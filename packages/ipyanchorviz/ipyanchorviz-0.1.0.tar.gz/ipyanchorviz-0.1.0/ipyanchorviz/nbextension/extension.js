@@ -1,0 +1,1 @@
+define((()=>{return n={758:n=>{window.require&&window.require.config({map:{"*":{ipyanchorviz:"nbextensions/ipyanchorviz/index"}}}),n.exports={load_ipython_extension:function(){}}}},r={},function e(i){var o=r[i];if(void 0!==o)return o.exports;var t=r[i]={exports:{}};return n[i](t,t.exports,e),t.exports}(758);var n,r}));
