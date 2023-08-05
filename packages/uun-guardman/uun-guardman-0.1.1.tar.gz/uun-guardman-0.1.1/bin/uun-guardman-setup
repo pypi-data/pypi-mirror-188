@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# hardware setup
+# passed environment variables from installation script: $PROJECT, $PROJECT_HOME
+
+g_changed=0 # indicate if config file was changed
+g_config_file="/boot/config.txt"
+
+setup_user () 
+{
+    if [ -z "$PROJECT" ]
+    then
+        echo "[!] Specify a dedicated username to run the project in this format 'PROJECT=uun-guardman $0'."
+        exit 1
+    else
+        echo "[+] Adding user $PROJECT to groups spi,gpio..."
+    fi
+
+    # these permission groups are needed for controlling the LEDs
+    usermod -aG "spi,gpio" "$PROJECT" 
+}
+
+append () 
+{
+    # append text to file IF not already present
+    # set 'g_changed' variable to indicate, if the file was changed
+    str="$1"
+    grep -q "^$str" "$g_config_file" || {
+        g_changed=1
+        echo "$str" | sudo tee -a "$g_config_file" >/dev/null 
+    }
+}
+
+enable_spi ()
+{
+    echo "[+] Enabling SPI..."
+    append "dtparam=spi=on"
+}
+
+adjust_frequency () 
+{
+    printf "[>] What Raspberry Pi model is this? Input number:
+    (0) Raspberry Pi Zero
+    (3) Raspberry Pi 3
+    (4) Raspberry Pi 4
+    > "
+    read -r rpi_model
+    echo "Selected ($rpi_model)."
+    case "$rpi_model" in
+        0|3) append "core_freq=250" 
+            ;;
+        4)  append "core_freq=500"
+            append "core_freq_min=500"
+            ;;
+        *)  echo "Doing nothing. See BookKit & set 'core_freq' and 'core_freq_min' manually in '$g_config_file'." 
+            exit 1
+            ;;
+    esac
+    echo "[+] Adjusted core frequencies."
+}
+
+main ()
+{
+    setup_user
+
+    [ -f "$g_config_file" ] || {
+        echo "Could not find Raspberry hardware configuration in $g_config_file. Exiting."
+        exit 1
+    }
+
+    enable_spi
+    adjust_frequency
+
+    # signal need for reboot (exit code 3) if something new was added to configuration file
+    if [ "$g_changed" = 0 ]; then
+        exit 0
+    else
+        exit 3
+    fi
+}
+
+main
