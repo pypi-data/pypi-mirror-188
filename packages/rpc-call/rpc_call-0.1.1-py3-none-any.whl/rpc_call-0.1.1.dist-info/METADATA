@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: rpc-call
+Version: 0.1.1
+Summary: 
+Author: Artyom Syssolov
+Author-email: artyom.syssolov1@homecredit.kz
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: aio-pika (>=8.3.0,<9.0.0)
+Requires-Dist: loguru (>=0.6.0,<0.7.0)
+Requires-Dist: orjson (>=3.8.5,<4.0.0)
+Requires-Dist: pika (>=1.3.1,<2.0.0)
+Requires-Dist: pydantic (>=1.10.4,<2.0.0)
+Requires-Dist: simplejson (>=3.18.1,<4.0.0)
+Description-Content-Type: text/markdown
+
+> **Note**
+> TThe main idea of the project is based on RabbitMQ RPC, so RabbitMQ must be installed. Keep it mind.
+
+### Get started
+-------------
+#### *Simple RPC client using FastAPI*
+
+
+#### **`server.py`**
+
+```python
+import asyncio
+from fastapi import FastAPI, Depends, status
+from rpc_call.async_client import RPCClient
+from rpc_call.types import Task, TaskResult
+
+app = FastAPI()
+
+async def rpc_connection() -> RPCClient:
+    return await RPCClient(
+        amqp_dsn = "<amqp://login:password@host:port/vhost>",
+        queue_name = "<RabbitMQQueueName>"
+    ).connect()
+
+@app.post("/RPCEndpoint", response_model=TaskResult)
+async def read_users(task: Task, rpc_conn: RPCClient = Depends(rpc_connection)) -> TaskResult:
+    task_result = await rpc_conn.call(task)
+    return task_result
+```
+
+```shell
+$ python server.py
+```
+
+-------------
+#### *Simple RPC server*
+
+#### **`client.py`**
+
+```python
+from rpc_call.server import RPCServer
+
+class CallbackHandler:
+    def test_func(self, arg1: str) -> str:
+        return "test_func rpc result"
+
+if __name__ == "__main__":
+    RPCServer(
+        amqp_dsn = "<amqp://login:password@host:port/vhost>",
+        queue_name = "<RabbitMQQueueName>",
+        callback_handler = CallbackHandler
+    )
+```
+
+```bash
+$ uvicorn client:app --host 0.0.0.0 --port 8000 --reload
+```
+
