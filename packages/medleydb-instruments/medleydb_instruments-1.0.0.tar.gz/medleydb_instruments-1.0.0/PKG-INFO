@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: medleydb-instruments
+Version: 1.0.0
+Summary: A tool to query MedleyDB annotations and metadata.
+Home-page: https://github.com/Seon82/medleydb_instruments
+License: MIT
+Keywords: medleydb,instruments,music
+Author: Dylan Sechet
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Project-URL: Repository, https://github.com/Seon82/medleydb_instruments
+Description-Content-Type: text/markdown
+
+# medleydb_instruments
+[![Linter Actions Status](https://github.com/Seon82/medleydb_instruments/actions/workflows/lint.yml//badge.svg?branch=master)](https://github.com/Seon82/medleydb_instruments/actions)
+
+`medleydb_instruments` is a tool to seemlessly query MedleyDB annotations and instrument metadata.
+
+The [MedleyDB 1.0 and 2.0](https://medleydb.weebly.com/) datasets don't provide annotations or metadata, only raw audio files. The authors provide [an official github repo](https://github.com/marl/medleydb) containing metadata, but it is painful to install and can be quite complex to use. 
+
+## Installation
+Simply run: `pip install medleydb_instruments`
+
+## Quickstart
+```python
+import medleydb_instruments as mdb
+
+track = mdb.MultiTrack("AcDc_BackInBlack")
+# Get a list of instruments present in the track
+instrument_list = track.instruments
+# Determine if the recording has bleed
+has_bleed = track.has_bleed
+# Get a dataframe of instrument activations
+activations_df = track.activations
+```
+
+
