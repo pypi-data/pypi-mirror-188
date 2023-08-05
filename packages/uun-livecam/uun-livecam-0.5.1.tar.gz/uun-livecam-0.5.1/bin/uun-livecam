@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+from uun_iot import Gateway
+from uun_livecam.modules import init
+
+import logging
+import time
+import argparse
+import sys
+
+__version__ = "0.5.1"
+__package__ = "uun_livecam"
+library = "uun_iot"
+
+def main():
+    argp = argparse.ArgumentParser(prog=__package__, description='Connect to ONVIF IP camera(s), drive it to desired destinations and take snapshots.')
+    argp.add_argument('-v', '--version', action='version', version='%(prog) ' + __version__)
+    argp.add_argument('-l', '--log', metavar='loglevel', dest='loglevel', type=str, help='level of logging: [DEBUG, INFO, WARNING, ERROR, CRITICAL]', default='WARNING')
+    args = argp.parse_args()
+ 
+    ## = SETTING LOGGING = ##
+    # set log level from option
+    loglevel = args.loglevel
+    llevel = getattr(logging, loglevel.upper(), None)
+    if not isinstance(llevel, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+
+    # set formatting and levels for this package and library (uuapp)
+    loggerw = logging.getLogger(__package__) # application specific logger
+    loggeru = logging.getLogger(library) # library logger
+    loggerw.setLevel(llevel)
+    loggeru.setLevel(llevel)
+    
+    # console handler (output text to console), here can be added file handlers, server handlers, ...
+    ch = logging.StreamHandler()
+    ch.setLevel(llevel)
+    # set log format
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+
+    # delete possible handlers of root logger (-> duplicates)
+    logging.getLogger().handlers = []
+    logging.getLogger().addHandler(ch)
+
+    # start module system
+    print("=== " + __package__ + " ===")
+    with Gateway('config.json', init) as g:
+        while True:
+            time.sleep(1)
+
+if __name__ == '__main__':
+    main()
