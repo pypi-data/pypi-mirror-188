@@ -1,0 +1,100 @@
+Metadata-Version: 2.1
+Name: rpc-call
+Version: 0.1.3
+Summary: 
+Author: Artyom Syssolov
+Author-email: artyom.syssolov1@homecredit.kz
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: aio-pika (>=8.3.0,<9.0.0)
+Requires-Dist: loguru (>=0.6.0,<0.7.0)
+Requires-Dist: orjson (>=3.8.5,<4.0.0)
+Requires-Dist: pika (>=1.3.1,<2.0.0)
+Requires-Dist: pydantic (>=1.10.4,<2.0.0)
+Requires-Dist: simplejson (>=3.18.1,<4.0.0)
+Description-Content-Type: text/markdown
+
+> **Note:**
+> The main idea of the project is based on RabbitMQ RPC, so RabbitMQ must be installed. Please keep it mind.
+
+### Get started
+
+#### *Simple RPC client using FastAPI*
+#### **`client.py`**
+
+```python
+import asyncio
+from fastapi import FastAPI, Depends, status
+from rpc_call.async_client import RPCClient
+from rpc_call.types import Task, TaskResult
+
+app = FastAPI()
+
+async def rpc_connection() -> RPCClient:
+    return await RPCClient(
+        amqp_dsn = "<amqp://login:password@host:port/vhost>",
+        queue_name = "<RabbitMQQueueName>"
+    ).connect()
+
+@app.post("/RPCEndpoint", response_model=TaskResult)
+async def read_users(task: Task, rpc_conn: RPCClient = Depends(rpc_connection)) -> TaskResult:
+    task_result = await rpc_conn.call(task)
+    return task_result
+```
+```bash
+$ uvicorn client:app --host 0.0.0.0 --port 8000 --reload
+```
+
+#### *Simple RPC server*
+
+#### **`server.py`**
+
+```python
+from rpc_call.server import RPCServer
+
+class CallbackHandler:
+    def test_func(self, arg: str) -> str:
+        return f"test_func('{arg}') call result"
+
+if __name__ == "__main__":
+    RPCServer(
+        amqp_dsn = "<amqp://login:password@host:port/vhost>",
+        queue_name = "<RabbitMQQueueName>",
+        callback_handler = CallbackHandler
+    )
+```
+```shell
+$ python server.py
+```
+
+### Usage
+
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8000/RPCEndpoint' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "procedure": "test_func",
+  "kwargs": {"arg": "Hello world!"}
+}'
+```
+And the response will be:
+```json
+{
+  "status_code": 200,
+  "result": {
+    "test_func": "test_func('Hello world!') call result"
+  }
+}
+```
+
+---
+So now, with this elegant and simple library, you can call your code remotely! 👏
+Good luck! 😉
+
+
+
