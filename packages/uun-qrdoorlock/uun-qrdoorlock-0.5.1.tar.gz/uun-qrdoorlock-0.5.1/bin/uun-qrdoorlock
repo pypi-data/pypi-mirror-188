@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+from uun_iot.Gateway import Gateway
+from uun_qrdoorlock.modules import init
+
+import logging
+import time
+import argparse
+import signal
+import sys
+
+__version__ = "0.5.1"
+__package__ = "uun_qrdoorlock"
+
+def main():
+    argp = argparse.ArgumentParser(prog=__package__, description='Retrieve QR data from QR reader, verify that it was signed by an authority and correspondingly gain access to electronically locked door.')
+    argp.add_argument('-v', '--version', action='version', version='%(prog) ' + __version__)
+    argp.add_argument('-l', '--log', metavar='loglevel', dest='loglevel', type=str, help='level of logging: [DEBUG, INFO, WARNING, ERROR, CRITICAL]', default='WARNING')
+    argp.add_argument('-c', '--config', metavar='config', dest='config', type=str, help='location of configuration JSON file', default='config.json')
+    args = argp.parse_args()
+ 
+    ## = SETTING LOGGING = ##
+    # set log level from option
+    loglevel = args.loglevel
+    llevel = getattr(logging, loglevel.upper(), None)
+    if not isinstance(llevel, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+
+    # set formatting and levels for this package and library (uuniot)
+    loggerw = logging.getLogger(__package__) # application specific logger
+    loggerw.setLevel(llevel)
+    loggeru = logging.getLogger("uun_iot") # library logger
+    loggeru.setLevel(llevel)
+    
+    # console handler (output text to console), here can be added file handlers, server handlers, ...
+    ch = logging.StreamHandler()
+    ch.setLevel(llevel)
+    # set log format
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+
+    # asssign the same handler to loggers
+    loggerw.addHandler(ch)
+    loggeru.addHandler(ch)
+
+    # start module system
+    print("=== " + __package__ + " ===")
+    with Gateway(args.config, init) as g:
+        signal.signal(signal.SIGTERM, g.signal_handler)
+        while True:
+            time.sleep(1)
+
+if __name__ == '__main__':
+    main()

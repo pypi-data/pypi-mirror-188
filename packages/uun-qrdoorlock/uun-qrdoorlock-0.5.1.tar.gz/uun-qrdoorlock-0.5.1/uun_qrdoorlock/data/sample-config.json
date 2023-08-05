@@ -1,0 +1,54 @@
+{
+    "gateway": {
+	"virtualMode": true,
+	"qrLock": {
+	    "lockOpenInterval": 3,
+	    "lockPreparationInterval": 2.9,
+	    "lockType": "SZLDS92",
+	    "relayPin": 26,
+	    "publicKey": "xxx",
+	    "qrReaderSerialDev": "/dev/pts/5"
+	},
+	"doorMonitor": {
+	    "signalAfter": 5,
+	    "monitorPin": 27,
+	    "bounceMs": 200
+	},
+	"moduleTimers": {
+	    "doorMonitor": 120,
+	    "qrLock": 120,
+	    "heartbeat": 30,
+	    "config": 600
+	},
+	"moduleBackupStorage": {
+	    "doorMonitor": "backup/doorMonitor.json",
+	    "qrLock": "backup/qrLock.json"
+	}
+    },
+    "uuThing": {
+	"uuIdentity": "xxx",
+	"accessCode1": "xxx",
+	"accessCode2": "xxx"
+    },
+    "uuApp": {
+	"gateway": "uuappg01-eu-w-1.plus4u.net",
+	"uuAppName": "ucl-qrdoorlock-maing01",
+	"awid": "xxx",
+	"uuCmdList": {
+	    "qrcodeLog": "qrcode/log",
+	    "qrcodeLogBulk": "qrcode/logBulk",
+	    "gatewayGetConfiguration": "gateway/getConfiguration",
+	    "getPublicKey": "getPublicKey",
+	    "gatewayHeartbeat": "gateway/heartbeat"
+	}
+    },
+    "oidcGrantToken": {
+        "gateway": "uuidentity.plus4u.net",
+        "uuAppName": "uu-oidc-maing02",
+        "awid": "xxx",
+        "clientId": "xxx",
+        "clientSecret": "xxx",
+        "uuCmd": "oidc/grantToken",
+        "tokenPath": "./oidc-token"
+    }
+}
