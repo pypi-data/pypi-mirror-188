@@ -1,0 +1,124 @@
+[tool.towncrier]
+package = "anitya_schema"
+filename = "docs/release-notes.rst"
+directory = "news/"
+title_format = "{version} ({project_date})"
+issue_format = "{issue}"
+template = "news/_template.rst"
+
+  [[tool.towncrier.type]]
+  directory = "api"
+  name = "API Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "feature"
+  name = "Features"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "bug"
+  name = "Bug Fixes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "dev"
+  name = "Development Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "other"
+  name = "Other Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "author"
+  name = "Contributors"
+  showcontent = true
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.poetry]
+name = "anitya_schema"
+version = "2.2.0"
+description = "JSON schema definitions for messages published by Anitya"
+authors = ["Fedora Infrastructure Team <infrastructure@lists.fedoraproject.org>"]
+maintainers = ["Fedora Infrastructure Team <infrastructure@lists.fedoraproject.org>"]
+readme = "README.rst"
+homepage = "https://github.com/fedora-infra/anitya-messages"
+documentation = "https://anitya-messages.readthedocs.io/en/latest"
+repository = "https://github.com/fedora-infra/anitya-messages"
+license = "GPL-2.0-or-later"
+classifiers = [
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10"
+]
+include = [
+  "LICENSE", "README.rst"
+]
+exclude = [
+  "anitya_schema.tests"
+]
+
+[tool.poetry.plugins."fedora.messages"]
+"anitya.distro.add" = "anitya_schema:DistroCreated"
+"anitya.distro.edit" = "anitya_schema:DistroEdited"
+"anitya.distro.remove" = "anitya_schema:DistroDeleted"
+"anitya.project.add" = "anitya_schema:ProjectCreated"
+"anitya.project.edit" = "anitya_schema:ProjectEdited"
+"anitya.project.remove" = "anitya_schema:ProjectDeleted"
+"anitya.project.flag" = "anitya_schema:ProjectFlag"
+"anitya.project.flag.set" = "anitya_schema:ProjectFlagSet"
+"anitya.project.map.new" = "anitya_schema:ProjectMapCreated"
+"anitya.project.map.update" = "anitya_schema:ProjectMapEdited"
+"anitya.project.map.remove" = "anitya_schema:ProjectMapDeleted"
+"anitya.project.version.update" = "anitya_schema:ProjectVersionUpdated"
+"anitya.project.version.update.v2" = "anitya_schema:ProjectVersionUpdatedV2"
+"anitya.project.version.remove" = "anitya_schema:ProjectVersionDeleted"
+"anitya.project.version.remove.v2" = "anitya_schema:ProjectVersionDeletedV2"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+fedora-messaging = "^3.1.0"
+
+[tool.poetry.dev-dependencies]
+bandit = "^1.7.4"
+black = "^22.8.0"
+coverage = "^7.0.0"
+diff-cover = "^7.0.1"
+flake8 = "^6.0.0"
+mock = "^5.0.0"
+pytest = "^7.1.3"
+pytest-cov = "^4.0.0"
+
+# Required to test building the docs
+Sphinx = "^6.0.0"
+
+# Mypy test requirements
+mypy = "^0.991"
+types-mock = "^4.0.15"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
