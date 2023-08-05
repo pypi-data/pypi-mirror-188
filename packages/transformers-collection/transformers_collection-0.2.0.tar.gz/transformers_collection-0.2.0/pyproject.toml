@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "transformers-collection"
+version = "0.2.0"
+description = "A collection of transformer models built  using huggingface for various tasks."
+authors = ["Aadhithya Sankar <aadhithya.s@outlook.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "transformers_collection"}]
+
+homepage = "https://github.com/aadhithya/transformers-collection"
+repository = "https://github.com/aadhithya/transformers-collection"
+
+keywords = ["transformers", "huggingface", "NLP"]
+
+classifiers = [
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+torch = ">1.10,<2.0"
+numpy = "^1.24.1"
+transformers = "^4.26.0"
+loguru = "^0.6.0"
+tensorboard = "^2.11.2"
+pytorch-lightning = "^1.9.0"
+datasets = "^2.8.0"
+evaluate = "^0.4.0"
+typer = "^0.7.0"
+munch = "^2.5.0"
+scikit-learn = "^1.2.1"
+scipy = "^1.10.0"
+
+[tool.poetry.group.dev.dependencies]
+commitizen = "^2.40.0"
+pre-commit = "^3.0.0"
+flake8 = "^6.0.0"
+black = "^22.12.0"
+ipykernel = "^6.20.2"
+ipywidgets = "^8.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+transformers-collection = "transformers_collection.__main__:app"
+
+[tool.semantic_release]
+version_variable = [
+    "pyproject.toml:version",
+    "transformers_collection/__init__.py:__version__"
+]
+branch = "master"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+commit_subject = "Bump to {version}"
+commit_message = "Bump to {version}"

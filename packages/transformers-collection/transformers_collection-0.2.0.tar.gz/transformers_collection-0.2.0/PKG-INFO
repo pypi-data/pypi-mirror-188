@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: transformers-collection
+Version: 0.2.0
+Summary: A collection of transformer models built  using huggingface for various tasks.
+Home-page: https://github.com/aadhithya/transformers-collection
+License: MIT
+Keywords: transformers,huggingface,NLP
+Author: Aadhithya Sankar
+Author-email: aadhithya.s@outlook.com
+Requires-Python: >=3.9,<3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Dist: datasets (>=2.8.0,<3.0.0)
+Requires-Dist: evaluate (>=0.4.0,<0.5.0)
+Requires-Dist: loguru (>=0.6.0,<0.7.0)
+Requires-Dist: munch (>=2.5.0,<3.0.0)
+Requires-Dist: numpy (>=1.24.1,<2.0.0)
+Requires-Dist: pytorch-lightning (>=1.9.0,<2.0.0)
+Requires-Dist: scikit-learn (>=1.2.1,<2.0.0)
+Requires-Dist: scipy (>=1.10.0,<2.0.0)
+Requires-Dist: tensorboard (>=2.11.2,<3.0.0)
+Requires-Dist: torch (>1.10,<2.0)
+Requires-Dist: transformers (>=4.26.0,<5.0.0)
+Requires-Dist: typer (>=0.7.0,<0.8.0)
+Project-URL: Repository, https://github.com/aadhithya/transformers-collection
+Description-Content-Type: text/markdown
+
+# transformers-collection
+- A collection of transformer models built  using huggingface for various tasks. Training done using pytorch lightning.
+- Datasets, models and tokenizers from hugging face.
+- **Goal**: Get familiar with huggingface and pytorch lightning ecosystems.
+
+## Get started
+### Train Models using the library
+- To train models, install using pip: `pip install transformers_collection`
+- check installation: `transformers-collection version`
+
+### Clone project and modify code
+To play around with the code clone the repo:
+- `git clone git@github.com:aadhithya/transformers-collection.git`
+- Install poetry: `pip install poetry`
+- Intsall dependencies: `poetry install`
+
+**Note:** `poetry install` will create a new venv.
+**Note**: `poetry/pip install` installs CPU version of pytorch if not available, please make sure to install CUDA version if needed.
+
+
+## Train a model
+- Create the yaml config file for the model (see configs/sentiment-clf.yml for example).
+- train model using: `transformers-collection train /path/to/config.yml`
+
+- For a list of supported models, see section Supported Models.
+
+
+
+## Supported Models / Task
+The following models are planned:
+| Model                            |                      Dataset                       |  Status   | Checkpoint |
+| :------------------------------- | :------------------------------------------------: | :-------: | ---------: |
+| Sentiment/Emotion Classification | [emotion](https://huggingface.co/datasets/emotion) |     ✅     |        TBD |
+| Text Summarization               |                                                    | 🗓️ Planned |        TBD |
+
