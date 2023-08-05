@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "pytest_kasima"
+repository = "https://github.com/k4sima/pytest-kasima"
+homepage = "https://github.com/k4sima/pytest-kasima"
+version = "0.1.5"
+description = "Display horizontal lines above and below the captured standard output for easy viewing."
+authors = ["k4sima <44926913+k4sima@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Science/Research",
+]
+packages = [{ include = "pytest_kasima" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.2.1"
+rich = { version = "*", optional = true }
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+isort = "^5.11.4"
+black = "^22.12.0"
+mypy = "^0.991"
+pre-commit = "^3.0.0"
+
+[tool.poetry.extras]
+rich = ["rich"]
+
+[tool.mypy]
+ignore_missing_imports = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+addopts = "--kasima-skip"
+testpaths = ["tests"]
+
+[tool.poetry.plugins.pytest11]
+kasima = "pytest_kasima"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
