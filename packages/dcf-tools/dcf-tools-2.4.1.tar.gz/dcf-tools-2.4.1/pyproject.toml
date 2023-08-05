@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dcf-tools"
+version = "2.4.1"
+dependencies = ["PyYAML>=3.08", "empy>=3.3.2"]
+authors = [
+  {name = "J. S. Seldenthuis", email = "jseldenthuis@lely.com"}
+]
+description = "Tools to generate and manipulate DCF files"
+classifiers=["License :: OSI Approved :: Apache Software License"]
+
+[project.urls]
+"Home Page" = "https://gitlab.com/lely_industries/lely-core"
+
+[project.scripts]
+dcf2dev = "dcf2dev.cli:main"
+dcfchk = "dcf.cli:main"
+dcfgen = "dcfgen.cli:main"
+
+[tool.setuptools]
+packages = ["dcf", "dcf2dev", "dcfgen"]
+
+[tool.setuptools.package-data]
+dcf2dev = ["data/*"]
+dcfgen = ["data/*"]
