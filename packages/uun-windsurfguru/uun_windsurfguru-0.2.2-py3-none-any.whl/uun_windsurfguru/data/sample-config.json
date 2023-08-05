@@ -1,0 +1,120 @@
+{
+    "oidcGrantToken": {
+        "gateway": "uuidentity.plus4u.net",
+        "uuAppName": "uu-oidc-maing02",
+        "awid": "xxx",
+        "uuCmd": "oidc/grantToken",
+        "tokenPath": "./oidc-token"
+    },
+    "uuThing": {
+        "accessCode1": "xxx",
+        "accessCode2": "xxx"
+    },
+    "uuApp": {
+        "gateway": "uuapp.plus4u.net",
+        "uuAppName": "ucl-weatherstation-maing01",
+        "awid": "xxx",
+        "uuCmdList": {
+            "weatherConditionsGetLast": "weatherConditions/getLast"
+        }
+    },
+    "gateway": {
+        "moduleTimers": {
+            "windSurfGuru": 120
+        },
+        "windSurfGuru": {
+            "weatherStationCode": "MELTEMI",
+            "ledStrip": {
+                "device": "virtual",
+                "pixels": 16,
+                "pin": "D10"
+            },
+            "state": {
+                "noConnection": {
+                    "color": "#ff0000",
+                    "action": "blink",
+                    "interval": 0.2
+                },
+                "blank": {
+                    "color": "#000000",
+                    "action": "solid",
+                    "interval": null
+                },
+                "error": {
+                    "color": "#ff0000",
+                    "action": "blink",
+                    "interval": 0.2
+                }
+            },
+            "severity": {
+                "low": {
+                    "color": "#0000ff",
+                    "action": "solid",
+                    "interval": null,
+                    "specialAction": {
+                        "condition": "ifWindBetween",
+                        "color": "#0000ff",
+                        "action": "blink",
+                        "interval": 0.2
+                    },
+                    "settings": {
+                        "windMin": 0,
+                        "windMax": 14,
+                        "ledMinPosition": 0,
+                        "ledMaxPosition": 0
+                    }
+                },
+                "light": {
+                    "color": "#0000ff",
+                    "action": "solid",
+                    "interval": null,
+                    "settings": {
+                        "windMin": 16,
+                        "windMax": 18,
+                        "ledMinPosition": 1,
+                        "ledMaxPosition": 3
+                    }
+                },
+                "optimal": {
+                    "color": "#00ff00",
+                    "action": "solid",
+                    "interval": null,
+                    "settings": {
+                        "windMin": 19,
+                        "windMax": 22,
+                        "ledMinPosition": 4,
+                        "ledMaxPosition": 7
+                    }
+                },
+                "heavy": {
+                    "color": "#ff8000",
+                    "action": "solid",
+                    "interval": null,
+                    "settings": {
+                        "windMin": 23,
+                        "windMax": 26,
+                        "ledMinPosition": 8,
+                        "ledMaxPosition": 11
+                    }
+                },
+                "extreme": {
+                    "color": "#ff0000",
+                    "action": "solid",
+                    "interval": null,
+                    "specialAction": {
+                        "condition": "ifWindGreater",
+                        "color": "#ff0000",
+                        "action": "blink",
+                        "interval": 0.2
+                    },
+                    "settings": {
+                        "windMin": 27,
+                        "windMax": 30,
+                        "ledMinPosition": 12,
+                        "ledMaxPosition": 15
+                    }
+                }
+            }
+        }
+    }
+}
