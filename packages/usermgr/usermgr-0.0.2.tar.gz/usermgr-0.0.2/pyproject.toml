@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "usermgr"
+version = "0.0.2"
+description = ""
+authors = ["tamuto <tamuto@infodb.jp>"]
+readme = "README.md"
+homepage = "https://github.com/tamuto/usermgr"
+repository = "https://github.com/tamuto/usermgr"
+
+packages = [
+    { include="usermgr", from="." }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+boto3 = {version = "^1.26.54", optional = true}
+
+[tool.poetry.extras]
+cognito = ["boto3"]
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = {extras = ["cli"], version = "^0.21.1"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

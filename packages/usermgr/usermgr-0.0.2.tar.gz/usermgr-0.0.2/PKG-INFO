@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: usermgr
+Version: 0.0.2
+Summary: 
+Home-page: https://github.com/tamuto/usermgr
+Author: tamuto
+Author-email: tamuto@infodb.jp
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: cognito
+Requires-Dist: boto3 (>=1.26.54,<2.0.0) ; extra == "cognito"
+Project-URL: Repository, https://github.com/tamuto/usermgr
+Description-Content-Type: text/markdown
+
+# User Management API
+
+## Memo
+
+* unittest
+
+  * prepare .env file
+
+```
+AWS_ACCESS_KEY_ID=xxx
+AWS_SECRET_ACCESS_KEY=xxx
+or
+AWS_PROFILE=xxx
+
+USER_POOL_ID=xxx
+CLIENT_ID=xxx
+```
+
+  * run unittest
+
+```
+poetry run dotenv run python -m unittest discover
+```
+
+* build
+
+```
+poetry build
+```
+
+* public
+
+```
+poetry publish
+```
+
+* Install for development
+
+```
+poetry install -E cognito
+```
+
