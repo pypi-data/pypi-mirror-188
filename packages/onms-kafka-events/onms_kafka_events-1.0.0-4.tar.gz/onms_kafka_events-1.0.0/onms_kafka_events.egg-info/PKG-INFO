@@ -1,0 +1,87 @@
+Metadata-Version: 2.1
+Name: onms-kafka-events
+Version: 1.0.0
+Summary: A Python library for sending events via kafka_consumer to OpenNMS.
+Author-email: Mark Mahacek <mmahacek@opennms.com>
+License: MIT License
+        
+        Copyright (c) 2023 mmahacek
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/opennms-forge/kafka-consumer-py
+Project-URL: Documentation, https://opennms-forge.github.io/kafka-consumer-py/
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+![package version](https://img.shields.io/pypi/v/onms_kafka_events)
+![python version](https://img.shields.io/pypi/pyversions/onms_kafka_events)
+
+# onms_kafka_events
+
+This library will allow you to generate event objects in Python to send to a Kafka topic for OpenNMS Horizon/Meridian to process.
+
+Documentation for this project is available at https://opennms-forge.github.io/kafka-consumer-py/
+
+Documentation for configuring the Kafka Consumer feature on your Horizon/Meridian server can be found at https://docs.opennms.com/horizon/latest/operation/deep-dive/events/sources/kafka.html.
+
+## Installation
+
+```
+pip install onms-kafka-events
+```
+
+## Associating events to nodes
+
+When received, the eventd daemon will attempt to associate the event to a node in the following order:
+
+ * If the `nodeId` field is included, the event will be matched to the node with that database ID.
+ * If the event does not have `nodeID`, the parameters `_foreignSource` and `_foreignId` can be included to associate the event based on the requisition name and ID.
+ * Any event that cannot match a node on either of these criteria will not be associated with a node.
+
+## Example
+
+```py
+from onms_kafka_events import KafkaConnection, Severity
+
+my_producer = KafkaConnection(
+    servers=["broker01:9092", "broker02:9092"], topic="opennms-kafka-events"
+)
+
+my_event = my_producer.create_event(
+    uei="uei.opennms.org/custom/event",
+    severity=Severity.WARNING,
+    node_id=1234,
+    custom="value"
+)
+
+result = my_producer.send_event(my_event)
+```
