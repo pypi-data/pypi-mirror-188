@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: RITMO
+Version: 1.1.1
+Summary: Research Investigation of Timeseries with Multiday Oscillations
+Home-page: https://github.com/rachel-stirling/RITMO
+Author: Rachel E. Stirling
+Author-email: rachelstirling1@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas (>=1.3.0)
+Requires-Dist: matplotlib (>=3.5.1)
+Requires-Dist: numpy (>=1.21.0)
+Requires-Dist: pyEDM (>=1.14.0.0)
+Requires-Dist: pymannkendall (>=1.4.3)
+Requires-Dist: pycwt (>=0.3.0a22)
+Requires-Dist: scikit-learn (>=1.0.2)
+
+## Research Investigation of Timeseries with Multiday Oscillations (RITMO)
+
+---
+This package provides a python toolbox for assessing the slow-drifting correlation and causation between two oscialltory timeseries' with multiday patterns. It includes three well-estabilised approaches:
+
+* Empirical Dynamic Modelling (also known as EDM)
+* Phase locking value
+* Mutual information
+
+---
+
+## Installation
+
+Command line using the Python pip module: `python -m pip install ritmo`
+
+---
+
+## Usage
+
+Example usage at the python prompt:
+
+```python
+>>> from ritmo import Ritmo
+>>> import numpy as np
+>>> x = np.arange(0, 100*24*3.6e6, 3.6e6) # UNIX timestamps in milliseconds
+>>> y1 = np.random.random(x.size) # first random timeseries
+>>> y2 = np.ra6ndom.random(x.size) # second random timeseries
+>>> ritmo = Ritmo(y1 = y1, y2 = y2, x1 = x)
+>>> ritmo.run()
+```
+
+---
+
+### References
+
+Stirling et al. 2022. A methodology to assess cyclical correlates: case study of the heart and the epileptic brain.
