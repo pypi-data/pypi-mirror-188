@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "imcs"
+version = "0.0.1"
+authors = [
+  { name="Timo Wentong Lin", email="lin@uni-mainz.de" },
+
+]
+description = "A CLI for adding metadata in JSON format to iRODs objects"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+          "License :: OSI Approved :: Apache Software License",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+"Homepage" = "https://gitlab.rlp.net/hpc/imcs"
+"Bug Tracker" = "https://gitlab.rlp.net/hpc/imcs/-/issues"
+
+[project.scripts]
+schema2avu = "imcs.schema2avu:main"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
