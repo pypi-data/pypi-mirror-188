@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+from uun_iot import Gateway
+from uun_windsurfguru.modules import init
+
+import logging
+import time
+import argparse
+import sys
+import signal
+
+__version__ = "0.2.2"
+__package__ = "uun_windsurfguru"
+
+
+def main():
+    argp = argparse.ArgumentParser(
+        prog=__package__, description='Display wind surf conditions on a colorful LED strip.')
+    argp.add_argument('-v', '--version', action='version',
+                      version='%(prog) ' + __version__)
+    argp.add_argument('-l', '--log', metavar='loglevel', dest='loglevel', type=str,
+                      help='level of logging: [DEBUG, INFO, WARNING, ERROR, CRITICAL]', default='WARNING')
+    argp.add_argument('-c', '--config', metavar='config', dest='config',
+                      type=str, help='configuration JSON file', default='config.json')
+    args = argp.parse_args()
+
+    ## = SETTING LOGGING = ##
+    # set log level from option
+    loglevel = args.loglevel
+    llevel = getattr(logging, loglevel.upper(), None)
+    if not isinstance(llevel, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+
+    # set formatting and levels for this package and library (uuniot)
+    loggerw = logging.getLogger(__package__)  # application specific logger
+    loggerw.setLevel(llevel)
+    loggeru = logging.getLogger("uun_iot")  # library logger
+    loggeru.setLevel(llevel)
+    loggeru2 = logging.getLogger("uun_iot_libledstrip")
+    loggeru2.setLevel(llevel)
+
+    # console handler (output text to console), here can be added file handlers, server handlers, ...
+    ch = logging.StreamHandler()
+    ch.setLevel(llevel)
+    # set log format
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+
+    # asssign the same handler to loggers
+    loggerw.addHandler(ch)
+    loggeru.addHandler(ch)
+    loggeru2.addHandler(ch)
+
+    # try to add colors to Windows (colored LED strip)
+    try:
+        from colorama import init as init_c
+        init_c()
+    except ImportError:
+        pass
+
+    # start module system
+    print("=== " + __package__ + " ===")
+    with Gateway(args.config, init) as g:
+        # Register a SIGTERM signal, as it is issued by systemd on stop/restart.
+        #   Because by default, it does not run destructors.
+        # Ctrl-C (SINGINT) correctly runs destructors, so no need to register.
+        signal.signal(signal.SIGTERM, g.signal_handler)
+        while True:
+            time.sleep(1)
+
+
+if __name__ == '__main__':
+    main()
