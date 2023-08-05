@@ -1,0 +1,100 @@
+
+
+---
+
+
+
+> -Features
+>     -Speaking:
+>         ai-win will help your comuter to say what you want:-
+>     Using you systems engine driver it can speak in different voices.
+>     Currently it has only two voices- male and female, but soon you will get a lot of voices and also languages.
+
+>     -Recognizing speech:
+>         This feature will make your computer listen you:-
+>         This function is made to make your computer not only take input form actions but also from your voice!
+
+>     -Accessing camera:
+>         This feature will make your computer to access your camera anytime you want. It might take a few seconds or even a minute-
+>     depending on your computer's RAM. You can also use speech recognition function with so it can access your camera when say it to do so.
+>         Note: 1. This function is absolutely safe and your captures will remain with you only.
+>               2. This function will only work when your computer has an accessible camera.
+>               In case of any issues you can ask on StackOverflow, we will be very happy to answer your questions.
+>     -Open internet:
+>         Opening internet is a do-daily activity, you can automate it with this function:-
+>         This function can automate your access to internet.
+>         Note: This function is still developing. Only a part of it is there in this library. This function will update more and more in the coming newer versions of ai-win.
+
+>     -Greetings:
+>         With this wonderful feature of this library, your computer can greet you at any point of day.
+
+>     -Time:
+>         This function will help you get the local-time-anytime.
+
+>     -Accessing Wikipedia:
+>         This is an amazing part of this library. This has no limits. With this function your computer will know every famous personality, place, facts, history and many more.
+
+>     -Search:
+>         The eagerness-to-know of any curious has no limits, it makes us search more and more and more:-
+>             The search function will search anything anytime anywhere- with an internet connection.
+
+>     -Face detection:
+>         With this library your computer can also detect your face. It uses opencv haarcascade to detect your facial muscles. It will access your camera, capture your live expressions, convert it to graysacle, detect your muscles and after all the process it gives you a complete colored frame as output.
+
+> -Examples
+>     -Speak:
+>
+> ```python
+> #from ai-logics
+> import AI
+>
+> if __name__=='__main__':
+> 	AI.speak.maleVoice('Hello World!')
+> ```
+>
+>     You can also use female voice instead:-
+>
+> ```python
+> #from ai-logics
+> import AI
+>
+> if __name__=='__main__':
+> 	AI.speak.femaleVoice('Hello World!')
+> ```
+>
+>     -Recognize speech:
+>
+> ```python
+> #from ai-logics
+> import AI
+>
+> if __name__=='__main__':
+> 	speech = AI.recognizeSpeech.listen()
+> 	print(speech)
+> #Example:- I said 'Hello World'
+> ```
+>
+>     Result:-![1674717566946](image/README/1674717566946.png)
+>     -Access the camera:
+>
+> ```python
+> #from ai-logics
+> import AI
+>
+> if __name__=='__main__':
+> 	AI.access_cam.capturefromDefaultcam('a')
+> 	#'a' is the close button from which you can terminate the execution. You can use any other key.
+> ```
+>
+>     'a' is the key from which you can terminate the execution. You can use any other key from your keyboard.
+>     -Using functions:
+>         You will find it in the documentation which will be released on my github account by 30th March. Link will be uploaded in later vrsions.
+
+Note: This library uses some modules which requires some system dependencies. If you are a Windows user, make sure your windows is activated; If you are a Linux user you may install espeak.
+
+To activate Windows - https://support.microsoft.com/en-us/windows/activate-windows-c39005d4-95ee-b91e-b399-2820fda32227#:~:text=Select%20the%20Start%20button%2C%20and%20then%20select%20Settings%20%3E%20Update%20%26,COA%20and%20follow%20the%20instructions.
+
+To download espeak - https://espeak.sourceforge.net/
+
+Terms and Conditions apply.
+Copyright &copy; 2023|Developed by Aditya Pratap Singh
