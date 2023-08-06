@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcfonts"
+description = "A module for exporting, manipulating, and working with Minecraft fonts"
+readme = "README.md"
+requires-python = ">=3.10"
+version = "0.5"
+license = {text = "MIT"}
+authors = [{name = "WhoAteMyButter"}]
+keywords = [
+    "minecraft",
+    "fonts",
+    "minecraft fonts",
+    "font exporting",
+    "minecraft opentype",
+    "minecraft font",
+    "minecraft export font",
+    "mc font",
+    "mc fonts",
+    "mcfonts"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    "Topic :: Games/Entertainment",
+    "Topic :: Text Processing :: Fonts",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Other Audience",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English"
+]
+dependencies = [
+    "fontTools >= 4.35.0",
+    "Pillow >= 9.3.0",
+    "lxml >= 4.9.0",
+    "tinyunicodeblock >= 1.1.0",
+    "jsonschema >= 4.17.3"
+]
+
+[project.optional-dependencies]
+docs = [
+    "Sphinx >= 5.3.0",
+    "sphinx-autoapi >= 2.0.0",
+    "furo >= 2022.12"
+]
+
+[project.urls]
+Documentation = "https://mcfonts.readthedocs.io"
+Source = "https://gitlab.com/whoatemybutter/mcfonts"
+Changelog = "https://gitlab.com/whoatemybutter/mcfonts/-/blob/master/CHANGELOG.md"
+Issues = "https://gitlab.com/whoatemybutter/mcfonts/-/issues"
+
+[tool.black]
+line-length = 120
+
+[tool.pylint."MASTER"]
+jobs = 8
+py-version = "3.10"
+max-line-length = 120
+# Needed for lxml not playing nice with pylint
+extension-pkg-allow-list = ["lxml.etree"]
+[tool.pylint."MESSAGES CONTROL"]
+disable = ["logging-fstring-interpolation"]
+confidence = []
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.setuptools.package-data]
+mcfonts = ["template_hexchar_textures/*.png", "py.typed", "LICENSE.txt"]
