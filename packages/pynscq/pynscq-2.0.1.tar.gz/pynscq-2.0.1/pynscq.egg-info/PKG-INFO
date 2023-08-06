@@ -1,0 +1,119 @@
+Metadata-Version: 2.1
+Name: pynscq
+Version: 2.0.1
+Summary: Python bindings for the NVSwitch Configuration and Query (NSCQ) library
+Home-page: UNKNOWN
+Author: NVIDIA Corporation
+Author-email: CUDAIssues@nvidia.com
+License: UNKNOWN
+Description: PyNSCQ
+        ======
+        
+        Python bindings to the NSCQ library (NVSwitch Configuration & Query library)
+        ------------------------------------------------
+        
+        Provides a Python interface to NVSwitch querying.
+        
+        This is a wrapper around the NSCQ library.
+        
+        Download the latest package from:
+        http://pypi.python.org/pypi/pynscq/
+        
+        Note this file can be run with 'python -m doctest -v README.md'
+        although the results are system dependent
+        
+        REQUIRES
+        --------
+        Python 3.0
+        
+        INSTALLATION
+        ------------
+        
+        Pip Installation with python3:
+        - `python3 -m pip install nvidia-pynscq`
+        
+        USAGE
+        -----
+        ```
+        >>>#!/usr/bin/env python
+        >>>
+        >>>from pynscq.paths import nscq_nvswitch_device_uuid_path
+        >>>from pynscq import *
+        >>>
+        >>>devices = []
+        >>>
+        >>>@nscqCallback(p_nscq_uuid_t, nscq_rc_t, p_nscq_uuid_t, user_data_type)
+        >>>def device_uuid_callback(device, rc, uuid, _user_data):
+        ...    label = nscq_uuid_to_label(uuid.contents)
+        ...    devices.append(label.data.decode("UTF-8"))
+        >>>
+        >>>
+        >>>with NSCQSession() as session:
+        ...    session.path_observe(nscq_nvswitch_device_uuid_path, device_uuid_callback)
+        >>>
+        >>>for label in devices:
+        ...    print(label)
+        ```
+        
+        FUNCTIONS
+        ---------
+        Python methods wrap NSCQ functions, implemented in a C shared library.
+        Each function's use is the same with the following exceptions:
+        
+        - Instead of returning error codes, failing error codes are raised as Python exceptions.
+        
+        ```
+        >>> try:
+        ...    session.path_observe(nscq_nvswitch_device_uuid_path, device_uuid_callback)
+        ... except NSCQError as error:
+        ...     print(error)
+        ...
+        Uninitialized
+        ```
+        
+        - C structs are converted into Python classes.
+        
+        ```
+        >>>// C query struct
+        >>>typedef struct {
+        ...    uint8_t bytes[16];
+        >>>} nscq_uuid_t;
+        
+        # Python call to function and accessing members of ctype struct
+        >>>class nscq_uuid_t(_PrintableStructure):
+        ...    _fields_ = [("bytes", ctypes.c_uint8 * 16)]
+        ...
+        ...    def __str__(self):
+        ...        return "[%s]" % (", ".join(hex(x) for x in self.bytes))
+        ...
+        ...    __repr__ = __str__
+        ```
+        
+        VARIABLES
+        ---------
+        All meaningful NSCQ constants and enums are exposed in Python.
+        
+        RELEASE NOTES
+        -------------
+        v2.0.1 - Initial Release
+        
+        COPYRIGHT
+        ---------
+        Copyright (c) 2020-2023, NVIDIA Corporation.  All rights reserved.
+        
+        LICENSE
+        -------
+        Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+        
+        - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+        
+        - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+        
+        - Neither the name of the NVIDIA Corporation nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Keywords: nvidia nvswitch nscq management nvlink
+Platform: UNKNOWN
+Requires-Python: >=3
+Description-Content-Type: text/markdown
