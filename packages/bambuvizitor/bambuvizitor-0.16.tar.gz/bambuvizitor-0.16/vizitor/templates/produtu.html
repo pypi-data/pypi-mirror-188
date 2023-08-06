@@ -1,0 +1,472 @@
+
+
+
+	{% extends 'baze.html' %}
+  {% load i18n%}
+
+    {% block content %}
+    {% load socialaccount %} {% providers_media_js %}
+
+
+
+  
+
+
+
+    <style>
+
+
+
+
+
+
+  
+        
+
+.tabs {
+
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 0 20px;
+}
+#tab-button {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#tab-button li {
+  display: table-cell;
+  width: 20%;
+}
+#tab-button li a {
+  display: block;
+  padding: .5em;
+  background: #fff;
+    border: 1px solid #c5c13d;
+
+  border-radius: 20px;
+    margin: 20px;
+  text-align: center;
+  color: #000;
+  text-decoration: none;
+}
+#tab-button li:not(:first-child) a {
+  border-left: none;
+}
+#tab-button li a:hover,
+#tab-button .is-active a {
+  border-bottom-color: transparent;
+  background: #cfd4c2;
+}
+.tab-contents {
+  padding: .5em 2em 1em;
+  border: 1px solid #ddd;
+}
+
+
+
+.tab-button-outer {
+  display: none;
+}
+.tab-contents {
+  margin-top: 20px;
+}
+@media screen and (min-width: 768px) {
+  .tab-button-outer {
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .tab-select-outer {
+    display: none;
+  }
+  .tab-contents {
+    position: relative;
+    top: -1px;
+    margin-top: 0;
+  }
+}
+        </style>
+
+
+    <div id="about" class="section wb">
+        <div class="container-fluid">
+
+                 <div class="section-title text-center">
+                <h3>{% trans "MenuProdutu" %}</h3>
+
+
+
+                <p class="lead">{% trans "DeskrisaunProdutu" %}</p>
+            </div><!-- end title -->
+
+
+
+            <div class="row">
+            <div class="col-md-12">
+
+
+                <div class="container my-4">
+
+    <div class="row">
+
+  
+
+
+
+
+
+      <div class="tabs">
+        <div class="tab-button-outer">
+          <ul id="tab-button">
+            <li><a id = "pf">     {% trans "ProdutuFoun" %} </a></li>
+
+            {% for dados in  kategoriaprodutu %}
+
+            <li><a id="ps{{forloop.counter}}">{{dados.titulu}}</a></li>
+              {% endfor %}
+      
+            
+
+          </ul>
+
+     
+        </div>
+        <div class="tab-select-outer">
+          <select id="tab-select" style='padding: 10px; width: 100%;'>
+            <option id="#pf">{% trans "ProdutuFoun" %}</option>
+            {% for dados in  kategoriaprodutu %}
+            <option value="{{dados.id}}">{{dados.titulu}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      
+        <div  class="tab-contents">
+
+
+     
+          <br>
+        
+
+          <div id ='loadingkontent2'>
+            <div id='kpf'></div>
+            </div>
+
+            <div id="loadingprosses2">
+              <br>
+              <br>
+              <center> <img src ='http://minio-s3.apps06.tic.gov.tl/bambumedia/pajina/loadingspiner.gif' style="width: 130px ;"></center> 
+              </div>
+
+                  
+   
+            
+           
+                 
+           
+           
+        </div>
+
+
+        
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+        
+
+
+
+
+
+
+        
+
+   
+
+
+
+
+
+
+
+  </div>
+
+ <br><br>
+
+
+            </div><!-- end col -->
+
+            
+            </div><!-- end row -->
+
+     
+        </div><!-- end container -->
+ 
+
+
+    </div><!-- end section -->
+   
+
+
+
+
+
+
+
+          
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+
+
+
+
+<!-- <div class="modal fade" tabindex="-1" id="modal_detallu" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class='form_altera_zona'></div>
+      </div>
+
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
+
+<script>
+
+
+// var element = document.getElementById("myDIV");
+//   element.classList.remove("mystyle");
+
+
+$("#settotalorder").text("0");
+
+
+
+const listaOrder = [""];
+
+listaOrder.push("");
+
+
+
+
+
+$(document).ready(function(){
+
+
+  function loadprodutu(id){
+
+          var loadingkontent2 = document.getElementById("loadingkontent2");
+          var loadingprosses2 = document.getElementById("loadingprosses2");
+
+          loadingkontent2.style.display = "none";
+          loadingprosses2.style.display = "block";
+
+        // $('#pf').on('click', function() {
+              // var rowid = $(e.relatedTarget).data('id');
+              //menggunakan fungsi ajax untuk pengambilan data
+              // alert(rowid);
+              $.ajax({
+                  type : 'GET',
+                  url : "{% url 'vizitor:produtu_loadajax' %}",
+                  data :  'dadus=' + id,
+                  success : function(data){
+                  $("#kpf").html(data);
+                  loadingkontent2.style.display = "block";
+                  loadingprosses2.style.display = "none";
+        
+                  }
+              });
+          //  });
+               }
+
+  loadprodutu("pf");
+              
+  $('#pf').on('click', function() {
+    loadprodutu("pf");
+  });
+
+
+  $('#tab-select').change(function(){ 
+   var value = $(this).val();
+  //  alert(value)
+   loadprodutu(value);  
+  });
+
+  {% for dados in  kategoriaprodutu %}
+
+  $('#ps{{forloop.counter}}').on('click', function() {
+    loadprodutu("{{dados.id}}");
+  });
+
+
+
+  {% endfor %}
+
+});
+
+
+
+
+
+
+
+      
+  $(document).ready(function(){
+              $('#modal_detallu').on('show.bs.modal', function (e) {
+              var rowid = $(e.relatedTarget).data('id');
+              //menggunakan fungsi ajax untuk pengambilan data
+              // alert(rowid);
+              $.ajax({
+                  type : 'GET',
+                  url : "{% url 'vizitor:detalluprodutu2' %}",
+                  data :  'id='+ rowid,
+                  success : function(data){
+                    
+                  $('.form_altera_zona').html(data);//menampilkan data ke dalam modal
+                  }
+              });
+           });
+      });
+
+
+    </script>
+
+
+
+
+
+
+
+    <style>
+
+.float{
+    position:fixed;
+    bottom:40px;
+    right:20px;
+    text-align:center;
+  margin-bottom: 60px;
+}
+
+.my-float{
+    margin-top:22px;
+}
+    </style>
+
+ 
+<script>
+     document.getElementById("dadosq").style.display = "none";
+  function openQ() {
+    document.getElementById("dadosq").style.display = "block";
+  }
+  
+
+  </script>
+
+
+
+  
+  
+   <div class="modal  fade" tabindex="-1" id="listaorderprodutu" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+   
+    
+          
+        <div class="modal-body" style='margin:20px;'>
+         
+          <div class ="listaorderload">
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+
+
+    
+  <div class="modal  fade" tabindex="-1" id="opsaunlogin" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+
+       <div class="row">
+
+        <div class="col-md-6">
+          <br>
+          
+  
+          <center>
+            <img src="/media/images/order.png" width="150px">
+          </center>
+        
+          <center> <h3 style='color:rgb(123, 123, 123)' ><br>Utiliza ba ita bo'ot nia media social hodi login no order ami nia produtu </h3></center>
+       
+          </div>
+
+        <div class="col-md-6">
+   
+          
+        <div class="modal-body">
+          <center>Login Ho :</center>
+          <center>
+<hr>
+   <hr>
+        </center>
+        </div>
+        </div>
+
+   
+
+       </div>
+     
+
+  
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+<script>
+$("#listaorderprodutu div[data-view='New-Operation']").on(" hidden.bs.modal", function () {
+  alert("kokok");
+});
+
+    // if modal is not shown/visible then do something
+
+</script>
+
+{% endblock content %}

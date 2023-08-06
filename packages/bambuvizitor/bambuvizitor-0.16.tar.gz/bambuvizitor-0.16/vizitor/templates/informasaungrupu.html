@@ -1,0 +1,141 @@
+
+
+
+
+	{% extends 'baze.html' %}
+    {% block content %}
+
+
+    <div id="about" class="section wb">
+        <div class="container">
+            <div class="row">
+
+
+                {% for dados in grupu %}
+              
+
+           
+
+
+                <div class="col-md-7">
+                    <div class="message-box">
+                    <h2>{{dados.titulu}}</h2>
+                     
+                    <p class="lead">{{dados.konteudu|safe}}</p>
+                        <!-- <a href="#services" class="btn btn-light btn-radius btn-brd grd1">Hare Detalla</a> -->
+                    </div><!-- end messagebox -->
+                </div><!-- end col -->
+
+
+
+
+                <div class="col-md-5">
+                    <div class="post-media wow fadeIn">
+                        <img src="{{dados.imagen.url}}"  alt="" class="img-responsive img-rounded">
+                        <!-- <a href="{{dados.imagen.url}}" data-rel="prettyPhoto[gal]" class="playbutton"><i class="flaticon-play-button"></i></a> -->
+                     </div><!-- end media -->
+                </div><!-- end col -->
+
+
+                <div class="col-md-12">
+                    <div class="post-media wow fadeIn">
+
+                        <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+
+
+
+<canvas id="the-canvas" style="width: 100%"></canvas>
+<div id="loadingprosses2">
+  <br>
+  <br>
+  <center> <img src ='http://minio-s3.apps06.tic.gov.tl/bambumedia/pajina/loadingspiner.gif' style="width: 130px ;"></center> 
+  </div>
+
+
+<script>
+
+var loadingkontent2 = document.getElementById("the-canvas");
+ var loadingprosses2 = document.getElementById("loadingprosses2");
+
+          loadingkontent2.style.display = "none";
+          loadingprosses2.style.display = "block";
+
+
+    var url = '{{dados.file_pdf.url}}';
+
+// Loaded via <script> tag, create shortcut to access PDF.js exports.
+var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+// The workerSrc property shall be specified.
+pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+// Asynchronous download of PDF
+var loadingTask = pdfjsLib.getDocument(url);
+loadingTask.promise.then(function(pdf) {
+  console.log('PDF loaded');
+  
+  // Fetch the first page
+  var pageNumber = 1;
+  pdf.getPage(pageNumber).then(function(page) {
+    console.log('Page loaded');
+    
+    var scale = 1.5;
+    var viewport = page.getViewport({scale: scale});
+
+    // Prepare canvas using PDF page dimensions
+    var canvas = document.getElementById('the-canvas');
+    var context = canvas.getContext('2d');
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    // Render PDF page into canvas context
+    var renderContext = {
+      canvasContext: context,
+      viewport: viewport
+    };
+    var renderTask = page.render(renderContext);
+    renderTask.promise.then(function () {
+      console.log('Page rendered');
+    });
+
+
+    loadingkontent2.style.display = "block";
+    loadingprosses2.style.display = "none";
+
+
+  });
+}, function (reason) {
+  // PDF loading error
+  console.error(reason);
+});
+
+
+
+</script>
+
+
+
+
+                        <!-- <iframe src="{{dados.file_pdf.url}}#toolbar=0" width="100%" height="700px"></iframe> -->
+                     </div><!-- end media -->
+                </div><!-- end col -->
+
+
+            </div><!-- end row -->
+
+            {% endfor %}
+
+
+
+     
+        </div><!-- end container -->
+ 
+
+ <hr>
+      
+    </div><!-- end section -->
+   
+
+
+
+{% endblock content %}

@@ -1,0 +1,489 @@
+{% load i18n%}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+
+
+h1 {
+  text-align: center;  
+}
+
+
+
+/* Mark input boxes that gets an error on validation: */
+
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+
+</style>
+<body>
+
+<form id="regForm" action="/action_page.php">
+  <!-- One "tab" for each step in the form: -->
+  <div class="tab"> <h3> Lista Order :</h3> <br>
+    <center> <h3>Total Presu : {{somapresu}}</h3></center>
+<table class="table" border="1" style="border-radius: 10px;">
+  <thead>
+
+    
+
+  <tr>
+    <td>No</td>
+    <td>Imagen</td>
+    <td>Naran</td>
+    <td>Pressu/1</td>
+    <td>Total Order & Total Osan</td>
+    <td>Apaga</td>
+
+  </tr>
+</thead>
+<tbody>
+  {% for dados in lista_order %}
+
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td><img src='{{dados.imagen.url}}' style='width: 70px; height:70px; object-fit: cover;'></td>
+    <td>{{dados.naran_produtu}}</td>
+    <td>{{dados.pressu}}</td>
+    <td> Order {{dados.totalorder}} Presu {{dados.totalpressu}} </td>
+    <td><a href="#" data-delidprodutu = '{{dados.id}}'   id='butaunapagaprodutu{{forloop.counter}}'  class="btn btn-danger" > <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+  </tr>
+
+
+  {% endfor %}
+
+</tbody>
+
+</table>
+  </div>
+  <div class="tab">
+
+
+<div id="submitorderloading" class="submitorderloading">
+  <br>
+  <br>
+  <center> <img src ='http://minio-s3.apps06.tic.gov.tl/bambumedia/pajina/loadingspiner.gif' style="width: 130px ;"></center> 
+  </div>
+
+<div id="submitorder" class="submitorder">
+  <form>
+
+    <h3>
+     Favor Prenxe , Kontaktu Seluk : 
+    </h3>
+
+      <br>
+
+    <textarea placeholder="Favor Prienxe Informasaun kontaktu seluk hanesan numeru telefone ka Email " id ='kontaktuseluk'  name ='kontaktu' style="width: 100%; height: 150px; padding: 10px;"></textarea>
+    <br>
+    <br>
+
+
+  </form>
+  
+  <h3>Klik Iha butaun order  produtu , hodi submete ita bo'ot nia lista sasan sira ba iha institutu bambu I.P </h3> 
+
+</div>
+
+  <br>
+ </div>
+
+
+    <div  style="float:right;">
+
+  
+                <table>
+                  <tr>
+                    <td>
+                      <a class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Fila ba Lista</a>
+                      <a class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Kontinua <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                    
+                    </td>
+                  <td>   &nbsp; &nbsp;  </td>
+                    <td>
+                      <a class="btn btn-primary" id="finishBtn" onclick=" Remata()">Order Produtu <i class="fa fa-paper-plane"aria-hidden="true"></i> </a>
+                    </td>
+                  </tr>
+                </table>
+
+  
+     
+   
+
+       
+
+
+
+
+    </div>
+
+  <!-- Circles which indicates the steps of the form: -->
+  <div style="text-align:center;margin-top:40px;">
+    <span class="step"></span>
+    <span class="step"></span>
+  </div>
+</form>
+
+
+
+
+<script>
+
+
+// var submitorderloading = document.getElementById("submitorderloading");
+// var submitorder = document.getElementById("submitorder");
+
+
+//   submitorderloading.style.display = "none";
+//   submitorder.style.display = "block";
+
+
+document.getElementById("finishBtn").style.display = "none";
+let listaorder2 = [];
+// document.getElementById("finishBtn").style.display = "block";
+
+
+var submitorderloading = document.getElementById("submitorderloading");
+var submitorder = document.getElementById("submitorder");
+
+
+  submitorderloading.style.display = "none";
+  submitorder.style.display = "block";
+
+
+function Remata(){
+
+  if  (document.getElementById('kontaktuseluk').value != "") {
+
+
+  
+
+
+  
+
+
+  document.getElementById("prevBtn").style.display = "none";
+                        document.getElementById("finishBtn").style.display = "none";
+                        
+
+
+
+      var submitorderloading = document.getElementById("submitorderloading");
+      var submitorder = document.getElementById("submitorder");
+    
+    
+      submitorder.style.display = "none";
+      submitorderloading.style.display = "block";
+  
+    
+      let listaorder = [];
+      const getlistaorderca = localStorage.getItem('listaorderca')
+      listaorder = JSON.parse(localStorage.getItem('listaorderca'))
+    
+      var dadosid ='mamuk';
+      for (var i = 0; i < listaorder.length; i++) {
+          dadosid +=  "," +listaorder[i]['id']+'-'+listaorder[i]['total'];
+    
+      }
+
+
+      // alert(dadosid);
+    
+      $.ajax({
+                      type : 'POST',
+                      url : "{% url 'vizitor:submitlistaorder' %}",
+                      data :  {
+                        'kontaktuseluk' : document.getElementById('kontaktuseluk').value,
+                        'dadosid' : dadosid, 
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                      },
+                      success : function(data){
+    
+
+                        setTimeout(loadingremata, 3000);
+
+                        function loadingremata(){
+                          submitorderloading.style.display = "none";
+                          submitorder.style.display = "block";
+                        $('.submitorder').html(data);
+
+                        loadajaxlistaorder2();
+
+
+
+
+
+                            
+
+                        }
+                    
+    
+                      }
+                  });
+    
+    
+      // alert(dadosid);
+
+                } else {
+                  alert("Favor prenxe Informasaun ka kontaktu ruma ")
+                }
+    
+    }
+    
+
+function loadajaxlistaorder(){
+
+ 
+                let listaorder = [];
+                const getlistaorderca = localStorage.getItem('listaorderca')
+                listaorder = JSON.parse(localStorage.getItem('listaorderca'))
+
+                var dadosid ='mamuk';
+                for (var i = 0; i < listaorder.length; i++) {
+                    dadosid +=  "," +listaorder[i]['id']+'-'+listaorder[i]['total'];
+      
+                }
+         
+  
+                $.ajax({
+                  type : 'POST',
+                  url : "{% url 'vizitor:listaorderprodutu' %}",
+                  data :  {
+                     'dadosid' : dadosid, 
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                  },
+                  success : function(data){
+          
+                  $('.listaorderload').html(data);
+                  $("#total_order").val('');//menampilkan data ke dalam modal
+                  }
+              });
+
+
+
+              if (listaorder.length > 0){
+
+              }else{
+                dadosid = "daduslaiha"
+                $('#listaorderprodutu').modal('hide'); 
+              }
+
+              $.ajax({
+                  type : 'POST',
+                  url : "{% url 'vizitor:detalluprodutu2button' %}",
+                  data :  {
+                     'dadosid' : dadosid, 
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                  },
+                  success : function(data){
+                  $('.buttonlistaorderload').html(data);
+                  }
+              });
+
+
+              // $("#settotalorder").text({{total}});
+
+
+
+
+
+
+               };
+
+
+
+               function loadajaxlistaorder2(){
+
+   localStorage.removeItem('listaorderca');
+   listaorder = "";
+
+
+dadosid = "daduslaiha"
+
+
+$.ajax({
+  type : 'POST',
+  url : "{% url 'vizitor:detalluprodutu2button' %}",
+  data :  {
+     'dadosid' : dadosid, 
+    'csrfmiddlewaretoken': '{{ csrf_token }}',
+  },
+  success : function(data){
+  $('.buttonlistaorderload').html(data);
+  }
+});
+
+
+// $("#settotalorder").text({{total}});
+
+
+
+
+
+
+};
+
+
+
+function apagaorder(rowid){
+
+
+const getlistaorderca2 = localStorage.getItem('listaorderca')
+
+   
+
+if(getlistaorderca2){
+  // alert("tama")
+  listaorder2 = JSON.parse(localStorage.getItem('listaorderca'))
+  // console.log("before")
+  // console.log(listaorder2)
+  const idToRemove = rowid;
+  // alert(idToRemove)
+  const filteredPeople = listaorder2.filter((item) => item.id !== rowid);
+  localStorage.setItem('listaorderca', JSON.stringify(filteredPeople))
+  // console.log("after")
+  // console.log(filteredPeople)
+  loadajaxlistaorder();
+
+  // alert("susesu");
+}
+
+
+
+
+}
+
+
+
+{% for dados in lista_order %}
+
+
+
+$('#butaunapagaprodutu{{forloop.counter}}').on('click', function(e) {
+
+var rowid = $(this).data("delidprodutu");
+
+ apagaorder(rowid);
+
+
+});
+
+
+{% endfor %}
+
+
+
+
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+    document.getElementById("nextBtn").style.display = "block";
+  } else {
+
+    document.getElementById("prevBtn").style.display = "block";
+  }
+  if (n == (x.length - 1)) {
+    
+    // document.getElementById("nextBtn").innerHTML = "Submete xx Lista";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("finishBtn").style.display = "block";
+  } else {
+    document.getElementById("finishBtn").style.display = "none";
+    // document.getElementById("nextBtn").innerHTML = "Kontinua Order";
+  }
+  //... and run a function that will display the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false
+      valid = false;
+    }
+  }
+  // If the valid status is true, mark the step as finished and valid:
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+  }
+  return valid; // return the valid status
+}
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class on the current step:
+  x[n].className += " active";
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,184 @@
+
+	{% extends 'baze.html' %}
+  {% load i18n%}
+    {% block content %}
+
+    
+    <div id="services" class="parallax section lb">
+      <div class="container">
+ 
+          <!-- <div class="owl-services owl-carousel owl-theme"> -->
+
+              <div class="row">
+          <div class="col-md-9 col-sm-9">
+
+
+
+            {% for dados in info %}
+
+              <div class="service-widget">
+                <br>
+               <center><font size="7" color="black" style=" line-height: 50px;"><b>{{dados.titulu}} </b></font></center> <br>
+                  <div class="post-media">
+                    
+                  </div>
+                  <div class="service-dit">
+             
+                      <p> {{dados.konteudu|safe}} . {{dados.data}}</p>
+
+
+
+
+
+                    
+                     
+                   <hr>
+
+                    <div class="owl-services owl-carousel owl-theme owl-loaded owl-drag">
+                  
+                    <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1071px;">
+                      
+                      <b>File Dokumentu</b> <hr>
+
+
+
+                      <table  style="border: 0.1;">
+
+                        <tr>
+                          <td style="background-color: bisque; padding: 10px;">
+                    Nu
+                          </td>
+                          <td style="padding: 10px;">
+                       Titulu       
+                          </td>
+
+                          <td style="padding: 10px; " >
+                      Download          
+                            </td>
+                        </tr>
+                     
+                    
+
+                     {% for dados in fileanunsiu %}
+                 
+
+               
+                  
+                          <tr>
+                            <td style="background-color: bisque; padding: 10px;">
+                        {{forloop.counter}}
+                            </td>
+                            <td style="padding: 10px;">
+                            <h4> <a href="{{dados.file_pdf}}"><b>{{dados.titulu}}</b> </a></h4>
+                           
+                            </td>
+
+                            <td style="padding: 10px; " >
+                              <h4> <a href="{{dados.file_pdf}}"><b>Download</b> </a></h4>
+                             
+                              </td>
+                          </tr>
+                       
+                      
+                    
+
+                  
+                  <!-- end service -->
+                      {% endfor %}
+
+                    </table>
+
+
+
+                      
+                        
+                  
+                      </div>
+                  
+                      </div>
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      <hr>
+                      <center>{% trans "InformasaunShare" %}  </center>
+                    <hr>
+                    
+                    
+                    <script src="https://apps.elfsight.com/p/platform.js" defer></script>
+                    <div class="elfsight-app-abec5393-604f-457d-a706-bc7896e0c162"></div>
+                    
+                    
+                      <hr>
+
+
+
+
+
+
+                  </div>
+              </div>
+              {% endfor %}
+
+
+
+
+              <!-- end service -->
+          </div>
+
+          
+
+
+          
+ 
+          {% for dados in anunsiuseluk %}
+              <div class="col-md-3 col-sm-3" style = "padding: 10px; ">
+
+
+              <div class="service-widget">
+                  <div class="post-media">
+                     
+                      <img src="{{dados.anunsiu.imagen_main.url}}" alt="" style="width: 100%; height: 150px;"  class="img-responsive img-rounded">
+                  </div>
+                  <div class="service-dit">
+                    <center>
+                      <a href="{% url 'vizitor:detalluanunsiu' dados.anunsiu.id %}"><h4>{{dados.titulu}} . <br>  {{dados.data}}</h4></a> <br>
+                   
+                     
+                    </center>
+            
+   
+                  </div>
+              </div>
+
+
+
+              
+              <!-- end service -->
+          </div>
+          {% endfor %}
+
+
+
+          
+              
+   </div>
+  </div>
+         
+{% endblock content %}
