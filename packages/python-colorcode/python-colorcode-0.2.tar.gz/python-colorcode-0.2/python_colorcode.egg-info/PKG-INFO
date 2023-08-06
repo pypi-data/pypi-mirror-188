@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: python-colorcode
+Version: 0.2
+Summary: A Python package for generating shades of a color
+Author: Anshu Pal
+Author-email: anshupal257@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Color Shade Generator
+
+Color Shade Generator is a Python package that allows you to easily generate a list of shades for a given color. The package can generate shades in both hexadecimal and RGB format.
+
+### Installation
+You can install the package using pip:
+
+`pip install python-colorcode==0.1`
+
+### Usage
+The package provides a single function called `generate_color_shades()` which takes in two parameters:
+
+`color_name`: the name of the color for which you want to generate shades. The color name should be a string that is recognized by the webcolors library.
+`rgb` (optional): a boolean value that indicates whether the shades should be returned in RGB format (True) or hex format (False). The default value is False.
+Here is an example of how to use the `generate_color_shades()` function:
+
+```
+from python-colorcode import python_colorcode
+
+try:
+    hex_shades = python_colorcode.generate_color_shades("red")
+    print(hex_shades)
+
+    rgb_shades = python_colorcode.generate_color_shades("red", rgb=True)
+    print(rgb_shades)
+except ValueError as e:
+    print(e)
+```
+
+The above code will generate 20 shades of the color red, in hex and RGB format, respectively. If the color name passed is not valid, it will raise a ValueError.
+
+### Note
+This package is using webcolors library to convert color name to RGB, it supports all the CSS3 standard color names, you can find the full list [here](https://www.w3.org/TR/css-color-3/)
+
+Also, you can add more functionality like,
+
+ability to return the shades in different format like HSL or HSV.
+ability to return the shades in the order of Lightest to Darkest or vice versa.
+etc.
+### Contributing
+If you would like to contribute to the package, please submit a pull request.
+
+### License
+This package is licensed under the MIT License.
+
+### Acknowledgements
+This package is using webcolors library, you can find more information about it [here](https://pypi.org/project/webcolors/)
