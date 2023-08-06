@@ -1,0 +1,107 @@
+
+name: metabase - Integracao Continua
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install python and pip
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8.12'
+          cache: 'pip' 
+
+      - name: Install poetry
+        uses: GrIN/setup-poetry@v4
+      
+      # Deploy
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Build poetry
+        run: poetry build
+
+      - name: Build and publish to private Python package repository
+        uses: JRubics/poetry-publish@v1.16
+        with:
+          repository_name: lib-metabase-gces
+          repository_url: "https://pypi.org/project/lib-metabase-gces/"
+          repository_username: ${{ secrets.PYPI_USER }}
+          repository_password: ${{ secrets.PYPI_PASSWORD }}
+
+      - name: Container up
+        working-directory: 
+        run: 
+          docker-compose up
+
+  linting:
+    name: Linting 
+    runs-on: ubuntu-latest 
+
+    steps: 
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Code Linting
+        run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+        
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8.12'
+    
+    - name: Install pytest
+      run: pip install pytest
+    
+    - name: Run pytest
+      run: pytest --cov
+
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Use Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8.12'
+
+    - name: Install sphinx, doxygen and breathe
+      run: |
+      apt install doxygen
+      pip install breathe
+      pip install -U sphinx
+
+    - name: Run doxygen
+    - uses: actions/checkout@v3
+    - uses: mattnotmitt/doxygen-action@v1.9.5
+
+    - name: Run sphinx
+    - uses: actions/checkout@v3
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
+        build-command: "make html"
