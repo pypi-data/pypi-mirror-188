@@ -1,0 +1,31 @@
+repos:
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.237
+    hooks:
+      - id: ruff
+        args: [--fix]
+        exclude: ^resources
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.10.1
+    hooks:
+      - id: validate-pyproject
+
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt --
+        language: rust
+        types: [rust]
+      - id: clippy
+        name: clippy
+        entry: cargo clippy --workspace --all-targets --all-features
+        language: rust
+        pass_filenames: false
+      - id: dev-generate-all
+        name: dev-generate-all
+        entry: cargo dev generate-all
+        language: rust
+        pass_filenames: false
+        exclude: target
