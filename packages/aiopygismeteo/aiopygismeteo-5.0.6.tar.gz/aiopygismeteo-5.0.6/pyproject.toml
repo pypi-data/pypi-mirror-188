@@ -1,0 +1,137 @@
+[tool.poetry]
+name = "aiopygismeteo"
+version = "5.0.6"
+description = "Asynchronous wrapper for Gismeteo API"
+authors = ["monosans <hsyqixco@protonmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/monosans/aiopygismeteo"
+documentation = "https://aiopygismeteo.readthedocs.io"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Natural Language :: Russian",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.7",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7.2"
+aiohttp = "^3.8"
+pygismeteo-base = "^4.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = ">=2.21,<4"
+pylint = "^2.15"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.4"
+mkdocs-material = "^9.0"
+
+[tool.poetry.group.format.dependencies]
+black = ">=22.12"
+isort = "^5.11"
+
+[tool.poetry.group.test.dependencies]
+covdefaults = "^2.2"
+pytest = "^7.2"
+pytest-asyncio = "^0.20"
+pytest-cov = "^4.0"
+
+[tool.poetry.group.typing.dependencies]
+mypy = "^0.991"
+pydantic = "^1.10"
+
+[tool.black]
+line-length = 79
+target-version = ["py37"]
+skip-magic-trailing-comma = true
+preview = true
+
+[tool.coverage.report]
+exclude_lines = ["@(abc.)?abstractmethod"]
+
+[tool.coverage.run]
+plugins = ["covdefaults"]
+
+[tool.isort]
+py_version = 37
+profile = "black"
+line_length = 79
+add_imports = ["from __future__ import annotations"]
+combine_as_imports = true
+combine_star = true
+
+[tool.mypy]
+python_version = "3.7"
+warn_unreachable = true
+local_partial_types = true
+enable_error_code = [
+    "redundant-expr",
+    "ignore-without-code",
+    "unused-awaitable",
+]
+strict = true
+show_error_codes = true
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.pylint.main]
+extension-pkg-allow-list = "pydantic"
+
+# https://pylint.pycqa.org/en/stable/user_guide/checkers/extensions.html
+load-plugins = [
+    "pylint.extensions.check_elif",
+    "pylint.extensions.code_style",
+    "pylint.extensions.comparison_placement",
+    "pylint.extensions.confusing_elif",
+    "pylint.extensions.consider_ternary_expression",
+    "pylint.extensions.empty_comment",
+    "pylint.extensions.eq_without_hash",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.overlapping_exceptions",
+    "pylint.extensions.private_import",
+    "pylint.extensions.redefined_loop_name",
+    "pylint.extensions.set_membership",
+    "pylint.extensions.typing",
+]
+
+persistent = false
+py-version = "3.7"
+recursive = true
+
+[tool.pylint.basic]
+good-names = ["ip"]
+
+[tool.pylint.format]
+max-line-length = 79
+
+[tool.pylint."messages control"]
+disable = [
+    "consider-using-assignment-expr",
+    "consider-using-f-string",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "too-few-public-methods",
+]
+
+[tool.pylint.reports]
+score = false
+
+[tool.pylint.string]
+check-str-concat-over-line-jumps = true
+
+[tool.pytest.ini_options]
+xfail_strict = true
+addopts = "--strict-markers --strict-config --asyncio-mode=auto"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
