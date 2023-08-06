@@ -1,0 +1,3328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 特徴量計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>特徴量計算<br>
+<small>
+[<a class="el" href="group__fie__measure.html">２値ブローブ解析</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g68c4d94811ee25bf1c2cf7e4d458c866">fnFIE_measure_get_perimeter</a> (const FHANDLE hresult, UINT blobno, DOUBLE *perimeter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">対象ブローブの周囲長の取得  <a href="#g68c4d94811ee25bf1c2cf7e4d458c866"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb">fnFIE_measure_get_boundary</a> (const FHANDLE hresult, UINT blobno, <a class="el" href="structPNT__T.html">PNT_T</a> **pnts, UINT *pnum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">周囲座標の取得  <a href="#gb43179acf8e966559c97420a428cfadb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gefdd44a748c2a64a045306bb7b5d47e9">fnFIE_measure_get_boundary_ex</a> (const FHANDLE hresult, UINT blobno, INT connection, <a class="el" href="structPNT__T.html">PNT_T</a> **ext_pnts, UINT *ext_pnum, <a class="el" href="structPNT__T.html">PNT_T</a> **int_pnts, UINT *int_pnum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">周囲座標の取得  <a href="#gefdd44a748c2a64a045306bb7b5d47e9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gc11edeba6a64c01cee87cdf364ecd508">fnFIE_measure_get_color</a> (const FHANDLE hresult, UINT blobno, UINT *color)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">色の取得  <a href="#gc11edeba6a64c01cee87cdf364ecd508"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g5b1cb22f5cc0e469f631f8937b2cfa43">fnFIE_measure_get_xyrange</a> (const FHANDLE hresult, UINT blobno, INT *xmin, INT *ymin, INT *xmax, INT *ymax)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">xyrangeの取得  <a href="#g5b1cb22f5cc0e469f631f8937b2cfa43"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gf27bc5074483987e194eddddca50c9c1">fnFIE_measure_get_area</a> (const FHANDLE hresult, UINT blobno, UINT *area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">対象ブローブの面積の取得  <a href="#gf27bc5074483987e194eddddca50c9c1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gc8f48d0c29d4c5a049e0d95e39fa4ad2">fnFIE_measure_get_maxminpos</a> (const FHANDLE hresult, UINT blobno, INT *xmin_at_ymin, INT *xmax_at_ymax, INT *ymin_at_xmax, INT *ymax_at_xmin)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標の最大最小位置の取得  <a href="#gc8f48d0c29d4c5a049e0d95e39fa4ad2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gd01a021a3587c658bebe7404f245f1ce">fnFIE_measure_get_xydiff</a> (const FHANDLE hresult, UINT blobno, INT *xdiff, INT *ydiff)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接矩形サイズの取得  <a href="#gd01a021a3587c658bebe7404f245f1ce"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gc9b8c90e6881bbf8de538a8fd18bba54">fnFIE_measure_get_rect1_area</a> (const FHANDLE hresult, UINT blobno, UINT *rect1_area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接矩形面積の取得  <a href="#gc9b8c90e6881bbf8de538a8fd18bba54"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gd943062b246b82e58cec937fa6d8d9da">fnFIE_measure_get_rect1_lratio</a> (const FHANDLE hresult, UINT blobno, DOUBLE *rect1_lratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接矩形縦横比の取得  <a href="#gd943062b246b82e58cec937fa6d8d9da"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gfe7dca84ac72f3edff1dec5b2d8efb91">fnFIE_measure_get_rect1_sratio</a> (const FHANDLE hresult, UINT blobno, DOUBLE *rect1_sratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接矩形面積比の取得  <a href="#gfe7dca84ac72f3edff1dec5b2d8efb91"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gdbc6860336e4fd5d98b43affb31d5385">fnFIE_measure_get_moment1</a> (const FHANDLE hresult, UINT blobno, DLONG *sumx, DLONG *sumy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">１次モーメントの取得  <a href="#gdbc6860336e4fd5d98b43affb31d5385"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g9c51abbf3926b804dd20e3cb7ae24808">fnFIE_measure_get_moment2</a> (const FHANDLE hresult, UINT blobno, UDLONG *sumx2, UDLONG *sumy2, DLONG *sumxy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２次モーメントの取得  <a href="#g9c51abbf3926b804dd20e3cb7ae24808"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#ga596327193c3a682fce67ead68fea25b">fnFIE_measure_get_central_moment2</a> (const FHANDLE hresult, UINT blobno, DOUBLE *mg20, DOUBLE *mg02, DOUBLE *mg11)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">重心２次モーメントの取得  <a href="#ga596327193c3a682fce67ead68fea25b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g6c64da81d9e86d0b7d474fb684e79028">fnFIE_measure_get_moment3</a> (const FHANDLE hresult, UINT blobno, DOUBLE *m30, DOUBLE *m03, DOUBLE *m21, DOUBLE *m12)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">３次モーメントの取得  <a href="#g6c64da81d9e86d0b7d474fb684e79028"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g56e44d2f93c80682b13b5c40abf70271">fnFIE_measure_get_central_moment3</a> (const FHANDLE hresult, UINT blobno, DOUBLE *mg30, DOUBLE *mg03, DOUBLE *mg21, DOUBLE *mg12)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">重心３次モーメントの取得  <a href="#g56e44d2f93c80682b13b5c40abf70271"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gde8e6f95ca9d7603a452d8715e3ab3ab">fnFIE_measure_get_moment</a> (const FHANDLE hresult, UINT blobno, INT xn, INT yn, DOUBLE *m)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ｎ次モーメントの取得  <a href="#gde8e6f95ca9d7603a452d8715e3ab3ab"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gce64be3e1fa19de5d1c532e8da4644dc">fnFIE_measure_get_central_moment</a> (const FHANDLE hresult, UINT blobno, INT xn, INT yn, DOUBLE *mg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">重心Ｎ次モーメントの取得  <a href="#gce64be3e1fa19de5d1c532e8da4644dc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gb9abc4e765b4c54128f65a3e9b1ceaf4">fnFIE_measure_get_hu_moments</a> (const FHANDLE hresult, UINT blobno, DOUBLE *h)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Huモーメント不変量の取得  <a href="#gb9abc4e765b4c54128f65a3e9b1ceaf4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gb4e989070282da9a84b2a454371391fc">fnFIE_measure_get_center</a> (const FHANDLE hresult, UINT blobno, DOUBLE *centerx, DOUBLE *centery)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">重心の取得  <a href="#gb4e989070282da9a84b2a454371391fc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#ge37f46482ea0503b947aeafdf28fc05d">fnFIE_measure_get_equivalent_ellipse</a> (const FHANDLE hresult, UINT blobno, DOUBLE *majoraxis, DOUBLE *minoraxis, DOUBLE *theta, DOUBLE *aratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">等価楕円の取得  <a href="#ge37f46482ea0503b947aeafdf28fc05d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g2cc9a22b44905611f3059c881c928fd8">fnFIE_measure_get_equivalent_disk</a> (const FHANDLE hresult, UINT blobno, DOUBLE *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">面積等価円の取得  <a href="#g2cc9a22b44905611f3059c881c928fd8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#ga29bde22672cedbfa4570e42d2bcf573">fnFIE_measure_get_rect2_size</a> (const FHANDLE hresult, UINT blobno, DOUBLE *lsize, DOUBLE *wsize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接長方形の取得  <a href="#ga29bde22672cedbfa4570e42d2bcf573"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g222c24c474098800f17f413762914e0e">fnFIE_measure_get_rect2_area</a> (const FHANDLE hresult, UINT blobno, DOUBLE *rect2_area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接長方形面積の取得  <a href="#g222c24c474098800f17f413762914e0e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g26f35e0cc5c802c00227ba35c9741201">fnFIE_measure_get_rect2_lratio</a> (const FHANDLE hresult, UINT blobno, DOUBLE *rect2_lratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接長方形縦横比の取得  <a href="#g26f35e0cc5c802c00227ba35c9741201"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g0c437b830f7b296a8419f1595c946549">fnFIE_measure_get_rect2_sratio</a> (const FHANDLE hresult, UINT blobno, DOUBLE *rect2_sratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接長方形面積比の取得  <a href="#g0c437b830f7b296a8419f1595c946549"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g875a8bf5fcd01c181b37f7e6519ce3f4">fnFIE_measure_get_feret_diameter</a> (const FHANDLE hresult, UINT blobno, DOUBLE theta, INT mode, DOUBLE *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">フェレ径の取得  <a href="#g875a8bf5fcd01c181b37f7e6519ce3f4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g4b0298944561f6211921abe219ff5265">fnFIE_measure_get_convex2d</a> (const FHANDLE hresult, UINT blobno, <a class="el" href="structPNT__T.html">PNT_T</a> **ppHull, UINT *verNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">凸包の取得  <a href="#g4b0298944561f6211921abe219ff5265"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gc6384a93cdd7ae9e16e1fa00107a7b64">fnFIE_measure_get_circmcircle</a> (const FHANDLE hresult, UINT blobno, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小外接円の取得  <a href="#gc6384a93cdd7ae9e16e1fa00107a7b64"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g3f9997ba7c13d9f04e13d79dae169864">fnFIE_measure_get_feret_diameter_maxmin</a> (const FHANDLE hresult, UINT blobno, DOUBLE *feretmax, DOUBLE *fmax_theta, DOUBLE *feretmin, DOUBLE *fmin_theta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最大フェレ径、最小フェレ径の取得  <a href="#g3f9997ba7c13d9f04e13d79dae169864"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gd5abc924f081e050f425d9e6b1bb97eb">fnFIE_measure_get_rect2pos</a> (const FHANDLE hresult, UINT blobno, <a class="el" href="structDPNT__T.html">DPNT_T</a> *points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外接長方形の頂点座標の取得  <a href="#gd5abc924f081e050f425d9e6b1bb97eb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g0d8d9f9908564ca3159b890cfd6c558a">fnFIE_measure_get_bounding_rotated_rect_pos</a> (const FHANDLE hresult, UINT blobno, DOUBLE theta, <a class="el" href="structDPNT__T.html">DPNT_T</a> *points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定角度外接長方形の頂点座標の取得  <a href="#g0d8d9f9908564ca3159b890cfd6c558a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g599fd38ec059de358b57f04b28ee689c">fnFIE_measure_get_equivalent_circle</a> (const FHANDLE hresult, UINT blobno, DOUBLE *diameter_equicircle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">周囲長等価円の取得  <a href="#g599fd38ec059de358b57f04b28ee689c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g4567ea798529acc6b35a254fd99c5951">fnFIE_measure_get_convexfeature</a> (const FHANDLE hresult, UINT blobno, DOUBLE *convex_area, DOUBLE *convex_perim)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">凸包面積・周囲長の取得  <a href="#g4567ea798529acc6b35a254fd99c5951"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gf252f4a38e0272232df441a157babf9e">fnFIE_measure_get_convexratio</a> (const FHANDLE hresult, UINT blobno, DOUBLE *convex_arearatio, DOUBLE *convex_perimratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">凸包面積比・周囲長比の取得  <a href="#gf252f4a38e0272232df441a157babf9e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g0f56986a47da0eea756b99d9990a4e13">fnFIE_measure_get_distance_to_boundary</a> (const FHANDLE hresult, UINT blobno, DOUBLE *dpmax, DOUBLE *dpmin, DOUBLE *dpave, DOUBLE *dpsigma)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">外周距離の取得  <a href="#g0f56986a47da0eea756b99d9990a4e13"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gfe8455a3f759d30ce99ebf30ab8be890">fnFIE_measure_get_circularity1</a> (const FHANDLE hresult, UINT blobno, DOUBLE *circularity1)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">真円度＃１の取得  <a href="#gfe8455a3f759d30ce99ebf30ab8be890"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#ga2788b2d670499c7bd2b6252d5fca434">fnFIE_measure_get_circularity2</a> (const FHANDLE hresult, UINT blobno, DOUBLE *circularity2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">真円度＃２の取得  <a href="#ga2788b2d670499c7bd2b6252d5fca434"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g176f0f9a21a55ee786f5f794991c52e2">fnFIE_measure_get_circularity3</a> (const FHANDLE hresult, UINT blobno, DOUBLE *circularity3)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">真円度＃３の取得  <a href="#g176f0f9a21a55ee786f5f794991c52e2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g9154311b81a242d3a858f32dfff72503">fnFIE_measure_get_hole_num</a> (const FHANDLE hresult, UINT blobno, UINT *holes)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">穴数の取得  <a href="#g9154311b81a242d3a858f32dfff72503"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gecf2c56c180f258c7740af939da58a49">fnFIE_measure_get_sibling_num</a> (const FHANDLE hresult, UINT blobno, UINT *sibling_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">兄弟ブローブ数の取得  <a href="#gecf2c56c180f258c7740af939da58a49"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g24427dccca49bcd2aec826ccd7c12844">fnFIE_measure_get_hole_area</a> (const FHANDLE hresult, UINT blobno, UINT *sc)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">穴面積の取得  <a href="#g24427dccca49bcd2aec826ccd7c12844"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g7dfd2d80d8c5c76690579a5fa5a9ac31">fnFIE_measure_get_area_with_hole</a> (const FHANDLE hresult, UINT blobno, UINT *st)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">面積（穴面積含む）の取得  <a href="#g7dfd2d80d8c5c76690579a5fa5a9ac31"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gecda9324457592427004f7d913df2209">fnFIE_measure_get_hole_ratio</a> (const FHANDLE hresult, UINT blobno, DOUBLE *hratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">穴面積比の取得  <a href="#gecda9324457592427004f7d913df2209"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g6e0798f559191307aefcb1a2782e361e">fnFIE_measure_get_distance_to_childs</a> (const FHANDLE hresult, UINT blobno, DOUBLE *dcmax, DOUBLE *dcmin, DOUBLE *dcave)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">子供距離の取得  <a href="#g6e0798f559191307aefcb1a2782e361e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g8f0f902472e5b24e5a0d027102230bc6">fnFIE_measure_get_pps</a> (const FHANDLE hresult, UINT blobno, DOUBLE *pps)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">面積周囲長比(pps)の取得  <a href="#g8f0f902472e5b24e5a0d027102230bc6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#gb715a19caa848351727f1a90c6ada228">fnFIE_measure_get_distance_to_siblings</a> (const FHANDLE hresult, UINT blobno, DOUBLE *dsmax, DOUBLE *dsmin, DOUBLE *dsave)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">隣接エリア（兄弟ブローブ）間距離の取得  <a href="#gb715a19caa848351727f1a90c6ada228"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__feature.html#g7264fa3e4e2540b835c5225e3888bd7d">fnFIE_measure_get_blobno_on_xy</a> (const FHANDLE hresult, INT x, INT y, UINT *blobno)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標(x,y)の位置のブローブ番号取得  <a href="#g7264fa3e4e2540b835c5225e3888bd7d"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g68c4d94811ee25bf1c2cf7e4d458c866"></a><!-- doxytag: member="fie_measure_boundary.c::fnFIE_measure_get_perimeter" ref="g68c4d94811ee25bf1c2cf7e4d458c866" args="(const FHANDLE hresult, UINT blobno, DOUBLE *perimeter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_perimeter           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>perimeter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+対象ブローブの周囲長の取得 
+<p>
+対象ブローブの周囲長を計算します。<p>
+ブローブの境界点列のユークリッド距離を周囲長と定義し、その値を計算します。 連結モードによって得られる周囲長は異なる。連結モードによる周囲座標点列のとりかたの 違いについては <a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a> のドキュメントを参照して下さい。<p>
+<ul>
+<li>4連結の場合、(面積/1.51)≦UI32_MAX (←左辺整数)でない場合は正しく計算できない可能性があります。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perimeter</em>&nbsp;</td><td>周囲長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に不正なハンドルが渡された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に不正なブローブ番号が渡された, パラメータに NULL ポインタが渡された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb43179acf8e966559c97420a428cfadb"></a><!-- doxytag: member="fie_measure_boundary.c::fnFIE_measure_get_boundary" ref="gb43179acf8e966559c97420a428cfadb" args="(const FHANDLE hresult, UINT blobno, PNT_T **pnts, UINT *pnum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_boundary           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>pnum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+周囲座標の取得 
+<p>
+対象ブローブの境界点列を抽出します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_boundary">ここ</a> を参照して下さい。 領域の境界にはexternal boundaryとinternal boundaryの２種類ありますが、 本関数ではexternal boundaryのみを抽出します。（下図参照）<p>
+<div align="center">
+<img src="fie_region_boundary_01.png" alt="fie_region_boundary_01.png">
+</div>
+<p>
+得られる境界点列は <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> 実行時の連結モード指定(param.neighborhood)によって異なります。 ４連結モードの場合、前景ブローブは４連結の座標点列、背景ブローブは８連結の座標点列になります。 ８連結モードの場合は、前景ブローブは８連結の座標点列、背景ブローブは４連結の座標点列になります。<p>
+<div align="center">
+<img src="fie_region_boundary_02.png" alt="fie_region_boundary_02.png">
+</div>
+<p>
+ブローブの境界を画像座標系で反時計回りに探索（右手の法則）します。 また、始点と終点は必ず同一点となります（座標点列の最初と最後に同じ座標が入る）。 配列の最後には I32_MIN が格納された点をストッパとして入れます。 <em>pnum</em> に代入される点数は、このストッパを含んだ個数になります。<p>
+<div align="center">
+<img src="fie_region_boundary_03.png" alt="fie_region_boundary_03.png">
+</div>
+<p>
+出力用のメモリは関数内で確保されるため <em>*pnts</em> には NULL を入れておいて下さい。 得られた点列(*pnts)は、不要になった後に <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用して解放して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>xdiff, ydiffがそれぞれ2以上65535以下のブローブで、４連結で境界点抽出を行った場合の <em>*pnum</em> の最大値は面積の1.5～1.6倍となります。 </li>
+<li>８連結の場合は xdiff, ydiff が65535以下であれば <em>*pnum</em> がUI32_MAXを超えることはないと考えられます。（ただし証明していない。） </li>
+<li>FVLなどの旧来のFAST境界点抽出ライブラリとは得られる結果が異なります。 </li>
+<li>関数エントリー時 *pnts == NULL でなければいけません。 </li>
+<li>背景ブローブ(blobno==0)を処理することは出来ません。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>出力点列の先頭ポインタを格納するアドレス(*pnts = NULL) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnum</em>&nbsp;</td><td>出力点列の点の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に不正なハンドルが渡された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー<ul>
+<li><em>blobno</em> に不正なブローブ番号が渡された</li><li>パラメータに NULL ポインタが渡された。</li><li><em>pnts</em> が NULL でない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>抽出例</b></dt><dd><div align="center">
+<img src="fie_measure_boundary_04.png" alt="fie_measure_boundary_04.png">
+</div>
+ 上図のブローブ(前景)を８連結モードで境界点列を生成したときの 結果を以下に示します。ただしPNT_Tの値を(x,y)と表記します。 <pre>
+	pnum : 13
+	pnts : (1,1)(1,2)(1,3)(2,3)(3,3)(4,3)(5,3)(4,3)(3,2)(3,1)(2,1)(1,1)(I32_MIN,I32_MIN)
+	</pre> 上図を４連結モードで境界点列を生成したときの結果を以下に示します。 <pre>
+	pnum : 14
+	pnts : (1,1)(1,2)(1,3)(2,3)(3,3)(4,3)(5,3)(4,3)(3,3)(3,2)(3,1)(2,1)(1,1)(I32_MIN,I32_MIN)
+	</pre> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gefdd44a748c2a64a045306bb7b5d47e9"></a><!-- doxytag: member="fie_measure_boundary.c::fnFIE_measure_get_boundary_ex" ref="gefdd44a748c2a64a045306bb7b5d47e9" args="(const FHANDLE hresult, UINT blobno, INT connection, PNT_T **ext_pnts, UINT *ext_pnum, PNT_T **int_pnts, UINT *int_pnum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_boundary_ex           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>connection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>ext_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>ext_pnum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>int_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>int_pnum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+周囲座標の取得 
+<p>
+対象ブローブの境界点列を抽出します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_boundary">ここ</a> を参照して下さい。 領域の境界にはexternal boundaryとinternal boundaryの２種類ありますが、 本関数ではその両方が取得できる <a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a> の拡張版です。（下図参照） external boundaryのみが取得できればいい場合は <a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a> をお使いください。<p>
+<div align="center">
+<img src="fie_region_boundary_01.png" alt="fie_region_boundary_01.png">
+</div>
+<p>
+得られる境界点列は <em>connection</em> パラメータの値によって異なります。 0を指定すると <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> 実行時の連結モード指定(param.neighborhood)に従います。 この場合、出力される点列の連結性は次の通りになります。<ul>
+<li>４連結モードの場合、前景ブローブは４連結の座標点列、背景ブローブは８連結の座標点列になります。</li><li>８連結モードの場合は、前景ブローブは８連結の座標点列、背景ブローブは４連結の座標点列になります。</li></ul>
+4または8を指定した場合は指定した連結モードでの出力となります。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域にinternal boundaryが無い（穴がない）ブローブの場合は、 <em>*int_pnts</em> は NULL , <em>*int_pnum</em> は0となります。 </li>
+<li>xdiff, ydiffがそれぞれ2以上65535以下のブローブで、４連結で境界点抽出を行った場合の <em>*ext_pnum</em> の最大値は面積の1.5～1.6倍となります。 </li>
+<li>８連結の場合はxdiff,ydiffが65535以下であれば <em>*ext_pnum</em> がUI32_MAXを超えることはないと考えられます。（ただし証明していない。） </li>
+<li>FVLなどの旧来のFAST境界点抽出ライブラリとは得られる結果が異なります。 </li>
+<li>*ext_pnts は関数エントリー時 *ext_pnts == NULL でなければいけません。( <em>ext_pnts</em> != NULL の場合 ) </li>
+<li>*int_pnts は関数エントリー時 *int_pnts == NULL でなければいけません。( <em>int_pnts</em> != NULL の場合 ) </li>
+<li>背景ブローブ(blobno==0)を処理することは出来ません。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>tips</b></dt><dd>背景ブローブ（blobno==0）のinternal boundaryを取得したい場合は、 <a class="el" href="group__fie__measure__result.html#g215dbd234382563737797dfbd76c03d7" title="REGION取得">fnFIE_measure_get_region()</a> にて一端リージョンとして取得した後、 そのリージョンの周囲座標を <a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd" title="REGION境界点抽出(拡張版)">fnFIE_region_calc_boundary_ex()</a> を使用して 計算すれば取得することが出来ます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>connection</em>&nbsp;</td><td>連結条件<ul>
+<li>0: ブローブ解析したときの設定に従う</li><li>4: ４連結にて処理する</li><li>8: ８連結にて処理する </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ext_pnts</em>&nbsp;</td><td>external boundary の出力点列の先頭ポインタを格納するアドレス <br>
+ 不要な場合は <em>ext_pnts</em> に NULL を渡す。<em>ext_pnts</em> != NULL の場合、 関数エントリー時 <em>*ext_pnts</em> == NULL でなければなりません </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ext_pnum</em>&nbsp;</td><td><em>ext_pnts</em> に出力された点の数 <br>
+ <em>ext_pnts</em> == NULL の場合、このパラメータは参照されません </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>int_pnts</em>&nbsp;</td><td>出力点列の先頭ポインタを格納するアドレス <br>
+ 不要な場合は <em>int_pnts</em> に NULL を渡す。<em>int_pnts</em> != NULL の場合、 関数エントリー時 <em>*int_pnts</em> == NULL でなければなりません </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>int_pnum</em>&nbsp;</td><td><em>int_pnts</em> に出力された点の数 <br>
+ <em>int_pnts</em> == NULL の場合、このパラメータは参照されません</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に不正なハンドルが渡された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー<ul>
+<li><em>blobno</em> に不正なブローブ番号が渡された</li><li>パラメータに NULL ポインタが渡された。</li><li><em>ext_pnts</em> と <em>int_pnts</em> がともに NULL</li><li><em>*ext_pnts</em> 又は *int_pnts が NULL でない</li><li><em>ext_pnum</em> 又は <em>int_pnum</em> が NULL </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>抽出例</b></dt><dd><div align="center">
+<img src="fie_measure_boundary_ex.png" alt="fie_measure_boundary_ex.png">
+</div>
+ 上図のブローブ(前景)を８連結モードで境界点列を生成したときの 結果を以下に示します。ただしPNT_Tの値を(x,y)と表記します。 <pre>
+	ext_pnum : 20
+	ext_pnts : (0,1),(0,2),(0,3),(0,4),(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),
+	           (6,3),(6,2),(6,1),(5,1),(4,1),(3,1),(2,1),(1,1),(0,1),(I32_MIN,I32_MIN)
+	int_pnum : 19
+	int_pnts : (0,2),(1,1),(2,1),(3,2),(3,3),(2,4),(1,4),(0,3),(0,2),(I32_MIN,I32_MIN)
+	           (3,2),(4,1),(5,2),(6,3),(5,4),(4,4),(3,3),(3,2),(I32_MIN,I32_MIN)
+	</pre> 上図を４連結モードで境界点列を生成したときの結果を以下に示します。 <pre>
+	ext_pnum : 20
+	ext_pnts : (0,1),(0,2),(0,3),(0,4),(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),
+	           (6,3),(6,2),(6,1),(5,1),(4,1),(3,1),(2,1),(1,1),(0,1),(I32_MIN,I32_MIN)
+	int_pnum : 28
+	int_pnts : (0,2),(0,1),(1,1),(2,1),(3,1),(3,2),(3,3),(3,4),(2,4),(1,4),(0,4),(0,3),(0,2),(I32_MIN,I32_MIN)
+	           (3,2),(3,1),(4,1),(5,1),(5,2),(6,2),(6,3),(6,4),(5,4),(4,4),(3,4),(3,3),(3,2),(I32_MIN,I32_MIN)
+	</pre> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc11edeba6a64c01cee87cdf364ecd508"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_color" ref="gc11edeba6a64c01cee87cdf364ecd508" args="(const FHANDLE hresult, UINT blobno, UINT *color)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_color           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>color</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色の取得 
+<p>
+対象ブローブのブローブ色を取得する。<p>
+対象ブローブ番号が有効なブローブ番号範囲(0～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>color</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>color</em>&nbsp;</td><td>ブローブ色 0==黒, 1==白</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, <em>color</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5b1cb22f5cc0e469f631f8937b2cfa43"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_xyrange" ref="g5b1cb22f5cc0e469f631f8937b2cfa43" args="(const FHANDLE hresult, UINT blobno, INT *xmin, INT *ymin, INT *xmax, INT *ymax)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_xyrange           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymax</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+xyrangeの取得 
+<p>
+対象ブローブのxyrangeを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_xyrange">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>xmin</em>, <em>ymin</em>, <em>xmax</em>, <em>ymax</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmin</em>&nbsp;</td><td>ｘ座標最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymin</em>&nbsp;</td><td>ｙ座標最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmax</em>&nbsp;</td><td>ｘ座標最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymax</em>&nbsp;</td><td>ｙ座標最大値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf27bc5074483987e194eddddca50c9c1"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_area" ref="gf27bc5074483987e194eddddca50c9c1" args="(const FHANDLE hresult, UINT blobno, UINT *area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_area           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+対象ブローブの面積の取得 
+<p>
+対象ブローブの面積(area)を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_area">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>area</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>area</em>&nbsp;</td><td>面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc8f48d0c29d4c5a049e0d95e39fa4ad2"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_maxminpos" ref="gc8f48d0c29d4c5a049e0d95e39fa4ad2" args="(const FHANDLE hresult, UINT blobno, INT *xmin_at_ymin, INT *xmax_at_ymax, INT *ymin_at_xmax, INT *ymax_at_xmin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_maxminpos           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmin_at_ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmax_at_ymax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymin_at_xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymax_at_xmin</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標の最大最小位置の取得 
+<p>
+対象ブローブのｘ,ｙ座標の最大最小位置を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_maxminpos">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>xmin_at_ymin</em>, <em>xmax_at_ymax</em>, <em>ymin_at_xmax</em>, <em>ymax_at_xmin</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmin_at_ymin</em>&nbsp;</td><td>ｙの最小位置におけるｘの最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmax_at_ymax</em>&nbsp;</td><td>ｙの最大位置におけるｘの最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymin_at_xmax</em>&nbsp;</td><td>ｘの最大位置におけるｙの最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymax_at_xmin</em>&nbsp;</td><td>ｘの最小位置におけるｙの最大値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd01a021a3587c658bebe7404f245f1ce"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_xydiff" ref="gd01a021a3587c658bebe7404f245f1ce" args="(const FHANDLE hresult, UINT blobno, INT *xdiff, INT *ydiff)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_xydiff           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xdiff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ydiff</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接矩形サイズの取得 
+<p>
+対象ブローブの外接矩形の横サイズ(xdiff)と縦サイズ(ydiff)を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_xydiff">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返す。 なお、エラー発生時は <em>xdiff</em>, <em>ydiff</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xdiff</em>&nbsp;</td><td>外接矩形横サイズ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ydiff</em>&nbsp;</td><td>外接矩形縦サイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc9b8c90e6881bbf8de538a8fd18bba54"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect1_area" ref="gc9b8c90e6881bbf8de538a8fd18bba54" args="(const FHANDLE hresult, UINT blobno, UINT *rect1_area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect1_area           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>rect1_area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接矩形面積の取得 
+<p>
+対象ブローブの外接矩形の面積(rect1_area)を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_area">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>rect1_area</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rect1_area</em>&nbsp;</td><td>外接矩形面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd943062b246b82e58cec937fa6d8d9da"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect1_lratio" ref="gd943062b246b82e58cec937fa6d8d9da" args="(const FHANDLE hresult, UINT blobno, DOUBLE *rect1_lratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect1_lratio           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>rect1_lratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接矩形縦横比の取得 
+<p>
+対象ブローブの外接矩形縦横比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_lratio">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>rect1_lratio</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rect1_lratio</em>&nbsp;</td><td>外接矩形縦横比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfe7dca84ac72f3edff1dec5b2d8efb91"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect1_sratio" ref="gfe7dca84ac72f3edff1dec5b2d8efb91" args="(const FHANDLE hresult, UINT blobno, DOUBLE *rect1_sratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect1_sratio           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>rect1_sratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接矩形面積比の取得 
+<p>
+対象ブローブの外接矩形面積比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_sratio">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>rect1_sratio</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rect1_sratio</em>&nbsp;</td><td>外接矩形面積比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gdbc6860336e4fd5d98b43affb31d5385"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_moment1" ref="gdbc6860336e4fd5d98b43affb31d5385" args="(const FHANDLE hresult, UINT blobno, DLONG *sumx, DLONG *sumy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_moment1           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+１次モーメントの取得 
+<p>
+対象ブローブの１次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment1">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>sumx</em>, <em>sumy</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumx</em>&nbsp;</td><td>ｘ方向１次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumy</em>&nbsp;</td><td>ｙ方向１次モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9c51abbf3926b804dd20e3cb7ae24808"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_moment2" ref="g9c51abbf3926b804dd20e3cb7ae24808" args="(const FHANDLE hresult, UINT blobno, UDLONG *sumx2, UDLONG *sumy2, DLONG *sumxy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_moment2           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UDLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumx2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UDLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumy2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumxy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２次モーメントの取得 
+<p>
+対象ブローブの２次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment2">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>sumx2</em>, <em>sumy2</em>, <em>sumxy</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumx2</em>&nbsp;</td><td>ｘ方向２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumy2</em>&nbsp;</td><td>ｙ方向２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumxy</em>&nbsp;</td><td>ｘｙ方向２次モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga596327193c3a682fce67ead68fea25b"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_central_moment2" ref="ga596327193c3a682fce67ead68fea25b" args="(const FHANDLE hresult, UINT blobno, DOUBLE *mg20, DOUBLE *mg02, DOUBLE *mg11)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_central_moment2           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg20</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg02</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg11</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+重心２次モーメントの取得 
+<p>
+対象ブローブの重心２次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_central_moment">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>mg20</em>, <em>mg02</em>, <em>mg11</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg20</em>&nbsp;</td><td>ｘ方向２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg02</em>&nbsp;</td><td>ｙ方向２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg11</em>&nbsp;</td><td>ｘｙ方向２次モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6c64da81d9e86d0b7d474fb684e79028"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_moment3" ref="g6c64da81d9e86d0b7d474fb684e79028" args="(const FHANDLE hresult, UINT blobno, DOUBLE *m30, DOUBLE *m03, DOUBLE *m21, DOUBLE *m12)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_moment3           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m30</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m03</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m21</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m12</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+３次モーメントの取得 
+<p>
+対象ブローブの３次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>m30</em>, <em>m03</em>, <em>m21</em>, <em>m12</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブや座標値の大きいブローブ ( 左上座標が(0,0)の正方ブローブを想定したとき、xdiff または ydiff が 1800程度以上が目安 ) では桁落ちによる計算誤差が発生します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m30</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{30} $" src="form_750.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m03</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{03} $" src="form_751.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m21</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{21} $" src="form_752.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m12</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{12} $" src="form_753.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g56e44d2f93c80682b13b5c40abf70271"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_central_moment3" ref="g56e44d2f93c80682b13b5c40abf70271" args="(const FHANDLE hresult, UINT blobno, DOUBLE *mg30, DOUBLE *mg03, DOUBLE *mg21, DOUBLE *mg12)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_central_moment3           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg30</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg03</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg21</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg12</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+重心３次モーメントの取得 
+<p>
+対象ブローブの重心３次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_central_moment">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>mg30</em>, <em>mg03</em>, <em>mg21</em>, <em>mg12</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブ( xdiff または ydiff が 1800程度以上が目安 ) では桁落ちによる計算誤差が発生します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg30</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{30} $" src="form_754.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg03</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{03} $" src="form_755.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg21</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{21} $" src="form_756.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg12</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{12} $" src="form_757.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gde8e6f95ca9d7603a452d8715e3ab3ab"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_moment" ref="gde8e6f95ca9d7603a452d8715e3ab3ab" args="(const FHANDLE hresult, UINT blobno, INT xn, INT yn, DOUBLE *m)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_moment           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>xn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>yn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Ｎ次モーメントの取得 
+<p>
+対象ブローブのＮ次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>m</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブでは桁落ちによる計算誤差が発生します。 (桁数は指定次数によって変わるため、どの程度のサイズで桁落ちが発生するかは不明です)</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>xn</em>&nbsp;</td><td>ｘの次数( 0以上 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>yn</em>&nbsp;</td><td>ｙの次数( 0以上 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{pq} $" src="form_758.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>以下のいずれかの理由によりパラメータエラー<ul>
+<li><em>blobno</em> に指定されたブローブ番号が不正</li><li>パラメータに NULL pointer が渡された</li><li><em>xn</em> または <em>yn</em> が0より小さい </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gce64be3e1fa19de5d1c532e8da4644dc"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_central_moment" ref="gce64be3e1fa19de5d1c532e8da4644dc" args="(const FHANDLE hresult, UINT blobno, INT xn, INT yn, DOUBLE *mg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_central_moment           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>xn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>yn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+重心Ｎ次モーメントの取得 
+<p>
+対象ブローブの重心Ｎ次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_central_moment">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>mg</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブでは桁落ちによる計算誤差が発生します。 (桁数は指定次数によって変わるため、どの程度のサイズで桁落ちが発生するかは不明です)</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>xn</em>&nbsp;</td><td>ｘの次数( 0以上 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>yn</em>&nbsp;</td><td>ｙの次数( 0以上 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{pq} $" src="form_759.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>以下のいずれかの理由によりパラメータエラー<ul>
+<li><em>blobno</em> に指定されたブローブ番号が不正</li><li>パラメータに NULL pointer が渡された</li><li><em>xn</em> または <em>yn</em> が0より小さい </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb9abc4e765b4c54128f65a3e9b1ceaf4"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_hu_moments" ref="gb9abc4e765b4c54128f65a3e9b1ceaf4" args="(const FHANDLE hresult, UINT blobno, DOUBLE *h)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_hu_moments           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>h</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Huモーメント不変量の取得 
+<p>
+対象ブローブの7つのHuモーメント不変量を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>h</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>h</em>&nbsp;</td><td>Huモーメント不変量の出力先配列。サイズは7</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb4e989070282da9a84b2a454371391fc"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_center" ref="gb4e989070282da9a84b2a454371391fc" args="(const FHANDLE hresult, UINT blobno, DOUBLE *centerx, DOUBLE *centery)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_center           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>centerx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>centery</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+重心の取得 
+<p>
+対象ブローブの重心を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_center">ここ</a> を参照してください。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>centerx</em>, <em>centery</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>centerx</em>&nbsp;</td><td>重心のｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>centery</em>&nbsp;</td><td>重心のｙ座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge37f46482ea0503b947aeafdf28fc05d"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_equivalent_ellipse" ref="ge37f46482ea0503b947aeafdf28fc05d" args="(const FHANDLE hresult, UINT blobno, DOUBLE *majoraxis, DOUBLE *minoraxis, DOUBLE *theta, DOUBLE *aratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_equivalent_ellipse           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>majoraxis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>minoraxis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>aratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+等価楕円の取得 
+<p>
+対象ブローブの面積と等価な楕円の主軸半径・副軸半径・傾き・主軸副軸長比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>majoraxis</em>, <em>minoraxis</em>, <em>theta</em>, <em>aratio</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>majoraxis</em>&nbsp;</td><td>慣性等価楕円 主軸長 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>minoraxis</em>&nbsp;</td><td>慣性等価楕円 副軸長 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>慣性等価楕円 主軸傾き( -π/2 &lt;= <em>theta</em> &lt;= π/2 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>aratio</em>&nbsp;</td><td>慣性等価楕円 主軸副軸長比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2cc9a22b44905611f3059c881c928fd8"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_equivalent_disk" ref="g2cc9a22b44905611f3059c881c928fd8" args="(const FHANDLE hresult, UINT blobno, DOUBLE *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_equivalent_disk           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+面積等価円の取得 
+<p>
+BLOBの面積と等価な円の直径を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_equivalent_disk">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>diameter</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>面積等価円直径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga29bde22672cedbfa4570e42d2bcf573"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect2_size" ref="ga29bde22672cedbfa4570e42d2bcf573" args="(const FHANDLE hresult, UINT blobno, DOUBLE *lsize, DOUBLE *wsize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect2_size           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>lsize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>wsize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接長方形の取得 
+<p>
+対象ブローブの外接長方形を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_size">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>lsize</em>, <em>wsize</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>lsize</em>&nbsp;</td><td>外接長方形横長 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>wsize</em>&nbsp;</td><td>外接長方形縦長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g222c24c474098800f17f413762914e0e"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect2_area" ref="g222c24c474098800f17f413762914e0e" args="(const FHANDLE hresult, UINT blobno, DOUBLE *rect2_area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect2_area           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>rect2_area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接長方形面積の取得 
+<p>
+対象ブローブの外接長方形面積を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_area">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>rect2_area</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rect2_area</em>&nbsp;</td><td>外接長方形面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g26f35e0cc5c802c00227ba35c9741201"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect2_lratio" ref="g26f35e0cc5c802c00227ba35c9741201" args="(const FHANDLE hresult, UINT blobno, DOUBLE *rect2_lratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect2_lratio           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>rect2_lratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接長方形縦横比の取得 
+<p>
+対象ブローブの外接長方形縦横比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_lratio">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>rect2_lratio</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rect2_lratio</em>&nbsp;</td><td>外接長方形縦横比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0c437b830f7b296a8419f1595c946549"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect2_sratio" ref="g0c437b830f7b296a8419f1595c946549" args="(const FHANDLE hresult, UINT blobno, DOUBLE *rect2_sratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect2_sratio           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>rect2_sratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接長方形面積比の取得 
+<p>
+対象ブローブの外接長方形面積比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_sratio">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>rect2_sratio</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rect2_sratio</em>&nbsp;</td><td>外接長方形面積比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g875a8bf5fcd01c181b37f7e6519ce3f4"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_feret_diameter" ref="g875a8bf5fcd01c181b37f7e6519ce3f4" args="(const FHANDLE hresult, UINT blobno, DOUBLE theta, INT mode, DOUBLE *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_feret_diameter           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+フェレ径の取得 
+<p>
+対象ブローブの指定角度におけるフェレ径を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_feret_diameter">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>diameter</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>計測角度(ラジアン) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>画素領域モード <ul>
+<li>0 : 点で計測 </li>
+<li>1 : 矩形の広がりを持つ点で計測 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>フェレ径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4b0298944561f6211921abe219ff5265"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_convex2d" ref="g4b0298944561f6211921abe219ff5265" args="(const FHANDLE hresult, UINT blobno, PNT_T **ppHull, UINT *verNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_convex2d           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppHull</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>verNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+凸包の取得 
+<p>
+対象ブローブに外接する凸包を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_convex2d">ここ</a> を参照して下さい。<p>
+出力される凸包の頂点は、画像座標系で時計回りに連結します。 最初と最後の頂点は同じ点で出力するため、出力される凸包の頂点数は実の頂点数プラス１になります。 凸包保存用点配列のメモリは関数内部で確保するため、引数の <em>*ppHull</em> の値は NULL でなければいけません。 また、不要になったら <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用してメモリ解放をユーザー側で行ってください。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域全点を入力して <a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> にて凸包を求めた結果とは、開始点の位置が異なる場合があります。 </li>
+<li>ブローブの全点が一直線上にある場合は凸包が生成できないため、F_ERR_CALC_IMPOSSIBLEとなります。 </li>
+<li>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は凸包が計算できず、エラーになります。 </li>
+<li>関数エントリー時 <em>*ppHull==NULL</em> でなければいけません。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppHull</em>&nbsp;</td><td>出力される凸包の頂点列（*ppHullは必ずNULLでなければならない） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>verNum</em>&nbsp;</td><td>出力される凸包の頂点の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー<ul>
+<li><em>blobno</em> に指定されたブローブ番号が不正</li><li>パラメータに NULL pointer が渡された</li><li>*ppHull がNULLで無い </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a>, fnFIE_region_convex2d() </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc6384a93cdd7ae9e16e1fa00107a7b64"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_circmcircle" ref="gc6384a93cdd7ae9e16e1fa00107a7b64" args="(const FHANDLE hresult, UINT blobno, DPNT_T *center, DOUBLE *radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_circmcircle           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小外接円の取得 
+<p>
+対象ブローブの最小外接円（最小包含円とも呼ばれる）を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circumcircle">ここ</a> を参照して下さい。<p>
+領域内の点の2点または3点に接する（点を通る）円で、かつ領域内のすべての点を内包する円のうち最小のものを求めます。 領域内の点が１点以下の場合はエラーとなります。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>center</em>, <em>radius</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は内部で利用する凸包が計算できず、エラーになります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>最小外接円の中心 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>最小外接円の半径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+「コンピュータ・ジオメトリ 計算幾何学：アルゴリズムと応用」近代科学社(ISBN4-7649-0277-X) P105-110 
+</div>
+</div><p>
+<a class="anchor" name="g3f9997ba7c13d9f04e13d79dae169864"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_feret_diameter_maxmin" ref="g3f9997ba7c13d9f04e13d79dae169864" args="(const FHANDLE hresult, UINT blobno, DOUBLE *feretmax, DOUBLE *fmax_theta, DOUBLE *feretmin, DOUBLE *fmin_theta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_feret_diameter_maxmin           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>feretmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>fmax_theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>feretmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>fmin_theta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最大フェレ径、最小フェレ径の取得 
+<p>
+領域の最大フェレ径と最小フェレ径を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_feret_maxmin">ここ</a> を参照して下さい。<p>
+角度は-π/2≦θ&lt;π/2の範囲で得られます。 フェレ径が最大、または最小となる角度は複数ある可能性がありますが、そのうちのどの角度が得られるかは不定です。 領域が1点のみの時は、最大フェレ径、最小フェレ径、最大フェレ径角度、最小フェレ径角度はすべて0.0となります。 領域が直線状になる場合（面積が2以上で凸包が求まらない場合）の最小フェレ径の値は0.0となります。<p>
+本関数では、点が広がりを持たない場合のフェレ径の最大・最小値を計算しています。点が広がりを持つ場合も計算可能ですが、処理を 高速に行なうことを優先して、そのような仕様としています。点の広がりについては <a class="el" href="group__fie__features.html#feature_feret_diameter">ここ</a> を参照してください。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>feretmax</em>, <em>fmax_theta</em>, <em>feretmin</em>, <em>fmin_theta</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は内部で利用する凸包が計算できず、エラーになります。</dd></dl>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd>本関数の角度範囲はFVALG ver1.7より -π/2≦θ&lt;π/2 に変更されました。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>feretmax</em>&nbsp;</td><td>最大フェレ径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fmax_theta</em>&nbsp;</td><td>最大フェレ径の角度( -π/2 &lt;= <em>fmax_theta</em> &lt; π/2 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>feretmin</em>&nbsp;</td><td>最小フェレ径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fmin_theta</em>&nbsp;</td><td>最小フェレ径の角度( -π/2 &lt;= <em>fmin_theta</em> &lt; π/2 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g875a8bf5fcd01c181b37f7e6519ce3f4" title="フェレ径の取得">fnFIE_measure_get_feret_diameter()</a>, <a class="el" href="group__fie__measure__feature.html#g4b0298944561f6211921abe219ff5265" title="凸包の取得">fnFIE_measure_get_convex2d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd5abc924f081e050f425d9e6b1bb97eb"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_rect2pos" ref="gd5abc924f081e050f425d9e6b1bb97eb" args="(const FHANDLE hresult, UINT blobno, DPNT_T *points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_rect2pos           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外接長方形の頂点座標の取得 
+<p>
+対象ブローブの外接長方形(rect2)の４頂点座標を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2pos">ここ</a> を参照して下さい。<p>
+座標点列は、0度のときに画像座標系で左上となる点を始点に、 時計回りに頂点を返します。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>points</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>外接長方形の４頂点の点列。サイズは４</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0d8d9f9908564ca3159b890cfd6c558a"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_bounding_rotated_rect_pos" ref="g0d8d9f9908564ca3159b890cfd6c558a" args="(const FHANDLE hresult, UINT blobno, DOUBLE theta, DPNT_T *points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_bounding_rotated_rect_pos           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定角度外接長方形の頂点座標の取得 
+<p>
+対象ブローブの指定した傾きをもった外接長方形の４頂点座標を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_bounding_rotated_rect_pos">外接長方形の頂点座標（指定角）</a> を参照して下さい。<p>
+座標点列は、0度のときに画像座標系で左上となる点を始点に、 時計回りに頂点を返します。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>points</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>外接長方形の角度（外接長方形のある一辺とx軸がなす角度）単位：ラジアン </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>外接長方形の４頂点の点列。サイズは４</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g599fd38ec059de358b57f04b28ee689c"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_equivalent_circle" ref="g599fd38ec059de358b57f04b28ee689c" args="(const FHANDLE hresult, UINT blobno, DOUBLE *diameter_equicircle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_equivalent_circle           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter_equicircle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+周囲長等価円の取得 
+<p>
+対象ブローブの周囲長と円周が等価な円の直径を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_equivalent_circle">ここ</a> を参照して下さい。<p>
+周囲長が0の場合(ブローブが１点のみの場合)には直径が0となります。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>diameter_equicircle</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter_equicircle</em>&nbsp;</td><td>周囲長等価円直径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g68c4d94811ee25bf1c2cf7e4d458c866" title="対象ブローブの周囲長の取得">fnFIE_measure_get_perimeter()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4567ea798529acc6b35a254fd99c5951"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_convexfeature" ref="g4567ea798529acc6b35a254fd99c5951" args="(const FHANDLE hresult, UINT blobno, DOUBLE *convex_area, DOUBLE *convex_perim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_convexfeature           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_area</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_perim</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+凸包面積・周囲長の取得 
+<p>
+対象ブローブの凸包の面積と周囲長を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_convexfeature">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>convex_area</em>, <em>convex_perim</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>凸包の計算できないブローブの場合（ブローブの構成点が１直線上にある場合）は エラーとなり、F_ERR_CALC_IMPOSSIBLE を返します。 また、ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は内部で利用する凸包が計算できず、エラーになります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_area</em>&nbsp;</td><td>凸包面積 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_perim</em>&nbsp;</td><td>凸包周囲長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g4b0298944561f6211921abe219ff5265" title="凸包の取得">fnFIE_measure_get_convex2d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf252f4a38e0272232df441a157babf9e"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_convexratio" ref="gf252f4a38e0272232df441a157babf9e" args="(const FHANDLE hresult, UINT blobno, DOUBLE *convex_arearatio, DOUBLE *convex_perimratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_convexratio           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_arearatio</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_perimratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+凸包面積比・周囲長比の取得 
+<p>
+凸包の面積比：(領域の面積/凸包面積)、凸包の周囲長比：(領域の周囲長/凸包周囲長)を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_convexratio">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>convex_arearatio</em>, <em>convex_perimratio</em> の値は変更されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は内部で利用する凸包が計算できず、エラーになります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_arearatio</em>&nbsp;</td><td>凸包面積比 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_perimratio</em>&nbsp;</td><td>凸包周囲長比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0f56986a47da0eea756b99d9990a4e13"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_distance_to_boundary" ref="g0f56986a47da0eea756b99d9990a4e13" args="(const FHANDLE hresult, UINT blobno, DOUBLE *dpmax, DOUBLE *dpmin, DOUBLE *dpave, DOUBLE *dpsigma)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_distance_to_boundary           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpsigma</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+外周距離の取得 
+<p>
+対象ブローブの重心と境界点列の距離最小値、距離最大値、距離平均値、距離標準偏差値を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_distance_to_boundary">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>dpmax</em>, <em>dpmin</em>, <em>dpave</em>, <em>dpsigma</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpmax</em>&nbsp;</td><td>外周距離最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpmin</em>&nbsp;</td><td>外周距離最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpave</em>&nbsp;</td><td>外周距離平均値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpsigma</em>&nbsp;</td><td>外周距離標準偏差値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfe8455a3f759d30ce99ebf30ab8be890"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_circularity1" ref="gfe8455a3f759d30ce99ebf30ab8be890" args="(const FHANDLE hresult, UINT blobno, DOUBLE *circularity1)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_circularity1           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>circularity1</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+真円度＃１の取得 
+<p>
+対象ブローブの真円度＃１を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circularity1">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>circularity1</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>circularity1</em>&nbsp;</td><td>真円度＃１</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga2788b2d670499c7bd2b6252d5fca434"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_circularity2" ref="ga2788b2d670499c7bd2b6252d5fca434" args="(const FHANDLE hresult, UINT blobno, DOUBLE *circularity2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_circularity2           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>circularity2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+真円度＃２の取得 
+<p>
+対象ブローブの真円度＃２を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circularity2">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>circularity2</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>circularity2</em>&nbsp;</td><td>真円度＃２</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g176f0f9a21a55ee786f5f794991c52e2"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_circularity3" ref="g176f0f9a21a55ee786f5f794991c52e2" args="(const FHANDLE hresult, UINT blobno, DOUBLE *circularity3)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_circularity3           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>circularity3</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+真円度＃３の取得 
+<p>
+対象ブローブの真円度＃３を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circularity2">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>circularity3</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>circularity3</em>&nbsp;</td><td>真円度＃３</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9154311b81a242d3a858f32dfff72503"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_hole_num" ref="g9154311b81a242d3a858f32dfff72503" args="(const FHANDLE hresult, UINT blobno, UINT *holes)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_hole_num           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>holes</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+穴数の取得 
+<p>
+対象ブローブの穴数を取得します。 特徴量の説明は <a class="el" href="group__fie__features.html#feature_holes">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>holes</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 穴数を計算できません。そのため、本関数は常に F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>holes</em>&nbsp;</td><td>穴数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gecf2c56c180f258c7740af939da58a49"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_sibling_num" ref="gecf2c56c180f258c7740af939da58a49" args="(const FHANDLE hresult, UINT blobno, UINT *sibling_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_sibling_num           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>sibling_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+兄弟ブローブ数の取得 
+<p>
+対象ブローブの兄弟ブローブ数を取得します。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>sibling_num</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 全てのブローブが背景ブローブ（０番ブローブ）を親とするブローブになり、同じ兄弟関係にあります。 そのため、本関数で取得される値は全有効ブローブ数( <a class="el" href="group__fie__measure__result.html#g0e044b82943708c0702328f7f69c4241" title="有効BLOB数の取得">fnFIE_measure_get_real_blobnum()</a> で返される値) と等しくなります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sibling_num</em>&nbsp;</td><td>兄弟ブローブ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g24427dccca49bcd2aec826ccd7c12844"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_hole_area" ref="g24427dccca49bcd2aec826ccd7c12844" args="(const FHANDLE hresult, UINT blobno, UINT *sc)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_hole_area           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>sc</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+穴面積の取得 
+<p>
+対象ブローブの穴面積を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_hole_area">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>sc</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 穴面積を計算できません。そのため、本関数は常に F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sc</em>&nbsp;</td><td>穴面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7dfd2d80d8c5c76690579a5fa5a9ac31"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_area_with_hole" ref="g7dfd2d80d8c5c76690579a5fa5a9ac31" args="(const FHANDLE hresult, UINT blobno, UINT *st)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_area_with_hole           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>st</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+面積（穴面積含む）の取得 
+<p>
+対象ブローブの穴を含んだ面積を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_hole_area">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>st</em> の値は変更されません。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 穴面積を計算できません。そのため、本関数は常に F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>st</em>&nbsp;</td><td>穴を含んだブローブ面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gecda9324457592427004f7d913df2209"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_hole_ratio" ref="gecda9324457592427004f7d913df2209" args="(const FHANDLE hresult, UINT blobno, DOUBLE *hratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_hole_ratio           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>hratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+穴面積比の取得 
+<p>
+対象ブローブの穴面積比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_hole_ratio">ここ</a> を参照してください。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返す。 なお、エラー発生時は <em>hratio</em> の値は変更されない。<p>
+本特徴量は結果保存特徴量です。一度計算を実行すると結果値が保存され、 以降、同じブローブに対する計算が行われたときは最初に計算した値を返します。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 穴面積を計算できません。そのため、本関数は常に F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hratio</em>&nbsp;</td><td>穴面積比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6e0798f559191307aefcb1a2782e361e"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_distance_to_childs" ref="g6e0798f559191307aefcb1a2782e361e" args="(const FHANDLE hresult, UINT blobno, DOUBLE *dcmax, DOUBLE *dcmin, DOUBLE *dcave)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_distance_to_childs           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dcmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dcmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dcave</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+子供距離の取得 
+<p>
+対象ブローブの子供ブローブ間距離を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_distance_to_childs">ここ</a> を参照してください。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>dcmax</em>, <em>dcmin</em>, <em>dcave</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 子供が存在せず、子供間距離を計算できません。 そのため、本関数は常に F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dcmax</em>&nbsp;</td><td>子供距離最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dcmin</em>&nbsp;</td><td>子供距離最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dcave</em>&nbsp;</td><td>子供距離平均値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8f0f902472e5b24e5a0d027102230bc6"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_pps" ref="g8f0f902472e5b24e5a0d027102230bc6" args="(const FHANDLE hresult, UINT blobno, DOUBLE *pps)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_pps           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pps</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+面積周囲長比(pps)の取得 
+<p>
+対象ブローブの面積周囲長比(pps)を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_pps">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>pps</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pps</em>&nbsp;</td><td>PPS</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb715a19caa848351727f1a90c6ada228"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_distance_to_siblings" ref="gb715a19caa848351727f1a90c6ada228" args="(const FHANDLE hresult, UINT blobno, DOUBLE *dsmax, DOUBLE *dsmin, DOUBLE *dsave)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_distance_to_siblings           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dsmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dsmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dsave</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+隣接エリア（兄弟ブローブ）間距離の取得 
+<p>
+対象ブローブの兄弟ブローブ間距離を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_distance_to_siblings">ここ</a> を参照して下さい。<p>
+対象ブローブ番号が背景ブローブ（ブローブ番号０番）か、 有効なブローブ番号範囲(1～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 または無効ブローブである場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>dsmax</em>, <em>dsmin</em>, <em>dsave</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 子供が存在せず、子供間距離を計算できません。 そのため、本関数は常に F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dsmax</em>&nbsp;</td><td>隣接間距離最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dsmin</em>&nbsp;</td><td>隣接間距離最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dsave</em>&nbsp;</td><td>隣接間距離平均値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, パラメータに NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7264fa3e4e2540b835c5225e3888bd7d"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_blobno_on_xy" ref="g7264fa3e4e2540b835c5225e3888bd7d" args="(const FHANDLE hresult, INT x, INT y, UINT *blobno)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_blobno_on_xy           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>blobno</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標(x,y)の位置のブローブ番号取得 
+<p>
+座標( <em>x</em>, <em>y</em> ) を領域内に含むブローブのブローブ番号を返します。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時はブローブの存在しない 領域が発生するため、その座標が指定された場合には F_ERR_CALC_IMPOSSIBLE を返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>ブローブ番号を取得するＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>ブローブ番号を取得するＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>ブローブ番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー、以下のいずれか。<ul>
+<li><em>x</em>, <em>y</em> に渡された座標がブローブ解析をした領域外</li><li>または パラメータに NULL pointer が渡された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>( <em>x</em>, <em>y</em> ) を含むブローブが無い。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

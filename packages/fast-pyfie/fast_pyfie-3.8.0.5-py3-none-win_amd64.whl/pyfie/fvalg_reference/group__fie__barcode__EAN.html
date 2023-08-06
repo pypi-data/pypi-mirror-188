@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: JAN/EAN</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>JAN/EAN<br>
+<small>
+[<a class="el" href="group__fie__barcode__doc.html">仕様</a>]</small>
+</h1><div align="center">
+<img src="barcode_EAN13.png" alt="barcode_EAN13.png">
+<p><strong>EAN-13</strong></p></div>
+ <hr>
+ <div align="center">
+<img src="barcode_EAN8.png" alt="barcode_EAN8.png">
+<p><strong>EAN-8</strong></p></div>
+ <hr>
+ <dl class="user" compact><dt><b>目次:</b></dt><dd><ul>
+<li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_Outline">概要</a> </li>
+<li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_Structure">構成</a><ul>
+<li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_Structure_EAN13">EAN-13 の構成</a></li><li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_Structure_EAN8">EAN-8 の構成</a></li></ul>
+</li>
+<li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_CharCode">文字コード表</a> </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd></dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_EAN_Outline">
+概要</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd>EAN（European Article Number）は、４値（１～４ビット）のスペースとバーで構成されます。 １ビットのスペース（またはバー）を１モジュールと呼びます。 １文字を７ビットで構成し、0/1 をスペースとバーで表現しています。 このバーコードは、１つで13桁の数値を表す EAN-13 と 8桁を表す EAN-8 が有ります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>特徴:</b><br>
+ <table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">&nbsp; </td><td class="indexkey" align="center">EAN-13 </td><td class="indexkey" align="center">EAN-8  </td></tr>
+<tr>
+<td class="indexkey">使用可能な文字 </td><td align="center">０～９の数字 </td><td align="center">０～９の数字  </td></tr>
+<tr>
+<td class="indexkey">桁数 </td><td align="center">１３桁固定 </td><td align="center">８桁固定  </td></tr>
+<tr>
+<td class="indexkey">１文字の構成 </td><td align="center">７ビット </td><td align="center">７ビット  </td></tr>
+<tr>
+<td class="indexkey">バーの太さ </td><td align="center">４値（１～４ビット） </td><td align="center">４値（１～４ビット）  </td></tr>
+<tr>
+<td class="indexkey">チェックデジット </td><td align="center">４値（１～４ビット） </td><td align="center">４値（１～４ビット）  </td></tr>
+</table>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_EAN_Structure">
+構成</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_Structure_EAN13">EAN-13 の構成</a> </li>
+<li><a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_Structure_EAN8">EAN-8 の構成</a></li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>１文字の構成:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">ビット </td><td class="indexkey" align="center">パターン  </td></tr>
+<tr>
+<td align="center">0 </td><td align="center">右側（偶数パリティ）<br>
+ 1110010  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp;  </td></tr>
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0  </td></tr>
+</table>
+</td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>スペースとバー:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">スペース </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+0  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+00  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+000  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+0000   </td></tr>
+<tr>
+<td class="indexkey" align="center">バー </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+1  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+11  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+111  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+1111   </td></tr>
+</table>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_EAN_Structure_EAN13">
+EAN-13 の構成</a></h2>
+<div align="center">
+<img src="barcode_EAN13.png" alt="barcode_EAN13.png">
+</div>
+<p>
+<dl class="user" compact><dt><b></b></dt><dd>EAN-13 は、１つのバーコードで１３桁の数字を表しますが、最後（右端）の１桁はチェックデジットで使用します。 また、最初（左端）の１桁目に該当するビットパターンはありません。 この文字は左側６文字のパリティの組み合わせで表されます。 後述の『<a class="el" href="group__fie__barcode__EAN.html#barcode_EAN_CharCode">文字コード表</a>』で説明します。 下図は 123456789012 を表しています。右端の 8 はチェックデジットです。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ol type=1>
+<li>マージンは、10モジュール以上必要です。</li><li>ガードバーは左がスタートコード、右がストップコードを意味します。 両方とも、ビットは 101 です。</li><li>センターバーのビットは 01010 です。</li></ol>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><div align="center">
+<img src="barcode_EAN13_structure.png" alt="barcode_EAN13_structure.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b>スタート・ストップコード:</b></dt><dd>下図の赤色で示すバーがスタートコード(左端)とストップコード(右端)です。 中央はセンターバーと呼ばれます。<br>
+ <div align="center">
+<img src="barcode_EAN13_start_stop.png" alt="barcode_EAN13_start_stop.png">
+</div>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_EAN_Structure_EAN8">
+EAN-8 の構成</a></h2>
+<div align="center">
+<img src="barcode_EAN8.png" alt="barcode_EAN8.png">
+</div>
+<p>
+<dl class="user" compact><dt><b></b></dt><dd>EAN-8 は、１つのバーコードで８桁の数字を表しますが、最後（右端）の１桁はチェックデジットで使用します。 下図は 1234567 を表しています。右端の 0 はチェックデジットです。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ol type=1>
+<li>マージンは、10モジュール以上必要です。</li><li>ガードバーは左がスタートコード、右がストップコードを意味します。 両方とも、ビットは 101 です。</li><li>センターバーのビットは 01010 です。</li></ol>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><div align="center">
+<img src="barcode_EAN8_structure.png" alt="barcode_EAN8_structure.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b>スタート・ストップコード:</b></dt><dd>下図の赤色で示すバーがスタートコード(左端)とストップコード(右端)です。 中央はセンターバーと呼ばれます。<br>
+ <div align="center">
+<img src="barcode_EAN8_start_stop.png" alt="barcode_EAN8_start_stop.png">
+</div>
+ <hr>
+ </dd></dl>
+<h2><a class="anchor" name="barcode_EAN_CharCode">
+文字コード表</a></h2>
+下表に、EAN で表現可能な文字を示します。<p>
+<ol type=1>
+<li>パリティは、７ビット中の１の個数を意味します。 <br>
+ １が奇数個あれば奇数パリティ、偶数個あれば偶数パリティです。</li><li>左側の文字の偶数パリティは、EAN-13で使用します。 EAN-8では使用しません。</li><li>RawData の覧は、ライブラリが返す『生データ』を意味します。</li></ol>
+<p>
+<table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">RawData </td><td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">左側の文字<br>
+(奇数パリティ) </td><td class="indexkey" align="center">左側の文字<br>
+(偶数パリティ) </td><td class="indexkey" align="center">右側の文字<br>
+(偶数パリティ)  </td></tr>
+<tr>
+<td align="center">0 </td><td align="center">0 </td><td align="center">0001101 </td><td align="center">0100111 </td><td align="center">1110010  </td></tr>
+<tr>
+<td align="center">1 </td><td align="center">1 </td><td align="center">0011001 </td><td align="center">0110011 </td><td align="center">1100110  </td></tr>
+<tr>
+<td align="center">2 </td><td align="center">2 </td><td align="center">0010011 </td><td align="center">0011011 </td><td align="center">1101100  </td></tr>
+<tr>
+<td align="center">3 </td><td align="center">3 </td><td align="center">0111101 </td><td align="center">0100001 </td><td align="center">1000010  </td></tr>
+<tr>
+<td align="center">4 </td><td align="center">4 </td><td align="center">0100011 </td><td align="center">0011101 </td><td align="center">1011100  </td></tr>
+<tr>
+<td align="center">5 </td><td align="center">5 </td><td align="center">0110001 </td><td align="center">0111001 </td><td align="center">1001110  </td></tr>
+<tr>
+<td align="center">6 </td><td align="center">6 </td><td align="center">0101111 </td><td align="center">0000101 </td><td align="center">1010000  </td></tr>
+<tr>
+<td align="center">7 </td><td align="center">7 </td><td align="center">0111011 </td><td align="center">0010001 </td><td align="center">1000100  </td></tr>
+<tr>
+<td align="center">8 </td><td align="center">8 </td><td align="center">0110111 </td><td align="center">0001001 </td><td align="center">1001000  </td></tr>
+<tr>
+<td align="center">9 </td><td align="center">9 </td><td align="center">0001011 </td><td align="center">0010111 </td><td align="center">1110100  </td></tr>
+</table>
+<h2><a class="anchor" name="section_barcode_EAN_AddChar">
+先頭の付加文字</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd>EAN-13 は、先頭（左端）の１文字に該当するビットパターンがない為、 左側６文字のパリティの組み合わせで表現します。 例えば、左側６文字が『234567』で付加文字が『1』の場合は、下表に示すビットパターンになります。 下図の赤枠の 1桁目～6桁目のパリティの組み合わせで先頭の付加文字『1』(青枠の部分)を表しています。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><div align="center">
+<img src="barcode_EAN13_AddChar.png" alt="barcode_EAN13_AddChar.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>表) ビットパターン</b><br>
+ <table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey">&nbsp; </td><td class="indexkey" align="center">付加文字 </td><td class="indexkey" align="center">1桁目 </td><td class="indexkey" align="center">2桁目 </td><td class="indexkey" align="center">3桁目 </td><td class="indexkey" align="center">4桁目 </td><td class="indexkey" align="center">5桁目 </td><td class="indexkey" align="center">6桁目  </td></tr>
+<tr>
+<td class="indexkey">文字 </td><td align="center" bgcolor="#7F7FFF">1 </td><td align="center" bgcolor="#FF7FFF">2 </td><td align="center" bgcolor="#FF7FFF">3 </td><td align="center" bgcolor="#FF7FFF">4 </td><td align="center" bgcolor="#FF7FFF">5 </td><td align="center" bgcolor="#FF7FFF">6 </td><td align="center" bgcolor="#FF7FFF">7  </td></tr>
+<tr>
+<td class="indexkey">ビットパターン </td><td align="center" bgcolor="#7F7FFF">------- </td><td align="center" bgcolor="#FFFFFF">0010011 </td><td align="center" bgcolor="#FFFFFF">0111101 </td><td align="center" bgcolor="#FFFFFF">0011101 </td><td align="center" bgcolor="#FFFFFF">0110001 </td><td align="center" bgcolor="#FFFFFF">0000101 </td><td align="center" bgcolor="#FFFFFF">0010001  </td></tr>
+<tr>
+<td class="indexkey">パリティ </td><td align="center" bgcolor="#7F7FFF">------- </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数  </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>表) 付加文字とパリティの組み合わせ</b><br>
+ <table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">付加文字 </td><td class="indexkey" align="center">1桁目 </td><td class="indexkey" align="center">2桁目 </td><td class="indexkey" align="center">3桁目 </td><td class="indexkey" align="center">4桁目 </td><td class="indexkey" align="center">5桁目 </td><td class="indexkey" align="center">6桁目  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">1 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">2 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">3 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">4 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">5 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">6 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFFFF">奇数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">7 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">8 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF">9 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数 </td><td align="center" bgcolor="#FFFF00">偶数 </td><td align="center" bgcolor="#FFFFFF">奇数  </td></tr>
+</table>
+</dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

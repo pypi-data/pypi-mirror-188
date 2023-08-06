@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__color__inspection.html">色彩検査</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<h2><a class="anchor" name="fie_color_check_main">
+色彩検査</a></h2>
+色彩検査は、任意のカラー画像に対する検査をするライブラリです。 ユーザーは、本ライブラリの機能を応用することで、カラー画像に対する様々な検査を実現することが可能です。 例としては、対象物の色むらや色しみ等の色彩欠陥を見つけるなどが挙げられます。<br>
+ 本ライブラリで実現する色彩検査は、Fig1に示すような処理対象領域へのユーザーの問い合わせに対して、 いくつかの手法を用いて定量的に回答を提示します。 Fig1で、白枠で囲まれている部分を処理対象領域とします。 枠内の数字は、任意に与えた処理対象領域の番号です。 本ライブラリでは、以下に示す要求などに対して回答を提示します。<p>
+<ul>
+<li>Fig1の処理対象領域１、処理対象領域２、処理対象領域３のそれぞれの特徴量を求めたい。 </li>
+<li>求めた特徴量を、様々な処理に応用したい。 </li>
+<li>Fig1の処理対象領域１と処理対象領域２、処理対象領域２と処理対象領域３、または処理対象領域３と処理対象領域１の色差を求めたい。 </li>
+<li>Fig2の処理対象領域１を基準として、色を抽出したい。 </li>
+<li>指定した色に最も近い処理対象領域を、Fig3から取得したい。</li>
+</ul>
+なお本ライブラリにおいては、処理対象領域より求めた特徴量をまとめたものを「色票」と定義します。<p>
+<div align="center">
+<img src="colorchart.png" alt="colorchart.png">
+<p><strong>Fig1. 色票とは？</strong></p></div>
+ <div align="center">
+<img src="color_extraction.png" alt="color_extraction.png">
+<p><strong>Fig2. 色抽出とは？</strong></p></div>
+ <div align="center">
+<img src="colorcheck.png" alt="colorcheck.png">
+<p><strong>Fig3. 色彩検査とは？</strong></p></div>
+ <h3><a class="anchor" name="fie_color_chark_color_chart">
+色票</a></h3>
+色票とは、前述したように処理対象領域の特徴量をまとめたものです。 色票構造体は、 <a class="el" href="structF__COLOR__CHART.html" title="色票構造体">F_COLOR_CHART</a> を参照ください。 本ライブラリでは、この色票を基に様々な処理が実行されます。 本ライブラリで色票にまとめられている特徴量は、<p>
+<ul>
+<li>平均色 </li>
+<li>分散共分散行列</li>
+</ul>
+の２つです。 <br>
+ 平均色は、入力された色空間が RGB 色空間であった場合には、R 、G 、B のチャネル毎の平均が保持されます。 カラーの表現方法としての色空間には、 RGB 以外にも、 L*a*b* 、 HSV 、 XYZ などの様々な色空間が存在します。 本ライブラリでは、色空間については考慮しません。 特定の色空間を使用したい場合には、ユーザーが前もって、その色空間に変換した画像を入力画像として使用する必要があります。<p>
+<hr>
+ <h2><a class="anchor" name="fie_color_check_norm_space">
+距離空間</a></h2>
+本ライブラリでは、様々な距離によって、色の違いを表します。 本ライブラリで使用される距離を以下に示します。 Fig4に、各距離の等距離線の関係を示します。<h3><a class="anchor" name="fie_color_check_norm_space_euclidean">
+ユークリッド距離</a></h3>
+ユークリッド距離は、最も基本的な距離定義であり、K 次元空間の物理距離と一致します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d_{ij} = \sqrt{ \sum _{l = 1}^{K} \left( x_{i}^{l} - x_{j}^{l} \right)^{2} } \]" src="form_354.png">
+<p>
+<h3><a class="anchor" name="fie_color_check_norm_space_w_euclidean">
+重み付きユークリッド距離</a></h3>
+重み付きユークリッド距離は、 K 次元空間の各次元を一様に扱わない距離算定法です。 各次元の重要度を変えることにより、物理的距離としてではなく、なんらかの評価基準に基づいた計量的距離として定められます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d_{ij} = \sqrt{ \sum _{l = 1}^{K} w^{l} \left( x_{i}^{l} - x_{j}^{l} \right)^{2} } \]" src="form_355.png">
+<p>
+<h3><a class="anchor" name="fie_color_check_norm_space_manhattan">
+マンハッタン距離（市街地距離、四近傍距離）</a></h3>
+マンハッタン距離は、加算、減算のみからなっており、高速に大量の距離計算を乗算性能の劣るコンピュータで行う場合などにむいています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d_{ij} = \sum _{l = 1}^{K} | x_{i}^{l} - x_{j}^{l} | \]" src="form_356.png">
+<p>
+<h3><a class="anchor" name="fie_color_check_norm_space_chebyshev">
+チェビシェフ距離（チェス盤距離、八近傍距離）</a></h3>
+マンハッタン距離が、各特徴軸にそった長さの和で距離を定義しているのに対し、チェビシェフ距離は各特徴軸にそった長さの最大値で定義します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d_{ij} = \max _{l} \left[ | x_{i}^{l} - x_{j}^{l} | \right] \]" src="form_357.png">
+<p>
+<p>
+<div align="center">
+<img src="colorcheck_norm.png" alt="colorcheck_norm.png">
+<p><strong>Fig4. 各ノルムの等距離線の関係</strong></p></div>
+ <h3><a class="anchor" name="fie_color_check_norm_space_mahalanobis">
+マハラノビス距離</a></h3>
+それぞれのクラス（チャネル）が多次元の正規分布に従うと仮定した場合に、マハラノビス距離は、あるデータからそれぞれのクラスまで最も自然な距離を与えます。 すなわち、クラスのもつ固有の分散による影響を正規化した空間での距離として定められます。 <br>
+ 参考のために、Fig5に、２次元座標上でのマハラノビス距離を示します。 重心から各点への距離は、ユークリッド距離では、 a = c ≦ b = d となりますが、マハラノビス距離では、 a = b = c = d となります。 マハラノビス距離はデータの拡がり（分散）を考慮した距離であるため、このような結果となります。<br>
+<p>
+<div align="center">
+<img src="colorcheck_mahalanobis.png" alt="colorcheck_mahalanobis.png">
+<p><strong>Fig5. ２次元上でのマハラノビスノルム</strong></p></div>
+ 平均ベクトルが<img class="formulaInl" alt="$ \mu $" src="form_358.png">、分散共分散行例が<img class="formulaInl" alt="$ \Sigma $" src="form_359.png">であるような多変数ベクトルで表される 一連のデータに対するマハラノビス距離は、次のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d_{i} = \sqrt{\left( x_{i} - \mu \right)^{t} \Sigma^{-1} \left( x_{i} - \mu \right) } \]" src="form_360.png">
+<p>
+<p>
+色彩検査では、多変数ベクトルが色の数値(R、G、Bの値など)、平均ベクトルと分散共分散行列はそれぞれ <a class="el" href="group__fie__color__inspection__doc.html#fie_color_chark_color_chart">色票</a>でまとめられている平均値・分散共分散行列となります。<h3><a class="anchor" name="fie_color_check_norm_space_norm">
+ノルム</a></h3>
+以後、本ライブラリでは、平面あるいは空間における幾何学的ベクトルの "長さ" の概念の一般化であり、 ベクトル空間に対して「距離」を与えるための数学の道具であるノルムとして距離を表現します。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__COLOR__CHART.html">F_COLOR_CHART</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">色票構造体  <a href="structF__COLOR__CHART.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__inspection__doc.html#g4658dca65574ff0cc613f374f5c1b3d3">F_CC_CALCULATED_VARIANCE</a>&nbsp;&nbsp;&nbsp;0x00000001</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__inspection__doc.html#g3575397ac70cc431591ae3f638678994">F_CC_VALID_MAHALANOBIS</a>&nbsp;&nbsp;&nbsp;0x00000002</td></tr>
+
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__inspection__doc.html#gd5a3cc17e83ecb6e72dd1bb70c67c371">f_colorcheck_norm_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c371352c37de7ab3caf025ac9aa0880e3b52">F_CC_CHEBYSHEV</a> =  1, 
+<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c3710f5a8f6a124b44e13cc1ec75620a4f81">F_CC_MANHATTAN</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c3718067bc76b3533d0c0dd202e97eeec5e6">F_CC_EUCLIDEAN</a> =  4, 
+<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c37109c930da0e9bb2ae40d87c37d6cc630a">F_CC_WEIGHTED_EUCLIDEAN</a> =  5, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c3716114847643708ef04ca85a9f1e0d43d3">F_CC_MAHALANOBIS</a> =  6, 
+<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c3712f86ac102d11a49bb12b878cc7e48ad4">F_CC_VARIANCE</a> =  98, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c371cd33e454799cfc5746c82f5adc3a3681">F_CC_TOLERANCE</a> =  99
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ノルム種別指定  <a href="group__fie__color__inspection__doc.html#gd5a3cc17e83ecb6e72dd1bb70c67c371">[詳細]</a><br></td></tr>
+</table>
+<hr><h2>マクロ定義</h2>
+<a class="anchor" name="g4658dca65574ff0cc613f374f5c1b3d3"></a><!-- doxytag: member="fie.h::F_CC_CALCULATED_VARIANCE" ref="g4658dca65574ff0cc613f374f5c1b3d3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_CC_CALCULATED_VARIANCE&nbsp;&nbsp;&nbsp;0x00000001          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色票用フラグ：分散共分散行列が計算済 
+</div>
+</div><p>
+<a class="anchor" name="g3575397ac70cc431591ae3f638678994"></a><!-- doxytag: member="fie.h::F_CC_VALID_MAHALANOBIS" ref="g3575397ac70cc431591ae3f638678994" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_CC_VALID_MAHALANOBIS&nbsp;&nbsp;&nbsp;0x00000002          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色票用フラグ：マハラノビスノルムが計算できる 
+</div>
+</div><p>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gd5a3cc17e83ecb6e72dd1bb70c67c371"></a><!-- doxytag: member="fie.h::f_colorcheck_norm_type" ref="gd5a3cc17e83ecb6e72dd1bb70c67c371" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__color__inspection__doc.html#gd5a3cc17e83ecb6e72dd1bb70c67c371">f_colorcheck_norm_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ノルム種別指定 
+<p>
+色彩検査でノルムの種別を指定するための列挙体です。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c371352c37de7ab3caf025ac9aa0880e3b52"></a><!-- doxytag: member="F_CC_CHEBYSHEV" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c371352c37de7ab3caf025ac9aa0880e3b52" args="" -->F_CC_CHEBYSHEV</em>&nbsp;</td><td>
+チェビシェフノルム： <img class="formulaInl" alt="$ d_{ij} = \max _{l} \left[ | x_{i}^{l} - x_{j}^{l} | \right] $" src="form_56.png"> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c3710f5a8f6a124b44e13cc1ec75620a4f81"></a><!-- doxytag: member="F_CC_MANHATTAN" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c3710f5a8f6a124b44e13cc1ec75620a4f81" args="" -->F_CC_MANHATTAN</em>&nbsp;</td><td>
+マンハッタンノルム： <img class="formulaInl" alt="$ d_{ij} = \sum _{l = 1}^{K} | x_{i}^{l} - x_{j}^{l} | $" src="form_57.png"> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c3718067bc76b3533d0c0dd202e97eeec5e6"></a><!-- doxytag: member="F_CC_EUCLIDEAN" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c3718067bc76b3533d0c0dd202e97eeec5e6" args="" -->F_CC_EUCLIDEAN</em>&nbsp;</td><td>
+ユークリッドノルム： <img class="formulaInl" alt="$ d_{ij} = \left\{ \sum _{l = 1}^{K} \left( x_{i}^{l} - x_{j}^{l} \right)^{2} \right\}^\frac{1}{2} $" src="form_58.png"> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c37109c930da0e9bb2ae40d87c37d6cc630a"></a><!-- doxytag: member="F_CC_WEIGHTED_EUCLIDEAN" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c37109c930da0e9bb2ae40d87c37d6cc630a" args="" -->F_CC_WEIGHTED_EUCLIDEAN</em>&nbsp;</td><td>
+重み付けユークリッドノルム： <img class="formulaInl" alt="$ d_{ij} = \left\{ \sum _{l = 1}^{K} w^{l} \left( x_{i}^{l} - x_{j}^{l} \right)^{2} \right\}^\frac{1}{2} $" src="form_59.png"> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c3716114847643708ef04ca85a9f1e0d43d3"></a><!-- doxytag: member="F_CC_MAHALANOBIS" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c3716114847643708ef04ca85a9f1e0d43d3" args="" -->F_CC_MAHALANOBIS</em>&nbsp;</td><td>
+マハラノビスノルム： <img class="formulaInl" alt="$ d_{i} = \left\{ \left( x_{i} - \mu \right)^{t} \Sigma^{-1} \left( x_{i} - \mu \right) \right\}^\frac{1}{2} $" src="form_60.png"> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c3712f86ac102d11a49bb12b878cc7e48ad4"></a><!-- doxytag: member="F_CC_VARIANCE" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c3712f86ac102d11a49bb12b878cc7e48ad4" args="" -->F_CC_VARIANCE</em>&nbsp;</td><td>
+分散基準 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5a3cc17e83ecb6e72dd1bb70c67c371cd33e454799cfc5746c82f5adc3a3681"></a><!-- doxytag: member="F_CC_TOLERANCE" ref="ggd5a3cc17e83ecb6e72dd1bb70c67c371cd33e454799cfc5746c82f5adc3a3681" args="" -->F_CC_TOLERANCE</em>&nbsp;</td><td>
+許容範囲基準 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

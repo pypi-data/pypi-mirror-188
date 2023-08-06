@@ -1,0 +1,632 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: エンハンス処理</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>エンハンス処理<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189">fnFIE_lut_convert</a> (const FHANDLE hSrc, FHANDLE hDst, const INT *iaConvertTable, const UINT uiTableSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ルックアップテーブルによる濃度変換フィルタ  <a href="#g7b6cf8f78f6d04dfc6867b9daebc3189"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__enhance.html#g5a0bc44a87e0bd18e3b9c54d44b614ad">fnFIE_lut_convert_ch</a> (const FHANDLE hSrc, FHANDLE hDst, const INT **ppiConvertTable, const UINT uiTableSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ルックアップテーブルによる濃度変換フィルタ（チャネル別）  <a href="#g5a0bc44a87e0bd18e3b9c54d44b614ad"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__enhance.html#g54fa9d6791d3ff938eae6bca25745ef2">fnFIE_lut_set_gamma</a> (const UINT uiInImageType, const UINT uiOutImageType, const DOUBLE dGamma, INT **ppiConvertTable, UINT *puiTableSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ガンマ変換用ルックアップテーブルの作成  <a href="#g54fa9d6791d3ff938eae6bca25745ef2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__enhance.html#g17e8c5e102dfed18a143a4f6d1738405">fnFIE_gamma_convert</a> (const FHANDLE hSrc, FHANDLE hDst, const DOUBLE dGamma)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ガンマ変換フィルタ  <a href="#g17e8c5e102dfed18a143a4f6d1738405"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__enhance.html#gfab22502770f5fa09ead7b455425f069">fnFIE_histogram_equalization</a> (const FHANDLE hsrc, UINT src_bpp, FHANDLE hdst, UINT dst_bpp)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ヒストグラムの平坦化  <a href="#gfab22502770f5fa09ead7b455425f069"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__enhance.html#gba13cb302bc3fc309b5fbf7706e599d1">fnFIE_histogram_normalization</a> (const FHANDLE hsrc, UINT src_bpp, FHANDLE hdst, UINT dst_bpp, INT min_thr, INT min_den, INT max_den)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ヒストグラムの正規化  <a href="#gba13cb302bc3fc309b5fbf7706e599d1"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g7b6cf8f78f6d04dfc6867b9daebc3189"></a><!-- doxytag: member="fie_enhance.c::fnFIE_lut_convert" ref="g7b6cf8f78f6d04dfc6867b9daebc3189" args="(const FHANDLE hSrc, FHANDLE hDst, const INT *iaConvertTable, const UINT uiTableSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_lut_convert           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT *&nbsp;</td>
+          <td class="paramname"> <em>iaConvertTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const UINT&nbsp;</td>
+          <td class="paramname"> <em>uiTableSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ルックアップテーブルによる濃度変換フィルタ 
+<p>
+与えられたルックアップテーブルに基づいて濃度変換を施します。 被処理画像と処理後画像は同一サイズ、かつ同一チャネル数でなければなりません。 ただし画素タイプは、被処理画像と処理後画像で異なっていても構いません。 すべての画素タイプ間で変換が可能です。<p>
+この関数は、入力画素の濃度値を <img class="formulaInl" alt="$D_{in}$" src="form_564.png"> 、出力画素の濃度値を <img class="formulaInl" alt="$D_{out}$" src="form_565.png"> とすると、 <img class="formulaInl" alt="$D_{out} = table[ D_{in} ]$" src="form_566.png"> という処理を行います。 複数のチャネルがあった場合、全てのチャネルにおいて、同じテーブルを用いて濃度変換を行います。 入力画像がF_IMG_S16形式のときは <img class="formulaInl" alt="$D_{in}=-32768$" src="form_567.png"> が <img class="formulaInl" alt="$table[0]$" src="form_568.png"> の値を参照するように内部でオフセットを追加しています。 このときの変換式は <img class="formulaInl" alt="$D_{out} = table[ D_{in} + 32768 ]$" src="form_569.png"> となっています。<p>
+この関数は、与えられたテーブルに従って濃度変換をするだけで、サチュレーションやスケーリングは行っていません。 なお濃度テーブルのサイズ（ <em>uiTableSize</em> ）は、入力画像 <em>hSrc</em> の画素タイプにより決定されます。 下記の条件を満たさない場合は、F_ERR_INVALID_PARAM が返されます。 <ul>
+<li>F_IMG_UC8 : 256(UC_MAX+1) </li>
+<li>F_IMG_US16 : 65536(US16_MAX+1) </li>
+<li>F_IMG_S16 : 65536(S16_MAX-S16_MIN+1)</li>
+</ul>
+チャネル毎に異なるルックアップテーブルで処理したい場合は、 <a class="el" href="group__fie__enhance.html#g5a0bc44a87e0bd18e3b9c54d44b614ad" title="ルックアップテーブルによる濃度変換フィルタ（チャネル別）...">fnFIE_lut_convert_ch()</a> を使用してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>被処理画像ハンドル(type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理後画像ハンドル(type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iaConvertTable</em>&nbsp;</td><td>濃度テーブル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiTableSize</em>&nbsp;</td><td>濃度テーブルサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された<br>
+ もしくは、入出力の画像サイズが違う、など </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__enhance.html#g5a0bc44a87e0bd18e3b9c54d44b614ad" title="ルックアップテーブルによる濃度変換フィルタ（チャネル別）...">fnFIE_lut_convert_ch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5a0bc44a87e0bd18e3b9c54d44b614ad"></a><!-- doxytag: member="fie_enhance.c::fnFIE_lut_convert_ch" ref="g5a0bc44a87e0bd18e3b9c54d44b614ad" args="(const FHANDLE hSrc, FHANDLE hDst, const INT **ppiConvertTable, const UINT uiTableSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_lut_convert_ch           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT **&nbsp;</td>
+          <td class="paramname"> <em>ppiConvertTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const UINT&nbsp;</td>
+          <td class="paramname"> <em>uiTableSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ルックアップテーブルによる濃度変換フィルタ（チャネル別） 
+<p>
+与えられたルックアップテーブルに基づいて濃度変換を施します。 <a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> と本関数の違いは複数チャネルの画像を処理する際に、 <a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> では単一のルックアップテーブルしか指定できないのに対し、 本関数ではチャネル毎に指定することが可能な点です。 また、画素タイプが F_IMG_RGBQUAD の画像も処理することが可能です。 処理対象画像が F_IMG_RGBQUAD の場合と、その他の場合で処理可能な条件が 異なるため、それぞれに分けて説明します。<p>
+<dl class="user" compact><dt><b>F_IMG_RGBQUAD 以外の画素タイプの場合</b></dt><dd>本関数はチャネル毎にルックアップテーブルを指定することができます。 そのため、ルックアップテーブルは M×N の２次元テーブルとなります。 N はパラメータ <em>uiTableSize</em> にて指定します。 M は <img class="formulaInl" alt="$M={M_{0},M_{1},M_{2},...}$" src="form_570.png"> とおくと、チャネル番号と M の番号が対応します。 そのため、M は画像オブジェクトのチャネル数分のサイズが必要です。<br>
+ <br>
+ なお、被処理画像と処理後画像は同一サイズ、かつ同一チャネル数でなければなりません。 ただし画素タイプは、被処理画像と処理後画像で異なっていても構いません。 対応するすべての画素タイプ間で変換が可能です。</dd></dl>
+<dl class="user" compact><dt><b>F_IMG_RGBQUAD の場合</b></dt><dd>被処理画像と処理後画像のいずれか、もしくは両方の画素タイプが F_IMG_RGBQUAD である場合 下記の条件が守られていなければなりません。 <ul>
+<li>被処理画像 <em>hSrc</em>, 処理後画像 <em>hDst</em> が共に F_IMG_RGBQUAD である場合 <br>
+ チャネル数は共に１でなければなりません。 </li>
+<li>被処理画像 <em>hSrc</em> が F_IMG_RGBQUAD 、処理後画像 <em>hDst</em> がその他画素タイプである場合 <br>
+ チャネル数は被処理画像が１、処理後画像は３でなければなりません。 </li>
+<li>処理後画像 <em>hDst</em> が F_IMG_RGBQUAD である場合 <br>
+ 被処理画像 <em>hSrc</em> に F_IMG_RGBQUAD 以外を指定することはできません。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>ルックアップテーブルは、R,G,Bの成分毎に指定することができます。 そのため、ルックアップテーブルは MxN の２次元テーブルとなります。 N はパラメータ <em>uiTableSize</em> にて指定します。 M はR,G,Bの各色成分に対応し、M=3となります。</dd></dl>
+<dl class="user" compact><dt><b>共通条件</b></dt><dd>本関数は、入力画素の濃度値を <img class="formulaInl" alt="$D_{in}$" src="form_564.png"> 、出力画素の濃度値を <img class="formulaInl" alt="$D_{out}$" src="form_565.png"> とすると、 <img class="formulaInl" alt="$D_{out} = table[ D_{in} ]$" src="form_566.png"> という処理を行います。 入力画像がF_IMG_S16形式では、 <img class="formulaInl" alt="$D_{in}=-32768$" src="form_567.png"> が <img class="formulaInl" alt="$table[0]$" src="form_568.png"> の値を参照するように内部でオフセットを追加しています。 このときの変換式は <img class="formulaInl" alt="$D_{out} = table[ D_{in} + 32768 ]$" src="form_569.png"> となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>この関数は、与えられたテーブルに従って濃度変換をするだけで、サチュレーションやスケーリングは行っていません。 なお、濃度テーブルのサイズ（ <em>uiTableSize</em> ）は、入力画像 <em>hSrc</em> の画素タイプにより決定されます。 下記の条件を満たさない場合は、　F_ERR_INVALID_PARAM が返されます。 <ul>
+<li>F_IMG_UC8 : 256(UC8_MAX+1) </li>
+<li>F_IMG_US16 : 65536(US16_MAX+1) </li>
+<li>F_IMG_S16 : 65536(S16_MAX-S16_MIN+1) </li>
+<li>F_IMG_RGBQUAD : 256(UC8_MAX+1)</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>また被処理画像と処理後画像は同一サイズでなければなりません。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>被処理画像ハンドル(type: uc8, us16, s16, rgbq) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理後画像ハンドル(type: uc8, us16, s16, rgbq) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ppiConvertTable</em>&nbsp;</td><td>濃度テーブル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiTableSize</em>&nbsp;</td><td>濃度テーブルサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された<br>
+ もしくは、入出力の画像サイズが違う、など </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMOY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a></dd></dl>
+<dl class="user" compact><dt><b>example</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE hsrc, hdst;
+    INT width = 100, height = 100, channel = 3;
+    INT **table, *tred, *tgreen, *tblue;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 画像を確保します</span>
+    hsrc = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, channel, width, height );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, channel, width, height );
+
+    <span class="comment">// ここでhsrcに処理したい画像を読み込みます。</span>
+
+    <span class="comment">// ルックアップテーブルを確保します。</span>
+    tred = ( INT * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( UC8_MAX + 1, <span class="keyword">sizeof</span>( INT ) );
+    tgreen = ( INT * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( UC8_MAX + 1, <span class="keyword">sizeof</span>( INT ) );
+    tblue = ( INT * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( UC8_MAX + 1, <span class="keyword">sizeof</span>( INT ) );
+    table = ( INT ** )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( channel, <span class="keyword">sizeof</span>( INT * ) );
+    table[0] = tred;
+    table[1] = tgreen;
+    table[2] = tblue;
+
+    <span class="comment">// ここでtr, tg, tbにテーブルの値を書き込みます。</span>
+
+    <span class="comment">// 濃度変換を実施します。</span>
+    <a class="code" href="group__fie__enhance.html#g5a0bc44a87e0bd18e3b9c54d44b614ad" title="ルックアップテーブルによる濃度変換フィルタ（チャネル別）...">fnFIE_lut_convert_ch</a>( hsrc, hdst, table, UC8_MAX + 1 );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( tred );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( tgreen );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( tblue );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( table );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g54fa9d6791d3ff938eae6bca25745ef2"></a><!-- doxytag: member="fie_enhance.c::fnFIE_lut_set_gamma" ref="g54fa9d6791d3ff938eae6bca25745ef2" args="(const UINT uiInImageType, const UINT uiOutImageType, const DOUBLE dGamma, INT **ppiConvertTable, UINT *puiTableSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_lut_set_gamma           </td>
+          <td>(</td>
+          <td class="paramtype">const UINT&nbsp;</td>
+          <td class="paramname"> <em>uiInImageType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const UINT&nbsp;</td>
+          <td class="paramname"> <em>uiOutImageType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dGamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>ppiConvertTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>puiTableSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ガンマ変換用ルックアップテーブルの作成 
+<p>
+ユーザが任意に設定したガンマ値で、ルックアップテーブルを生成します。<p>
+関数エントリー時、ルックアップテーブルのポインタ <em>*ppiConvertTable</em> は NULL でなければなりません。本関数は必要なテーブルに必要なメモリを 内部で確保し、そのポインタを <em>*ppiConvertTable</em> に代入して返します。 ユーザーはテーブルが不要になった時点で <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて解放する必要があります。<p>
+確保されるテーブルのサイズは <em>uiInImageType</em> にて指定される 入力画像タイプに依存し、下記の通りになります。 <ul>
+<li>F_IMG_UC8の場合256 </li>
+<li>F_IMG_US16またはF_IMG_S16の場合65536</li>
+</ul>
+生成されたルックアップテーブルの使い方は <a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> を参照してください。<p>
+<dl class="user" compact><dt><b>変換式</b></dt><dd>ルックアップテーブルの各値は下記変換式により計算されます。<br>
+ 入力タイプがF_IMG_UC8またはF_IMG_US16の場合：<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ table[ index ] = ( \frac{ index }{ InTypeMax } )^{ \frac{1}{\gamma{} } } * OutTypeMax \]" src="form_571.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>入力画像タイプがF_IMG_S16の場合：<br>
+ ・indexが0以上32787以下の場合は <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ table[ index ] = 0 \]" src="form_572.png">
+<p>
+ ・indexが32768以上65535以下の場合は <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ table[ index ] = ( \frac{ index - 32768 }{ InTypeMax } )^{ \frac{ 1 }{ \gamma{} } } * OutTypeMax \]" src="form_573.png">
+<p>
+ 上式の通り、ガンマ変換をした後に、出力画像型の最大値でスケーリングし、四捨五入しています。<br>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiInImageType</em>&nbsp;</td><td>入力画像タイプ(入力値：F_IMG_UC8, F_IMG_US16, F_IMG_S16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiOutImageType</em>&nbsp;</td><td>出力画像タイプ(入力値：F_IMG_UC8, F_IMG_US16, F_IMG_S16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dGamma</em>&nbsp;</td><td>ガンマ値(0 &lt; dGamma) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppiConvertTable</em>&nbsp;</td><td>濃度値テーブル先頭アドレスへのポインタ <br>
+ 関数エントリー時 *ppiConvertTable はNULLでなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>puiTableSize</em>&nbsp;</td><td>濃度値テーブルサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g17e8c5e102dfed18a143a4f6d1738405"></a><!-- doxytag: member="fie_enhance.c::fnFIE_gamma_convert" ref="g17e8c5e102dfed18a143a4f6d1738405" args="(const FHANDLE hSrc, FHANDLE hDst, const DOUBLE dGamma)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gamma_convert           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dGamma</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ガンマ変換フィルタ 
+<p>
+与えられたガンマ値を基に被処理画像を濃度値変換し、処理画像へ書き込みます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f(x) = x^{ \frac{ 1 }{ \gamma{} } } \]" src="form_574.png">
+<p>
+ 上式をガンマ関数と呼び、これで濃度値を変換することをガンマ変換といいます。 入力の濃度値を <img class="formulaInl" alt="$ (0, 1) $" src="form_575.png"> に正規化して、ガンマ関数で変換し、 出力側に合わせてスケーリングし、四捨五入します。<p>
+以下に、変換例を挙げます。 <div align="center">
+<img src="fie_gamma_convert.png" alt="fie_gamma_convert.png">
+</div>
+ グラフに記入してあるように、それぞれ左上がF_IMG_UC8からF_IMG_UC8、右上がF_IMG_UC8からF_IMG_S16、 左下がF_IMG_S16からF_IMG_S16、右下がF_IMG_S16からF_IMG_US16への変換です。<p>
+また、入力の濃度値がマイナスの場合は出力は0に固定されます。 被処理画像 <em>hSrc</em> と処理後画像 <em>hDst</em> は同一サイズ、かつ同一チャネル数でなければなりません。 ガンマ値 <em>dGamma</em> は0よりも大きい値を設定する必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>被処理画像（type: uc8, us16, s16） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理後画像（type: uc8, us16, s16） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dGamma</em>&nbsp;</td><td>ガンマ値（dGamma &gt; 0）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された<br>
+ もしくは、入出力の画像サイズが違う、など </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__enhance.html#g54fa9d6791d3ff938eae6bca25745ef2" title="ガンマ変換用ルックアップテーブルの作成">fnFIE_lut_set_gamma()</a>, <a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfab22502770f5fa09ead7b455425f069"></a><!-- doxytag: member="fie_enhance2.c::fnFIE_histogram_equalization" ref="gfab22502770f5fa09ead7b455425f069" args="(const FHANDLE hsrc, UINT src_bpp, FHANDLE hdst, UINT dst_bpp)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_histogram_equalization           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>src_bpp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>dst_bpp</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ヒストグラムの平坦化 
+<p>
+本関数は内部で処理対象画像のヒストグラムを作成し、 このヒストグラムが平坦化されるように濃度値を変換します。 なお、濃度値の変換には <a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> が利用されています。 処理はチャネル毎に実行されます。<p>
+入力画像と出力画像は同じサイズ、チャネル数である必要があります。 画像型は、色深度が条件を満たしていれば、どの組合せでも許可されます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>総画素数が I32_MAX(2147483647)を超える場合は、 内部計算にてオーバーフローが発生する場合があり、 正しい結果が得られない可能性があります。</li><li>入力画像の実際の濃度値が指定した色深度の範囲を超えている場合、 色深度の最大値でサチュレーション処理が行われます。</li></ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type : uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_bpp</em>&nbsp;</td><td>入力画像の色深度（BPP） <ul>
+<li>2&lt;= <em>src_bpp</em> &lt;= 8（type : uc8） </li>
+<li>2&lt;= <em>src_bpp</em> &lt;= 16（type : us16） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type : uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_bpp</em>&nbsp;</td><td>出力画像の色深度（BPP） <ul>
+<li>2&lt;= <em>dst_bpp</em> &lt;= 8（type : uc8） </li>
+<li>2&lt;= <em>dst_bpp</em> &lt;= 16（type : us16）</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例：</b></dt><dd><div align="center">
+<img src="fie_hist_equalization.png" alt="fie_hist_equalization.png">
+</div>
+ </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gba13cb302bc3fc309b5fbf7706e599d1"></a><!-- doxytag: member="fie_enhance2.c::fnFIE_histogram_normalization" ref="gba13cb302bc3fc309b5fbf7706e599d1" args="(const FHANDLE hsrc, UINT src_bpp, FHANDLE hdst, UINT dst_bpp, INT min_thr, INT min_den, INT max_den)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_histogram_normalization           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>src_bpp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>dst_bpp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>min_thr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>min_den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_den</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ヒストグラムの正規化 
+<p>
+本関数は内部で処理対象画像のヒストグラムを作成し、 このヒストグラムが正規化されるように濃度値を変換します。 なお、濃度値の変換には <a class="el" href="group__fie__enhance.html#g7b6cf8f78f6d04dfc6867b9daebc3189" title="ルックアップテーブルによる濃度変換フィルタ">fnFIE_lut_convert()</a> が利用されています。 処理はチャネル毎に実行されます。<p>
+ヒストグラムを作成したら、下記の処理を行い、最大濃度値と最小濃度値を決定します。<p>
+<ul>
+<li>ヒストグラムの最小濃度値側から最大濃度値側へ、順に頻度値を調べていき、 始めに最小ヒストグラム頻度値( <em>min_thr</em> )を超えた濃度を最小濃度値とする。 </li>
+<li>ヒストグラムの最大濃度値側から最小濃度値側へ、順に頻度値を調べていき、 始めに最小ヒストグラム頻度値を超えた濃度を最大濃度値とする。</li>
+</ul>
+そして、この最小～最大濃度値が変換後の画像のヒストグラムで正規化されるように変換を行います。 ただし、濃度値の変換は、ルックアップテーブルによって行いますので、 処理前の画像で濃度値が同じだった画素は、変換後でも必ず同じ濃度値になります。 言い換えると、変換後の画像のヒストグラムは、歯抜けの状態になります。<p>
+下図のヒストグラム例では、 <em>min_thr</em> に 200、 <em>min_den</em> に 0、 <em>max_den</em> に 255 を指定して処理を行うと、入力濃度値 87～199 が出力濃度値にて最小～最大となるよう正規化されます。<p>
+ただし、 <em>min_thr</em> 、 <em>min_den</em> 、 <em>max_den</em> は、以下の条件を満たす必要があります。 <ul>
+<li><em>min_thr</em> &gt;= 0 </li>
+<li>画素タイプの最小値 &lt;= <em>min_den</em>, <em>max_den</em> &lt;= 画素タイプの最大値 </li>
+<li><em>min_den</em> &lt;= <em>max_den</em> </li>
+</ul>
+<em>min_den</em> 、 <em>max_den</em> を指定すると、その濃度値から頻度値のスキャンを行います。 下図のヒストグラム例では、 <em>min_thr</em> に200、 <em>min_den</em> に150、 <em>max_den</em> に250 を指定すれば、入力濃度値 150～199 が正規化されます。<p>
+<div align="center">
+<img src="fie_normalize.png" alt="fie_normalize.png">
+</div>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>入力画像と出力画像は同じサイズ、チャネル数である必要があります。 画像型は、色深度が条件を満たしていれば、どの組合せでも許可されます。</li><li>総画素数が I32_MAX(2147483647)を超える場合は、 内部計算にてオーバーフローが発生する場合があり、 正しい結果が得られない可能性があります。</li><li>入力画像の実際の濃度値が指定した色深度の範囲を超えている場合、 色深度の最大値でサチュレーション処理が行われます。</li></ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type : uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_bpp</em>&nbsp;</td><td>入力画像の色深度（BPP） <ul>
+<li>2&lt;= <em>src_bpp</em> &lt;= 8（type : uc8） </li>
+<li>2&lt;= <em>src_bpp</em> &lt;= 16（type : us16） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type : uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_bpp</em>&nbsp;</td><td>出力画像の色深度（BPP） <ul>
+<li>2&lt;= <em>dst_bpp</em> &lt;= 8（type : uc8） </li>
+<li>2&lt;= <em>dst_bpp</em> &lt;= 16（type : us16） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>min_thr</em>&nbsp;</td><td>入力画像の最小ヒストグラム頻度値( 0以上 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>min_den</em>&nbsp;</td><td>入力画像の最小濃度値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_den</em>&nbsp;</td><td>入力画像の最大濃度値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例：</b></dt><dd><div align="center">
+<img src="fie_hist_normalization.png" alt="fie_hist_normalization.png">
+</div>
+ </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

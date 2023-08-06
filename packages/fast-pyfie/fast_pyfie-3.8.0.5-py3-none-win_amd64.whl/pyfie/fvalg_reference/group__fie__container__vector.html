@@ -1,0 +1,656 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 可変長配列</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>可変長配列<br>
+<small>
+[<a class="el" href="group__fie__low__level__func.html">低レベル処理関数</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+C++ の vector template class を模した、動的可変長配列です。 但し、配列の動的確保に関する部分のみの実装で、iteratorに相当する仕組みは有りません。<p>
+<a class="anchor" name="smp_fie_vector"></a> Example: <div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE hvarray;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *p;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> data;
+    INT num, i;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    hvarray = <a class="code" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc</a>( 0, <span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>), 100 );
+    <span class="keywordflow">if</span>( hvarray )
+    {
+        <span class="comment">/* 配列の先頭アドレスを取得 */</span>
+        p = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__fie__container__vector.html#g797a3ffd1433943b395d7f8494fceb68" title="先頭ポインタの取得">fnFIE_vectarray_getptr</a>( hvarray );
+
+        <span class="comment">/* 配列に適当な値を書き込む */</span>
+        <span class="keywordflow">for</span>( i=0; i&lt;100; i++ ){
+            p[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i;
+            p[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = i;
+        }
+
+        <span class="comment">/* サイズを増やす */</span>
+        <a class="code" href="group__fie__container__vector.html#g7711f91850b70435b7c8abf287bbae23" title="要素数の変更">fnFIE_vectarray_resize</a>( hvarray, 200 );
+
+        <span class="comment">/* resize等を行ったときはアドレスが変わるので、ポインタをキャッシュしてはいけない */</span>
+        p = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__fie__container__vector.html#g797a3ffd1433943b395d7f8494fceb68" title="先頭ポインタの取得">fnFIE_vectarray_getptr</a>( hvarray );
+        <span class="comment">/* 増やした領域は初期化されないので、必要に応じて初期化する */</span>
+        <span class="keywordflow">for</span>( i=100; i&lt;200; i++ ){
+            p[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+            p[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+        }
+
+        
+        <span class="comment">/* 最後にデータを追加する */</span>
+        data.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 10;
+        data.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 20;
+        <a class="code" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6" title="配列の最後に追加">fnFIE_vectarray_push_back</a>( hvarray, &amp;data );
+
+        <span class="comment">/* 先頭にデータを追加する */</span>
+        <a class="code" href="group__fie__container__vector.html#gbe8d6936f54f28a6dc5fa97880fd1c04" title="要素の追加">fnFIE_vectarray_insert</a>( hvarray, 0, &amp;data );
+        
+        <span class="comment">/* 要素数を取得 */</span>
+        num = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray ); <span class="comment">/* num == 202 */</span>
+
+
+        <span class="comment">/* 最後のデータを取得する */</span>
+        <a class="code" href="group__fie__container__vector.html#g183ceac21313c4f1baaaa6dab8b69f6e" title="配列の最後の要素の取り出し">fnFIE_vectarray_pop_back</a>( hvarray, &amp;data );
+        <span class="comment">/* data.x == 10, data.y == 20 */</span>
+
+        <span class="comment">/* 要素数を取得 */</span>
+        num = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray ); <span class="comment">/* num == 201 */</span>
+
+
+        <span class="comment">/* 先頭のデータを削除 */</span>
+        <a class="code" href="group__fie__container__vector.html#g30c8d418ce52c7c4f165cf38f7d86d2a" title="要素の削除">fnFIE_vectarray_erace</a>( hvarray, 0 );
+
+        <span class="comment">/* 要素数を取得 */</span>
+        num = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray ); <span class="comment">/* num == 200 */</span>
+
+
+        <span class="comment">/* 要素を全て消す */</span>
+        <a class="code" href="group__fie__container__vector.html#ge5c696c75c4733033aabb9484d8d0fc7" title="全ての要素を削除する。">fnFIE_vectarray_clear</a>( hvarray );
+
+        <span class="comment">/* 要素数を取得 */</span>
+        num = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray ); <span class="comment">/* num == 0 */</span>
+        
+        <a class="code" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free</a>( hvarray );
+    }
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+}
+
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55">fnFIE_vectarray_alloc</a> (enum <a class="el" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a">f_objtag</a> tag, size_t elemsz, size_t num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">配列オブジェクトの確保  <a href="#gc9afc0608d85fb97af5302cb18b89b55"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901">fnFIE_vectarray_free</a> (FHANDLE hvarray)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">配列オブジェクトの解放  <a href="#g9610944a7940c07708235c81bc638901"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g797a3ffd1433943b395d7f8494fceb68">fnFIE_vectarray_getptr</a> (FHANDLE hvarray)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">先頭ポインタの取得  <a href="#g797a3ffd1433943b395d7f8494fceb68"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9">fnFIE_vectarray_getat</a> (FHANDLE hvarray, size_t idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定位置要素のポインタ取得  <a href="#g1889658ca9acaf5a84cc6bef2aceb5e9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">size_t FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54">fnFIE_vectarray_getnum</a> (FHANDLE hvarray)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">配列の要素数を取得  <a href="#g0c90b34e148320595687ca187cfedf54"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">size_t FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#gebda64f0d23206b3228f11ca226fd823">fnFIE_vectarray_getmaxnum</a> (FHANDLE hvarray)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">保持しているメモリ量を取得  <a href="#gebda64f0d23206b3228f11ca226fd823"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g7711f91850b70435b7c8abf287bbae23">fnFIE_vectarray_resize</a> (FHANDLE hvarray, size_t num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素数の変更  <a href="#g7711f91850b70435b7c8abf287bbae23"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#ge5c696c75c4733033aabb9484d8d0fc7">fnFIE_vectarray_clear</a> (FHANDLE hvarray)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">全ての要素を削除する。  <a href="#ge5c696c75c4733033aabb9484d8d0fc7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6">fnFIE_vectarray_push_back</a> (FHANDLE hvarray, const VOID *data)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">配列の最後に追加  <a href="#g8cb5d120500cca3202c997fbf15ccfe6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g183ceac21313c4f1baaaa6dab8b69f6e">fnFIE_vectarray_pop_back</a> (FHANDLE hvarray, VOID *data)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">配列の最後の要素の取り出し  <a href="#g183ceac21313c4f1baaaa6dab8b69f6e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#gbe8d6936f54f28a6dc5fa97880fd1c04">fnFIE_vectarray_insert</a> (FHANDLE hvarray, size_t idx, const VOID *data)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素の追加  <a href="#gbe8d6936f54f28a6dc5fa97880fd1c04"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__vector.html#g30c8d418ce52c7c4f165cf38f7d86d2a">fnFIE_vectarray_erace</a> (FHANDLE hvarray, size_t idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素の削除  <a href="#g30c8d418ce52c7c4f165cf38f7d86d2a"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gc9afc0608d85fb97af5302cb18b89b55"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_alloc" ref="gc9afc0608d85fb97af5302cb18b89b55" args="(enum f_objtag tag, size_t elemsz, size_t num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_vectarray_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a">f_objtag</a>&nbsp;</td>
+          <td class="paramname"> <em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>elemsz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+配列オブジェクトの確保 
+<p>
+vectarray配列オブジェクトを確保します。 本関数は、使用する型に合わせて、ラップして使うことを想定した関数です。 ラップしなくても使用することが出来ますが、その際返されるハンドルは <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> ではなく <a class="el" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free()</a> を使って解放しなければいけないこと、 他のFHANDLEを引数に取る関数へは渡せないことに注意して下さい。<p>
+パラメータ <em>tag</em> には任意の値を指定することが出来ます。 FHANDLEのオブジェクト識別の仕組みで使う場合に指定して下さい。 特に必要ない場合は0を指定しておく事をおすすめします。<p>
+確保された領域は、特に初期化されないので、必要に応じて初期化を行って下さい。 本関数で作成したオブジェクトが不要になった場合は <a class="el" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free()</a> 関数にて解放して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>tag</em>&nbsp;</td><td>オブジェクト型認識のための種別IDを指定します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>elemsz</em>&nbsp;</td><td>１要素当たりのバイト数を指定します。（１以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>要素の数を指定します。０以下の値が指定された場合は、要素数０の配列を作成します。</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、配列オブジェクトのハンドルを返します。 メモリ不足などにより異常終了した場合は、NULL を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9610944a7940c07708235c81bc638901"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_free" ref="g9610944a7940c07708235c81bc638901" args="(FHANDLE hvarray)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_vectarray_free           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+配列オブジェクトの解放 
+<p>
+<a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> 関数で確保された 配列オブジェクトを解放します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>解放する配列オブジェクト </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g797a3ffd1433943b395d7f8494fceb68"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_getptr" ref="g797a3ffd1433943b395d7f8494fceb68" args="(FHANDLE hvarray)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_vectarray_getptr           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+先頭ポインタの取得 
+<p>
+配列の先頭ポインタを取得します。 なお、サイズ変更や追加の際に、メモリの実体が変わる可能性があるため、 本関数で取得したポインタをキャッシュしてはいけません。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 使用する際は十分注意してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1889658ca9acaf5a84cc6bef2aceb5e9"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_getat" ref="g1889658ca9acaf5a84cc6bef2aceb5e9" args="(FHANDLE hvarray, size_t idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_vectarray_getat           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定位置要素のポインタ取得 
+<p>
+<em>idx</em> 番目の要素のポインタを取得します。 なお、サイズ変更や追加の際に、メモリの実体が変わる可能性があるため、 本関数で取得したポインタをキャッシュしてはいけません。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 また idx に渡された値が配列の範囲を超えている場合も不正な動作となります。 使用する際は十分注意してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>要素番号 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0c90b34e148320595687ca187cfedf54"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_getnum" ref="g0c90b34e148320595687ca187cfedf54" args="(FHANDLE hvarray)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t FVALGAPI fnFIE_vectarray_getnum           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+配列の要素数を取得 
+<p>
+配列の要素数(size)を取得します。 この数は実際に確保されているメモリの量とは等しくない場合がある点に注意して下さい。 メモリ量が取得したい場合は <a class="el" href="group__fie__container__vector.html#gebda64f0d23206b3228f11ca226fd823" title="保持しているメモリ量を取得">fnFIE_vectarray_getmaxnum()</a> を使用して下さい。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>要素数 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gebda64f0d23206b3228f11ca226fd823"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_getmaxnum" ref="gebda64f0d23206b3228f11ca226fd823" args="(FHANDLE hvarray)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t FVALGAPI fnFIE_vectarray_getmaxnum           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+保持しているメモリ量を取得 
+<p>
+配列オブジェクトが保持しているメモリ量を返します。 要素数(size)を取得したい場合は <a class="el" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum()</a> を使用して下さい。<p>
+オブジェクト内で確保されている配列のメモリ量を返します。 返される値の単位は、要素の数で、byte数では無い点に注意して下さい。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保されているメモリ量（要素の数） </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7711f91850b70435b7c8abf287bbae23"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_resize" ref="g7711f91850b70435b7c8abf287bbae23" args="(FHANDLE hvarray, size_t num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vectarray_resize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素数の変更 
+<p>
+要素の個数を変更します。 確保済みのメモリ領域が指定の <em>num</em> より小さい場合には、メモリ領域を拡張します。 この時、元の配列の内容は元の要素数の分だけ保存されます。 また、増えた領域は初期化されません。<p>
+既に確保済みのメモリ領域が <em>num</em> より大きい場合には、要素数のみ変更し、 メモリ領域は変更しません。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>変更後の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge5c696c75c4733033aabb9484d8d0fc7"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_clear" ref="ge5c696c75c4733033aabb9484d8d0fc7" args="(FHANDLE hvarray)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_vectarray_clear           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+全ての要素を削除する。 
+<p>
+配列の全ての要素を削除します。 但し、本関数では要素数を０にするのみです。 実際に確保されているメモリ領域は変更しません。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8cb5d120500cca3202c997fbf15ccfe6"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_push_back" ref="g8cb5d120500cca3202c997fbf15ccfe6" args="(FHANDLE hvarray, const VOID *data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vectarray_push_back           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VOID *&nbsp;</td>
+          <td class="paramname"> <em>data</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+配列の最後に追加 
+<p>
+配列の最後に指定の値を追加します。 追加は、data の値コピーで行われます。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 また data へ渡されたポインタが不正な場合も、不正な動作をします。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>data</em>&nbsp;</td><td>追加する値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g183ceac21313c4f1baaaa6dab8b69f6e"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_pop_back" ref="g183ceac21313c4f1baaaa6dab8b69f6e" args="(FHANDLE hvarray, VOID *data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vectarray_pop_back           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>data</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+配列の最後の要素の取り出し 
+<p>
+配列の最後の値を val に代入し、配列から削除します。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 また <em>data</em> へ渡されたポインタが不正な場合も、不正な動作をします。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>data</em>&nbsp;</td><td>追加する値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNKNOWN</em>&nbsp;</td><td>配列の要素が０個のためエラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbe8d6936f54f28a6dc5fa97880fd1c04"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_insert" ref="gbe8d6936f54f28a6dc5fa97880fd1c04" args="(FHANDLE hvarray, size_t idx, const VOID *data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vectarray_insert           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VOID *&nbsp;</td>
+          <td class="paramname"> <em>data</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素の追加 
+<p>
+配列の <em>idx</em> 番目の位置に要素を追加します。 <em>idx</em> に指定できる値の範囲は、配列の要素数を num とすると、0～num です。 この範囲外の値を <em>idx</em> に指定した場合はエラーになります。 追加は <em>data</em> の値コピーで行われます。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 また <em>data</em> へ渡されたポインタが不正な場合や <em>idx</em> が配列の範囲を超えている場合も、不正な動作をします。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>追加位置の番号 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>data</em>&nbsp;</td><td>追加する値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー(不正なidxが指定された) </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g30c8d418ce52c7c4f165cf38f7d86d2a"></a><!-- doxytag: member="fie_vector.c::fnFIE_vectarray_erace" ref="g30c8d418ce52c7c4f165cf38f7d86d2a" args="(FHANDLE hvarray, size_t idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vectarray_erace           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素の削除 
+<p>
+配列の <em>idx</em> 番目の要素を削除して、詰めます。 <em>idx</em> に指定できる値の範囲は、配列の要素数を num とすると、0～(num-1) です。 この範囲外の値を <em>idx</em> に指定した場合はエラーになります。<p>
+<dl class="warning" compact><dt><b>警告:</b></dt><dd>本関数では、速度重視のために渡される引数のチェックを省いています。 そのため <em>hvarray</em> に <a class="el" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc()</a> で作成した以外の 不正なハンドルが渡された場合には、不正な動作となります。 また <em>idx</em> が配列の範囲を超えている場合も、不正な動作をします。 使用する際は十分注意して下さい。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvarray</em>&nbsp;</td><td>配列オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>削除する要素の番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー(不正なidxが指定された) </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

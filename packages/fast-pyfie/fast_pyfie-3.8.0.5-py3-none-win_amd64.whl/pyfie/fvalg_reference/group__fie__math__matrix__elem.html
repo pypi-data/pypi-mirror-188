@@ -1,0 +1,1631 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 要素計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>要素計算<br>
+<small>
+[<a class="el" href="group__fie__math__matrix.html">行列演算</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gcccaa63c3770238b3542fb483e4ea16a">fnFIE_mat_max</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, DOUBLE *val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分の最大値抽出  <a href="#gcccaa63c3770238b3542fb483e4ea16a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gcfc4527b074a0bda3f4e518fcd708885">fnFIE_mat_min</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, DOUBLE *val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分の最小値抽出  <a href="#gcfc4527b074a0bda3f4e518fcd708885"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g01c1581d6fab92393cf5462c4f0d512d">fnFIE_mat_asin</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のasinを計算  <a href="#g01c1581d6fab92393cf5462c4f0d512d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g67c07983cee50a736099eee380249875">fnFIE_mat_acos</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のacosを計算  <a href="#g67c07983cee50a736099eee380249875"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gd4568ec111405af2d94752a0bf437a75">fnFIE_mat_atan</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のatanを計算  <a href="#gd4568ec111405af2d94752a0bf437a75"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#ge3b4823459b4f800158593b4d7382ef8">fnFIE_mat_atan2</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *ay, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *ax, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のatan2を計算  <a href="#ge3b4823459b4f800158593b4d7382ef8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g58f0322259eb5b1613cac8bc1c5c5196">fnFIE_mat_cos</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のcosを計算  <a href="#g58f0322259eb5b1613cac8bc1c5c5196"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g89ee30675d37421ba6b96b4d01b71f8c">fnFIE_mat_sin</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のsinを計算  <a href="#g89ee30675d37421ba6b96b4d01b71f8c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gb1c12d7ec22a0f89203163ee7d7d7437">fnFIE_mat_tan</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のtanを計算  <a href="#gb1c12d7ec22a0f89203163ee7d7d7437"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g3f09316fc019f0a5bb78b94eca381ff7">fnFIE_mat_exp</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のexpを計算  <a href="#g3f09316fc019f0a5bb78b94eca381ff7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#geb09cd5d125d41bf1b2e56596d896952">fnFIE_mat_log</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のlogを計算  <a href="#geb09cd5d125d41bf1b2e56596d896952"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gbf346d3301d1322b01011700a29d1406">fnFIE_mat_sqrt</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のsqrtを計算  <a href="#gbf346d3301d1322b01011700a29d1406"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gc92036e680b781cfc8eee5876c0790d5">fnFIE_mat_abs</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分の絶対値を計算  <a href="#gc92036e680b781cfc8eee5876c0790d5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gdae01647943fd117d39b0d250d4f55a2">fnFIE_mat_ceil</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のceilを計算  <a href="#gdae01647943fd117d39b0d250d4f55a2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g9e3d629d29ccffdf9dc111cff224503f">fnFIE_mat_floor</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のfloorを計算  <a href="#g9e3d629d29ccffdf9dc111cff224503f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g6f9cf32c446a9351c4ae92c3cbd4d57e">fnFIE_mat_modf</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *adi, <a class="el" href="structFMATRIX.html">FMATRIX</a> *adf)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">各成分のmodfを計算  <a href="#g6f9cf32c446a9351c4ae92c3cbd4d57e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g2f9e9b342ab8f5388d7a1e0f066b64ec">fnFIE_mat_mul_elem_aa</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a1, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a2, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分ごとの乗算  <a href="#g2f9e9b342ab8f5388d7a1e0f066b64ec"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g211ec60da1b7c576da79c500962b41bf">fnFIE_mat_mul_elem_as</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, DOUBLE s, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分ごとの乗算  <a href="#g211ec60da1b7c576da79c500962b41bf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g547a1ce72816fccb400a334f7fcb01d5">fnFIE_mat_div_elem_aa</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a1, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a2, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分ごとの除算  <a href="#g547a1ce72816fccb400a334f7fcb01d5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g4097e56c49f6f12aed8354f885d7ffd3">fnFIE_mat_div_elem_as</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, DOUBLE s, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分ごとの除算  <a href="#g4097e56c49f6f12aed8354f885d7ffd3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g833185ff87b343307665ae41f65ba6b0">fnFIE_mat_div_elem_sa</a> (DOUBLE s, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">成分ごとの除算  <a href="#g833185ff87b343307665ae41f65ba6b0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g4cc5d1d82fc52a319331f4e40a34eb9d">fnFIE_vect_mul_elem_vv</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v1, const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v2, <a class="el" href="structFVECTOR.html">FVECTOR</a> *vd)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの成分ごとの乗算  <a href="#g4cc5d1d82fc52a319331f4e40a34eb9d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g18d8d619f8f75c5fa91a33196c565657">fnFIE_vect_mul_elem_vs</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v, DOUBLE s, <a class="el" href="structFVECTOR.html">FVECTOR</a> *vd)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの成分ごとの乗算  <a href="#g18d8d619f8f75c5fa91a33196c565657"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g48b5b3c827e3c0963d4411f473e0eb9a">fnFIE_vect_div_elem_vv</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v1, const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v2, <a class="el" href="structFVECTOR.html">FVECTOR</a> *vd)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの成分ごとの除算  <a href="#g48b5b3c827e3c0963d4411f473e0eb9a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gc31846509a773c759dc9243e8a74ad0d">fnFIE_vect_div_elem_vs</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v, DOUBLE s, <a class="el" href="structFVECTOR.html">FVECTOR</a> *vd)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの成分ごとの除算  <a href="#gc31846509a773c759dc9243e8a74ad0d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#gb14a04d57cc6ae687fbdbb53f2484b15">fnFIE_vect_div_elem_sv</a> (DOUBLE s, const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v, <a class="el" href="structFVECTOR.html">FVECTOR</a> *vd)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの成分ごとの除算  <a href="#gb14a04d57cc6ae687fbdbb53f2484b15"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#ga56ac8fcc2840fe2d0a38373668b59fb">fnFIE_mat_has_nan</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">NaN値を含んでいるか判定  <a href="#ga56ac8fcc2840fe2d0a38373668b59fb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g35ba11c435f345a47475afda2b7b43d3">fnFIE_mat_is_nan</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列がNaN値か判定  <a href="#g35ba11c435f345a47475afda2b7b43d3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#ged57c24d41abd384f88ca62a98834ba9">fnFIE_mat_is_normal</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の非数値判定  <a href="#ged57c24d41abd384f88ca62a98834ba9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__elem.html#g5c9e7d096d2b1b072849ec8a448bc709">fnFIE_vect_is_normal</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの非数値判定  <a href="#g5c9e7d096d2b1b072849ec8a448bc709"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gcccaa63c3770238b3542fb483e4ea16a"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_max" ref="gcccaa63c3770238b3542fb483e4ea16a" args="(const FMATRIX *a, DOUBLE *val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_max           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分の最大値抽出 
+<p>
+入力された行列の成分のうち、最大の値を返します<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcfc4527b074a0bda3f4e518fcd708885"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_min" ref="gcfc4527b074a0bda3f4e518fcd708885" args="(const FMATRIX *a, DOUBLE *val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_min           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分の最小値抽出 
+<p>
+入力された行列の成分のうち、最小の値を返します<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g01c1581d6fab92393cf5462c4f0d512d"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_asin" ref="g01c1581d6fab92393cf5462c4f0d512d" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_asin           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のasinを計算 
+<p>
+行列 <em>a</em> の各成分に対してasinを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = asin(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g67c07983cee50a736099eee380249875"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_acos" ref="g67c07983cee50a736099eee380249875" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_acos           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のacosを計算 
+<p>
+行列 <em>a</em> の各成分に対してacosを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = acos(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd4568ec111405af2d94752a0bf437a75"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_atan" ref="gd4568ec111405af2d94752a0bf437a75" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_atan           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のatanを計算 
+<p>
+行列 <em>a</em> の各成分に対してatanを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = atan(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge3b4823459b4f800158593b4d7382ef8"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_atan2" ref="ge3b4823459b4f800158593b4d7382ef8" args="(const FMATRIX *ay, const FMATRIX *ax, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_atan2           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ay</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のatan2を計算 
+<p>
+行列 <em>ay</em> , <em>ax</em> の各成分に対してatan2を計算し <em>ad</em> に結果を出力します。 <em>ay</em> と <em>ax</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>ax</em> と <em>ay</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = atan2( ay-&gt;m[m][n], ax-&gt;m[m][n] ) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ay</em>&nbsp;</td><td>入力行列（ｙ成分） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ax</em>&nbsp;</td><td>入力行列（ｘ成分） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g58f0322259eb5b1613cac8bc1c5c5196"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_cos" ref="g58f0322259eb5b1613cac8bc1c5c5196" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_cos           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のcosを計算 
+<p>
+行列 <em>a</em> の各成分に対してcosを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = cos(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g89ee30675d37421ba6b96b4d01b71f8c"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_sin" ref="g89ee30675d37421ba6b96b4d01b71f8c" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_sin           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のsinを計算 
+<p>
+行列 <em>a</em> の各成分に対してsinを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = sin(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb1c12d7ec22a0f89203163ee7d7d7437"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_tan" ref="gb1c12d7ec22a0f89203163ee7d7d7437" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_tan           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のtanを計算 
+<p>
+行列 <em>a</em> の各成分に対してtanを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = tan(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3f09316fc019f0a5bb78b94eca381ff7"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_exp" ref="g3f09316fc019f0a5bb78b94eca381ff7" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_exp           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のexpを計算 
+<p>
+行列 <em>a</em> の各成分に対してexpを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = exp(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="geb09cd5d125d41bf1b2e56596d896952"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_log" ref="geb09cd5d125d41bf1b2e56596d896952" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_log           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のlogを計算 
+<p>
+行列 <em>a</em> の各成分に対してlogを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = log(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbf346d3301d1322b01011700a29d1406"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_sqrt" ref="gbf346d3301d1322b01011700a29d1406" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_sqrt           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のsqrtを計算 
+<p>
+行列 <em>a</em> の各成分に対してsqrtを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = sqrt(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc92036e680b781cfc8eee5876c0790d5"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_abs" ref="gc92036e680b781cfc8eee5876c0790d5" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_abs           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分の絶対値を計算 
+<p>
+行列 <em>a</em> の各成分に対して絶対値を計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = |a-&gt;m[m][n]| </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gdae01647943fd117d39b0d250d4f55a2"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_ceil" ref="gdae01647943fd117d39b0d250d4f55a2" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_ceil           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のceilを計算 
+<p>
+行列 <em>a</em> の各成分に対してceilを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = ceil(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9e3d629d29ccffdf9dc111cff224503f"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_floor" ref="g9e3d629d29ccffdf9dc111cff224503f" args="(const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_floor           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のfloorを計算 
+<p>
+行列 <em>a</em> の各成分に対してfloorを計算し <em>ad</em> に結果を出力します。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<pre> ad-&gt;m[m][n] = floor(a-&gt;m[m][n]) </pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6f9cf32c446a9351c4ae92c3cbd4d57e"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_modf" ref="g6f9cf32c446a9351c4ae92c3cbd4d57e" args="(const FMATRIX *a, FMATRIX *adi, FMATRIX *adf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_modf           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>adi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>adf</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+各成分のmodfを計算 
+<p>
+行列 <em>a</em> の各成分に対してmodfを計算し整数部を <em>adi</em> に 小数部を <em>adf</em> に結果を出力します。 <br>
+ <em>a</em> と <em>adi</em> と <em>adf</em> の次元は等しくなければいけません。 <em>adi</em> と <em>adf</em> はどちらか一方を省略することが可能です。 省略する場合はNULLを引数に渡して下さい。 このとき <em>adi</em> にNULLを指定したときは <em>adf</em> のみが、 <em>adf</em> にNULLを指定したときは <em>adi</em> のみが出力されます。 ただし両方にNULLが指定されたときはエラーになります。<p>
+<em>a</em> と <em>adi</em> または <em>adf</em> は同じポインタを渡すことが出来ます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>adi</em>&nbsp;</td><td>整数成分出力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>adf</em>&nbsp;</td><td>小数成分出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2f9e9b342ab8f5388d7a1e0f066b64ec"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_mul_elem_aa" ref="g2f9e9b342ab8f5388d7a1e0f066b64ec" args="(const FMATRIX *a1, const FMATRIX *a2, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_mul_elem_aa           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分ごとの乗算 
+<p>
+<em>a1</em> と <em>a2</em> の各成分について乗算を行い、結果を <em>ad</em> に出力します。 <em>a1</em> と <em>a2</em> と <em>ad</em> の次元は同じでなければいけません。<p>
+<em>a1</em> と <em>a2</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ ad_{(i,j)} = a1_{(i,j)} \times a2_{(i,j)} \]" src="form_594.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a1</em>&nbsp;</td><td>入力行列１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a2</em>&nbsp;</td><td>入力行列２ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g211ec60da1b7c576da79c500962b41bf"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_mul_elem_as" ref="g211ec60da1b7c576da79c500962b41bf" args="(const FMATRIX *a, DOUBLE s, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_mul_elem_as           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分ごとの乗算 
+<p>
+<em>a</em> の各成分について <em>s</em> を乗算し、結果を <em>ad</em> に出力します。 <em>a</em> と <em>ad</em> の次元は同じでなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ ad_{(i,j)} = a_{(i,j)} \times s \]" src="form_595.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>s</em>&nbsp;</td><td>乗算定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g547a1ce72816fccb400a334f7fcb01d5"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_div_elem_aa" ref="g547a1ce72816fccb400a334f7fcb01d5" args="(const FMATRIX *a1, const FMATRIX *a2, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_div_elem_aa           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分ごとの除算 
+<p>
+<em>a1</em> と <em>a2</em> の各成分について除算を行い、結果を <em>ad</em> に出力します。 <em>a1</em> と <em>a2</em> と <em>ad</em> の次元は同じでなければいけません。<p>
+<em>a1</em> と <em>a2</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ ad_{(i,j)} = a1_{(i,j)} / a2_{(i,j)} \]" src="form_596.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a1</em>&nbsp;</td><td>入力行列１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a2</em>&nbsp;</td><td>入力行列２ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4097e56c49f6f12aed8354f885d7ffd3"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_div_elem_as" ref="g4097e56c49f6f12aed8354f885d7ffd3" args="(const FMATRIX *a, DOUBLE s, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_div_elem_as           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分ごとの除算 
+<p>
+<em>a</em> の各成分について <em>s</em> で除算し、結果を <em>ad</em> に出力します。 <em>a</em> と <em>ad</em> の次元は同じでなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ ad_{(i,j)} = a_{(i,j)} / s \]" src="form_597.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>s</em>&nbsp;</td><td>除算定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g833185ff87b343307665ae41f65ba6b0"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_div_elem_sa" ref="g833185ff87b343307665ae41f65ba6b0" args="(DOUBLE s, const FMATRIX *a, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_div_elem_sa           </td>
+          <td>(</td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+成分ごとの除算 
+<p>
+<em>s</em> を <em>a</em> の各成分で除算し、結果を <em>ad</em> に出力します。 <em>a</em> と <em>ad</em> の次元は同じでなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ ad_{(i,j)} = s / a_{(i,j)} \]" src="form_598.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>s</em>&nbsp;</td><td>除算定数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>出力行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4cc5d1d82fc52a319331f4e40a34eb9d"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_vect_mul_elem_vv" ref="g4cc5d1d82fc52a319331f4e40a34eb9d" args="(const FVECTOR *v1, const FVECTOR *v2, FVECTOR *vd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vect_mul_elem_vv           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vd</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの成分ごとの乗算 
+<p>
+<em>v1</em> と <em>v2</em> の各成分について乗算を行い、結果を <em>vd</em> に出力します。 <em>v1</em> と <em>v2</em> と <em>vd</em> の次元は同じでなければいけません。<p>
+<em>v1</em> と <em>v2</em> と <em>vd</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ vd_{(i,j)} = v1_{(i,j)} \times v2_{(i,j)} \]" src="form_599.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v1</em>&nbsp;</td><td>入力ベクトル１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v2</em>&nbsp;</td><td>入力ベクトル２ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vd</em>&nbsp;</td><td>出力ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g18d8d619f8f75c5fa91a33196c565657"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_vect_mul_elem_vs" ref="g18d8d619f8f75c5fa91a33196c565657" args="(const FVECTOR *v, DOUBLE s, FVECTOR *vd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vect_mul_elem_vs           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vd</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの成分ごとの乗算 
+<p>
+<em>v</em> の各成分について <em>s</em> を乗算し、結果を <em>vd</em> に出力します。 <em>v</em> と <em>vd</em> の次元は同じでなければいけません。<p>
+<em>v</em> と <em>vd</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ vd_{(i,j)} = v_{(i,j)} \times s \]" src="form_600.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v</em>&nbsp;</td><td>入力ベクトル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>s</em>&nbsp;</td><td>乗算定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vd</em>&nbsp;</td><td>出力ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g48b5b3c827e3c0963d4411f473e0eb9a"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_vect_div_elem_vv" ref="g48b5b3c827e3c0963d4411f473e0eb9a" args="(const FVECTOR *v1, const FVECTOR *v2, FVECTOR *vd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vect_div_elem_vv           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vd</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの成分ごとの除算 
+<p>
+<em>v1</em> と <em>v2</em> の各成分について除算を行い、結果を <em>vd</em> に出力します。 <em>v1</em> と <em>v2</em> と <em>vd</em> の次元は同じでなければいけません。<p>
+<em>v1</em> と <em>v2</em> と <em>vd</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ vd_{(i,j)} = v1_{(i,j)} / v2_{(i,j)} \]" src="form_601.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v1</em>&nbsp;</td><td>入力ベクトル１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v2</em>&nbsp;</td><td>入力ベクトル２ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vd</em>&nbsp;</td><td>出力ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc31846509a773c759dc9243e8a74ad0d"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_vect_div_elem_vs" ref="gc31846509a773c759dc9243e8a74ad0d" args="(const FVECTOR *v, DOUBLE s, FVECTOR *vd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vect_div_elem_vs           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vd</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの成分ごとの除算 
+<p>
+<em>v</em> の各成分について <em>s</em> で除算し、結果を <em>vd</em> に出力します。 <em>v</em> と <em>vd</em> の次元は同じでなければいけません。<p>
+<em>v</em> と <em>vd</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ vd_{(i,j)} = v_{(i,j)} / s \]" src="form_602.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v</em>&nbsp;</td><td>入力ベクトル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>s</em>&nbsp;</td><td>除算定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vd</em>&nbsp;</td><td>出力ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb14a04d57cc6ae687fbdbb53f2484b15"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_vect_div_elem_sv" ref="gb14a04d57cc6ae687fbdbb53f2484b15" args="(DOUBLE s, const FVECTOR *v, FVECTOR *vd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vect_div_elem_sv           </td>
+          <td>(</td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vd</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの成分ごとの除算 
+<p>
+<em>s</em> を <em>v</em> の各成分で除算し、結果を <em>vd</em> に出力します。 <em>v</em> と <em>vd</em> の次元は同じでなければいけません。<p>
+<em>v</em> と <em>vd</em> は同じポインタを渡すことが出来ます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ vd_{(i,j)} = s / v_{(i,j)} \]" src="form_603.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>s</em>&nbsp;</td><td>被除算定数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v</em>&nbsp;</td><td>入力ベクトル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vd</em>&nbsp;</td><td>出力ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga56ac8fcc2840fe2d0a38373668b59fb"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_has_nan" ref="ga56ac8fcc2840fe2d0a38373668b59fb" args="(const FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_has_nan           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+NaN値を含んでいるか判定 
+<p>
+行列の要素内にNaN値が含まれているかどうかを判定します。 qNaN か sNaN のどちらかは区別しません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>判定対象行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>0</em>&nbsp;</td><td><em>a</em> は NaN を一つも含んでいない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>1</em>&nbsp;</td><td><em>a</em> は NaN を含んでいる </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー： <em>a</em> にNULLが指定された </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g35ba11c435f345a47475afda2b7b43d3"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_is_nan" ref="g35ba11c435f345a47475afda2b7b43d3" args="(const FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_is_nan           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列がNaN値か判定 
+<p>
+行列の要素すべてがNaN値かどうかを判定します。 qNaN か sNaN のどちらかは区別しません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>判定対象行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>0</em>&nbsp;</td><td><em>a</em> は 少なくとも１つの NaN で無い要素を含んでいる </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>1</em>&nbsp;</td><td><em>a</em> は 全ての要素が NaN である </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー： <em>a</em> にNULLが指定された </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ged57c24d41abd384f88ca62a98834ba9"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_mat_is_normal" ref="ged57c24d41abd384f88ca62a98834ba9" args="(const FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_is_normal           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の非数値判定 
+<p>
+行列の要素内に非数値(NaN, IND, ±INF)が含まれているかどうかを判定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>判定対象行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>0</em>&nbsp;</td><td><em>a</em> は非数値を含んでいる </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>1</em>&nbsp;</td><td><em>a</em> は非数値を一つも含んでいない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー： <em>a</em> にNULLが指定された </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5c9e7d096d2b1b072849ec8a448bc709"></a><!-- doxytag: member="fie_fmatrix_elem.c::fnFIE_vect_is_normal" ref="g5c9e7d096d2b1b072849ec8a448bc709" args="(const FVECTOR *v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_vect_is_normal           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの非数値判定 
+<p>
+行列の要素内に非数値(NaN, IND, ±INF)が含まれているかどうかを判定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v</em>&nbsp;</td><td>判定対象ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>0</em>&nbsp;</td><td><em>v</em> は非数値を含んでいる </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>1</em>&nbsp;</td><td><em>v</em> は非数値を一つも含んでいない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー： <em>v</em> にNULLが指定された </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

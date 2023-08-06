@@ -1,0 +1,678 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ツール</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ツール<br>
+<small>
+[<a class="el" href="group__fie__ml__dtree.html">決定木</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g97afbcf913d44a7d01d1d2b63a0be0e4">F_ML_DTREE_NO_CHILD</a>&nbsp;&nbsp;&nbsp;(-1)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g320633548740c16afca873a8196ba97c">F_ML_DTREE_NO_PARENT</a>&nbsp;&nbsp;&nbsp;(-2)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g19e426daf0d059255730fbd8702fb2f5">F_ML_DTREE_NODE_ROOT</a>&nbsp;&nbsp;&nbsp;(1)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g7174dd66f295ef4561e0a4c4e95a75e8">F_ML_DTREE_NODE_INTERNAL</a>&nbsp;&nbsp;&nbsp;(2)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g7b96e63a2bddfcbaa0405e1678275223">F_ML_DTREE_NODE_LEAF</a>&nbsp;&nbsp;&nbsp;(3)</td></tr>
+
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g5e39ba1dea9b0b3844baeb5e05ee867b">fnFIE_ml_get_dtree_train_param</a> (FHANDLE hMl, INT *max_depth, INT *min_node_sample, INT *k_fold, INT *pruning_type, INT *var_type, INT *preprocess)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">決定木の学習時パラメータを取得する  <a href="#g5e39ba1dea9b0b3844baeb5e05ee867b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g2c0d38d9085280a82dfbd9f3c6c5f1ac">fnFIE_ml_dtree_get_height</a> (FHANDLE hDtree, INT *tree_height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">決定木の高さを取得する  <a href="#g2c0d38d9085280a82dfbd9f3c6c5f1ac"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g4f764c4425d79892f98d404f3db7876c">fnFIE_ml_dtree_get_node_num</a> (FHANDLE hDtree, INT *node_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">決定木のノード数の取得  <a href="#g4f764c4425d79892f98d404f3db7876c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g4d22020dcbaec311fdc6d6123f548709">fnFIE_ml_dtree_get_child</a> (FHANDLE hDtree, INT node_no, INT *left_child_no, INT *right_child_no)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定されたノードの子ノードの番号を取得する  <a href="#g4d22020dcbaec311fdc6d6123f548709"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g6890442e7844b7ab6453ad9a149e5e16">fnFIE_ml_dtree_get_parent</a> (FHANDLE hDtree, INT node_no, INT *parent_no)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定されたノードの親ノードの番号を取得する  <a href="#g6890442e7844b7ab6453ad9a149e5e16"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g72105873e1d4f55ecbb466e6f2ad5044">fnFIE_ml_dtree_get_node_info</a> (FHANDLE hDtree, INT node_no, INT *node_type, INT *node_depth)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定されたノードの情報を取得する  <a href="#g72105873e1d4f55ecbb466e6f2ad5044"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g351ef2051f4a11017a4b7f77f43ee314">fnFIE_ml_dtree_get_decided_val</a> (FHANDLE hDtree, INT node_no, INT *decided_val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定されたノードにおける出力値を取得する  <a href="#g351ef2051f4a11017a4b7f77f43ee314"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__dtree__tools.html#g6a74a0e49653b37652f031f1b0b33c68">fnFIE_ml_dtree_get_criteria</a> (FHANDLE hDtree, INT node_no, INT *vec_index, DOUBLE **criteria, INT *criteria_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定されたノードにおける分岐基準を取得する  <a href="#g6a74a0e49653b37652f031f1b0b33c68"></a><br></td></tr>
+</table>
+<hr><h2>マクロ定義</h2>
+<a class="anchor" name="g97afbcf913d44a7d01d1d2b63a0be0e4"></a><!-- doxytag: member="fie.h::F_ML_DTREE_NO_CHILD" ref="g97afbcf913d44a7d01d1d2b63a0be0e4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_ML_DTREE_NO_CHILD&nbsp;&nbsp;&nbsp;(-1)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木の構造取得時定数 このノードは子ノードを持たない 
+</div>
+</div><p>
+<a class="anchor" name="g320633548740c16afca873a8196ba97c"></a><!-- doxytag: member="fie.h::F_ML_DTREE_NO_PARENT" ref="g320633548740c16afca873a8196ba97c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_ML_DTREE_NO_PARENT&nbsp;&nbsp;&nbsp;(-2)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木の構造取得時定数 このノードは親ノードを持たない 
+</div>
+</div><p>
+<a class="anchor" name="g19e426daf0d059255730fbd8702fb2f5"></a><!-- doxytag: member="fie.h::F_ML_DTREE_NODE_ROOT" ref="g19e426daf0d059255730fbd8702fb2f5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_ML_DTREE_NODE_ROOT&nbsp;&nbsp;&nbsp;(1)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木のノードタイプ取得時定数 ルートノード 
+</div>
+</div><p>
+<a class="anchor" name="g7174dd66f295ef4561e0a4c4e95a75e8"></a><!-- doxytag: member="fie.h::F_ML_DTREE_NODE_INTERNAL" ref="g7174dd66f295ef4561e0a4c4e95a75e8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_ML_DTREE_NODE_INTERNAL&nbsp;&nbsp;&nbsp;(2)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木のノードタイプ取得時定数 内節ノード 
+</div>
+</div><p>
+<a class="anchor" name="g7b96e63a2bddfcbaa0405e1678275223"></a><!-- doxytag: member="fie.h::F_ML_DTREE_NODE_LEAF" ref="g7b96e63a2bddfcbaa0405e1678275223" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_ML_DTREE_NODE_LEAF&nbsp;&nbsp;&nbsp;(3)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木のノードタイプ取得時定数 葉ノード 
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g5e39ba1dea9b0b3844baeb5e05ee867b"></a><!-- doxytag: member="fie_ml_dtree.c::fnFIE_ml_get_dtree_train_param" ref="g5e39ba1dea9b0b3844baeb5e05ee867b" args="(FHANDLE hMl, INT *max_depth, INT *min_node_sample, INT *k_fold, INT *pruning_type, INT *var_type, INT *preprocess)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_get_dtree_train_param           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>max_depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>min_node_sample</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>k_fold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pruning_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>var_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>preprocess</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木の学習時パラメータを取得する 
+<p>
+<em>hMl</em> で指定した決定木のパラメータを取得します。<p>
+取得できるパラメータは、決定木の学習開始時に指定した木の深さの上限値、 決定木の最小サンプル数、枝刈りのタイプ、交差検定の値、特徴ベクトルのタイプ、 学習時の前処理指定パラメータです。<br>
+<p>
+本関数で取得するのは、学習開始時に指定されたパラメータです。そのため、 構成された決定木の実際のパラメータとは異なる可能性があることに注意してください。<br>
+<p>
+出力先の引数は全てNULLポインタチェックがされるため、必要の無いものについてはNULL指定が可能です。 このとき、 <em>hMl</em> 以外のパラメータがNULLであっても、エラーにはならず正常終了します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl</em>&nbsp;</td><td>情報を取得する決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>max_depth</em>&nbsp;</td><td>学習時に指定した決定木の深さの上限 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>min_node_sample</em>&nbsp;</td><td>学習時に指定した決定木の最小サンプル数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>k_fold</em>&nbsp;</td><td>学習時に指定したk-交差検定の値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pruning_type</em>&nbsp;</td><td>学習時に指定した枝刈りのタイプ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>var_type</em>&nbsp;</td><td>学習時に指定した特徴ベクトルのタイプ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>preprocess</em>&nbsp;</td><td>学習時に指定した前処理指定パラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2c0d38d9085280a82dfbd9f3c6c5f1ac"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_height" ref="g2c0d38d9085280a82dfbd9f3c6c5f1ac" args="(FHANDLE hDtree, INT *tree_height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_height           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>tree_height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木の高さを取得する 
+<p>
+<em>hDtree</em> で指定した決定木の高さを取得します<br>
+<p>
+ここで取得できる高さは、 <a class="el" href="group__fie__ml__dtree__tools.html#g5e39ba1dea9b0b3844baeb5e05ee867b" title="決定木の学習時パラメータを取得する">fnFIE_ml_get_dtree_train_param()</a> で取得できる ものと異なり、実際に学習を通じて構成された決定木の高さになります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>情報を取得する決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>tree_height</em>&nbsp;</td><td>決定木の高さ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4f764c4425d79892f98d404f3db7876c"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_node_num" ref="g4f764c4425d79892f98d404f3db7876c" args="(FHANDLE hDtree, INT *node_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_node_num           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>node_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+決定木のノード数の取得 
+<p>
+<em>hDtree</em> で指定した決定木を構成するノードの数を取得します。<br>
+ 他の実行結果取得関数において、ノード番号を指定する場合は、 0～(ノード数-1)がノード番号の範囲となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>情報を取得する決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>node_num</em>&nbsp;</td><td>決定木を構成するノードの数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4d22020dcbaec311fdc6d6123f548709"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_child" ref="g4d22020dcbaec311fdc6d6123f548709" args="(FHANDLE hDtree, INT node_no, INT *left_child_no, INT *right_child_no)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_child           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>node_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>left_child_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>right_child_no</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定されたノードの子ノードの番号を取得する 
+<p>
+<em>node_no</em> で指定したノードの、子ノードの番号を取得します<br>
+<p>
+<em>left_child_no</em> には指定したノードの左分岐側のノード、<em>right_child_no</em> には 右分岐側のノードの番号が出力されます。指定されたノードが子を持たないノードの場合は、 それぞれ F_ML_DTREE_NO_CHILD が設定されます。<br>
+<p>
+出力先の引数( <em>left_child_no</em> , <em>right_child_no</em> )は NULLポインタチェックがされるため、不要なものはNULL指定が可能です。また、出力先の引数がすべてNULLで あっても、エラーにはならず正常終了します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>node_no</em>&nbsp;</td><td>対象ノードの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>left_child_no</em>&nbsp;</td><td>対象ノードの左分岐子ノードの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>right_child_no</em>&nbsp;</td><td>対象ノードの右分岐子ノードの番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6890442e7844b7ab6453ad9a149e5e16"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_parent" ref="g6890442e7844b7ab6453ad9a149e5e16" args="(FHANDLE hDtree, INT node_no, INT *parent_no)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_parent           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>node_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>parent_no</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定されたノードの親ノードの番号を取得する 
+<p>
+<em>node_no</em> で指定したノードの、親ノードの番号を取得します。 指定されたノードが親を持たないノードの場合は、 F_ML_DTREE_NO_PARENT が設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>node_no</em>&nbsp;</td><td>対象ノードの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>parent_no</em>&nbsp;</td><td>対象ノードの親ノードの番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g72105873e1d4f55ecbb466e6f2ad5044"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_node_info" ref="g72105873e1d4f55ecbb466e6f2ad5044" args="(FHANDLE hDtree, INT node_no, INT *node_type, INT *node_depth)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_node_info           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>node_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>node_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>node_depth</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定されたノードの情報を取得する 
+<p>
+<em>node_no</em> で指定したノードの各種情報を取得します。取得可能な情報は ノードタイプ、ノードの深さ、です。<br>
+<p>
+出力先の引数( <em>node_type</em> , <em>node_depth</em> )は NULLポインタチェックがされるため、不要なものはNULL指定が可能です。また、出力先の引数がすべてNULLで あっても、エラーにはならず正常終了します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>node_no</em>&nbsp;</td><td>対象ノードの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>node_type</em>&nbsp;</td><td>対象ノードのタイプ <ul>
+<li>F_ML_DTREE_NODE_ROOT ルートノード </li>
+<li>F_ML_DTREE_NODE_INTERNAL 内節ノード </li>
+<li>F_ML_DTREE_NODE_LEAF 葉ノード</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>node_depth</em>&nbsp;</td><td>対象ノードの深さ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g351ef2051f4a11017a4b7f77f43ee314"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_decided_val" ref="g351ef2051f4a11017a4b7f77f43ee314" args="(FHANDLE hDtree, INT node_no, INT *decided_val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_decided_val           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>node_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>decided_val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定されたノードにおける出力値を取得する 
+<p>
+<em>hDtree</em> で指定したノードにおける出力値(予測の最終判定値)を取得します。 出力値が定義されないようなノードを指定した場合は F_ERR_NODATA を返却します。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>node_no</em>&nbsp;</td><td>対象ノードの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>decided_val</em>&nbsp;</td><td>ノードの出力値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>指定されたノードが出力値を持たない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6a74a0e49653b37652f031f1b0b33c68"></a><!-- doxytag: member="fie_ml_dtree_tools.c::fnFIE_ml_dtree_get_criteria" ref="g6a74a0e49653b37652f031f1b0b33c68" args="(FHANDLE hDtree, INT node_no, INT *vec_index, DOUBLE **criteria, INT *criteria_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_dtree_get_criteria           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDtree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>node_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>vec_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE **&nbsp;</td>
+          <td class="paramname"> <em>criteria</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>criteria_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定されたノードにおける分岐基準を取得する 
+<p>
+<em>node_no</em> で指定したノードにおける分岐基準を取得します。つまり、ある判別をしたい特徴ベクトルが このノードに到達したときに、次にどの子ノードに分岐するかの基準値です。<p>
+<em>vec_index</em> には、このノードの分岐で用いる特徴ベクトルの次元が出力されます。<br>
+<p>
+<em>*criteria</em> には、このノードの分岐基準となる数値が配列として出力されます。<em>*criteria</em> に出力された 値の意味は、この決定木の学習で指定した教師データのタイプが数値型( F_ML_SAMPLE_NUMERICAL ) か 分類型( F_ML_SAMPLE_CATEGORICAL )かで、以下のように変わります。<br>
+<p>
+<ul>
+<li>数値型 : 分岐に用いる特徴ベクトルの値が <em>*criteria</em> の値以上ならば右分岐(そうでなければ左分岐)</li><li>分類型 : 分岐に用いる特徴ベクトルの値(カテゴリ)が <em>*criteria</em> 内にあれば右分岐(そうでなければ左分岐)</li></ul>
+<p>
+上記のように、数値型の場合は値同士の大小比較で分岐が決定します。そのため、数値型の教師データで学習 した決定木に対して本関数を実行した場合、<em>criteria_num</em> は必ず1になります(エラー発生時は除く)。<br>
+<p>
+<em>node_no</em> で指定したノードが、分岐基準が定義されていないノードの場合は、 F_ERR_NODATA を返却します。<p>
+<em>*criteria</em> に出力する配列に必要なメモリは、関数内部で確保します。そのため、<em>*criteria</em> は NULLでなければなりません。また、<em>*criteria</em> は、不要になった場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて 確実に解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hDtree</em>&nbsp;</td><td>決定木オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>node_no</em>&nbsp;</td><td>対象ノードの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vec_index</em>&nbsp;</td><td>対象ノードで使用する分岐判断のベクトルの次元の値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>criteria</em>&nbsp;</td><td>対象ノードの分岐基準の値を保持した配列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>criteria_num</em>&nbsp;</td><td>criteriaの配列サイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>指定されたノードが分岐基準をもたない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

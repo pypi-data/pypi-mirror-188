@@ -1,0 +1,2148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 近似計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>近似計算<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<h2><a class="anchor" name="fie_fitting_rbs">
+最小二乗法とロバスト推定法</a></h2>
+通常、与えられたデータには誤差が含まれています。 測定値の中で想定される誤差範囲内にあるものをインライア、明らかに誤りであるものをアウトライア、外れ値と呼びます。 外れ値が存在することで、測定結果からのフィッティングに影響がでるため、外れ値を排除する必要があります。 ロバスト推定法は、外れ値をある程度含むようなデータからでも、比較的安定したモデルのパラメータを推定することができます。<h3><a class="anchor" name="fie_fitting_rbs_lsm">
+最小二乗法</a></h3>
+二乗誤差を最小にするのが最小二乗法です。 最小二乗法は、外れ値に対してロバストではありません。 LMS 基準は以下のようになります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\rm LMS} = \min\ \sum _{i} \epsilon _{i} ^{2} \]" src="form_967.png">
+<p>
+<p>
+なお、 <img class="formulaInl" alt="$ \epsilon $" src="form_968.png"> は誤差を表します。<h3><a class="anchor" name="fie_fitting_rbs_mestimator">
+ロバスト推定法（Ｍ推定法）</a></h3>
+二乗誤差基準では、誤差が大きいほど値が大きくなます。 ある一定以上の誤差で値の上昇を抑えることで、外れ値の影響を小さくする手法がＭ推定法です。 つまり、外れ値には小さいな重みを与えるように変形し、評価基準とします。 最小二乗法基準はすべての誤差に均等な重みで扱っているために、ひとつの大きな外れ値によって大きな影響を受けてしまいます。 評価基準は以下のようになります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\rm M} = \min\ \sum _{i} \rho \left( \epsilon _{i} \right) \]" src="form_969.png">
+<p>
+<p>
+なお、 <img class="formulaInl" alt="$ \epsilon $" src="form_968.png"> は誤差、 <img class="formulaInl" alt="$ \rho \left( x \right) $" src="form_970.png"> は重みを与えるための関数です。<p>
+参考のために、Ｍ推定法による直線近似の例を下図に示します。 <img class="formulaInl" alt="$ p_{i} $" src="form_971.png"> は計算対象となる点、 W は重みです。 この例での重みは 0.6 となります。 そして、 (a) は、直線を算出する際に、重みを加味して計算する領域、(b) は、直線を算出する際に、全く使われないデータとする領域となります。<p>
+<div align="center">
+<img src="fie_fit_m-estimator.png" alt="fie_fit_m-estimator.png">
+</div>
+<h3><a class="anchor" name="fie_fitting_rbs_ransac">
+ロバスト推定法（ランザック法）</a></h3>
+与えられた点群から、ランダムにいくつかのサンプル点を抽出して、最小二乗法に当てはめることを繰り返します。 抽出したサンプル点に外れ値が含まれていなければ、より確からしい推定を得ることができます。 かつ、外れ値が全点群の個数と比較して少なければ、推定される誤差範囲内に、より多くの点が含まれることになります。 このことから、最も多くの点が範囲内に含まれた場合の推定値を、正しい推定とする手法が、ランザック法です。<h3><a class="anchor" name="fie_fitting_rbs_lmeds">
+ロバスト推定法（最小メディアン法）</a></h3>
+与えられた点群から、ランダムにいくつかのサンプル点を抽出して、最小二乗法に当てはめることを繰り返します。 ランザック法との違いは、この場合の評価方法です。 最小メディアン法では、全測定値における二乗誤差の中央値が最も小さい場合の推定値を、正しい推定とします。 LMedS 基準は以下のようになります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ {\rm LMedS} = \min\left( med\ \epsilon _{i} ^2 \right) \]" src="form_972.png">
+<p>
+<p>
+なお、 <img class="formulaInl" alt="$ \epsilon $" src="form_968.png"> は誤差、 <em>med</em> は中央値を取ることを表します。<h3><a class="anchor" name="fie_fitting_rbs_comp">
+各手法の比較</a></h3>
+<ul>
+<li>ロバスト性：最小メディアン法、ランザック法、Ｍ推定法、最小二乗法の順でロバストです。 </li>
+<li>実行時間：最小二乗法、Ｍ推定法、ランザック法、最小メディアン法の順で高速です。 </li>
+<li>最小メディアン法は誤差範囲が不明な場合に、ランザック法は明らかな場合に有効です。 </li>
+</ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggbc7c02dfa0adcf226fdd841a600495cd94ecc32d8363a8d4fb4ca33296f6dca1">F_PFIT_LSQ</a>, 
+<a class="el" href="group__fie__cg__fitting.html#ggbc7c02dfa0adcf226fdd841a600495cdd457a89a976be2edbcbdc011856d4ed1">F_PFIT_LSQ_SCALE</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggbc7c02dfa0adcf226fdd841a600495cd2ee0a803a71662358f93b0e81148ed9f">F_PFIT_RBST</a>, 
+<a class="el" href="group__fie__cg__fitting.html#ggbc7c02dfa0adcf226fdd841a600495cd8caa99483dfef0887c0682bbd253d740">F_PFIT_RBST_SCALE</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggbc7c02dfa0adcf226fdd841a600495cdc62bb874f13ac5e0c72b176abd01fccb">F_PFIT_MINMAX</a>, 
+<a class="el" href="group__fie__cg__fitting.html#ggbc7c02dfa0adcf226fdd841a600495cd5529567cedc4ce6a5050f45080ea050b">F_PFIT_MINMAX_SCALE</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群マッチングの処理選択  <a href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe">F_FIT_LSM</a> =  0, 
+<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c48e31cffe978dfa2037f3c46ee170948">F_FIT_MESTIMATOR</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c04a8c9b1693260ebaa09264539bd4cce">F_FIT_RANSAC</a> =  2, 
+<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3cbcade41576a7c4866af4f03c0d079dd0">F_FIT_LMEDS</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c4883a279cadcaebdafb24dbd99ea4f17">F_FIT_LSM_FAST</a> =  4, 
+<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c3729cc38d8845d8bb55731ab1c7d9561">F_FIT_MESTIMATOR2</a> =  101, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3ced0cd79335cf92c5757920addf1ddd1d">F_FIT_LMEDS2</a> =  103
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小二乗法・ロバスト推定の処理選択  <a href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g18c414ce25e3ede376bf7040bef5fd1a">fnFIE_pfit_coord</a> (INT iPntNum, <a class="el" href="structDPNT__T.html">DPNT_T</a> taOldPnt[], <a class="el" href="structDPNT__T.html">DPNT_T</a> taNewPnt[], DOUBLE dSigmaCoef, enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a> iCalcMode, DOUBLE *dpXc, DOUBLE *dpYc, DOUBLE *dpTheta, DOUBLE *dpScale)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群マッチングによる座標系パラメータ(原点座標，傾きおよびスケール)の算出  <a href="#g18c414ce25e3ede376bf7040bef5fd1a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#gc507bb0fa05e997e888139edb338dc37">fnFIE_pfit_points</a> (INT iPntNum, <a class="el" href="structDPNT__T.html">DPNT_T</a> taWork[], <a class="el" href="structDPNT__T.html">DPNT_T</a> taMaster[], DOUBLE dSigmaCoef, enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a> iCalcMode, <a class="el" href="structDPNT__T.html">DPNT_T</a> taConv[], DOUBLE daErr[])</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群マッチング後の座標値および誤差の算出  <a href="#gc507bb0fa05e997e888139edb338dc37"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g2461f746be9ed6da3dc4c3b0ea3a8a01">fnFIE_pfit_param</a> (INT iPntNum, <a class="el" href="structDPNT__T.html">DPNT_T</a> taWork[], <a class="el" href="structDPNT__T.html">DPNT_T</a> taMaster[], DOUBLE dSigmaCoef, enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a> iCalcMode, DOUBLE *dpXcOrg, DOUBLE *dpYcOrg, DOUBLE *dpXc, DOUBLE *dpYc, DOUBLE *dpTheta, DOUBLE *dpScale)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群マッチングの変換パラメータ(重心，回転角およびスケール)算出  <a href="#g2461f746be9ed6da3dc4c3b0ea3a8a01"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g060dfd3fdb8671db7bfea44fa7ed0d85">fnFIE_cg_vectorize2d_cone</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *src, UINT num_src, <a class="el" href="structPNT__T.html">PNT_T</a> *dst, UINT *index, UINT *num_dst, DOUBLE radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">コーン交差法による点列の折れ線化  <a href="#g060dfd3fdb8671db7bfea44fa7ed0d85"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g00a3c5b44dc62afce4a9bfd054d40765">fnFIE_cg_vectorize2d_dp</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *src, UINT num_src, <a class="el" href="structPNT__T.html">PNT_T</a> *dst, UINT *index, UINT *num_dst, DOUBLE threshold)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">DP法による点列の折れ線化  <a href="#g00a3c5b44dc62afce4a9bfd054d40765"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#gfb9011771c50aea6e6ad09c08a325211">fnFIE_fit_centroid</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT pnt_num, enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> fitting_mode, DOUBLE param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの重心座標推定  <a href="#gfb9011771c50aea6e6ad09c08a325211"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#gde0d148ac3bb63f08dd63bc10dce61bc">fnFIE_fit_circle</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT pnt_num, enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> fitting_mode, DOUBLE param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの円近似  <a href="#gde0d148ac3bb63f08dd63bc10dce61bc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g86dac7f4f2b292fc1d1fcfa96e74eed7">fnFIE_fit_circle2</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT pnt_num, enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> fitting_mode, DOUBLE param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの円近似  <a href="#g86dac7f4f2b292fc1d1fcfa96e74eed7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#ga26e01e93c5d9e91c22807330d1e4225">fnFIE_fit_ellipse_b2ac</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *points, INT num, DOUBLE *cx, DOUBLE *cy, DOUBLE *major, DOUBLE *minor, DOUBLE *theta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点列からの楕円の最小二乗近似  <a href="#ga26e01e93c5d9e91c22807330d1e4225"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g89b070926a4901fb38f67a27a145471a">fnFIE_fit_ellipse</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT pnt_num, enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> fitting_mode, DOUBLE param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *major, DOUBLE *minor, DOUBLE *theta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの楕円近似  <a href="#g89b070926a4901fb38f67a27a145471a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#gc9f4e2765c2c446a3805933f5bc433e7">fnFIE_fit_line</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT pnt_num, enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> fitting_mode, DOUBLE param, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの直線近似  <a href="#gc9f4e2765c2c446a3805933f5bc433e7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__fitting.html#g6e62331776c2f3b96675d6bf67842b54">fnFIE_fit_polynomial</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, UINT pnt_num, UINT degree, enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a> fitting_mode, DOUBLE param, DOUBLE *coefficient)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からのn次多項式近似  <a href="#g6e62331776c2f3b96675d6bf67842b54"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gbc7c02dfa0adcf226fdd841a600495cd"></a><!-- doxytag: member="fie.h::f_pfit_calc_mode" ref="gbc7c02dfa0adcf226fdd841a600495cd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群マッチングの処理選択 
+<p>
+点群マッチングの処理方法は、以下の３種類となります。<p>
+<ol type=1>
+<li>最小二乗法</li><li>ロバスト推定</li><li>ミニマックス近似</li></ol>
+<p>
+はじめに、点群マッチングの概要を説明します。<p>
+ふたつの点群 <img class="formulaInl" alt="$ P $" src="form_29.png"> と <img class="formulaInl" alt="$ Q $" src="form_30.png"> があり、それらの点どうしの対応がとれているものとします。 また、点群 <img class="formulaInl" alt="$ P $" src="form_29.png">，<img class="formulaInl" alt="$ Q $" src="form_30.png"> は誤差を除けば相似であるとします。 このとき、点群 <img class="formulaInl" alt="$ P $" src="form_29.png"> に対して、平行移動(<img class="formulaInl" alt="$\; (x,y) \;$" src="form_31.png">)、重心まわりの回転(<img class="formulaInl" alt="$\; \theta \;$" src="form_32.png">) および 重心基準のスケーリング（拡大・縮小）(<img class="formulaInl" alt="$\; s \;$" src="form_33.png">) を施し、点群 <img class="formulaInl" alt="$ Q $" src="form_30.png"> に重ね合わせることを考えます。<p>
+点群マッチングでは、このときの最適なパラメータ <img class="formulaInl" alt="$(\; (x,y), \; \theta, \; s \;)$" src="form_34.png"> を求めます。<p>
+その際の‘最適’の基準として、「最小二乗法」と「ミニマックス近似」を用意しました。 なお，「ロバスト推定」は、点群内のはずれ値（他と比べて誤差の大きい点）を除いて最小二乗法を行うものです。<p>
+さて、最小二乗法とミニマックス近似の違いは次のとおりです。<br>
+ あるパラメータ <img class="formulaInl" alt="$ p = (\; (x,y), \; \theta, \; s \;) $" src="form_35.png"> における、 点群の <img class="formulaInl" alt="$ k $" src="form_36.png"> 番目の対応点での誤差（対応点間のユークリッド距離）を <img class="formulaInl" alt="$ d_k \; ; \; k=1, \cdots, n $" src="form_37.png"> とします。 このとき、誤差ベクトル <img class="formulaInl" alt="$ d_p = (\; d_1, \; d_2, \cdots, \; d_n \;) $" src="form_38.png"> に対して、その大きさ（ノルム）を次のように定義します。<p>
+<ul>
+<li><img class="formulaInl" alt="$ \|\, d_p \,\|_2 = \sqrt{\sum_{k=1}^{n} d_k^2} $" src="form_39.png"> (ユークリッドノルム)</li><li><img class="formulaInl" alt="$ \|\, d_p \,\|_\infty = \underset{k}{\max}\,|\, d_k \,| $" src="form_40.png"> (最大値ノルム)</li></ul>
+<p>
+すると、最小二乗法とミニマックス近似はそれぞれ，これらのノルムに対して最小化を行ったものになります。<p>
+<ul>
+<li>最小二乗法 <img class="formulaInl" alt="$ :\; \underset{p}{\min}\,\|\, d_p \,\|_2^2 $" src="form_41.png"></li><li>ミニマックス近似 <img class="formulaInl" alt="$ :\; \underset{p}{\min}\,\|\, d_p \,\|_\infty^2 $" src="form_42.png"></li></ul>
+<p>
+具体例として、４点のマッチング例を下図に示します。 この図では、合わされる点群 <img class="formulaInl" alt="$ Q $" src="form_30.png"> を緑色点で表し、合わせる点群 <img class="formulaInl" alt="$ P $" src="form_29.png"> の最小二乗解を青色点、 ミニマックス近似解を赤色点で表しています。 また、橙色円は、ミニマックス近似解における最大誤差を半径とする円です。<br>
+ <div align="center">
+<img src="fie_pfit_example.png" alt="fie_pfit_example.png">
+</div>
+ この例のように、最小二乗解においては最大誤差点（左上画像）と最小誤差点（左下画像）が大きく異なる場合があります。 一方、ミニマックス近似解では、最大誤差を限界まで小さくしています。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggbc7c02dfa0adcf226fdd841a600495cd94ecc32d8363a8d4fb4ca33296f6dca1"></a><!-- doxytag: member="F_PFIT_LSQ" ref="ggbc7c02dfa0adcf226fdd841a600495cd94ecc32d8363a8d4fb4ca33296f6dca1" args="" -->F_PFIT_LSQ</em>&nbsp;</td><td>
+最小二乗法：スケール推定なし </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbc7c02dfa0adcf226fdd841a600495cdd457a89a976be2edbcbdc011856d4ed1"></a><!-- doxytag: member="F_PFIT_LSQ_SCALE" ref="ggbc7c02dfa0adcf226fdd841a600495cdd457a89a976be2edbcbdc011856d4ed1" args="" -->F_PFIT_LSQ_SCALE</em>&nbsp;</td><td>
+最小二乗法：スケール推定あり </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbc7c02dfa0adcf226fdd841a600495cd2ee0a803a71662358f93b0e81148ed9f"></a><!-- doxytag: member="F_PFIT_RBST" ref="ggbc7c02dfa0adcf226fdd841a600495cd2ee0a803a71662358f93b0e81148ed9f" args="" -->F_PFIT_RBST</em>&nbsp;</td><td>
+ロバスト推定：スケール推定なし </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbc7c02dfa0adcf226fdd841a600495cd8caa99483dfef0887c0682bbd253d740"></a><!-- doxytag: member="F_PFIT_RBST_SCALE" ref="ggbc7c02dfa0adcf226fdd841a600495cd8caa99483dfef0887c0682bbd253d740" args="" -->F_PFIT_RBST_SCALE</em>&nbsp;</td><td>
+ロバスト推定：スケール推定あり </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbc7c02dfa0adcf226fdd841a600495cdc62bb874f13ac5e0c72b176abd01fccb"></a><!-- doxytag: member="F_PFIT_MINMAX" ref="ggbc7c02dfa0adcf226fdd841a600495cdc62bb874f13ac5e0c72b176abd01fccb" args="" -->F_PFIT_MINMAX</em>&nbsp;</td><td>
+ミニマックス近似：スケール推定なし </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbc7c02dfa0adcf226fdd841a600495cd5529567cedc4ce6a5050f45080ea050b"></a><!-- doxytag: member="F_PFIT_MINMAX_SCALE" ref="ggbc7c02dfa0adcf226fdd841a600495cd5529567cedc4ce6a5050f45080ea050b" args="" -->F_PFIT_MINMAX_SCALE</em>&nbsp;</td><td>
+ミニマックス近似：スケール推定あり </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gda55682e2bdd416f9868a11c61ccdd3c"></a><!-- doxytag: member="fie.h::f_fit_mode" ref="gda55682e2bdd416f9868a11c61ccdd3c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小二乗法・ロバスト推定の処理選択 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe"></a><!-- doxytag: member="F_FIT_LSM" ref="ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe" args="" -->F_FIT_LSM</em>&nbsp;</td><td>
+最小二乗法 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3c48e31cffe978dfa2037f3c46ee170948"></a><!-- doxytag: member="F_FIT_MESTIMATOR" ref="ggda55682e2bdd416f9868a11c61ccdd3c48e31cffe978dfa2037f3c46ee170948" args="" -->F_FIT_MESTIMATOR</em>&nbsp;</td><td>
+ロバスト推定（Ｍ推定法） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3c04a8c9b1693260ebaa09264539bd4cce"></a><!-- doxytag: member="F_FIT_RANSAC" ref="ggda55682e2bdd416f9868a11c61ccdd3c04a8c9b1693260ebaa09264539bd4cce" args="" -->F_FIT_RANSAC</em>&nbsp;</td><td>
+ロバスト推定（ランザック法） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3cbcade41576a7c4866af4f03c0d079dd0"></a><!-- doxytag: member="F_FIT_LMEDS" ref="ggda55682e2bdd416f9868a11c61ccdd3cbcade41576a7c4866af4f03c0d079dd0" args="" -->F_FIT_LMEDS</em>&nbsp;</td><td>
+ロバスト推定（最小メディアン法） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3c4883a279cadcaebdafb24dbd99ea4f17"></a><!-- doxytag: member="F_FIT_LSM_FAST" ref="ggda55682e2bdd416f9868a11c61ccdd3c4883a279cadcaebdafb24dbd99ea4f17" args="" -->F_FIT_LSM_FAST</em>&nbsp;</td><td>
+旧ライブラリ互換の最小二乗法 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3c3729cc38d8845d8bb55731ab1c7d9561"></a><!-- doxytag: member="F_FIT_MESTIMATOR2" ref="ggda55682e2bdd416f9868a11c61ccdd3c3729cc38d8845d8bb55731ab1c7d9561" args="" -->F_FIT_MESTIMATOR2</em>&nbsp;</td><td>
+ロバスト推定（Ｍ推定法）…標準偏差の自動決定 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggda55682e2bdd416f9868a11c61ccdd3ced0cd79335cf92c5757920addf1ddd1d"></a><!-- doxytag: member="F_FIT_LMEDS2" ref="ggda55682e2bdd416f9868a11c61ccdd3ced0cd79335cf92c5757920addf1ddd1d" args="" -->F_FIT_LMEDS2</em>&nbsp;</td><td>
+ロバスト推定（最小メディアン法）…標準偏差の自動決定 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g18c414ce25e3ede376bf7040bef5fd1a"></a><!-- doxytag: member="fie_pfit.c::fnFIE_pfit_coord" ref="g18c414ce25e3ede376bf7040bef5fd1a" args="(INT iPntNum, DPNT_T taOldPnt[], DPNT_T taNewPnt[], DOUBLE dSigmaCoef, enum f_pfit_calc_mode iCalcMode, DOUBLE *dpXc, DOUBLE *dpYc, DOUBLE *dpTheta, DOUBLE *dpScale)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_pfit_coord           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iPntNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taOldPnt</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taNewPnt</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dSigmaCoef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>iCalcMode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpXc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpYc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpTheta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpScale</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群マッチングによる座標系パラメータ(原点座標，傾きおよびスケール)の算出 
+<p>
+新座標系上の座標値群を旧座標系上の座標値群に 最小二乗法，ロバスト推定 または ミニマックス近似 によりマッチングします． その際，新座標系上の座標値群と旧座標系上の座標値群の各点は配列要素順に対応づけがあるものとします． 結果出力は，旧座標系から見た新座標系のパラメータ（原点座標，傾きおよびスケール）です．<p>
+ロバスト推定用重みしきい値の係数は，入力データの誤差（ばらつき）の標準偏差に掛ける係数を入力します． 例えば，３σをしきい値にする場合はσの係数である‘３’を入力します．<p>
+ミニマックス近似では，各対応点の距離（誤差）の最大値が最も小さくなるように合わせ込みを行います．<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iPntNum</em>&nbsp;</td><td>データ(座標)点の数（２点以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>taOldPnt[]</em>&nbsp;</td><td>旧座標系上の座標値群（合わされる方） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>taNewPnt[]</em>&nbsp;</td><td>新座標系上の座標値群（合わせる方） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dSigmaCoef</em>&nbsp;</td><td>ロバスト推定用重みしきい値の係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iCalcMode</em>&nbsp;</td><td>処理選択 <ul>
+<li>F_PFIT_LSQ 最小二乗法：スケール推定なし </li>
+<li>F_PFIT_LSQ_SCALE 最小二乗法：スケール推定あり </li>
+<li>F_PFIT_RBST ロバスト推定：スケール推定なし </li>
+<li>F_PFIT_RBST_SCALE ロバスト推定：スケール推定あり </li>
+<li>F_PFIT_MINMAX ミニマックス近似：スケール推定なし </li>
+<li>F_PFIT_MINMAX_SCALE ミニマックス近似：スケール推定あり </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpXc</em>&nbsp;</td><td>旧座標系から見た新座標系の原点ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpYc</em>&nbsp;</td><td>旧座標系から見た新座標系の原点ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpTheta</em>&nbsp;</td><td>旧座標系から見た新座標系の傾き（rad：[-π，π]） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpScale</em>&nbsp;</td><td>旧座標系から見た新座標系のスケール(相似比)（処理選択で‘スケール推定なし’を選択した場合は、1.0 が返ります。）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ確保失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>ロバスト推定失敗（重みしきい値が小さくなりすぎた）または ミニマックス近似失敗（反復回数オーバー） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc507bb0fa05e997e888139edb338dc37"></a><!-- doxytag: member="fie_pfit.c::fnFIE_pfit_points" ref="gc507bb0fa05e997e888139edb338dc37" args="(INT iPntNum, DPNT_T taWork[], DPNT_T taMaster[], DOUBLE dSigmaCoef, enum f_pfit_calc_mode iCalcMode, DPNT_T taConv[], DOUBLE daErr[])" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_pfit_points           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iPntNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taWork</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taMaster</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dSigmaCoef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>iCalcMode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taConv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>daErr</em>[]</td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群マッチング後の座標値および誤差の算出 
+<p>
+同一座標系上の点群（Master＆Work）に対し，最小二乗法，ロバスト推定 または ミニマックス近似 により， Master点群をWork点群にマッチングします． その際，Master点群とWork点群の各点は配列要素順に対応づけがあるものとします． 結果出力は，マッチング後のMaster各点の位置と，それらの対応するWork各点との距離（誤差）です．<p>
+ロバスト推定用重みしきい値の係数は，入力データの誤差（ばらつき）の標準偏差に掛ける係数を入力します． 例えば，３σをしきい値にする場合はσの係数である‘３’を入力します．<p>
+ミニマックス近似では，各対応点の距離（誤差）の最大値が最も小さくなるように合わせ込みを行います．<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iPntNum</em>&nbsp;</td><td>データ(座標)点の数（２点以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>taWork[]</em>&nbsp;</td><td>ワーク点群座標データ（合わされる方） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>taMaster[]</em>&nbsp;</td><td>マスタ点群座標データ（合わせる方） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dSigmaCoef</em>&nbsp;</td><td>ロバスト推定用重みしきい値の係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iCalcMode</em>&nbsp;</td><td>処理選択 <ul>
+<li>F_PFIT_LSQ 最小二乗法：スケール推定なし </li>
+<li>F_PFIT_LSQ_SCALE 最小二乗法：スケール推定あり </li>
+<li>F_PFIT_RBST ロバスト推定：スケール推定なし </li>
+<li>F_PFIT_RBST_SCALE ロバスト推定：スケール推定あり </li>
+<li>F_PFIT_MINMAX ミニマックス近似：スケール推定なし </li>
+<li>F_PFIT_MINMAX_SCALE ミニマックス近似：スケール推定あり </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>taConv[]</em>&nbsp;</td><td>マッチング後のマスタ点群の座標（taMaster[] と同じでもよい） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>daErr[]</em>&nbsp;</td><td>マッチング後の対応する２点間の距離（誤差）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ確保失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>ロバスト推定失敗（重みしきい値が小さくなりすぎた）または ミニマックス近似失敗（反復回数オーバー） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2461f746be9ed6da3dc4c3b0ea3a8a01"></a><!-- doxytag: member="fie_pfit.c::fnFIE_pfit_param" ref="g2461f746be9ed6da3dc4c3b0ea3a8a01" args="(INT iPntNum, DPNT_T taWork[], DPNT_T taMaster[], DOUBLE dSigmaCoef, enum f_pfit_calc_mode iCalcMode, DOUBLE *dpXcOrg, DOUBLE *dpYcOrg, DOUBLE *dpXc, DOUBLE *dpYc, DOUBLE *dpTheta, DOUBLE *dpScale)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_pfit_param           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iPntNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taWork</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>taMaster</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dSigmaCoef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gbc7c02dfa0adcf226fdd841a600495cd">f_pfit_calc_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>iCalcMode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpXcOrg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpYcOrg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpXc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpYc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpTheta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpScale</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群マッチングの変換パラメータ(重心，回転角およびスケール)算出 
+<p>
+同一座標系上の点群（Master＆Work）に対し，最小二乗法，ロバスト推定 または ミニマックス近似 により， Master点群をWork点群にマッチングします． その際，Master点群とWork点群の各点は配列要素順に対応づけがあるものとします． 結果出力は，マッチング後のMaster点群の重心と，その周りの回転角およびスケール（相似比）です．<p>
+ロバスト推定用重みしきい値の係数は，入力データの誤差（ばらつき）の標準偏差に掛ける係数を入力します． 例えば，３σをしきい値にする場合はσの係数である‘３’を入力します．<p>
+ミニマックス近似では，各対応点の距離（誤差）の最大値が最も小さくなるように合わせ込みを行います．<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iPntNum</em>&nbsp;</td><td>データ(座標)点の数（２点以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>taWork[]</em>&nbsp;</td><td>ワーク点群座標データ（合わされる方） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>taMaster[]</em>&nbsp;</td><td>マスタ点群座標データ（合わせる方） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dSigmaCoef</em>&nbsp;</td><td>ロバスト推定用重みしきい値の係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iCalcMode</em>&nbsp;</td><td>処理選択 <ul>
+<li>F_PFIT_LSQ 最小二乗法：スケール推定なし </li>
+<li>F_PFIT_LSQ_SCALE 最小二乗法：スケール推定あり </li>
+<li>F_PFIT_RBST ロバスト推定：スケール推定なし </li>
+<li>F_PFIT_RBST_SCALE ロバスト推定：スケール推定あり </li>
+<li>F_PFIT_MINMAX ミニマックス近似：スケール推定なし </li>
+<li>F_PFIT_MINMAX_SCALE ミニマックス近似：スケール推定あり </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpXcOrg</em>&nbsp;</td><td>元の（マッチング前の）マスタ点群の重心ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpYcOrg</em>&nbsp;</td><td>元の（マッチング前の）マスタ点群の重心ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpXc</em>&nbsp;</td><td>マッチング後のマスタ点群の重心ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpYc</em>&nbsp;</td><td>マッチング後のマスタ点群の重心ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpTheta</em>&nbsp;</td><td>マスタ点群の重心周りの回転角（rad：[-π，π]） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*dpScale</em>&nbsp;</td><td>マスタ点群のスケール（相似比）（処理選択で‘スケール推定なし’を選択した場合は、1.0 が返ります。）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ確保失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>ロバスト推定失敗（重みしきい値が小さくなりすぎた）または ミニマックス近似失敗（反復回数オーバー） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g060dfd3fdb8671db7bfea44fa7ed0d85"></a><!-- doxytag: member="fie_vec2d_cone.c::fnFIE_cg_vectorize2d_cone" ref="g060dfd3fdb8671db7bfea44fa7ed0d85" args="(const PNT_T *src, UINT num_src, PNT_T *dst, UINT *index, UINT *num_dst, DOUBLE radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_vectorize2d_cone           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>num_src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>num_dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+コーン交差法による点列の折れ線化 
+<p>
+コーン交差法(Cone Intersection Method)を用いて、点列を間引いて折れ線にします。 入力点列の始点と終点は必ず出力します。 結果は元の点列のうち有効な点の場所を示すインデックス配列と、 有効な点の座標を並べた点列の2種類で出力します。<p>
+<a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a> で作成した2値ブローブの境界点列を入力することを想定しています。 <a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd" title="REGION境界点抽出(拡張版)">fnFIE_region_calc_boundary_ex()</a> や <a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a> で作成した点列の場合、配列の先頭から最初のストッパ(I32_MINを格納した点)までの先頭の点列のみ処理を行います。 ストッパは無くてもかまいません。また、閉曲線になっている必要もありません。<p>
+<dl class="user" compact><dt><b>アルゴリズム</b></dt><dd><div align="center">
+<img src="vec2d_cone.png" alt="vec2d_cone.png">
+<p><strong>コーン交差法のアルゴリズム</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b>処理例</b></dt><dd><br>
+ 下図は境界点列を赤色で表現したものです。点列の点数は3042点です。 <div align="center">
+<img src="vec2d_pre.png" alt="vec2d_pre.png">
+<p><strong>処理前の点列</strong></p></div>
+ <em>radius</em> が 1.0の時、折れ線化の結果は以下の矢印になります。点列の座標点数は78点です。 <div align="center">
+<img src="vec2d_cone1.png" alt="vec2d_cone1.png">
+<p><strong>処理後の点列 誤差円半径1.0</strong></p></div>
+ <em>radius</em> が 4.0の時、折れ線化の結果は以下の矢印になります。点列の座標点数は54点です。 <div align="center">
+<img src="vec2d_cone2.png" alt="vec2d_cone2.png">
+<p><strong>処理後の点列 誤差円半径4.0</strong></p></div>
+ </dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力座標点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_src</em>&nbsp;</td><td>入力座標点列のサイズ。 3点以上を与えてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力座標点列。 <em>num_src</em> 以上の大きさを持つ配列を与えてください。 不要な場合はNULLを与えてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>index</em>&nbsp;</td><td>出力座標のインデックス配列。折れ線を <em>src</em> での先頭からのオフセットで表現します。 <em>num_src</em> 以上の大きさを持つ配列を与えてください。不要な場合はNULLを与えてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_dst</em>&nbsp;</td><td>出力座標点列のサイズ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>誤差円の半径。 ゼロより大きい値を与えてください。 入力点列の座標が整数のため、0.5以下では間引きの効果はほとんど無くなります。 大きくすると元の点列と出力する折れ線の乖離が大きくなります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+新編画像解析ハンドブック pp.1544 (ISBN 4-13-061119-4) 
+</div>
+</div><p>
+<a class="anchor" name="g00a3c5b44dc62afce4a9bfd054d40765"></a><!-- doxytag: member="fie_vec2d_dp.c::fnFIE_cg_vectorize2d_dp" ref="g00a3c5b44dc62afce4a9bfd054d40765" args="(const PNT_T *src, UINT num_src, PNT_T *dst, UINT *index, UINT *num_dst, DOUBLE threshold)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_vectorize2d_dp           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>num_src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>num_dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>threshold</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+DP法による点列の折れ線化 
+<p>
+点列をDP法( Ramer / Douglas Peucker algorithm )を用いて間引き、折れ線にして出力します。 始点と終点が異なる点列を与えた場合は、始点と終点を必ず出力します。 始点と終点に同じ座標の入った点列を与えた場合、 閉曲線と判断して入力点列の始点から最も遠い点を探し、その点から最も遠い点を探して新しい始点としてから折れ線化するため 必ずしも入力点列の始点と終点を出力するとは限りませんが、 出力点列の始点と終点には同一の座標が入ります。<p>
+<a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a> で作成した2値ブローブの境界点列を入力することを想定しています。 <a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd" title="REGION境界点抽出(拡張版)">fnFIE_region_calc_boundary_ex()</a> や <a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a> で作成した点列の場合、配列の先頭から最初のストッパ(I32_MINを格納した点)までの先頭の点列のみ処理を行います。 ストッパは無くてもかまいません。また、閉曲線になっている必要もありません。<p>
+<dl class="user" compact><dt><b>アルゴリズム</b></dt><dd><div align="center">
+<img src="vec2d_dp.png" alt="vec2d_dp.png">
+<p><strong>DP法のアルゴリズム</strong></p></div>
+<ul>
+<li>1.点列を用意します。</li><li>2.始点と終点を結ぶ線分を引き、最も遠い点から垂線をおろして長さを測ります。</li><li>3.垂線の長さが <em>threshold</em> より長かったらその点で線分を折り、残りの点のうち新たな線分から最も遠い点から垂線をおろして長さを測ります。</li><li>4.垂線の長さが <em>threshold</em> より短くなったら終了します。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>処理例</b></dt><dd>下図は境界点列を赤色で表現したものです。点列の座標点数は3042点です。 <div align="center">
+<img src="vec2d_pre.png" alt="vec2d_pre.png">
+<p><strong>処理前の点列</strong></p></div>
+ <em>threshold</em> が 2.0の時、折れ線化の結果は以下の矢印になります。点列の座標点数は73点です。 <div align="center">
+<img src="vec2d_dp1.png" alt="vec2d_dp1.png">
+<p><strong>処理後の点列 閾値2.0</strong></p></div>
+ <em>threshold</em> が 24.0の時、折れ線化の結果は以下の矢印になります。点列の座標点数は38点です。 <div align="center">
+<img src="vec2d_dp2.png" alt="vec2d_dp2.png">
+<p><strong>処理後の点列 閾値24.0</strong></p></div>
+ </dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力座標点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_src</em>&nbsp;</td><td>入力座標点列のサイズ。3点以上を与えてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力座標点列。 <em>num_src</em> 以上の大きさを持つ配列を与えてください。不要な場合はNULLを与えてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>index</em>&nbsp;</td><td>出力座標点列のインデックス配列。出力座標点列を <em>src</em> の先頭からのオフセットで表現したものです。 <em>num_src</em> 以上の大きさを持つ配列を与えてください。不要な場合はNULLを与えてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_dst</em>&nbsp;</td><td>出力座標点列のサイズ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>折れ線閾値。ゼロより大きい値を与えてください。 折れ線と点列を比較したとき点列が折れ線の方向から垂直に何ピクセル外れていたら折るかを指定します。 出力する点列は元の点列から <em>threshold</em> より大きく外れません。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Urs Ramer, "An iterative procedure for the polygonal approximation of plane curves", Computer Graphics and Image Processing, vol. 1, pp. 244-256, 1972.</li><li>DAVID H DOUGLAS, THOMAS K PEUCKER, "ALGORITHMS FOR THE REDUCTION OF THE NUMBER OF POINTS REQUIRED TO REPRESENT A DIGITIZED LINE OR ITS CARICATURE", Cartographica: The International Journal for Geographic Information and Geovisualization, Volume 10, pp.112-122, Number 2 / December 1973. </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="gfb9011771c50aea6e6ad09c08a325211"></a><!-- doxytag: member="oss_fie_fit_centroid.c::fnFIE_fit_centroid" ref="gfb9011771c50aea6e6ad09c08a325211" args="(const DPNT_T *pnts, INT pnt_num, enum f_fit_mode fitting_mode, DOUBLE param, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_centroid           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>fitting_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの重心座標推定 
+<p>
+与えれた座標点群から、最小二乗法または、ロバスト推定法で点群の重心座標を算出します。<p>
+<dl class="user" compact><dt><b>最適化パラメータ（ <em>param</em> ）</b></dt><dd></dd></dl>
+ロバスト推定法は、標準偏差によりインライアとアウトライアを判定しています。 点群の誤差は正規分布であることを前提として、標準偏差より信頼区間内の点をインライアと判定します。 <em>param</em> は、例外値の影響を軽減するための利用されるパラメータです。 近似モード（ <em>fitting_mode</em> ）によって、パラメータの意味が異なります。<p>
+誤差の計算式は、以下の通りとなります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \epsilon _{i} = \sqrt{ ( x _{i} - cx ) ^{2} + ( y _{i} - cy ) ^{2} } \]" src="form_960.png">
+<p>
+ なお、 <em>cx</em> は重心のｘ座標、 <em>cy</em> は重心のｙ座標となります。<p>
+F_FIT_MESTIMATOR を指定した場合、 <em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差となります。 標準偏差より95％信頼区間内の点をインライアと判定します。 つまり、 [-1.96σ, 1.96σ] より、95％信頼区間が計算されます。<p>
+F_FIT_MESTIMATOR2 を指定した場合、<em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差の係数です。 標準偏差は、自動的に計算されます。 F_FIT_MESTIMATOR では、[-1.96σ, 1.96σ] と1.96に固定されていた係数を、自由に指定することができます。 例えば、以下の信頼区間内の点をインライアとして判定したい場合は、次の係数を入力してください。 <ul>
+<li>90％信頼区間内：1.645 </li>
+<li>95％信頼区間内：1.960 </li>
+<li>99％信頼区間内：2.567 </li>
+<li>99.9％信頼区間内：3.291</li>
+</ul>
+なお F_FIT_MESTIMATOR、 F_FIT_MESTIMATOR2、 のどちらかを指定した場合、 <em>param</em> に 0 以下の値を指定するとパラメータエラーとなります。<p>
+入力点群の個数( <em>pnt_num</em> )が 1 の場合は、単に入力座標を重心座標として出力する処理となります。 また、 2 の場合は2点の中点座標を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力点群の個数（ <em>pnt_num</em> &gt;= 1 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fitting_mode</em>&nbsp;</td><td>近似モード <ul>
+<li>F_FIT_LSM 最小二乗法 </li>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…自動決定される標準偏差の係数を設定可能 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>最適化パラメータ（ロバスト推定法で利用） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>点群の重心座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>David A. Forsyth, Jean Ponce, コンピュータビジョン §15.5, p391, 共立出版, 2007. </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="gde0d148ac3bb63f08dd63bc10dce61bc"></a><!-- doxytag: member="oss_fie_fit_circle.c::fnFIE_fit_circle" ref="gde0d148ac3bb63f08dd63bc10dce61bc" args="(const DPNT_T *pnts, INT pnt_num, enum f_fit_mode fitting_mode, DOUBLE param, DPNT_T *center, DOUBLE *radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_circle           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>fitting_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの円近似 
+<p>
+与えれた座標点群から、最小二乗法または、ロバスト推定法で円の中心座標と半径を算出します。<p>
+<dl class="user" compact><dt><b>最適化パラメータ（ <em>param</em> ）</b></dt><dd></dd></dl>
+ロバスト推定法は、標準偏差によりインライアとアウトライアを判定しています。 点群の誤差は正規分布であることを前提として、標準偏差より信頼区間内の点をインライアと判定します。 <em>param</em> は、例外値の影響を軽減するための利用されるパラメータです。 近似モード（ <em>fitting_mode</em> ）によって、パラメータの意味が異なります。<p>
+誤差の計算式は、以下の通りとなります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \epsilon _{i} = | ( x _{i} - cx ) ^{2} + ( y _{i} - cy ) ^{2} - r ^{2} | \]" src="form_962.png">
+<p>
+ なお、 <em>cx</em> は中心ｘ座標、 <em>cy</em> は中心ｙ座標、 <em>r</em> は半径となります。<p>
+F_FIT_MESTIMATOR または、 F_FIT_RANSAC を指定した場合、 <em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差となります。 標準偏差より95％信頼区間内の点をインライアと判定します。 つまり、 [-1.96σ, 1.96σ] より、95％信頼区間が計算されます。 近似しようとする円の半径がおおむね <em>r</em> であり座標点群のほぼ全てが円の半径から <em>s</em> ピクセル以内に収まると期待するとき、 <em>s</em>(s+2r)/2 を <em>param</em> に設定します。<em>param</em> の設定が難しい場合は <a class="el" href="group__fie__cg__fitting.html#g86dac7f4f2b292fc1d1fcfa96e74eed7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの円...">fnFIE_fit_circle2()</a> をご利用ください。<p>
+F_FIT_LMEDS を指定した場合は、 <em>param</em> は無視されます。 計算結果より自動的に標準偏差を計算します。 標準偏差より95％信頼区間内の点をインライアと判定します。<p>
+F_FIT_MESTIMATOR2 または、 F_FIT_LMEDS2 を指定した場合、<em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差の係数です。 標準偏差は、自動的に計算されます。 F_FIT_MESTIMATOR と F_FIT_RANSAC では、[-1.96σ, 1.96σ] と1.96に固定されていた係数を、自由に指定することができます。 例えば、以下の信頼区間内の点をインライアとして判定したい場合は、次の係数を入力してください。 <ul>
+<li>90％信頼区間内：1.645 </li>
+<li>95％信頼区間内：1.960 </li>
+<li>99％信頼区間内：2.567 </li>
+<li>99.9％信頼区間内：3.291</li>
+</ul>
+なお F_FIT_MESTIMATOR、 F_FIT_RANSAC、 F_FIT_MESTIMATOR2、 F_FIT_LMEDS2 のいずれかを指定した場合、 <em>param</em> に 0 以下の値を指定するとパラメータエラーとなります。<p>
+<dl class="user" compact><dt><b>入力点群の個数制限</b></dt><dd></dd></dl>
+入力点群の個数は、近似モードが F_FIT_LSM_FAST の場合を除き、 (<em>pnt_num</em> * 3) &lt; <img class="formulaInl" alt="$ 2^{28} $" src="form_963.png"> を満たさなければならないという制限があります。 この制限は、内部計算で行列演算を用いていることに起因します。<p>
+<dl class="user" compact><dt><b>乱数</b></dt><dd></dd></dl>
+<em>fitting_mode</em> で、 F_FIT_RANSAC、 F_FIT_LMEDS または F_FIT_LMEDS2 を選択した場合、 <a class="el" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [0...">fnFIE_mtrand_real2()</a> で発生させた擬似乱数を使用して処理をしています。 擬似乱数の初期化用シードは、 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> 呼び出しからの経過時間を元に設定されます。 そのため、入力データが同じ点群でも、結果が異なることがあります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力点群の個数（ <em>pnt_num</em> &gt;= 3 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fitting_mode</em>&nbsp;</td><td>近似モード <ul>
+<li>F_FIT_LSM 最小二乗法 </li>
+<li>F_FIT_LSM_FAST 最小二乗法（旧ライブラリ仕様） </li>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_RANSAC ロバスト推定法（ランザック法） </li>
+<li>F_FIT_LMEDS ロバスト推定法（最小メディアン法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…標準偏差を自動決定 </li>
+<li>F_FIT_LMEDS2 ロバスト推定法（最小メディアン法）…自動決定される標準偏差の係数を設定可能 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>最適化パラメータ（ロバスト推定法で利用） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>円の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>円の半径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>M. A. Fischler, R. C. Bolles, Random Sample Consensus : A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography, Commun. ACM, no.24, vol.6, pp.381-395, 1981.</li><li>Rousseeuw P. J, Least Median of Squares Regression, Journal of the American Statistical Association, 79, pp.871-880, 1984.</li><li>David A. Forsyth, Jean Ponce, コンピュータビジョン §15.5, 共立出版, 2007.</li><li>松山隆司 他, コンピュータビジョン 第３章, 新技術コミュニケーションズ, 1998.</li><li>D. Umbach, K.N. Jones, A Few Methods for Fitting Circles to Data, IEEE Transactions on Instrumentation and Measurement, 2000.</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="preprocessor">#define WIDTH 256       //出力画像の幅</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 256      //出力画像の高さ</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM 256    //入力点数</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PER 1           //円周の何％に点群を配置するか（1で全周）</span>
+<span class="preprocessor"></span>
+VOID fit_circle()
+{
+    INT i;              <span class="comment">//ループ用変数</span>
+    DOUBLE val = 0;     <span class="comment">//画像に描画する際の濃度値</span>
+
+    <span class="comment">//ルート画像</span>
+    FHANDLE hdst = NULL;    <span class="comment">//結果画像</span>
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a>  r;      <span class="comment">//擬似乱数列生成用データ </span>
+    UINT seed = 1324;   <span class="comment">//乱数因子（適当な値）</span>
+    DOUBLE random;      <span class="comment">//乱数</span>
+
+    <span class="comment">//近似円生成パラメータ</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> f_center;        <span class="comment">//近似円の中心座標</span>
+    DOUBLE f_radius;        <span class="comment">//近似円の半径</span>
+
+    <span class="comment">//点列の作成</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts = NULL;
+
+    <span class="comment">//円のノイズ付加点群生成パラメータ</span>
+    DOUBLE radius = 100;    <span class="comment">//半径            </span>
+    DOUBLE radian = PI;     <span class="comment">//角度</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center;
+    center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = WIDTH/2;     <span class="comment">//画像中心X座標</span>
+    center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = HEIGHT/2;    <span class="comment">//画像中心Y座標</span>
+
+    <span class="comment">//乱数生成子の初期化</span>
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>(seed, &amp;r);
+
+    <span class="comment">//点列領域確保</span>
+    pnts = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * PNTS_NUM);
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+
+    <span class="comment">//チャイルド画像の領域を確保する</span>
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//入力点列の生成</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; PNTS_NUM; i++)
+    {
+        radian += ((2 * PI) * (PER))/PNTS_NUM;              <span class="comment">//角度</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> + (radius * cos(radian) );     <span class="comment">//X座標</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + (radius * sin(radian) );     <span class="comment">//Y座標</span>
+
+        <span class="comment">//乱数の生成</span>
+        random = <a class="code" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real2</a>(&amp;r);
+
+        <span class="comment">//X座標に乱数を付加</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> += 100 * (random - 0.5);
+        <span class="comment">//Y座標に乱数を付加</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> += 100 * (random - 0.5);
+
+        <span class="comment">//点列を描画する（点描画では小さいので，円で描画）</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hdst, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts[i], 1);
+    }
+
+    <span class="comment">//近似円の計算(Ｍ推定法…標準偏差の自動決定)</span>
+    <a class="code" href="group__fie__cg__fitting.html#gde0d148ac3bb63f08dd63bc10dce61bc" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からの円...">fnFIE_fit_circle</a>(pnts, PNTS_NUM, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c3729cc38d8845d8bb55731ab1c7d9561" title="ロバスト推定（Ｍ推定法）…標準偏差の自動決定">F_FIT_MESTIMATOR2</a>, 1.645, &amp;f_center, &amp;f_radius); 
+    <span class="comment">//近似円を描画する</span>
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, f_center, f_radius);
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, f_center, f_radius);
+
+    <span class="comment">//近似円の計算(最小二乗法）</span>
+    <a class="code" href="group__fie__cg__fitting.html#gde0d148ac3bb63f08dd63bc10dce61bc" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からの円...">fnFIE_fit_circle</a>(pnts, PNTS_NUM, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c4883a279cadcaebdafb24dbd99ea4f17" title="旧ライブラリ互換の最小二乗法">F_FIT_LSM_FAST</a>, 0, &amp;f_center, &amp;f_radius); 
+    <span class="comment">//近似円を描画する</span>
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_r, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, f_center, f_radius);
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, f_center, f_radius);
+
+    <span class="comment">//画像をPNG形式で保存する</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    fit_circle();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fit_circle.png" alt="fit_circle.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g86dac7f4f2b292fc1d1fcfa96e74eed7"></a><!-- doxytag: member="oss_fie_fit_circle2.c::fnFIE_fit_circle2" ref="g86dac7f4f2b292fc1d1fcfa96e74eed7" args="(const DPNT_T *pnts, INT pnt_num, enum f_fit_mode fitting_mode, DOUBLE param, DPNT_T *center, DOUBLE *radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_circle2           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>fitting_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの円近似 
+<p>
+与えれた座標点群から、最小二乗法または、ロバスト推定法で円の中心座標と半径を算出します。<p>
+<dl class="user" compact><dt><b>最適化パラメータ（ <em>param</em> ）</b></dt><dd></dd></dl>
+ロバスト推定法は、標準偏差によりインライアとアウトライアを判定しています。 点群の誤差は正規分布であることを前提として、標準偏差より信頼区間内の点をインライアと判定します。 <em>param</em> は、例外値の影響を軽減するための利用されるパラメータです。 近似モード（ <em>fitting_mode</em> ）によって、パラメータの意味が異なります。<p>
+誤差の計算式は、以下の通りとなります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \epsilon _{i} = | \sqrt{ ( x _{i} - cx ) ^{2} + ( y _{i} - cy ) ^{2} } - r | \]" src="form_964.png">
+<p>
+ なお、 <em>cx</em> は中心ｘ座標、 <em>cy</em> は中心ｙ座標、 <em>r</em> は半径となります。<p>
+F_FIT_MESTIMATOR または、 F_FIT_RANSAC を指定した場合、 <em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差となります。 標準偏差より95％信頼区間内の点をインライアと判定します。 つまり、 [-1.96σ, 1.96σ] より、95％信頼区間が計算されます。 推定した、対象点群の標準偏差をパラメータとして入力してください。<p>
+F_FIT_LMEDS を指定した場合は、 <em>param</em> は無視されます。 計算結果より自動的に標準偏差を計算します。 標準偏差より95％信頼区間内の点をインライアと判定します。<p>
+F_FIT_MESTIMATOR2 または、 F_FIT_LMEDS2 を指定した場合、<em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差の係数です。 標準偏差は、自動的に計算されます。 F_FIT_MESTIMATOR と F_FIT_RANSAC では、[-1.96σ, 1.96σ] と1.96に固定されていた係数を、自由に指定することができます。 例えば、以下の信頼区間内の点をインライアとして判定したい場合は、次の係数を入力してください。 <ul>
+<li>90％信頼区間内：1.645 </li>
+<li>95％信頼区間内：1.960 </li>
+<li>99％信頼区間内：2.567 </li>
+<li>99.9％信頼区間内：3.291</li>
+</ul>
+なお F_FIT_MESTIMATOR、 F_FIT_RANSAC、 F_FIT_MESTIMATOR2、 F_FIT_LMEDS2 のいずれかを指定した場合、 <em>param</em> に 0 以下の値を指定するとパラメータエラーとなります。<p>
+<dl class="user" compact><dt><b>入力点群の個数制限</b></dt><dd></dd></dl>
+入力点群の個数は、近似モードが F_FIT_LSM_FAST の場合を除き、 (<em>pnt_num</em> * 3) &lt; <img class="formulaInl" alt="$ 2^{28} $" src="form_963.png"> を満たさなければならないという制限があります。 この制限は、内部計算で行列演算を用いていることに起因します。<p>
+<dl class="user" compact><dt><b>乱数</b></dt><dd></dd></dl>
+<em>fitting_mode</em> で、 F_FIT_RANSAC、 F_FIT_LMEDS または F_FIT_LMEDS2 を選択した場合、 <a class="el" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [0...">fnFIE_mtrand_real2()</a> で発生させた擬似乱数を使用して処理をしています。 擬似乱数の初期化用シードは、 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> 呼び出しからの経過時間を元に設定されます。 そのため、入力データが同じ点群でも、結果が異なることがあります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力点群の個数（ <em>pnt_num</em> &gt;= 3 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fitting_mode</em>&nbsp;</td><td>近似モード <ul>
+<li>F_FIT_LSM 最小二乗法 </li>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_RANSAC ロバスト推定法（ランザック法） </li>
+<li>F_FIT_LMEDS ロバスト推定法（最小メディアン法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…標準偏差を自動決定 </li>
+<li>F_FIT_LMEDS2 ロバスト推定法（最小メディアン法）…自動決定される標準偏差の係数を設定可能 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>最適化パラメータ（ロバスト推定法で利用） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>円の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>円の半径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>M. A. Fischler, R. C. Bolles, Random Sample Consensus : A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography, Commun. ACM, no.24, vol.6, pp.381-395, 1981.</li><li>Rousseeuw P. J, Least Median of Squares Regression, Journal of the American Statistical Association, 79, pp.871-880, 1984.</li><li>David A. Forsyth, Jean Ponce, コンピュータビジョン §15.5, 共立出版, 2007.</li><li>松山隆司 他, コンピュータビジョン 第３章, 新技術コミュニケーションズ, 1998.</li><li>D. Umbach, K.N. Jones, A Few Methods for Fitting Circles to Data, IEEE Transactions on Instrumentation and Measurement, 2000. </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="ga26e01e93c5d9e91c22807330d1e4225"></a><!-- doxytag: member="oss_fie_fit_ellipse.c::fnFIE_fit_ellipse_b2ac" ref="ga26e01e93c5d9e91c22807330d1e4225" args="(const DPNT_T *points, INT num, DOUBLE *cx, DOUBLE *cy, DOUBLE *major, DOUBLE *minor, DOUBLE *theta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_ellipse_b2ac           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>cx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>cy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>major</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>minor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>theta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点列からの楕円の最小二乗近似 
+<p>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000008">非推奨:</a></b></dt><dd>本関数は後方互換性のために残されています。<br>
+ 新規の開発では <a class="el" href="group__fie__cg__fitting.html#g89b070926a4901fb38f67a27a145471a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの楕...">fnFIE_fit_ellipse()</a> を使用し、本関数は使用しないでください。</dd></dl>
+与えられた座標点群から最小二乗法を使用し楕円の係数を算出します。<p>
+本関数では Andrew W. Fitzgibbon らのB2AC手法を用い楕円の当てはめを 行います。本手法では座標点群が偏っている場合や ノイズの多い状況において、弊社従来手法と比較して 計算不能に陥りにくく、より妥当な計算結果を得ることができます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>入力点群配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>入力点数 ( <em>points</em> の要素数, 5以上) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cx</em>&nbsp;</td><td>楕円の中心Ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cy</em>&nbsp;</td><td>楕円の中心Ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>major</em>&nbsp;</td><td>楕円の主軸半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>minor</em>&nbsp;</td><td>楕円の副軸半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>楕円の主軸角度( -PI / 2 ≦<em>theta</em> ≦ +PI / 2 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Andrew W. Fitzgibbon, Maurizio Pilu, and Robert B. Fisher \ Direct least-squares fitting of ellipses, \ IEEE Transactions on Pattern Analysis and Machine Intelligence, 21(5), pp.476~480, May 1999 </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="g89b070926a4901fb38f67a27a145471a"></a><!-- doxytag: member="oss_fie_fit_ellipse2.c::fnFIE_fit_ellipse" ref="g89b070926a4901fb38f67a27a145471a" args="(const DPNT_T *pnts, INT pnt_num, enum f_fit_mode fitting_mode, DOUBLE param, DPNT_T *center, DOUBLE *major, DOUBLE *minor, DOUBLE *theta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_ellipse           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>fitting_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>major</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>minor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>theta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの楕円近似 
+<p>
+与えれた座標点群から、最小二乗法または、ロバスト推定法で楕円の中心座標、主軸半径、副軸半径、そして主軸角度を算出します。<p>
+なお、 <em>fitting_mode</em> に F_FIT_LSM を指定した場合は、 <a class="el" href="group__fie__cg__fitting.html#ga26e01e93c5d9e91c22807330d1e4225" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列からの楕...">fnFIE_fit_ellipse_b2ac()</a> が使用されます。 また、各ロバスト推定法を指定した場合も、 <a class="el" href="group__fie__cg__fitting.html#ga26e01e93c5d9e91c22807330d1e4225" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列からの楕...">fnFIE_fit_ellipse_b2ac()</a> と同じアルゴリズムを使用した関数、または、 <a class="el" href="group__fie__cg__fitting.html#ga26e01e93c5d9e91c22807330d1e4225" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列からの楕...">fnFIE_fit_ellipse_b2ac()</a> を一部改良した関数が使用されます。<p>
+<dl class="user" compact><dt><b>最適化パラメータ（ <em>param</em> ）</b></dt><dd></dd></dl>
+ロバスト推定法は、標準偏差によりインライアとアウトライアを判定しています。 点群の誤差は正規分布であることを前提として、標準偏差より信頼区間内の点をインライアと判定します。 <em>param</em> は、例外値の影響を軽減するための利用されるパラメータです。 近似モード（ <em>fitting_mode</em> ）によって、パラメータの意味が異なります。<p>
+誤差の計算式は、楕円を2次曲線の式 <img class="formulaInl" alt="$ ax ^{2} + bxy + cy ^{2} + dx + ey = 0 $" src="form_965.png"> で表すと、 以下の通りとなります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \epsilon _{i} = | ax _{i} ^{2} + bx _{i} y _{i} + cy _{i} ^{2} + dx _{i} + ey _{i} | \]" src="form_966.png">
+<p>
+<p>
+F_FIT_MESTIMATOR または、 F_FIT_RANSAC を指定した場合、 <em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差となります。 標準偏差より95％信頼区間内の点をインライアと判定します。 つまり、 [-1.96σ, 1.96σ] より、95％信頼区間が計算されます。 推定した、対象点群の標準偏差をパラメータとして入力してください。<p>
+F_FIT_LMEDS を指定した場合は、 <em>param</em> は無視されます。 計算結果より自動的に標準偏差を計算します。 標準偏差より95％信頼区間内の点をインライアと判定します。<p>
+F_FIT_MESTIMATOR2 または、 F_FIT_LMEDS2 を指定した場合、<em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差の係数です。 標準偏差は、自動的に計算されます。 F_FIT_MESTIMATOR と F_FIT_RANSAC では、[-1.96σ, 1.96σ] と1.96に固定されていた係数を、自由に指定することができます。 例えば、以下の信頼区間内の点をインライアとして判定したい場合は、次の係数を入力してください。 <ul>
+<li>90％信頼区間内：1.645 </li>
+<li>95％信頼区間内：1.960 </li>
+<li>99％信頼区間内：2.567 </li>
+<li>99.9％信頼区間内：3.291</li>
+</ul>
+なお F_FIT_MESTIMATOR、 F_FIT_RANSAC、 F_FIT_MESTIMATOR2、 F_FIT_LMEDS2 のいずれかを指定した場合、 <em>param</em> に 0 以下の値を指定するとパラメータエラーとなります。<p>
+<dl class="user" compact><dt><b>入力点群の個数制限</b></dt><dd></dd></dl>
+入力点群の個数は、 (<em>pnt_num</em> * 6) &lt; <img class="formulaInl" alt="$ 2^{28} $" src="form_963.png"> を満たさなければならないという制限があります。 この制限は、内部計算で行列演算を用いていることに起因します。<p>
+<dl class="user" compact><dt><b>乱数</b></dt><dd></dd></dl>
+<em>fitting_mode</em> で、 F_FIT_RANSAC、 F_FIT_LMEDS または F_FIT_LMEDS2 を選択した場合、 <a class="el" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [0...">fnFIE_mtrand_real2()</a> で発生させた擬似乱数を使用して処理をしています。 擬似乱数の初期化用シードは、 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> 呼び出しからの経過時間を元に設定されます。 そのため、入力データが同じ点群でも、結果が異なることがあります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力点群の個数（ <em>pnt_num</em> &gt;= 5 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fitting_mode</em>&nbsp;</td><td>近似モード <ul>
+<li>F_FIT_LSM 最小二乗法 </li>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_RANSAC ロバスト推定法（ランザック法） </li>
+<li>F_FIT_LMEDS ロバスト推定法（最小メディアン法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…標準偏差を自動決定 </li>
+<li>F_FIT_LMEDS2 ロバスト推定法（最小メディアン法）…自動決定される標準偏差の係数を設定可能 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>最適化パラメータ（ロバスト推定法で利用） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>楕円の中心点 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>major</em>&nbsp;</td><td>楕円の主軸半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>minor</em>&nbsp;</td><td>楕円の副軸半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>楕円の主軸角度( -PI / 2 ≦ <em>theta</em> ≦ +PI / 2 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>M. A. Fischler, R. C. Bolles, Random Sample Consensus : A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography, Commun. ACM, no.24, vol.6, pp.381-395, 1981.</li><li>Rousseeuw P. J, Least Median of Squares Regression, Journal of the American Statistical Association, 79, pp.871-880, 1984.</li><li>Andrew W. Fitzgibbon, Maurizio Pilu, and Robert B. Fisher, Direct least-squares fitting of ellipses, IEEE Transactions on Pattern Analysis and Machine Intelligence, 21(5), pp.476-480, May 1999.</li><li>David A. Forsyth, Jean Ponce, コンピュータビジョン §15.5, 共立出版, 2007.</li><li>松山隆司 他, コンピュータビジョン 第３章, 新技術コミュニケーションズ, 1998.</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="preprocessor">#define WIDTH 256       //出力画像の幅</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 256      //出力画像の高さ</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM 128    //入力点数</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PER 0.5         //円周の何％に点群を配置するか（1で全周）</span>
+<span class="preprocessor"></span>
+VOID fit_circle()
+{
+    INT i;              <span class="comment">//ループ用変数</span>
+    DOUBLE val = 0;     <span class="comment">//画像に描画する際の濃度値</span>
+
+    <span class="comment">//ルート画像</span>
+    FHANDLE hdst = NULL;    <span class="comment">//結果画像</span>
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a>  r;      <span class="comment">//擬似乱数列生成用データ </span>
+    UINT seed = 777;    <span class="comment">//乱数因子（適当な値）</span>
+    DOUBLE random;      <span class="comment">//乱数</span>
+
+    <span class="comment">//近似楕円生成パラメータ</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> f_center;        <span class="comment">//中心座標</span>
+    DOUBLE f_major;         <span class="comment">//長軸</span>
+    DOUBLE f_minor;         <span class="comment">//短軸</span>
+    DOUBLE f_theta;         <span class="comment">//回転角</span>
+
+    <span class="comment">//点列の作成</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts = NULL;
+
+    <span class="comment">//楕円のノイズ付加点群生成パラメータ</span>
+    DOUBLE major = 100;     <span class="comment">//長軸</span>
+    DOUBLE minor = 80;      <span class="comment">//短軸</span>
+    DOUBLE radian = PI;     <span class="comment">//角度</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center;          <span class="comment">//中心座標</span>
+
+    center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = WIDTH/2;     <span class="comment">//画像中心X座標</span>
+    center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = HEIGHT/2;    <span class="comment">//画像中心Y座標</span>
+
+    <span class="comment">//乱数生成子の初期化</span>
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>(seed, &amp;r);
+
+    <span class="comment">//点列領域確保</span>
+    pnts = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * PNTS_NUM);
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+
+    <span class="comment">//チャイルド画像の領域を確保する</span>
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//入力点列の生成</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; PNTS_NUM; i++)
+    {
+        radian += ((2 * PI) * (PER))/PNTS_NUM;          <span class="comment">//角度</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> + (major * cos(radian) );  <span class="comment">//X座標</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + (minor * sin(radian) );  <span class="comment">//Y座標</span>
+
+        <span class="comment">//乱数の生成</span>
+        random = <a class="code" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real2</a>(&amp;r);
+
+        <span class="comment">//X座標に乱数を付加</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> += 5 * (random - 0.5);
+        <span class="comment">//Y座標に乱数を付加</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> += 5 * (random - 0.5);
+
+        <span class="comment">//点列を描画する（点描画では小さいので，円で描画）</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hdst, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts[i], 1);
+    }
+
+    <span class="comment">//近似楕円の計算（最小二乗法）</span>
+    <a class="code" href="group__fie__cg__fitting.html#g89b070926a4901fb38f67a27a145471a" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からの楕...">fnFIE_fit_ellipse</a>(pnts, PNTS_NUM, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe" title="最小二乗法">F_FIT_LSM</a>, 0, &amp;f_center, &amp;f_major, &amp;f_minor, &amp;f_theta); 
+    <span class="comment">//近似楕円を描画する</span>
+    <a class="code" href="group__fie__img__draw.html#g8a051485d36dcfc4857f18af1e1975c1" title="楕円の描画">fnFIE_draw_ellipse</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, f_center, f_major, f_minor, f_theta);
+    <a class="code" href="group__fie__img__draw.html#g8a051485d36dcfc4857f18af1e1975c1" title="楕円の描画">fnFIE_draw_ellipse</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, f_center, f_major, f_minor, f_theta);
+
+    <span class="comment">//画像をPNG形式で保存する</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    fit_circle();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fit_ellipse.png" alt="fit_ellipse.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc9f4e2765c2c446a3805933f5bc433e7"></a><!-- doxytag: member="oss_fie_fit_line.c::fnFIE_fit_line" ref="gc9f4e2765c2c446a3805933f5bc433e7" args="(const DPNT_T *pnts, INT pnt_num, enum f_fit_mode fitting_mode, DOUBLE param, DLINE_T *line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_line           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>fitting_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からの直線近似 
+<p>
+与えれた座標点群から、最小二乗法または、ロバスト推定法で直線の係数を算出します。 各手法の詳細については、 <a class="el" href="group__fie__cg__fitting.html#fie_fitting_rbs">最小二乗法とロバスト推定法</a>を参照してください。<p>
+<dl class="user" compact><dt><b>最適化パラメータ（ <em>param</em> ）</b></dt><dd></dd></dl>
+ロバスト推定法は、標準偏差によりインライアとアウトライアを判定しています。 点群の誤差は正規分布であることを前提として、標準偏差より信頼区間内の点をインライアと判定します。 <em>param</em> は、例外値の影響を軽減するための利用されるパラメータです。 近似モード（ <em>fitting_mode</em> ）によって、パラメータの意味が異なります。<p>
+誤差の計算式は、直線の式を <em>ax+by+c=0</em> とすると、以下の通りとなります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \epsilon _{i} = \frac{ | ax _{i} + by _{i} + c | }{ \sqrt{ a ^{2} + b ^{2} } } \]" src="form_973.png">
+<p>
+<p>
+F_FIT_MESTIMATOR または、 F_FIT_RANSAC を指定した場合、 <em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差となります。 標準偏差より95％信頼区間内の点をインライアと判定します。 つまり、 [-1.96σ, 1.96σ] より、95％信頼区間が計算されます。 推定した、対象点群の標準偏差をパラメータとして入力してください。<p>
+F_FIT_LMEDS を指定した場合は、 <em>param</em> は無視されます。 計算結果より自動的に標準偏差を計算します。 標準偏差より95％信頼区間内の点をインライアと判定します。<p>
+F_FIT_MESTIMATOR2 または、 F_FIT_LMEDS2 を指定した場合、<em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差の係数です。 標準偏差は、自動的に計算されます。 F_FIT_MESTIMATOR と F_FIT_RANSAC では、[-1.96σ, 1.96σ] と1.96に固定されていた係数を、自由に指定することができます。 例えば、以下の信頼区間内の点をインライアとして判定したい場合は、次の係数を入力してください。 <ul>
+<li>90％信頼区間内：1.645 </li>
+<li>95％信頼区間内：1.960 </li>
+<li>99％信頼区間内：2.567 </li>
+<li>99.9％信頼区間内：3.291</li>
+</ul>
+なお F_FIT_MESTIMATOR、 F_FIT_RANSAC、 F_FIT_MESTIMATOR2、 F_FIT_LMEDS2 のいずれかを指定した場合、 <em>param</em> に 0 以下の値を指定するとパラメータエラーとなります。<p>
+<dl class="user" compact><dt><b>乱数</b></dt><dd></dd></dl>
+<em>fitting_mode</em> で、 F_FIT_RANSAC、 F_FIT_LMEDS または F_FIT_LMEDS2 を選択した場合、 <a class="el" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [0...">fnFIE_mtrand_real2()</a> で発生させた擬似乱数を使用して処理をしています。 擬似乱数の初期化用シードは、 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> 呼び出しからの経過時間を元に設定されます。 そのため、入力データが同じ点群でも、結果が異なることがあります。<p>
+なお、得られる直線は、傾きが [ -PI / 4 , PI / 4 ] または、 [ 3PI / 4 , 5PI / 4 ] の場合、 <em>line-&gt;b</em> を 1.0 に正規化します。 それ以外の傾きでは、 <em>line-&gt;a</em> を 1.0 に正規化します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力点群の個数（ <em>pnt_num</em> &gt;= 2 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fitting_mode</em>&nbsp;</td><td>近似モード <ul>
+<li>F_FIT_LSM 最小二乗法 </li>
+<li>F_FIT_LSM_FAST 最小二乗法（旧ライブラリ仕様） </li>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_RANSAC ロバスト推定法（ランザック法） </li>
+<li>F_FIT_LMEDS ロバスト推定法（最小メディアン法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…標準偏差を自動決定 </li>
+<li>F_FIT_LMEDS2 ロバスト推定法（最小メディアン法）…自動決定される標準偏差の係数を設定可能 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>最適化パラメータ（ロバスト推定法で利用） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線の係数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>M. A. Fischler, R. C. Bolles, Random Sample Consensus : A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography, Commun. ACM, no.24, vol.6, pp.381-395, 1981.</li><li>Rousseeuw P. J, Least Median of Squares Regression, Journal of the American Statistical Association, 79, pp.871-880, 1984.</li><li>David A. Forsyth, Jean Ponce, コンピュータビジョン §15.5, 共立出版, 2007.</li><li>松山隆司 他, コンピュータビジョン 第３章, 新技術コミュニケーションズ, 1998.</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+
+<span class="preprocessor">#define WIDTH 256       //出力画像の幅</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 256      //出力画像の高さ</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM 64     //入力点数</span>
+<span class="preprocessor"></span>
+VOID fit_line()
+{
+    INT i;              <span class="comment">//ループ用変数</span>
+    DOUBLE val = 0;     <span class="comment">//画像に描画する際の濃度値</span>
+
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a>  r;      <span class="comment">//擬似乱数列生成用データ </span>
+    UINT seed = 152;    <span class="comment">//乱数因子（適当な値）;</span>
+    DOUBLE random;      <span class="comment">//乱数</span>
+
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts = NULL;   <span class="comment">//点列の作成</span>
+    <a class="code" href="structDLINE__T.html" title="直線指定用構造体(DOUBLE)">DLINE_T</a> line;           <span class="comment">//直線のパラメータ</span>
+
+    <span class="comment">//ルート画像</span>
+    FHANDLE hdst = NULL;    <span class="comment">//結果画像</span>
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    <span class="comment">//乱数生成子の初期化</span>
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>(seed, &amp;r);
+
+    <span class="comment">//点列領域確保</span>
+    pnts = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * PNTS_NUM);
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+
+    <span class="comment">//チャイルド画像の領域を確保する</span>
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//近似計算のための点列を生成</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; PNTS_NUM; i++)
+    {
+        <span class="comment">//座標の設定</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i*(WIDTH/PNTS_NUM);     <span class="comment">//X座標</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = (2 * pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>) - 10;   <span class="comment">//Y座標</span>
+
+        <span class="comment">//乱数の生成</span>
+        random = <a class="code" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real2</a>(&amp;r);
+
+        <span class="comment">//Y座標に乱数を付加</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> += 200 * (random - 0.5);
+
+        <span class="comment">//点列を描画する</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hdst, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts[i], 1);
+    }
+
+    <span class="comment">//最小二乗法による直線の推定</span>
+    <a class="code" href="group__fie__cg__fitting.html#gc9f4e2765c2c446a3805933f5bc433e7" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からの直...">fnFIE_fit_line</a>(pnts, PNTS_NUM, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe" title="最小二乗法">F_FIT_LSM</a>, 0, &amp;line);
+    <a class="code" href="group__fie__img__draw.html#g3d34c19d524d872b24090782e3cf2fbc" title="直線の描画">fnFIE_draw_line</a>(hrgb_g, &amp;val, line);
+    <a class="code" href="group__fie__img__draw.html#g3d34c19d524d872b24090782e3cf2fbc" title="直線の描画">fnFIE_draw_line</a>(hrgb_b, &amp;val, line);
+
+    <span class="comment">//ロバスト推定法（最小メディアン法）による直線の推定</span>
+    <a class="code" href="group__fie__cg__fitting.html#gc9f4e2765c2c446a3805933f5bc433e7" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からの直...">fnFIE_fit_line</a>(pnts, PNTS_NUM, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3ced0cd79335cf92c5757920addf1ddd1d" title="ロバスト推定（最小メディアン法）…標準偏差の自動決定">F_FIT_LMEDS2</a>, 1.0, &amp;line);
+    <a class="code" href="group__fie__img__draw.html#g3d34c19d524d872b24090782e3cf2fbc" title="直線の描画">fnFIE_draw_line</a>(hrgb_r, &amp;val, line);
+    <a class="code" href="group__fie__img__draw.html#g3d34c19d524d872b24090782e3cf2fbc" title="直線の描画">fnFIE_draw_line</a>(hrgb_g, &amp;val, line);
+
+    <span class="comment">//画像をPNG形式で保存する</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    fit_line();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fit_line.png" alt="fit_line.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6e62331776c2f3b96675d6bf67842b54"></a><!-- doxytag: member="oss_fie_fit_polynomial.c::fnFIE_fit_polynomial" ref="g6e62331776c2f3b96675d6bf67842b54" args="(const DPNT_T *pnts, UINT pnt_num, UINT degree, enum f_fit_mode fitting_mode, DOUBLE param, DOUBLE *coefficient)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fit_polynomial           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>degree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__fitting.html#gda55682e2bdd416f9868a11c61ccdd3c">f_fit_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>fitting_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>coefficient</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  点群からのn次多項式近似 
+<p>
+与えれた座標点群から、最小二乗法または、ロバスト推定法で、指定された次数のn次多項式 <img class="formulaInl" alt="$ f(x)=a_{n}x^{n} + a_{n-1}x^{n-1} + \cdots + a_{1}x + a_{0} $" src="form_974.png">の係数を算出します。 各手法の詳細については、 <a class="el" href="group__fie__cg__fitting.html#fie_fitting_rbs">最小二乗法とロバスト推定法</a>を参照してください。 なお、ロバスト推定法については、現在以下のものについてのみ対応しています。<p>
+<ul>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_RANSAC ロバスト推定法（ランザック法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…標準偏差を自動決定</li>
+</ul>
+算出された係数は、パラメータ <em>coefficient</em> で指定された領域へ、次数の昇べき順で格納されます。 すなわち、<img class="formulaInl" alt="$ f(x)=a_{n}x^{n} + a_{n-1}x^{n-1} + \cdots + a_{1}x + a_{0} $" src="form_974.png">に対して、 <img class="formulaInl" alt="$ a_{0}, a_{1},\ldots, a_{n-1}, a_{n}$" src="form_975.png">の順で格納されます。係数が0の項は、該当する箇所に0が格納されます。<p>
+<em>coefficient</em> へは、計算結果を格納するのに必要なサイズの配列を確保したうえで、その配列を渡してください。 その際、n次多項式で近似を行う場合、係数はn+1個であることに注意してください。 なお、エラー発生時は <em>coefficient</em> の内容は変更されません。<p>
+本関数で次数を1に設定した場合、1次多項式、つまり直線による近似を行います。しかし、 誤差の計算式等、内部的な処理に違いがあるため、 <a class="el" href="group__fie__cg__fitting.html#gc9f4e2765c2c446a3805933f5bc433e7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの直...">fnFIE_fit_line()</a> とは異なる結果を返す場合があります。 直線による、より精度の高い近似を行いたい場合は、 <a class="el" href="group__fie__cg__fitting.html#gc9f4e2765c2c446a3805933f5bc433e7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの直...">fnFIE_fit_line()</a> を使用してください。<p>
+本関数では、与えられた点群の各yの値と、指定された多項式との残差を最小化することで係数の算出を行います。 そのため、x軸に垂直な直線や、双曲線のように、１つのxに対して複数のf(x)が定義されるような曲線の近似はできません。 本来はそのような直線・曲線で近似されるような点群を入力した場合は、意図したような結果を得ることができませんので、 ご注意ください。<p>
+<dl class="user" compact><dt><b>指定する次数の制限</b></dt><dd></dd></dl>
+指定する次数には、上限に制限があります。これは、近似計算を行う際に、行列計算を行う 必要があることや、近似計算において、最大で<img class="formulaInl" alt="$ \Sigma x^{2n} $" src="form_976.png"> の数値演算を行う必要が あること、高次の多項式での近似を行うことによる誤差の増大に起因します。<p>
+<ul>
+<li><em>degree</em> &lt;= 7</li>
+</ul>
+<dl class="user" compact><dt><b>最適化パラメータ（ <em>param</em> ）</b></dt><dd></dd></dl>
+ロバスト推定法は、標準偏差によりインライアとアウトライアを判定しています。 点群の誤差は正規分布であることを前提として、標準偏差より信頼区間内の点をインライアと判定します。 <em>param</em> は、例外値の影響を軽減するための利用されるパラメータです。 近似モード（ <em>fitting_mode</em> ）によって、パラメータの意味が異なります。<p>
+誤差の計算式は、n次多項式(1&lt;=n)の式を <img class="formulaInl" alt="$ a_{n}x^{n} + a_{n-1}x^{n-1} + \cdots + a_{1}x + a_{0} - y = 0 $" src="form_977.png">とすると、以下の通りとなります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \epsilon _{i} = |a_{n}x^{n}_{i} + a_{n-1}x^{n-1}_{i} + \cdots + a_{1}x_{i} + a_{0} - y_{i}| \]" src="form_978.png">
+<p>
+<p>
+F_FIT_MESTIMATOR または、 F_FIT_RANSAC を指定した場合、 <em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差となります。 標準偏差より95％信頼区間内の点をインライアと判定します。 つまり、 [-1.96σ, 1.96σ] より、95％信頼区間が計算されます。 推定した、対象点群の標準偏差をパラメータとして入力してください。<p>
+F_FIT_MESTIMATOR2 を指定した場合、<em>param</em> は 誤差 <img class="formulaInl" alt="$ \epsilon _{i} $" src="form_961.png"> の標準偏差の係数です。 標準偏差は、自動的に計算されます。 F_FIT_MESTIMATOR と F_FIT_RANSAC では、[-1.96σ, 1.96σ] と1.96に固定されていた係数を、自由に指定することができます。 例えば、以下の信頼区間内の点をインライアとして判定したい場合は、次の係数を入力してください。 <ul>
+<li>90％信頼区間内：1.645 </li>
+<li>95％信頼区間内：1.960 </li>
+<li>99％信頼区間内：2.567 </li>
+<li>99.9％信頼区間内：3.291</li>
+</ul>
+F_FIT_RANSAC を指定した場合の、ランダムに抽出するサンプル点の数は以下のようになります。<p>
+<ul>
+<li>F_FIT_RANSAC　：　<em>degree</em> * 5</li>
+</ul>
+そのため、F_FIT_RANSAC を指定した場合は、このサンプル数よりも大きい数の点群を入力して下さい。 このサンプル数以下の点群を入力しても実行は可能ですが、その場合、意図したような結果を得ることができない可能性があります。<p>
+なお F_FIT_MESTIMATOR、 F_FIT_RANSAC、 F_FIT_MESTIMATOR2 のいずれかを指定した場合、 <em>param</em> に 0 以下の値を指定するとパラメータエラーとなります。<p>
+<dl class="user" compact><dt><b>乱数</b></dt><dd></dd></dl>
+<em>fitting_mode</em> で、 F_FIT_RANSAC を選択した場合、 <a class="el" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [0...">fnFIE_mtrand_real2()</a> で発生させた擬似乱数を使用して処理をしています。 擬似乱数の初期化用シードは、 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> 呼び出しからの経過時間を元に設定されます。 そのため、入力データが同じ点群でも、結果が異なることがあります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力点群の個数（<em>degree</em> + 1 &lt;= <em>pnt_num）</em> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>degree</em>&nbsp;</td><td>近似したい多項式の次数（ 1 &lt;= <em>degree</em> &lt;= 7 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fitting_mode</em>&nbsp;</td><td>近似モード <ul>
+<li>F_FIT_LSM 最小二乗法 </li>
+<li>F_FIT_MESTIMATOR ロバスト推定法（Ｍ推定法） </li>
+<li>F_FIT_RANSAC ロバスト推定法（ランザック法） </li>
+<li>F_FIT_MESTIMATOR2 ロバスト推定法（Ｍ推定法）…標準偏差を自動決定 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>最適化パラメータ（ロバスト推定法で利用） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>coefficient</em>&nbsp;</td><td>多項式の係数を昇べき順で保持する　要素数は入力<em>degree</em> + 1 に等しい</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_OVERFLOW</em>&nbsp;</td><td>オーバーフロー発生により計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>M. A. Fischler, R. C. Bolles, Random Sample Consensus : A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography, Commun. ACM, no.24, vol.6, pp.381-395, 1981.</li><li>Rousseeuw P. J, Least Median of Squares Regression, Journal of the American Statistical Association, 79, pp.871-880, 1984.</li><li>David A. Forsyth, Jean Ponce, コンピュータビジョン §15.5, 共立出版, 2007.</li><li>松山隆司 他, コンピュータビジョン 第３章, 新技術コミュニケーションズ, 1998.</li><li>金谷健一, これならわかる最適化数学, 共立出版, ISBN 4-320-01786-2.</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例1:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">//エラー処理は省略していますので、注意してください</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>       <span class="comment">//数学ライブラリ使用</span>
+
+
+
+<span class="preprocessor">#define WIDTH       256     //出力画像の幅</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT      256     //出力画像の高さ</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM    256     //入力点の数 </span>
+<span class="preprocessor"></span><span class="preprocessor">#define DEGREE      3       //近似したい多項式の次数</span>
+<span class="preprocessor"></span>
+
+<span class="comment">//処理本体部分</span>
+VOID fit_polynomial(VOID)
+{
+    INT i;              <span class="comment">//ループ用変数</span>
+    DOUBLE val[3] ;     <span class="comment">//画像に描画する際の濃度値</span>
+
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a>  r;      <span class="comment">//擬似乱数列生成用データ </span>
+    UINT seed = 152;    <span class="comment">//乱数因子（適当な値）;</span>
+    DOUBLE random;      <span class="comment">//乱数</span>
+
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts = NULL;       <span class="comment">//点列の作成</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts_ans = NULL;    <span class="comment">//近似描画用の点群用</span>
+    DOUBLE  param[DEGREE + 1];  <span class="comment">//出力パラメータ用の領域</span>
+    DOUBLE  param2[DEGREE + 1]; <span class="comment">//出力パラメータ用の領域</span>
+    INT ret ;
+
+    <span class="comment">//描画用のルート画像</span>
+    FHANDLE hdst = NULL;
+
+    <span class="comment">//このサンプルでは、3次多項式 f(x) =0.001 * (x - 60) * (x - 120) * (x - 180) + 100 を近似します</span>
+
+    <span class="comment">//乱数の生成子初期化</span>
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>(seed, &amp;r);
+
+    <span class="comment">//点列領域確保</span>
+    pnts = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * PNTS_NUM);
+    pnts_ans = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * PNTS_NUM);
+
+    <span class="comment">//出力画像の領域を確保します カラー表示のため、uc8型 3ch を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//点群描画用の濃度値を設定　入力用点群は黒(0, 0, 0)で描画</span>
+    val[0] = 0; 
+    val[1] = 0; 
+    val[2] = 0; 
+    <span class="comment">//乱数を生成して、入力用の点群を生成する</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; PNTS_NUM; i++ ){
+        <span class="comment">//座標の設定</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i ;                                                 <span class="comment">//X座標</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0.001 * (i - 60) * (i - 120) * (i - 180) + 100 ;    <span class="comment">//Y座標</span>
+
+        <span class="comment">//乱数の生成</span>
+        random = <a class="code" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real2</a>(&amp;r);
+
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> += 25 * (random - 0.5);
+        <span class="comment">//Y座標に乱数を付加</span>
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> += 50 * (random - 0.5);
+
+        <span class="comment">//点列を描画する </span>
+        <span class="keywordflow">if</span>(0 &lt;= pnts[i].y &amp;&amp; pnts[i].y &lt; HEIGHT){
+            <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hdst, val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts[i] , 1);
+        }
+    }
+
+
+
+    
+    <span class="comment">// 最小二乗法による近似の推定</span>
+    <a class="code" href="group__fie__cg__fitting.html#g6e62331776c2f3b96675d6bf67842b54" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からのn次...">fnFIE_fit_polynomial</a>(pnts, PNTS_NUM, DEGREE, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe" title="最小二乗法">F_FIT_LSM</a>, 1.0, param);
+    
+    <span class="comment">//取得できた係数から、点群を作成</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; PNTS_NUM; i++){
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i;                  
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = param[3] * pow(i, 3) +  param[2] * pow(i, 2) + param[1] * pow(i, 1) + param[0];
+    }
+    <span class="comment">//近似した点群で曲線を描く 描画の色は(R,G,B)=(255,0,0)で設定する</span>
+    val[0] = 255; 
+    val[1] = 0; 
+    val[2] = 0; 
+    <a class="code" href="group__fie__img__draw.html#g0fac0c035179348d0644ce5f46c77167" title="曲線の描画">fnFIE_draw_curve</a>(hdst,val,pnts_ans,PNTS_NUM, <a class="code" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e65e102494a8e37d3fe3761d27e19ec4a6" title="3次カットマル-ロム">F_DRAW_CUBIC_CATMULL_ROM</a>);
+
+
+
+    <span class="comment">// M推定法による近似の推定</span>
+    ret = <a class="code" href="group__fie__cg__fitting.html#g6e62331776c2f3b96675d6bf67842b54" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からのn次...">fnFIE_fit_polynomial</a>(pnts, PNTS_NUM, DEGREE, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c3729cc38d8845d8bb55731ab1c7d9561" title="ロバスト推定（Ｍ推定法）…標準偏差の自動決定">F_FIT_MESTIMATOR2</a>  , 1.96, param2);
+
+    <span class="comment">//取得できた係数から、点群を作成</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; PNTS_NUM; i++){
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i;                 
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = param2[3] * pow(i, 3) +  param2[2] * pow(i, 2) + param2[1] * pow(i, 1) + param2[0];
+    }
+    <span class="comment">//近似した点群で曲線を描く 描画の色は(R,G,B)=(0,0,255)で設定する</span>
+    val[0] = 0; 
+    val[1] = 0; 
+    val[2] = 255; 
+    <a class="code" href="group__fie__img__draw.html#g0fac0c035179348d0644ce5f46c77167" title="曲線の描画">fnFIE_draw_curve</a>(hdst,val,pnts_ans,PNTS_NUM, <a class="code" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e65e102494a8e37d3fe3761d27e19ec4a6" title="3次カットマル-ロム">F_DRAW_CUBIC_CATMULL_ROM</a>);
+
+
+
+    <span class="comment">//結果を描画したものを保存する 画像描画のため、y方向が下向きに正であることに注意</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//解放処理</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts);
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts_ans);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+}
+
+
+INT main(VOID)
+{
+    <span class="comment">//FIEライブラリの初期化コール</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+
+    <span class="comment">//処理実行</span>
+    fit_polynomial();
+
+    <span class="comment">//終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> (0);
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_fit_polynomial_1.png" alt="fie_fit_polynomial_1.png">
+<p><strong>処理結果</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>使用例2:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">//エラー処理は省略していますので、注意してください</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>       <span class="comment">//数学ライブラリ使用</span>
+
+
+<span class="preprocessor">#define WIDTH       256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT      256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define DEGREE      2       //近似したい多項式の次数</span>
+<span class="preprocessor"></span>
+
+<span class="comment">/*</span>
+<span class="comment">    このサンプルでは画像の１次元濃度データを、ガウス関数でフィッティングすることを考えます。</span>
+<span class="comment">　 ガウス関数G(x)=N exp (-(x - e)^2 / 2σ^2 ) は、G(x)の対数をとることで </span>
+<span class="comment">    lnG(x) = lnN + ( -(x - e)^2 / 2σ^2 )という２次関数として見ることができます。</span>
+<span class="comment">    そこで、ガウス関数で近似したいデータ群を２次関数でまず近似し、そこからガウス関数の値を近似します。</span>
+<span class="comment">*/</span>
+
+
+
+<span class="comment">//処理本体部分</span>
+    
+VOID fit_Gaussian(VOID)
+{
+    INT i;              <span class="comment">//ループ用変数</span>
+    DOUBLE val[3] ;     <span class="comment">//画像に描画する際の濃度値</span>
+
+    <span class="comment">//入力画像のパラメータ取得用</span>
+    INT width, height;
+    INT_PTR step;
+    UCHAR * adr;
+
+    INT pnt_num;                <span class="comment">//点群の数</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts = NULL;       <span class="comment">//点群を保持する領域</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * pnts_ans = NULL;   <span class="comment">//結果を描画するために使用する領域</span>
+    DOUBLE  param[DEGREE + 1];  <span class="comment">//出力パラメータ用の領域</span>
+    DOUBLE  param2[DEGREE + 1]; <span class="comment">//出力パラメータ用の領域</span>
+
+    DOUBLE  N, e, sigma_sqr;    <span class="comment">//フィッティングするガウス関数のパラメータ</span>
+    
+    FHANDLE hSrc = NULL;        <span class="comment">//ファイル読み込み用ハンドル</span>
+    FHANDLE hdst = NULL;        <span class="comment">//描画用のルート画像</span>
+    
+
+
+    <span class="comment">//入力画像読み込み</span>
+    <span class="comment">//この例では、ガウス分布に従うような濃度分布に、ランダムにノイズが付与されている画像を用います</span>
+    <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(<span class="stringliteral">"Src1.png"</span>,&amp;hSrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">//入力画像のパラメータを取得</span>
+    <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hSrc, NULL, NULL, &amp;step, &amp;width, &amp;height);
+    adr = (UCHAR *)<a class="code" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479" title="画像アドレス取得(チャネル０固定)">fnFIE_img_get_adrs</a>(hSrc);
+
+    
+    <span class="comment">//点群領域確保</span>
+    pnt_num = width;
+    pnts = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * pnt_num);
+    pnts_ans = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>)) * pnt_num);
+
+    <span class="comment">//出力画像の領域を確保 カラー描画をするので3ch確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+
+    
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    val[0] = 0;
+    val[1] = 1;
+    val[2] = 2;
+    <span class="comment">//ちょうどy座標が中間 横一列の濃度を取得し、対数の値に変換する</span>
+    adr = adr + ( step * ( height / 2));
+    <span class="keywordflow">for</span>(i = 0; i &lt; pnt_num; i++){
+        pnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i;
+        pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = adr[i];
+
+        <span class="comment">//元の濃度の状態はプロットしておく</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hdst, val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts[i] , 1);
+
+        <span class="comment">//濃度の値の対数を計算して、点群に設定する</span>
+        <span class="keywordflow">if</span>(0 != adr[i]){
+            pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = log(adr[i]);
+        }
+        <span class="keywordflow">else</span>{
+            pnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+        }
+        
+    }
+
+
+    <span class="comment">// 近似計算を行い近似式を計算する</span>
+    <span class="comment">/*</span>
+<span class="comment">        取得できた係数から、ガウス関数を計算する</span>
+<span class="comment">        対数をとって近似した二次多項式の係数と、ガウス関数のパラメータN, e, σ^2には、</span>
+<span class="comment">        二次多項式をf(x) = ax^2 + bx + cとしたときに、次のような関係があります。</span>
+<span class="comment"></span>
+<span class="comment">        N = exp(c - (b^2 / 4a) )</span>
+<span class="comment">        e = -b / 2a</span>
+<span class="comment">        σ^2 = -1 / 2a</span>
+<span class="comment"></span>
+<span class="comment">    */</span>
+    <span class="comment">// 最小二乗法による近似の推定</span>
+    <a class="code" href="group__fie__cg__fitting.html#g6e62331776c2f3b96675d6bf67842b54" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からのn次...">fnFIE_fit_polynomial</a>(pnts, pnt_num, DEGREE, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c1cc9bbe1644701a8f64446d48cc721fe" title="最小二乗法">F_FIT_LSM</a>, 1.0, param);
+
+    N = exp(param[0] - ( pow(param[1],2) / (4 * param[2] ) ) );
+    e = -param[1] / ( 2 * param[2] );
+    sigma_sqr = -1 / (2 * param[2] );
+    
+    <span class="comment">//取得できた係数から、点群を作成</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; pnt_num; i++){
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i;                 
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = N * exp(-pow(i - e, 2) / (2 * sigma_sqr));
+    }
+    <span class="comment">//近似した曲線を描画する 描画色は(R,G,B)=(255,0,0)</span>
+    val[0] = 255; 
+    val[1] = 0;
+    val[2] = 0;
+    <a class="code" href="group__fie__img__draw.html#g0fac0c035179348d0644ce5f46c77167" title="曲線の描画">fnFIE_draw_curve</a>(hdst,val,pnts_ans,pnt_num, <a class="code" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e64d599fc1bda390f71786e5cbeabf7e55" title="折れ線">F_DRAW_POLYGONAL_LINE</a>);
+    
+
+    <span class="comment">// M推定法による近似の推定</span>
+    <a class="code" href="group__fie__cg__fitting.html#g6e62331776c2f3b96675d6bf67842b54" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  点群からのn次...">fnFIE_fit_polynomial</a>(pnts, pnt_num, DEGREE, <a class="code" href="group__fie__cg__fitting.html#ggda55682e2bdd416f9868a11c61ccdd3c3729cc38d8845d8bb55731ab1c7d9561" title="ロバスト推定（Ｍ推定法）…標準偏差の自動決定">F_FIT_MESTIMATOR2</a>, 1.96 , param2);
+
+    N = exp(param2[0] - ( pow(param2[1],2) / (4 * param2[2] ) ) );
+    e = -param2[1] / ( 2 * param2[2] );
+    sigma_sqr = -1 / (2 * param2[2] );
+
+    <span class="comment">//取得できた係数から、点群を作成</span>
+    <span class="keywordflow">for</span>(i = 0; i &lt; pnt_num; i++){
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i;                 
+        pnts_ans[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = N * exp(-pow(i - e, 2) / (2 * sigma_sqr));
+    }
+    <span class="comment">//近似した曲線を描画する 描画色は(R,G,B)=(0,0,255)</span>
+    val[0] = 0; 
+    val[1] = 0;
+    val[2] = 255;
+    <a class="code" href="group__fie__img__draw.html#g0fac0c035179348d0644ce5f46c77167" title="曲線の描画">fnFIE_draw_curve</a>(hdst,val,pnts_ans, pnt_num, <a class="code" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e64d599fc1bda390f71786e5cbeabf7e55" title="折れ線">F_DRAW_POLYGONAL_LINE</a>);
+
+    <span class="comment">//結果を描画したものを保存する 画像描画のため、y方向が下向きに正であることに注意</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//解放処理</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts);
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pnts_ans);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hSrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+}
+
+
+INT main(VOID)
+{
+    <span class="comment">//FIEライブラリの初期化コール</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">//処理実行</span>
+    fit_Gaussian();
+
+    <span class="comment">//終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> (0);
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_fit_polynomial2.png" alt="fie_fit_polynomial2.png">
+<p><strong>入力画像(y=128の横一列の濃度を近似)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_fit_polynomial3.png" alt="fie_fit_polynomial3.png">
+<p><strong>処理結果</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

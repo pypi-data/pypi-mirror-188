@@ -1,0 +1,1006 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 画像描画</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>画像描画<br>
+<small>
+[<a class="el" href="group__fie__std__operation__base.html">基本画像操作</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+本ライブラリは、画像メモリに対して幾何図形を描画するライブラリです。<p>
+<dl class="user" compact><dt><b>濃度値</b></dt><dd></dd></dl>
+濃度値を格納した配列の要素数はチャネル数だけ必要となります。 ただし、 F_IMG_RGBQUAD 形式のみチャネル数は１、濃度値の配列の要素数は３で固定となります。 濃度値を格納した配列の要素数がそれ以上の場合は、エラーとはなりませんが処理には使用されません。 配列の要素数はチェックしていません。 チャネル数より配列の要素数が少ない場合の動作は保証しません。 さらに、本関数では、濃度値は自動的に形式毎に有効な値に変換されます。 出力画像が F_IMG_DOUBLE 、 F_IMG_BIN 形式以外では、 濃度値は <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> により四捨五入で整数に変換されます。 濃度値が対象となる画素タイプの濃度値範囲を超えていた場合は、サチュレーション処理が行われます。 F_IMG_BIN 形式は、０または１に変換されます。 ０以下の値は０に、それ以外は１となります。<p>
+<dl class="user" compact><dt><b>領域の塗りつぶし</b></dt><dd></dd></dl>
+円、楕円、長方形、多角形は線の描画以外に、内側、外側の塗りつぶし処理が行えます。 その際、内側の塗りつぶし領域は、描画される線を含みます。 外側の塗りつぶし領域は、描画される線を含みません。<p>
+<dl class="user" compact><dt><b>小数点の扱い</b></dt><dd></dd></dl>
+与えられた座標点、半径などの値は四捨五入され描画されます。 四捨五入には <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> を使用しています。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914">F_DRAW_LINE</a> =  0, 
+<a class="el" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d">F_DRAW_FILL_IN</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9eb69e934fd82feb7037745ac824e9b250">F_DRAW_FILL_OUT</a> =  2
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">図形描画のスタイルの指定  <a href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">f_draw_curve_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e66ab183205fd4fbfa3dcbc5eb3a15d5e3">F_DRAW_CUBIC_BSPLINE</a> =  0, 
+<a class="el" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e6b964c89319f9650eb13c27e09e1ef629">F_DRAW_QUADRATIC_BEZIER</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e65e102494a8e37d3fe3761d27e19ec4a6">F_DRAW_CUBIC_CATMULL_ROM</a> =  2, 
+<a class="el" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e66863a8c7eb26f2e8f1bd2b5054e35981">F_DRAW_CUBIC_BEZIER</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__img__draw.html#ggc1c22c82a5c2698f5fca8f68b29086e64d599fc1bda390f71786e5cbeabf7e55">F_DRAW_POLYGONAL_LINE</a> =  99
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">曲線の種類の指定  <a href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c">fnFIE_draw_circle</a> (FHANDLE hImg, DOUBLE *val, enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a> mode, <a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">円の描画  <a href="#g11b167f09af94662edd48caa14cef42c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g0fac0c035179348d0644ce5f46c77167">fnFIE_draw_curve</a> (FHANDLE hImg, DOUBLE *val, <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num, enum <a class="el" href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">f_draw_curve_mode</a> mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">曲線の描画  <a href="#g0fac0c035179348d0644ce5f46c77167"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structDPNT__T.html">DPNT_T</a> *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g133be3b2bb5ba665c96cd980ee64f671">fnFIE_draw_curve_get_point_set</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num_pnt, enum <a class="el" href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">f_draw_curve_mode</a> mode, INT *num_inter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">曲線補間をして、補間点群を取得  <a href="#g133be3b2bb5ba665c96cd980ee64f671"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g8a051485d36dcfc4857f18af1e1975c1">fnFIE_draw_ellipse</a> (FHANDLE hImg, DOUBLE *val, enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a> mode, <a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE major, DOUBLE minor, DOUBLE theta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">楕円の描画  <a href="#g8a051485d36dcfc4857f18af1e1975c1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0">fnFIE_draw_line_seg</a> (FHANDLE hImg, DOUBLE *val, <a class="el" href="structDPNT__T.html">DPNT_T</a> start, <a class="el" href="structDPNT__T.html">DPNT_T</a> end)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">線分の描画  <a href="#g407c003f5e1d6c162327cd9fb6a32ea0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g3d34c19d524d872b24090782e3cf2fbc">fnFIE_draw_line</a> (FHANDLE hImg, DOUBLE *val, <a class="el" href="structDLINE__T.html">DLINE_T</a> line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線の描画  <a href="#g3d34c19d524d872b24090782e3cf2fbc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g1b6fc1f2fec4bc09638f042ced117401">fnFIE_draw_point</a> (FHANDLE hImg, DOUBLE *val, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点の描画  <a href="#g1b6fc1f2fec4bc09638f042ced117401"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g862787acd9a7fc7efec46816c6090a8c">fnFIE_draw_rect</a> (FHANDLE hImg, DOUBLE *val, enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a> mode, <a class="el" href="structDPNT__T.html">DPNT_T</a> start, DOUBLE width, DOUBLE height, <a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE theta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">長方形の描画  <a href="#g862787acd9a7fc7efec46816c6090a8c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__draw.html#g0045909ea39b11183dc8776dd8e832b7">fnFIE_draw_polygon</a> (FHANDLE hImg, DOUBLE *val, enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a> mode, <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">多角形の描画  <a href="#g0045909ea39b11183dc8776dd8e832b7"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g7c9f210cb6c3535d4fc6125964250e9e"></a><!-- doxytag: member="fie.h::f_draw_fill_mode" ref="g7c9f210cb6c3535d4fc6125964250e9e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+図形描画のスタイルの指定 
+<p>
+描画する図形のスタイルを指定します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914"></a><!-- doxytag: member="F_DRAW_LINE" ref="gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" args="" -->F_DRAW_LINE</em>&nbsp;</td><td>
+図形の線のみを描画 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d"></a><!-- doxytag: member="F_DRAW_FILL_IN" ref="gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" args="" -->F_DRAW_FILL_IN</em>&nbsp;</td><td>
+図形の内側を塗りつぶし </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg7c9f210cb6c3535d4fc6125964250e9eb69e934fd82feb7037745ac824e9b250"></a><!-- doxytag: member="F_DRAW_FILL_OUT" ref="gg7c9f210cb6c3535d4fc6125964250e9eb69e934fd82feb7037745ac824e9b250" args="" -->F_DRAW_FILL_OUT</em>&nbsp;</td><td>
+図形の外側を塗りつぶし </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc1c22c82a5c2698f5fca8f68b29086e6"></a><!-- doxytag: member="fie.h::f_draw_curve_mode" ref="gc1c22c82a5c2698f5fca8f68b29086e6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">f_draw_curve_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+曲線の種類の指定 
+<p>
+描画する曲線の種類を指定します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggc1c22c82a5c2698f5fca8f68b29086e66ab183205fd4fbfa3dcbc5eb3a15d5e3"></a><!-- doxytag: member="F_DRAW_CUBIC_BSPLINE" ref="ggc1c22c82a5c2698f5fca8f68b29086e66ab183205fd4fbfa3dcbc5eb3a15d5e3" args="" -->F_DRAW_CUBIC_BSPLINE</em>&nbsp;</td><td>
+3次Ｂスプライン </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc1c22c82a5c2698f5fca8f68b29086e6b964c89319f9650eb13c27e09e1ef629"></a><!-- doxytag: member="F_DRAW_QUADRATIC_BEZIER" ref="ggc1c22c82a5c2698f5fca8f68b29086e6b964c89319f9650eb13c27e09e1ef629" args="" -->F_DRAW_QUADRATIC_BEZIER</em>&nbsp;</td><td>
+2次ベジェ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc1c22c82a5c2698f5fca8f68b29086e65e102494a8e37d3fe3761d27e19ec4a6"></a><!-- doxytag: member="F_DRAW_CUBIC_CATMULL_ROM" ref="ggc1c22c82a5c2698f5fca8f68b29086e65e102494a8e37d3fe3761d27e19ec4a6" args="" -->F_DRAW_CUBIC_CATMULL_ROM</em>&nbsp;</td><td>
+3次カットマル-ロム </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc1c22c82a5c2698f5fca8f68b29086e66863a8c7eb26f2e8f1bd2b5054e35981"></a><!-- doxytag: member="F_DRAW_CUBIC_BEZIER" ref="ggc1c22c82a5c2698f5fca8f68b29086e66863a8c7eb26f2e8f1bd2b5054e35981" args="" -->F_DRAW_CUBIC_BEZIER</em>&nbsp;</td><td>
+3次ベジェ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc1c22c82a5c2698f5fca8f68b29086e64d599fc1bda390f71786e5cbeabf7e55"></a><!-- doxytag: member="F_DRAW_POLYGONAL_LINE" ref="ggc1c22c82a5c2698f5fca8f68b29086e64d599fc1bda390f71786e5cbeabf7e55" args="" -->F_DRAW_POLYGONAL_LINE</em>&nbsp;</td><td>
+折れ線 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g11b167f09af94662edd48caa14cef42c"></a><!-- doxytag: member="fie_draw_circle.c::fnFIE_draw_circle" ref="g11b167f09af94662edd48caa14cef42c" args="(FHANDLE hImg, DOUBLE *val, enum f_draw_fill_mode mode, DPNT_T center, DOUBLE radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_circle           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+円の描画 
+<p>
+指定されたパラメータにより、円を描画します。 本描画関数は、中心点、および半径はは <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入され描画されます。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+座標系は、FIEの座標系に準拠します。 １画素は、その中心を座標(0, 0)としています。<p>
+下図に示す円は、中心が(4.0, 4.0)、半径が 2.0 の円を描画した場合の例です。 なお、与えられたパラメータは四捨五入されて描画されます。 そのため、中心が(3.5, 3.5)、半径が1.5の円と、中心が(4.4, 4.4)、半径が2.4の円は、 下図と同じ円が描画されることになります。 また、半径が0の円は、中心座標１画素のみの点として描画されます。<p>
+<div align="center">
+<img src="draw_circle.png" alt="draw_circle.png">
+</div>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する各パラメータは、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>radius &lt;= 268435455 </li>
+<li>I32_MIN(-2147483648) &lt;= (center.x, center.y) + radius &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= (center.x + bitpos, center.y) + radius &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>描画モード <ul>
+<li>F_DRAW_LINE 図形の線のみを描画 </li>
+<li>F_DRAW_FILL_IN 図形の内側を塗りつぶし </li>
+<li>F_DRAW_FILL_OUT 図形の外側を塗りつぶし </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>中心点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>半径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_circle.png" alt="fie_draw_circle.png">
+<p><strong>線のみ描画</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_circle_fill_in.png" alt="fie_draw_circle_fill_in.png">
+<p><strong>内側塗りつぶし</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_circle_fill_out.png" alt="fie_draw_circle_fill_out.png">
+<p><strong>外側塗りつぶし</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0fac0c035179348d0644ce5f46c77167"></a><!-- doxytag: member="fie_draw_curve.c::fnFIE_draw_curve" ref="g0fac0c035179348d0644ce5f46c77167" args="(FHANDLE hImg, DOUBLE *val, DPNT_T *pnts, INT num, enum f_draw_curve_mode mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_curve           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">f_draw_curve_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+曲線の描画 
+<p>
+与えられた頂点座標より、曲線を描画します。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+与えられた頂点は、指定された曲線の近似計算により補間点が計算された後に、 その補間点の小数点以下は四捨五入され描画されます。 求められた補間点が隣接していない場合、線分描画の関数を利用してして点間は補間されます。 なお、F_DRAW_POLYGONAL_LINEは、与えられた頂点を直接四捨五入し、頂点間を線分で結びます。<p>
+本関数では処理を行う際に <em>pnts</em> 配列の座標値をオフセットした値に書き換えてから処理し、 最後にそのオフセット分を元に戻します。このため、座標値に非常に小さな値が入っていた場合、 桁落ちによって処理前と処理後で <em>pnts</em> 配列の座標値が微少に変化してしまうことがあります。 ご注意ください。<p>
+<dl class="user" compact><dt><b>必要な頂点数</b></dt><dd>各曲線で必要な最小頂点数は以下の通りです。 頂点数が少ない場合はエラーとなります。 ただし、折れ線（F_DRAW_POLYGONAL_LINE）は、与えられた点群データが１の場合、点を描画します。 ０以下の場合はエラーとなります。 <ul>
+<li>3次Ｂスプライン曲線（F_DRAW_CUBIC_BSPLINE) ：7 </li>
+<li>2次ベジェ曲線（F_DRAW_QUADRATIC_BEZIER） ：5 </li>
+<li>3次カットマル-ロム曲線（F_DRAW_CUBIC_CATMULL_ROM） ：4 </li>
+<li>折れ線（F_DRAW_POLYGONAL_LINE） ：2</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>曲線の性質</b></dt><dd><ul>
+<li>ベジェ曲線はセグメントの始点と終点のみ通過します。 本実装での ２次のベジェ曲線では ３つの点から曲線が計算され、中点が制御点として働きます。 ３つの定義点によるポリゴンの形状から描かれる曲線の形状を想像しやすいという特徴を持っています。 ここで、p(0)、p(1)、p(2)の３点からベジェ曲線を生成するとします。 本実装では、曲線のセグメント間の連結を滑らかにするために、始点をp(0)とp(1)の中点、 終点をp(1)とp(2)の中点としてベジェ曲線が求められます。 p(0)とp(2)上を通過しないことに注意してください。 </li>
+<li>スプライン曲線は、定義点をまったく通過せず、曲線は４点の内側に発生します。 定義点の移動に対して比較的緩慢に変化するので、滑らかな曲線を微妙にコントロールしたい場合に最も適しています。 </li>
+<li>カットマル－ロム曲線は、４つの定義点のうち、２番目の点を起点に、次の点までの曲線を描きます。 ベジェとはとは対照的です。 与えられた頂点上に曲線を通過させたい場合に使用します。</li>
+</ul>
+</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する座標値は、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>I32_MIN(-2147483648) &lt;= pnts[].x, pnts[].y &lt;= I32_MAX(2147483647) </li>
+<li>I32_MIN(-2147483648) &lt;= (pnts[].x + bitpos), pnts[].y &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>点群データ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点群の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>曲線の種類 <ul>
+<li>F_DRAW_CUBIC_BSPLINE ３次Ｂスプライン曲線 </li>
+<li>F_DRAW_QUADRATIC_BEZIER ２次ベジェ曲線 </li>
+<li>F_DRAW_CUBIC_CATMULL_ROM ３次カットマル-ロム曲線 </li>
+<li>F_DRAW_POLYGONAL_LINE 折れ線 </li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算ができない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下の処理結果例では、折れ線の上に各曲線を描画しています。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_curve_3_bspline.png" alt="fie_draw_curve_3_bspline.png">
+<p><strong>3次Ｂスプライン曲線</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_curve_2_bezier.png" alt="fie_draw_curve_2_bezier.png">
+<p><strong>2次ベジェ曲線</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_curve_3_catmull.png" alt="fie_draw_curve_3_catmull.png">
+<p><strong>3次カットマル-ロム曲線</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g133be3b2bb5ba665c96cd980ee64f671"></a><!-- doxytag: member="fie_draw_curve.c::fnFIE_draw_curve_get_point_set" ref="g133be3b2bb5ba665c96cd980ee64f671" args="(DPNT_T *pnts, INT num_pnt, enum f_draw_curve_mode mode, INT *num_inter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structDPNT__T.html">DPNT_T</a>* FVALGAPI fnFIE_draw_curve_get_point_set           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__img__draw.html#gc1c22c82a5c2698f5fca8f68b29086e6">f_draw_curve_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_inter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+曲線補間をして、補間点群を取得 
+<p>
+与えられた頂点より曲線補間をして、その補間した点の座標を DPNT_T型の配列として得ることができます。 得られる座標は、浮動小数点型となります。 なお、使用済みの配列は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> により必ず領域を解放してください。<p>
+最小頂点数、各曲線の性質については、 <a class="el" href="group__fie__img__draw.html#g0fac0c035179348d0644ce5f46c77167" title="曲線の描画">fnFIE_draw_curve()</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>頂点データ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_pnt</em>&nbsp;</td><td>頂点の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>曲線の種類 <ul>
+<li>F_DRAW_CUBIC_BSPLINE ３次Ｂスプライン曲線 </li>
+<li>F_DRAW_QUADRATIC_BEZIER ２次ベジェ曲線 </li>
+<li>F_DRAW_CUBIC_CATMULL_ROM ３次カットマル-ロム曲線 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_inter</em>&nbsp;</td><td>求められた補間点群の数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>求められた曲線近似による補間点群の配列の先頭アドレスを返します。 メモリ不足、不正なパラメータが渡された場合、ライセンスエラー、未初期化エラー などで失敗した場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8a051485d36dcfc4857f18af1e1975c1"></a><!-- doxytag: member="fie_draw_ellipse.c::fnFIE_draw_ellipse" ref="g8a051485d36dcfc4857f18af1e1975c1" args="(FHANDLE hImg, DOUBLE *val, enum f_draw_fill_mode mode, DPNT_T center, DOUBLE major, DOUBLE minor, DOUBLE theta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_ellipse           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>major</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>minor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+楕円の描画 
+<p>
+指定されたパラメータにより、楕円を描画します。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+座標系は、FIEの座標系に準拠します。 １画素はその中心を座標(0, 0)としています。 下図に示す楕円は、中心が(5.0, 4.0)、長軸半径が3.0、短軸半径が2.0の楕円を描画した場合の例です。 また、長軸半径と短軸半径がともに0の楕円は、座標(5.0, 4.0)の点として描画されます。<p>
+<div align="center">
+<img src="draw_ellipse.png" alt="draw_ellipse.png">
+</div>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する各パラメータは、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>I32_MIN(-2147483648) &lt;= (center.x, center.y) + major &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= (center.x, center.y) + minor &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= (center.x + bitpos, center.y) + major &lt;= I32_MAX(2147483647)：F_IMG_BIN※1 </li>
+<li>I32_MIN(-2147483648) &lt;= (center.x + bitpos, center.y) + minor &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>描画モード <ul>
+<li>F_DRAW_LINE 図形の線のみを描画 </li>
+<li>F_DRAW_FILL_IN 図形の内側を塗りつぶし </li>
+<li>F_DRAW_FILL_OUT 図形の外側を塗りつぶし </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>中心点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>major</em>&nbsp;</td><td>長軸（x軸方向）の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>minor</em>&nbsp;</td><td>短軸（y軸方向）の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>回転角（ラジアン）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算ができない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_ellipse.png" alt="fie_draw_ellipse.png">
+<p><strong>線のみ描画</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_ellipse_fill_in.png" alt="fie_draw_ellipse_fill_in.png">
+<p><strong>内側塗りつぶし</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_ellipse_fill_out.png" alt="fie_draw_ellipse_fill_out.png">
+<p><strong>外側塗りつぶし</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g407c003f5e1d6c162327cd9fb6a32ea0"></a><!-- doxytag: member="fie_draw_line.c::fnFIE_draw_line_seg" ref="g407c003f5e1d6c162327cd9fb6a32ea0" args="(FHANDLE hImg, DOUBLE *val, DPNT_T start, DPNT_T end)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_line_seg           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>end</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+線分の描画 
+<p>
+与えられた始点と終点の座標より、線分を描画します。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+本描画関数は、始点、および終点は <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入され描画されます。 ただし、始点、または終点が画像領域外の場合は、クリッピング処理が行われ、画像との交点が求められます。 求められた交点の小数点以下が四捨五入され、描画のための始点、または終点となります。 また、実装したアルゴリズムの特徴として、傾きが同じ線分の場合でも、始点と終点が異なった場合、 描画される線分が一致しない場合があります。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する各座標値は、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>I32_MIN(-2147483648) &lt;= start.x, start.y, end.x, end.y &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= (start.x + bitpos), start.y, (end.x+bitpos), end.y &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start</em>&nbsp;</td><td>描画開始点の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>end</em>&nbsp;</td><td>描画終了点の座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>コンピュータグラフィックス 理論と実践, ISBN 4-274-06405-0, P.78, P.116</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_line_seg.png" alt="fie_draw_line_seg.png">
+</div>
+  </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3d34c19d524d872b24090782e3cf2fbc"></a><!-- doxytag: member="fie_draw_line.c::fnFIE_draw_line" ref="g3d34c19d524d872b24090782e3cf2fbc" args="(FHANDLE hImg, DOUBLE *val, DLINE_T line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_line           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線の描画 
+<p>
+指定されたパラメータにより、直線を描画します。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMS_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+本描画関数は、与えられた直線の方程式式から、描画のための始点と終点が求められます。 ただし、直線の方程式 ax + by + c = 0 における、aとbが閾値(1e-9)未満の場合、直線は描画されません。<p>
+実装したアルゴリズムの特徴として、傾きが同じ線分の場合でも、始点と終点が異なった場合、 描画される線分が一致しない場合があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>描画する直線の式</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>コンピュータグラフィックス 理論と実践, ISBN 4-274-06405-0, P.78, P.116</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_line.png" alt="fie_draw_line.png">
+</div>
+  </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1b6fc1f2fec4bc09638f042ced117401"></a><!-- doxytag: member="fie_draw_point.c::fnFIE_draw_point" ref="g1b6fc1f2fec4bc09638f042ced117401" args="(FHANDLE hImg, DOUBLE *val, DPNT_T pnt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_point           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点の描画 
+<p>
+与えられた座標点を描画します。 与えられた座標点の <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入され描画されます。 対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する座標値は、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>I32_MIN(-2147483648) &lt;= pnt.x, pnt.y &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= (pnt.x + bitpos), pnt.y &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>座標点</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177" title="指定座標の濃度値設定">fnFIE_img_set_dens()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g862787acd9a7fc7efec46816c6090a8c"></a><!-- doxytag: member="fie_draw_polygon.c::fnFIE_draw_rect" ref="g862787acd9a7fc7efec46816c6090a8c" args="(FHANDLE hImg, DOUBLE *val, enum f_draw_fill_mode mode, DPNT_T start, DOUBLE width, DOUBLE height, DPNT_T center, DOUBLE theta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_rect           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+長方形の描画 
+<p>
+指定されたパラメータにより、長方形を描画します。 なお、与えられたパラメータは <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入されて描画されます。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_S16、F_IMG_US16、F_IMG_UC8、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+座標系は、FIEの座標系に準拠します。 １画素はその中心を座標(0, 0)としています。 下図に示す長方形は、幅が６、高さが４として描画されています。 １画素の中心座標(0, 0)として考えた場合、幅が７画素、高さが５画素の長方形として描画されます。 そのため、幅と高さがともに０の長方形は、点として描画されます。<p>
+<div align="center">
+<img src="draw_rect.png" alt="draw_rect.png">
+</div>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する各パラメータは、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>I32_MIN(-2147483648) &lt;= center.x, center.y &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= ４頂点の各座標 &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= ４頂点の各座標のｘ座標 + bitpos, ｙ座標 &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>描画モード <ul>
+<li>F_DRAW_LINE 図形の線のみを描画 </li>
+<li>F_DRAW_FILL_IN 図形の内側を塗りつぶし </li>
+<li>F_DRAW_FILL_OUT 図形の外側を塗りつぶし </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start</em>&nbsp;</td><td>始点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>回転のための中心点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>回転角（ラジアン）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_rect.png" alt="fie_draw_rect.png">
+<p><strong>線のみ描画</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_rect_fill_in.png" alt="fie_draw_rect_fill_in.png">
+<p><strong>内側塗りつぶし</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_rect_fill_out.png" alt="fie_draw_rect_fill_out.png">
+<p><strong>外側塗りつぶし</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0045909ea39b11183dc8776dd8e832b7"></a><!-- doxytag: member="fie_draw_polygon.c::fnFIE_draw_polygon" ref="g0045909ea39b11183dc8776dd8e832b7" args="(FHANDLE hImg, DOUBLE *val, enum f_draw_fill_mode mode, DPNT_T *pnts, INT num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_draw_polygon           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__img__draw.html#g7c9f210cb6c3535d4fc6125964250e9e">f_draw_fill_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+多角形の描画 
+<p>
+与えられた頂点座標より、多角形を描画します。 なお、与えられた頂点群は <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入されて描画されます。<p>
+対応している画素タイプは、F_IMG_BIN、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE、F_IMG_RGBQUADです。 ただし、F_IMG_RGBQUADはチャネル０のみが描画されます。 他のチャネルは描画されません。<p>
+与えられた頂点を Pn = { p(0),p(1),…,p(n-2),p(n-1)} とおくと、 本関数では p(0)と p(n-1) は、接続しているのとして処理をされます。 つまり与えられた頂点群は、閉空間として扱われます。 ただし、頂点数が１の場合は点を、２の場合は線分を描画します。<p>
+塗りつぶしは、ポリゴンと輪郭とスキャンラインの交点を求め、求められた各点の間を水平成分で 結んでいく処理を各スキャンラインについて繰り返すことで実現されています。 そのため、例えば一筆書きで描かれた星型のように内側にできる閉じた領域は塗りつぶされません。<p>
+本関数では処理を行う際に <em>pnts</em> 配列の座標値をオフセットした値に書き換えてから処理し、 最後にそのオフセット分を元に戻します。このため、座標値に非常に小さな値が入っていた場合、 桁落ちによって処理前と処理後で <em>pnts</em> 配列の座標値が微少に変化してしまうことがあります。 ご注意ください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>指定する座標値は、以下の条件を満たすように指定してください。 条件を満たさない場合、期待通りの動作ではなかったり、アクセス違反が発生することがあります。 <ul>
+<li>I32_MIN(-2147483648) &lt;= pnts[].x, pnts[].y &lt;= I32_MAX(2147483647)：F_IMG_BIN以外 </li>
+<li>I32_MIN(-2147483648) &lt;= (pnts[].x + bitpos), pnts[].y &lt;= I32_MAX(2147483647)：F_IMG_BIN※1</li>
+</ul>
+※1：bitpos（ブロック内の左上画素のビット位置）</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>画像のハンドル（type：bin,uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>濃度値を格納した配列の先頭アドレス </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>描画モード <ul>
+<li>F_DRAW_LINE 図形の線のみを描画 </li>
+<li>F_DRAW_FILL_IN 図形の内側を塗りつぶし </li>
+<li>F_DRAW_FILL_OUT 図形の外側を塗りつぶし </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>頂点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>コンピュータグラフィックス 理論と実践, ISBN 4-274-06405-0, P.99</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_draw_poly1.png" alt="fie_draw_poly1.png">
+<p><strong>線のみ描画</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_poly_fill_in1.png" alt="fie_draw_poly_fill_in1.png">
+<p><strong>内側塗りつぶし</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_poly_fill_out1.png" alt="fie_draw_poly_fill_out1.png">
+<p><strong>外側塗りつぶし</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_draw_poly2.png" alt="fie_draw_poly2.png">
+<p><strong>線のみ描画</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_poly_fill_in2.png" alt="fie_draw_poly_fill_in2.png">
+<p><strong>内側塗りつぶし</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_draw_poly_fill_out2.png" alt="fie_draw_poly_fill_out2.png">
+<p><strong>外側塗りつぶし</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ファジー推論テーブル</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ファジー推論テーブル<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">メンバシップ関数生成用基準値  <a href="structF__FUZZY__BASE.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FUZZY__SPEC.html">F_FUZZY_SPEC</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">実数系台集合仕様  <a href="structF__FUZZY__SPEC.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fuzzy.html#gb248ff53e0ed6ea76b54794be3845e52">fnFIE_fuzzy_open</a> (INT rule_num, const <a class="el" href="structF__FUZZY__SPEC.html">F_FUZZY_SPEC</a> *antec_cond, INT antec_num, const <a class="el" href="structF__FUZZY__SPEC.html">F_FUZZY_SPEC</a> *concl_cond, INT concl_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ファジィ推論テーブルの生成  <a href="#gb248ff53e0ed6ea76b54794be3845e52"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fuzzy.html#g392e0264a7c0ba13b7cd19362ff9927c">fnFIE_fuzzy_clear_rule</a> (FHANDLE htbl, INT rule_no)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">プロダクションルールのクリア（メンバシップ関数のクリア）  <a href="#g392e0264a7c0ba13b7cd19362ff9927c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fuzzy.html#gcd0814517707116f5cee16caa1e33ff6">fnFIE_fuzzy_generate_rule</a> (FHANDLE htbl, INT rule_no, const <a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a> *antec_memb, const <a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a> *concl_memb)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ファジィルールの作成(メンバシップ関数の生成)  <a href="#gcd0814517707116f5cee16caa1e33ff6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fuzzy.html#g2cb6af9ae64a53e7c28397c3f89a0765">fnFIE_fuzzy_inference</a> (FHANDLE htbl, const <a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a> *inp, DOUBLE *out)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ファジィの実行(ルールと観測情報を使っての推論)  <a href="#g2cb6af9ae64a53e7c28397c3f89a0765"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gb248ff53e0ed6ea76b54794be3845e52"></a><!-- doxytag: member="fie_fuzzy.c::fnFIE_fuzzy_open" ref="gb248ff53e0ed6ea76b54794be3845e52" args="(INT rule_num, const F_FUZZY_SPEC *antec_cond, INT antec_num, const F_FUZZY_SPEC *concl_cond, INT concl_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_fuzzy_open           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rule_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FUZZY__SPEC.html">F_FUZZY_SPEC</a> *&nbsp;</td>
+          <td class="paramname"> <em>antec_cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>antec_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FUZZY__SPEC.html">F_FUZZY_SPEC</a> *&nbsp;</td>
+          <td class="paramname"> <em>concl_cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>concl_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ファジィ推論テーブルの生成 
+<p>
+与えられた条件のもとで、新規にファジィ推論テーブルを生成します。 ファジィ推論テーブルとは、ファジィルールの集合体のことです。<p>
+<em>antec_cond</em> 及び <em>concl_cond</em> で指定される条件は、構造体 <a class="el" href="structF__FUZZY__SPEC.html" title="実数系台集合仕様">F_FUZZY_SPEC</a> にて設定します。 <a class="el" href="structF__FUZZY__SPEC.html" title="実数系台集合仕様">F_FUZZY_SPEC</a> 構造体の各要素が示す意味は、下図に示すとおりです。<p>
+<div align="center">
+<img src="fie_fuzzy_open.png" alt="fie_fuzzy_open.png">
+</div>
+<p>
+本関数でオープンしたオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rule_num</em>&nbsp;</td><td>ファジィルール数( [1,MAX_RULE_N=30] ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>antec_cond</em>&nbsp;</td><td>前提条件の台集合生成条件配列 <br>
+ <em>antec_num</em> で指定した前提個数分の条件を指定します </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>antec_num</em>&nbsp;</td><td>１ファジィルールあたりの前提条件の数( [1,MAX_ANTEC_N=5] ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>concl_cond</em>&nbsp;</td><td>結論の台集合生成条件配列 <br>
+ <em>concl_num</em> で指定した結論個数分の条件を指定します </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>concl_num</em>&nbsp;</td><td>１ファジィルールあたりの結論の数( [1,MAX_CONCL_N=2] )</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、ファジィのハンドルを返します。 ライセンスエラー、未初期化エラー、メモリ不足、またはパラメータ不正により異常終了した場合には、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g392e0264a7c0ba13b7cd19362ff9927c"></a><!-- doxytag: member="fie_fuzzy.c::fnFIE_fuzzy_clear_rule" ref="g392e0264a7c0ba13b7cd19362ff9927c" args="(FHANDLE htbl, INT rule_no)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fuzzy_clear_rule           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htbl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rule_no</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+プロダクションルールのクリア（メンバシップ関数のクリア） 
+<p>
+指定されたファジィルール内の前提条件および結論にかかる、すべてのメンバシップ関数をクリアします。 ここでは、値がクリアされるのであって、領域はそのままです。 本関数は、すでに設定済のファジィルールをクリアするために使用します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>htbl</em>&nbsp;</td><td>ファジィ推論テーブルのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rule_no</em>&nbsp;</td><td>ファジィルール番号( [0,オープン時に指定したルール数-1] )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcd0814517707116f5cee16caa1e33ff6"></a><!-- doxytag: member="fie_fuzzy.c::fnFIE_fuzzy_generate_rule" ref="gcd0814517707116f5cee16caa1e33ff6" args="(FHANDLE htbl, INT rule_no, const F_FUZZY_BASE *antec_memb, const F_FUZZY_BASE *concl_memb)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fuzzy_generate_rule           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htbl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rule_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a> *&nbsp;</td>
+          <td class="paramname"> <em>antec_memb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a> *&nbsp;</td>
+          <td class="paramname"> <em>concl_memb</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ファジィルールの作成(メンバシップ関数の生成) 
+<p>
+ファジィルール(ファジィプロダクションルール)を生成します。 <em>antec_memb</em> 及び、 <em>concl_memb</em> には <a class="el" href="structF__FUZZY__BASE.html" title="メンバシップ関数生成用基準値">F_FUZZY_BASE</a> 構造体にて台集合を指定します。 <a class="el" href="structF__FUZZY__BASE.html" title="メンバシップ関数生成用基準値">F_FUZZY_BASE</a> 構造体の各要素の意味は下図の通りです。 <ul>
+<li>(1)台集合テーブルによって生成される台集合です。 </li>
+<li>(2)基準値テーブルによって生成されるメンバシップ関数です。 </li>
+<li>(3)メンバシップ関数を台集合に当てはめます。 </li>
+<li>(4)離散化されたメンバシップ関数を生成します。</li>
+</ul>
+<div align="center">
+<img src="fie_fuzzy_generate_rule.png" alt="fie_fuzzy_generate_rule.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>htbl</em>&nbsp;</td><td>ファジィ推論テーブルのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rule_no</em>&nbsp;</td><td>生成したいファジィルールの番号( [0,オープン時に指定したルール数-1] ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>antec_memb</em>&nbsp;</td><td>前提条件のメンバシップ関数生成用基準値配列 <br>
+ <a class="el" href="group__fie__fuzzy.html#gb248ff53e0ed6ea76b54794be3845e52" title="ファジィ推論テーブルの生成">fnFIE_fuzzy_open()</a> 実行時に指定した前提条件数( <em>antec_num</em> )分の設定値が必要です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>concl_memb</em>&nbsp;</td><td>結論のメンバシップ関数生成用パラメータの配列 <br>
+ <a class="el" href="group__fie__fuzzy.html#gb248ff53e0ed6ea76b54794be3845e52" title="ファジィ推論テーブルの生成">fnFIE_fuzzy_open()</a> 実行時に指定した結論数( <em>concl_num</em> )分の設定値が必要です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2cb6af9ae64a53e7c28397c3f89a0765"></a><!-- doxytag: member="fie_fuzzy.c::fnFIE_fuzzy_inference" ref="g2cb6af9ae64a53e7c28397c3f89a0765" args="(FHANDLE htbl, const F_FUZZY_BASE *inp, DOUBLE *out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fuzzy_inference           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htbl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FUZZY__BASE.html">F_FUZZY_BASE</a> *&nbsp;</td>
+          <td class="paramname"> <em>inp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ファジィの実行(ルールと観測情報を使っての推論) 
+<p>
+設定されているファジィルールと観測情報を使って、推論を実行します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>htbl</em>&nbsp;</td><td>ファジィ推論テーブルのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>inp</em>&nbsp;</td><td>観測情報のメンバシップ関数の生成用基準値配列 <br>
+ <a class="el" href="group__fie__fuzzy.html#gb248ff53e0ed6ea76b54794be3845e52" title="ファジィ推論テーブルの生成">fnFIE_fuzzy_open()</a> 実行時に指定した基準値の数分の設定(配列要素数)が必要です </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>ファジィ推論結果配列 <br>
+ <a class="el" href="group__fie__fuzzy.html#gb248ff53e0ed6ea76b54794be3845e52" title="ファジィ推論テーブルの生成">fnFIE_fuzzy_open()</a> 実行時に指定した結論数( <em>concl_num</em> )分の配列要素が必要です</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

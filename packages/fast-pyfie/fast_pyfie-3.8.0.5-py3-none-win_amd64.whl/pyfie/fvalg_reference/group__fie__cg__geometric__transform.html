@@ -1,0 +1,1739 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 幾何変換</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>幾何変換<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+線形幾何変換を行うためのライブラリです。 画像の幾何変換に関しては <a class="el" href="group__fie__geometric__transform.html">画像の幾何変換ページ</a> を、 リージョンの幾何変換に関しては <a class="el" href="group__fie__region__geometric__transform.html">リージョンの幾何変換ページ</a> を、 それぞれご参照ください。<p>
+<a class="anchor" name="homogeneous_coord"></a> <dl class="user" compact><dt><b>同次変換行列 </b></dt><dd>FIEライブラリでは、二次元座標空間上の画像および図形の線形幾何変換を 同次変換行列を用いて指定します。同次変換行列とは、ある座標から別の 座標への線形変換を表す行列です。変換前の座標を x, y 変換後の座標を u, v で表すとすると、２次元座標でのアフィン変換は次のように表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left(\begin{array}{c} u \\ v \\ 1 \end{array}\right) = M \left(\begin{array}{c} x \\ y \\ 1 \end{array}\right) \]" src="form_631.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>この M を同次変換行列とよびます。この <img class="formulaInl" alt="$M$" src="form_491.png"> は 3x3のサイズです。 この同次変換行列を使用すると、回転、平行移動、スケール変換などの 変換を行列の掛け算による統一的な表現で表すことが出来ることが メリットです。</dd></dl>
+<dl class="user" compact><dt><b>同次変換行列計算ライブラリ</b></dt><dd>座標変換のための各種パラメータ(回転、平行移動、スケール変換など)が既知の場合に 同次変換行列が簡単に計算できるよう、下記の関数が用意されています。 <ul>
+<li>回転: <a class="el" href="group__fie__cg__geometric__transform.html#gc8adf879f6a35b67c481d5b2c2c67a8a" title="回転をする同次変換行列を作成">fnFIE_geotrans_calc_rotate_matrix()</a> </li>
+<li>平行移動: <a class="el" href="group__fie__cg__geometric__transform.html#g584b4ec9049ab46240b9552d0456c2a3" title="平行移動する同次変換行列を作成">fnFIE_geotrans_calc_shift_matrix()</a> </li>
+<li>スケール変換: <a class="el" href="group__fie__cg__geometric__transform.html#g08c98ab142ef574644c9ab3001cf581c" title="スケール変化する同次変換行列を作成">fnFIE_geotrans_calc_scale_matrix()</a> </li>
+<li>水平せん断: <a class="el" href="group__fie__cg__geometric__transform.html#g9dcb52336289af4bbe86f05e7eb5080c" title="せん断変形(ｘ方向)する同次変換行列を作成">fnFIE_geotrans_calc_xshear_matrix()</a> </li>
+<li>垂直せん断: <a class="el" href="group__fie__cg__geometric__transform.html#g45f8834c5b30820969c7bbd52770755c" title="せん断変形(ｙ方向)する同次変換行列を作成">fnFIE_geotrans_calc_yshear_matrix()</a></li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>また、「変換前の点座標と変換後の点座標のペア」が既知で有る場合は、 以下の関数により座標変換行列を作成することができます。 <ul>
+<li>射影変換: <a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a> </li>
+<li>アフィン変換: <a class="el" href="group__fie__cg__geometric__transform.html#gc69a6eef00db76385387367ff62823b1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  アフィン変換...">fnFIE_geotrans_estimate_affine_matrix()</a> </li>
+<li>相似変換（回転、平行移動、スケール変換のみの変換）: <a class="el" href="group__fie__cg__geometric__transform.html#gcd3cd58c4749314e7457ca839e45d503" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  相似変換の変...">fnFIE_geotrans_estimate_similarity_matrix()</a> </li>
+<li>ユークリッド変換（回転、平行移動のみの変換）: <a class="el" href="group__fie__cg__geometric__transform.html#g66401405df4bec13c26bf409f4152215" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  ユークリッド...">fnFIE_geotrans_estimate_euclidean_matrix()</a></li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>同次変換行列の組み合わせ</b></dt><dd>たとえば、<ol type=1>
+<li>平行移動する同次変換行列 <img class="formulaInl" alt="$M_{S1}$" src="form_632.png"></li><li>回転する同次変換行列 <img class="formulaInl" alt="$M_{R}$" src="form_633.png"></li><li>平行移動する同次変換行列 <img class="formulaInl" alt="$M_{S2}$" src="form_634.png"></li><li>スケールする同次変換行列 <img class="formulaInl" alt="$M_{M}$" src="form_635.png"></li></ol>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>という変換行列が有った場合、これらを掛け合わせた行列 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ M' = M_{M} M_{S2} M_{R} M_{S1} \]" src="form_636.png">
+<p>
+ を計算します。すると、<img class="formulaInl" alt="$M'$" src="form_637.png"> は 1.平行移動して 2.回転して 3.平行移動して 4.スケールする変換 を表す事になります。 これにより複数の変換を１回の変換にまとめることができるため、 複雑な変換が必用な場合には処理時間の短縮を図ることが出来ます。 また <img class="formulaInl" alt="$M$" src="form_491.png"> の逆行列 <img class="formulaInl" alt="$M^{-1}$" src="form_638.png"> を求めれば、 <img class="formulaInl" alt="$M$" src="form_491.png"> の逆の変換を行うことが出来ます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>なお、これら行列同士の演算は行列演算の <a class="el" href="group__fie__math__matrix__basic.html">基本操作</a> ライブラリにより行うことが出来ます。</dd></dl>
+<dl class="user" compact><dt><b>座標変換マップ作成ライブラリ</b></dt><dd>線形幾何変換では表現できない複雑な幾何変換は、座標変換マップを用いて実行することができます。 「変換前の点座標と変換後の点座標のペア」が既知で有る場合は、 <a class="el" href="group__fie__cg__geometric__transform.html#g396b0a5f9d3b135344f81e88d404684c" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  変換前後の点...">fnFIE_geotrans_estimate_warp_map()</a> により座標変換マップを作成することができます。 </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g9fa8e97291615095089fd10280c3fdaa">f_geotrans_warp_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaafb7d1f2124fdaf24a8ac77eecffceae5">F_WARP_MODE_EUCLIDEAN</a>, 
+<a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa45a9d318466829eaa8bf31d1a648bc48">F_WARP_MODE_SIMILARITY</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa2e9c45f263b68d597952a67dae8c1e35">F_WARP_MODE_AFFINE</a>, 
+<a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa85515e59ce9b9fbe5eb77606ad3aba8d">F_WARP_MODE_PERSPECTIVE</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaac83a506622b822f902961a83209a125b">F_WARP_MODE_PIECEWISE_AFFINE</a>, 
+<a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa120b8e7f2ba24832ce415034e9598342">F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標変換マップ作成モード  <a href="group__fie__cg__geometric__transform.html#g9fa8e97291615095089fd10280c3fdaa">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gc8adf879f6a35b67c481d5b2c2c67a8a">fnFIE_geotrans_calc_rotate_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE rad, DOUBLE cx, DOUBLE cy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">回転をする同次変換行列を作成  <a href="#gc8adf879f6a35b67c481d5b2c2c67a8a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g584b4ec9049ab46240b9552d0456c2a3">fnFIE_geotrans_calc_shift_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE dx, DOUBLE dy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">平行移動する同次変換行列を作成  <a href="#g584b4ec9049ab46240b9552d0456c2a3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g08c98ab142ef574644c9ab3001cf581c">fnFIE_geotrans_calc_scale_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE sx, DOUBLE sy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">スケール変化する同次変換行列を作成  <a href="#g08c98ab142ef574644c9ab3001cf581c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g9dcb52336289af4bbe86f05e7eb5080c">fnFIE_geotrans_calc_xshear_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE rad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">せん断変形(ｘ方向)する同次変換行列を作成  <a href="#g9dcb52336289af4bbe86f05e7eb5080c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g45f8834c5b30820969c7bbd52770755c">fnFIE_geotrans_calc_yshear_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE rad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">せん断変形(ｙ方向)する同次変換行列を作成  <a href="#g45f8834c5b30820969c7bbd52770755c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#ga46a2252849472cb8f19b52c7c78211c">fnFIE_geotrans_affine_point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> src, <a class="el" href="structDPNT__T.html">DPNT_T</a> *dst, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点のアフィン変換  <a href="#ga46a2252849472cb8f19b52c7c78211c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e">fnFIE_geotrans_affine_npoints</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *src, <a class="el" href="structDPNT__T.html">DPNT_T</a> *dst, INT num, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群のアフィン変換  <a href="#ga8b40f570884b0091f4e08e41f37913e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gf20b344fd916251f2b12325d322721f5">fnFIE_geotrans_affine_line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> src, <a class="el" href="structDLINE__T.html">DLINE_T</a> *dst, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線のアフィン変換  <a href="#gf20b344fd916251f2b12325d322721f5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gfabe1b37f8b55f830443557592133c40">fnFIE_geotrans_affine_lineseg</a> (<a class="el" href="structDSGMT__T.html">DSGMT_T</a> src, <a class="el" href="structDSGMT__T.html">DSGMT_T</a> *dst, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">線分のアフィン変換  <a href="#gfabe1b37f8b55f830443557592133c40"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g60b8d5244f8a96f6a707720ac8c4cf3e">fnFIE_geotrans_perspective_point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> src, <a class="el" href="structDPNT__T.html">DPNT_T</a> *dst, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点の射影変換  <a href="#g60b8d5244f8a96f6a707720ac8c4cf3e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779">fnFIE_geotrans_perspective_npoints</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *src, <a class="el" href="structDPNT__T.html">DPNT_T</a> *dst, INT num, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群の射影変換  <a href="#gd8879c70ca9efb494cdaaeb5d21f0779"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gdb526c5c3698fc48ec280e24636c6634">fnFIE_geotrans_perspective_line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> src, <a class="el" href="structDLINE__T.html">DLINE_T</a> *dst, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線の射影変換  <a href="#gdb526c5c3698fc48ec280e24636c6634"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gcdb2136aabebf65cb6e54defca084dc6">fnFIE_geotrans_perspective_lineseg</a> (<a class="el" href="structDSGMT__T.html">DSGMT_T</a> src, <a class="el" href="structDSGMT__T.html">DSGMT_T</a> *dst, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">線分の射影変換  <a href="#gcdb2136aabebf65cb6e54defca084dc6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8">fnFIE_geotrans_estimate_perspective_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *fpMat, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntspFrom, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntspTo, UINT uiNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  射影変換の変換行列を計算  <a href="#g0e848317e7679efe16a832ae853122e8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gc69a6eef00db76385387367ff62823b1">fnFIE_geotrans_estimate_affine_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *fpMat, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntspFrom, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntspTo, UINT uiNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  アフィン変換の変換行列を計算  <a href="#gc69a6eef00db76385387367ff62823b1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#gcd3cd58c4749314e7457ca839e45d503">fnFIE_geotrans_estimate_similarity_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *trans_mat, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_from, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_to, UINT pnts_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  相似変換の変換行列を計算  <a href="#gcd3cd58c4749314e7457ca839e45d503"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g66401405df4bec13c26bf409f4152215">fnFIE_geotrans_estimate_euclidean_matrix</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *trans_mat, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_from, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_to, UINT pnts_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  ユークリッド変換の変換行列を計算  <a href="#g66401405df4bec13c26bf409f4152215"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__geometric__transform.html#g396b0a5f9d3b135344f81e88d404684c">fnFIE_geotrans_estimate_warp_map</a> (FHANDLE hmap, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_from, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_to, UINT pnts_num, enum <a class="el" href="group__fie__cg__geometric__transform.html#g9fa8e97291615095089fd10280c3fdaa">f_geotrans_warp_mode</a> warp_mode, DOUBLE param)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  変換前後の点列を用いて座標変換マップを作成  <a href="#g396b0a5f9d3b135344f81e88d404684c"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g9fa8e97291615095089fd10280c3fdaa"></a><!-- doxytag: member="fie.h::f_geotrans_warp_mode" ref="g9fa8e97291615095089fd10280c3fdaa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__geometric__transform.html#g9fa8e97291615095089fd10280c3fdaa">f_geotrans_warp_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標変換マップ作成モード 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg9fa8e97291615095089fd10280c3fdaafb7d1f2124fdaf24a8ac77eecffceae5"></a><!-- doxytag: member="F_WARP_MODE_EUCLIDEAN" ref="gg9fa8e97291615095089fd10280c3fdaafb7d1f2124fdaf24a8ac77eecffceae5" args="" -->F_WARP_MODE_EUCLIDEAN</em>&nbsp;</td><td>
+ユークリッド変換 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9fa8e97291615095089fd10280c3fdaa45a9d318466829eaa8bf31d1a648bc48"></a><!-- doxytag: member="F_WARP_MODE_SIMILARITY" ref="gg9fa8e97291615095089fd10280c3fdaa45a9d318466829eaa8bf31d1a648bc48" args="" -->F_WARP_MODE_SIMILARITY</em>&nbsp;</td><td>
+相似変換 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9fa8e97291615095089fd10280c3fdaa2e9c45f263b68d597952a67dae8c1e35"></a><!-- doxytag: member="F_WARP_MODE_AFFINE" ref="gg9fa8e97291615095089fd10280c3fdaa2e9c45f263b68d597952a67dae8c1e35" args="" -->F_WARP_MODE_AFFINE</em>&nbsp;</td><td>
+アフィン変換 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9fa8e97291615095089fd10280c3fdaa85515e59ce9b9fbe5eb77606ad3aba8d"></a><!-- doxytag: member="F_WARP_MODE_PERSPECTIVE" ref="gg9fa8e97291615095089fd10280c3fdaa85515e59ce9b9fbe5eb77606ad3aba8d" args="" -->F_WARP_MODE_PERSPECTIVE</em>&nbsp;</td><td>
+射影変換 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9fa8e97291615095089fd10280c3fdaac83a506622b822f902961a83209a125b"></a><!-- doxytag: member="F_WARP_MODE_PIECEWISE_AFFINE" ref="gg9fa8e97291615095089fd10280c3fdaac83a506622b822f902961a83209a125b" args="" -->F_WARP_MODE_PIECEWISE_AFFINE</em>&nbsp;</td><td>
+区分アフィン変換 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9fa8e97291615095089fd10280c3fdaa120b8e7f2ba24832ce415034e9598342"></a><!-- doxytag: member="F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR" ref="gg9fa8e97291615095089fd10280c3fdaa120b8e7f2ba24832ce415034e9598342" args="" -->F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR</em>&nbsp;</td><td>
+局所重み付き平均による変換（線形） </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gc8adf879f6a35b67c481d5b2c2c67a8a"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_calc_rotate_matrix" ref="gc8adf879f6a35b67c481d5b2c2c67a8a" args="(FMATRIX *mat, DOUBLE rad, DOUBLE cx, DOUBLE cy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_calc_rotate_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>rad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>cx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>cy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+回転をする同次変換行列を作成 
+<p>
+点( <em>cx</em> , <em>cy</em> )を中心として、 <em>rad</em> 回転する同次変換行列を作成します。 <em>mat</em> に指定する行列は、あらかじめ３×３のサイズで確保しておかなければいけません。 なお <em>mat</em> の意味や利用法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+本関数は、下記のように行列を設定します。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ mat = \left( \begin{array}{ccc} \cos(rad) &amp; -\sin(rad) &amp; cx - ( cx*\cos(rad) - cy*\sin(rad) ) \\ \sin(rad) &amp; \cos(rad) &amp; cy - ( cx*\sin(rad) + cy*\cos(rad) ) \\ 0 &amp; 0 &amp; 1 \end{array}\right) \]" src="form_639.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_rotate.png" alt="fie_geotrans_rotate.png">
+<p><strong>回転行列の作成（左右共に、同一座標系）</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rad</em>&nbsp;</td><td>回転角（ラジアン） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cx</em>&nbsp;</td><td>回転中心ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cy</em>&nbsp;</td><td>回転中心ｙ座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g584b4ec9049ab46240b9552d0456c2a3"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_calc_shift_matrix" ref="g584b4ec9049ab46240b9552d0456c2a3" args="(FMATRIX *mat, DOUBLE dx, DOUBLE dy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_calc_shift_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+平行移動する同次変換行列を作成 
+<p>
+ｘ方向に <em>dx</em>, ｙ方向に <em>dy</em> だけ平行移動する同次変換行列を作成します。 <em>mat</em> に指定する行列は、あらかじめ３×３のサイズで確保しておかなければいけません。 なお <em>mat</em> の意味や利用法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+本関数は、下記のように行列を設定します。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ mat = \left( \begin{array}{ccc} 1 &amp; 0 &amp; dx \\ 0 &amp; 1 &amp; dy \\ 0 &amp; 0 &amp; 1 \end{array}\right) \]" src="form_640.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_shift.png" alt="fie_geotrans_shift.png">
+<p><strong>平行移動行列の作成（左右共に、同一座標系）</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dx</em>&nbsp;</td><td>ｘ方向移動量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dy</em>&nbsp;</td><td>ｙ方向移動量</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g08c98ab142ef574644c9ab3001cf581c"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_calc_scale_matrix" ref="g08c98ab142ef574644c9ab3001cf581c" args="(FMATRIX *mat, DOUBLE sx, DOUBLE sy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_calc_scale_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>sx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>sy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+スケール変化する同次変換行列を作成 
+<p>
+ｘ方向を <em>sx</em> 倍、ｙ方向を <em>sy</em> 倍する同次変換行列を作成します。 <em>mat</em> に指定する行列は、あらかじめ３×３のサイズで確保しておかなければいけません。 なお <em>mat</em> の意味や利用法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+本関数は、下記のように行列を設定します。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ mat = \left( \begin{array}{ccc} sx &amp; 0 &amp; 0 \\ 0 &amp; sy &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array}\right) \]" src="form_641.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_scale.png" alt="fie_geotrans_scale.png">
+<p><strong>スケール変化行列の作成（左右共に、同一座標系）</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sx</em>&nbsp;</td><td>ｘ方向倍率 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sy</em>&nbsp;</td><td>ｙ方向倍率</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9dcb52336289af4bbe86f05e7eb5080c"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_calc_xshear_matrix" ref="g9dcb52336289af4bbe86f05e7eb5080c" args="(FMATRIX *mat, DOUBLE rad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_calc_xshear_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>rad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+せん断変形(ｘ方向)する同次変換行列を作成 
+<p>
+ｘ方向にせん断変形をする同次変換行列を作成します。 <em>mat</em> に指定する行列は、あらかじめ３×３のサイズで確保しておかなければいけません。 なお <em>mat</em> の意味や利用法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+本関数は、下記のように行列を設定します。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ mat = \left( \begin{array}{ccc} 1 &amp; \tan(rad) &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array}\right) \]" src="form_642.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_xshear.png" alt="fie_geotrans_xshear.png">
+<p><strong>ｘ方向のせん断行列の作成（左右共に、同一座標系）</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rad</em>&nbsp;</td><td>せん断角（ラジアン）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g45f8834c5b30820969c7bbd52770755c"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_calc_yshear_matrix" ref="g45f8834c5b30820969c7bbd52770755c" args="(FMATRIX *mat, DOUBLE rad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_calc_yshear_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>rad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+せん断変形(ｙ方向)する同次変換行列を作成 
+<p>
+ｙ方向にせん断変形をする同次変換行列を作成します。 <em>mat</em> に指定する行列は、あらかじめ３×３のサイズで確保しておかなければいけません。 なお <em>mat</em> の意味や利用法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+本関数は、下記のように行列を設定します。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ mat = \left( \begin{array}{ccc} 1 &amp; 0 &amp; 0 \\ \tan(rad) &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{array}\right) \]" src="form_643.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_yshear.png" alt="fie_geotrans_yshear.png">
+<p><strong>ｙ方向のせん断行列の作成（左右共に、同一座標系）</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rad</em>&nbsp;</td><td>せん断角（ラジアン）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga46a2252849472cb8f19b52c7c78211c"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_affine_point" ref="ga46a2252849472cb8f19b52c7c78211c" args="(DPNT_T src, DPNT_T *dst, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_affine_point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点のアフィン変換 
+<p>
+入力点 <em>src</em> を同次変換行列 <em>mat</em> により変換し、 <em>dst</em> を返します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.x = src.x * mat\left[ 0 \right]\left[ 0 \right] + src.y * mat\left[ 0 \right]\left[ 1 \right] + mat\left[ 0 \right]\left[ 2 \right] \]" src="form_644.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.y = src.x * mat\left[ 1 \right]\left[ 0 \right] + src.y * mat\left[ 1 \right]\left[ 1 \right] + mat\left[ 1 \right]\left[ 2 \right] \]" src="form_645.png">
+<p>
+<p>
+<em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力点座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力点座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e" title="点群のアフィン変換">fnFIE_geotrans_affine_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gf20b344fd916251f2b12325d322721f5" title="直線のアフィン変換">fnFIE_geotrans_affine_line()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gfabe1b37f8b55f830443557592133c40" title="線分のアフィン変換">fnFIE_geotrans_affine_lineseg()</a> , <a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga8b40f570884b0091f4e08e41f37913e"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_affine_npoints" ref="ga8b40f570884b0091f4e08e41f37913e" args="(const DPNT_T *src, DPNT_T *dst, INT num, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_affine_npoints           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群のアフィン変換 
+<p>
+入力点列 <em>src</em> を同次変換行列 <em>mat</em> により変換し、点列 <em>dst</em> を返します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.x = src.x * mat\left[ 0 \right]\left[ 0 \right] + src.y * mat\left[ 0 \right]\left[ 1 \right] + mat\left[ 0 \right]\left[ 2 \right] \]" src="form_644.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.y = src.x * mat\left[ 1 \right]\left[ 0 \right] + src.y * mat\left[ 1 \right]\left[ 1 \right] + mat\left[ 1 \right]\left[ 2 \right] \]" src="form_645.png">
+<p>
+<p>
+<em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力点座標配列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力点座標配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>入力点数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#ga46a2252849472cb8f19b52c7c78211c" title="点のアフィン変換">fnFIE_geotrans_affine_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gf20b344fd916251f2b12325d322721f5" title="直線のアフィン変換">fnFIE_geotrans_affine_line()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gfabe1b37f8b55f830443557592133c40" title="線分のアフィン変換">fnFIE_geotrans_affine_lineseg()</a> , <a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf20b344fd916251f2b12325d322721f5"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_affine_line" ref="gf20b344fd916251f2b12325d322721f5" args="(DLINE_T src, DLINE_T *dst, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_affine_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線のアフィン変換 
+<p>
+入力直線 <em>src</em> を同次変換行列 <em>mat</em> により変換し、直線 <em>dst</em> を返します。 <em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力直線 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力直線 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#ga46a2252849472cb8f19b52c7c78211c" title="点のアフィン変換">fnFIE_geotrans_affine_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e" title="点群のアフィン変換">fnFIE_geotrans_affine_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gfabe1b37f8b55f830443557592133c40" title="線分のアフィン変換">fnFIE_geotrans_affine_lineseg()</a> , <a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfabe1b37f8b55f830443557592133c40"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_affine_lineseg" ref="gfabe1b37f8b55f830443557592133c40" args="(DSGMT_T src, DSGMT_T *dst, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_affine_lineseg           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+線分のアフィン変換 
+<p>
+入力線分 <em>src</em> を同次変換行列 <em>mat</em> により変換し、線分 <em>dst</em> を返します。 <em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力線分 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力線分 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#ga46a2252849472cb8f19b52c7c78211c" title="点のアフィン変換">fnFIE_geotrans_affine_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e" title="点群のアフィン変換">fnFIE_geotrans_affine_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gf20b344fd916251f2b12325d322721f5" title="直線のアフィン変換">fnFIE_geotrans_affine_line()</a> , <a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g60b8d5244f8a96f6a707720ac8c4cf3e"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_perspective_point" ref="g60b8d5244f8a96f6a707720ac8c4cf3e" args="(DPNT_T src, DPNT_T *dst, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_perspective_point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点の射影変換 
+<p>
+入力点 <em>src</em> を同次変換行列 <em>mat</em> により変換し、 <em>dst</em> を返します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.x = \frac{\left( src.x * mat\left[ 0 \right]\left[ 0 \right] + src.y * mat\left[ 0 \right]\left[ 1 \right] + mat\left[ 0 \right]\left[ 2 \right] \right)} {\left( src.x * mat\left[ 2 \right]\left[ 0 \right] + src.y * mat\left[ 2 \right]\left[ 1 \right] + mat\left[ 2 \right]\left[ 2 \right] \right)} \]" src="form_646.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.y = \frac{\left( src.x * mat\left[ 1 \right]\left[ 0 \right] + src.y * mat\left[ 1 \right]\left[ 1 \right] + mat\left[ 1 \right]\left[ 2 \right] \right)} {\left( src.x * mat\left[ 2 \right]\left[ 0 \right] + src.y * mat\left[ 2 \right]\left[ 1 \right] + mat\left[ 2 \right]\left[ 2 \right] \right)} \]" src="form_647.png">
+<p>
+<p>
+分母の値が０になる時は、 F_ERR_INVALID_PARAM を返します。 また、分母の値が非常に小さくなる場合は、計算誤差が増大しますので注意してください。<p>
+<em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力点座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力点座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779" title="点群の射影変換">fnFIE_geotrans_perspective_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gdb526c5c3698fc48ec280e24636c6634" title="直線の射影変換">fnFIE_geotrans_perspective_line()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gcdb2136aabebf65cb6e54defca084dc6" title="線分の射影変換">fnFIE_geotrans_perspective_lineseg()</a> , <a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd8879c70ca9efb494cdaaeb5d21f0779"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_perspective_npoints" ref="gd8879c70ca9efb494cdaaeb5d21f0779" args="(const DPNT_T *src, DPNT_T *dst, INT num, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_perspective_npoints           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群の射影変換 
+<p>
+入力点列 <em>src</em> を同次変換行列 <em>mat</em> により変換し、点列 <em>dst</em> を返します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.x = \frac{\left( src.x * mat\left[ 0 \right]\left[ 0 \right] + src.y * mat\left[ 0 \right]\left[ 1 \right] + mat\left[ 0 \right]\left[ 2 \right] \right)} {\left( src.x * mat\left[ 2 \right]\left[ 0 \right] + src.y * mat\left[ 2 \right]\left[ 1 \right] + mat\left[ 2 \right]\left[ 2 \right] \right)} \]" src="form_646.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst.y = \frac{\left( src.x * mat\left[ 1 \right]\left[ 0 \right] + src.y * mat\left[ 1 \right]\left[ 1 \right] + mat\left[ 1 \right]\left[ 2 \right] \right)} {\left( src.x * mat\left[ 2 \right]\left[ 0 \right] + src.y * mat\left[ 2 \right]\left[ 1 \right] + mat\left[ 2 \right]\left[ 2 \right] \right)} \]" src="form_647.png">
+<p>
+<p>
+<em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力点座標配列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力点座標配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>入力点数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g60b8d5244f8a96f6a707720ac8c4cf3e" title="点の射影変換">fnFIE_geotrans_perspective_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gdb526c5c3698fc48ec280e24636c6634" title="直線の射影変換">fnFIE_geotrans_perspective_line()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gcdb2136aabebf65cb6e54defca084dc6" title="線分の射影変換">fnFIE_geotrans_perspective_lineseg()</a> , <a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gdb526c5c3698fc48ec280e24636c6634"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_perspective_line" ref="gdb526c5c3698fc48ec280e24636c6634" args="(DLINE_T src, DLINE_T *dst, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_perspective_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線の射影変換 
+<p>
+入力直線 <em>src</em> を同次変換行列 <em>mat</em> により変換し、直線 <em>dst</em> を返します。 <em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力点座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力点座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g60b8d5244f8a96f6a707720ac8c4cf3e" title="点の射影変換">fnFIE_geotrans_perspective_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779" title="点群の射影変換">fnFIE_geotrans_perspective_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gcdb2136aabebf65cb6e54defca084dc6" title="線分の射影変換">fnFIE_geotrans_perspective_lineseg()</a> , <a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcdb2136aabebf65cb6e54defca084dc6"></a><!-- doxytag: member="fie_geotrans.c::fnFIE_geotrans_perspective_lineseg" ref="gcdb2136aabebf65cb6e54defca084dc6" args="(DSGMT_T src, DSGMT_T *dst, const FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_perspective_lineseg           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+線分の射影変換 
+<p>
+入力直線 <em>src</em> を同次変換行列 <em>mat</em> により変換し、線分 <em>dst</em> を返します。 <em>mat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力線分 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力線分 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同次変換行列(3x3の正方行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g60b8d5244f8a96f6a707720ac8c4cf3e" title="点の射影変換">fnFIE_geotrans_perspective_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779" title="点群の射影変換">fnFIE_geotrans_perspective_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gdb526c5c3698fc48ec280e24636c6634" title="直線の射影変換">fnFIE_geotrans_perspective_line()</a> , <a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0e848317e7679efe16a832ae853122e8"></a><!-- doxytag: member="fie_geotrans_support.c::fnFIE_geotrans_estimate_perspective_matrix" ref="g0e848317e7679efe16a832ae853122e8" args="(FMATRIX *fpMat, const DPNT_T *pntspFrom, const DPNT_T *pntspTo, UINT uiNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_estimate_perspective_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>fpMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntspFrom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntspTo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>uiNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  射影変換の変換行列を計算 
+<p>
+本関数は最小二乗法を使用し、「変換前の点座標と変換後の点座標のペア」の 配列から射影変換行列を求めます。求められた行列は射影変換 (<a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705">fnFIE_geotrans_perspective</a>) 等で変換行列として使用できます。<br>
+ 射影変換は、線分の直線性は保たれますが、平行性は失われます。 つまり、任意の四角形を別の任意の四角形に移す変換であるといえます。<p>
+変換前の点座標を(x',y'), 変換後の点座標(x,y) とすると、射影変換は<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{c} Wx \\ Wy \\ W \end{array} \right) = \mathbf{M} \left( \begin{array}{c} x' \\ y' \\ 1 \end{array} \right) \]" src="form_949.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathbf{M} = \left( \begin{array}{ccc} a &amp; b &amp; c \\ d &amp; e &amp; f \\ g &amp; h &amp; 1 \end{array} \right) \]" src="form_950.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[W = gx'+hy'+1\]" src="form_951.png">
+<p>
+<p>
+と与えられます。この時(x,y)と(x',y')のペアが複数分かっているとき、 本関数により行列 M を求めることができます。なお、点のペアは同一直線上にない４組以上が必要です。<p>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd><ul>
+<li>関数内部の行列計算はCLAPACKのDGELSD関数を使って行います。 </li>
+<li>入力点列の点数は同一直線上にない４組以上なければなりません。 </li>
+<li><em>fpMat</em> は3×3の行列をユーザが用意する必要があります。 3×3以外の行列を入力した場合はエラーとなります。 </li>
+<li>本関数内では、行列のメモリ確保はおこないません。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fpMat</em>&nbsp;</td><td>求められた射影変換の変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntspFrom</em>&nbsp;</td><td>射影変換前の点の座標列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntspTo</em>&nbsp;</td><td>射影変換後の点の座標列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiNum</em>&nbsp;</td><td>pntspFrom/pntspTo の点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 <ul>
+<li><em>fpMat</em> , <em>pntspFrom</em> , または <em>pntspTo</em> がNULL </li>
+<li>点数が３点以下、または1073741824点(2^30点)以上 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>fpMat</em> が3×3の行列ではない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能で異常終了 <ul>
+<li>関数 DGELSD 中の計算が収束できない </li>
+<li>入力点列によって作った座標行列のランクが 8未満のため、計算できない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 各変換行列を求めて、その変換行列を使用して画像の幾何変換をします。</span>
+VOID affine_trans()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a_aff = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  from[3], to[3];
+    INT ch, type;
+    INT src_w, src_h;
+    INT dst_w, dst_h;
+
+    <span class="comment">// 変換する BMP 形式の処理対象画像を読み込みます。</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"testdata/test.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 結果画像を処理対象と同じ型とチャネル数にします。</span>
+    <span class="comment">// サイズは異なっていてもかまいません。</span>
+    <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;ch, &amp;type, NULL, &amp;src_w, &amp;src_h );
+    dst_w = src_w * 2;
+    dst_h = src_h / 2;
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( type, ch, dst_w, dst_h );
+
+    <span class="comment">// 3×3の行列を設定します。</span>
+    a_aff = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// アフィン変換は同一直線上にない3組以上の座標列を設定します。</span>
+    <span class="comment">// 変換前の座標を設定します。</span>
+    from[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    from[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+
+    from[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    from[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = src_h - 1;
+
+    from[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = src_w - 1;
+    from[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = src_h - 1;
+
+    <span class="comment">// 変換後の座標を設定します。</span>
+    to[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    to[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dst_h / 2;
+
+    to[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dst_w / 2;
+    to[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dst_h - 1;
+
+    to[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dst_w - 1;
+    to[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dst_h / 2;
+
+    <span class="comment">// アフィン変換行列を求めます。</span>
+    <a class="code" href="group__fie__cg__geometric__transform.html#gc69a6eef00db76385387367ff62823b1" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  アフィン変換...">fnFIE_geotrans_estimate_affine_matrix</a>( a_aff, from, to, 3 );
+
+    <span class="comment">// 求めたアフィン変換行列より、画像のアフィン変換を行います。</span>
+    <span class="comment">// 三次畳み込み法により濃度補間で、結果画像を生成します。</span>
+    <span class="comment">// マスク画像は生成しません。</span>
+    <span class="comment">// 領域外になる画素は処理をしません。</span>
+    <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>( hsrc, hdst, NULL, a_aff, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <span class="comment">// 結果画像を BMP 形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>( <span class="stringliteral">"result/test1.bmp"</span>, hdst );
+
+    <span class="keywordflow">if</span>( NULL != a_aff ) <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a_aff );
+    <span class="keywordflow">if</span>( NULL != hsrc  ) <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <span class="keywordflow">if</span>( NULL != hdst  ) <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+
+    <span class="keywordflow">return</span>;
+}
+
+VOID perspective_trans()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a_pp = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  from[4], to[4];
+    INT ch, type;
+    INT src_w, src_h;
+    INT dst_w, dst_h;
+
+    <span class="comment">// 変換する BMP 形式の処理対象画像を読み込みます。</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"testdata/test.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 結果画像を処理対象と同じ型とチャネル数にします。</span>
+    <span class="comment">// サイズは異なっていてもかまいません。</span>
+    <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;ch, &amp;type, NULL, &amp;src_w, &amp;src_h );
+    dst_w = src_w * 2;
+    dst_h = src_h / 2;
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( type, ch, dst_w, dst_h );
+
+    <span class="comment">// 3×3の行列を設定します。</span>
+    a_pp = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// 射影変換は同一直線上にない4組以上の座標列を設定します。</span>
+    <span class="comment">// 変換前の座標を設定します。</span>
+    from[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    from[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+
+    from[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    from[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = src_h - 1;
+
+    from[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = src_w - 1;
+    from[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = src_h - 1;
+
+    from[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = src_w - 1;
+    from[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+
+    <span class="comment">// 変換後の座標を設定します。</span>
+    to[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    to[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dst_h / 2;
+
+    to[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dst_w / 2;
+    to[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dst_h - 1;
+
+    to[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = (dst_w / 4) * 3;
+    to[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = (dst_h / 4) * 3;
+
+    to[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dst_w / 2;
+    to[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+
+    <span class="comment">// 射影変換行列を求めます。</span>
+    <a class="code" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix</a>( a_pp, from, to, 4 );
+
+    <span class="comment">// 求めた射影変換行列より、画像の射影変換を行います。</span>
+    <span class="comment">// 最近傍法により濃度補間で、結果画像を生成します。</span>
+    <span class="comment">// マスク画像は生成しません。</span>
+    <span class="comment">// 領域外になる画素は０でクリアします。</span>
+    <a class="code" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective</a>( hsrc, hdst, NULL, a_pp, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e14f07e347ff74354ebf9cfcf72f51306" title="最近傍法">F_SAMPLING_NN</a> );
+
+    <span class="comment">// 結果画像を BMP 形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>( <span class="stringliteral">"result/test2.bmp"</span>, hdst );
+
+    <span class="keywordflow">if</span>( NULL != a_pp ) <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a_pp );
+    <span class="keywordflow">if</span>( NULL != hsrc ) <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <span class="keywordflow">if</span>( NULL != hdst ) <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+
+    <span class="keywordflow">return</span>;
+}
+
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    affine_trans();
+    perspective_trans();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc69a6eef00db76385387367ff62823b1"></a><!-- doxytag: member="fie_geotrans_support.c::fnFIE_geotrans_estimate_affine_matrix" ref="gc69a6eef00db76385387367ff62823b1" args="(FMATRIX *fpMat, const DPNT_T *pntspFrom, const DPNT_T *pntspTo, UINT uiNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_estimate_affine_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>fpMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntspFrom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntspTo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>uiNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  アフィン変換の変換行列を計算 
+<p>
+本関数は最小二乗法を使用し、「変換前の点座標と変換後の点座標のペア」の 配列からアフィン変換行列を求めます。求められた行列はアフィン変換 (<a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb">fnFIE_geotrans_affine</a>) 等で変換行列として使用できます。<br>
+ アフィン変換は、一般に原図形の長さや角度は保たれませんが、線分の直線性や平行性は保たれます。 つまり、任意の平行四辺形を、別の任意の平行四辺形に移すような変換であるといえます。<p>
+変換前の点座標を(x',y'), 変換後の点座標(x,y) とすると、アフィン変換は<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{c} x \\ y \\ 1 \end{array} \right) = \mathbf{M} \left( \begin{array}{c} x' \\ y' \\ 1 \end{array} \right) \]" src="form_952.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathbf{M} = \left( \begin{array}{ccc} a &amp; b &amp; c \\ d &amp; e &amp; f \\ 0 &amp; 0 &amp; 1 \end{array} \right) \]" src="form_953.png">
+<p>
+<p>
+と与えられます。この時(x,y)と(x',y')のペアが複数分かっているとき、 本関数により行列 M を求めることができます。なお、点のペアは同一直線上にない３組以上が必要です。<p>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd><ul>
+<li>関数内部の行列計算はCLAPACKのDGELSD関数を使って行います。 </li>
+<li>入力点列の点数は同一直線上にない３組以上なければなりません。 </li>
+<li><em>fpMat</em> は3×3の行列をユーザが用意する必要があります。 3×3以外の行列を入力した場合はエラーとなります。 </li>
+<li>本関数内では、行列のメモリ確保は行いません。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fpMat</em>&nbsp;</td><td>求められたアフィン変換の変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntspFrom</em>&nbsp;</td><td>アフィン変換前の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntspTo</em>&nbsp;</td><td>アフィン変換後の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiNum</em>&nbsp;</td><td>pntspFrom/pntspTo の点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 <ul>
+<li><em>fpMat</em> , <em>pntspFrom</em> , または <em>pntspTo</em> がNULL </li>
+<li>点数が２点以下、または1073741824点(2^30点)以上 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>fpMat</em> が3×3の行列ではない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能で異常終了 <ul>
+<li>関数 DGELSD 中の計算は収束できない </li>
+<li>入力点列によって作った座標行列のランクが6未満のため、計算できない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a> の例を参照してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcd3cd58c4749314e7457ca839e45d503"></a><!-- doxytag: member="fie_geotrans_support.c::fnFIE_geotrans_estimate_similarity_matrix" ref="gcd3cd58c4749314e7457ca839e45d503" args="(FMATRIX *trans_mat, const DPNT_T *pnts_from, const DPNT_T *pnts_to, UINT pnts_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_estimate_similarity_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>trans_mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>pnts_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  相似変換の変換行列を計算 
+<p>
+最小二乗法を使用し、「変換前の点座標と変換後の点座標のペア」の 配列から相似変換行列を求めます。求められた行列はアフィン変換 (<a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb">fnFIE_geotrans_affine</a>) 等で変換行列として使用できます。<br>
+ 相似変換は、任意の平行移動、回転、および縦横の倍率が等しいスケーリングを組み合わせた変換であり、原図形の直線性や角度を保ちます。 つまり、任意の四角形を、その四角形と相似で鏡映でない別の四角形に移すような変換であるといえます。<p>
+変換前の点座標を(x',y'), 変換後の点座標(x,y) とすると、相似変換は<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{c} x \\ y \\ 1 \end{array} \right) = \mathbf{M} \left( \begin{array}{c} x' \\ y' \\ 1 \end{array} \right) \]" src="form_952.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathbf{M} = \left( \begin{array}{ccc} s \cos \theta &amp; - s \sin \theta &amp; a \\ s \sin \theta &amp; s \cos \theta &amp; b \\ 0 &amp; 0 &amp; 1 \end{array} \right) \]" src="form_954.png">
+<p>
+<p>
+と与えられます。この時(x,y)と(x',y')のペアが複数分かっているとき、 本関数により行列 M を求めることができます。なお、点のペアは相違なる２組以上が必要です。<p>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd><ul>
+<li>関数内部の行列計算はCLAPACKのDGELSD関数を使って行います。 </li>
+<li>入力点列の点数は２組以上なければなりません。 </li>
+<li><em>trans_mat</em> は3×3の行列をユーザが用意する必要があります。 3×3以外の行列を入力した場合はエラーとなります。 </li>
+<li>本関数内では、行列のメモリ確保は行いません。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>trans_mat</em>&nbsp;</td><td>求められた相似変換の変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_from</em>&nbsp;</td><td>相似変換前の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_to</em>&nbsp;</td><td>相似変換後の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_num</em>&nbsp;</td><td>pnts_from/pnts_to の点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 <ul>
+<li><em>trans_mat</em> , <em>pnts_from</em> , または <em>pnts_to</em> がNULL </li>
+<li>点数が１点以下、または1073741824点(2^30点)以上 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>trans_mat</em> が3×3の行列ではない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能で異常終了 <ul>
+<li>関数 DGELSD 中の計算は収束できない </li>
+<li>入力点列によって作った座標行列のランクが4未満のため、計算できない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a> の例を参照してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g66401405df4bec13c26bf409f4152215"></a><!-- doxytag: member="fie_geotrans_support.c::fnFIE_geotrans_estimate_euclidean_matrix" ref="g66401405df4bec13c26bf409f4152215" args="(FMATRIX *trans_mat, const DPNT_T *pnts_from, const DPNT_T *pnts_to, UINT pnts_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_estimate_euclidean_matrix           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>trans_mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>pnts_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  ユークリッド変換の変換行列を計算 
+<p>
+最小二乗法を使用し、「変換前の点座標と変換後の点座標のペア」の 配列からユークリッド変換行列を求めます。求められた行列はアフィン変換 (<a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb">fnFIE_geotrans_affine</a>) 等で変換行列として使用できます。<br>
+ ユークリッド変換は、任意の平行移動・回転を組み合わせた変換であり、原図形の長さや角度を保ちます。 つまり、任意の四角形を、その四角形と合同な別の四角形に移すような変換であるといえます。<p>
+変換前の点座標を(x',y'), 変換後の点座標(x,y) とすると、ユークリッド変換は<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{c} x \\ y \\ 1 \end{array} \right) = \mathbf{M} \left( \begin{array}{c} x' \\ y' \\ 1 \end{array} \right) \]" src="form_952.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathbf{M} = \left( \begin{array}{ccc} \cos \theta &amp; - \sin \theta &amp; a \\ \sin \theta &amp; \cos \theta &amp; b \\ 0 &amp; 0 &amp; 1 \end{array} \right) \]" src="form_955.png">
+<p>
+<p>
+と与えられます。この時(x,y)と(x',y')のペアが複数分かっているとき、 本関数により行列 M を求めることができます。なお、点のペアは相違なる２組以上が必要です。<p>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd><ul>
+<li>入力点列の点数は２組以上なければなりません。 </li>
+<li><em>trans_mat</em> は3×3の行列をユーザが用意する必要があります。 3×3以外の行列を入力した場合はエラーとなります。 </li>
+<li>本関数内では、行列のメモリ確保は行いません。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>trans_mat</em>&nbsp;</td><td>求められたユークリッド変換の変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_from</em>&nbsp;</td><td>ユークリッド変換前の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_to</em>&nbsp;</td><td>ユークリッド変換後の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_num</em>&nbsp;</td><td>pnts_from/pnts_to の点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 <ul>
+<li><em>trans_mat</em> , <em>pnts_from</em> , または <em>pnts_to</em> がNULL </li>
+<li>点数が１点以下、または1073741824点(2^30点)以上 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>trans_mat</em> が3×3の行列ではない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能で異常終了 <ul>
+<li>内部の行列演算に失敗した </li>
+<li>最適解が一意に定まらない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a> の例を参照してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g396b0a5f9d3b135344f81e88d404684c"></a><!-- doxytag: member="fie_geotrans_support.c::fnFIE_geotrans_estimate_warp_map" ref="g396b0a5f9d3b135344f81e88d404684c" args="(FHANDLE hmap, const DPNT_T *pnts_from, const DPNT_T *pnts_to, UINT pnts_num, enum f_geotrans_warp_mode warp_mode, DOUBLE param)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_estimate_warp_map           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>pnts_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__geometric__transform.html#g9fa8e97291615095089fd10280c3fdaa">f_geotrans_warp_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>warp_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>param</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  変換前後の点列を用いて座標変換マップを作成 
+<p>
+「変換前の点座標と変換後の点座標のペア」の配列から座標変換マップを作成します。 求められた変換マップ <em>hmap</em> は <a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping()</a> で使用できます。<p>
+<em>hmap</em> の画素タイプは F_IMG_DOUBLE または F_IMG_FLOAT でなければなりません。 <em>hmap</em> のチャネル数は2であり、チャネル0に x 座標が、チャネル1に y 座標が出力されます。<p>
+座標変換マップを作成するための処理モードはパラメータ <em>warp_mode</em> で設定します。 <em>warp_mode</em> の値は下記のいずれかです。<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaac83a506622b822f902961a83209a125b">F_WARP_MODE_PIECEWISE_AFFINE</a> <br>
+ 区分アフィン変換モードです。 局所領域ごとに異なるアフィン変換が実行されるため、 線形変換では表現できない複雑な変形に対応することができます。</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa120b8e7f2ba24832ce415034e9598342">F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR</a> <br>
+ 局所重み付き平均による変換モード（線形）です。 区分アフィン変換と同様に複雑な変形に対応でき、より滑らかな結果を得ることができますが、 多数の一様な点の対応を必要とします。 <br>
+ 点が一様に分布していない場合、点が少ない領域にて変換マップの座標値が定まらないことがあります。 そのような領域では正の無限大を座標値として格納します。</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaafb7d1f2124fdaf24a8ac77eecffceae5">F_WARP_MODE_EUCLIDEAN</a> <br>
+ ユークリッド変換モードです。 処理内部で <a class="el" href="group__fie__cg__geometric__transform.html#g66401405df4bec13c26bf409f4152215" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  ユークリッド...">fnFIE_geotrans_estimate_euclidean_matrix()</a> が使用されます。</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa45a9d318466829eaa8bf31d1a648bc48">F_WARP_MODE_SIMILARITY</a> <br>
+ 相似変換モードです。 処理内部で <a class="el" href="group__fie__cg__geometric__transform.html#gcd3cd58c4749314e7457ca839e45d503" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  相似変換の変...">fnFIE_geotrans_estimate_similarity_matrix()</a> が使用されます。</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa2e9c45f263b68d597952a67dae8c1e35">F_WARP_MODE_AFFINE</a> <br>
+ アフィン変換モードです。 処理内部で <a class="el" href="group__fie__cg__geometric__transform.html#gc69a6eef00db76385387367ff62823b1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  アフィン変換...">fnFIE_geotrans_estimate_affine_matrix()</a> が使用されます。</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa85515e59ce9b9fbe5eb77606ad3aba8d">F_WARP_MODE_PERSPECTIVE</a> <br>
+ 射影変換モードです。 処理内部で <a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a> が使用されます。</li></ul>
+<p>
+<dl class="user" compact><dt><b><em>param</em> について</b></dt><dd><em>param</em> は変換マップ作成モード <em>warp_mode</em> に応じて意味が変化するパラメータです。 <em>warp_mode</em> が F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR 以外の場合は使用されません。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><em>warp_mode</em> が F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR の場合は、 <em>param</em> は近傍点の数となります。 <em>param</em> は4以上の整数でなければなりません。 近傍点の数が小さいと処理結果が不安定となりやすいため、8以上の値を設定することを推奨します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>入力点列の点数 <em>pnts_num</em> は変換マップ作成モードごとに下記の値以上でなければなりません。<ul>
+<li>F_WARP_MODE_EUCLIDEAN: 2</li><li>F_WARP_MODE_SIMILARITY: 2</li><li>F_WARP_MODE_AFFINE: 3</li><li>F_WARP_MODE_PERSPECTIVE: 4</li><li>F_WARP_MODE_PIECEWISE_AFFINE: 4</li><li>F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR: <em>param</em> (≧ 4) </li></ul>
+</li>
+<li>入力点列に同一直線上に並ぶ点が多数含まれている場合は計算不能エラーになる場合があります。 </li>
+<li><em>warp_mode</em> が F_WARP_MODE_PIECEWISE_AFFINE または F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR の場合、 入力点列に重複点があるとエラーになります。 </li>
+<li><em>warp_mode</em> が F_WARP_MODE_PIECEWISE_AFFINE の場合、内部処理の都合上、 座標変換後の点列の座標値の絶対値が100万を超えているとエラーになります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmap</em>&nbsp;</td><td>座標変換マップ (type:float, double, ch:2) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_from</em>&nbsp;</td><td>座標変換前の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_to</em>&nbsp;</td><td>座標変換後の点列の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_num</em>&nbsp;</td><td>pnts_from/pnts_to の点数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>warp_mode</em>&nbsp;</td><td>変換マップ作成モード<ul>
+<li>F_WARP_MODE_EUCLIDEAN</li><li>F_WARP_MODE_SIMILARITY</li><li>F_WARP_MODE_AFFINE</li><li>F_WARP_MODE_PERSPECTIVE</li><li>F_WARP_MODE_PIECEWISE_AFFINE</li><li>F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>変換マップ作成モードごとのパラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトハンドルが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能で異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// FIE関数の異常終了時に処理終了するためのマクロ定義</span>
+<span class="preprocessor">#define ERROR_CHECK(expr) if ((err = (expr)) != F_ERR_NONE) { printf("err: %d, line: %d\n", err, __LINE__); goto exit; }</span>
+<span class="preprocessor"></span>
+<span class="comment">// 縦方向の点の数</span>
+<span class="preprocessor">#define NUM_POINT_ROWS 10</span>
+<span class="preprocessor"></span><span class="comment">// 横方向の点の数</span>
+<span class="preprocessor">#define NUM_POINT_COLS 10</span>
+<span class="preprocessor"></span><span class="comment">// 点の数</span>
+<span class="preprocessor">#define NUM_POINTS (NUM_POINT_ROWS * NUM_POINT_COLS)</span>
+<span class="preprocessor"></span>
+<span class="comment">// アーチ状に画像を変形するサンプル</span>
+INT warp_image_like_arch()
+{
+    <span class="comment">// 入力画像</span>
+    FHANDLE hsrc = NULL;
+    <span class="comment">// 出力画像</span>
+    FHANDLE hdst = NULL;
+    <span class="comment">// 座標変換マップ</span>
+    FHANDLE hmap = NULL;
+    <span class="comment">// 点列のプロット用画像</span>
+    FHANDLE hsrc_plot = NULL;
+    FHANDLE hdst_plot = NULL;
+
+    <span class="comment">// 変換前座標点列</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnts_from[NUM_POINTS];
+    <span class="comment">// 変換後座標点列</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnts_to[NUM_POINTS];
+
+    <span class="comment">// 画像パラメータ</span>
+    INT type, channels, width, height;
+    INT dst_height;
+
+    <span class="comment">// 変換パラメータ</span>
+    <span class="comment">// 変換マップ作成モード。複雑な変形に対応できるものを設定</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__cg__geometric__transform.html#g9fa8e97291615095089fd10280c3fdaa" title="座標変換マップ作成モード">f_geotrans_warp_mode</a> warp_mode = <a class="code" href="group__fie__cg__geometric__transform.html#gg9fa8e97291615095089fd10280c3fdaa120b8e7f2ba24832ce415034e9598342">F_WARP_MODE_LOCAL_WEIGHTED_MEAN_LINEAR</a>;
+    <span class="comment">// 近傍点の数</span>
+    DOUBLE param = 8.0;
+    <span class="comment">// 濃度補間法</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e" title="濃度補間を指定">f_sampling_mode</a> sampling_mode = <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8ef37e277b29f4302b27d157d83fa19643" title="共一次線形補間法">F_SAMPLING_BILINEAR</a>;
+
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+    INT x, y, i;
+
+    <span class="comment">// 入力画像読み込み。1チャネルまたは3チャネルの濃淡画像（F_IMG_UC8）を想定</span>
+    ERROR_CHECK( <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(<span class="stringliteral">"sample.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>) );
+
+    <span class="comment">// 入力画像のパラメータ取得</span>
+    ERROR_CHECK( <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, &amp;channels, &amp;type, NULL, &amp;width, &amp;height) );
+    <span class="comment">// アーチ状に変形させるため、出力画像の高さを少し追加</span>
+    dst_height = height * 5 / 4;
+
+    <span class="comment">// 出力画像と座標変換マップのメモリ確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, channels, width, dst_height);
+    hmap = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 2, width, dst_height);
+
+    <span class="comment">// 変換前後の点列の設定</span>
+    <span class="keywordflow">for</span> (y = 0; y &lt; NUM_POINT_ROWS; y++)
+    {
+        <span class="keywordflow">for</span> (x = 0; x &lt; NUM_POINT_COLS; x++)
+        {
+            DOUBLE x_ratio = (DOUBLE)x / (NUM_POINT_COLS - 1);
+            DOUBLE y_ratio = (DOUBLE)y / (NUM_POINT_ROWS - 1);
+            <span class="comment">// 変換前点は格子状に配置</span>
+            <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> from = {x_ratio * width, y_ratio * height};
+            <span class="comment">// 変換後点列のY方向差分。アーチ状に変形するので、X座標が画像中央に近いほどY座標を小さくする</span>
+            DOUBLE y_shift_to = (x_ratio - 0.5) * (x_ratio - 0.5) * height;
+            <span class="comment">// 変換後点</span>
+            <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> to = {from.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>, from.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + y_shift_to};
+            INT idx = y * NUM_POINT_COLS + x;
+
+            pnts_from[idx] = from;
+            pnts_to[idx] = to;
+        }
+    }
+    
+    <span class="comment">// 変換マップ作成</span>
+    ERROR_CHECK( <a class="code" href="group__fie__cg__geometric__transform.html#g396b0a5f9d3b135344f81e88d404684c" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  変換前後の点...">fnFIE_geotrans_estimate_warp_map</a>(hmap, pnts_from, pnts_to, NUM_POINTS, warp_mode, param) );
+    
+    <span class="comment">// 変換実施</span>
+    ERROR_CHECK( <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>(hsrc, hmap, hdst, NULL, TRUE, sampling_mode) );
+
+    <span class="comment">// 結果画像保存</span>
+    ERROR_CHECK( <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"sample_deformed.png"</span>, hdst, -1) );
+
+    <span class="comment">// 可視化用に、点列を赤色で入出力画像にプロットして表示</span>
+    hsrc_plot = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, 3, width, height);
+    hdst_plot = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, 3, width, dst_height);
+    <span class="keywordflow">if</span> (channels == 1) {
+        ERROR_CHECK( <a class="code" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f" title="色空間変換処理">fnFIE_color_convert</a>(hsrc, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903fd56663465978a8bc6035af31db491c6" title="グレースケール">F_CS_GRAY</a>, hsrc_plot, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865" title="RGB">F_CS_RGB</a>, NULL) );
+        ERROR_CHECK( <a class="code" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f" title="色空間変換処理">fnFIE_color_convert</a>(hdst, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903fd56663465978a8bc6035af31db491c6" title="グレースケール">F_CS_GRAY</a>, hdst_plot, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865" title="RGB">F_CS_RGB</a>, NULL) );
+    }
+    <span class="keywordflow">else</span> {
+        <span class="comment">// channel == 3</span>
+        ERROR_CHECK( <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc, hsrc_plot) );
+        ERROR_CHECK( <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hdst, hdst_plot) );
+    }
+
+    <span class="keywordflow">for</span> (i = 0; i &lt; NUM_POINTS; i++)
+    {
+        DOUBLE val[3] = {255.0, 0.0, 0.0};
+        ERROR_CHECK( <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hsrc_plot, val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts_from[i], 2) );
+        ERROR_CHECK( <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hdst_plot, val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, pnts_to[i], 2) );
+    }
+
+    <span class="comment">// 点列可視化画像保存</span>
+    ERROR_CHECK( <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"sample_keypoints.png"</span>, hsrc_plot, -1) );
+    ERROR_CHECK( <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"sample_deformed_keypoints.png"</span>, hdst_plot, -1) );
+
+exit:
+    <span class="comment">// 画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hmap);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_plot);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst_plot);
+
+    <span class="keywordflow">return</span> err;
+}
+
+<span class="keywordtype">int</span> main()
+{
+    INT err;
+
+    <span class="comment">// FIEライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    err = warp_image_like_arch();
+
+    <span class="comment">// ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> err;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_geotrans_estimate_lwm_deformed.png" alt="fie_geotrans_estimate_lwm_deformed.png">
+<p><strong>作成した変換マップにより入力画像を変形した画像</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_geotrans_estimate_lwm_keypoints.png" alt="fie_geotrans_estimate_lwm_keypoints.png">
+<p><strong>変換前点列の可視化画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_geotrans_estimate_lwm_deformed_keypoints.png" alt="fie_geotrans_estimate_lwm_deformed_keypoints.png">
+<p><strong>変換後点列の可視化画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Goshtasby, Piecewise linear mapping functions for image registration, Pattern Recognition, Vol. 19, pp. 459-466, 1986.</li><li>Goshtasby, Image registration by local approximation methods, Image and Vision Computing, Vol. 6, pp. 255-261, 1988. </li></ul>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

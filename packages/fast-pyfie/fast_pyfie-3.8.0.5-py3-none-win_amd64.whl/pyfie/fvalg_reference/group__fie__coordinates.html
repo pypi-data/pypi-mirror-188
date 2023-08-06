@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 座標系</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>座標系<br>
+<small>
+[<a class="el" href="group__fie__document.html">総合ドキュメント</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="coordinates_axis">
+座標系</a></h2>
+FIEで扱う座標は特に明記の無い限り、下図のように、 向かって右方向が＋ｘ、向かって下方向が＋ｙ、 向かって時計回り（＋ｘ軸方向から＋ｙ軸方向）が＋θとなります。<p>
+<div align="center">
+<img src="coordinates.png" alt="coordinates.png">
+<p><strong>Fig. FIEの座標系</strong></p></div>
+ <hr>
+ <h2><a class="anchor" name="coordinates_image">
+画像オブジェクトの座標系</a></h2>
+画像オブジェクトの画素座標値を扱う場合は、特に明記の無い限り チャイルド画像、ルート画像にかかわらず画像の左上を(0,0)としています。<p>
+<div align="center">
+<img src="coordinates_image.png" alt="coordinates_image.png">
+<p><strong>Fig. 画像オブジェクトの座標例</strong></p></div>
+ <hr>
+ <h2><a class="anchor" name="coordinates_subpix">
+サブピクセル座標</a></h2>
+画像の座標において、１画素未満のサブピクセル値を扱う場合には、 画素の定義に言及しなければなりません。１画素はその中心を座標(0,0)とし、 Ｘ方向、Ｙ方向それぞれに±0.5の広がりを持つ矩形領域であるとFIEでは定義します。<p>
+<div align="center">
+<img src="coordinates_pixcel.png" alt="coordinates_pixcel.png">
+<p><strong>Fig. 画素の座標定義</strong></p></div>
+ つまり、画像を表示したときに、その左上隅の座標は(-0.5,-0.5)となるわけです。<p>
+<div align="center">
+<img src="coordinates_subpix.png" alt="coordinates_subpix.png">
+<p><strong>Fig. 表示の座標</strong></p></div>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

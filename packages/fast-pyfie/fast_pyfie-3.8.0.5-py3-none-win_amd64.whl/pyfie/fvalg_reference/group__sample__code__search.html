@@ -1,0 +1,2078 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: サーチ 応用例</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>サーチ 応用例<br>
+<small>
+[<a class="el" href="group__fie__sample__code__list.html">サンプルコード一覧</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="smp_gray_search_rotate">
+回転対応グレイサーチ</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">    回転しているパターン画像のサーチを目的とした、グレイサーチのサンプルコードです.</span>
+<span class="comment">    </span>
+<span class="comment">    従来の結果に加え、検出された際の角度を出力します.</span>
+<span class="comment">    また、同一座標で複数角度のパターンが検出された場合、スコアが最大のものを回答します.</span>
+<span class="comment">*/</span>
+
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="comment">/*</span>
+<span class="comment">    サンプル用回転グレイサーチ結果構造体</span>
+<span class="comment">*/</span>
+<span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    INT x;
+    INT y;
+    INT score;
+    INT angle;
+}SMP_RESULT_ROT;
+
+<span class="preprocessor">#define DEG_TO_RAD(a) ( (a)*PI/180.0 )</span>
+<span class="preprocessor"></span><span class="preprocessor">#define RAD_TO_DEG(a) ( (a)*180.0/PI )</span>
+<span class="preprocessor"></span><span class="preprocessor">#define SAMPLE_PRINT</span>
+<span class="preprocessor"></span>
+<span class="comment">//結果表示用マクロ.</span>
+<span class="preprocessor">#ifdef SAMPLE_PRINT</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PRINT_RESULT( result, result_num )\</span>
+<span class="preprocessor">    {\</span>
+<span class="preprocessor">        INT num;\</span>
+<span class="preprocessor">        puts("result");\</span>
+<span class="preprocessor">        for( num = 0; num &lt; result_num; num++ )\</span>
+<span class="preprocessor">        {\</span>
+<span class="preprocessor">            printf("No.%2d : score %d, ( %d, %d ) angle:%d\n",\</span>
+<span class="preprocessor">            num, result[num].score, result[num].x/100, result[num].y/100, result[num].angle/10 );\</span>
+<span class="preprocessor">        }\</span>
+<span class="preprocessor">    }</span>
+<span class="preprocessor"></span><span class="preprocessor">#else</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PRINT_RESULT( result, result_num )</span>
+<span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 関数プロトタイプ</span>
+
+INT fnSMP_gray_search_rot( 
+    FHANDLE                 hgs,
+    FHANDLE                 hpattern,
+    FHANDLE                 himage,
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>                   search_window,
+    INT                     threshold_mid,
+    INT                     threshold_final,
+    INT                     edge_detect,
+    INT                     reverse_mode,
+    INT                     pitch_x,
+    INT                     pitch_y,
+    INT                     pitch_angle,
+    INT                     first_unit,
+    INT                     last_unit,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a>  subpxl_neib,
+    INT                     max_result_num,
+    INT                     base_angle,
+    INT                     plus_rot,
+    INT                     minus_rot,
+    SMP_RESULT_ROT          *result,
+    INT                     *result_num
+    );
+<span class="keyword">static</span> BOOL fnSMP_angle_diff_comp( INT a, INT b, INT pitch_angle );
+<span class="keyword">static</span> INT FVALGAPI fnSMP_comp_ex( VOID *search_result, <span class="keyword">const</span> VOID *p_index1, <span class="keyword">const</span> VOID *p_index2 );
+<span class="keyword">static</span> INT fnSMP_sort_result( FHANDLE hvarray, SMP_RESULT_ROT *result, INT pitch_x, INT pitch_y, INT pitch_angle, INT max_result_num, INT *result_num );
+<span class="keyword">static</span> INT fnSMP_result_add( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result, FHANDLE hvarray, INT result_num, INT angle );
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実装</span>
+
+<span class="comment">/*</span>
+<span class="comment">    回転対応 グレイサーチ.</span>
+<span class="comment">    </span>
+<span class="comment">    指定範囲内の角度を1度刻みでパターンを回転させグレイサーチを実行します.</span>
+<span class="comment">    回転サーチ結果において、同一座標に複数出力されたとき角度差が pitch_angle 以上の場合は、別のサーチ結果と判断し出力します.</span>
+<span class="comment"></span>
+<span class="comment">    base_angle を基準に±方向に指定角度分1度ずつ回転しサーチします.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in,out]    hgs                 グレイサーチオブジェクト</span>
+<span class="comment">        [in]        hpattern            グレイサーチパターンオブジェクト</span>
+<span class="comment">        [in]        himage              サーチ対象となる画像オブジェクト ( type : uc8 )</span>
+<span class="comment">                                        チャネル数は1でなければなりません.</span>
+<span class="comment">                                        また、パタンのサイズよりも縦横共に大きい必要があります.</span>
+<span class="comment">        [in]        search_window       サーチウインドウ</span>
+<span class="comment">                                        画像オブジェクトの中でサーチを行う処理範囲を himage 上の座標で指定します.</span>
+<span class="comment">                                        himage の内部に納まるように座標を指定する必要があります.</span>
+<span class="comment">                                        また、パタンのサイズよりも大きい必要があります.</span>
+<span class="comment">        [in]        threshold_mid       途中相関値 ( 1000 ～ 9999 )</span>
+<span class="comment">        [in]        threshold_final     最終相関値 ( 1000 ～ 9999 )</span>
+<span class="comment">        [in]        edge_detect         サーチウインドウ周囲接触フラグ</span>
+<span class="comment">                                         - TRUE サーチウインドウに接したパターンも検出</span>
+<span class="comment">                                         - FALSE サーチウインドウに接したパターンを検出しない</span>
+<span class="comment">        [in]        reverse_mode        反転パターン検出モードフラグ 濃度反転しているパターンも検出するかどうかを指定します.</span>
+<span class="comment">                                         - TRUE 反転パターンも検出</span>
+<span class="comment">                                         - FALSE 反転パターンを検出しない</span>
+<span class="comment">        [in]        pitch_x             最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.</span>
+<span class="comment">                                        0を入力した場合、パターンサイズの半分になります.</span>
+<span class="comment">        [in]        pitch_y             最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.</span>
+<span class="comment">                                        0を入力した場合、パターンサイズの半分になります.</span>
+<span class="comment">        [in]        pitch_angle         最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.(degree)</span>
+<span class="comment">                                        0を入力した場合、パターン回転総角度数の半分となります.</span>
+<span class="comment">                                        ( 0 &lt;= pitch_angle &lt;= 180 )</span>
+<span class="comment">        [in]        first_unit          サーチ開始圧縮度を指定します.( 0 ～ 9 ) </span>
+<span class="comment">                                        圧縮度がnのとき、2の-n乗倍の画像でサーチを開始します.</span>
+<span class="comment">        [in]        last_unit           サーチ終了圧縮度を指定します.( 0 ～ 9 ) </span>
+<span class="comment">                                        圧縮度がnのとき、2の-n乗倍の画像でサーチを完了します.</span>
+<span class="comment">        [in]        subpxl_neib         精サーチ・サブピクセル推定に用いる近傍を指定します.</span>
+<span class="comment">                                        ８近傍を指定する場合、サーチ終了圧縮度(last_unit)は 0 を推奨します.</span>
+<span class="comment">                                         - F_GS2_SUBPXL_NEIB_4  ４近傍</span>
+<span class="comment">                                         - F_GS2_SUBPXL_NEIB_8  ８近傍</span>
+<span class="comment">        [in]        max_result_num      サーチ結果取得個数.</span>
+<span class="comment">                                        相関値の上位からこの個数だけ回答します.</span>
+<span class="comment">                                        result はこの個数よりも大きい配列でなければいけません.</span>
+<span class="comment">        [in]        base_angle          処理開始角度　degreeの10倍値　( 0 ～ 3600)</span>
+<span class="comment">                                        開始角度から時計回りに回転します.</span>
+<span class="comment">        [in]        plus_rot            処理開始角度からの処理範囲プラス方向　degreeの10倍値 ( 0 ～ 1800)</span>
+<span class="comment">        [in]        minus_rot           処理開始角度からの処理範囲マイナス方向　degreeの10倍値 ( 0 ～ 1800)</span>
+<span class="comment">        [out]       result              サーチ結果</span>
+<span class="comment">                                        サーチスコア( 0 ～ 10000 )と結果座標の100倍値と角度の10倍値を返します.</span>
+<span class="comment">        [out]       result_num          見つかったサーチ結果の個数 ( 0 ～ max_result_num )</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE                      正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM             引数異常、範囲外の引数を与えた(pitchがマイナス等)</span>
+<span class="comment">        F_ERR_INVALID_OBJECT            引数オブジェクトの種別が異常、引数オブジェクトがNULL</span>
+<span class="comment">        F_ERR_NOMEMORY                  メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_IMAGE             対応していない画像が渡された</span>
+<span class="comment">        F_ERR_NO_LICENCE                ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+INT fnSMP_gray_search_rot( 
+    FHANDLE                 hgs,
+    FHANDLE                 hpattern, 
+    FHANDLE                 himage, 
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>                   search_window,
+    INT                     threshold_mid,
+    INT                     threshold_final,
+    INT                     edge_detect,
+    INT                     reverse_mode,
+    INT                     pitch_x,
+    INT                     pitch_y,
+    INT                     pitch_angle,
+    INT                     first_unit,
+    INT                     last_unit,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a>  subpxl_neib,
+    INT                     max_result_num,
+    INT                     base_angle,
+    INT                     plus_rot,
+    INT                     minus_rot,
+    SMP_RESULT_ROT          *result,
+    INT                     *result_num
+    )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    
+    FHANDLE hrot_pattern = NULL;
+    INT clip_width = I32_MAX;<span class="comment">//特に問題ない場合はI32_MAXを使用する.</span>
+    INT clip_height = I32_MAX;
+    INT rotate_pattern = 0;<span class="comment">//回転方法 Nearest neighbor. </span>
+    <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result_buff = NULL;
+    FHANDLE hvary   = NULL;
+
+    <span class="comment">//1度刻みで回転させる.</span>
+    INT inc_num = 10;
+    INT total_count = ( plus_rot + minus_rot ) / inc_num + 1;
+
+    <span class="comment">//Pitch x yが0を指定されていた際のPitch取得用画像.</span>
+    FHANDLE pat_img = NULL;
+
+    <span class="comment">/* パラメータ確認 */</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( base_angle &lt; 0 || base_angle &gt; 3600 || plus_rot &lt; 0 || plus_rot &gt; 1800 || minus_rot &lt; 0 || minus_rot &gt; 1800 )
+        <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( pitch_x &lt; 0 || pitch_y &lt; 0 )
+        <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( pitch_angle &lt; 0 || pitch_angle &gt; 180 )
+        <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( NULL == result || NULL == result_num )
+        <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    result_buff = (<a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a>*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( max_result_num, <span class="keyword">sizeof</span>(<a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a>) );
+    <span class="keywordflow">if</span>( NULL == result_buff ) <span class="keywordflow">goto</span> EXIT;
+
+    hvary = <a class="code" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc</a>( (<span class="keyword">enum</span> <a class="code" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a" title="FIEオブジェクト種別">f_objtag</a>)0, <span class="keyword">sizeof</span>(SMP_RESULT_ROT), 0 );
+    <span class="keywordflow">if</span>( NULL == hvary ) <span class="keywordflow">goto</span> EXIT;
+    
+    <span class="comment">//Pitch設定.</span>
+    <span class="keywordflow">if</span>( pitch_x == 0 || pitch_y == 0 )
+    {
+        ret = <a class="code" href="group__fie__gs2__pattern.html#g204bc0ffed285e59439bc98bfc01e1b5" title="パターン画像を取得する">fnFIE_gs2_pattern_get_image</a>( hpattern, &amp;pat_img );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+        <span class="keywordflow">if</span>( pitch_x == 0 )
+            pitch_x = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( pat_img ) / 2;
+        <span class="keywordflow">if</span>( pitch_y == 0 )
+            pitch_y = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( pat_img ) / 2;
+    }
+    <span class="keywordflow">if</span>( pitch_angle == 0 )
+            pitch_angle = ( plus_rot + minus_rot ) / 2;
+
+    {
+        INT i;
+        INT start = base_angle - minus_rot;
+        INT end = base_angle + plus_rot;
+        INT rot_angle;
+        FHANDLE himage_buff = himage;
+
+        <span class="keywordflow">for</span>( i = start; i &lt;= end; i+= inc_num )
+        {
+            <span class="comment">//角度を0～360°の範囲に収める.</span>
+            rot_angle = i % 3600;
+            <span class="keywordflow">if</span>( rot_angle &lt; 0 )
+                rot_angle += 3600;
+
+            ret = <a class="code" href="group__fie__gs2__pattern.html#g98b3e2a87127a4885d3b7c9496642896" title="回転パターンの生成">fnFIE_gs2_pattern_rotate</a>(
+                hpattern,
+                rot_angle,
+                clip_width,
+                clip_height,
+                rotate_pattern,
+                &amp;hrot_pattern
+                );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+            ret =<a class="code" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2</a>(
+                    hgs,
+                    hrot_pattern,
+                    himage_buff,<span class="comment">//二回目以降NULL.</span>
+                    search_window,
+                    threshold_mid, threshold_final,
+                    edge_detect,
+                    reverse_mode,
+                    pitch_x, pitch_y,
+                    first_unit,
+                    last_unit,
+                    subpxl_neib,
+                    result_buff,
+                    max_result_num,
+                    result_num
+                    );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+            
+            ret = fnSMP_result_add( result_buff, hvary, *result_num, rot_angle );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+            <span class="comment">//次の回転パターン登録のためパターン開放 及び NULL初期化.</span>
+            <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrot_pattern ); hrot_pattern = NULL;
+            <span class="comment">//二回目以降ターゲット画像をNULLにし、継続サーチへ切り替える.</span>
+            himage_buff = NULL;
+        }
+
+        <span class="comment">//結果出力.</span>
+        ret = fnSMP_sort_result( hvary, result, pitch_x, pitch_y, pitch_angle, max_result_num, result_num );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+    }
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result_buff );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrot_pattern );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pat_img );
+
+    <a class="code" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free</a>( hvary );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    角度差判定.</span>
+<span class="comment">    </span>
+<span class="comment">    角度を単位ベクトルを求め内積を取ることでaとbの角度差を取得します。</span>
+<span class="comment">    角度1と角度2の差が比較角度未満の場合はTRUE(1)返し、差が比較角度以上場合はFALSE(0)を返します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]    a               角度1 (degree)</span>
+<span class="comment">        [in]    b               角度2 (degree)</span>
+<span class="comment">        [in]    pitch_angle     比較角度 (degree)</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        TRUE    角度差が比較角度未満</span>
+<span class="comment">        FALSE   角度差が比較角度以上</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> BOOL fnSMP_angle_diff_comp( INT a, INT b, INT pitch_angle )
+{
+    DOUBLE rad_a = DEG_TO_RAD( a );
+    DOUBLE rad_b = DEG_TO_RAD( b );
+    DOUBLE pitch_angle_cos = cos( DEG_TO_RAD( pitch_angle ) );<span class="comment">//比較角度の cosθ値.</span>
+    DOUBLE x1, y1;
+    DOUBLE x2, y2;
+    DOUBLE angle_sub_cos;
+    
+    <span class="comment">//aの単位ベクトル.</span>
+    x1 = cos( rad_a );
+    y1 = sin( rad_a );
+    <span class="comment">//bの単位ベクトル.</span>
+    x2 = cos( rad_b );
+    y2 = sin( rad_b );
+
+    <span class="comment">//内積計算.</span>
+    angle_sub_cos = ( ( x1 * x2 ) + ( y1 * y2 ) );
+
+    <span class="comment">/*</span>
+<span class="comment">        角度での比較では無く、角度のコサイン値による比較.</span>
+<span class="comment">        角度が大きくなるとコサイン値が小さくなる(0～PI:1～-1)ため.</span>
+<span class="comment">        角度の大小と比較方法が異なる.</span>
+<span class="comment">    */</span>
+    <span class="keywordflow">if</span>( angle_sub_cos &gt; pitch_angle_cos )
+        <span class="keywordflow">return</span> TRUE;<span class="comment">//角度差　&lt;　比較角度</span>
+    <span class="keywordflow">else</span>
+        <span class="keywordflow">return</span> FALSE;<span class="comment">//角度差　&gt;= 比較角度</span>
+}
+
+<span class="comment">/*</span>
+<span class="comment">    比較関数.</span>
+<span class="comment">    1. スコア降順</span>
+<span class="comment">    2. 角度昇順</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT FVALGAPI fnSMP_comp_ex( VOID *search_result, <span class="keyword">const</span> VOID *p_index1, <span class="keyword">const</span> VOID *p_index2 )
+{
+    SMP_RESULT_ROT *result = (SMP_RESULT_ROT*)search_result;
+    INT index1 = *(INT*)p_index1;
+    INT index2 = *(INT*)p_index2;
+    SMP_RESULT_ROT *result1 = result + index1;
+    SMP_RESULT_ROT *result2 = result + index2;
+
+    <span class="keywordflow">if</span>( result1-&gt;score &lt; result2-&gt;score )
+        <span class="keywordflow">return</span> 1;
+    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( result1-&gt;score &gt; result2-&gt;score )
+        <span class="keywordflow">return</span> -1;
+    <span class="keywordflow">else</span>
+    { <span class="comment">/* result1-&gt;score == result2-&gt;score */</span>
+        <span class="keywordflow">if</span>( result1-&gt;angle &lt; result2-&gt;angle )
+            <span class="keywordflow">return</span> -1;
+        <span class="keywordflow">else</span> <span class="keywordflow">if</span>( result1-&gt;angle &gt; result2-&gt;angle )
+            <span class="keywordflow">return</span> 1;
+        <span class="keywordflow">else</span>
+            <span class="keywordflow">return</span> 0;
+    }
+}
+
+<span class="comment">/*</span>
+<span class="comment">    結果のソート及び重複除去</span>
+<span class="comment"></span>
+<span class="comment">        [in]        hvarray         サーチ結果(vectarray配列オブジェクト)</span>
+<span class="comment">        [out]       result          ソート後サーチ結果</span>
+<span class="comment">        [in]        pitch_x         最小x間隔(1以上)</span>
+<span class="comment">        [in]        pitch_y         最小y間隔(1以上)</span>
+<span class="comment">        [in]        pitch_angle     最小angle間隔(1以上)</span>
+<span class="comment">        [in]        max_result_num  最大で上位何個回答するか(1以上)</span>
+<span class="comment">        [out]       result_num      有効な結果の個数</span>
+<span class="comment"></span>
+<span class="comment">        F_ERR_NONE                  正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM         引数異常</span>
+<span class="comment">        F_ERR_NOMEMORY              メモリ不足</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_sort_result( 
+    FHANDLE hvarray,
+    SMP_RESULT_ROT *result,
+    INT pitch_x, INT pitch_y, INT pitch_angle,
+    INT max_result_num, INT *result_num
+    )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    SMP_RESULT_ROT *p_hvarray = NULL;
+    INT ary_size;
+    INT *sort_indexes = NULL;
+    INT *hit_flags = NULL;
+    
+    <span class="comment">//パラメータ確認.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == hvarray || NULL == result || NULL == result_num ) <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( max_result_num &lt; 1 ) <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( pitch_x &lt; 1 || pitch_y &lt; 1 || pitch_angle &lt; 1 ) <span class="keywordflow">goto</span> EXIT;
+
+    ary_size = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray );
+    <span class="keywordflow">if</span>( ary_size &lt; 0 ) <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    sort_indexes = (INT*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>(INT) * ary_size );
+    <span class="keywordflow">if</span>( NULL == sort_indexes ) <span class="keywordflow">goto</span> EXIT;
+    hit_flags = (INT*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>(INT) * ary_size );
+    <span class="keywordflow">if</span>( NULL == hit_flags ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//indexes, hit_flags 初期化.</span>
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            sort_indexes[i] = i;
+            hit_flags[i] = 0;
+        }
+    }
+
+    <span class="comment">//相関値が高い+角度が小さい順にソート.</span>
+    <span class="comment">//最終結果で重複した際に角度が小さい方を優先する.</span>
+    p_hvarray = (SMP_RESULT_ROT*)<a class="code" href="group__fie__container__vector.html#g797a3ffd1433943b395d7f8494fceb68" title="先頭ポインタの取得">fnFIE_vectarray_getptr</a>( hvarray );
+    <span class="comment">//fnFIE_qsort()を用いると、配列の中身を直接入替えてしまい元のデータが消えてしまう.</span>
+    <span class="comment">//そこで、結果配列のインデックスと等価なsort_indexesをソートすることで、元の配列を保持しつつソートを行う.</span>
+    <a class="code" href="group__fie__sort.html#g37484df2e635b39cc1965c39d495521c" title="クイックソート">fnFIE_qsort_ex</a>( sort_indexes, ary_size, <span class="keyword">sizeof</span>(INT), fnSMP_comp_ex, (SMP_RESULT_ROT*)p_hvarray );
+
+    <span class="comment">//ピッチを100倍値へ換算.</span>
+    pitch_x *= 100;
+    pitch_y *= 100;
+
+    <span class="comment">//サーチ結果 重複フラグチェック.</span>
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            SMP_RESULT_ROT result = *( ( SMP_RESULT_ROT* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[i] ) );
+            INT x = result.x;
+            INT y = result.y;
+            INT angle = result.angle;
+            INT j;
+            <span class="keywordflow">for</span>( j = i+1; j &lt; ary_size; j++ )
+            {
+                SMP_RESULT_ROT dresult = *( ( SMP_RESULT_ROT* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[j] ) );
+                INT dx = abs( dresult.x - x );
+                INT dy = abs( dresult.y - y );
+                INT dangle = dresult.angle;
+                <span class="comment">//10倍値されている角度を元に戻して判定.</span>
+                BOOL angle_judge = fnSMP_angle_diff_comp( angle/10, dangle/10, pitch_angle );
+
+                <span class="comment">//重複と判別されたインデックスのフラグをオン(1)していく.</span>
+                <span class="keywordflow">if</span>( ( dx &lt; pitch_x ) &amp;&amp; ( dy &lt; pitch_y ) &amp;&amp; ( angle_judge ) )
+                {
+                    hit_flags[j] = 1;
+                }
+            }
+        }
+    }
+
+    <span class="comment">//結果出力.</span>
+    {
+        INT i;
+        INT dst_ary_index = 0;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            <span class="comment">//上記フラグチェックで重複していないものを結果として出力していく.</span>
+            <span class="keywordflow">if</span>( !(hit_flags[i]) )
+            {
+                SMP_RESULT_ROT result_buff = *( ( SMP_RESULT_ROT* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[i] ) );
+                result[dst_ary_index].<a class="code" href="structF__GS__RESULT.html#531a83b7f5cf116c8400a988c63ddb57">score</a> = result_buff.score;
+                result[dst_ary_index].x     = result_buff.x;
+                result[dst_ary_index].y     = result_buff.y;
+                result[dst_ary_index].angle = result_buff.angle;
+                dst_ary_index++;
+            }
+            <span class="comment">//個数とindexの差は上記処理で埋められているのでそのまま比較.</span>
+            <span class="keywordflow">if</span>( max_result_num &lt;= dst_ary_index )
+            {
+                dst_ary_index = max_result_num;
+                <span class="keywordflow">break</span>;
+            }
+        }
+        
+        *result_num = dst_ary_index;
+    }
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( sort_indexes );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( hit_flags );
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    サーチ結果　配列へ要素追加.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        result      サーチ結果</span>
+<span class="comment">        [out]       hvarray     サーチ結果配列(vectarray配列オブジェクト)</span>
+<span class="comment">        [in]        result_num  サーチ結果個数</span>
+<span class="comment">        [in]        angle       サーチ角度</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALD_PARAM      引数異常</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_result_add( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result, FHANDLE hvarray, INT result_num, INT angle )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    SMP_RESULT_ROT result_buff;
+    INT i;
+
+    <span class="keywordflow">if</span>( NULL == result || NULL == hvarray )
+        <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( result_num &lt; 0 )
+        <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    
+    <span class="comment">//可変長配列へデータを追加するため.</span>
+    <span class="comment">//F_GS_RESULT → SMP_RESULT_ROT へ変更.</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; result_num; i++ )
+    {
+        result_buff.score   = result[i].<a class="code" href="structF__GS__RESULT.html#531a83b7f5cf116c8400a988c63ddb57">score</a>;
+        result_buff.x       = result[i].<a class="code" href="structF__GS__RESULT.html#0f84dbc9ab16a5b55a5c3701ee16066f">x</a>;
+        result_buff.y       = result[i].<a class="code" href="structF__GS__RESULT.html#af248829d4ef2e4f69058b80f2a2f0c2">y</a>;
+        result_buff.angle   = angle;
+
+        ret = <a class="code" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6" title="配列の最後に追加">fnFIE_vectarray_push_back</a>( hvarray, &amp;result_buff );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">return</span> ret;
+    }
+
+    <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+}
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実行サンプル</span>
+
+<span class="keyword">static</span> INT execute()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    FHANDLE pat_img = NULL;<span class="comment">//パターン画像を読み込むための画像HANDLE.</span>
+    INT pattern_w, pattern_h;
+
+    <span class="comment">/* ---------------------- gray search params -------------------------- */</span>
+    FHANDLE hgs = NULL;
+    FHANDLE himage = NULL;
+    FHANDLE hpattern = NULL;
+
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a> search_window;
+    INT threshold_mid = 3500;<span class="comment">//中間相関値.</span>
+    INT threshold_final = 5000;<span class="comment">//最終相関値.</span>
+    INT edge_detect = TRUE;<span class="comment">//サーチウインドウ周囲接触フラグ.</span>
+    INT reverse_mode = FALSE;<span class="comment">//濃度反転フラグ.</span>
+    INT pitch_x = 0;
+    INT pitch_y = 0;
+    INT pitch_angle = 45;<span class="comment">//pitch_angle未満の範囲を同一の範囲とみなす.</span>
+    INT first_unit = 5;<span class="comment">//開始圧縮度.</span>
+    INT last_unit = 0;<span class="comment">//終了圧縮度.</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a> subpxl_neib = <a class="code" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4ddf91a21a0bed6e65ff541ab83bc15d96">F_GS2_SUBPXL_NEIB_4</a>;
+    INT max_result_num = 100;<span class="comment">//サーチ結果取得個数.</span>
+    INT base_angle = 0;<span class="comment">//回転 処理開始位置.</span>
+    INT plus_rot = 1800;
+    INT minus_rot = 1800;
+    SMP_RESULT_ROT *result = NULL;
+    INT result_num;
+
+    <span class="comment">/* -------------------------------------------------------------------- */</span>
+
+    <span class="comment">//画像読込.</span>
+    <span class="comment">//適宜目的の画像に置き換えてください.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( <span class="stringliteral">"rot_gray_search.png"</span>, &amp;himage, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//パターン元画像読込及びパターン生成.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( <span class="stringliteral">"rot_pattern.png"</span>, &amp;pat_img, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//回答座標を設定.</span>
+    <span class="comment">//サンプルではパターン画像の中心とします.</span>
+    pattern_w = ( <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( pat_img ) / 2 ) * 100;
+    pattern_h = ( <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( pat_img ) / 2 ) * 100;
+    hpattern = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( pat_img, NULL, pattern_w, pattern_h, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, &amp;ret );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//グレイサーチオブジェクト生成.</span>
+    hgs = <a class="code" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc</a>( 0, 0, 0 );
+    
+    <span class="comment">//サーチウインドウの設定 サーチ対象画像の中に納まるよう設定.</span>
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( himage )-1;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( himage )-1;
+
+    <span class="comment">//結果の保存先確保.</span>
+    result = (SMP_RESULT_ROT*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( max_result_num, <span class="keyword">sizeof</span>(SMP_RESULT_ROT) );
+    <span class="keywordflow">if</span>( NULL == result ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//メインサンプル実行.</span>
+    ret = fnSMP_gray_search_rot( hgs,
+                                 hpattern,
+                                 himage,
+                                 search_window,
+                                 threshold_mid,
+                                 threshold_final,
+                                 edge_detect,
+                                 reverse_mode,
+                                 pitch_x,
+                                 pitch_y,
+                                 pitch_angle,
+                                 first_unit,
+                                 last_unit,
+                                 subpxl_neib,
+                                 max_result_num,
+                                 base_angle,
+                                 plus_rot,
+                                 minus_rot,
+                                 result,
+                                 &amp;result_num
+                                );
+
+    <span class="comment">//結果表示 SAMPLE_PRINTが定義されている場合のみ実行されます.</span>
+    PRINT_RESULT( result, result_num );
+
+EXIT:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himage );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pat_img );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hpattern );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hgs );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main( )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります.</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = execute();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+</pre></div><p>
+<hr>
+ <h2><a class="anchor" name="smp_gray_search_multipat">
+マルチパターングレイサーチ</a></h2>
+微小変形する対象のサーチにおける位置決め <div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">    マルチパターングレイサーチ サンプルコード</span>
+<span class="comment"></span>
+<span class="comment">    このサンプルコードは、複数のパターンにおいて、サーチを行い</span>
+<span class="comment">    最もスコアが高いパターンの位置を出力することを目的としています.</span>
+<span class="comment">    また、同一座標付近に複数パターン検出された場合、スコアが最大のものを回答します.</span>
+<span class="comment">*/</span>
+
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="comment">/*</span>
+<span class="comment">    サンプル用グレイサーチ結果　構造体</span>
+<span class="comment">*/</span>
+<span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    INT x;
+    INT y;
+    INT score;
+    INT pattern_id;
+}SMP_RESULT_MULTI;
+
+<span class="preprocessor">#define SAMPLE_PRINT</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PATTERN_NUM 4</span>
+<span class="preprocessor"></span>
+<span class="comment">//結果表示用マクロ.</span>
+<span class="preprocessor">#ifdef SAMPLE_PRINT</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PRINT_RESULT( result, result_num )\</span>
+<span class="preprocessor">    {\</span>
+<span class="preprocessor">        INT num;\</span>
+<span class="preprocessor">        puts("result");\</span>
+<span class="preprocessor">        for( num = 0; num &lt; result_num; num++ )\</span>
+<span class="preprocessor">        {\</span>
+<span class="preprocessor">            printf("No.%2d : score %d, ( %d, %d ) pattarn_id:%d\n",\</span>
+<span class="preprocessor">            num, result[num].score, result[num].x/100, result[num].y/100, result[num].pattern_id );\</span>
+<span class="preprocessor">        }\</span>
+<span class="preprocessor">    }</span>
+<span class="preprocessor"></span><span class="preprocessor">#else</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PRINT_RESULT( result, result_num )</span>
+<span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 関数プロトタイプ</span>
+
+INT fnSMP_gray_search_multipattern( 
+    FHANDLE                 hgs,
+    FHANDLE                 *hpatterns,
+    INT                     pattern_num,
+    FHANDLE                 himage, 
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>                   search_window,
+    INT                     threshold_mid,
+    INT                     threshold_final,
+    INT                     edge_detect,
+    INT                     reverse_mode,
+    INT                     pitch_x,
+    INT                     pitch_y,
+    INT                     first_unit,
+    INT                     last_unit,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a>  subpxl_neib,
+    INT                     max_result_num,
+    SMP_RESULT_MULTI        *result,
+    INT                     *result_num
+    );
+<span class="keyword">static</span> INT fnSMP_alloc_patterns( CHAR **filenames, <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> *mark_offset, FHANDLE *hmasks, INT pattern_num, FHANDLE **hpatterns );
+<span class="keyword">static</span> VOID fnSMP_free_patterns( FHANDLE *hpatterns, INT pattern_num );
+<span class="keyword">static</span> INT FVALGAPI fnSMP_comp_ex( VOID *search_result, <span class="keyword">const</span> VOID *p_index1, <span class="keyword">const</span> VOID *p_index2 );
+<span class="keyword">static</span> INT fnSMP_sort_result( FHANDLE hvarray, SMP_RESULT_MULTI *result, INT pitch_x, INT pitch_y, INT max_result_num, INT *result_num );
+<span class="keyword">static</span> INT fnSMP_result_add( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result, FHANDLE hvarray, INT result_num, INT pattern_id );
+<span class="keyword">static</span> INT fnSMP_pitch_calc( FHANDLE *hpatterns, INT pattern_num, INT *pitch_x, INT *pitch_y ); 
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実装</span>
+
+<span class="comment">/*</span>
+<span class="comment">    マルチパターン グレイサーチ.</span>
+<span class="comment">    複数のパターンによるグレイサーチを実施します.</span>
+<span class="comment">    通常のグレイサーチ結果に検出したパターンIDを追加したものを出力します.</span>
+<span class="comment"></span>
+<span class="comment">    同一座標とみなされる位置に複数のパターン検出された場合、スコアが最大のものを回答します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in,out]    hgs                 グレイサーチオブジェクト</span>
+<span class="comment">        [in]        hpatterns           グレイサーチパターンオブジェクト配列</span>
+<span class="comment">        [in]        pattern_num         パターンオブジェクト配列の要素数</span>
+<span class="comment">        [in]        himage              サーチ対象となる画像オブジェクト ( type : uc8 )</span>
+<span class="comment">                                        チャネル数は1でなければなりません.</span>
+<span class="comment">                                        また、パタンのサイズよりも縦横共に大きい必要があります.</span>
+<span class="comment">        [in]        search_window       サーチウインドウ</span>
+<span class="comment">                                        画像オブジェクトの中でサーチを行う処理範囲を himage 上の座標で指定します.</span>
+<span class="comment">                                        himage の内部に納まるように座標を指定する必要があります.</span>
+<span class="comment">                                        また、パタンのサイズよりも大きい必要があります.</span>
+<span class="comment">        [in]        threshold_mid       途中相関値 ( 1000 ～ 9999 )</span>
+<span class="comment">        [in]        threshold_final     最終相関値 ( 1000 ～ 9999 )</span>
+<span class="comment">        [in]        edge_detect         サーチウインドウ周囲接触フラグ</span>
+<span class="comment">                                        - TRUE サーチウインドウに接したパターンも検出</span>
+<span class="comment">                                        - FALSE サーチウインドウに接したパターンを検出しない</span>
+<span class="comment">        [in]        reverse_mode        反転パターン検出モードフラグ 濃度反転しているパターンも検出するかどうかを指定します.</span>
+<span class="comment">                                        - TRUE 反転パターンも検出</span>
+<span class="comment">                                        - FALSE 反転パターンを検出しない</span>
+<span class="comment">        [in]        pitch_x             最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.</span>
+<span class="comment">                                        0を入力した場合、各パターンサイズ平均の半分になります.</span>
+<span class="comment">        [in]        pitch_y             最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.</span>
+<span class="comment">                                        0を入力した場合、各パターンサイズ平均の半分になります.</span>
+<span class="comment">        [in]        first_unit          サーチ開始圧縮度を指定します.( 0 ～ 9 ) </span>
+<span class="comment">                                        圧縮度がnのとき、2の-n乗倍の画像でサーチを開始します.</span>
+<span class="comment">        [in]        last_unit           サーチ終了圧縮度を指定します.( 0 ～ 9 ) </span>
+<span class="comment">                                        圧縮度がnのとき、2の-n乗倍の画像でサーチを完了します.</span>
+<span class="comment">        [in]        subpxl_neib         精サーチ・サブピクセル推定に用いる近傍を指定します.</span>
+<span class="comment">                                        ８近傍を指定する場合、サーチ終了圧縮度(last_unit)は 0 を推奨します.</span>
+<span class="comment">                                        - F_GS2_SUBPXL_NEIB_4  ４近傍</span>
+<span class="comment">                                        - F_GS2_SUBPXL_NEIB_8  ８近傍</span>
+<span class="comment">        [in]        max_result_num      サーチ結果取得個数.</span>
+<span class="comment">                                        相関値の上位からこの個数だけ回答します.</span>
+<span class="comment">                                        result はこの個数よりも大きい配列でなければいけません.</span>
+<span class="comment">        [out]       result              サーチ結果</span>
+<span class="comment">                                        サーチスコア( 0 ～ 10000 )と結果座標の100倍値を返します.</span>
+<span class="comment">        [out]       result_num          見つかったサーチ結果の個数 ( 0 ～ max_result_num )</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE                  正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM         引数異常、範囲外の引数を与えた(pitchがマイナス等)</span>
+<span class="comment">        F_ERR_INVALID_OBJECT        引数オブジェクトの種別が異常、引数オブジェクトがNULL</span>
+<span class="comment">        F_ERR_NOMEMORY              メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_IMAGE         対応していない画像が渡された</span>
+<span class="comment">        F_ERR_NO_LICENCE            ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+INT fnSMP_gray_search_multipattern( 
+    FHANDLE                 hgs,
+    FHANDLE                 *hpatterns,
+    INT                     pattern_num,
+    FHANDLE                 himage, 
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>                   search_window,
+    INT                     threshold_mid,
+    INT                     threshold_final,
+    INT                     edge_detect,
+    INT                     reverse_mode,
+    INT                     pitch_x,
+    INT                     pitch_y,
+    INT                     first_unit,
+    INT                     last_unit,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a>  subpxl_neib,
+    INT                     max_result_num,
+    SMP_RESULT_MULTI        *result,
+    INT                     *result_num
+    )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result_buff = NULL;
+    FHANDLE hvary   = NULL;
+
+    <span class="comment">/* パラメータ確認 */</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == result || NULL == hpatterns ) <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( pitch_x &lt; 0 || pitch_y &lt; 0 ) <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    result_buff = (<a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a>*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( max_result_num, <span class="keyword">sizeof</span>(<a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a>) );
+    <span class="keywordflow">if</span>( NULL == result_buff ) <span class="keywordflow">goto</span> EXIT;
+
+    hvary = <a class="code" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc</a>( (<span class="keyword">enum</span> <a class="code" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a" title="FIEオブジェクト種別">f_objtag</a>)0, <span class="keyword">sizeof</span>(SMP_RESULT_MULTI), 0 );
+    <span class="keywordflow">if</span>( NULL == hvary ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">/*</span>
+<span class="comment">        ピッチの入力が0の場合</span>
+<span class="comment">        各パターン画像サイズ(幅, 高さ)平均の半分とする.</span>
+<span class="comment">    */</span>
+    <span class="keywordflow">if</span>( pitch_x == 0 || pitch_y == 0 )
+    {
+        ret = fnSMP_pitch_calc( hpatterns, pattern_num, &amp;pitch_x, &amp;pitch_y );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+    }
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    {
+        INT i;
+
+        FHANDLE himage_buff = himage;
+        <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++ )
+        {
+            ret = <a class="code" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2</a>(
+                    hgs,
+                    hpatterns[i],
+                    himage_buff,<span class="comment">//二回目以降NULL.</span>
+                    search_window,
+                    threshold_mid, threshold_final,
+                    edge_detect,
+                    reverse_mode,
+                    pitch_x, pitch_y,
+                    first_unit,
+                    last_unit,
+                    subpxl_neib,
+                    result_buff,
+                    max_result_num,
+                    result_num
+                    );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+            
+            ret = fnSMP_result_add( result_buff, hvary, *result_num, i );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+            <span class="comment">//二回目以降ターゲット画像をNULLにし、継続サーチへ切り替える.</span>
+            himage_buff = NULL;
+        }
+
+        <span class="comment">//結果出力.</span>
+        ret = fnSMP_sort_result( hvary, result, pitch_x, pitch_y, max_result_num, result_num );
+        <span class="keywordflow">if</span>( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> ) <span class="keywordflow">goto</span> EXIT;
+    }
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result_buff );
+    <a class="code" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free</a>( hvary );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    パターンオブジェクト配列　生成</span>
+<span class="comment"></span>
+<span class="comment">    引数のhpatternsはNULLで初期化したものを与えてください.</span>
+<span class="comment"></span>
+<span class="comment">    生成された配列が不要になったら fnSMP_free_patterns()で解放してください.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]    filenames       パターン画像のPath配列</span>
+<span class="comment">        [in]    mark_offset     回答座標オフセット配列</span>
+<span class="comment">        [in]    hmask           マスク画像配列</span>
+<span class="comment">        [in]    pattern_num     パターンオブジェクト配列の要素数</span>
+<span class="comment">        [out]   hpatterns       パターンオブジェクト配列</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM     パターンオブジェクト配列がNULLでなかった</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">        F_ERR_GS_NO_CONTRAST    パターン画像に情報が足りないため、パターンにならない.(==マスク部を除いた画像の濃度分散が0.0になる)</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_alloc_patterns( CHAR **filenames, <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> *mark_offset, FHANDLE *hmasks, INT pattern_num, FHANDLE **hpatterns )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa" title="圧縮フィルタ指定">f_comp_filter</a> comp_filter = <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>;
+    FHANDLE *hpat_buff = NULL;
+    FHANDLE himg = NULL;
+
+    <span class="comment">//パラメータ確認.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == hpatterns || NULL != (*hpatterns) ) <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hpat_buff = (FHANDLE*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( pattern_num, <span class="keyword">sizeof</span>(FHANDLE) );
+    <span class="keywordflow">if</span>( NULL == hpat_buff ) <span class="keywordflow">goto</span> EXIT;
+
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++ )
+        {
+            ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( filenames[i], &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+            hpat_buff[i] = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( himg, hmasks[i], mark_offset[i].x, mark_offset[i].y, comp_filter, &amp;ret );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+        }
+    }
+
+EXIT:
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> == ret )     <span class="comment">//正常終了.</span>
+        *hpatterns = hpat_buff;
+    <span class="keywordflow">else</span>                        <span class="comment">//異常終了.</span>
+        fnSMP_free_patterns( hpat_buff, pattern_num );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg );
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    パターンオブジェクト配列　解放</span>
+<span class="comment">    </span>
+<span class="comment">    fnSMP_alloc_patterns()で確保した配列を解放します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [out]   hpatterns       パターンオブジェクト配列</span>
+<span class="comment">        [out]   pattern_num     パターンオブジェクト配列の要素数</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> VOID fnSMP_free_patterns( FHANDLE *hpatterns, INT pattern_num )
+{
+    INT i;
+    
+    <span class="keywordflow">if</span>( NULL == hpatterns ) <span class="keywordflow">return</span>;
+    
+    <span class="keywordflow">for</span>( i =0; i &lt; pattern_num; i++ )
+    {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hpatterns[i] );
+    }
+    
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( hpatterns );
+    <span class="keywordflow">return</span>;
+}
+
+<span class="keyword">static</span> INT FVALGAPI fnSMP_comp_ex( VOID *search_result, <span class="keyword">const</span> VOID *p_index1, <span class="keyword">const</span> VOID *p_index2 )
+{
+    SMP_RESULT_MULTI *result = (SMP_RESULT_MULTI*)search_result;
+    INT index1 = *(INT*)p_index1;
+    INT index2 = *(INT*)p_index2;
+    SMP_RESULT_MULTI *result1 = result + index1;
+    SMP_RESULT_MULTI *result2 = result + index2;
+
+    <span class="keywordflow">if</span>( result1-&gt;score &lt; result2-&gt;score )
+        <span class="keywordflow">return</span> 1;
+    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( result1-&gt;score &gt; result2-&gt;score )
+        <span class="keywordflow">return</span> -1;
+    <span class="keywordflow">else</span>
+        <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    結果のソート</span>
+<span class="comment"></span>
+<span class="comment">    サーチ結果をスコア順にソートし出力の構造体へ格納します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        hvarray         サーチ結果(vectarray配列オブジェクト)</span>
+<span class="comment">        [out]       result          ソート後サーチ結果</span>
+<span class="comment">        [in]        pitch_x         最小x間隔(1以上)</span>
+<span class="comment">        [in]        pitch_y         最小y間隔(1以上)</span>
+<span class="comment">        [in]        max_result_num  最大で上位何個回答するか(1以上)</span>
+<span class="comment">        [out]       result_num      有効な結果の個数</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM     引数異常</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_sort_result( 
+    FHANDLE hvarray,
+    SMP_RESULT_MULTI *result,
+    INT pitch_x, INT pitch_y,
+    INT max_result_num, INT *result_num
+    )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    SMP_RESULT_MULTI *p_hvarray = NULL;
+    INT ary_size;
+    INT *sort_indexes = NULL;
+    INT *hit_flags = NULL;
+    
+    <span class="comment">//パラメータ確認.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == result ) <span class="keywordflow">goto</span> EXIT;
+
+    ary_size = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray );
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    sort_indexes = (INT*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>(INT) * ary_size );
+    <span class="keywordflow">if</span>( NULL == sort_indexes ) <span class="keywordflow">goto</span> EXIT;
+    hit_flags = (INT*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>(INT) * ary_size );
+    <span class="keywordflow">if</span>( NULL == hit_flags ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//indexes, hit_flags 初期化.</span>
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            sort_indexes[i] = i;
+            hit_flags[i] = 0;
+        }
+    }
+
+    <span class="comment">//相関値が高い順にソート.</span>
+    p_hvarray = (SMP_RESULT_MULTI*)<a class="code" href="group__fie__container__vector.html#g797a3ffd1433943b395d7f8494fceb68" title="先頭ポインタの取得">fnFIE_vectarray_getptr</a>( hvarray );
+    <a class="code" href="group__fie__sort.html#g37484df2e635b39cc1965c39d495521c" title="クイックソート">fnFIE_qsort_ex</a>( sort_indexes, ary_size, <span class="keyword">sizeof</span>(INT), fnSMP_comp_ex, (SMP_RESULT_MULTI*)p_hvarray );
+
+    <span class="comment">//ピッチを100倍値と10倍値へ換算.</span>
+    pitch_x     *= 100;
+    pitch_y     *= 100;
+
+    <span class="comment">//サーチ結果重複除去.</span>
+    {
+        INT i;
+        INT num = 0;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            SMP_RESULT_MULTI result = *( ( SMP_RESULT_MULTI* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[i] ) );
+            INT x = result.x;
+            INT y = result.y;
+            INT j;
+            <span class="keywordflow">for</span>( j = i+1; j &lt; ary_size; j++ )
+            {
+                SMP_RESULT_MULTI dresult = *( ( SMP_RESULT_MULTI* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[j] ) );
+                INT dx = abs( dresult.x - x );
+                INT dy = abs( dresult.y - y );
+                <span class="keywordflow">if</span>( ( dx &lt; pitch_x ) &amp;&amp; ( dy &lt; pitch_y ) )
+                {
+                    hit_flags[j] = 1;
+                }
+            }
+        }
+    }
+
+    <span class="comment">//結果出力.</span>
+    {
+        INT i;
+        INT dst_ary_index = 0;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            <span class="keywordflow">if</span>( !(hit_flags[i]) )
+            {
+                SMP_RESULT_MULTI result_buff = *( ( SMP_RESULT_MULTI* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[i] ) );
+                result[dst_ary_index].<a class="code" href="structF__GS__RESULT.html#531a83b7f5cf116c8400a988c63ddb57">score</a>         = result_buff.score;
+                result[dst_ary_index].x             = result_buff.x;
+                result[dst_ary_index].y             = result_buff.y;
+                result[dst_ary_index].pattern_id        = result_buff.pattern_id;
+                dst_ary_index++;
+            }
+            <span class="comment">//個数とindexの差は上記処理で埋められているのでそのまま比較.</span>
+            <span class="keywordflow">if</span>( max_result_num &lt;= dst_ary_index )
+            {
+                dst_ary_index = max_result_num;
+                <span class="keywordflow">break</span>;
+            }
+        }
+        
+        *result_num = dst_ary_index;
+    }
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( sort_indexes );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( hit_flags );
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    サーチ結果　配列へ要素追加.</span>
+<span class="comment">    サーチ結果及びパタンIDを追加します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        result      サーチ結果</span>
+<span class="comment">        [out]       hvarray     統合後サーチ結果</span>
+<span class="comment">        [in]        result_num  サーチ結果個数</span>
+<span class="comment">        [in]        pattern_id  パタンID</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALD_PARAM      引数異常</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_result_add( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result, FHANDLE hvarray, INT result_num, INT pattern_id )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    SMP_RESULT_MULTI result_buff;
+    INT i;
+
+    <span class="keywordflow">if</span>( NULL == result || NULL == hvarray )
+        <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( result_num &lt; 0 )
+        <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    
+    <span class="comment">//可変長配列へデータを追加するため.</span>
+    <span class="comment">//F_GS_RESULT → SMP_RESULT_MULTI へ変更.</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; result_num; i++ )
+    {
+        result_buff.score       = result[i].<a class="code" href="structF__GS__RESULT.html#531a83b7f5cf116c8400a988c63ddb57">score</a>;
+        result_buff.x           = result[i].<a class="code" href="structF__GS__RESULT.html#0f84dbc9ab16a5b55a5c3701ee16066f">x</a>;
+        result_buff.y           = result[i].<a class="code" href="structF__GS__RESULT.html#af248829d4ef2e4f69058b80f2a2f0c2">y</a>;
+        result_buff.pattern_id  = pattern_id;
+
+        ret = <a class="code" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6" title="配列の最後に追加">fnFIE_vectarray_push_back</a>( hvarray, &amp;result_buff );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">return</span> ret;
+    }
+
+    <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    ピッチ計算.</span>
+<span class="comment"></span>
+<span class="comment">    各パターンサイズ(幅, 高さ)平均の半分を算出します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        hpatterns       パターンオブジェクト配列</span>
+<span class="comment">        [in]        pattern_num     パターンオブジェクト配列の要素数</span>
+<span class="comment">        [in,out]    pitch_x         最小x間隔(1以上)</span>
+<span class="comment">        [in,out]    pitch_y         最小y間隔(1以上)</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_INVALID_PARAM         引数異常</span>
+<span class="comment">        F_ERR_INVALID_OBJECT        パタンでないオブジェクトが渡された</span>
+<span class="comment">        F_ERR_NOMEMORY              メモリ不足</span>
+<span class="comment">        F_ERR_NONE                  正常終了</span>
+<span class="comment">        F_ERR_NO_LICENCE            ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_pitch_calc( FHANDLE *hpatterns, INT pattern_num, INT *pitch_x, INT *pitch_y )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    DOUBLE x = 0.0;
+    DOUBLE y = 0.0;
+    INT i;
+    FHANDLE pat_img = NULL;
+
+    <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++ )
+    {
+        ret = <a class="code" href="group__fie__gs2__pattern.html#g204bc0ffed285e59439bc98bfc01e1b5" title="パターン画像を取得する">fnFIE_gs2_pattern_get_image</a>( hpatterns[i], &amp;pat_img );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;;
+
+        x += <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( pat_img );
+        y += <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( pat_img );
+
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pat_img ); pat_img = NULL;
+    }
+    
+    <span class="keywordflow">if</span>( pitch_x == 0 )
+        *pitch_x = ( <a class="code" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5</a>( x / (DOUBLE)pattern_num ) / 2 );
+    <span class="keywordflow">if</span>( pitch_y == 0 )
+        *pitch_y = ( <a class="code" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5</a>( y / (DOUBLE)pattern_num ) / 2 );
+
+EXIT:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pat_img );
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実行サンプル</span>
+
+<span class="keyword">static</span> INT execute()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    FHANDLE hgs = NULL;
+    FHANDLE himage = NULL;
+    FHANDLE *hpatterns = NULL;
+    INT     pattern_num = PATTERN_NUM;
+
+    <span class="comment">/* -----------------------gray search params -------------------------- */</span>
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a> search_window;
+    INT threshold_mid = 3500;<span class="comment">//中間相関値.</span>
+    INT threshold_final = 4000;<span class="comment">//最終相関値.</span>
+    INT edge_detect = TRUE;<span class="comment">//サーチウインドウ周囲接触フラグ.</span>
+    INT reverse_mode = FALSE;<span class="comment">//濃度反転フラグ.</span>
+    INT pitch_x = 0;
+    INT pitch_y = 0;
+    INT first_unit = 5;<span class="comment">//開始圧縮度.</span>
+    INT last_unit = 0;<span class="comment">//終了圧縮度.</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a> subpxl_neib = <a class="code" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4ddf91a21a0bed6e65ff541ab83bc15d96">F_GS2_SUBPXL_NEIB_4</a>;
+    INT max_result_num = 100;<span class="comment">//サーチ結果取得個数.</span>
+    SMP_RESULT_MULTI *result = NULL;
+    INT result_num;
+
+    <span class="comment">/* --------------------------------------------------------------------- */</span>
+
+    <span class="comment">//読み込むパターン画像Path 適宜変更してください.</span>
+    CHAR *filename[]=
+    {
+        <span class="stringliteral">"pattern_0.png"</span>, <span class="comment">/* id 0 */</span>
+        <span class="stringliteral">"pattern_1.png"</span>, <span class="comment">/* id 1 */</span>
+        <span class="stringliteral">"pattern_2.png"</span>, <span class="comment">/* id 2 */</span>
+        <span class="stringliteral">"pattern_3.png"</span>  <span class="comment">/* id 3 */</span>
+    };
+    <span class="comment">//回答座標オフセット 適宜変更してください.</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> mark_offset[] = 
+    {<span class="comment">/* x, y */</span>
+        0, 0, <span class="comment">/* id 0 */</span>
+        0, 0, <span class="comment">/* id 1 */</span>
+        0, 0, <span class="comment">/* id 2 */</span>
+        0, 0  <span class="comment">/* id 3 */</span>
+    };
+    <span class="comment">//マスクにする画像.</span>
+    <span class="comment">//サンプルではマスクは用いないため全てNULLのままです.</span>
+    <span class="comment">//マスクが必要な場合は、リストに対応するマスク画像を確保して下さい.</span>
+    FHANDLE hmasks[] =
+    {
+         NULL,      <span class="comment">/* id 0 */</span>
+         NULL,      <span class="comment">/* id 1 */</span>
+         NULL,      <span class="comment">/* id 2 */</span>
+         NULL       <span class="comment">/* id 3 */</span>
+    };
+
+    <span class="comment">//画像読込.</span>
+    <span class="comment">//適宜目的の画像に置き換えてください.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( <span class="stringliteral">"gray_search_multi.png"</span>, &amp;himage, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//パターンオブジェクト配列　生成.</span>
+    <span class="comment">//適宜確保してください サンプルでは上記のパターン画像4枚をサーチします.</span>
+    ret = fnSMP_alloc_patterns( filename, mark_offset, hmasks,pattern_num, &amp;hpatterns );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//グレイサーチオブジェクト生成.</span>
+    hgs = <a class="code" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc</a>( 0, 0, 0 );
+    
+    <span class="comment">//サーチウインドウの設定 サーチ対象画像の中に納まるよう設定.</span>
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( himage ) - 1;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( himage ) - 1;
+
+    <span class="comment">//結果領域確保.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    result = (SMP_RESULT_MULTI*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( max_result_num, <span class="keyword">sizeof</span>(SMP_RESULT_MULTI) );
+    <span class="keywordflow">if</span>( NULL == result ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//メインサンプル実行.</span>
+    ret = fnSMP_gray_search_multipattern(
+        hgs,
+        hpatterns,
+        pattern_num,
+        himage,
+        search_window,
+        threshold_mid,
+        threshold_final,
+        edge_detect,
+        reverse_mode,
+        pitch_x,
+        pitch_y,
+        first_unit,
+        last_unit,
+        subpxl_neib,
+        max_result_num,
+        result,
+        &amp;result_num
+        );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//結果表示　SAMPLE_PRINTが定義されている場合のみ出力されます.</span>
+    PRINT_RESULT( result, result_num );
+
+EXIT:
+    fnSMP_free_patterns( hpatterns, pattern_num );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himage );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hgs );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result );
+
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++)
+        {
+            <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmasks[i] );
+        }
+    }
+
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main( )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります.</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = execute();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+</pre></div><p>
+<hr>
+ <h2><a class="anchor" name="smp_gray_search_multipat_mat">
+マルチパターングレイサーチ</a></h2>
+複数ワークの判別 <div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">    マルチパターングレイサーチ サンプルコード</span>
+<span class="comment"></span>
+<span class="comment">    このサンプルコードは、複数のパターンにおいてどの位置で検出されたかを全て回答し、</span>
+<span class="comment">    何処で何が見つかったかを判別することを目的とします.</span>
+<span class="comment">    また、同一座標付近に検出されたパターンに対しスコア比の行列を出力します.</span>
+<span class="comment">*/</span>
+
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="comment">/*</span>
+<span class="comment">    サンプル用グレイサーチ結果　構造体</span>
+<span class="comment">*/</span>
+<span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    INT x;
+    INT y;
+    INT score;
+    INT pattern_id;
+}SMP_RESULT_MULTI;
+
+<span class="preprocessor">#define SAMPLE_PRINT</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PATTERN_NUM 4</span>
+<span class="preprocessor"></span>
+<span class="comment">//結果表示用マクロ.</span>
+<span class="preprocessor">#ifdef SAMPLE_PRINT</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PRINT_RESULT( result, result_num, mat )\</span>
+<span class="preprocessor">    {\</span>
+<span class="preprocessor">        INT i,j;\</span>
+<span class="preprocessor">        puts("result");\</span>
+<span class="preprocessor">        for( i = 0; i &lt; result_num; i++ )\</span>
+<span class="preprocessor">        {\</span>
+<span class="preprocessor">            printf("No.%2d : score %d, ( %d, %d ) pattarn_id:%d\n", \</span>
+<span class="preprocessor">            i, result[i].score, result[i].x/100, result[i].y/100, result[i].pattern_id );\</span>
+<span class="preprocessor">        }\</span>
+<span class="preprocessor">        puts("");\</span>
+<span class="preprocessor">        for( i = 0; i &lt; result_num; i++ )\</span>
+<span class="preprocessor">        {\</span>
+<span class="preprocessor">            for( j = 0; j &lt; result_num; j++)\</span>
+<span class="preprocessor">            {\</span>
+<span class="preprocessor">                printf(" %.3f,", mat-&gt;m[i][j]);\</span>
+<span class="preprocessor">            }\</span>
+<span class="preprocessor">            puts("");\</span>
+<span class="preprocessor">        }\</span>
+<span class="preprocessor">    }</span>
+<span class="preprocessor"></span><span class="preprocessor">#else</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PRINT_RESULT( result, result_num, mat )</span>
+<span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 関数プロトタイプ</span>
+
+INT fnSMP_gray_search_multipattern_mat( 
+    FHANDLE                 hgs,
+    FHANDLE                 *hpatterns,
+    INT                     pattern_num,
+    FHANDLE                 himage, 
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>                   search_window,
+    INT                     threshold_mid,
+    INT                     threshold_final,
+    INT                     edge_detect,
+    INT                     reverse_mode,
+    INT                     pitch_x,
+    INT                     pitch_y,
+    INT                     first_unit,
+    INT                     last_unit,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a>  subpxl_neib,
+    INT                     max_result_num,
+    SMP_RESULT_MULTI        *result,
+    INT                     *result_num,
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>                 **result_comp_mat
+    );
+<span class="keyword">static</span> INT fnSMP_alloc_patterns( CHAR **filenames, <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> *mark_offset, FHANDLE *hmasks, INT pattern_num, FHANDLE **hpatterns );
+<span class="keyword">static</span> VOID fnSMP_free_patterns( FHANDLE *hpatterns, INT pattern_num );
+<span class="keyword">static</span> INT FVALGAPI fnSMP_comp_ex( VOID *search_result, <span class="keyword">const</span> VOID *p_index1, <span class="keyword">const</span> VOID *p_index2 );
+<span class="keyword">static</span> INT fnSMP_sort_result( FHANDLE hvarray, SMP_RESULT_MULTI *result, INT max_result_num, INT *result_num );
+<span class="keyword">static</span> INT fnSMP_result_add( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result, FHANDLE hvarray, INT result_num, INT pattern_id );
+<span class="keyword">static</span> INT fnSMP_result_comp_matrix( SMP_RESULT_MULTI *result, <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *result_comp_mat, INT result_num, INT pitch_x, INT pitch_y );
+<span class="keyword">static</span> INT fnSMP_pitch_calc( FHANDLE *hpatterns, INT pattern_num, INT *pitch_x, INT *pitch_y );
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実装</span>
+
+<span class="comment">/*</span>
+<span class="comment">    マルチパターン グレイサーチ.</span>
+<span class="comment"></span>
+<span class="comment">    複数パターンによるグレイサーチを実施します.</span>
+<span class="comment">    通常のグレイサーチ結果に検出したパターンIDを追加したものを出力します.</span>
+<span class="comment">    また、同一の解とされる座標に出現したパターンのスコア比を計算します.</span>
+<span class="comment">    無関係な位置にいるパターンは比較を行わず該当する行列位置に0を格納します.</span>
+<span class="comment"></span>
+<span class="comment">    result_compはNULLで初期化してください.NULL出ない場合はエラーを出力します.</span>
+<span class="comment">    自動的にサーチ結果個数分の正方行列を確保します.</span>
+<span class="comment">    result_compが不要になったら、fnFIE_mat_afree()で解放して下さい.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in,out]    hgs                 グレイサーチオブジェクト</span>
+<span class="comment">        [in]        hpatterns           グレイサーチパターンオブジェクト配列</span>
+<span class="comment">        [in]        pattern_num         パターンオブジェクト配列の要素数</span>
+<span class="comment">        [in]        himage              サーチ対象となる画像オブジェクト ( type : uc8 )</span>
+<span class="comment">                                        チャネル数は1でなければなりません.</span>
+<span class="comment">                                        また、パタンのサイズよりも縦横共に大きい必要があります.</span>
+<span class="comment">        [in]        search_window       サーチウインドウ</span>
+<span class="comment">                                        画像オブジェクトの中でサーチを行う処理範囲を himage 上の座標で指定します.</span>
+<span class="comment">                                        himage の内部に納まるように座標を指定する必要があります.</span>
+<span class="comment">                                        また、パタンのサイズよりも大きい必要があります.</span>
+<span class="comment">        [in]        threshold_mid       途中相関値 ( 1000 ～ 9999 )</span>
+<span class="comment">        [in]        threshold_final     最終相関値 ( 1000 ～ 9999 )</span>
+<span class="comment">        [in]        edge_detect         サーチウインドウ周囲接触フラグ</span>
+<span class="comment">                                        - TRUE サーチウインドウに接したパターンも検出</span>
+<span class="comment">                                        - FALSE サーチウインドウに接したパターンを検出しない</span>
+<span class="comment">        [in]        reverse_mode        反転パターン検出モードフラグ 濃度反転しているパターンも検出するかどうかを指定します.</span>
+<span class="comment">                                        - TRUE 反転パターンも検出</span>
+<span class="comment">                                        - FALSE 反転パターンを検出しない</span>
+<span class="comment">        [in]        pitch_x             最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.</span>
+<span class="comment">                                        0を入力した場合、各パターンサイズ平均の半分になります.</span>
+<span class="comment">        [in]        pitch_y             最終的な回答の出力時に、同一の解であるとみなす範囲を指定します.</span>
+<span class="comment">                                        0を入力した場合、各パターンサイズ平均の半分になります.</span>
+<span class="comment">        [in]        first_unit          サーチ開始圧縮度を指定します.( 0 ～ 9 ) </span>
+<span class="comment">                                        圧縮度がnのとき、2の-n乗倍の画像でサーチを開始します.</span>
+<span class="comment">        [in]        last_unit           サーチ終了圧縮度を指定します.( 0 ～ 9 ) </span>
+<span class="comment">                                        圧縮度がnのとき、2の-n乗倍の画像でサーチを完了します.</span>
+<span class="comment">        [in]        subpxl_neib         精サーチ・サブピクセル推定に用いる近傍を指定します.</span>
+<span class="comment">                                        ８近傍を指定する場合、サーチ終了圧縮度(last_unit)は 0 を推奨します.</span>
+<span class="comment">                                        - F_GS2_SUBPXL_NEIB_4  ４近傍</span>
+<span class="comment">                                        - F_GS2_SUBPXL_NEIB_8  ８近傍</span>
+<span class="comment">        [in]        max_result_num      サーチ結果取得個数.</span>
+<span class="comment">                                        相関値の上位からこの個数だけ回答します.</span>
+<span class="comment">                                        result はこの個数よりも大きい配列でなければいけません.</span>
+<span class="comment">        [out]       result              サーチ結果 </span>
+<span class="comment">                                        サーチスコア( 0 ～ 10000 )と結果座標の100倍値を返します.</span>
+<span class="comment">        [out]       result_num          見つかったサーチ結果の個数 ( 0 ～ max_result_num )</span>
+<span class="comment">        [out]       result_comp_mat     サーチ結果比較行列( result_num x result_num )</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE                      正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM             引数異常、範囲外の引数を与えた(pitchがマイナス等)</span>
+<span class="comment">        F_ERR_INVALID_OBJECT            引数オブジェクトの種別が異常、引数オブジェクトがNULL</span>
+<span class="comment">        F_ERR_NOMEMORY                  メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_IMAGE             対応していない画像が渡された</span>
+<span class="comment">        F_ERR_NO_LICENCE                ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+INT fnSMP_gray_search_multipattern_mat( 
+    FHANDLE                 hgs,
+    FHANDLE                 *hpatterns,
+    INT                     pattern_num,
+    FHANDLE                 himage, 
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>                   search_window,
+    INT                     threshold_mid,
+    INT                     threshold_final,
+    INT                     edge_detect,
+    INT                     reverse_mode,
+    INT                     pitch_x,
+    INT                     pitch_y,
+    INT                     first_unit,
+    INT                     last_unit,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a>  subpxl_neib,
+    INT                     max_result_num,
+    SMP_RESULT_MULTI        *result,
+    INT                     *result_num,
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>                 **result_comp_mat
+    )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result_buff = NULL;
+    FHANDLE hvary   = NULL;
+
+    <span class="comment">/* パラメータ確認 */</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == result || NULL == hpatterns ) <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( NULL != (*result_comp_mat) ) <span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span>( pitch_x &lt; 0 || pitch_y &lt; 0 ) <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    result_buff = (<a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a>*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( max_result_num, <span class="keyword">sizeof</span>(<a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a>) );
+    <span class="keywordflow">if</span>( NULL == result_buff ) <span class="keywordflow">goto</span> EXIT;
+
+    hvary = <a class="code" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc</a>( (<span class="keyword">enum</span> <a class="code" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a" title="FIEオブジェクト種別">f_objtag</a>)0, <span class="keyword">sizeof</span>(SMP_RESULT_MULTI), 0 );
+    <span class="keywordflow">if</span>( NULL == hvary ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">/*</span>
+<span class="comment">        ピッチの入力が0の場合</span>
+<span class="comment">        各パターン画像サイズ(幅, 高さ)平均の半分とする.</span>
+<span class="comment">    */</span>
+    <span class="keywordflow">if</span>( pitch_x == 0 || pitch_y == 0 )
+    {
+        ret = fnSMP_pitch_calc( hpatterns, pattern_num, &amp;pitch_x, &amp;pitch_y );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+    }
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    {
+        INT i;
+        FHANDLE himage_buff = himage;
+
+        <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++ )
+        {
+            ret = <a class="code" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2</a>(
+                    hgs,
+                    hpatterns[i],
+                    himage_buff,<span class="comment">//二回目以降NULL.</span>
+                    search_window,
+                    threshold_mid, threshold_final,
+                    edge_detect,
+                    reverse_mode,
+                    pitch_x, pitch_y,
+                    first_unit,
+                    last_unit,
+                    subpxl_neib,
+                    result_buff,
+                    max_result_num,
+                    result_num
+                    );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+            
+            ret = fnSMP_result_add( result_buff, hvary, *result_num, i );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+            <span class="comment">//二回目以降ターゲット画像をNULLにし、継続サーチへ切り替える.</span>
+            himage_buff = NULL;
+        }
+
+        <span class="comment">//結果出力.</span>
+        ret = fnSMP_sort_result( hvary, result, max_result_num, result_num );
+        <span class="keywordflow">if</span>( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> ) <span class="keywordflow">goto</span> EXIT;
+
+        <span class="comment">//行列　領域確保.</span>
+        *result_comp_mat = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( *result_num, *result_num );
+        <span class="keywordflow">if</span>( NULL == (*result_comp_mat) )
+            <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+
+        ret = fnSMP_result_comp_matrix( result, *result_comp_mat, *result_num, pitch_x, pitch_y );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+    }
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result_buff );
+    <a class="code" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free</a>( hvary );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    パターンオブジェクト配列　生成.</span>
+<span class="comment"></span>
+<span class="comment">    引数のhpatternsはNULLで初期化したものを与えてください.</span>
+<span class="comment"></span>
+<span class="comment">    生成された配列が不要になったら fnSMP_free_patterns()で解放してください.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]    filenames       パターン画像のPath配列</span>
+<span class="comment">        [in]    mark_offset     回答座標オフセット配列</span>
+<span class="comment">        [in]    hmask           マスク画像配列</span>
+<span class="comment">        [in]    pattern_num     パターンオブジェクト配列の要素数</span>
+<span class="comment">        [out]   hpatterns       パターンオブジェクト配列</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM     パターンオブジェクト配列がNULLでなかった</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">        F_ERR_GS_NO_CONTRAST    パターン画像に情報が足りないため、パターンにならない.(==マスク部を除いた画像の濃度分散が0.0になる)</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_alloc_patterns( CHAR **filenames, <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> *mark_offset, FHANDLE *hmasks, INT pattern_num, FHANDLE **hpatterns )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa" title="圧縮フィルタ指定">f_comp_filter</a> comp_filter = <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>;
+    FHANDLE *hpat_buff = NULL;
+    FHANDLE himg = NULL;
+
+    <span class="comment">//パラメータ確認.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == hpatterns || NULL != (*hpatterns) ) <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hpat_buff = (FHANDLE*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( pattern_num, <span class="keyword">sizeof</span>(FHANDLE) );
+    <span class="keywordflow">if</span>( NULL == hpat_buff ) <span class="keywordflow">goto</span> EXIT;
+
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++ )
+        {
+            ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( filenames[i], &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+            hpat_buff[i] = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( himg, hmasks[i], mark_offset[i].x, mark_offset[i].y, comp_filter, &amp;ret );
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+        }
+    }
+
+EXIT:
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> == ret )     <span class="comment">//正常終了.</span>
+        *hpatterns = hpat_buff;
+    <span class="keywordflow">else</span>                        <span class="comment">//異常終了.</span>
+        fnSMP_free_patterns( hpat_buff, pattern_num );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg );
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    パターンオブジェクト配列　解放.</span>
+<span class="comment">    </span>
+<span class="comment">    fnSMP_alloc_patterns()で確保した配列を解放します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [out]   hpatterns       パターンオブジェクト配列</span>
+<span class="comment">        [out]   pattern_num     パターンオブジェクト配列の要素数</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> VOID fnSMP_free_patterns( FHANDLE *hpatterns, INT pattern_num )
+{
+    INT i;
+    
+    <span class="keywordflow">if</span>( NULL == hpatterns ) <span class="keywordflow">return</span>;
+    
+    <span class="keywordflow">for</span>( i =0; i &lt; pattern_num; i++ )
+    {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hpatterns[i] );
+    }
+
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( hpatterns );
+    <span class="keywordflow">return</span>;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    比較関数.</span>
+<span class="comment">    スコア降順.</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT FVALGAPI fnSMP_comp_ex( VOID *search_result, <span class="keyword">const</span> VOID *p_index1, <span class="keyword">const</span> VOID *p_index2 )
+{
+    SMP_RESULT_MULTI *result = (SMP_RESULT_MULTI*)search_result;
+    INT index1 = *(INT*)p_index1;
+    INT index2 = *(INT*)p_index2;
+    SMP_RESULT_MULTI *result1 = result + index1;
+    SMP_RESULT_MULTI *result2 = result + index2;
+
+    <span class="keywordflow">if</span>( result1-&gt;score &lt; result2-&gt;score )
+        <span class="keywordflow">return</span> 1;
+    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( result1-&gt;score &gt; result2-&gt;score )
+        <span class="keywordflow">return</span> -1;
+    <span class="keywordflow">else</span>
+        <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    結果のソート</span>
+<span class="comment"></span>
+<span class="comment">    サーチ結果をスコア順にソートし出力の構造体へ格納します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        hvarray         サーチ結果(vectarray配列オブジェクト)</span>
+<span class="comment">        [out]       result          ソート後サーチ結果</span>
+<span class="comment">        [in]        pitch_x         最小x間隔(1以上)</span>
+<span class="comment">        [in]        pitch_y         最小y間隔(1以上)</span>
+<span class="comment">        [in]        max_result_num  最大で上位何個回答するか(1以上)</span>
+<span class="comment">        [out]       result_num      有効な結果の個数</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE                  正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM         引数異常</span>
+<span class="comment">        F_ERR_NOMEMORY              メモリ不足</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_sort_result( 
+    FHANDLE hvarray,
+    SMP_RESULT_MULTI *result,
+    INT max_result_num, INT *result_num
+    )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    SMP_RESULT_MULTI *p_hvarray = NULL;
+    INT ary_size;
+    INT *sort_indexes = NULL;
+    
+    <span class="comment">//パラメータ確認.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( NULL == result ) <span class="keywordflow">goto</span> EXIT;
+
+    ary_size = <a class="code" href="group__fie__container__vector.html#g0c90b34e148320595687ca187cfedf54" title="配列の要素数を取得">fnFIE_vectarray_getnum</a>( hvarray );
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    sort_indexes = (INT*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>(INT) * ary_size );
+    <span class="keywordflow">if</span>( NULL == sort_indexes ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//indexes初期化.</span>
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            sort_indexes[i] = i;
+        }
+    }
+
+    <span class="comment">//相関値が高い順にソート.</span>
+    p_hvarray = (SMP_RESULT_MULTI*)<a class="code" href="group__fie__container__vector.html#g797a3ffd1433943b395d7f8494fceb68" title="先頭ポインタの取得">fnFIE_vectarray_getptr</a>( hvarray );
+    <a class="code" href="group__fie__sort.html#g37484df2e635b39cc1965c39d495521c" title="クイックソート">fnFIE_qsort_ex</a>( sort_indexes, ary_size, <span class="keyword">sizeof</span>(INT), fnSMP_comp_ex, (SMP_RESULT_MULTI*)p_hvarray );
+
+    <span class="comment">//結果出力.</span>
+    {
+        INT i;  
+        <span class="keywordflow">if</span>( max_result_num &lt; ary_size )
+            ary_size = max_result_num;
+        
+        <span class="keywordflow">for</span>( i = 0; i &lt; ary_size; i++ )
+        {
+            SMP_RESULT_MULTI result_buff = *( ( SMP_RESULT_MULTI* )<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>( hvarray, sort_indexes[i] ) );
+            result[i].<a class="code" href="structF__GS__RESULT.html#531a83b7f5cf116c8400a988c63ddb57">score</a>         = result_buff.score;
+            result[i].x             = result_buff.x;
+            result[i].y             = result_buff.y;
+            result[i].pattern_id    = result_buff.pattern_id;
+        }
+        *result_num = ary_size;
+    }
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( sort_indexes );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    サーチ結果　配列へ要素追加.</span>
+<span class="comment">    </span>
+<span class="comment">    サーチ結果及びパタンIDを追加します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        result      サーチ結果</span>
+<span class="comment">        [out]       hvarray     統合後サーチ結果</span>
+<span class="comment">        [in]        result_num  サーチ結果個数</span>
+<span class="comment">        [in]        pattern_id  パタンID</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALD_PARAM      引数異常</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_result_add( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result, FHANDLE hvarray, INT result_num, INT pattern_id )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    SMP_RESULT_MULTI result_buff;
+    INT i;
+
+    <span class="keywordflow">if</span>( NULL == result || NULL == hvarray )
+        <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( result_num &lt; 0 )
+        <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    
+    <span class="comment">//可変長配列へデータを追加するため.</span>
+    <span class="comment">//F_GS_RESULT → SMP_RESULT_MULTI へ変更.</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; result_num; i++ )
+    {
+        result_buff.score       = result[i].<a class="code" href="structF__GS__RESULT.html#531a83b7f5cf116c8400a988c63ddb57">score</a>;
+        result_buff.x           = result[i].<a class="code" href="structF__GS__RESULT.html#0f84dbc9ab16a5b55a5c3701ee16066f">x</a>;
+        result_buff.y           = result[i].<a class="code" href="structF__GS__RESULT.html#af248829d4ef2e4f69058b80f2a2f0c2">y</a>;
+        result_buff.pattern_id  = pattern_id;
+
+        ret = <a class="code" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6" title="配列の最後に追加">fnFIE_vectarray_push_back</a>( hvarray, &amp;result_buff );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">return</span> ret;
+    }
+
+    <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+}
+<span class="comment">/*</span>
+<span class="comment">    サーチ結果比較</span>
+<span class="comment"></span>
+<span class="comment">    同一の解とされる座標に出現したパターンのスコア比を計算します.</span>
+<span class="comment">    無関係な座標のパターンは該当する行列位置に 0 を格納します.</span>
+<span class="comment">    行列の対角線要素は同一リザルトのスコア比となり 1 が出力されます。</span>
+<span class="comment"></span>
+<span class="comment">    [in]    result          サーチ結果</span>
+<span class="comment">    [out]   result_comp_mat サーチ比較行列</span>
+<span class="comment">    [in]    result_num      サーチ個数</span>
+<span class="comment">    [in]    pitch_x         最小x間隔(1以上)</span>
+<span class="comment">    [in]    pitch_y         最小y間隔(1以上)</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_result_comp_matrix( SMP_RESULT_MULTI *result, <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *result_comp_mat, INT result_num, INT pitch_x, INT pitch_y )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    INT i, j;
+    
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span>( pitch_x &lt; 0 || pitch_y &lt; 0 )
+        <span class="keywordflow">return</span> ret;
+    <span class="keywordflow">if</span>( result_num &gt; result_comp_mat-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a> || result_num &gt; result_comp_mat-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a> )
+        <span class="keywordflow">return</span> ret;
+
+    pitch_x *= 100;
+    pitch_y *= 100;
+
+    <span class="keywordflow">for</span>( i = 0; i &lt; result_num; i++ )
+    {
+        SMP_RESULT_MULTI result_row = result[i];
+        INT score_row = result_row.score;
+        INT x= result_row.x;
+        INT y= result_row.y;
+        INT id_row = result_row.pattern_id; 
+        <span class="keywordflow">for</span>( j = 0; j &lt; result_num; j++ )
+        {
+            SMP_RESULT_MULTI result_col = result[j];
+            INT score_col = result_col.score;
+            INT dx = abs( result_col.x - x );
+            INT dy = abs( result_col.y - y );
+            INT id_col = result_col.pattern_id;
+            <span class="comment">/*</span>
+<span class="comment">                まず座標が近いか判別</span>
+<span class="comment">                近ければスコア比を計算します.</span>
+<span class="comment">                遠ければ0とします.</span>
+<span class="comment">            */</span>
+            <span class="keywordflow">if</span>( ( dx &lt; pitch_x ) &amp;&amp; ( dy &lt; pitch_y ) )
+            {
+                DOUBLE comp = (DOUBLE)score_col / (DOUBLE)score_row;
+                result_comp_mat-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[i][j] = comp;
+            }
+            <span class="keywordflow">else</span>
+                result_comp_mat-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[i][j] = 0;
+        }
+    }
+
+    <span class="keywordflow">return</span> <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    ピッチ計算</span>
+<span class="comment"></span>
+<span class="comment">    各パターンサイズ(幅, 高さ)平均の半分を算出します.</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]        hpatterns       パターンオブジェクト配列</span>
+<span class="comment">        [in]        pattern_num     パターンオブジェクト配列の要素数</span>
+<span class="comment">        [in,out]    pitch_x         最小x間隔(1以上)</span>
+<span class="comment">        [in,out]    pitch_y         最小y間隔(1以上)</span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_INVALID_PARAM         引数異常</span>
+<span class="comment">        F_ERR_INVALID_OBJECT        パタンでないオブジェクトが渡された</span>
+<span class="comment">        F_ERR_NOMEMORY              メモリ不足</span>
+<span class="comment">        F_ERR_NONE                  正常終了</span>
+<span class="comment">        F_ERR_NO_LICENCE            ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_pitch_calc( FHANDLE *hpatterns, INT pattern_num, INT *pitch_x, INT *pitch_y )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    DOUBLE x = 0.0;
+    DOUBLE y = 0.0;
+    INT i;
+    FHANDLE pat_img = NULL;
+
+    <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++ )
+    {
+        ret = <a class="code" href="group__fie__gs2__pattern.html#g204bc0ffed285e59439bc98bfc01e1b5" title="パターン画像を取得する">fnFIE_gs2_pattern_get_image</a>( hpatterns[i], &amp;pat_img );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;;
+
+        x += <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( pat_img );
+        y += <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( pat_img );
+
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pat_img ); pat_img = NULL;
+    }
+
+    <span class="keywordflow">if</span>( pitch_x == 0 )
+        *pitch_x = ( <a class="code" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5</a>( x / (DOUBLE)pattern_num ) / 2 );
+    <span class="keywordflow">if</span>( pitch_y == 0 )
+        *pitch_y = ( <a class="code" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5</a>( y / (DOUBLE)pattern_num ) / 2 );
+
+EXIT:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pat_img );
+    <span class="keywordflow">return</span> ret;
+}
+
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実行サンプル</span>
+
+<span class="keyword">static</span> INT execute()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    FHANDLE hgs = NULL;
+    FHANDLE himage = NULL;
+    FHANDLE *hpatterns = NULL;
+    INT     pattern_num = PATTERN_NUM;
+
+    <span class="comment">/* -----------------------gray search params -------------------------- */</span>
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a> search_window;
+    INT threshold_mid = 3500;<span class="comment">//中間相関値.</span>
+    INT threshold_final = 4000;<span class="comment">//最終相関値.</span>
+    INT edge_detect = TRUE;<span class="comment">//サーチウインドウ周囲接触フラグ.</span>
+    INT reverse_mode = FALSE;<span class="comment">//濃度反転フラグ.</span>
+    INT pitch_x = 0;
+    INT pitch_y = 0;
+    INT first_unit = 5;<span class="comment">//開始圧縮度.</span>
+    INT last_unit = 0;<span class="comment">//終了圧縮度.</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d" title="精サーチ・サブピクセル推定の近傍指定">f_gs2_subpxl_neib</a> subpxl_neib = <a class="code" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4ddf91a21a0bed6e65ff541ab83bc15d96">F_GS2_SUBPXL_NEIB_4</a>;
+    INT max_result_num = 100;<span class="comment">//サーチ結果取得個数.</span>
+    SMP_RESULT_MULTI *result = NULL;
+    INT result_num;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *result_comp_mat = NULL;
+
+    <span class="comment">/* --------------------------------------------------------------------- */</span>
+
+    <span class="comment">//読み込むパターン画像Path 適宜変更してください.</span>
+    CHAR *filename[]=
+    {
+        <span class="stringliteral">"pattern_0.png"</span>, <span class="comment">/* id 0 */</span>
+        <span class="stringliteral">"pattern_1.png"</span>, <span class="comment">/* id 1 */</span>
+        <span class="stringliteral">"pattern_2.png"</span>, <span class="comment">/* id 2 */</span>
+        <span class="stringliteral">"pattern_3.png"</span>  <span class="comment">/* id 3 */</span>
+    };
+    <span class="comment">//回答座標オフセット 適宜変更してください.</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> mark_offset[] = 
+    {<span class="comment">/* x, y */</span>
+        0, 0, <span class="comment">/* id 0 */</span>
+        0, 0, <span class="comment">/* id 1 */</span>
+        0, 0, <span class="comment">/* id 2 */</span>
+        0, 0  <span class="comment">/* id 3 */</span>
+    };
+    <span class="comment">//マスクにする画像.</span>
+    <span class="comment">//サンプルではマスクは用いないため全てNULLのままです.</span>
+    <span class="comment">//マスクが必要な場合は、リストに対応するマスク画像を確保して下さい.</span>
+    FHANDLE hmasks[] =
+    {
+         NULL,      <span class="comment">/* id 0 */</span>
+         NULL,      <span class="comment">/* id 1 */</span>
+         NULL,      <span class="comment">/* id 2 */</span>
+         NULL       <span class="comment">/* id 3 */</span>
+    };
+
+    <span class="comment">//画像読込.</span>
+    <span class="comment">//適宜目的の画像に置き換えてください.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( <span class="stringliteral">"gray_search_multi.png"</span>, &amp;himage, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//パターンオブジェクト配列　生成.</span>
+    <span class="comment">//適宜確保してください サンプルでは上記のパターン画像4枚をサーチします.</span>
+    ret = fnSMP_alloc_patterns( filename, mark_offset, hmasks,pattern_num, &amp;hpatterns );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//グレイサーチオブジェクト生成.</span>
+    hgs = <a class="code" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc</a>( 0, 0, 0 );
+    
+    <span class="comment">//サーチウインドウの設定 サーチ対象画像の中に納まるよう設定.</span>
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( himage )-1;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( himage )-1;
+
+    <span class="comment">//結果領域確保.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    result = (SMP_RESULT_MULTI*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( max_result_num, <span class="keyword">sizeof</span>(SMP_RESULT_MULTI) );
+    <span class="keywordflow">if</span>( NULL == result ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//メインサンプル実行.</span>
+    ret = fnSMP_gray_search_multipattern_mat(
+        hgs,
+        hpatterns,
+        pattern_num,
+        himage,
+        search_window,
+        threshold_mid,
+        threshold_final,
+        edge_detect,
+        reverse_mode,
+        pitch_x,
+        pitch_y,
+        first_unit,
+        last_unit,
+        subpxl_neib,
+        max_result_num,
+        result,
+        &amp;result_num,
+        &amp;result_comp_mat
+        );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//結果表示 SAMPLE_PRINTが定義されている場合のみ実行されます.</span>
+    PRINT_RESULT( result, result_num, result_comp_mat );
+
+EXIT:
+    fnSMP_free_patterns( hpatterns, pattern_num );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himage );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hgs );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( result_comp_mat );
+
+    {
+        INT i;
+        <span class="keywordflow">for</span>( i = 0; i &lt; pattern_num; i++)
+        {
+            <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmasks[i] );
+        }
+    }
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main( )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります.</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = execute();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

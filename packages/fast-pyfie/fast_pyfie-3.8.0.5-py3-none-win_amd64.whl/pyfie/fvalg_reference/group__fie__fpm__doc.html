@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__fpm.html">FPM(特徴点応用マッチング)</a>]</small>
+</h1><h2><a class="anchor" name="fie_fpm">
+FPM(Feature Point Matching)について</a></h2>
+<h3><a class="anchor" name="">
+</a></h3>
+対象物が構成する輪郭の幾何情報を特徴量として利用したパターンマッチング手法です。マスターパタンの特徴量と、マッチング対象画像の特徴量との対応を一致度の評価値として用いることで類似度を求めています。 マッチングは二段階で行っており、始めにパラメータ空間への投票を用いた多数決方式によって候補を絞り、さらに周辺対応点探索を行って大体の位置を決定します。 その後、第一段階の処理で残った候補の位置で再度対応点探索を行い、高精度に推定を行うことで最終的な位置、姿勢、スケール値を算出します。 機能面では従来の弊社のパターンマッチング技術である高機能サーチ同様、平行移動、回転、スケール変化を扱うことが可能で、一部の特徴量に欠損があっても変換パラメータ(平行移動、回転、スケール変化)の推定結果に影響を与えません。<p>
+<hr>
+ <h3><a class="anchor" name="fie_fpm_tokuchou">
+FPMの特徴</a></h3>
+以下に、FPMの特徴を挙げます。 <dl class="user" compact><dt><b>長所</b></dt><dd><ul>
+<li>平行移動、回転、スケール変化を扱うことができる</li><li>対象物の一部が視野外にあっても探索が可能</li><li>対象物のコントラストが低い場合のノイズの影響を低減</li><li>汚れの付着による欠損の影響を受けない</li><li>シェーディングの影響を受けにくい</li><li>画像の輝度変化に強い</li><li>焦点ずれ等のボケによる精度の低下を抑制</li><li>特定形状以外でも安定した探索を実現</li><li>処理時間変動の抑制 </li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>短所</b></dt><dd><ul>
+<li>太り細りの影響を受ける（非相似変形に未対応）</li><li>処理時間の増大</li><li>パラメータ設定が難解である</li></ul>
+</dd></dl>
+<hr>
+ <h3><a class="anchor" name="fie_fpm_call">
+FPMの最も簡単な使い方</a></h3>
+FPMは「FPMオブジェクトの生成」と、「マッチング実行」の２つの関数のみで実現可能です。FPMオブジェクトとは、マッチングを行うマスターパタン毎に必要となるオブジェクトです。 <div align="center">
+<img src="fpm_flow.png" alt="fpm_flow.png">
+<p><strong>FPMの簡単な実行</strong></p></div>
+<p>
+FPMオブジェクトではマスターパタンの画像はもちろん、マスクやパラメータ等の入力情報からマッチング結果まで、様々なデータを管理しております。 マッチング実行関数である <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a> に関しては下図のようにパーツレベルで用意されたライブラリによって構成されていますので、特徴量計測等のライブラリを個別に実行することも可能です。<p>
+<div align="center">
+<img src="fpm_flow_detail.png" alt="fpm_flow_detail.png">
+<p><strong>FPMマッチング実行( fnFIE_fpm_matching() )内部での処理</strong></p></div>
+<p>
+<hr>
+ <h3><a class="anchor" name="fie_fpm_highspeed">
+高速版FPM(F_FPM_SPEED_MODE)</a></h3>
+FPMではマッチングのモードとして、画像を1/4(面積比)に圧縮してマッチングを行う高速モードが選択可能です。 通常版と比較して約2～3倍の処理速度でマッチング可能で、検出能力、認識能力に関してもほぼ遜色ありません。精度については繰り返し精度には大きな低下は確認されていませんが、絶対位置精度では通常モードと比べて約半分程度の精度低下が確認されています。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>尚、高速モードでは通常モードとの仕様上の違いがありますのでご注意ください。<br>
+ スケール変化には完全に対応するわけでなく、パラメータのスケール最小値と最大値が違うことをチェックして約±5％程度対応します。</dd></dl>
+<hr>
+ <h3><a class="anchor" name="fie_fpm_parameter">
+FPMのパラメータ</a></h3>
+FPMで必要となるパラメータの説明をします。安定してマッチングを行うためにはパラメータの調整が必要です。<p>
+<dl class="user" compact><dt><b>特徴量抽出パラメータ( 共用体  F_FPM_FEATURE )</b></dt><dd>FPMではエッジ情報を細線化後、サブピクセル精度で求めた情報をマッチングに使用するための特徴量としています。この特徴量を抽出するためのパラメータです。<br>
+</dd></dl>
+<ul>
+<li>特徴量計測方法 特徴量抽出に使用するアルゴリズムを次の５つの方法から選択可能です。<ul>
+<li>ソーベルエッジ<ul>
+<li>直感的にわかりやすいパラメータで、高速に処理(エッジ抽出時間のみ)が可能ですが、環境変化に弱く、対象物の焦点ずれ等によるボケが生じた場合に精度の安定性が低い傾向があります。</li></ul>
+</li><li>相関エッジ<ul>
+<li>ノイズやボケ、シェーディングなどの悪条件に比較的強い傾向がありますが、ソーベルエッジより処理時間が掛かり、パラメータ調整にも熟練が必要です。</li></ul>
+</li><li>強度上限付ソーベルエッジ<ul>
+<li>強いコントラストを持つ背景の近傍に弱いコントラストを持つ対象物がある時、背景を無視してマッチングする目的でソーベルエッジの強度しきい値に上限を設けたアルゴリズムです。</li></ul>
+</li><li>強度上限付相関エッジ<ul>
+<li>強いコントラストを持つ背景の近傍に弱いコントラストを持つ対象物がある時、背景を無視してマッチングする目的で相関エッジの分散しきい値と強度しきい値に上限を設けたアルゴリズムです。</li></ul>
+</li><li>細線エッジ<ul>
+<li>1画素から5画素程度の幅を持つような極めて細い線で構成され内外が同一の輝度であるような対象物に使用し、線の中央を特徴点として検出します。マッチングパラメータに必ず両極性を指定せねばならないため処理時間がかかりますが、ソーベルエッジや相関エッジのように濃度の変化する点を検出するアルゴリズムでは対応の難しい場合に対応できます。ただし性質上、パターンの10度以上の回転に弱い他、高速モードの場合コントラストしきい値を通常モードより低めにしたり誤差範囲を広めにとらないとサーチが成功しないなどの特徴も持っています。</li></ul>
+</li></ul>
+</li>
+</ul>
+<ul>
+<li>ソーベルエッジでのみ有効なパラメータ( <a class="el" href="unionF__FPM__FEATURE.html#63decc6bdc1ca989e253285e80635b56">F_FPM_FEATURE::sobel_edge</a> )<ul>
+<li>強度しきい値( <a class="el" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">F_EDGE_SOBEL_PARAMS::mag_threshold</a>, 推奨値：120 )<ul>
+<li>エッジの強度に対するしきい値を設定します。設定値以上のエッジ強度を持つ画素をエッジとみなします。対象となるマスターパタンと背景のコントラストによって値を調整する必要があります。</li><li>設定範囲：0≦強度しきい値≦1023</li></ul>
+</li><li>非極大抑制のフィルタ片幅( <a class="el" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">F_EDGE_SOBEL_PARAMS::nms_length</a>, 推奨値：3 )<ul>
+<li>細線化処理を行う際の幅を画素で設定します。正しいエッジ位置の近隣に余計なエッジが生じる場合には値を大きくします。</li><li>設定範囲：1≦フィルタ片幅</li></ul>
+</li></ul>
+</li>
+</ul>
+<ul>
+<li>相関エッジでのみ有効なパラメータ( <a class="el" href="unionF__FPM__FEATURE.html#690d5430d2a6398147bf6508857578ca">F_FPM_FEATURE::corr_edge</a> )<ul>
+<li>相関エッジフィルタの長さ( <a class="el" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6">F_EDGE_CORR_PARAMS::width</a>, 推奨値：13 )<ul>
+<li>相関エッジに使用する領域の長さ方向の値を画素で指定します。</li><li>設定範囲：3≦フィルタ長さ≦255の奇数, フィルタ高さ≦フィルタ長さ</li></ul>
+</li><li>相関エッジフィルタの高さ( <a class="el" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2">F_EDGE_CORR_PARAMS::height</a>, 推奨値：5 )<ul>
+<li>相関エッジに使用する領域の高さ方向の値を画素で指定します。</li><li>設定範囲：1≦フィルタ高さ≦255 の奇数, フィルタ高さ≦フィルタ長さ</li></ul>
+</li><li>シグモイド係数( <a class="el" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b">F_EDGE_CORR_PARAMS::sigmoid_k</a>, 推奨値：1.0 )<ul>
+<li>相関エッジに使用するためのマスターとなるシグモイド関数の形状を決める係数です。</li><li>設定範囲：0&lt;シグモイド係数</li></ul>
+</li><li>分散しきい値( <a class="el" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e">F_EDGE_CORR_PARAMS::var_threshold</a>, 推奨値：25 )<ul>
+<li>相関エッジで使用する領域内の濃度分散値の下限値を決定します。領域内の濃度分散値が設定値を超えた場合にエッジであるとみなします。</li><li>設定範囲：0&lt;分散しきい値≦16384</li></ul>
+</li><li>強度しきい値( <a class="el" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512">F_EDGE_CORR_PARAMS::mag_threshold</a>, 推奨値：160 )<ul>
+<li>相関エッジで使用するエッジ強度の下限値を決定します。</li><li>設定範囲：0≦強度しきい値≦255</li></ul>
+</li><li>非極大抑制のフィルタ片幅( <a class="el" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236">F_EDGE_CORR_PARAMS::nms_length</a>, 推奨値：6(=相関エッジフィルタの長さ/2) )<ul>
+<li>細線化処理を行う際の幅を画素値で設定します。</li><li>設定範囲：1≦フィルタ片幅</li></ul>
+</li><li>パラメータの詳細や決定方法については、 <a class="el" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a> 構造体を参照してください。</li></ul>
+</li>
+</ul>
+<ul>
+<li>強度上限付ソーベルエッジでのみ有効なパラメータ( <a class="el" href="unionF__FPM__FEATURE.html#0902b00851ebeff4b3afbce305ee8f1b">F_FPM_FEATURE::sobel_max_edge</a> )<ul>
+<li>強度下限しきい値( <a class="el" href="structF__EDGE__SOBEL__MAX__PARAMS.html#37d7b38a434c1528a7ce8caf255ce903">F_EDGE_SOBEL_MAX_PARAMS::mag_threshold_min</a>, 推奨値：120 )<ul>
+<li>エッジの強度に対する下限しきい値を設定します。設定値以上のエッジ強度を持つ画素をエッジとみなします。対象となるマスターパタンと背景のコントラストによって値を調整する必要があります。</li><li>設定範囲：0≦強度しきい値≦1023</li></ul>
+</li><li>強度上限しきい値( <a class="el" href="structF__EDGE__SOBEL__MAX__PARAMS.html#ebdb1eb583681220caee006144057f97">F_EDGE_SOBEL_MAX_PARAMS::mag_threshold_max</a>, 推奨値：1023 )<ul>
+<li>エッジの強度に対する上限しきい値を設定します。設定値以下のエッジ強度を持つ画素をエッジとみなします。対象となるマスターパタンと背景のコントラストによって値を調整する必要があります。</li><li>設定範囲：0≦強度しきい値≦1023</li></ul>
+</li><li>非極大抑制のフィルタ片幅( <a class="el" href="structF__EDGE__SOBEL__MAX__PARAMS.html#7593abbdef765654dfab9f1994dcb170">F_EDGE_SOBEL_MAX_PARAMS::nms_length</a>, 推奨値：3 )<ul>
+<li>細線化処理を行う際の幅を画素で設定します。正しいエッジ位置の近隣に余計なエッジが生じる場合には値を大きくします。</li><li>設定範囲：1≦フィルタ片幅</li></ul>
+</li></ul>
+</li>
+</ul>
+<ul>
+<li>強度上限付相関エッジでのみ有効なパラメータ( <a class="el" href="unionF__FPM__FEATURE.html#bbe6783d1f1fc864e9cda4c484218b9a">F_FPM_FEATURE::corr_max_edge</a> )<ul>
+<li>相関エッジフィルタの長さ( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#e79de442d8e16e6dbc41e2b7fa1d6c3b">F_EDGE_CORR_MAX_PARAMS::width</a>, 推奨値：13 )<ul>
+<li>相関エッジに使用する領域の長さ方向の値を画素で指定します。</li><li>設定範囲：3≦フィルタ長さ≦255の奇数, フィルタ高さ≦フィルタ長さ</li></ul>
+</li><li>相関エッジフィルタの高さ( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#1fdd8f8940cdf5c585d88a3f8fafcc6c">F_EDGE_CORR_MAX_PARAMS::height</a>, 推奨値：5 )<ul>
+<li>相関エッジに使用する領域の幅方向の値を画素で指定します。</li><li>設定範囲：1≦フィルタ高さ≦255 の奇数, フィルタ高さ≦フィルタ長さ</li></ul>
+</li><li>シグモイド係数( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#752dcebeb38973f67026da32eea2504f">F_EDGE_CORR_MAX_PARAMS::sigmoid_k</a>, 推奨値：1.0 )<ul>
+<li>相関エッジに使用するためのマスターとなるシグモイド関数の形状を決める係数です。</li><li>設定範囲：0&lt;シグモイド係数</li></ul>
+</li><li>分散下限しきい値( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#7b18b29060917f1a9193f234dd681e39">F_EDGE_CORR_MAX_PARAMS::var_threshold_min</a>, 推奨値：25 )<ul>
+<li>相関エッジで使用する領域内の濃度分散値の下限値を決定します。領域内の濃度分散値が設定値を超えた場合にエッジであるとみなします。</li><li>設定範囲：0&lt;分散しきい値≦16384</li></ul>
+</li><li>分散上限しきい値( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#45f014b0d9f4115d6a2026c6ebae2a47">F_EDGE_CORR_MAX_PARAMS::var_threshold_max</a>, 推奨値：16384 )<ul>
+<li>相関エッジで使用する領域内の濃度分散値の上限値を決定します。領域内の濃度分散値が設定値を超えない場合にエッジであるとみなします。</li><li>設定範囲：0&lt;分散しきい値≦16384</li></ul>
+</li><li>強度下限しきい値( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#a62db64295fb9599936fcf999294f393">F_EDGE_CORR_MAX_PARAMS::mag_threshold_min</a>, 推奨値：160 )<ul>
+<li>相関エッジで使用するエッジ強度の下限値を決定します。相関エッジによって得られたエッジ強度(=モデルエッジとの類似度)が設定値を超えた場合にエッジであるとみなします</li><li>設定範囲：0≦強度しきい値≦255</li></ul>
+</li><li>強度上限しきい値( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#4c02322632728577bcdaff5a4e44f123">F_EDGE_CORR_MAX_PARAMS::mag_threshold_max</a>, 推奨値：255 )<ul>
+<li>相関エッジで使用するエッジ強度の上限値を決定します。相関エッジによって得られたエッジ強度(=モデルエッジとの類似度)が設定値を超えない場合にエッジであるとみなします</li><li>設定範囲：0≦強度しきい値≦255</li></ul>
+</li><li>非極大抑制のフィルタ片幅( <a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html#a89cdb4b935539189255bfe1b125e7f3">F_EDGE_CORR_MAX_PARAMS::nms_length</a>, 推奨値：6(=相関エッジフィルタの長さ/2) )<ul>
+<li>細線化処理を行う際の幅を画素値で設定します。</li><li>設定範囲：1≦フィルタ片幅</li></ul>
+</li><li>通常の相関エッジフィルタと共通するパラメータの詳細や決定方法については、 <a class="el" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a> 構造体を参照してください。</li></ul>
+</li>
+</ul>
+<ul>
+<li>細線エッジでのみ有効なパラメータ( <a class="el" href="unionF__FPM__FEATURE.html#dc622562196fe60a5195a4c2d1849db3">F_FPM_FEATURE::groove_edge</a> )<ul>
+<li>分布係数( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#80818bf6273860b6e7c7786a8fe51d9b">F_EDGE_GROOVE_PARAMS::sigma</a>, 推奨値 : 1.0 )<ul>
+<li>フィルタの形状を決める係数です。検出したい細線幅の4分の1から2分の1を目安に指定します。</li><li>設定範囲：0＜分布係数</li></ul>
+</li><li>フィルタの長さ( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#5be09012024eceef83fe9ff0611dae8d">F_EDGE_GROOVE_PARAMS::width</a>, 推奨値 : 13 )<ul>
+<li>フィルタに使用する領域の長さ方向の値を画素で指定します。</li><li>細線とその両側に広がる輝度一定領域の長さ合計より小さい値に指定します。</li><li>分布係数の4倍以上を推奨します。</li><li>設定範囲: 3≦フィルタ長さ≦255 の奇数, フィルタ高さ≦フィルタ長さ</li></ul>
+</li><li>フィルタの高さ( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#a9e3697033e965665b3e041ee8de5e7b">F_EDGE_GROOVE_PARAMS::height</a>, 推奨値 : 5 )<ul>
+<li>フィルタに使用する領域の幅方向の値を画素で指定します。</li><li>フィルタ長さの半分程度が目安になります。</li><li>設定範囲: 1 ≦フィルタ高さ≦255 の奇数, フィルタ高さ≦フィルタ長さ</li></ul>
+</li><li>コントラスト下限しきい値( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#39a1af3cc7e1e999d9c69382ecc839ba">F_EDGE_GROOVE_PARAMS::con_threshold_min</a>, 推奨値:0.1)<ul>
+<li>フィルタ領域内のコントラストが設定値を超えた場合にエッジであるとみなします。</li><li>設定範囲：0≦コントラスト下限しきい値＜コントラスト上限しきい値≦1.0</li></ul>
+</li><li>コントラスト上限しきい値( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#4acecb2e0978fcb05c51ccd3207e82ba">F_EDGE_GROOVE_PARAMS::con_threshold_max</a>, 推奨値:1.0)<ul>
+<li>フィルタ領域内のコントラストが設定値を超えない場合にエッジであるとみなします。</li><li>設定範囲：0≦コントラスト下限しきい値＜コントラスト上限しきい値≦1.0</li></ul>
+</li><li>強度下限しきい値( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#8af5af0a7f22b932e107365043fede78">F_EDGE_GROOVE_PARAMS::mag_threshold_min</a>, 推奨値：0.5 )<ul>
+<li>エッジ強度(=モデルエッジとの類似度)が設定値を超えた場合にエッジであるとみなします</li><li>一般的なエッジの強度とは考え方が違い、マスターとなるエッジモデルとの類似度を強度としています。</li><li>設定範囲：0≦強度下限しきい値＜強度上限しきい値≦1.0</li></ul>
+</li><li>強度上限しきい値( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#da63d71eaa6c5a8a4ab3d2d052846a70">F_EDGE_GROOVE_PARAMS::mag_threshold_max</a>, 推奨値：1.0 )<ul>
+<li>エッジ強度(=モデルエッジとの類似度)が設定値を超えない場合にエッジであるとみなします</li><li>一般的なエッジの強度とは考え方が違い、マスターとなるエッジモデルとの類似度を強度としています。</li><li>設定範囲：0≦強度下限しきい値＜強度上限しきい値≦1.0</li></ul>
+</li><li>非極大抑制のフィルタ片幅( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#b24ad3df182d62266de5cfb62dd28da9">F_EDGE_GROOVE_PARAMS::nms_length</a>, 推奨値：6(=フィルタの長さ/2) )<ul>
+<li>細線化処理を行う際の幅を画素値で設定します。正しいエッジ位置の近隣に余計なエッジが生じる場合には値を大きくします。</li><li>設定範囲：1≦フィルタ片幅(フィルタ長さの半分)</li></ul>
+</li><li>線色 ( <a class="el" href="structF__EDGE__GROOVE__PARAMS.html#5c08031895a04ca7441b0dcb0bd297fb">F_EDGE_GROOVE_PARAMS::color</a> )<ul>
+<li>検出する線の色を指定します。</li><li>設定範囲：BLACK_COLOR, WHITE_COLOR, BLACK_WHITE_COLOR のいずれか。</li><li>白い背景に黒い線の場合 BLACK_COLOR を、黒い背景に白い線の場合 WHITE_COLORを指定してください。 BLACK_WHITE_COLOR は両方検出したい場合に指定します。</li></ul>
+</li></ul>
+</li>
+</ul>
+<dl class="user" compact><dt><b>マッチングパラメータ</b></dt><dd><a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> 構造体に指定するパラメータで、マッチングを行う際のパラメータです。</dd></dl>
+<ul>
+<li>マッチング個数( <a class="el" href="structF__FPM__MATCH.html#1ee0f264d589e598774a92d3a6a807fa">F_FPM_MATCH::require_result_num</a> )<ul>
+<li>マッチング回答の最大値を個数で指定します。</li><li>設定範囲：1≦マッチング個数 </li></ul>
+</li>
+<li>マッチング傾き範囲の最小値( <a class="el" href="structF__FPM__MATCH.html#e83ebc8e011298709c7b0b9fa4e8adc1">F_FPM_MATCH::min_angle</a> )<ul>
+<li>探索したい傾きの範囲の最小値を度で指定します。</li><li>設定範囲：-180≦傾き最小値≦傾き最大値≦179 </li></ul>
+</li>
+<li>マッチング傾き範囲の最大値( <a class="el" href="structF__FPM__MATCH.html#b72992d46cdd1b84fabcae91aba257be">F_FPM_MATCH::max_angle</a> )<ul>
+<li>探索したい傾きの範囲の最大値を度で指定します。</li><li>設定範囲：-180≦傾き最小値≦傾き最大値≦179 </li></ul>
+</li>
+<li>マッチングスケール範囲の最小値( <a class="el" href="structF__FPM__MATCH.html#74edc4656a38847ac743a29c6b093815">F_FPM_MATCH::min_scale</a> )<ul>
+<li>探索したいスケールの最小値を％で指定します。</li><li>設定範囲：50≦スケール最小値≦スケール最大値≦200 </li></ul>
+</li>
+<li>マッチングスケール範囲の最大値( <a class="el" href="structF__FPM__MATCH.html#36908168e39880501c25734da8e504a8">F_FPM_MATCH::max_scale</a> )<ul>
+<li>探索したいスケールの最大値を％で指定します。</li><li>設定範囲：50≦スケール最小値≦スケール最大値≦200 </li></ul>
+</li>
+<li>特徴量の圧縮率( <a class="el" href="structF__FPM__MATCH.html#81a03d6da2e5d0c709a7c5f82abb3c12">F_FPM_MATCH::coarse_comp_rate</a>, 推奨値：3 )<ul>
+<li>粗い精度でのマッチングに使用する際の特徴量の圧縮率の最大値です。</li><li>この値が大きいほど少量のデータでマッチングを行いますので高速で処理が可能ですが、検出能力に影響する危険性が高くなります。</li><li>設定範囲：0≦圧縮率≦5 </li></ul>
+</li>
+<li>粗い精度でのマッチングエッジ点の誤差範囲( <a class="el" href="structF__FPM__MATCH.html#b1c18716060dc574caced60d35c564f6">F_FPM_MATCH::coarse_err_wide</a>, 推奨値：1 )<ul>
+<li>粗い精度でのマッチング対応点探索時に、指定した誤差範囲内にある特徴量に対して対応がつくとみなすパラメータで、画素で指定します。</li><li>ワーク自体の不規則な変形、レンズ歪等、位置、回転、スケール変化では許容しきれない変動が起こりスコアが安定しない場合に大きくします。</li><li>設定範囲：0≦誤差範囲 </li></ul>
+</li>
+<li>粗い精度でのマッチングでの高圧縮スコアしきい値( <a class="el" href="structF__FPM__MATCH.html#a733994b4464658c50b81163cfb83b20">F_FPM_MATCH::coarse_highcomp_threshold</a>, 推奨値：50 )<ul>
+<li>粗い精度でのマッチング時における、投票による探索での100点を満点としたスコアの下限値です。</li><li>投票によるスコアが、設定したスコアしきい値を上回った場合に次の対応点探索に進みます。</li><li>設定範囲：0≦スコアしきい値１≦100 </li></ul>
+</li>
+<li>粗い精度でのマッチングでの低圧縮スコアしきい値( <a class="el" href="structF__FPM__MATCH.html#5ae666ef0e023618bf6191087eb9d181">F_FPM_MATCH::coarse_lowcomp_threshold</a>, 推奨値：50 )<ul>
+<li>粗い精度でのマッチング時における、投票後に行う対応点探索での100点を満点としたスコアの下限値です。</li><li>対応点探索によるスコアが設定したスコアしきい値を上回った場合に、粗い精度でのマッチングの回答として見つかったものみなされます。</li><li>設定範囲：0≦スコアしきい値１≦100 </li></ul>
+</li>
+<li>高精度ポーズ推定実行( <a class="el" href="structF__FPM__MATCH.html#6288e84b99af50a5f18524952cb72cc2">F_FPM_MATCH::refine_execute</a>, 推奨値：TRUE )<ul>
+<li>高精度ポーズ推定を行うか否かを指定します。</li><li>設定範囲：TRUE:高精度ポーズ推定実行 or FALSE:粗い精度でのマッチングのみで終了 </li></ul>
+</li>
+<li>高精度ポーズ推定スコアしきい値( <a class="el" href="structF__FPM__MATCH.html#39b7eec4a511f217972e2d7689c1e340">F_FPM_MATCH::refine_threshold</a>, 推奨値：60 )<ul>
+<li>高精度ポーズ推定におけるスコア下限値です。</li><li>設定範囲：0≦スコアしきい値≦100 </li></ul>
+</li>
+<li>高精度ポーズ推定での特徴量の誤差範囲( <a class="el" href="structF__FPM__MATCH.html#f86e328199cb9503f2776aa75194197f">F_FPM_MATCH::refine_err_wide</a>, 推奨値：1 )<ul>
+<li>高精度ポーズ推定での対応点探索時に、ここで指定した誤差範囲内にある特徴量に対して対応がつくとみなすパラメータで、画素で指定します。</li><li>ワーク自体の不規則な変形、レンズ歪等、位置、回転、スケール変化では許容しきれない変動が起こりスコアが安定しない場合に大きくします。</li><li>設定範囲：0≦誤差範囲 </li></ul>
+</li>
+<li>エッジの極性指定( <a class="el" href="structF__FPM__MATCH.html#a25f2505f6223977b62ad8ce892c3160">F_FPM_MATCH::polarity</a>, 推奨値:同極性 )<ul>
+<li>マッチングに使用するワークと背景との輝度変化の関係を考慮するパラメータです。</li><li>設定範囲：同極性(F_FPM_SAME_POLARITY) or 極性反転(F_FPM_REVERSE_POLARITY) or 両極性(F_FPM_EITHER_POLARITY)</li></ul>
+</li>
+</ul>
+<div align="center">
+<img src="fpm_polarity.png" alt="fpm_polarity.png">
+<p><strong>エッジの極性を考慮した場合のマッチング結果の差</strong></p></div>
+<p>
+<dl class="user" compact><dt><b>領域スコア再計算パラメータ</b></dt><dd><a class="el" href="structF__FPM__AREASCORE.html">F_FPM_AREASCORE</a> 構造体に指定するパラメータです。 エッジのマッチング処理では、マスターパタンのエッジの対応がつくか否かでスコアが決定します。 よって、マスターパタンのエッジとは対応しない位置に余分なエッジが存在するような状況でも、スコアに対する考慮はされません。 領域スコア再計算を行うと、このようなノイズや隠蔽によって余計なエッジが生じる状況で減点処理を行いスコアに差をつけることが可能です。</dd></dl>
+<div align="center">
+<img src="fpm_areascore.png" alt="fpm_areascore.png">
+<p><strong>領域スコア計算によるスコアの変化</strong></p></div>
+<p>
+<ul>
+<li>マッチング結果に対する誤差範囲( <a class="el" href="structF__FPM__AREASCORE.html#637981b8b3117171a19be10ee45470f7">F_FPM_AREASCORE::err_wide_tx</a>, <a class="el" href="structF__FPM__AREASCORE.html#3c3835de609fa9b9fcffdc711fc978e7">F_FPM_AREASCORE::err_wide_ty</a>, <a class="el" href="structF__FPM__AREASCORE.html#a8f2e6402576e03ca60cb3b45f5ff610">F_FPM_AREASCORE::err_wide_tq</a>, <a class="el" href="structF__FPM__AREASCORE.html#c7e20d42db4ccbd3dd87a4b74d056144">F_FPM_AREASCORE::err_wide_ts</a>, 推奨値： 高精度ポーズ推定なし：2.0 or あり：0.5 )<ul>
+<li>スコアの再計算を行う際のマッチング結果の誤差範囲で、Ｘ座標(画素)、Ｙ座標(画素)、回転角(度)、スケール(％)それぞれの値を持ちます。</li><li>設定範囲：0≦誤差範囲 </li></ul>
+</li>
+<li>誤差範囲( <a class="el" href="structF__FPM__AREASCORE.html#c170aebfa7d57963dd2047e8a5bd30d2">F_FPM_AREASCORE::err_wide</a>, 推奨値：1 )<ul>
+<li>領域スコア計算時に、ここで指定した誤差範囲内にある特徴量に対して対応がつくとみなすパラメータで、画素で指定します。</li><li>設定範囲：0≦誤差範囲 </li></ul>
+</li>
+<li>ノイズ減点重み係数( <a class="el" href="structF__FPM__AREASCORE.html#69630f7af2022d2c452429b33f55123a">F_FPM_AREASCORE::noise_weight</a>, 推奨値：0.2 )<ul>
+<li>一個のノイズに対しての減点値の重みで、１つのノイズが持つスコアの倍率を指定します。</li><li>設定範囲：0≦重み係数</li></ul>
+</li>
+</ul>
+<ul>
+<li>領域スコアしきい値( <a class="el" href="structF__FPM__AREASCORE.html#cd37288d9455a890e23c494c149cb0f0">F_FPM_AREASCORE::threshold</a>, 推奨値：60 )<ul>
+<li>領域スコア計算におけるスコア下限値です。減点後にこの値を超えたスコアを持つ位置のものが回答として残ります</li><li>設定範囲：0≦スコアしきい値≦100</li></ul>
+</li>
+</ul>
+<hr>
+ <h3><a class="anchor" name="fie_fpm_etc">
+他</a></h3>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd></dd></dl>
+<ul>
+<li>FIE版のFPMではパタン登録時にはボーダー処理(<a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a>の F_BORDER_CONTINUOUS)を行って処理しています。一方で、<b>画像オブジェクトを入力としたマッチング処理ではボーダー処理を行っていません。</b> ボーダー処理を行った画像に対してマッチングをしたい場合には、特徴量抽出処理を行った後、特徴量オブジェクトを用いたマッチングを行う必要があります。<br>
+ </li>
+<li>対応する画像タイプは8bit濃淡画像のみとなります。<br>
+</li>
+</ul>
+<ul>
+<li><b>うまくみつからないときは</b><ul>
+<li>特徴量抽出パラメータの調整をして、対象物の輪郭が正確に取得できているか、エッジの状態を確認しましょう。(<a class="el" href="group__fie__fpm__pattern.html#gbd1fd9d337dae5ea149ca81b62580856" title="マスターパタン特徴量を取得（勾配方向付きエッジ型）">fnFIE_fpm_get_pattern_feature_edges()</a>,<a class="el" href="group__fie__fpm__pattern.html#g4f6447b83e4416bb2e7f45ad027bae37" title="マッチングで使用した特徴量を取得（勾配方向付きエッジ型）...">fnFIE_fpm_get_matching_feature_edges()</a>にてマッチングに使用する特徴量を取得できます)<ul>
+<li>細いパタン<ul>
+<li>相関エッジを使用している場合には、フィルタ長さを小さくします。</li></ul>
+</li><li>ぼやけた画像<ul>
+<li>相関エッジを使用している場合には、シグモイド係数, 分散しきい値の値を小さくし、フィルタ長さを大きくします。</li><li>ソーベルエッジを使用している場合には、エッジ強度しきい値を小さくします。</li></ul>
+</li><li>コントラストが低い<ul>
+<li>相関エッジを使用している場合には、分散しきい値を小さくします。</li><li>ソーベルエッジを使用している場合には、エッジ強度しきい値を小さくします。</li></ul>
+</li></ul>
+</li><li>マッチングパラメータのスコアしきい値を下げてみましょう。</li><li>マッチングウインドウ指定が適切か確認しましょう。</li><li>マスクの設定が適切かどうか検討しましょう。</li><li>マッチング結果取得個数が適切か調べましょう。</li><li>なるべく探したい対象物の輪郭がはっきりし、且つマッチングにとって不必要な情報が少なくなるような画像を取得できる環境の構築を心がけましょう。</li></ul>
+</li>
+</ul>
+<ul>
+<li><b>マッチングが遅いときは</b><ul>
+<li>マッチングに使用しているエッジ情報を確認して、特徴量が過剰に取得されていないか確認しましょう</li><li>パターン画像が不必要に大きくないか検討しましょう。</li><li>高速モード(F_FPM_SPEED_MODE)を試してみましょう。</li><li>エッジ抽出方法としてソーベルフィルタが適用可能かを検討しましょう。</li><li>マッチングウインドウを小さくしてみましょう。</li><li>スコアしきい値の値を大きくしてましょう。</li><li>複数のパタンをマッチングする場合、特徴量取得とマッチングを分けて実行することを試みましょう。</li></ul>
+</li>
+</ul>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__fpm__example.html#fie_fpm_example">サンプル</a> </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 2.2.0</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel2_2_0">release 2.2.0 </a></h1><div style="text-align:right">2009/11/06</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel2_2_0.html#fie2_2_0">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie2_2_0">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">FIE関数の追加</h3>
+<p>
+<h3 class="relnote_sub">基本画像操作</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__image.html#gff5d66c5c42523a8b3bab9c137765b58">ルート画像のコピー</a></li></ul>
+<p>
+<h3 class="relnote_sub">FPM</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__fpm__pattern.html#g65457c026104496903f0a935c230dc7a">形状指定FPM オブジェクト生成(楕円or 円)</a></li><li><a class="el" href="group__fie__fpm__pattern.html#g334f8d107692795b961fe794ac1eb0b2">形状指定FPM オブジェクト生成(矩形)</a></li><li><a class="el" href="group__fie__fpm__pattern.html#g5b8e1557890a810c247747904160abae">形状指定FPM オブジェクト生成(十字)</a></li><li><a class="el" href="group__fie__fpm__pattern.html#g31178a1ca29cf3f37fb802470a02f9b2">点情報からFPM オブジェクト生成</a></li></ul>
+<p>
+<h3 class="relnote_sub">色彩特徴量抽出</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__color__convert__main.html#g4a71052ea8082da8877cf08493ff81d2">色彩特徴量抽出(HSV 基準)</a></li></ul>
+<p>
+<h3 class="relnote">機能追加及び仕様変更</h3>
+<p>
+<ul>
+<li>#500: <a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step()</a> 他の画像step値の型変更(64bit 版バイナリのみ)</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>#502: SamplingModeがNNのとき、bIsClearBackが無視されるバグを修正</li></ul>
+<p>
+<h3 class="relnote">関数インターフェイスの変更</h3>
+<p>
+#500 での変更に伴い、画像メモリを扱う下記関数の引数型が変更されています。<br>
+ 32bit バイナリ環境ではこの変更によるユーザープログラムの変更は必要有りませんが、 コンパイラの設定によってはワーニングが新たに出るようになる可能性が有ります。ご注意ください。<ul>
+<li>旧<ol type=a>
+<li>FHANDLE FVALGAPI fnFIE_img_root_import_alloc( VOID **adrss, INT channels, INT type, <span style="color:red;">INT step,</span> INT width, INT height );</li><li>INT FVALGAPI fnFIE_img_get_params( FHANDLE himg, INT *channels, INT *type, <span style="color:red;">INT *step,</span> INT *width, INT *height );</li><li><span style="color:red;">INT</span> FVALGAPI <a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step( FHANDLE himg )</a>;</li></ol>
+</li><li>新<ol type=a>
+<li>FHANDLE FVALGAPI fnFIE_img_root_import_alloc( VOID **adrss, INT channels, INT type, <span style="color:red;">INT_PTR step,</span> INT width, INT height );</li><li>INT FVALGAPI fnFIE_img_get_params( FHANDLE himg, INT *channels, INT *type, <span style="color:red;">INT_PTR *step,</span> INT *width, INT *height );</li><li><span style="color:red;">INT_PTR</span> FVALGAPI <a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step( FHANDLE himg )</a>; </li></ol>
+</li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:32 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

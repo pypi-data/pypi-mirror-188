@@ -1,0 +1,1886 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: パタン操作</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>パタン操作<br>
+<small>
+[<a class="el" href="group__fie__fpm.html">FPM(特徴点応用マッチング)</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b">fnFIE_fpm_alloc</a> (FHANDLE himage, FHANDLE hmask, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset, enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> matching_mode, enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a> method, const <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *pfeature_param, INT *perr_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FPM オブジェクト生成  <a href="#g56a7cd0574ed5184ab4ccb6c847c899b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g31178a1ca29cf3f37fb802470a02f9b2">fnFIE_fpm_import_alloc</a> (<a class="el" href="structF__DEDGE.html">F_DEDGE</a> *ptn_edges, INT num_ptn_edges, FHANDLE himage_ptn, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset, enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> matching_mode, INT *perr_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点情報から FPM オブジェクト生成  <a href="#g31178a1ca29cf3f37fb802470a02f9b2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g65457c026104496903f0a935c230dc7a">fnFIE_fpm_alloc_shape_ellipse</a> (DOUBLE a, DOUBLE b, BOOL is_white, enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> matching_mode, INT *perr_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">形状指定 FPM オブジェクト生成(楕円or円)  <a href="#g65457c026104496903f0a935c230dc7a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g334f8d107692795b961fe794ac1eb0b2">fnFIE_fpm_alloc_shape_rectangle</a> (DOUBLE width, DOUBLE height, BOOL is_white, enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> matching_mode, INT *perr_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">形状指定 FPM オブジェクト生成(矩形)  <a href="#g334f8d107692795b961fe794ac1eb0b2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g5b8e1557890a810c247747904160abae">fnFIE_fpm_alloc_shape_cross</a> (DOUBLE a, DOUBLE b, BOOL is_close, BOOL is_white, enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> matching_mode, INT *perr_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">形状指定 FPM オブジェクト生成(十字)  <a href="#g5b8e1557890a810c247747904160abae"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#gd831b8971cebe5f8aa1c5b34aedbb193">fnFIE_fpm_set_pattern_mask</a> (FHANDLE hfpm, FHANDLE hmask)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスクの設定  <a href="#gd831b8971cebe5f8aa1c5b34aedbb193"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g7e2bd28dda7444e1e10287fd725bb39f">fnFIE_fpm_clear_pattern_mask</a> (FHANDLE hfpm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスク情報のクリア  <a href="#g7e2bd28dda7444e1e10287fd725bb39f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g973e70028a525116660d4ad713609802">fnFIE_fpm_set_pattern_offset</a> (FHANDLE hfpm, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マッチング回答オフセット値の設定  <a href="#g973e70028a525116660d4ad713609802"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g2514be06cb5fc3a349ae76522e3d5094">fnFIE_fpm_set_pattern_offset_gravity</a> (FHANDLE hfpm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マッチング回答オフセット値の自動設定（特徴量重心）  <a href="#g2514be06cb5fc3a349ae76522e3d5094"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#gd6e64fa187afa8e8121e0a042455451c">fnFIE_fpm_get_pattern_mask</a> (FHANDLE hfpm, FHANDLE *phmask)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスク情報の取得  <a href="#gd6e64fa187afa8e8121e0a042455451c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g0706112a96ba3748c53069fdc1a95631">fnFIE_fpm_get_pattern_offset</a> (FHANDLE hfpm, <a class="el" href="structDPNT__T.html">DPNT_T</a> *poffset)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスターパタンマッチング回答オフセット値の取得  <a href="#g0706112a96ba3748c53069fdc1a95631"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g0d1f32fdbb6f763884fd49ae68e64dae">fnFIE_fpm_get_pattern_size</a> (FHANDLE hfpm, INT *ptn_width, INT *ptn_height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスターパタン画像サイズ取得  <a href="#g0d1f32fdbb6f763884fd49ae68e64dae"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g1f549835609e04b2c6d99f7cb1d2d6e8">fnFIE_fpm_get_pattern_feature_param</a> (FHANDLE hfpm, enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a> *pmethod, <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *pfeature_param)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">特徴量パラメータ取得  <a href="#g1f549835609e04b2c6d99f7cb1d2d6e8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#gb899f8d52dcf48088b23f0af1bf99c27">fnFIE_fpm_get_matching_mode</a> (FHANDLE hfpm, enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> *pmatching_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FPMオブジェクト生成時のマッチングモードの取得  <a href="#gb899f8d52dcf48088b23f0af1bf99c27"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g4be518bc747a0516b189cc5ac4c218fc">fnFIE_fpm_get_pattern_image</a> (FHANDLE hfpm, FHANDLE *phimage)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスターパタン画像の取得  <a href="#g4be518bc747a0516b189cc5ac4c218fc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g5ed6da9ac505681cc806a8101a2e5bbe">fnFIE_fpm_get_pattern_feature_num</a> (FHANDLE hfpm, INT *pfeature_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスターパタン特徴量数の取得  <a href="#g5ed6da9ac505681cc806a8101a2e5bbe"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#gbd1fd9d337dae5ea149ca81b62580856">fnFIE_fpm_get_pattern_feature_edges</a> (FHANDLE hfpm, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *pedges)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスターパタン特徴量を取得（勾配方向付きエッジ型）  <a href="#gbd1fd9d337dae5ea149ca81b62580856"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#gd31922528cfd499bd34855a90ea40df4">fnFIE_fpm_get_matching_feature_num</a> (FHANDLE hfpm, INT *pmatching_feature_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">サーチ対象画像の特徴量数の取得  <a href="#gd31922528cfd499bd34855a90ea40df4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g4f6447b83e4416bb2e7f45ad027bae37">fnFIE_fpm_get_matching_feature_edges</a> (FHANDLE hfpm, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *pmatching_edges)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マッチングで使用した特徴量を取得（勾配方向付きエッジ型）  <a href="#g4f6447b83e4416bb2e7f45ad027bae37"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g957ca08b152eddf68184418c884faf1c">fnFIE_fpm_clear_result</a> (FHANDLE hfpm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FPMオブジェクト結果データのクリア  <a href="#g957ca08b152eddf68184418c884faf1c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#gf45acab5b9fc021ffe5f45788dfbf135">fnFIE_fpm_get_relative_edge</a> (FHANDLE hfpm, INT no, INT err_wide, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定ポーズ下の対応点取得  <a href="#gf45acab5b9fc021ffe5f45788dfbf135"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g736c80f84bfccffc6dcb29ecf7a6b542">fnFIE_fpm_set_pattern_essential</a> (FHANDLE hfpm, FHANDLE hesse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">不可欠領域の設定  <a href="#g736c80f84bfccffc6dcb29ecf7a6b542"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g5b781d6b178f34f25aa950d2a669df92">fnFIE_fpm_get_pattern_essential</a> (FHANDLE hfpm, FHANDLE *phesse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">不可欠領域情報の取得  <a href="#g5b781d6b178f34f25aa950d2a669df92"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g39d4fdc49f09357e7d03c7739cab4cb8">fnFIE_fpm_set_pattern_edgeless_mask</a> (FHANDLE hfpm, FHANDLE hedgeless)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ減点領域の設定  <a href="#g39d4fdc49f09357e7d03c7739cab4cb8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g6850d50fb21378e9409704b907b1c0e9">fnFIE_fpm_get_pattern_edgeless_mask</a> (FHANDLE hfpm, FHANDLE *phedgeless)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ減点領域情報の取得  <a href="#g6850d50fb21378e9409704b907b1c0e9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g731ca3870fff58c6c48af9f3c97b3ad3">fnFIE_fpm_set_refine_mode</a> (FHANDLE hfpm, INT refine_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">高精度ポーズ推定モードの設定  <a href="#g731ca3870fff58c6c48af9f3c97b3ad3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g90c2cc55f7474b775f465cc347a8339b">fnFIE_fpm_get_refine_mode</a> (FHANDLE hfpm, INT *refine_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">高精度ポーズ推定モードの取得  <a href="#g90c2cc55f7474b775f465cc347a8339b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g5f1320da2686702804bb1b2b972f8dbc">fnFIE_fpm_set_pitch</a> (FHANDLE hfpm, INT pitch_x, INT pitch_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小検出間隔の設定  <a href="#g5f1320da2686702804bb1b2b972f8dbc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g56e79d4deb05f7e046068b8032c07385">fnFIE_fpm_get_pitch</a> (FHANDLE hfpm, INT *pitch_x, INT *pitch_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小検出間隔の取得  <a href="#g56e79d4deb05f7e046068b8032c07385"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g075080552b40a802d3f93fa1f25a2b47">fnFIE_fpm_set_refine_pose_boundary_mode</a> (FHANDLE hfpm, enum <a class="el" href="group__fie__fpm__define.html#gd56750ed0976246842725982b6d10a80">f_fpm_pose_boundary_mode</a> boundary_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">高精度ポーズ推定における姿勢の範囲境界モードの設定  <a href="#g075080552b40a802d3f93fa1f25a2b47"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__pattern.html#g30e61f6704e541c58244c17e7d53ac4e">fnFIE_fpm_get_refine_pose_boundary_mode</a> (FHANDLE hfpm, enum <a class="el" href="group__fie__fpm__define.html#gd56750ed0976246842725982b6d10a80">f_fpm_pose_boundary_mode</a> *boundary_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">高精度ポーズ推定における姿勢の範囲境界モードの取得  <a href="#g30e61f6704e541c58244c17e7d53ac4e"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g56a7cd0574ed5184ab4ccb6c847c899b"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_alloc" ref="g56a7cd0574ed5184ab4ccb6c847c899b" args="(FHANDLE himage, FHANDLE hmask, DPNT_T offset, enum f_fpm_mode matching_mode, enum f_fpm_featedge method, const F_FPM_FEATURE *pfeature_param, INT *perr_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_fpm_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>matching_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a>&nbsp;</td>
+          <td class="paramname"> <em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pfeature_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>perr_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FPM オブジェクト生成 
+<p>
+マスターパタンとして使用する画像オブジェクトから、FPMオブジェクト(F_OBJID_FPM)を生成します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>FPMで使用するための特徴量を取得する対象となる画像オブジェクト(画像タイプ：uc8 のみ対応)<br>
+ チャネル数は 1 でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>マスターパタン特徴量取得時のマスク指定用画像オブジェクト(画像タイプ：uc8 のみ対応)<br>
+ チャネル数は 1 でなければいけません。<br>
+ NULLを指定するとマスクなしのパターンになります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>マッチング回答オフセット値(マスターパタン画像の左上位置からの相対値) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>matching_mode</em>&nbsp;</td><td>FPMを行う際のマッチングモード<ul>
+<li>F_FPM_NORMAL_MODE 通常モード</li><li>F_FPM_SPEED_MODE 高速モード </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>method</em>&nbsp;</td><td>特徴量抽出手法<ul>
+<li>F_FPM_SOBEL_EDGE ソーベルによる特徴量抽出</li><li>F_FPM_CORR_EDGE 相関エッジによる特徴量抽出</li><li>F_FPM_SOBEL_MAX_EDGE 強度上限付ソーベルによる特徴量抽出</li><li>F_FPM_CORR_MAX_EDGE 強度上限付相関エッジによる特徴量抽出</li><li>F_FPM_GROOVE_EDGE 細線エッジによる特徴量抽出 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pfeature_param</em>&nbsp;</td><td>FPMオブジェクトを生成する際に使用する特徴量計測パラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perr_code</em>&nbsp;</td><td>正常終了、またはエラーコードが入力されます。エラーコードを受け取る必要の無い場合は、NULLを指定します。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_IMAGE 引数画像オブジェクトが異常</li><li>F_ERR_INVALID_PARAM 引数異常</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_FPM_NOFEATURE 特徴量が見つかりません。</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したFPMオブジェクトのハンドルを返します。 異常終了により生成できなかったときはNULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>画像オブジェクトからマスターパタンの特徴量を取得する際には、指定した画像に対してボーダー拡張処理を行っています。</li><li>FPMオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g31178a1ca29cf3f37fb802470a02f9b2"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_import_alloc" ref="g31178a1ca29cf3f37fb802470a02f9b2" args="(F_DEDGE *ptn_edges, INT num_ptn_edges, FHANDLE himage_ptn, DPNT_T offset, enum f_fpm_mode matching_mode, INT *perr_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_fpm_import_alloc           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>ptn_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_ptn_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage_ptn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>matching_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>perr_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点情報から FPM オブジェクト生成 
+<p>
+マスターパタン画像のエッジ情報(<a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> 型)をインポートして、FPMオブジェクト(F_OBJID_FPM)を生成します。 自身で作成した処理によって計測したエッジ情報や、既知の幾何情報から生成した情報等を用いてFPMオブジェクトを生成することが可能です。<p>
+<div align="center">
+<img src="fpm_import.png" alt="fpm_import.png">
+<p><strong>fig．画像オブジェクトを用いたFPMの処理(左)と、F_DEDGE型の情報を用いたFPMの処理(右)</strong></p></div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ptn_edges</em>&nbsp;</td><td><a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> 型 エッジデータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_ptn_edges</em>&nbsp;</td><td><em>ptn_edges</em> に格納されているエッジデータ数(1≦ <em>num_ptn_edges</em>) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage_ptn</em>&nbsp;</td><td><em>ptn_edges</em> を取得した画像（type:uc8,ch:1, マスターパタン画像がない、または FPMオブジェクトが保持する必要が無ければNULLを指定することも可能です） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>マッチング回答オフセット値(マスターパタン画像の左上位置からの相対値) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>matching_mode</em>&nbsp;</td><td>FPMを行う際のマッチングモード<ul>
+<li>F_FPM_NORMAL_MODE 通常モード</li><li>F_FPM_SPEED_MODE 高速モード </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perr_code</em>&nbsp;</td><td>正常終了、またはエラーコードが入力されます。エラーコードを受け取る必要の無い場合は、NULLを指定することも可能です。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_IMAGE 画像オブジェクト異常</li><li>F_ERR_INVALID_PARAM 引数異常</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したFPMオブジェクトのハンドルを返します。 異常終了により生成できなかったときはNULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>入力情報 <em>ptn_edges</em> のメンバである 強度 <em>mag</em> は使用しません。値が未知であっても値を計算する必要はありません。(未知の場合には 0で初期化しておいてください)</li><li>FPMオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li><li>本ライブラリではエッジ計測パラメータは使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g1f549835609e04b2c6d99f7cb1d2d6e8" title="特徴量パラメータ取得">fnFIE_fpm_get_pattern_feature_param()</a> 関数を実行してもパラメータを取得することができません。</li><li>本ライブラリは必ずしもマスターパタン画像を必要とするものではありません。マスターパタンの画像を指定せずに作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g4be518bc747a0516b189cc5ac4c218fc" title="マスターパタン画像の取得">fnFIE_fpm_get_pattern_image()</a> 関数を実行してもマスターパタン画像を取得することができません。</li><li><em>ptn_edges</em> の入力エッジ情報は、画像処理で取得したエッジを想定しています。そのため <em>ptn_edges</em> のＸＹの入力値として、四捨五入して負になるような値を入力した場合には、戻り値に F_ERR_INVALID_PARAM が返ります。(同様に、 <em>himage_ptn</em> にパタン画像を指定した場合には、パタン画像サイズよりも小さい値のエッジ情報を指定しなければなりません。) </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g65457c026104496903f0a935c230dc7a"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_alloc_shape_ellipse" ref="g65457c026104496903f0a935c230dc7a" args="(DOUBLE a, DOUBLE b, BOOL is_white, enum f_fpm_mode matching_mode, INT *perr_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_fpm_alloc_shape_ellipse           </td>
+          <td>(</td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>is_white</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>matching_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>perr_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+形状指定 FPM オブジェクト生成(楕円or円) 
+<p>
+楕円(or円)の形状情報を指定して、FPMオブジェクト(F_OBJID_FPM)を生成します。<p>
+楕円は次の式で表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \frac {x^{2}}{a^{2}} + \frac{y^{2}}{b^{2}} = 1 \]" src="form_612.png">
+<p>
+ 0 &lt; <em>b</em> &lt; <em>a</em> の時には、<em>2a</em> は長軸の長さ、<em>2b</em> は短軸の長さを表します。<em>xy</em> 平面上にグラフを書くと、下図のように横長の楕円となります。 本式からは、<em>a</em> と <em>b</em> が等しければ、半径が <em>a</em> (= <em>b</em>)の円を表すこともわかります。<p>
+<div align="center">
+<img src="fpm_ellipse_alloc.png" alt="fpm_ellipse_alloc.png">
+<p><strong>fig．楕円パタンと指定パラメータの関係</strong></p></div>
+<p>
+また、登録時の回答基準位置は、図の原点位置<img class="formulaInl" alt="$o$" src="form_613.png">(=図形の中心位置)に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>楕円の方程式 パラメータ <em>a</em> (3.0&lt;=<em>a</em>, 単位:画素) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>b</em>&nbsp;</td><td>楕円の方程式 パラメータ <em>b</em> (3.0&lt;=<em>b</em>, 単位:画素)、円を指定する場合には <em>a</em> と <em>b</em> の値を等しい値にします。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>is_white</em>&nbsp;</td><td>楕円パタンの色<ul>
+<li>TRUE 指定楕円は白(背景よりも明るい)</li><li>FALSE 指定楕円は黒(背景よりも暗い) </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>matching_mode</em>&nbsp;</td><td>FPMを行う際のマッチングモード<ul>
+<li>F_FPM_NORMAL_MODE 通常モード</li><li>F_FPM_SPEED_MODE 高速モード </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perr_code</em>&nbsp;</td><td>正常終了、またはエラーコードを格納します。エラーコードを受け取る必要の無い場合は、NULLを指定することも可能です。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_PARAM 引数異常</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_BUFFER_OVERFLOW バッファ不足エラー</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したFPMオブジェクトのハンドルを返します。 異常終了により生成できなかったときはNULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>FPMオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li><li>本ライブラリではエッジ計測パラメータは使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g1f549835609e04b2c6d99f7cb1d2d6e8" title="特徴量パラメータ取得">fnFIE_fpm_get_pattern_feature_param()</a> 関数を実行してもパラメータを取得することができません。</li><li>本ライブラリは必ずしもマスターパタンを使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g4be518bc747a0516b189cc5ac4c218fc" title="マスターパタン画像の取得">fnFIE_fpm_get_pattern_image()</a> 関数を実行してもマスターパタン画像を取得することができません。</li><li>内部で生成される楕円状の点情報 <img class="formulaInl" alt="$\left(x_i,y_i\right)$" src="form_614.png">がもつエッジの勾配方向 <img class="formulaInl" alt="$q_i$" src="form_615.png">は、楕円接線の傾斜に対して垂直な方向とし、式 <img class="formulaInl" alt="$q_i=\tan^{-1}{ \left(\frac{{\it a}^2y_i}{{\it b}^2x_i} \right)}$" src="form_616.png"> によって得られます。(<em>is_white</em> の値によっては180度反転します)</li><li>ここでは説明の図と式に原点を中心とした楕円を用いていますが、実際には xyのシフト移動を行い、楕円が第１象限(0&lt;<em>x</em>,0&lt;<em>y</em>)に収まるような状態です。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g334f8d107692795b961fe794ac1eb0b2"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_alloc_shape_rectangle" ref="g334f8d107692795b961fe794ac1eb0b2" args="(DOUBLE width, DOUBLE height, BOOL is_white, enum f_fpm_mode matching_mode, INT *perr_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_fpm_alloc_shape_rectangle           </td>
+          <td>(</td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>is_white</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>matching_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>perr_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+形状指定 FPM オブジェクト生成(矩形) 
+<p>
+矩形の形状情報を指定して、FPMオブジェクト(F_OBJID_FPM)を生成します。<p>
+<div align="center">
+<img src="fpm_rectangle_alloc.png" alt="fpm_rectangle_alloc.png">
+<p><strong>fig．矩形パタンと指定パラメータの関係</strong></p></div>
+<p>
+登録時の回答基準位置は、図の点<img class="formulaInl" alt="$P_c$" src="form_617.png">(=図形の中心位置)に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>矩形のX方向幅(3.0&lt;=<em>width</em>, 単位:画素) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>矩形のY方向高さ(3.0&lt;=<em>height</em>, 単位:画素) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>is_white</em>&nbsp;</td><td>矩形パタンの色<ul>
+<li>TRUE 指定矩形は白(背景よりも明るい)</li><li>FALSE 指定矩形は黒(背景よりも暗い) </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>matching_mode</em>&nbsp;</td><td>FPMを行う際のマッチングモード<ul>
+<li>F_FPM_NORMAL_MODE 通常モード</li><li>F_FPM_SPEED_MODE 高速モード </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perr_code</em>&nbsp;</td><td>正常終了、またはエラーコードを格納します。エラーコードを受け取る必要の無い場合は、NULLを指定することも可能です。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_PARAM 引数異常</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_BUFFER_OVERFLOW バッファ不足エラー</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したFPMオブジェクトのハンドルを返します。 異常終了により生成できなかったときはNULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>FPMオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li><li>本ライブラリではエッジ計測パラメータは使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g1f549835609e04b2c6d99f7cb1d2d6e8" title="特徴量パラメータ取得">fnFIE_fpm_get_pattern_feature_param()</a> 関数を実行してもパラメータを取得することができません。</li><li>本ライブラリは必ずしもマスターパタンを使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g4be518bc747a0516b189cc5ac4c218fc" title="マスターパタン画像の取得">fnFIE_fpm_get_pattern_image()</a> 関数を実行してもマスターパタン画像を取得することができません。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5b8e1557890a810c247747904160abae"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_alloc_shape_cross" ref="g5b8e1557890a810c247747904160abae" args="(DOUBLE a, DOUBLE b, BOOL is_close, BOOL is_white, enum f_fpm_mode matching_mode, INT *perr_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_fpm_alloc_shape_cross           </td>
+          <td>(</td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>is_close</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>is_white</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>matching_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>perr_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+形状指定 FPM オブジェクト生成(十字) 
+<p>
+十字パタンの形状情報を指定して、FPMオブジェクト(F_OBJID_FPM)を生成します。<p>
+<div align="center">
+<img src="fpm_cross_alloc.png" alt="fpm_cross_alloc.png">
+<p><strong>fig．十字パタンと指定パラメータの関係</strong></p></div>
+<p>
+登録時の回答基準位置は、図の点<img class="formulaInl" alt="$P_c$" src="form_617.png">(=図形の中心位置)に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>十字パタンのパラメータ <em>a</em> (3.0&lt;=<em>a</em>, 単位:画素) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>b</em>&nbsp;</td><td>十字パタンのパラメータ <em>b</em> (1.0&lt;=<em>b</em>, <em>b&lt;<em>a</em>,単位</em>:画素) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>is_close</em>&nbsp;</td><td>十字パタン 開閉状態<ul>
+<li>TRUE 指定十字マークは閉じている</li><li>FALSE 指定十字マークは開いている(パラメータ <em>b</em> の位置のエッジが無い) <div align="center">
+<img src="fpm_cross_close.png" alt="fpm_cross_close.png">
+<p><strong>fig．<em>is_close</em> に TRUE を指定(左)、もしくは FALSE を指定(右)した際の生成エッジ情報の違い</strong></p></div>
+ </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>is_white</em>&nbsp;</td><td>十字パタンの色<ul>
+<li>TRUE 指定矩形は白(背景よりも明るい)</li><li>FALSE 指定矩形は黒(背景よりも暗い) </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>matching_mode</em>&nbsp;</td><td>FPMを行う際のマッチングモード<ul>
+<li>F_FPM_NORMAL_MODE 通常モード</li><li>F_FPM_SPEED_MODE 高速モード </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perr_code</em>&nbsp;</td><td>正常終了、またはエラーコードを格納します。エラーコードを受け取る必要の無い場合は、NULLを指定することも可能です。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_PARAM 引数異常</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_BUFFER_OVERFLOW バッファ不足エラー</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したFPMオブジェクトのハンドルを返します。 異常終了により生成できなかったときはNULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>FPMオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li><li>本ライブラリではエッジ計測パラメータは使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g1f549835609e04b2c6d99f7cb1d2d6e8" title="特徴量パラメータ取得">fnFIE_fpm_get_pattern_feature_param()</a> 関数を実行してもパラメータを取得することができません。</li><li>本ライブラリは必ずしもマスターパタンを使用しません。本ライブラリを使用して作成したFPMオブジェクトに対して <a class="el" href="group__fie__fpm__pattern.html#g4be518bc747a0516b189cc5ac4c218fc" title="マスターパタン画像の取得">fnFIE_fpm_get_pattern_image()</a> 関数を実行してもマスターパタン画像を取得することができません。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd831b8971cebe5f8aa1c5b34aedbb193"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_pattern_mask" ref="gd831b8971cebe5f8aa1c5b34aedbb193" args="(FHANDLE hfpm, FHANDLE hmask)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_pattern_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスクの設定 
+<p>
+FPMオブジェクトのマスターパタンに対するマスク情報を更新します。 マスクの設定を行うと、マスクの指定されていないエリアにある情報だけを使用してマッチングを行います。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>マスク指定用画像オブジェクト(画像タイプ：uc8 のみ対応) 画像オブジェクトのサイズは、FPMオブジェクトで管理されるマスターパタンのサイズと合わせてください。 マスクを指定する場合には1を、マスクを指定しない場合には0を設定してください。それ以外の値が設定されていた場合にはF_ERR_INVALID_PARAMが戻ります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量が見つかりません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>未サポートエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7e2bd28dda7444e1e10287fd725bb39f"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_clear_pattern_mask" ref="g7e2bd28dda7444e1e10287fd725bb39f" args="(FHANDLE hfpm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_clear_pattern_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスク情報のクリア 
+<p>
+FPMオブジェクト内のマスターパタンへのマスク情報をクリアします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>未サポートエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g973e70028a525116660d4ad713609802"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_pattern_offset" ref="g973e70028a525116660d4ad713609802" args="(FHANDLE hfpm, DPNT_T offset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_pattern_offset           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マッチング回答オフセット値の設定 
+<p>
+FPMオブジェクトのマッチング回答オフセット値を更新します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>マッチング回答オフセット値(マスターパタン画像の左上位置からの値)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2514be06cb5fc3a349ae76522e3d5094"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_pattern_offset_gravity" ref="g2514be06cb5fc3a349ae76522e3d5094" args="(FHANDLE hfpm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_pattern_offset_gravity           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マッチング回答オフセット値の自動設定（特徴量重心） 
+<p>
+FPMオブジェクトの回答オフセット値を、取得した特徴量重心位置に更新します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd6e64fa187afa8e8121e0a042455451c"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_mask" ref="gd6e64fa187afa8e8121e0a042455451c" args="(FHANDLE hfpm, FHANDLE *phmask)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>phmask</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスク情報の取得 
+<p>
+FPMオブジェクトで管理しているマスターパタンへのマスク情報を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>phmask</em>&nbsp;</td><td>マスターパタンのマスク情報 ( type: uc8 ) <br>
+ 画像オブジェクトを生成し、FPMオブジェクトで管理されるマスターパタンのマスク情報の複製を取得します。<br>
+ 　*phmask はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>未サポートエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>マスク画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0706112a96ba3748c53069fdc1a95631"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_offset" ref="g0706112a96ba3748c53069fdc1a95631" args="(FHANDLE hfpm, DPNT_T *poffset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_offset           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>poffset</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスターパタンマッチング回答オフセット値の取得 
+<p>
+FPMオブジェクトの回答オフセット値を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>poffset</em>&nbsp;</td><td>FPMオブジェクトが管理しているマッチング回答オフセット値(マスターパタン画像の左上位置からの値)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0d1f32fdbb6f763884fd49ae68e64dae"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_size" ref="g0d1f32fdbb6f763884fd49ae68e64dae" args="(FHANDLE hfpm, INT *ptn_width, INT *ptn_height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_size           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ptn_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ptn_height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスターパタン画像サイズ取得 
+<p>
+FPMオブジェクトに保存されているマスターパタンの画像の縦横サイズを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ptn_width</em>&nbsp;</td><td>マスターパタン画像Ｘサイズ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ptn_height</em>&nbsp;</td><td>マスターパタン画像Ｙサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1f549835609e04b2c6d99f7cb1d2d6e8"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_feature_param" ref="g1f549835609e04b2c6d99f7cb1d2d6e8" args="(FHANDLE hfpm, enum f_fpm_featedge *pmethod, F_FPM_FEATURE *pfeature_param)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_feature_param           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmethod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pfeature_param</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量パラメータ取得 
+<p>
+FPMオブジェクト生成時に使用した特徴量パラメータの値を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmethod</em>&nbsp;</td><td>特徴量取得方法 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pfeature_param</em>&nbsp;</td><td>特徴量パラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>パラメータは存在しません( FPMオブジェクトは <a class="el" href="group__fie__fpm__pattern.html#g31178a1ca29cf3f37fb802470a02f9b2" title="点情報から FPM オブジェクト生成">fnFIE_fpm_import_alloc()</a> によって生成されました ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb899f8d52dcf48088b23f0af1bf99c27"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_matching_mode" ref="gb899f8d52dcf48088b23f0af1bf99c27" args="(FHANDLE hfpm, enum f_fpm_mode *pmatching_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_matching_mode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9">f_fpm_mode</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FPMオブジェクト生成時のマッチングモードの取得 
+<p>
+FPMオブジェクトを生成した際のマッチングモードを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_mode</em>&nbsp;</td><td>FPMマッチング実行モード</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4be518bc747a0516b189cc5ac4c218fc"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_image" ref="g4be518bc747a0516b189cc5ac4c218fc" args="(FHANDLE hfpm, FHANDLE *phimage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>phimage</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスターパタン画像の取得 
+<p>
+FPMオブジェクトを生成した際に指定した画像を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>phimage</em>&nbsp;</td><td>マスターパタンの画像 ( type: uc8 ) <br>
+ 画像オブジェクトを生成し、FPMオブジェクトで管理されるマスターパタンの複製を取得します。<br>
+ 　*phimage はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>画像が登録されていません( FPMオブジェクトは <a class="el" href="group__fie__fpm__pattern.html#g31178a1ca29cf3f37fb802470a02f9b2" title="点情報から FPM オブジェクト生成">fnFIE_fpm_import_alloc()</a> によって生成する際に画像が指定されませんでした ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>マスターパタン画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5ed6da9ac505681cc806a8101a2e5bbe"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_feature_num" ref="g5ed6da9ac505681cc806a8101a2e5bbe" args="(FHANDLE hfpm, INT *pfeature_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_feature_num           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pfeature_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスターパタン特徴量数の取得 
+<p>
+FPMオブジェクトを生成した際のマスターパタンの特徴量の数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pfeature_num</em>&nbsp;</td><td>FPMオブジェクトにある特徴量の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbd1fd9d337dae5ea149ca81b62580856"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_feature_edges" ref="gbd1fd9d337dae5ea149ca81b62580856" args="(FHANDLE hfpm, F_DEDGE *pedges)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_feature_edges           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pedges</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスターパタン特徴量を取得（勾配方向付きエッジ型） 
+<p>
+FPMオブジェクトに格納されているマスターパタンの特徴量を勾配方向付きエッジデータ型で取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pedges</em>&nbsp;</td><td>勾配付きエッジ情報(格納エリアは予め確保する必要があります) 予め <a class="el" href="group__fie__fpm__pattern.html#g5ed6da9ac505681cc806a8101a2e5bbe" title="マスターパタン特徴量数の取得">fnFIE_fpm_get_pattern_feature_num()</a> によって特徴量の数を取得し、必要な領域を確保する必要があります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>強度の出力値は0が入ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g5ed6da9ac505681cc806a8101a2e5bbe" title="マスターパタン特徴量数の取得">fnFIE_fpm_get_pattern_feature_num()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd31922528cfd499bd34855a90ea40df4"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_matching_feature_num" ref="gd31922528cfd499bd34855a90ea40df4" args="(FHANDLE hfpm, INT *pmatching_feature_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_matching_feature_num           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_feature_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+サーチ対象画像の特徴量数の取得 
+<p>
+マッチングの際に使用した特徴量の数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_feature_num</em>&nbsp;</td><td>FPMオブジェクトにある特徴量の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数をコールする場合、マッチング処理(<a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a> or <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> or <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a>)を行い、FPMオブジェクト内部で特徴量オブジェクトを確保しておく必要があります。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4f6447b83e4416bb2e7f45ad027bae37"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_matching_feature_edges" ref="g4f6447b83e4416bb2e7f45ad027bae37" args="(FHANDLE hfpm, F_DEDGE *pmatching_edges)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_matching_feature_edges           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_edges</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マッチングで使用した特徴量を取得（勾配方向付きエッジ型） 
+<p>
+FPMオブジェクトに格納されている特徴量を勾配方向付きエッジデータ型で取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_edges</em>&nbsp;</td><td>勾配付きエッジ情報 予め <a class="el" href="group__fie__fpm__pattern.html#gd31922528cfd499bd34855a90ea40df4" title="サーチ対象画像の特徴量数の取得">fnFIE_fpm_get_matching_feature_num()</a> によって特徴量の数を取得し、必要な領域を確保する必要があります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数をコールする場合、マッチング処理(<a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a> or <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> or <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a>)を行い、FPMオブジェクト内部で特徴量オブジェクトを確保しておく必要があります。</li><li>強度の出力値は0が入ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#gd31922528cfd499bd34855a90ea40df4" title="サーチ対象画像の特徴量数の取得">fnFIE_fpm_get_matching_feature_num()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g957ca08b152eddf68184418c884faf1c"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_clear_result" ref="g957ca08b152eddf68184418c884faf1c" args="(FHANDLE hfpm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_clear_result           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FPMオブジェクト結果データのクリア 
+<p>
+FPMオブジェクトに格納されている結果情報(マッチング回答、マッチングに使用した特徴量)を削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf45acab5b9fc021ffe5f45788dfbf135"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_relative_edge" ref="gf45acab5b9fc021ffe5f45788dfbf135" args="(FHANDLE hfpm, INT no, INT err_wide, F_DEDGE *edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_relative_edge           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_wide</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定ポーズ下の対応点取得 
+<p>
+サーチ回答として格納された番号を指定し、その回答に使用された対応エッジ情報の取得します。<p>
+<div align="center">
+<img src="fpm_relative.png" alt="fpm_relative.png">
+<p><strong>fig．指定ポーズ下の対応点を取得し表示</strong></p></div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト(サーチを実行済み) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>no</em>&nbsp;</td><td>対応するエッジを取得するサーチ回答番号(0～) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_wide</em>&nbsp;</td><td>誤差範囲　±err_wide (0以上) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>対応点情報 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>取得した対応点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>対応点を格納する <em>edge</em> のメモリは、最大数であるマスターパタンの特徴量数の分( <a class="el" href="group__fie__fpm__pattern.html#g5ed6da9ac505681cc806a8101a2e5bbe" title="マスターパタン特徴量数の取得">fnFIE_fpm_get_pattern_feature_num()</a> によって取得 )だけ予め確保しておいてください。</li><li>取得した <em>edge</em> 内で格納された対応点情報は、マッチングの状況によっては同じ対応点を複数回出力することがあります。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g736c80f84bfccffc6dcb29ecf7a6b542"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_pattern_essential" ref="g736c80f84bfccffc6dcb29ecf7a6b542" args="(FHANDLE hfpm, FHANDLE hesse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_pattern_essential           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hesse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+不可欠領域の設定 
+<p>
+マスターパタンに対する不可欠領域情報を設定します。<br>
+<p>
+不可欠領域の設定を行うと、通常のサーチ処理を行った後、不可欠領域エリアにある情報だけを使用してスコアを再計算します。 特に、下図のように大きなパタンの中に含まれる小さな領域に対してのスコアに差をつけたい場合に有効な処理です。<p>
+<div align="center">
+<img src="fpm_esse.png" alt="fpm_esse.png">
+<p><strong>fig．不可欠領域設定によるスコア</strong></p></div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hesse</em>&nbsp;</td><td>不可欠領域指定用画像オブジェクト(画像タイプ：uc8 のみ対応)<br>
+ 画像オブジェクトのサイズは、FPMオブジェクトで管理されるマスターパタンのサイズと合わせてください。 不可欠領域を指定する画素には1を、不可欠領域を指定しない画素には0を設定してください。それ以外の値が設定されていた場合にはF_ERR_INVALID_PARAMが戻ります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量が見つかりません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g5b781d6b178f34f25aa950d2a669df92" title="不可欠領域情報の取得">fnFIE_fpm_get_pattern_essential()</a>, <a class="el" href="group__fie__fpm__match.html#g7b9429144335ed6d0eac3c83fbb79a0a" title="不可欠領域スコア計算">fnFIE_fpm_matching_essential()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5b781d6b178f34f25aa950d2a669df92"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_essential" ref="g5b781d6b178f34f25aa950d2a669df92" args="(FHANDLE hfpm, FHANDLE *phesse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_essential           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>phesse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+不可欠領域情報の取得 
+<p>
+マスターパタンへの不可欠領域情報を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>phesse</em>&nbsp;</td><td>マスターパタンの不可欠領域情報<br>
+ 画像オブジェクト( type: uc8 )を生成し、FPMオブジェクトで管理されるマスターパタンの不可欠領域情報の複製を取得します。<br>
+ 不可欠領域として指定された画素には1を、指定されていない画素には0が設定されます。 　*phesse はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNKNOWN</em>&nbsp;</td><td>原因不明なエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>不可欠領域画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g736c80f84bfccffc6dcb29ecf7a6b542" title="不可欠領域の設定">fnFIE_fpm_set_pattern_essential()</a>, <a class="el" href="group__fie__fpm__match.html#g7b9429144335ed6d0eac3c83fbb79a0a" title="不可欠領域スコア計算">fnFIE_fpm_matching_essential()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g39d4fdc49f09357e7d03c7739cab4cb8"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_pattern_edgeless_mask" ref="g39d4fdc49f09357e7d03c7739cab4cb8" args="(FHANDLE hfpm, FHANDLE hedgeless)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_pattern_edgeless_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hedgeless</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジ減点領域の設定 
+<p>
+マスターパタンに対するエッジ減点領域情報を設定します。<p>
+エッジ減点領域を使用すると、通常のサーチ処理を行った後、エッジ減点領域情報にあるエッジの分だけ減点処理を行いスコアを再計算します。 下図のように、大きなパタンの内側に含まれる余計なエッジを減点しつつ、パタンの外側にあるエッジは減点しない場合に有効な処理です。<p>
+<div align="center">
+<img src="fpm_edgeless_mask.png" alt="fpm_edgeless_mask.png">
+<p><strong>fig．エッジ減点領域設定によるスコア</strong></p></div>
+<p>
+設定されたエッジ減点領域は <a class="el" href="group__fie__fpm__match.html#g1fb9d1438306bd84df0a15dcf6cafd5e" title="特定領域エッジ減点スコア計算">fnFIE_fpm_matching_recalc_with_edgeless_mask()</a> で使用されます。 <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a> などで実行される通常のマッチング処理では使用されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hedgeless</em>&nbsp;</td><td>エッジ減点領域指定用画像オブジェクト(type：bin, uc8)<br>
+ 画像オブジェクトのサイズは、FPMオブジェクトで管理されるマスターパタンのサイズと合わせてください。 エッジ減点領域を指定する画素には1を、エッジ減点領域を指定しない画素には0を設定してください。 それ以外の値が設定されていた場合には <a class="el" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a> が戻ります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g6850d50fb21378e9409704b907b1c0e9" title="エッジ減点領域情報の取得">fnFIE_fpm_get_pattern_edgeless_mask()</a>, <a class="el" href="group__fie__fpm__match.html#g1fb9d1438306bd84df0a15dcf6cafd5e" title="特定領域エッジ減点スコア計算">fnFIE_fpm_matching_recalc_with_edgeless_mask()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6850d50fb21378e9409704b907b1c0e9"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pattern_edgeless_mask" ref="g6850d50fb21378e9409704b907b1c0e9" args="(FHANDLE hfpm, FHANDLE *phedgeless)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pattern_edgeless_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>phedgeless</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジ減点領域情報の取得 
+<p>
+マスターパタンへのエッジ減点領域情報を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>phedgeless</em>&nbsp;</td><td>マスターパタンのエッジ減点領域情報<br>
+ 画像オブジェクト( type: uc8 )を生成し、FPMオブジェクトで管理されるマスターパタンのエッジ減点領域情報の複製を取得します。<br>
+ エッジ減点領域として指定された画素には1を、指定されていない画素には0が設定されます。 　*phesse はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNKNOWN</em>&nbsp;</td><td>原因不明なエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>エッジ減点領域画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g39d4fdc49f09357e7d03c7739cab4cb8" title="エッジ減点領域の設定">fnFIE_fpm_set_pattern_edgeless_mask()</a>, <a class="el" href="group__fie__fpm__match.html#g1fb9d1438306bd84df0a15dcf6cafd5e" title="特定領域エッジ減点スコア計算">fnFIE_fpm_matching_recalc_with_edgeless_mask()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g731ca3870fff58c6c48af9f3c97b3ad3"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_refine_mode" ref="g731ca3870fff58c6c48af9f3c97b3ad3" args="(FHANDLE hfpm, INT refine_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_refine_mode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>refine_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+高精度ポーズ推定モードの設定 
+<p>
+高精度ポーズ推定が収束せずに適当な回答が見つからなかった際の動作を指定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>refine_mode</em>&nbsp;</td><td>指定する高精度ポーズ推定の動作モード<ul>
+<li>0：粗サーチの位置姿勢情報を使用し、スコア計算まで行います(初期値)</li><li>1：その候補位置での回答を返しません</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g90c2cc55f7474b775f465cc347a8339b" title="高精度ポーズ推定モードの取得">fnFIE_fpm_get_refine_mode()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g90c2cc55f7474b775f465cc347a8339b"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_refine_mode" ref="g90c2cc55f7474b775f465cc347a8339b" args="(FHANDLE hfpm, INT *refine_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_refine_mode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>refine_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+高精度ポーズ推定モードの取得 
+<p>
+現在設定されている高精度ポーズ推定モードを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>refine_mode</em>&nbsp;</td><td>設定されている高精度ポーズ推定の動作モード<ul>
+<li>0：粗サーチの位置姿勢情報を使用し、スコア計算まで行います(初期値)</li><li>1：その候補位置での回答を返しません</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g731ca3870fff58c6c48af9f3c97b3ad3" title="高精度ポーズ推定モードの設定">fnFIE_fpm_set_refine_mode()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5f1320da2686702804bb1b2b972f8dbc"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_pitch" ref="g5f1320da2686702804bb1b2b972f8dbc" args="(FHANDLE hfpm, INT pitch_x, INT pitch_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_pitch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小検出間隔の設定 
+<p>
+最小検出間隔を設定します。 最小検出間隔はサーチの回答が同一の解であるとみなす範囲で、回答候補の周辺で最小検出間隔以内にある別の候補の出現を抑制します。単位はピクセルです。 初期値はゼロで、その場合パタンのもつ特徴量から自動決定した数値が使われます。 パタンの大きさより小さい間隔で複数の回答を出現させたい場合に、その間隔よりすこし小さい数値を当関数で設定します。<p>
+<ul>
+<li>水平方向、垂直方向個別に設定できますが、直感的ではない挙動変化をするため同一の数値を推奨します。</li><li>XY方向はパタンの座標系によります。</li><li>検出ピッチを小さくしすぎると処理時間が増大します。</li><li>検出ピッチを大きくしすぎると検出抜けが発生します。</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_x</em>&nbsp;</td><td>同一の解であるとみなす範囲で、単位はピクセルです。0の場合パタンの情報から自動決定します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_y</em>&nbsp;</td><td>同一の解であるとみなす範囲で、単位はピクセルです。0の場合パタンの情報から自動決定します。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g56e79d4deb05f7e046068b8032c07385" title="最小検出間隔の取得">fnFIE_fpm_get_pitch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g56e79d4deb05f7e046068b8032c07385"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_pitch" ref="g56e79d4deb05f7e046068b8032c07385" args="(FHANDLE hfpm, INT *pitch_x, INT *pitch_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_pitch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pitch_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pitch_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小検出間隔の取得 
+<p>
+現在設定されている最小検出間隔を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pitch_x</em>&nbsp;</td><td>同一の解であるとみなす範囲で、単位はピクセルです。0の場合パタンの情報から自動決定します。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pitch_y</em>&nbsp;</td><td>同一の解であるとみなす範囲で、単位はピクセルです。0の場合パタンの情報から自動決定します。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g5f1320da2686702804bb1b2b972f8dbc" title="最小検出間隔の設定">fnFIE_fpm_set_pitch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g075080552b40a802d3f93fa1f25a2b47"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_set_refine_pose_boundary_mode" ref="g075080552b40a802d3f93fa1f25a2b47" args="(FHANDLE hfpm, enum f_fpm_pose_boundary_mode boundary_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_set_refine_pose_boundary_mode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#gd56750ed0976246842725982b6d10a80">f_fpm_pose_boundary_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>boundary_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+高精度ポーズ推定における姿勢の範囲境界モードの設定 
+<p>
+高精度ポーズ推定における、姿勢（傾きとスケール）の範囲境界に対する処理モードを設定します。 <br>
+ 傾きの範囲は <a class="el" href="structF__FPM__MATCH.html#e83ebc8e011298709c7b0b9fa4e8adc1">F_FPM_MATCH::min_angle</a> と <a class="el" href="structF__FPM__MATCH.html#b72992d46cdd1b84fabcae91aba257be">F_FPM_MATCH::max_angle</a> 、スケールの範囲は <a class="el" href="structF__FPM__MATCH.html#74edc4656a38847ac743a29c6b093815">F_FPM_MATCH::min_scale</a> と <a class="el" href="structF__FPM__MATCH.html#36908168e39880501c25734da8e504a8">F_FPM_MATCH::max_scale</a> により設定されます。 <br>
+ 下記の3種類のモードがあります。<p>
+<ul>
+<li><a class="el" href="group__fie__fpm__define.html#ggd56750ed0976246842725982b6d10a80d85c719e950001a0d644cd1905cd5309" title="姿勢の範囲制限なし">F_FPM_POSE_UNBOUNDED</a> <br>
+ 範囲制限のないモードです。 設定された傾きやスケールの範囲外となるマッチング回答が得られる場合があります。</li>
+</ul>
+<ul>
+<li><a class="el" href="group__fie__fpm__define.html#ggd56750ed0976246842725982b6d10a8088f1d29a35d0046c57ebf6002553b0b7" title="姿勢の範囲制限あり">F_FPM_POSE_BOUNDED</a> <br>
+ 範囲制限のあるモードです。 マッチング回答は必ず設定された傾きやスケールの範囲内となります。 サーチ対象物の真の姿勢がわずかに設定された傾きやスケールの範囲外となる場合、真の姿勢とマッチング回答にずれが生じる場合があります。</li>
+</ul>
+<ul>
+<li><a class="el" href="group__fie__fpm__define.html#ggd56750ed0976246842725982b6d10a80538691e270b961015208745c5e3dc510" title="姿勢が範囲外となる回答を削除">F_FPM_POSE_DELETE_OUT_OF_BOUND</a> <br>
+ 範囲外の回答を削除するモードです。 モードを F_FPM_POSE_UNBOUNDED とした場合と同様に高精度ポーズ推定を行い、マッチング回答が設定された傾きやスケールの範囲外であれば、その回答を削除します。</li>
+</ul>
+初期モードは F_FPM_POSE_UNBOUNDED です。 最初はこのモードでマッチングを行い、範囲外のマッチング回答により不都合を生じる場合に他のモードを検討することを推奨します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>boundary_mode</em>&nbsp;</td><td>姿勢の範囲境界モード<ul>
+<li>F_FPM_POSE_UNBOUNDED 姿勢の範囲制限なし（初期値）</li><li>F_FPM_POSE_BOUNDED 姿勢の範囲制限あり</li><li>F_FPM_POSE_DELETE_OUT_OF_BOUND 姿勢が範囲外となる回答を削除</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g30e61f6704e541c58244c17e7d53ac4e" title="高精度ポーズ推定における姿勢の範囲境界モードの取得">fnFIE_fpm_get_refine_pose_boundary_mode()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g30e61f6704e541c58244c17e7d53ac4e"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_refine_pose_boundary_mode" ref="g30e61f6704e541c58244c17e7d53ac4e" args="(FHANDLE hfpm, enum f_fpm_pose_boundary_mode *boundary_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_refine_pose_boundary_mode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#gd56750ed0976246842725982b6d10a80">f_fpm_pose_boundary_mode</a> *&nbsp;</td>
+          <td class="paramname"> <em>boundary_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+高精度ポーズ推定における姿勢の範囲境界モードの取得 
+<p>
+現在の高精度ポーズ推定における姿勢の範囲境界モードを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>boundary_mode</em>&nbsp;</td><td>姿勢の範囲境界モード<ul>
+<li>F_FPM_POSE_UNBOUNDED 姿勢の範囲制限なし（初期値）</li><li>F_FPM_POSE_BOUNDED 姿勢の範囲制限あり</li><li>F_FPM_POSE_DELETE_OUT_OF_BOUND 姿勢が範囲外となる回答を削除</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g075080552b40a802d3f93fa1f25a2b47" title="高精度ポーズ推定における姿勢の範囲境界モードの設定">fnFIE_fpm_set_refine_pose_boundary_mode()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

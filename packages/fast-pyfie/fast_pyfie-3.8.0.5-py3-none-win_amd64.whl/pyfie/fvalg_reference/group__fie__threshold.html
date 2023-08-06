@@ -1,0 +1,2842 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ２値化／セグメンテーション</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>２値化／セグメンテーション<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c">fnFIE_niblack_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV, DOUBLE dK, INT iBrdMod)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所平均値と標準偏差を用いたNiblack法による画像２値化  <a href="#g3a13eb66a77c9db2c48883b01ba8e98c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac">fnFIE_sauvola_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV, DOUBLE dK, DOUBLE dR, INT iBrdMod)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所平均値と標準偏差を用いてSauvola法による画像２値化  <a href="#gfd46af0877af73d655d37039b60b66ac"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#gd8a4943892aa82b30a32f2770407b45d">fnFIE_background_remove_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">[非推奨]局所メディアン値をバックグランドとして除去して得られた画像を判別分析法で２値化  <a href="#gd8a4943892aa82b30a32f2770407b45d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g9af3a8a5105798b335daa82fb06c4c96">fnFIE_background_remove_threshold2</a> (FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所メディアン値をバックグランドとして除去して得られた画像を判別分析法で２値化  <a href="#g9af3a8a5105798b335daa82fb06c4c96"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g2579ad0d6e126004f769e3ca32af0f64">fnFIE_binarize</a> (FHANDLE hsrc, FHANDLE hdst, DOUBLE threshold)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">固定しきい値による２値化  <a href="#g2579ad0d6e126004f769e3ca32af0f64"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g696e8d3d9f1b4729d0578269ea39a978">fnFIE_hysteresis_stack_us16</a> (FHANDLE hMag, USHORT ushTHigh, USHORT ushTLow, FHANDLE hImg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ヒステリシス２値化（スタックを利用したアルゴリズム）  <a href="#g696e8d3d9f1b4729d0578269ea39a978"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g0712352d1ef41d3a6b81ad58c1e54ccf">fnFIE_hysteresis_rle_uf</a> (FHANDLE hMag, DOUBLE dTHigh, DOUBLE dTLow, UINT uiNoiseEdge, FHANDLE hImg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ヒステリシス特性による２値化（ランレングスを利用したアルゴリズム）  <a href="#g0712352d1ef41d3a6b81ad58c1e54ccf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#gc34e99444cab93f2cba46006c2aaa434">fnFIE_ptile_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iRate)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ｐタイル法による画像２値化  <a href="#gc34e99444cab93f2cba46006c2aaa434"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#ga89aa2327d69620aa7be206dc439ed15">fnFIE_discrimination_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">[非推奨]判別分析法による画像２値化  <a href="#ga89aa2327d69620aa7be206dc439ed15"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#gfe6ff6606a4a55ffd7813dba6774189d">fnFIE_discrimination_threshold2</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">判別分析法による画像２値化  <a href="#gfe6ff6606a4a55ffd7813dba6774189d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g976a28f9cc96f5b4ecc2992313ff8063">fnFIE_grad_hist_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iEdgeFactor)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">微分ヒストグラム法による画像２値化  <a href="#g976a28f9cc96f5b4ecc2992313ff8063"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#gcba5dc736e0d8d820f8bfad3676bfd77">fnFIE_lap_hist_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iEdgeFactor)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">[非推奨]ラプラシアンヒストグラム法による画像の２値化  <a href="#gcba5dc736e0d8d820f8bfad3676bfd77"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g952719300717e4bb97fef0172033c480">fnFIE_lap_hist_threshold2</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iEdgeFactor)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ラプラシアンヒストグラム法による画像の２値化  <a href="#g952719300717e4bb97fef0172033c480"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g912109cbf4d36893385674afec2fb08f">fnFIE_kittler_threshold</a> (FHANDLE hSrc, FHANDLE hDst, INT *ipThresh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キトラー(kittler)法による画像２値化  <a href="#g912109cbf4d36893385674afec2fb08f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g4901e4f18f06708582df9afb31f9821e">fnFIE_shift_avr_threshold_ex</a> (FHANDLE hsrc, FHANDLE hdst, INT size_x, INT size_y, INT border_mode, DOUBLE border_value)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所領域平均値による２値画像作成 ボーダー処理付き  <a href="#g4901e4f18f06708582df9afb31f9821e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#ga60f116f7006c1807270ce6673fc4ebf">fnFIE_shift_avr_threshold</a> (FHANDLE hsrc, FHANDLE hdst, INT size_x, INT size_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所領域平均値による２値画像作成  <a href="#ga60f116f7006c1807270ce6673fc4ebf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g8b29a13db62eb1e28858d2dcf88c7399">fnFIE_shift_avr_threshold_offset</a> (FHANDLE hsrc, FHANDLE hdst, INT size_x, INT size_y, INT offset, INT border_mode, DOUBLE border_value)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所領域平均値とオフセットによる２値画像作成 ボーダー処理付き  <a href="#g8b29a13db62eb1e28858d2dcf88c7399"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g891e5304a0e2bd18db2aac9163a30216">fnFIE_shift_avr_threshold_offset_mask</a> (FHANDLE hsrc, FHANDLE hdst, FHANDLE hmask, INT size_x, INT size_y, INT offset, INT border_mode, DOUBLE border_value)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">局所領域平均値とオフセットによる２値画像作成 マスク付き  <a href="#g891e5304a0e2bd18db2aac9163a30216"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#gccacc1973605b68ef276319a97528bae">fnFIE_band_threshold_ch</a> (const FHANDLE hsrc, FHANDLE hdst, const DOUBLE *tlow, const DOUBLE *thigh, INT back_clear)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２つの固定しきい値を用いたセグメンテーション処理  <a href="#gccacc1973605b68ef276319a97528bae"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g8759a7c3a5a7b7d2929ceab93cf4b18f">fnFIE_band_threshold</a> (FHANDLE hsrc, FHANDLE hdst, DOUBLE tlow, DOUBLE thigh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">二つの固定しきい値を用いて２値化  <a href="#g8759a7c3a5a7b7d2929ceab93cf4b18f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__threshold.html#g01410167407adb0cb7bb4f11d264fb46">fnFIE_watershed</a> (FHANDLE hSrc, FHANDLE hDst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Watershed法による領域分割  <a href="#g01410167407adb0cb7bb4f11d264fb46"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g3a13eb66a77c9db2c48883b01ba8e98c"></a><!-- doxytag: member="fie_adapt_thresholding.c::fnFIE_niblack_threshold" ref="g3a13eb66a77c9db2c48883b01ba8e98c" args="(FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV, DOUBLE dK, INT iBrdMod)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_niblack_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iV</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBrdMod</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所平均値と標準偏差を用いたNiblack法による画像２値化 
+<p>
+入力画像の注目画素の閾値を、その周辺画素の平均値と標準偏差を用いて決定し(Niblack法)、 動的な２値化を行います。周辺画素として統計値を計算する局所領域のサイズは パラメータにより変更することが出来ます。<p>
+各画素の閾値の計算は下式にしたがって行われます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T(i,j) = m(i,j) + k \cdot s(i,j) \]" src="form_475.png">
+<p>
+ ここで<ul>
+<li><img class="formulaInl" alt="$m(i,j)$" src="form_476.png"> は注目画素 <img class="formulaInl" alt="$(i,j)$" src="form_477.png"> 周辺指定範囲内画素の平均値</li><li><img class="formulaInl" alt="$s(i,j)$" src="form_478.png"> は注目画素 <img class="formulaInl" alt="$(i,j)$" src="form_477.png"> 周辺指定範囲内画素の標準偏差</li><li><img class="formulaInl" alt="$k$" src="form_479.png"> はユーザ入力係数</li></ul>
+<p>
+<em>dK</em> パラメータは公式中の <img class="formulaInl" alt="$k$" src="form_479.png"> に対応します。 <em>dK</em> の値に制限はありませんが、-1と1の間の小数に設定することを勧めます。<p>
+<em>iH</em> と <em>iV</em> パラメータは注目画素周辺の平均値、標準偏差を計算する 局所領域（ウィンドウ）のサイズを指定するパラメータです。 局所領域のサイズは縦横別々に <em>iH</em> と <em>iV</em> パラメータにて指定できます。 サイズは 1～255 の間の奇数を指定しなければいけません。 但し <em>iH</em> と <em>iV</em> に共に１が指定された場合はパラメータエラーとなりますので、 必ずどちらかを３以上の値にしてください。 また、局所領域のサイズは画像のサイズより小さくなければいけません。 指定された局所領域のサイズが画像サイズよりも大きい場合には、エラーになります。 局所領域のサイズは、２値化しようとしている画像内の目標物よりも大きく設定し、 かつ、局所領域内に前景と背景の両方が入るよう設定すると良い結果が得られます。<p>
+<em>iBrdMod</em> はボーダー拡張処理モードを指定するパラメータです。 本関数では局所領域の情報を使って処理を行うため、ボーダー拡張処理をしないと 画像の周囲に処理できない領域が出来ます。しかし、本パラメータにてボーダー拡張処理方法を 指定すると内部でボーダー拡張処理を行うため、画像の端まで結果を得ることが出来ます。 ボーダー拡張については <a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 関数を参照してください。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型は F_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型は F_IMG_BINである。</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力２値画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iH</em>&nbsp;</td><td>局所領域の横サイズ <br>
+ ( 1～255 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iV</em>&nbsp;</td><td>局所領域の縦サイズ <br>
+ ( 1～255 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dK</em>&nbsp;</td><td>計算式の係数 <img class="formulaInl" alt="$k$" src="form_479.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBrdMod</em>&nbsp;</td><td>ボーダー処理モード<ul>
+<li>F_BORDER_NONE ボーダー拡張しない</li><li>F_BORDER_CONTINUOUS 端延長モード</li><li>F_BORDER_MIRROR1 反転モード１</li><li>F_BORDER_MIRROR2 反転モード２</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac" title="局所平均値と標準偏差を用いてSauvola法による画像２値化">fnFIE_sauvola_threshold()</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Zhao, M., Yang, Y. and Yan, H. "An adaptive thresholding method for binarization of blueprint images", Pattern Recognition, Vol.21, 2000, pp.927-43</li><li>Sezgin, M. and Sankur, B. "Survey over image thresholding techniques and qualitative performance evaluation", J. of Electronic Imaging, Vol.13(1), 2004, pp.146-65</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID niblack_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//Niblack法による画像２値化</span>
+    <span class="comment">//局所領域（ウィンドウ）サイズ11×11，係数-1，ボーダー処理CONTINUOUS</span>
+    <span class="comment">//ウィンドウサイズは幅，高さ共に奇数でなければならない</span>
+    <a class="code" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold</a>(hsrc, hdst, 11, 11, -1, <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f568bc404460c354f6e05d89439f24c6f" title="端延長モード">F_BORDER_CONTINUOUS</a>);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    niblack_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_niblack.png" alt="fie_binarize_niblack.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfd46af0877af73d655d37039b60b66ac"></a><!-- doxytag: member="fie_adapt_thresholding.c::fnFIE_sauvola_threshold" ref="gfd46af0877af73d655d37039b60b66ac" args="(FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV, DOUBLE dK, DOUBLE dR, INT iBrdMod)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_sauvola_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iV</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dR</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBrdMod</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所平均値と標準偏差を用いてSauvola法による画像２値化 
+<p>
+入力画像の注目画素の閾値を、その周辺画素の平均値と標準偏差を用いて決定し(Sauvola法)、 動的な２値化を行います。周辺画素として統計値を計算する局所領域のサイズは パラメータにより変更することが出来ます。<p>
+閾値の計算は下式にしたがって行われます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T(i,j) = m(i,j) \cdot \left [ 1 + k \cdot \left (\frac { s(i,j) }{R} - 1 \right ) \right ] \]" src="form_480.png">
+<p>
+ ここで：<ul>
+<li><img class="formulaInl" alt="$m(i,j)$" src="form_476.png"> は注目画素 <img class="formulaInl" alt="$(i,j)$" src="form_477.png"> 周辺指定範囲内画素の平均値</li><li><img class="formulaInl" alt="$s(i,j)$" src="form_478.png"> は注目画素 <img class="formulaInl" alt="$(i,j)$" src="form_477.png"> 周辺指定範囲内画素の標準偏差</li><li><img class="formulaInl" alt="$k$" src="form_479.png"> と <img class="formulaInl" alt="$R$" src="form_411.png"> はユーザ入力係数</li></ul>
+<p>
+Sauvola法はNiblack法( <a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold()</a> )の改善手法です。 Niblack法に比べるとSauvola法は標準偏差の影響を重視し、係数 <img class="formulaInl" alt="$k$" src="form_479.png"> の影響も小さくなっています。<p>
+<em>dK</em> と <em>dR</em> パラメータは公式中の <img class="formulaInl" alt="$k$" src="form_479.png"> と <img class="formulaInl" alt="$R$" src="form_411.png"> に対応します。 <em>dR</em> の絶対値が１より小さい場合は、パラメータ不正となります。但し、入力画像型がF_IMG_DOUBLEとF_IMG_FLOATの場合は、<em>dR</em> が0の場合にのみパラメータ不正となります。 その他に <em>dK</em> と <em>dR</em> の値の制限は有りませんが、 <em>dK</em> は -1と1の間の小数に、 <em>dR</em> は画素値の範囲内（入力画像内の最大画素値から最小画素値の間）に設定することを勧めます。 <em>dR</em> の設定にお困りの場合は次の様な値をお試しください。画像の値域が0～255の場合は128を、0～65535の場合は32768等。<p>
+<em>iH</em> と <em>iV</em> パラメータは注目画素周辺の平均値、標準偏差を計算する 局所領域（ウィンドウ）のサイズを指定するパラメータです。 局所領域のサイズは縦横別々に <em>iH</em> と <em>iV</em> パラメータにて指定できます。 サイズは 1～255 の間の奇数を指定しなければいけません。 但し <em>iH</em> と <em>iV</em> に共に１が指定された場合はパラメータエラーとなりますので、 必ずどちらかを３以上の値にしてください。 また、局所領域のサイズは画像のサイズより小さくなければいけません。 指定された局所領域のサイズが画像サイズよりも大きい場合には、エラーになります。 局所領域のサイズは、２値化しようとしている画像内の目標物よりも大きく設定し、 かつ、局所領域内に前景と背景の両方が入るよう設定すると良い結果が得られます。<p>
+<em>iBrdMod</em> はボーダー拡張処理モードを指定するパラメータです。 本関数では局所領域の情報を使って処理を行うため、ボーダー拡張処理をしないと 画像の周囲に処理できない領域が出来ます。しかし、本パラメータにてボーダー拡張処理方法を 指定すると内部でボーダー拡張処理を行うため、画像の端まで結果を得ることが出来ます。 ボーダー拡張については <a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 関数を参照してください。<p>
+入力画像、平均値画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型は F_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_FLOAT, F_IMG_DOUBLE のいずれか</li><li>出力画像の型は F_IMG_BIN である</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16, float, double) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力２値画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iH</em>&nbsp;</td><td>局所領域の横サイズ <br>
+ ( 1～255 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iV</em>&nbsp;</td><td>局所領域の縦サイズ <br>
+ ( 1～255 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dK</em>&nbsp;</td><td>計算式の <img class="formulaInl" alt="$k$" src="form_479.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dR</em>&nbsp;</td><td>計算式の <img class="formulaInl" alt="$R$" src="form_411.png"> ( 絶対値が１以上の値。但し、double,float型の場合は0以外 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBrdMod</em>&nbsp;</td><td>ボーダー処理モード<ul>
+<li>F_BORDER_NONE ボーダー拡張しない</li><li>F_BORDER_CONTINUOUS 端延長モード</li><li>F_BORDER_MIRROR1 反転モード１</li><li>F_BORDER_MIRROR2 反転モード２</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold()</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Sauvola, J. &amp; Pietikainen, M. "Adaptive document image binarization", Pattern Recognition, Vol33, 2000, pp.225-236</li><li>Sezgin, M. &amp; Sankur, B. "Survey over image thresholding techniques and qualitative performance evaluation", J. of Electronic Imaging, Vol.13(1), 2004, pp.146-165</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID sauvola_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//Sauvola法による画像２値化</span>
+    <span class="comment">//局所領域サイズは奇数でなければならない</span>
+    <a class="code" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac" title="局所平均値と標準偏差を用いてSauvola法による画像２値化">fnFIE_sauvola_threshold</a>(hsrc, hdst, 11, 11, 0.1, 100, <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f568bc404460c354f6e05d89439f24c6f" title="端延長モード">F_BORDER_CONTINUOUS</a>);
+        
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    sauvola_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_sauvola.png" alt="fie_binarize_sauvola.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd8a4943892aa82b30a32f2770407b45d"></a><!-- doxytag: member="fie_adapt_thresholding.c::fnFIE_background_remove_threshold" ref="gd8a4943892aa82b30a32f2770407b45d" args="(FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_background_remove_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iV</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+[非推奨]局所メディアン値をバックグランドとして除去して得られた画像を判別分析法で２値化 
+<p>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000001">非推奨:</a></b></dt><dd>本関数は後方互換性のために残されています。 新規の開発では <a class="el" href="group__fie__threshold.html#g9af3a8a5105798b335daa82fb06c4c96" title="局所メディアン値をバックグランドとして除去して得られた画像を判別分...">fnFIE_background_remove_threshold2()</a> を使用し、本関数は使用しないでください。</dd></dl>
+入力画像のメディアン値を背景輝度として使用し、その背景輝度を除去した画像に対して 判別分析法を行って２値化します。メディアン値を求める局所領域のサイズは パラメータにより変更することが出来ます。<p>
+<em>iH</em> と <em>iV</em> パラメータは注目画素周辺のメディアン値を計算する 局所領域（ウィンドウ）のサイズを指定するパラメータです。 局所領域のサイズは縦横別々に <em>iH</em> と <em>iV</em> パラメータにて指定できます。 サイズは 1～253 の間の奇数を指定しなければいけません。 但し <em>iH</em> と <em>iV</em> に共に１が指定された場合はパラメータエラーとなりますので、 必ずどちらかを３以上の値にしてください。 また、局所領域のサイズは画像のサイズより小さくなければいけません。 指定された局所領域のサイズが画像サイズよりも大きい場合には、エラーになります。 局所領域のサイズは、２値化しようとしている画像内の目標物よりも大きく設定し、 かつ、局所領域内に前景と背景の両方が入るよう設定すると良い結果が得られます。<p>
+入力画像のボーダー拡張処理モードは指定できません。 関数内部にて F_BORDER_MIRROR2 を使ってボーダー拡張を行っています。 ボーダー拡張については <a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 関数を参照してください。<p>
+入力画像、平均値画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型は F_IMG_UC8</li><li>出力画像の型は F_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力２値画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iH</em>&nbsp;</td><td>メディアンフィルタのフィルタ横サイズ <br>
+ ( 1～253 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iV</em>&nbsp;</td><td>メディアンフィルタのフィルタ縦サイズ <br>
+ ( 1～253 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#g619e1dfb25b7e82af69da263bfb6ed8f" title="median filter with variable filtering window">fnFIE_medianMxN()</a>, <a class="el" href="group__fie__threshold.html#ga89aa2327d69620aa7be206dc439ed15" title="[非推奨]判別分析法による画像２値化">fnFIE_discrimination_threshold()</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Hutchison, L. A. D. &amp; Barrent, W. A. "Fast Registration of Tabular Document Images Using the Fourier-Mellin Transform", Proceedings of the First Internation Workshop on Document Image Analysis for Libraries, 2004</li><li>Ahmad, M. O. and Sundararajan, D., "A Fast Algorithm for Two-Dimensional Median Filtering", IEEE Trans. on Circ. and Sys., Vol. Cas-34, No.11, pp. 1364-74, 1987(11)</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID background_remove_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//メディアン値（中央値）をバックグランドとして除去して得られた画像を判別分析法で２値化</span>
+    <span class="comment">//局所領域（ウィンドウ）サイズ7×7（ウィンドウサイズは奇数でなければならない）</span>
+    <a class="code" href="group__fie__threshold.html#gd8a4943892aa82b30a32f2770407b45d" title="[非推奨]局所メディアン値をバックグランドとして除去して得られた画像...">fnFIE_background_remove_threshold</a>(hsrc, hdst, 7, 7);
+        
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    background_remove_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_background_remove_threshold.png" alt="fie_binarize_background_remove_threshold.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9af3a8a5105798b335daa82fb06c4c96"></a><!-- doxytag: member="fie_adapt_thresholding.c::fnFIE_background_remove_threshold2" ref="g9af3a8a5105798b335daa82fb06c4c96" args="(FHANDLE hSrc, FHANDLE hDst, INT iH, INT iV)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_background_remove_threshold2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iV</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所メディアン値をバックグランドとして除去して得られた画像を判別分析法で２値化 
+<p>
+入力画像のメディアン値を背景輝度として使用し、その背景輝度を除去した画像に対して 判別分析法を行って２値化します。メディアン値を求める局所領域のサイズは パラメータにより変更することが出来ます。<p>
+<em>iH</em> と <em>iV</em> パラメータは注目画素周辺のメディアン値を計算する 局所領域（ウィンドウ）のサイズを指定するパラメータです。 局所領域のサイズは縦横別々に <em>iH</em> と <em>iV</em> パラメータにて指定できます。 サイズは 1～253 の間の奇数を指定しなければいけません。 但し <em>iH</em> と <em>iV</em> に共に１が指定された場合はパラメータエラーとなりますので、 必ずどちらかを３以上の値にしてください。 また、局所領域のサイズは画像のサイズより小さくなければいけません。 指定された局所領域のサイズが画像サイズよりも大きい場合には、エラーになります。 局所領域のサイズは、２値化しようとしている画像内の目標物よりも大きく設定し、 かつ、局所領域内に前景と背景の両方が入るよう設定すると良い結果が得られます。<p>
+入力画像のボーダー拡張処理モードは指定できません。 関数内部にて F_BORDER_MIRROR2 を使ってボーダー拡張を行っています。 ボーダー拡張については <a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 関数を参照してください。<p>
+入力画像、平均値画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型は F_IMG_UC8</li><li>出力画像の型は F_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力２値画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iH</em>&nbsp;</td><td>メディアンフィルタのフィルタ横サイズ <br>
+ ( 1～253 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iV</em>&nbsp;</td><td>メディアンフィルタのフィルタ縦サイズ <br>
+ ( 1～253 の奇数。但し <em>iH</em> と <em>iV</em> のどちらかは3以上でなければならない）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#g619e1dfb25b7e82af69da263bfb6ed8f" title="median filter with variable filtering window">fnFIE_medianMxN()</a>, <a class="el" href="group__fie__threshold.html#gfe6ff6606a4a55ffd7813dba6774189d" title="判別分析法による画像２値化">fnFIE_discrimination_threshold2()</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Hutchison, L. A. D. &amp; Barrent, W. A. "Fast Registration of Tabular Document Images Using the Fourier-Mellin Transform", Proceedings of the First Internation Workshop on Document Image Analysis for Libraries, 2004</li><li>Ahmad, M. O. and Sundararajan, D., "A Fast Algorithm for Two-Dimensional Median Filtering", IEEE Trans. on Circ. and Sys., Vol. Cas-34, No.11, pp. 1364-74, 1987(11)</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID background_remove_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//メディアン値（中央値）をバックグランドとして除去して得られた画像を判別分析法で２値化</span>
+    <span class="comment">//局所領域（ウィンドウ）サイズ7×7（ウィンドウサイズは奇数でなければならない）</span>
+    <a class="code" href="group__fie__threshold.html#g9af3a8a5105798b335daa82fb06c4c96" title="局所メディアン値をバックグランドとして除去して得られた画像を判別分...">fnFIE_background_remove_threshold2</a>( hsrc, hdst, 7, 7 );
+        
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    background_remove_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_background_remove_threshold2.png" alt="fie_binarize_background_remove_threshold2.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2579ad0d6e126004f769e3ca32af0f64"></a><!-- doxytag: member="fie_binarize.c::fnFIE_binarize" ref="g2579ad0d6e126004f769e3ca32af0f64" args="(FHANDLE hsrc, FHANDLE hdst, DOUBLE threshold)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_binarize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>threshold</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+固定しきい値による２値化 
+<p>
+指定された濃淡画像を２値化画像へ変換します。 ２値化は、濃淡画像の濃度値をXとしたとき、 <br>
+ <em>threshold</em> ＞ X : 0 <br>
+ <em>threshold</em> ≦ X : 1 <br>
+ となります。<p>
+閾値パラメータ <em>threshold</em> は判定時に画像の型に合わせてキャストされた後に評価されます。 この際、飽和判定は行わないため、型の表現可能な範囲を超えた値が指定された場合の結果は不定です。 例えば入力画像の型がF_IMG_UC8であれば、UCHARにキャストした後に判定が行われます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type : uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type : bin ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>２値化閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため異常終了した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Henry S. Warren, jr. <em>"ハッカーのたのしみ"，Chap</em>.7, pp. 107, 株式会社星雲社，２００５年６月１日初版</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID binarize()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">// 固定しきい値による２値化</span>
+    <a class="code" href="group__fie__threshold.html#g2579ad0d6e126004f769e3ca32af0f64" title="固定しきい値による２値化">fnFIE_binarize</a>( hsrc, hdst, 128 );
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+<span class="keywordtype">int</span> main()
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    binarize();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize.png" alt="fie_binarize.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g696e8d3d9f1b4729d0578269ea39a978"></a><!-- doxytag: member="fie_hysteresis_binarize.c::fnFIE_hysteresis_stack_us16" ref="g696e8d3d9f1b4729d0578269ea39a978" args="(FHANDLE hMag, USHORT ushTHigh, USHORT ushTLow, FHANDLE hImg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hysteresis_stack_us16           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">USHORT&nbsp;</td>
+          <td class="paramname"> <em>ushTHigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">USHORT&nbsp;</td>
+          <td class="paramname"> <em>ushTLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ヒステリシス２値化（スタックを利用したアルゴリズム） 
+<p>
+従来のヒステリシス特性は、少ない適合性で適応されます。 本関数では、閾値の上限より勾配の大きい画素へのポインタや画素値を保持するために、 スタックを用いる方法を採用します。 PUSH や POP 操作は、従来の再帰的に接続しているエッジ点を追跡する方法の代わりに使用します。<p>
+入力画像は、チャネル数１で画素タイプが F_IMG_US16 である必要があります。 一方、出力画像は、チャネル数１で画素タイプが F_IMG_UC8 である必要があります。 そして、入力画像と出力画像のサイズは同じである必要があります。<p>
+出力画像の周囲１画素の濃度値は、０となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMag</em>&nbsp;</td><td>エッジ勾配強度画像 (type: us16 / ch: 1 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ushTLow</em>&nbsp;</td><td>閾値の下限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ushTHigh</em>&nbsp;</td><td>閾値の上限 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>出力画像 ( type: uc8 / ch: 1 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>ushTHigh</em> &lt;= <em>ushTLow</em>; </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>各画像のサイズが違う、不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>バッファーメモリ配分失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0712352d1ef41d3a6b81ad58c1e54ccf"></a><!-- doxytag: member="fie_hysteresis_binarize.c::fnFIE_hysteresis_rle_uf" ref="g0712352d1ef41d3a6b81ad58c1e54ccf" args="(FHANDLE hMag, DOUBLE dTHigh, DOUBLE dTLow, UINT uiNoiseEdge, FHANDLE hImg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hysteresis_rle_uf           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTHigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>uiNoiseEdge</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ヒステリシス特性による２値化（ランレングスを利用したアルゴリズム） 
+<p>
+本関数で利用しているランレングスは、２値画像を処理するのに適している構造です。 処理時間短縮の効果があります。 しかし、非常に多くのエッジ点がランダムに分布しているような場合は、 直接画像を処理するより、処理時間が増大することがあります。<p>
+本関数は、接続しているエッジ点の長さを評価します。 エッジ点が指定した閾値より短い場合は、ノイズとみなし消去します。<p>
+出力画像は画素タイプが F_IMG_UC8 または、 F_IMG_BIN となります。 チャネル数とサイズは入力画像と同じでなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMag</em>&nbsp;</td><td>エッジ勾配強度画像(type: uc8, s16, us16, double) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTHigh</em>&nbsp;</td><td>閾値の上限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTLow</em>&nbsp;</td><td>閾値の下限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiNoiseEdge</em>&nbsp;</td><td>ノイズとみなすエッジの最大面積 <br>
+ <em>uiNoiseEdge</em> より小さなエッジはノイズとみなし、削除される </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>出力画像(type: uc8, bin)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>dTLow</em> 、または <em>dTHigh</em> が入力画像のダイナミックレンジを越えている </li>
+<li><em>dTLow</em> &gt; <em>dTHigh</em> </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>各画像のサイズが違う、不正な画像が渡された \ 画像サイズの横縦いずれかが3以下, 或いは (2^16 - 1) 以上 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>1. Linda G. Shapiro and George Stockman, "Computer vision", Prentice Hall, Mar. 2000, pp.69-78 </li>
+<li>2. Robert M. Haralick and Linda G. Shapiro, "Computer and robot vision", Addison-Wesley Pub. Company, Jun. 1992, Vol. I, pp37-48 </li>
+<li>3. Kesheng Wu, Ekow Otoo and Arie Shoshani, Optimizing Connected Component Labeling Algorithms, Proc. of SPIE Medical Imaging Conf., 2005. </li>
+</ul>
+
+</div>
+</div><p>
+<a class="anchor" name="gc34e99444cab93f2cba46006c2aaa434"></a><!-- doxytag: member="fie_threshold.c::fnFIE_ptile_threshold" ref="gc34e99444cab93f2cba46006c2aaa434" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iRate)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ptile_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iRate</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Ｐタイル法による画像２値化 
+<p>
+２値画像中の画素の割合が指定された割合になるしきい値を算出して、画像を２値化します。 入力画像のヒストグラムを作成して、輝度値が小さいほうからみて最初に指定した割合を 超える輝度値をしきい値とします。<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが2^32画素以上の場合には オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保して下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要があります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iRate</em>&nbsp;</td><td>割合(1 ~ 99)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID ptile_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">// Pタイル法による画像２値化します（iRate=20,白画素と黒画素の割合が80:20）</span>
+    <a class="code" href="group__fie__threshold.html#gc34e99444cab93f2cba46006c2aaa434" title="Ｐタイル法による画像２値化">fnFIE_ptile_threshold</a>( hsrc, hdst, &amp;threshold, 20 );
+
+    <span class="comment">//Pタイル法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ptile_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_ptile.png" alt="fie_binarize_ptile.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga89aa2327d69620aa7be206dc439ed15"></a><!-- doxytag: member="fie_threshold.c::fnFIE_discrimination_threshold" ref="ga89aa2327d69620aa7be206dc439ed15" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_discrimination_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+[非推奨]判別分析法による画像２値化 
+<p>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000004">非推奨:</a></b></dt><dd>本関数は後方互換性のために残されています。 新規の開発では <a class="el" href="group__fie__threshold.html#gfe6ff6606a4a55ffd7813dba6774189d" title="判別分析法による画像２値化">fnFIE_discrimination_threshold2()</a> を使用し、本関数は使用しないでください。</dd></dl>
+あるしきい値によって、ヒストグラムを２クラスに分割した場合の、 クラス間分散が最大になるしきい値kを算出し、各チャネル画像を２値化します。 この方法は、判別分析法 又は 大津の方法 と呼ばれます。 アルゴリズムは下記の通りです。<p>
+クラス内分散 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \sigma_W^2 = \frac{n_1\sigma_1^2+n_2\sigma_2^2}{n_1+n_2} \]" src="form_914.png">
+<p>
+<p>
+クラス間分散 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \sigma_B^2 = \frac{n_1\left(\mu_1-\mu_T\right)^2 + n_2\left(\mu_2-\mu_T\right)^2}{n_1+n_2} \]" src="form_915.png">
+<p>
+<p>
+但し、<ul>
+<li><img class="formulaInl" alt="$\mu_1$" src="form_916.png"> 、 <img class="formulaInl" alt="$\mu_2$" src="form_917.png"> 各クラスの輝度平均値</li><li><img class="formulaInl" alt="$\sigma_1^2$" src="form_918.png"> 、 <img class="formulaInl" alt="$\sigma_2^2$" src="form_919.png"> 各クラスの輝度分散値</li><li><img class="formulaInl" alt="$n_1$" src="form_920.png"> 、 <img class="formulaInl" alt="$n_2$" src="form_921.png"> 各クラスの画素数</li><li><img class="formulaInl" alt="$\mu_T$" src="form_922.png"> 全画素の輝度平均値</li></ul>
+<p>
+<div align="center">
+<img src="otsu.png" alt="otsu.png">
+</div>
+<p>
+とするときに、 <img class="formulaInl" alt="$ \sigma_B^2 / \sigma_W^2 $" src="form_923.png"> を最大とするように閾値を定めます。<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが2^32画素以上の場合には オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保して下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID discrimination_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//判別分析法により画像を２値化します</span>
+    <a class="code" href="group__fie__threshold.html#ga89aa2327d69620aa7be206dc439ed15" title="[非推奨]判別分析法による画像２値化">fnFIE_discrimination_threshold</a>( hsrc, hdst, &amp;threshold);
+
+    <span class="comment">//判別分析法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    discrimination_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_discrimination.png" alt="fie_binarize_discrimination.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfe6ff6606a4a55ffd7813dba6774189d"></a><!-- doxytag: member="fie_threshold.c::fnFIE_discrimination_threshold2" ref="gfe6ff6606a4a55ffd7813dba6774189d" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_discrimination_threshold2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+判別分析法による画像２値化 
+<p>
+あるしきい値によって、ヒストグラムを２クラスに分割した場合の、 クラス間分散が最大になるしきい値kを算出し、各チャネル画像を２値化します。 この方法は、判別分析法 又は 大津の方法 と呼ばれます。 アルゴリズムは下記の通りです。<p>
+クラス内分散 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \sigma_W^2 = \frac{n_1\sigma_1^2+n_2\sigma_2^2}{n_1+n_2} \]" src="form_914.png">
+<p>
+<p>
+クラス間分散 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \sigma_B^2 = \frac{n_1\left(\mu_1-\mu_T\right)^2 + n_2\left(\mu_2-\mu_T\right)^2}{n_1+n_2} \]" src="form_915.png">
+<p>
+<p>
+但し、<ul>
+<li><img class="formulaInl" alt="$\mu_1$" src="form_916.png"> 、 <img class="formulaInl" alt="$\mu_2$" src="form_917.png"> 各クラスの輝度平均値</li><li><img class="formulaInl" alt="$\sigma_1^2$" src="form_918.png"> 、 <img class="formulaInl" alt="$\sigma_2^2$" src="form_919.png"> 各クラスの輝度分散値</li><li><img class="formulaInl" alt="$n_1$" src="form_920.png"> 、 <img class="formulaInl" alt="$n_2$" src="form_921.png"> 各クラスの画素数</li><li><img class="formulaInl" alt="$\mu_T$" src="form_922.png"> 全画素の輝度平均値</li></ul>
+<p>
+<div align="center">
+<img src="otsu.png" alt="otsu.png">
+</div>
+<p>
+とするときに、 <img class="formulaInl" alt="$ \sigma_B^2 / \sigma_W^2 $" src="form_923.png"> を最大とするように閾値を定めます。<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが2^32画素以上の場合には オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保して下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID discrimination_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//判別分析法により画像を２値化します</span>
+    <a class="code" href="group__fie__threshold.html#gfe6ff6606a4a55ffd7813dba6774189d" title="判別分析法による画像２値化">fnFIE_discrimination_threshold2</a>( hsrc, hdst, &amp;threshold );
+
+    <span class="comment">//判別分析法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    discrimination_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_discrimination2.png" alt="fie_binarize_discrimination2.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g976a28f9cc96f5b4ecc2992313ff8063"></a><!-- doxytag: member="fie_threshold.c::fnFIE_grad_hist_threshold" ref="g976a28f9cc96f5b4ecc2992313ff8063" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iEdgeFactor)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_grad_hist_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iEdgeFactor</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+微分ヒストグラム法による画像２値化 
+<p>
+指定メモリ上の画像データから、１次微分絶対値の大きい画素を抽出し、 各濃度ごとに１次微分絶対値の和を取り、和が最大となる濃度値をしきい値 として２値化します。微分値総和の最大値となる輝度値が複数ある場合は、 一番小さな輝度値が選ばれます。 １次微分の計算は <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> を使って行います。 また、この際 <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> のボーダー処理モードには F_BORDER_NONE を使用します。<p>
+濃度値があまりにも高い、または低い場合、しきい値として適当でないため、 入力画像のうち、処理を行う濃度値の範囲を制限しています。 処理対象になる画素の濃度値は下記の通りです。<ul>
+<li>UCHAR: 10 ~ 250</li><li>SHORT: -32758 ~ 32757</li><li>USHORT: 10 ~ 65525 また、入力画像の全画素（１チャネル分）がすべて処理範囲外の場合はF_ERR_INVALID_IMAGEを返します。</li></ul>
+<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが2^32画素以上の場合は オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保しておいて下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)がいずれも3以上</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iEdgeFactor</em>&nbsp;</td><td>処理対象となる（１次微分最大値＊iEdgeFactor（）） 以上の微分値を持つ画素を処理対象とします。取値範囲は0~100</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>入力画像によって２値化閾値は０になった </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID grad_hist_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//微分ヒストグラム法による画像２値化</span>
+    <a class="code" href="group__fie__threshold.html#g976a28f9cc96f5b4ecc2992313ff8063" title="微分ヒストグラム法による画像２値化">fnFIE_grad_hist_threshold</a>(hsrc, hdst, &amp;threshold, 60);
+    
+    <span class="comment">//微分ヒストグラム法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    grad_hist_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_gradient.png" alt="fie_binarize_gradient.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcba5dc736e0d8d820f8bfad3676bfd77"></a><!-- doxytag: member="fie_threshold.c::fnFIE_lap_hist_threshold" ref="gcba5dc736e0d8d820f8bfad3676bfd77" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iEdgeFactor)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_lap_hist_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iEdgeFactor</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+[非推奨]ラプラシアンヒストグラム法による画像の２値化 
+<p>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000005">非推奨:</a></b></dt><dd>本関数は後方互換性のために残されています。 新規の開発では <a class="el" href="group__fie__threshold.html#g952719300717e4bb97fef0172033c480" title="ラプラシアンヒストグラム法による画像の２値化">fnFIE_lap_hist_threshold2()</a> を使用し、本関数は使用しないでください。</dd></dl>
+画像から、２次微分絶対値の大きい画素を抽出し濃度ヒストグラムを作成し、 その後、判別分析法によって閾値を決定して、元画像を２値化します。 ニ次微分(ラプラシアン微分フィルタ)の計算は <a class="el" href="group__fie__filter.html#g563caba1b3efccb95e6ce2d04d3342c8" title="laplacian filter">fnFIE_laplacian()</a> を使って行います。 その際、ボーダー処理モードには F_BORDER_NONE を使用します。<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが2^32画素以上の場合には オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保して下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)がいずれも3以上</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iEdgeFactor</em>&nbsp;</td><td>処理対象となる（２次微分最大値＊iEdgeFactor（％）) 以上の微分値を持つ画素を処理対象とします。取値範囲は0~100</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#g563caba1b3efccb95e6ce2d04d3342c8" title="laplacian filter">fnFIE_laplacian()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID lap_hist_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//ラプラシアンヒストグラム法による画像２値化</span>
+    <a class="code" href="group__fie__threshold.html#gcba5dc736e0d8d820f8bfad3676bfd77" title="[非推奨]ラプラシアンヒストグラム法による画像の２値化">fnFIE_lap_hist_threshold</a>(hsrc, hdst, &amp;threshold, 0);
+    
+    <span class="comment">//ラプラシアンヒストグラム法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    lap_hist_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_laplacian.png" alt="fie_binarize_laplacian.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g952719300717e4bb97fef0172033c480"></a><!-- doxytag: member="fie_threshold.c::fnFIE_lap_hist_threshold2" ref="g952719300717e4bb97fef0172033c480" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh, INT iEdgeFactor)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_lap_hist_threshold2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iEdgeFactor</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ラプラシアンヒストグラム法による画像の２値化 
+<p>
+画像から、２次微分絶対値の大きい画素を抽出し濃度ヒストグラムを作成し、 その後、判別分析法によって閾値を決定して、元画像を２値化します。 ニ次微分(ラプラシアン微分フィルタ)の計算は <a class="el" href="group__fie__filter.html#g563caba1b3efccb95e6ce2d04d3342c8" title="laplacian filter">fnFIE_laplacian()</a> を使って行います。 その際、ボーダー処理モードには F_BORDER_NONE を使用します。<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが2^32画素以上の場合には オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保して下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)がいずれも3以上</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iEdgeFactor</em>&nbsp;</td><td>処理対象となる（２次微分最大値＊iEdgeFactor（％）) 以上の微分値を持つ画素を処理対象とします。取値範囲は0~100</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#g563caba1b3efccb95e6ce2d04d3342c8" title="laplacian filter">fnFIE_laplacian()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID lap_hist_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//ラプラシアンヒストグラム法による画像２値化</span>
+    <a class="code" href="group__fie__threshold.html#g952719300717e4bb97fef0172033c480" title="ラプラシアンヒストグラム法による画像の２値化">fnFIE_lap_hist_threshold2</a>( hsrc, hdst, &amp;threshold, 0 );
+    
+    <span class="comment">//ラプラシアンヒストグラム法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    lap_hist_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_laplacian2.png" alt="fie_binarize_laplacian2.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g912109cbf4d36893385674afec2fb08f"></a><!-- doxytag: member="fie_threshold.c::fnFIE_kittler_threshold" ref="g912109cbf4d36893385674afec2fb08f" args="(FHANDLE hSrc, FHANDLE hDst, INT *ipThresh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_kittler_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipThresh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キトラー(kittler)法による画像２値化 
+<p>
+キトラーらは、対象領域と背景の濃淡値がともに正規分布に従うという仮定のもとで、平均誤識別率に関する基準を最小とするようなしきい値選定法を提案しました。 本２値化手法はこのアルゴリズムを実装したもので、対象領域と背景の各濃淡値の分散が極端に異なる場合や、対象領域と背景の各画素数が極端に異なる場合でも妥当なしきい値が選ばれることが示されています。<p>
+画像ヒストグラムをUINTで計算するため、入力画像サイズが <img class="formulaInl" alt="$ 2^{32} $" src="form_747.png"> 画素以上の場合には オーバーフローの可能性が有ります。<p>
+<em>ipThresh</em> には各チャネルごとに決定された２値化閾値が出力されます。 画像のチャネル数分の配列が必要になるので、あらかじめ格納メモリを確保して下さい。 なお、閾値を取得する必要が無い場合には <em>ipThresh</em> にNULLを指定することが出来ます。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipThresh</em>&nbsp;</td><td>各チャネルの閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可能です。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID kittler_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+    INT threshold;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//キトラー(kittler)法による画像２値化</span>
+    <a class="code" href="group__fie__threshold.html#g912109cbf4d36893385674afec2fb08f" title="キトラー(kittler)法による画像２値化">fnFIE_kittler_threshold</a>(hsrc, hdst, &amp;threshold);
+    
+    <span class="comment">//キトラー(kittler)法により求めたしきい値を表示します</span>
+    printf(<span class="stringliteral">"しきい値 = %d\n"</span>, threshold);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    kittler_threshold();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_kittler.png" alt="fie_binarize_kittler.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>アルゴリズムについて</b></dt><dd>アルゴリズムは下記の通りです。 各画素が区間 <img class="formulaInl" alt="$[1,L]$" src="form_924.png"> の範囲の濃淡値<img class="formulaInl" alt="$ i $" src="form_882.png">をもつような画像を考えます。 このとき、画像の濃淡値の分布は、ヒストグラム <img class="formulaInl" alt="$\{h(i) \vert i=1,\ldots,L\}$" src="form_925.png"> で与えられます。 ここで、<img class="formulaInl" alt="$h(i)$" src="form_926.png"> はその画像に濃淡値<img class="formulaInl" alt="$ i $" src="form_882.png">があらわれる頻度を表します。 これを全画素数<img class="formulaInl" alt="$N=\sum_{i=1}^L h(i)$" src="form_927.png"> で正規化して、正規化ヒストグラムを <img class="formulaInl" alt="$\{p(i) = h(i)/N\}$" src="form_928.png"> とします。<br>
+ また、正規化ヒストグラムに対して、２つの累計量(レベル<img class="formulaInl" alt="$k$" src="form_479.png">までの濃淡分布の0,1次モーメント) <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \omega(k) &amp;=&amp; \sum_{i=1}^k p(i) \]" src="form_929.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mu(k) &amp;=&amp; \sum_{i=1}^k ip(i) \]" src="form_930.png">
+<p>
+ を定義しておきます。 今、各画素をしきい値 <img class="formulaInl" alt="$ k $" src="form_36.png"> によって２つのクラス <img class="formulaInl" alt="$ C_1 $" src="form_931.png"> と <img class="formulaInl" alt="$ C_2 $" src="form_932.png"> のどちらかに分類するものとします。また、レベル<img class="formulaInl" alt="$ i $" src="form_882.png">の条件付き分布 <img class="formulaInl" alt="$ f(i\vert C_j)$" src="form_933.png"> , <img class="formulaInl" alt="$ (j=1,2) $" src="form_934.png"> が平均 <img class="formulaInl" alt="$\mu_j(k)$" src="form_935.png"> ,分散 <img class="formulaInl" alt="$ \sigma_j^2(k) $" src="form_936.png"> の正規分布に従うとします。 このとき、Bayes の公式と不等式 <img class="formulaInl" alt="$ $p \ge 1 + \log(p) (\ 0 \le p \le 1)$ $" src="form_937.png"> から、平均誤識別率は、 <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ P_e &amp;=&amp; 1 - \sum_{i=1}^k f(C_1\vert i)p(i) - \sum_{i=k+1}^L f(C_2\vert i)p(i) \]" src="form_938.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ &amp;\le&amp; 1 - \sum_{i=1}^k [1+\log f(C_1\vert i)]p(i) - \sum_{i=k+1}^L [1+\log f(C_2\vert i)]p(i) \]" src="form_939.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ &amp;=&amp; \omega_1(k)\log(\frac{\sigma_1(k)}{\omega_1(k)}) + \omega_2(k)\log(\frac{\sigma_2(k)}{\omega_2(k)}) \]" src="form_940.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ &amp; &amp; + \frac{1}{2}(1+\log(2\pi)) + \sum_{i=1}^L p(i)\log(p(i)) \]" src="form_941.png">
+<p>
+ のように評価できます。ここで、定数項を無視すると、しきい値選択のための基準として <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ J(k) &amp;=&amp; \omega_1(k)\log(\frac{\sigma_1(k)}{\omega_1(k)}) + \omega_2(k)\log(\frac{\sigma_2(k)}{\omega_2(k)}) \]" src="form_942.png">
+<p>
+ が得られ、この値を最小とするような値を閾値として定めます。</dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>パターン認識‐理論と応用 (行動計量学シリーズ) p89 大津 展之, 関田 巌, 栗田 多喜夫(著) 出版社: 朝倉書店 (1996/07) ISBN-10: 4254126522 ISBN-13: 978-4254126525 </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="g4901e4f18f06708582df9afb31f9821e"></a><!-- doxytag: member="fie_threshold.c::fnFIE_shift_avr_threshold_ex" ref="g4901e4f18f06708582df9afb31f9821e" args="(FHANDLE hsrc, FHANDLE hdst, INT size_x, INT size_y, INT border_mode, DOUBLE border_value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_shift_avr_threshold_ex           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>border_value</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所領域平均値による２値画像作成 ボーダー処理付き 
+<p>
+各画素ごとに画素周辺の局所領域の平均値をとり、画素の濃度と平均値を比べ、 １画素単位で２値化をおこないます。周囲画素平均値以上の画素は１、未満の画素は０にします。<p>
+局所領域の縦横サイズは必ず３以上、画像縦横サイズ以下の奇数にしてください。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)が近傍平均のエリアサイズより大きいこと</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_x</em>&nbsp;</td><td>近傍平均エリアの横サイズ。3～画像の幅 の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_y</em>&nbsp;</td><td>近傍平均エリアの縦サイズ。3～画像の高さ の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダー処理モード<ul>
+<li>F_BORDER_NONE ボーダー拡張しない</li><li>F_BORDER_ZERO ０埋めモード</li><li>F_BORDER_VALUE 一定値モード</li><li>F_BORDER_CONTINUOUS 端延長モード</li><li>F_BORDER_REPEAT 繰り返しモード</li><li>F_BORDER_MIRROR1 反転モード１</li><li>F_BORDER_MIRROR2 反転モード２ </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_value</em>&nbsp;</td><td>ボーダー濃度値。 border_mode がF_BORDER_VALUEの場合のみ使用されます。 その他のモードの場合は、この値は無視されます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_shift_average.png" alt="fie_binarize_shift_average.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga60f116f7006c1807270ce6673fc4ebf"></a><!-- doxytag: member="fie_threshold.c::fnFIE_shift_avr_threshold" ref="ga60f116f7006c1807270ce6673fc4ebf" args="(FHANDLE hsrc, FHANDLE hdst, INT size_x, INT size_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_shift_avr_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所領域平均値による２値画像作成 
+<p>
+各画素ごとに画素周辺の局所領域の平均値をとり、画素の濃度と平均値を比べ、 １画素単位で２値化をおこないます。周囲画素平均値以上の画素は１、未満の画素は０にします。 内部で使用している平均フィルタのボーダー処理モードは F_BORDER_MIRROR2 を使用します。<p>
+局所領域の縦横サイズは必ず３以上、画像縦横サイズ以下の奇数にしてください。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)が近傍平均のエリアサイズより大きいこと</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16 のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 (type: uc8, us16, s16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_x</em>&nbsp;</td><td>近傍平均エリアの横サイズ。3～画像の幅 の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_y</em>&nbsp;</td><td>近傍平均エリアの縦サイズ。3～画像の高さ の範囲の奇数を設定する</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID shift_avr_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//局所領域平均値による画像２値化</span>
+    <a class="code" href="group__fie__threshold.html#ga60f116f7006c1807270ce6673fc4ebf" title="局所領域平均値による２値画像作成">fnFIE_shift_avr_threshold</a>(hsrc, hdst, 25, 25);
+    
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    shift_avr_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_shift_average.png" alt="fie_binarize_shift_average.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8b29a13db62eb1e28858d2dcf88c7399"></a><!-- doxytag: member="fie_threshold.c::fnFIE_shift_avr_threshold_offset" ref="g8b29a13db62eb1e28858d2dcf88c7399" args="(FHANDLE hsrc, FHANDLE hdst, INT size_x, INT size_y, INT offset, INT border_mode, DOUBLE border_value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_shift_avr_threshold_offset           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>border_value</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所領域平均値とオフセットによる２値画像作成 ボーダー処理付き 
+<p>
+各画素ごとに画素周辺の局所領域の平均値をとり、画素の濃度と平均値にオフセットを加算したものを比べ、 １画素単位で２値化をおこないます。周囲画素平均値にオフセットを加算した値以上の画素は１、未満の画素は０にします。<ul>
+<li>オフセットを0に設定すると <a class="el" href="group__fie__threshold.html#g4901e4f18f06708582df9afb31f9821e" title="局所領域平均値による２値画像作成 ボーダー処理付き">fnFIE_shift_avr_threshold_ex()</a> と同様の結果になります。</li><li>オフセットを負の値に設定すると、周囲画素より顕著に暗い画素だけを黒にするフィルタになります。</li><li>オフセットを正の値に設定すると、周囲画素より顕著に明るい画素だけを白にするフィルタになります。</li></ul>
+<p>
+局所領域の縦横サイズは必ず３以上、画像縦横サイズ以下の奇数にしてください。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)が近傍平均のエリアサイズより大きいこと</li><li>チャネル数が等しい</li><li>入力画像の型は F_IMG_UC8, F_IMG_S16, F_IMG_US16</li><li>出力画像の型は F_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 (type: uc8,s16,us16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_x</em>&nbsp;</td><td>近傍平均エリアの横サイズ。3～画像の幅 の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_y</em>&nbsp;</td><td>近傍平均エリアの縦サイズ。3～画像の高さ の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>周囲画素平均値からのオフセット。 F_IMG_UC8 のとき <img class="formulaInl" alt="$ -255 \le offset \le 255 $" src="form_943.png"> それ以外の時 <img class="formulaInl" alt="$ -65535 \le offset \le 65535 $" src="form_944.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダー処理モード<ul>
+<li>F_BORDER_NONE ボーダー拡張しない</li><li>F_BORDER_ZERO ０埋めモード</li><li>F_BORDER_VALUE 一定値モード</li><li>F_BORDER_CONTINUOUS 端延長モード</li><li>F_BORDER_REPEAT 繰り返しモード</li><li>F_BORDER_MIRROR1 反転モード１</li><li>F_BORDER_MIRROR2 反転モード２ </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_value</em>&nbsp;</td><td>ボーダー濃度値。 border_mode がF_BORDER_VALUEの場合のみ使用されます。 その他のモードの場合は、この値は無視されます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_shift_avr_threhsold_offset_src.png" alt="fie_shift_avr_threhsold_offset_src.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_shift_avr_threhsold_offset_0.png" alt="fie_shift_avr_threhsold_offset_0.png">
+<p><strong>処理結果画像 オフセット0</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_shift_avr_threhsold_offset_minus.png" alt="fie_shift_avr_threhsold_offset_minus.png">
+<p><strong>処理結果画像 オフセット-40</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_shift_avr_threhsold_offset_plus.png" alt="fie_shift_avr_threhsold_offset_plus.png">
+<p><strong>処理結果画像 オフセット+40</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#g4901e4f18f06708582df9afb31f9821e" title="局所領域平均値による２値画像作成 ボーダー処理付き">fnFIE_shift_avr_threshold_ex()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g891e5304a0e2bd18db2aac9163a30216"></a><!-- doxytag: member="fie_threshold.c::fnFIE_shift_avr_threshold_offset_mask" ref="g891e5304a0e2bd18db2aac9163a30216" args="(FHANDLE hsrc, FHANDLE hdst, FHANDLE hmask, INT size_x, INT size_y, INT offset, INT border_mode, DOUBLE border_value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_shift_avr_threshold_offset_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>border_value</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+局所領域平均値とオフセットによる２値画像作成 マスク付き 
+<p>
+各画素ごとに画素周辺の局所領域の平均値をとり、画素の濃度と平均値にオフセットを加算したものを比べ、 １画素単位で２値化をおこないます。局所領域平均値にオフセットを加算した値以上の画素は１、未満の画素は０にします。<br>
+<p>
+マスクにより入出力画像上の有効画素及び無効画素を指定することができます。<br>
+ 入力画像上の無効画素は、局所領域平均値を得る際の周辺画素から除外されます。<br>
+ また出力画像上の無効画素は、出力画像の元の画素値を保持します。<br>
+<p>
+マスクにはリージョンオブジェクト、または画像オブジェクトを使用することができます。<br>
+ リージョンオブジェクトをマスクとして使用した場合、リージョンに含まれる画素が有効画素となります。<br>
+ 画像オブジェクトをマスクとして使用した場合、濃度値０の画素は無効画素、濃度値０以外の画素は有効画素となります。<br>
+<p>
+マスク <em>hmask</em> に NULL を指定すると、入出力画像の全画素が有効画素となり <a class="el" href="group__fie__threshold.html#g8b29a13db62eb1e28858d2dcf88c7399" title="局所領域平均値とオフセットによる２値画像作成 ボーダー処理付き...">fnFIE_shift_avr_threshold_offset()</a> と同様の結果になります。<br>
+<p>
+局所領域の縦横サイズは必ず３以上、入出力画像縦横サイズ以下の奇数にしてください。<br>
+<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<br>
+<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>サイズ(幅・高さ)が近傍平均のエリアサイズより大きいこと</li><li>チャネル数が等しい</li><li>入力画像の型は F_IMG_UC8, F_IMG_S16, F_IMG_US16</li><li>出力画像の型は F_IMG_BIN</li></ul>
+<p>
+画像オブジェクトをマスクとして使用する場合、マスク画像は下記の条件を全て満たしている必要があります。<br>
+<ul>
+<li>入出力画像とサイズ(幅・高さ)が等しい</li><li>チャネル数は 1</li><li>マスク画像の型は F_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 (type: uc8,s16,us16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 (type: bin) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>マスク <ul>
+<li>リージョン </li>
+<li>マスク画像 (type: bin) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_x</em>&nbsp;</td><td>近傍平均エリアの横サイズ。3～画像の幅 の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_y</em>&nbsp;</td><td>近傍平均エリアの縦サイズ。3～画像の高さ の範囲の奇数を設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>周囲画素平均値からのオフセット。<br>
+ F_IMG_UC8 のとき <img class="formulaInl" alt="$ -255 \le offset \le 255 $" src="form_943.png"> それ以外の時 <img class="formulaInl" alt="$ -65535 \le offset \le 65535 $" src="form_944.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダー処理モード<ul>
+<li>F_BORDER_NONE ボーダー拡張しない</li><li>F_BORDER_ZERO ０埋めモード</li><li>F_BORDER_VALUE 一定値モード</li><li>F_BORDER_CONTINUOUS 端延長モード</li><li>F_BORDER_REPEAT 繰り返しモード</li><li>F_BORDER_MIRROR1 反転モード１</li><li>F_BORDER_MIRROR2 反転モード２ </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_value</em>&nbsp;</td><td>ボーダー濃度値。 border_mode がF_BORDER_VALUEの場合のみ使用されます。 その他のモードの場合は、この値は無視されます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なマスクが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>画像中央に輝度値の高い領域があるような入力画像に対し、輝度値の高い領域をマスクして処理を行った結果と、 マスクを使用せずに処理を行った結果を示します。<br>
+ マスクを使用しない場合の処理結果では輝度値の高い領域の影響によりその周辺に黒画素が発生しますが、 マスクを使用することにより影響を防ぐことができます。<br>
+ <br>
+</dd></dl>
+<table class="layoutTable">
+<tr>
+<td rowspan="5"><div align="center">
+<img src="fie_shift_avr_thresh_offs_msk_src.png" alt="fie_shift_avr_thresh_offs_msk_src.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td rowspan="5">&nbsp; </td><td rowspan="5">&nbsp; </td><td colspan="3"><b>マスクを使用しない場合</b> <br>
+ <a class="el" href="group__fie__threshold.html#g8b29a13db62eb1e28858d2dcf88c7399" title="局所領域平均値とオフセットによる２値画像作成 ボーダー処理付き...">fnFIE_shift_avr_threshold_offset()</a>   </td></tr>
+<tr>
+<td>&nbsp; </td><td>&nbsp; </td><td><div align="center">
+<img src="fie_shift_avr_thresh_offs_no_msk_dst.png" alt="fie_shift_avr_thresh_offs_no_msk_dst.png">
+<p><strong>結果画像</strong></p></div>
+   </td></tr>
+<tr>
+<td colspan="3">&nbsp;  </td></tr>
+<tr>
+<td colspan="3"><b>マスクを使用した場合</b> <br>
+ <a class="el" href="group__fie__threshold.html#g891e5304a0e2bd18db2aac9163a30216" title="局所領域平均値とオフセットによる２値画像作成 マスク付き...">fnFIE_shift_avr_threshold_offset_mask()</a>   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_shift_avr_thresh_offs_msk_msk.png" alt="fie_shift_avr_thresh_offs_msk_msk.png">
+<p><strong>マスク画像</strong></p></div>
+  </td><td>&nbsp; </td><td><div align="center">
+<img src="fie_shift_avr_thresh_offs_msk_dst1.png" alt="fie_shift_avr_thresh_offs_msk_dst1.png">
+<p><strong>結果画像</strong></p></div>
+   </td></tr>
+</table>
+<p>
+<dl class="user" compact><dt><b>TIPS:</b></dt><dd>本関数では出力画像上でマスクされている領域については、元の画素値を保持します。<br>
+ 出力画像上でマスクされている領域を白（または黒）としたい場合には、本関数を呼び出す前に出力画像全面を白（または黒）でクリアして下さい。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#g8b29a13db62eb1e28858d2dcf88c7399" title="局所領域平均値とオフセットによる２値画像作成 ボーダー処理付き...">fnFIE_shift_avr_threshold_offset()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gccacc1973605b68ef276319a97528bae"></a><!-- doxytag: member="fie_threshold.c::fnFIE_band_threshold_ch" ref="gccacc1973605b68ef276319a97528bae" args="(const FHANDLE hsrc, FHANDLE hdst, const DOUBLE *tlow, const DOUBLE *thigh, INT back_clear)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_band_threshold_ch           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>tlow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>thigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>back_clear</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２つの固定しきい値を用いたセグメンテーション処理 
+<p>
+指定された画像のセグメンテーション処理をします。入力画像の各画素の値が閾値 <em>tlow</em> と <em>thigh</em> の間に入っているかどうか調べ、出力画像の同一画素に書き込みます。<p>
+<a class="el" href="group__fie__threshold.html#g8759a7c3a5a7b7d2929ceab93cf4b18f" title="二つの固定しきい値を用いて２値化">fnFIE_band_threshold()</a> との違いは、以下の通りです。 <ul>
+<li>閾値をチャネル毎に指定でき、全てのチャネルで条件を満たした場合に画素を出力する </li>
+<li>出力画像として、２値画像だけではなく、入力画像と同じ型・同じチャネル数の画像を指定できる </li>
+<li>出力画像として２値画像を指定する場合、1チャネルである必要がある </li>
+<li>背景の処理法を指定できる</li>
+</ul>
+<dl class="user" compact><dt><b>入出力画像</b></dt><dd>入出力画像は以下の条件を満たしている必要があります。<ul>
+<li>出力画像が入力画像と同じ画像型である場合<ul>
+<li>入出力画像のサイズ(幅・高さ)が等しい</li><li>入出力画像のチャネル数が等しい</li><li>入出力画像の画像型は F_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE, F_IMG_RGBQUAD のいずれか</li><li>入出力画像の型が F_IMG_RGBQUAD の場合、チャネル数は１のみ指定可能</li></ul>
+</li><li>出力画像の型が入力画像と異なる型である場合<ul>
+<li>入出力画像のサイズ(幅・高さ)が等しい</li><li>出力画像は F_IMG_BIN 1チャネルである</li><li>入力画像の画像型は F_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE, F_IMG_RGBQUAD のいずれか</li><li>入力画像の型が F_IMG_RGBQUAD の場合、チャネル数は１のみ指定可能</li></ul>
+</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>閾値パラメータ</b></dt><dd>閾値パラメータ <em>tlow</em> と <em>thigh</em> は入力画像のチャネル数と画像型に応じた要素数の配列です。 必要な要素数以上の配列を指定してください。<ul>
+<li>入力画像に F_IMG_RGBQUAD を指定する場合、画像のチャネル数は必ず1になりますが、必要な要素数は3です。配列の先頭からR,G,Bの順に閾値を指定します。</li><li>入力画像に F_IMG_RGBQUAD 以外を指定する場合、必要な要素数はチャネル数と同一です。配列の先頭から各チャネルに対応する閾値を指定します。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>入力画像型が F_IMG_DOUBLE 以外の場合 閾値パラメータ <em>tlow</em> と <em>thigh</em> は判定時に整数型へキャストされた後に評価されます。 <br>
+ また <em>thigh</em> は <em>tlow</em> 以上でなければなりません。</dd></dl>
+<dl class="user" compact><dt><b>閾値による判定と出力画像に書き込む画素値</b></dt><dd><ul>
+<li>入力画像に F_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE を指定する場合 <br>
+ 全てのチャネルで閾値を満たした場合に条件が満たされたとして画素を出力します。<br>
+ 入力画像のチャネルc座標(x,y)における濃度値をS(x,y,c), 出力画像のチャネルc座標(x,y)における濃度値をD(x,y,c),チャネルcの閾値をtlow[c],thigh[c],入力画像の保持するチャネル数をnとしたとき、 <br>
+ (<em>tlow</em>[0] &lt;= S(x,y,0) &amp;&amp; <em>thigh</em>[0] &gt;= S(x,y,0)) &amp;&amp; <br>
+ (<em>tlow</em>[1] &lt;= S(x,y,1) &amp;&amp; <em>thigh</em>[1] &gt;= S(x,y,1)) &amp;&amp; <br>
+ ... &amp;&amp;(<em>tlow</em>[n-1] &lt;= S(x,y,n-1) &amp;&amp; <em>thigh</em>[n-1] &gt;= S(x,y,n-1)) <br>
+ の場合に条件が満たされたとし、 D(x,y,c) = S(x,y,c) とします。</li><li>入力画像に F_IMG_RGBQUAD を指定する場合 <br>
+ r,g,b 全てで閾値を満たした場合に条件が満たされたとして画素を出力します。 <br>
+ ( <em>tlow</em>[0] &lt;= S(x,y).rgbRed &amp;&amp; <em>thigh</em>[0] &gt;= S(x,y).rgbRed )&amp;&amp; <br>
+ ( <em>tlow</em>[1] &lt;= S(x,y).rgbGreen &amp;&amp; <em>thigh</em>[1] &gt;= S(x,y).rgbGreen )&amp;&amp; <br>
+ ( <em>tlow</em>[2] &lt;= S(x,y).rgbBlue &amp;&amp; <em>thigh</em>[2] &gt;= S(x,y).rgbBlue )</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>出力画像に書き込む画素値</b></dt><dd><ul>
+<li>閾値の条件を満たした場合<ul>
+<li>出力画像が F_IMG_BIN の場合、条件を満たしたピクセルと同じ座標の画素を1にします。</li><li>出力画像が F_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE の場合、条件を満たしたピクセルと同じ座標の画素を出力画像の全てのチャネルで入力画像と同じ値にします。</li><li>出力画像が F_IMG_RGBQUAD の場合、条件を満たしたピクセルと同じ座標の画素で rgbRed, rgbGreen, rgbBlue のメンバを入力画像と同じ値にし、rgbReservedを0にします。</li></ul>
+</li><li>条件を満たさない場合、出力画像の全てのチャネルで以下の処理をします。<ul>
+<li><em>back_clear</em> が TRUE <br>
+ 0 を書き込みます。</li><li><em>back_clear</em> が FALSE <br>
+ 元の値を保持します。</li></ul>
+</li></ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,s16,us16,double,rgbq） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像（type:uc8,s16,us16,double,rgbq,bin） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>tlow</em>&nbsp;</td><td>閾値の下限配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>thigh</em>&nbsp;</td><td>閾値の上限配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>back_clear</em>&nbsp;</td><td>背景処理法 <ul>
+<li>TRUE 閾値の指定範囲外になる画素は０クリア </li>
+<li>FALSE 閾値の指定範囲外になる画素は出力先の元々の値を保持</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>作業用画像が確保できない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された<ul>
+<li>閾値がNULL</li><li>閾値の大小が逆転している</li><li>入出力画像の形式が合わない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下の結果は、全てのチャネル(0,1,2)の濃度が 64～255 に該当する画素を切り出す処理の結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="palette_rgb.png" alt="palette_rgb.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_band_threshold_ch.png" alt="fie_binarize_band_threshold_ch.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8759a7c3a5a7b7d2929ceab93cf4b18f"></a><!-- doxytag: member="fie_threshold.c::fnFIE_band_threshold" ref="g8759a7c3a5a7b7d2929ceab93cf4b18f" args="(FHANDLE hsrc, FHANDLE hdst, DOUBLE tlow, DOUBLE thigh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_band_threshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>tlow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>thigh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+二つの固定しきい値を用いて２値化 
+<p>
+指定された濃淡画像を２値化画像へ変換します。 ２値化は、濃淡画像の濃度値をX、閾値をtlowとthighとしたとき、 <br>
+<ul>
+<li><em>tlow</em> &lt;= X &amp;&amp; <em>thigh</em> &gt;= X: 1 <br>
+</li><li><em>tlow</em> &gt; X || <em>thigh</em> &lt; X: 0 <br>
+ となります。</li></ul>
+<p>
+入力画像型が F_IMG_DOUBLE 以外の場合 閾値パラメータ <em>tlow</em> と <em>thigh</em> は判定時に整数型へキャストされた後に評価されます。<p>
+また <em>thigh</em> は <em>tlow</em> 以上でなければなりません。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>入力画像及び出力画像のチャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE のいずれか</li><li>出力画像の型はF_IMG_BIN</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type : uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type : bin ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>tlow</em>&nbsp;</td><td>２値化閾値の下限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>thigh</em>&nbsp;</td><td>２値化閾値の上限</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため異常終了した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Henry S. Warren, jr. <em>"ハッカーのたのしみ"，Chap</em>.7, pp. 107, 株式会社星雲社，２００５年６月１日初版</li></ul>
+<p>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID band_threshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT width, height;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+
+    <span class="comment">//2つのしきい値により画像２値化します（下限100，上限150）</span>
+    <a class="code" href="group__fie__threshold.html#g8759a7c3a5a7b7d2929ceab93cf4b18f" title="二つの固定しきい値を用いて２値化">fnFIE_band_threshold</a>( hsrc, hdst, 100, 150);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//確保した画像の領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    band_threshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_binarize_band_threshold.png" alt="fie_binarize_band_threshold.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g01410167407adb0cb7bb4f11d264fb46"></a><!-- doxytag: member="fie_watershed.c::fnFIE_watershed" ref="g01410167407adb0cb7bb4f11d264fb46" args="(FHANDLE hSrc, FHANDLE hDst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_watershed           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Watershed法による領域分割 
+<p>
+Watershed法(分水嶺法)による画像の領域分割を行います<p>
+Watershed法は、入力画像の輝度勾配を山(輝度が高い画素)と谷(輝度が低い画素)に見立て、 谷底となっている部分に水を溜めて池を作ったとき、池同士の境界線(分水嶺)となる部分を 領域の境界線とするアルゴリズムです。<br>
+ (池の水位を徐々に上げていったときに、池同士がちょうどつながり合う部分と考えてもよいでしょう)<br>
+<p>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_watershed_1dImage.png" alt="fie_watershed_1dImage.png">
+<p><strong>1次元でのwatershedの例(山と谷)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_watershed_1dImage2.png" alt="fie_watershed_1dImage2.png">
+<p><strong>1次元でのwatershedの例(境界線)</strong></p></div>
+   </td></tr>
+</table>
+<p>
+本関数は、MP.Soille氏の著書"Morphological Image Analysis"にて紹介されている方法でWatershed法を実装をしています。 これは、注目画素に対してその周囲8近傍の画素を探索し、池同士がぶつかっていないかを確認していくというものです。<br>
+<p>
+複数の物体が隣接しているような状況で2値化やブロブ解析を行うと、 それらを1つの物体として認識してしまうケースがあります。その際に本関数を適応し、 物体間の境界線を求めることで、物体同士を正しく分離することができます。<br>
+<p>
+処理結果は2値画像で出力され、分割領域の境界線の画素値は1、 分割される領域の画素値は0となります。<br>
+ 分水嶺が幅を持つ場合は、中央付近の画素値を1としますが、 境界線の線幅は1になるとは限らず、また完全に分水嶺の中心になるとも限りません。<p>
+入力画像の画像型が F_IMG_RGBQUAD または F_IMG_RGBTRIPLE の場合には 以下のような3チャネルのUC8画像とみなして処理を行います。<ul>
+<li>ch = 0 : 赤成分(R)</li><li>ch = 1 : 緑成分(G)</li><li>ch = 2 : 青成分(B)</li></ul>
+<p>
+このとき、入力画像のチャネル数は 1 、出力画像のチャネル数は 3 である必要があります。<p>
+入力画像、出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE, F_IMG_RGBQUAD, F_IMG_FLOAT, F_IMG_RGBTRIPLEのいずれか</li><li>出力画像の型はF_IMG_BIN</li><li>入力画像の型がF_IMG_RGBQUAD, F_IMG_RGBTRIPLEの場合、入力画像のチャネル数は1, 出力画像のチャネル数は3</li><li>入力画像の型がF_IMG_RGBQUAD, F_IMG_RGBTRIPLE以外の場合、チャネル数が等しい</li></ul>
+<p>
+入力画像がF_IMG_DOUBLE、またはF_IMG_FLOATの場合、画素値にNaNが含まれていると正しく処理できません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type : uc8, s16, us16, double, rgbq, float, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type : bin )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足によるエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>MP.Soille <em>"Morphological Image Analysis(Second Edition)"，Chap</em>.9, pp. 268-277, Springer; 2nd Corrected ed. 2004. Corr. 2nd printing 2004版 (2003/1/17)</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_watershed_in.png" alt="fie_watershed_in.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_watershed_result.png" alt="fie_watershed_result.png">
+<p><strong>出力画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>適応例:</b></dt><dd>入出力画像は、"処理結果例"と同じです。 <table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_watershed_in_bin.png" alt="fie_watershed_in_bin.png">
+<p><strong>入力画像の2値化</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_watershed_in_blob.png" alt="fie_watershed_in_blob.png">
+<p><strong>ブロブ解析結果</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_watershed_or.png" alt="fie_watershed_or.png">
+<p><strong>入力画像の2値化と出力画像のOR</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_watershed_or_blob.png" alt="fie_watershed_or_blob.png">
+<p><strong>ブロブ解析結果</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#define WIDTH 256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 128</span>
+<span class="preprocessor"></span>
+<span class="comment">// 二値画像を生成し、距離変換をしたのちにWatershedを実行する</span>
+VOID separate_using_watershed()
+{
+    FHANDLE himg = NULL;    <span class="comment">//入力画像(分離したい二値画像)</span>
+    FHANDLE hpart = NULL;   <span class="comment">//出力画像(境界線画像)</span>
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像(分離後の二値画像)</span>
+    FHANDLE hdepth = NULL;  <span class="comment">//距離画像の保存用画像</span>
+    FHANDLE htmp = NULL;    <span class="comment">//作業用画像</span>
+    DOUBLE val = 0.0;       <span class="comment">//描画する円の濃度値</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center[3];       <span class="comment">//描画する円の中心座標</span>
+    DOUBLE radius[3];       <span class="comment">//描画する円の半径</span>
+    INT i;                  <span class="comment">//ループ用変数</span>
+    INT ret;                <span class="comment">//エラーコード</span>
+
+    <span class="comment">// 横256, 縦128の二値画像オブジェクトを確保</span>
+    himg = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, WIDTH, HEIGHT);
+    <span class="comment">// 確保した二値画像を白く(画素値1.0)初期化</span>
+    ret = <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(himg, 1.0);
+
+    <span class="comment">//描画する円のパラメータ設定</span>
+    center[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64;   center[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64;   radius[0] = 30;
+    center[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 128;  center[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;   radius[1] = 40;
+    center[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 192;  center[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 70;   radius[2] = 30;
+
+    <span class="comment">//himgに円を描画</span>
+    <span class="keywordflow">for</span> (i = 0; i &lt; 3; i++) {
+        ret = <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(himg, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, center[i], radius[i]);
+    }
+
+    <span class="comment">//入力画像を保存(確認のため)</span>
+    ret = <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"smp_watershed_before.bmp"</span>, himg);
+
+    <span class="comment">//境界線画像の領域を確保</span>
+    hpart = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, WIDTH, HEIGHT);
+    <span class="comment">//作業用領域を確保</span>
+    htmp = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb63726dfd831e50f091b93b401b6251a1" title="16bit濃淡画像">F_IMG_US16</a>, 1, WIDTH, HEIGHT);
+    hdepth = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, WIDTH, HEIGHT);
+
+    <span class="comment">//入力用の距離画像を作成</span>
+    <span class="comment">//二値画像の画素値を反転</span>
+    ret = <a class="code" href="group__fie__filter__arithm.html#g751ab8e6500f2c5f508b288f2209507d" title="画像濃度値反転演算">fnFIE_img_invert</a>(himg, himg);
+    <span class="comment">//距離変換</span>
+    ret = <a class="code" href="group__fie__filter.html#gcd46fcca5899a9dac2a6adede9b5aae3" title="２値画像の距離変換を行う">fnFIE_distance_transform</a>(himg, htmp, F_DT_EUCLIDEAN_EXACT);
+    <span class="comment">//距離画像の画素値を反転</span>
+    ret = <a class="code" href="group__fie__filter__arithm.html#g751ab8e6500f2c5f508b288f2209507d" title="画像濃度値反転演算">fnFIE_img_invert</a>(htmp, htmp);
+    <span class="comment">//距離画像を保存</span>
+    ret = <a class="code" href="group__fie__std__operation.html#g3d515b8e1843ffa3dc986f67f0185d5c" title="濃度変換付き画像コピー">fnFIE_img_copy_ex</a>(htmp, hdepth, 1, 0, 0);
+    ret = <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"smp_watershed_depth.bmp"</span>, hdepth);
+
+    <span class="comment">//Watershed実行</span>
+    ret = <a class="code" href="group__fie__threshold.html#g01410167407adb0cb7bb4f11d264fb46" title="Watershed法による領域分割">fnFIE_watershed</a>(htmp, hpart);
+
+    <span class="comment">//境界線画像を保存</span>
+    ret = <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"smp_watershed_partition.bmp"</span>, hpart);
+
+    <span class="comment">//境界線を用いて二値画像を分離</span>
+    <span class="comment">//出力画像を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, WIDTH, HEIGHT);
+    <span class="comment">//反転してた二値画像を元に戻す</span>
+    ret = <a class="code" href="group__fie__filter__arithm.html#g751ab8e6500f2c5f508b288f2209507d" title="画像濃度値反転演算">fnFIE_img_invert</a>(himg, himg);
+    <span class="comment">//境界線画像を用いて分離</span>
+    ret = <a class="code" href="group__fie__filter__logical.html#ge400e9673c71183c33cf64e93c5da09e" title="画像間OR演算">fnFIE_img_or</a>(himg, hpart, hdst);
+
+    <span class="comment">//分離後の画像を保存</span>
+    ret = <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"smp_watershed_separated.bmp"</span>, hdst);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hpart);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(htmp);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdepth);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    separate_using_watershed();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>上記の使用例により得られる画像:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_watershed_smp_watershed_before.bmp" alt="fie_watershed_smp_watershed_before.bmp">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_watershed_smp_watershed_depth.bmp" alt="fie_watershed_smp_watershed_depth.bmp">
+<p><strong>距離画像(画素値反転)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_watershed_smp_watershed_partition.bmp" alt="fie_watershed_smp_watershed_partition.bmp">
+<p><strong>境界線画像(本関数の出力画像)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_watershed_smp_watershed_separated.bmp" alt="fie_watershed_smp_watershed_separated.bmp">
+<p><strong>分離画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

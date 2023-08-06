@@ -1,0 +1,626 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 初期化</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>初期化<br>
+<small>
+[<a class="el" href="group__fie__opt__camcalib.html">カメラキャリブレーション</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g9802bec525e1fe4c7cb5e04135953284">fnFIE_calib_open</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> *model, INT num_model, INT *status)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  カメラキャリブレーションデータオブジェクトの作成  <a href="#g9802bec525e1fe4c7cb5e04135953284"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g629e0c3ad0076eadbcd0febcf9886f68">fnFIE_calib_add_data</a> (FHANDLE hcalib, <a class="el" href="structDPNT__T.html">DPNT_T</a> *points, INT num_points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  モデル撮像結果の追加  <a href="#g629e0c3ad0076eadbcd0febcf9886f68"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g7225ccf2d7c044b3297e5b8a811495a3">fnFIE_calib_get_model_points</a> (FHANDLE hcalib, <a class="el" href="structDPNT__T.html">DPNT_T</a> **model, INT *num_model)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  基準モデル座標列の取得  <a href="#g7225ccf2d7c044b3297e5b8a811495a3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#gcd2c26cbaa4b734c3fdcd17d00f8cf07">fnFIE_calib_get_marker_points</a> (FHANDLE hcalib, INT view_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> **points, INT *num_points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  格納済みモデル撮像結果座標列の取得  <a href="#gcd2c26cbaa4b734c3fdcd17d00f8cf07"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g386bd3b1e01356da961943c33b120b0f">fnFIE_calib_get_num_view</a> (FHANDLE hcalib, INT *num_view)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  モデル撮像結果の格納回数の取得  <a href="#g386bd3b1e01356da961943c33b120b0f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g981b52ad7bfcb0548fd8691dbdac738e">fnFIE_calib_get_num_model</a> (FHANDLE hcalib, INT *num_model)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  基準モデル座標列の座標点数を取得  <a href="#g981b52ad7bfcb0548fd8691dbdac738e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3">fnFIE_calib_open2</a> (INT type, INT n, DOUBLE unit, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset, INT *status)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  カメラキャリブレーションデータオブジェクトの作成2  <a href="#g0dca9ae9c6d894aa5780ed10c293d6f3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g274576a8c3f1369f24764bcb14a8ebc0">fnFIE_calib_detect</a> (FHANDLE hcalib, FHANDLE image, <a class="el" href="structDPNT__T.html">DPNT_T</a> **points, INT *num_points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  特徴点の検出  <a href="#g274576a8c3f1369f24764bcb14a8ebc0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html#g9dc19e6717b62eac0d5e39401c84e0d8">fnFIE_calib_add_data2</a> (FHANDLE hcalib, FHANDLE image)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  特徴点の検出と追加  <a href="#g9dc19e6717b62eac0d5e39401c84e0d8"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g9802bec525e1fe4c7cb5e04135953284"></a><!-- doxytag: member="fie_calib.c::fnFIE_calib_open" ref="g9802bec525e1fe4c7cb5e04135953284" args="(DPNT_T *model, INT num_model, INT *status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_calib_open           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>status</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  カメラキャリブレーションデータオブジェクトの作成 
+<p>
+カメラキャリブレーションに使用する基準モデル座標列とその個数を与え、 カメラキャリブレーションデータオブジェクトを作成します。 座標値はワールド座標系の単位で与えてください。<p>
+<div align="center">
+<img src="calib_model0.png" alt="calib_model0.png">
+<p><strong>基準モデル</strong></p></div>
+ 利用を終了するなどしてカメラキャリブレーションデータオブジェクトが 不要になった場合は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>model</em>&nbsp;</td><td>基準モデル座標列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_model</em>&nbsp;</td><td><em>model</em> 配列が含む座標の個数 (4以上) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>status</em>&nbsp;</td><td>エラーコードを格納する変数のポインタ。<br>
+ 必要のない場合はNULLを入れてください。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_INVALID_PARAM 引数異常 <br>
+ <em>model</em> が NULL <br>
+ <em>num_model</em> &lt; 4</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、内部で確保したカメラキャリブレーションデータオブジェクトのハンドルを返します。 異常終了により生成できなかったときはNULLを返します。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g629e0c3ad0076eadbcd0febcf9886f68"></a><!-- doxytag: member="fie_calib.c::fnFIE_calib_add_data" ref="g629e0c3ad0076eadbcd0febcf9886f68" args="(FHANDLE hcalib, DPNT_T *points, INT num_points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_add_data           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  モデル撮像結果の追加 
+<p>
+撮像結果から得られたモデル座標列を カメラキャリブレーションデータオブジェクトに追加します。<p>
+<em>points</em> にて与える座標列は <a class="el" href="group__fie__opt__camcalib__init.html#g9802bec525e1fe4c7cb5e04135953284" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open()</a> で設定した 基準モデル座標列と同じ数でなければなりません。 またその順序は、基準モデル座標列の指定時と同じ順序でなければなりません。 なお、<em>points</em> の座標はカメラ画像の座標系 (画像左上を原点として単位はピクセル)で与えてください。<p>
+<div align="center">
+<img src="calib_add_data.png" alt="calib_add_data.png">
+<p><strong>特徴点の追加</strong></p></div>
+ <a class="el" href="group__fie__opt__camcalib__exec.html#gf3e633c716b0a13d84572707e4ad3f53" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  １視野による...">fnFIE_calib_calc_1shot()</a> を実行したい場合には当関数を少なくとも 1回呼んでキャリブレーション実行の準備をします。 <a class="el" href="group__fie__opt__camcalib__exec.html#g8028fe1ae3343e24a1c17b8e9c5e98c8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ内部パ...">fnFIE_calib_calc_intrinsic_parameters()</a> を実行したい場合には 当関数を複数回（最低3回）呼び、 様々な位置や姿勢の点列をオブジェクトに追加して キャリブレーション実行の準備をします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>画像から検出したモデル座標の配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_points</em>&nbsp;</td><td><em>points</em> の要素数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常<ul>
+<li><em>points</em> が NULL</li><li><em>num_points</em> が <a class="el" href="group__fie__opt__camcalib__init.html#g9802bec525e1fe4c7cb5e04135953284" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open()</a> の num_model と異なる </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7225ccf2d7c044b3297e5b8a811495a3"></a><!-- doxytag: member="fie_calib.c::fnFIE_calib_get_model_points" ref="g7225ccf2d7c044b3297e5b8a811495a3" args="(FHANDLE hcalib, DPNT_T **model, INT *num_model)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_get_model_points           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_model</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  基準モデル座標列の取得 
+<p>
+カメラキャリブレーションデータオブジェクトから基準モデル座標列の複製を取得します。 <em>*model</em> はNULLで初期化して与えてください。 内部でメモリ確保した配列を返します。基準モデル座標列が不要になった場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>model</em>&nbsp;</td><td>基準モデル座標配列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_model</em>&nbsp;</td><td><em>model</em> 配列が含む座標の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>num_model</em> がNULL</li><li><em>model</em> がNULL</li><li><em>*model</em> がNULLで初期化されていない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcd2c26cbaa4b734c3fdcd17d00f8cf07"></a><!-- doxytag: member="fie_calib.c::fnFIE_calib_get_marker_points" ref="gcd2c26cbaa4b734c3fdcd17d00f8cf07" args="(FHANDLE hcalib, INT view_num, DPNT_T **points, INT *num_points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_get_marker_points           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>view_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  格納済みモデル撮像結果座標列の取得 
+<p>
+カメラキャリブレーションデータオブジェクトから、格納済みのモデル撮像結果座標列の複製を取得します。 <em>*points</em> で得たモデル撮像結果座標列のn番目と <a class="el" href="group__fie__opt__camcalib__init.html#g7225ccf2d7c044b3297e5b8a811495a3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  基準モデル座...">fnFIE_calib_get_model_points()</a> で得た基準モデル座標配列のn番目は対応した座標データになります。 <em>*points</em> はNULLで初期化して与えてください。 内部でメモリ確保した配列を返します。モデル撮像結果座標列が不要になった場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>view_num</em>&nbsp;</td><td><em>hcalib</em> に何番目に追加したデータを取得するか. <br>
+ (0 &lt;= view_num &lt; <a class="el" href="group__fie__opt__camcalib__init.html#g629e0c3ad0076eadbcd0febcf9886f68" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  モデル撮像結...">fnFIE_calib_add_data()</a> を呼んだ回数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>モデル撮像結果座標配列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_points</em>&nbsp;</td><td><em>points</em> が含む座標の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>num_points</em> がNULL</li><li><em>points</em> がNULL</li><li><em>*points</em> がNULLで初期化されていない</li><li><em>view_num</em> が範囲外 </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g386bd3b1e01356da961943c33b120b0f"></a><!-- doxytag: member="fie_calib.c::fnFIE_calib_get_num_view" ref="g386bd3b1e01356da961943c33b120b0f" args="(FHANDLE hcalib, INT *num_view)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_get_num_view           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_view</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  モデル撮像結果の格納回数の取得 
+<p>
+カメラキャリブレーションデータオブジェクトから、 モデル撮像結果座標列を今までに <a class="el" href="group__fie__opt__camcalib__init.html#g629e0c3ad0076eadbcd0febcf9886f68" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  モデル撮像結...">fnFIE_calib_add_data()</a> や <a class="el" href="group__fie__opt__camcalib__init.html#g9dc19e6717b62eac0d5e39401c84e0d8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  特徴点の検出...">fnFIE_calib_add_data2()</a> で何回追加したかを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_view</em>&nbsp;</td><td>モデル撮像結果の格納回数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g981b52ad7bfcb0548fd8691dbdac738e"></a><!-- doxytag: member="fie_calib.c::fnFIE_calib_get_num_model" ref="g981b52ad7bfcb0548fd8691dbdac738e" args="(FHANDLE hcalib, INT *num_model)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_get_num_model           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_model</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  基準モデル座標列の座標点数を取得 
+<p>
+カメラキャリブレーションデータオブジェクトから、 基準モデル座標列の座標点数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_model</em>&nbsp;</td><td>基準モデル座標列の座標点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0dca9ae9c6d894aa5780ed10c293d6f3"></a><!-- doxytag: member="fie_calib_model.c::fnFIE_calib_open2" ref="g0dca9ae9c6d894aa5780ed10c293d6f3" args="(INT type, INT n, DOUBLE unit, DPNT_T offset, INT *status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_calib_open2           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>status</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  カメラキャリブレーションデータオブジェクトの作成2 
+<p>
+カメラキャリブレーションに使用する基準モデルのデータを与え、 カメラキャリブレーションデータオブジェクトを作成します。 利用を終了するなどしてカメラキャリブレーションデータオブジェクトが 不要になった場合は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl class="user" compact><dt><b>円モデルについて</b></dt><dd>F_CALIB_MODEL_CIRCLE の場合、次のようなキャリブレーションテンプレートを用います。 <div align="center">
+<img src="circle_model.png" alt="circle_model.png">
+<p><strong>円モデルのキャリブレーションテンプレート</strong></p></div>
+ 図中の数値に <em>unit</em> を乗算したサイズのテンプレートを用います。 また、縦横方向の円の数を <em>n</em> として与えます。上図の場合4です。 白地に黒色の円と枠でなければなりません。 モデルの原点はテンプレートの中心にあります。 別の位置に指定したい場合には <em>offset</em> にその座標値を与えてください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>モデルの種別 (下記の値を指定してください。)<ul>
+<li>F_CALIB_MODEL_CIRCLE </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>n</em>&nbsp;</td><td>円の縦横方向個数<ul>
+<li><em>type</em> が F_CALIB_MODEL_CIRCLE の場合、 n &gt; 2 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>unit</em>&nbsp;</td><td>モデルの単位長さ。ワールド座標系の単位(ミリメートル等)で与えます。 ( <em>unit</em> &gt; 0.0 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>モデル原点とワールド座標系原点のオフセット。ワールド座標系の単位(ミリメートル等)で与えます。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>status</em>&nbsp;</td><td>エラーコード。不要な場合はNULLを指定してください。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_INVALID_PARAM パラメータ異常</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL以外</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g274576a8c3f1369f24764bcb14a8ebc0"></a><!-- doxytag: member="fie_calib_model.c::fnFIE_calib_detect" ref="g274576a8c3f1369f24764bcb14a8ebc0" args="(FHANDLE hcalib, FHANDLE image, DPNT_T **points, INT *num_points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_detect           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  特徴点の検出 
+<p>
+カメラキャリブレーションデータオブジェクトに設定されているモデル種別に従って、 濃淡画像から基準モデル座標列に対応する特徴点座標を検出します。 カラー画像を与えた場合は内部で濃淡画像に変換してから処理をしています。 <br>
+ カメラキャリブレーションデータオブジェクトを <a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> で作成したときのみ検出できます。 <a class="el" href="group__fie__opt__camcalib__init.html#g9802bec525e1fe4c7cb5e04135953284" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open()</a> で作成されていた場合には処理を実行せず、 F_ERR_INVALID_OBJECT を返して終了します。 <br>
+ <a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> で F_CALIB_MODEL_CIRCLE のモデルでオブジェクトを作成していた場合、キャリブレーションテンプレートは白地に黒色の円と枠でなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>image</em>&nbsp;</td><td>入力画像 ( type:uc8 / ch:1,3, type:rgbq,s16,us16 / ch:1 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>検出したモデル座標列。 points をNULLに初期化して入力すると内部でメモリ確保した配列を返します。 不要になった場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_points</em>&nbsp;</td><td><em>points</em> のサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー<ul>
+<li>発見できなかった特徴点がひとつ以上あった</li><li>キャリブレーションテンプレート四隅の姿勢推定に失敗した</li><li>特徴点座標検出の過程で円周辺のエッジが充分に取得できなかった</li><li>特徴点座標検出の過程で円の中心推定に失敗した </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常<ul>
+<li><em>hcalib</em> がNULL</li><li><em>hcalib</em> のオブジェクト種別が異なる</li><li><em>hcalib</em> に設定されているモデル種別では検出ができない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正<ul>
+<li><em>points</em> がNULL</li><li><em>*points</em> がNULLでない</li><li><em>num_points</em> がNULL </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9dc19e6717b62eac0d5e39401c84e0d8"></a><!-- doxytag: member="fie_calib_model.c::fnFIE_calib_add_data2" ref="g9dc19e6717b62eac0d5e39401c84e0d8" args="(FHANDLE hcalib, FHANDLE image)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_calib_add_data2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>image</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  特徴点の検出と追加 
+<p>
+カメラキャリブレーションデータオブジェクトに設定されているモデル種別に従って、 濃淡画像から基準モデル座標列に対応する特徴点座標を検出し、カメラキャリブレーションデータオブジェクトに追加します。 カラー画像を与えた場合は内部で濃淡画像に変換してから処理をしています。 <br>
+ カメラキャリブレーションデータオブジェクトを <a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> で作成したときのみデータを追加できます。 <a class="el" href="group__fie__opt__camcalib__init.html#g9802bec525e1fe4c7cb5e04135953284" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open()</a> で作成されていた場合には処理を実行せず、 F_ERR_INVALID_OBJECT を返して終了します。 <br>
+ <a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> で F_CALIB_MODEL_CIRCLE のモデルでオブジェクトを作成していた場合、キャリブレーションテンプレートは白地に黒色の円と枠でなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>カメラキャリブレーションデータオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>image</em>&nbsp;</td><td>入力画像 ( type:uc8 / ch:1,3, type:rgbq,s16,us16 / ch:1 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常<ul>
+<li><em>hcalib</em> がNULL</li><li><em>hcalib</em> のオブジェクト種別が異なる</li><li><em>hcalib</em> に設定されているモデル種別では検出ができない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー<ul>
+<li>発見できなかった特徴点がひとつ以上あった</li><li>キャリブレーションテンプレート四隅の姿勢推定に失敗した</li><li>特徴点座標検出の過程で円周辺のエッジが充分に取得できなかった</li><li>特徴点座標検出の過程で円の中心推定に失敗した </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

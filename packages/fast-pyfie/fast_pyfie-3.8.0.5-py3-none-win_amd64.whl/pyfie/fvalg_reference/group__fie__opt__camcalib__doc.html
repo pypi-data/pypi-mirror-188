@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__opt__camcalib.html">カメラキャリブレーション</a>]</small>
+</h1>本ライブラリは、カメラの撮像画像又はその座標上の点座標を レンズによる放射歪みを取り除いた上でワールド座標上での 画像または点座標に変換するためのライブラリです。 <div align="center">
+<img src="calib_coord.png" alt="calib_coord.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>カメラキャリブレーションとは</b></dt><dd>撮像画像上での座標をワールド空間上の座標へ変換するためには、 カメラ及びレンズがどのような特性を持っているか、そのカメラが ３Ｄワールド空間上のどこに設置されているか、という情報が必要になります。 この情報をあらかじめ物体形状が分かっている基準モデルを撮像することにより ライブラリに推定させる行為がカメラキャリブレーションです。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>具体的には、カメラキャリブレーションでは カメラの内部パラメータと外部パラメータの推定を行います。 カメラ内部パラメータとはカメラとレンズの組み合わせによる特性を表現する数値で、 焦点距離、スキュー、画素の縦横比、撮像デバイスにおける光軸の中心、レンズ歪みなどを表現します。 カメラ外部パラメータとはカメラとワールド座標の位置関係を表現する数値で、 ワールド座標系に対する回転・並進などを表現します。 これらのパラメータを推定するため、カメラキャリブレーションでは、 物理的な座標の手がかりになる物体をキャリブレーションを行いたいカメラで撮像し、 その画像座標上の点と物体の座標系上の点の多数の対応関係を利用します。</dd></dl>
+<dl class="user" compact><dt><b>当ライブラリの手法について</b></dt><dd>当2次元カメラキャリブレーションライブラリでは、立体状に図形を配置した校正リグ等は用いず、 2次元の校正リグ、平面上に図形を印刷したキャリブレーションテンプレートを用います。 キャリブレーションテンプレート上の特徴点座標をあらかじめライブラリに入力しておき、 キャリブレーションを行いたい一つのカメラに対する角度・位置を変えながら複数回の撮像を行って、 その画像から取得した特徴点の位置との対応関係を入力することでカメラ内部パラメータの算出を行います。 なお、本ライブラリでは Microsoftの米国特許技術 "US Patent 6,437,823 - Method and system for calibrating digital cameras" を使用しています。</dd></dl>
+<dl class="user" compact><dt><b>当ライブラリ利用の手順</b></dt><dd>当ライブラリは下記のような手順で使用されることを想定しています。<ol type=1>
+<li>基準モデル点列を用意し <a class="el" href="group__fie__opt__camcalib__init.html#g9802bec525e1fe4c7cb5e04135953284" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open()</a> でキャリブレーションデータオブジェクトを作成します。</li><li>様々な姿勢でモデルを撮像し <a class="el" href="group__fie__opt__camcalib__init.html#g629e0c3ad0076eadbcd0febcf9886f68" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  モデル撮像結...">fnFIE_calib_add_data()</a> で追加します。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#g8028fe1ae3343e24a1c17b8e9c5e98c8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ内部パ...">fnFIE_calib_calc_intrinsic_parameters()</a> でカメラ内部パラメータと放射歪み係数を計算します。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#g1a4f0ab9bfce79d32a5e01a83f9fa59a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ外部パ...">fnFIE_calib_calc_extrinsic_parameters()</a> でカメラ外部パラメータを計算します。</li><li>計算した結果を利用して各種の座標変換を行います。<br>
+ <br>
+ <div align="center">
+<img src="calib_chart0.png" alt="calib_chart0.png">
+<p><strong>ライブラリ利用の手順</strong></p></div>
+ <br>
+</li></ol>
+</dd></dl>
+<dl class="user" compact><dt><b>座標変換</b></dt><dd>当ライブラリを用いると以下のような座標変換が可能になります。 <table style="white-space:nowrap;" class="pretable">
+<tr>
+<th>変換元 </th><td>ワールド座標系 </td><td>正規化画像座標系 </td><td>理想画像座標系 </td><td>カメラ画像座標系 </td></tr>
+<tr>
+<th>変換元の単位系 </th><td>mm ※ </td><td>mm ※ </td><td>pixel </td><td>pixel </td></tr>
+<tr>
+<th>ワールド座標系<br>
+へ変換 </th><td>- </td><td><img class="formulaInl" alt="$\bf{Rt}^{-1}$" src="form_1027.png"> </td><td><img class="formulaInl" alt="$\bf{H}^{-1}$" src="form_1028.png"><br>
+ <a class="el" href="group__fie__opt__camcalib__use.html#g7253e93a49a7a1a58809dc012ec84e63" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像を正対変...">fnFIE_calib_rectify_matrix()</a> </td><td><a class="el" href="group__fie__opt__camcalib__use.html#gf3512622ed7c0741f828feaa32821801" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の正対変...">fnFIE_calib_rectify_ud_image_map()</a> </td></tr>
+<tr>
+<th>正規化画像座標系<br>
+へ変換 </th><td><img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> </td><td>- </td><td><img class="formulaInl" alt="$\bf{A}^{-1}$" src="form_1030.png"> </td><td>- </td></tr>
+<tr>
+<th>理想画像座標系<br>
+へ変換 </th><td><img class="formulaInl" alt="$\bf{H}$" src="form_1031.png"><br>
+ <a class="el" href="group__fie__opt__camcalib__use.html#gc66c887e0ec4e50d4c6689da38f2cb8e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像を逆正対...">fnFIE_calib_rectify_matrix_inv()</a> </td><td><img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> </td><td>- </td><td><a class="el" href="group__fie__opt__camcalib__use.html#gb3618da3839ddf73c84a10f9721b3264" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列を歪み補...">fnFIE_calib_undistort_points()</a> <br>
+<a class="el" href="group__fie__opt__camcalib__use.html#geed54e0168d712841402bf53f4c70a8a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の歪み補...">fnFIE_calib_undistort_image_map()</a> </td></tr>
+<tr>
+<th>カメラ画像座標系<br>
+へ変換 </th><td>- </td><td>- </td><td><a class="el" href="group__fie__opt__camcalib__use.html#g5cedfff9c020872194864b42f544e8b3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列を歪ん...">fnFIE_calib_distort_points()</a> <br>
+<a class="el" href="group__fie__opt__camcalib__use.html#g22241f0e16d2d55fbbdcae80f6504b1d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の歪みシ...">fnFIE_calib_distort_image_map()</a> </td><td>-  </td></tr>
+</table>
+上記の表において <img class="formulaInl" alt="$\bf{Rt}, \bf{Rt}^{-1}, \bf{H}, \bf{H}^{-1}, \bf{A}, \bf{A}^{-1}$" src="form_1032.png"> とは、 各パラメータ行列（またはその逆行列）を <a class="el" href="group__fie__cg__geometric__transform.html#g60b8d5244f8a96f6a707720ac8c4cf3e" title="点の射影変換">fnFIE_geotrans_perspective_point()</a>, <a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779" title="点群の射影変換">fnFIE_geotrans_perspective_npoints()</a>, <a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective()</a> 等に用いて座標変換することを示しています。 <br>
+ ※ 説明をわかりやすくするために単位をmmと記載していますが、 実際には任意の単位を使用することが出来ます。</dd></dl>
+<dl class="user" compact><dt><b>パラメータ行列の算出法</b></dt><dd>内部パラメータ行列 <img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> が必用な場合は <a class="el" href="group__fie__opt__camcalib__exec.html#g8028fe1ae3343e24a1c17b8e9c5e98c8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ内部パ...">fnFIE_calib_calc_intrinsic_parameters()</a> によりカメラ内部パラメータ <a class="el" href="structF__CAMERA__PARAM.html" title="カメラ内部パラメータ構造体 (intrinsic parameters)">F_CAMERA_PARAM</a> を算出した後、その構造体のメンバ値を用いて 次式により生成してください。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{A} = \left[ \begin{array}{ccc} \alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1 \\ \end{array} \right] \]" src="form_1033.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>外部パラメータ行列 <img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> が必用な場合には <a class="el" href="group__fie__opt__camcalib__exec.html#g1a4f0ab9bfce79d32a5e01a83f9fa59a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ外部パ...">fnFIE_calib_calc_extrinsic_parameters()</a> で算出されるカメラ外部パラメータ <img class="formulaInl" alt="$\bf{R}$" src="form_1034.png"> と <img class="formulaInl" alt="$\bf{T}$" src="form_1035.png"> の成分 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{R} = \left[ \begin{array}{ccc} r_{11} &amp; r_{12} &amp; r_{13}\\ r_{21} &amp; r_{22} &amp; r_{23}\\ r_{31} &amp; r_{32} &amp; r_{33} \end{array} \right] \]" src="form_1036.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{T} = \left[ \begin{array}{c} t_1 \\ t_2 \\ t_3 \end{array} \right] \]" src="form_1037.png">
+<p>
+ を用いて、次式により生成してください。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{Rt} = \left[ \begin{array}{ccc} r_{11} &amp; r_{12} &amp; t_1\\ r_{21} &amp; r_{22} &amp; t_2\\ r_{31} &amp; r_{32} &amp; t_3 \end{array}\right] \]" src="form_1038.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>混合パラメータ行列 <img class="formulaInl" alt="$\bf{H}$" src="form_1031.png"> は、 <a class="el" href="group__fie__opt__camcalib__exec.html#g1a4f0ab9bfce79d32a5e01a83f9fa59a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ外部パ...">fnFIE_calib_calc_extrinsic_parameters()</a> にて算出できます。</dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>"A Flexible New Technique for Camera Calibration", Zhengyou Zhang, Microsoft Research, 1998 </li></ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

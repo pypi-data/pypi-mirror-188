@@ -1,0 +1,1194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: マルチカメラ応用位置決め</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>マルチカメラ応用位置決め<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<dl class="user" compact><dt><b>ライブラリの説明</b></dt><dd>本ライブラリは、ＸＹθ移動可能なステージを用いてアライメントを行うことを目的とした計算ライブラリです。 つまり画像処理を行うライブラリではなく、画像処理で得られた結果に対して処理を行うライブラリです。 特に複数の狭視野のカメラを用いて高精度にアライメントを行う用途を想定しています。 用途は特に限定されるものではありませんが、液晶ガラスの張り合わせや、 プリント基板印刷の位置決めといったような用途で用いられます。 <div align="center">
+<img src="xyqn_purpose.png" alt="xyqn_purpose.png">
+<p><strong>Fig1. ライブラリの目的</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b>使用の際の前提条件</b></dt><dd>ＸＹθ移動ステージと連動するライブラリなので、ステージと連携を取ることが必須になります。 つまり、次に挙げるような環境が揃っていることが前提となります。 また、カメラが移動する場合には対応せず、基本的にカメラが固定された環境下で使用します。<ul>
+<li>ステージに対して任意のＸＹθ位置に移動する命令を与えることが可能である</li><li>ステージの現在位置を取得することが可能である</li><li>ステージ移動正方向が次の条件を満たしていること<ul>
+<li>ステージＸ軸正方向をステージＹ軸正方向に回転させた場合の方向(時計/反時計回り)と、それを画像に映して見る方向との関係に変化がないこと。</li><li>また、その回転方向が、ステージθ正方向と同じであること <div align="center">
+<img src="xyqn_system.png" alt="xyqn_system.png">
+<p><strong>Fig2. 使用するシステム</strong></p></div>
+ </li></ul>
+</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>特長</b></dt><dd>液晶ガラスの張り合わせなどを例に取ると、たたみ１畳以上の大きさのものをμmレベルの精度でアライメントしたいという要求になることがあります。 その際、位置決めに使用する基準マークは、一般的に複数個用意され、ガラス基板の端に非常に小さく配置されます。 このような状況では、１カメラで全てのアライメントマークを撮像しようとしても、視野が広すぎて小さなアライメントマークを計測することが困難です。 そのため、複数のカメラを用いて個別にアライメントマークを撮像することになりますが、 カメラとステージの位置関係、カメラの撮像倍率が既知でなければ正確なアライメントができません。 さらにそれがカメラの個数分必要になり、その調整は非常に煩わしいものになります。 このような状況で本ライブラリを用いることで、ステージ移動とマーク計測を繰り返すことによってカメラとステージの位置関係を半自動で求め、 手間を掛けずにアライメントまで行うことが可能になります。 <div align="center">
+<img src="xyqn_example.png" alt="xyqn_example.png">
+<p><strong>Fig3. アライメントの例（パネルの張り合わせ）</strong></p></div>
+ <a class="anchor" name="smp_fie_xyqn"></a> </dd></dl>
+<dl class="user" compact><dt><b>サンプルコード</b></dt><dd>マルチカメラ応用位置決めライブラリを使用して効果的にアライメントを行うためには、ある程度決まった手順でライブラリをコールする必要があります。 本サンプルコードを参照して、ステージ位置情報やマーク計測等のデータ生成、ライブラリのコール手順等を参考にしてください。<br>
+ また、ステージの現在位置の取得やステージに対しての移動指令を行いながら使用するため、通常はサンプルコードだけでは実現不可能です。 そこで、本サンプルコードではステージの移動やモニタに映るマークの計測値は、計算によるシミュレーションデータを利用して実現しています。<br>
+ なお、本シミュレーションでは画像の計測誤差、レンズ歪み、機械の移動誤差等の悪条件はまったく加味しておりません。 よって、ここで得られたキャリブレーション、及びアライメントの収束回数及び精度は、実際にアライメントを行う場合の精度を保証するものではないことを予めご了承の上でご利用下さい。<br>
+ <br>
+※本サンプルコードが正常終了した場合には「XYQPARAM.DAT」というファイルを作成します。</dd></dl>
+<div class="fragment"><pre class="fragment"><span class="comment">/* マルチカメラ応用位置決めライブラリサンプルコード(シミュレータ付属) */</span>
+<span class="comment">/* エラー処理を省略している箇所がありますので注意して下さい。*/</span>
+<span class="preprocessor">#include    &lt;math.h&gt;</span>
+<span class="preprocessor">#include    &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include    "fie.h"</span>
+
+<span class="preprocessor">#define     DATA_FILE       "XYQPARAM.DAT"  </span><span class="comment">/* データセーブ用 */</span>
+<span class="preprocessor">#define     CHAN_N          2               </span><span class="comment">/* カメラ数       */</span>
+
+<span class="comment">/* 計算用の諸定義 */</span>
+<span class="preprocessor">#define     PI_DEG          180.0               </span><span class="comment">/* π(度)  */</span>
+<span class="preprocessor">#define     PI_RAD          3.14159265358979    </span><span class="comment">/* π(rad) */</span>
+
+<span class="comment">/**********************************</span>
+<span class="comment">  カメラパラメータ</span>
+<span class="comment"> **********************************/</span>
+<span class="preprocessor">#define     CAM1_X      ( - 24.0 )                          </span><span class="comment">/* 固定カメラ１取り付け位置Ｘ                  */</span>
+<span class="preprocessor">#define     CAM1_Y      ( - 24.0 )                          </span><span class="comment">/* 固定カメラ１取り付け位置Ｙ                  */</span>
+<span class="preprocessor">#define     CAM1_Q      (   30.0 * PI_RAD / PI_DEG )        </span><span class="comment">/* 固定カメラ１取り付け位置θ(rad)              */</span>
+<span class="preprocessor">#define     CAM1_RES    (    1.0 )                          </span><span class="comment">/* 固定カメラ１スケール値 1(画素) ＝ dRes(mm) */</span>
+<span class="preprocessor">#define     CAM2_X      ( -  6.0 )                          </span><span class="comment">/* 固定カメラ２取り付け位置Ｘ                  */</span>
+<span class="preprocessor">#define     CAM2_Y      ( - 18.0 )                          </span><span class="comment">/* 固定カメラ２取り付け位置Ｙ                  */</span>
+<span class="preprocessor">#define     CAM2_Q      (    0.0 * PI_RAD / PI_DEG )        </span><span class="comment">/* 固定カメラ２取り付け位置θ(rad)              */</span>
+<span class="preprocessor">#define     CAM2_RES    (    1.0 )                          </span><span class="comment">/* 固定カメラ２スケール値 1(画素) ＝ dRes(mm) */</span>
+
+<span class="comment">/**********************************</span>
+<span class="comment">  キャリブレーションパラメータ</span>
+<span class="comment"> **********************************/</span>
+<span class="preprocessor">#define     CLB_MARK1_X     ( -  6.0 )                      </span><span class="comment">/* ステージ上のキャリブレーションマーク１Ｘ座標   */</span>
+<span class="preprocessor">#define     CLB_MARK1_Y     ( -  6.0 )                      </span><span class="comment">/* ステージ上のキャリブレーションマーク１Ｙ座標   */</span>
+<span class="preprocessor">#define     CLB_MARK2_X     (    6.0 )                      </span><span class="comment">/* ステージ上のキャリブレーションマーク２Ｘ座標   */</span>
+<span class="preprocessor">#define     CLB_MARK2_Y     ( -  6.0 )                      </span><span class="comment">/* ステージ上のキャリブレーションマーク２Ｙ座標   */</span>
+
+<span class="preprocessor">#define     SFT_X           (    6.0 )                      </span><span class="comment">/* キャリブレーションＸ方向シフト量(mm)     */</span>
+<span class="preprocessor">#define     SFT_Y           ( -  6.0 )                      </span><span class="comment">/* キャリブレーションＹ方向シフト量(mm)     */</span>
+<span class="preprocessor">#define     ROT_Q           (   60.0 * PI_RAD / PI_DEG )    </span><span class="comment">/* キャリブレーション総回転量(rad)</span>
+<span class="comment">                                                                ±x度ならばこの値は２・x度になる      */</span>
+<span class="preprocessor">#define     CORREC_COUNT    3                               </span><span class="comment">/* 補正計算回数                           */</span>
+
+<span class="comment">/**********************************</span>
+<span class="comment">    アライメントパラメータ</span>
+<span class="comment"> **********************************/</span>
+<span class="preprocessor">#define     ATGT_MARK1_X    ( -  6.0 )      </span><span class="comment">/* ステージ上のターゲットマーク１Ｘ座標       */</span>
+<span class="preprocessor">#define     ATGT_MARK1_Y    ( -  6.0 )      </span><span class="comment">/* ステージ上のターゲットマーク１Ｙ座標       */</span>
+<span class="preprocessor">#define     ATGT_MARK2_X    (    6.0 )      </span><span class="comment">/* ステージ上のターゲットマーク２Ｘ座標       */</span>
+<span class="preprocessor">#define     ATGT_MARK2_Y    ( -  6.0 )      </span><span class="comment">/* ステージ上のターゲットマーク２Ｙ座標       */</span>
+
+<span class="preprocessor">#define     AOBJ_MARK1_X    ( -  6.0 )      </span><span class="comment">/* ステージ上のオブジェクトマーク１Ｘ座標    */</span>
+<span class="preprocessor">#define     AOBJ_MARK1_Y    ( - 12.0 )      </span><span class="comment">/* ステージ上のオブジェクトマーク１Ｙ座標    */</span>
+<span class="preprocessor">#define     AOBJ_MARK2_X    (    6.0 )      </span><span class="comment">/* ステージ上のオブジェクトマーク２Ｘ座標    */</span>
+<span class="preprocessor">#define     AOBJ_MARK2_Y    ( - 12.0 )      </span><span class="comment">/* ステージ上のオブジェクトマーク２Ｙ座標    */</span>
+
+<span class="preprocessor">#define     LIMIT           0.01            </span><span class="comment">/* アライメント精度（mm）             */</span>
+<span class="preprocessor">#define     RETRY_N         3               </span><span class="comment">/* 精度が未達の場合の最大繰り返し回数  */</span>
+
+
+<span class="comment">/* 内部で定義した関数  */</span>
+<span class="keyword">static</span>  VOID    calc_correct_calib_pos( DOUBLE, DOUBLE, DOUBLE, DOUBLE *, DOUBLE *, DOUBLE * );
+<span class="keyword">static</span>  INT     calibration( DOUBLE, DOUBLE, DOUBLE, <span class="keywordtype">char</span>[] );
+<span class="keyword">static</span>  INT     alignment( <span class="keywordtype">char</span>[] );
+
+<span class="comment">/* シミュレーションデータ作成用関数 */</span>
+<span class="keyword">static</span>  INT     simu_vTt( DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE, DOUBLE *, DOUBLE * );
+
+
+<span class="comment">/************</span>
+<span class="comment"> メイン関数</span>
+<span class="comment"> ************/</span>
+VOID main( VOID )
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">/* キャリブレーション実行 */</span>
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> == calibration( SFT_X, SFT_Y, ROT_Q, DATA_FILE ) ){
+        <span class="comment">/* アライメント実行 */</span>
+        alignment( DATA_FILE );
+    }
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+}
+
+<span class="comment">/* ファイル書き込み用関数 */</span>
+<span class="keyword">static</span> INT write_data( VOID *data, INT sz, VOID* strm ){
+    <span class="keywordflow">return</span> (INT)fwrite( data, 1, sz, (FILE*)strm );
+}
+
+<span class="comment">/* ファイル読込用関数 */</span>
+<span class="keyword">static</span> INT read_data( VOID *data, INT sz, VOID* strm ){
+    <span class="keywordflow">return</span> (INT)fread( data, 1, sz, (FILE*)strm );
+}
+
+
+<span class="comment">/* カメラとＸＹθステージのキャリブレーション */</span>
+<span class="keyword">static</span>  INT calibration( 
+DOUBLE shift_x,         <span class="comment">/* 入力：キャリブレーションステージ平行Ｘ移動量 */</span>
+DOUBLE shift_y,         <span class="comment">/* 入力：キャリブレーションステージ平行Ｙ移動量 */</span>
+DOUBLE rot_q,           <span class="comment">/* 入力：キャリブレーションステージ回転θ移動量(rad) */</span>
+<span class="keywordtype">char</span>    *file_name      <span class="comment">/* 入力：パラメータを保存するファイルの名称 */</span> ){
+    INT     ch;
+    INT     status = -1;
+    INT     loop;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  posit[CHAN_N][4];
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  correc[CHAN_N][2], center[CHAN_N];
+    DOUBLE  x_cor, y_cor, q_cor;
+    DOUBLE  d_tXm[CHAN_N],d_tYm[CHAN_N];
+    DOUBLE  now_x, now_y,now_q;
+    FHANDLE hxyqn;
+    <span class="keyword">const</span> DOUBLE cam_x[CHAN_N]   = { CAM1_X, CAM2_X };
+    <span class="keyword">const</span> DOUBLE cam_y[CHAN_N]   = { CAM1_Y, CAM2_Y };
+    <span class="keyword">const</span> DOUBLE cam_q[CHAN_N]   = { CAM1_Q, CAM2_Q };
+    <span class="keyword">const</span> DOUBLE cam_res[CHAN_N] = { CAM1_RES, CAM2_RES };
+    
+    <a class="code" href="structfvstream.html" title="データストリーム">fvstream</a>    strm;   <span class="comment">// データストリーム</span>
+    
+    <span class="comment">/*  キャリブレーションシステムのオープン  */</span>
+    <span class="keywordflow">if</span>( NULL == ( hxyqn = <a class="code" href="group__fie__xyqn.html#gc2cd63572c1eccb7e253ff8ef867c31f" title="キャリブレーションシステムのオープン">fnFIE_xyqn_open</a>() ) ) <span class="keywordflow">goto</span> exit;
+    
+    <span class="comment">/* キャリブレーションマーク */</span>
+    d_tXm[0] = CLB_MARK1_X; d_tYm[0] = CLB_MARK1_Y;
+    d_tXm[1] = CLB_MARK2_X; d_tYm[1] = CLB_MARK2_Y;
+
+    <span class="keywordflow">for</span>( ch=0; ch&lt;CHAN_N; ch++ ){
+        <span class="comment">/* 「カメラ座標系上の基準点」の座標取得 */</span>
+        now_x  = 0.0;       now_y  = 0.0;       now_q  = 0.0;
+        simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch],
+                  now_x, now_y, now_q,
+                  d_tXm[ch], d_tYm[ch],
+                  &amp;posit[ch][0].x, &amp;posit[ch][0].y );
+
+        <span class="comment">/* 「カメラ座標系上のシフト参照点」の座標取得 */</span>
+        now_x  = shift_x;       now_y = shift_y;        now_q  = 0.0;
+        simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch],
+                  now_x, now_y, now_q,
+                  d_tXm[ch], d_tYm[ch],
+                  &amp;posit[ch][1].x, &amp;posit[ch][1].y );
+
+        <span class="comment">/* 「カメラ座標系上の＋側回転参照点」の座標取得 */</span>
+        now_x  = 0.0;       now_y = 0.0;        now_q  = rot_q / 2.0;
+        simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch],
+                  now_x, now_y, now_q,
+                  d_tXm[ch], d_tYm[ch],
+                  &amp;posit[ch][2].x, &amp;posit[ch][2].y );
+
+        <span class="comment">/* 「カメラ座標系上の－側回転参照点」の座標取得 */</span>
+        now_x  = 0.0;       now_y = 0.0;        now_q  = - rot_q / 2.0;
+        simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch],
+                  now_x, now_y, now_q,
+                  d_tXm[ch], d_tYm[ch],
+                  &amp;posit[ch][3].x, &amp;posit[ch][3].y );
+    }
+
+    printf( <span class="stringliteral">"-- CALIBRATION START --\n\r"</span> );
+    printf( <span class="stringliteral">"OPEN DATA\n\r"</span> );
+    printf( <span class="stringliteral">"MRK1 BASE (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[0][0].x, posit[0][0].y );
+    printf( <span class="stringliteral">"MRK1 SFT  (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[0][1].x, posit[0][1].y );
+    printf( <span class="stringliteral">"MRK1 ROT+ (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[0][2].x, posit[0][2].y );
+    printf( <span class="stringliteral">"MRK1 ROT- (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[0][3].x, posit[0][3].y );
+    printf( <span class="stringliteral">"MRK2 BASE (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[1][0].x, posit[1][0].y );
+    printf( <span class="stringliteral">"MRK2 SFT  (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[1][1].x, posit[1][1].y );
+    printf( <span class="stringliteral">"MRK2 ROT+ (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[1][2].x, posit[1][2].y );
+    printf( <span class="stringliteral">"MRK2 ROT- (%8.3f, %8.3f)(画素,画素)\n\r"</span>, posit[1][3].x, posit[1][3].y );
+
+    <span class="comment">/*****************************</span>
+<span class="comment">     キャリブレーションのオープン</span>
+<span class="comment">     *****************************/</span>
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != <a class="code" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table</a>( hxyqn, shift_x, shift_y, rot_q, CHAN_N, (<span class="keyword">const</span> <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *)posit ) )
+        <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">/* 補正を繰り返すことでキャリブレーションの精度を高めることが可能です。 */</span>
+    <span class="keywordflow">for</span>( loop = 0; loop &lt; CORREC_COUNT; loop++ ){
+        <span class="comment">/*******************************************</span>
+<span class="comment">        「ＸＹθステージ座標系上の基準点」座標の取得</span>
+<span class="comment">         *******************************************/</span>
+        <a class="code" href="group__fie__xyqn.html#gc6c74fdc09cc6622582968a4eff6956c" title="補正計算用回転中心の取得">fnFIE_xyqn_get_center</a>( hxyqn, center );
+        <span class="comment">/* 誤差が全く無い場合には、ここで求まる center の値 CLB_MARKn_X(Y)と同じ値になります */</span>
+        printf( <span class="stringliteral">"CENTER DATA:%d\n\r"</span>, loop + 1 );
+        printf( <span class="stringliteral">"MRK1 CENT (%8.3f, %8.3f)(mm,mm)\n\r"</span>, center[0].x, center[0].y );
+        printf( <span class="stringliteral">"MRK2 CENT (%8.3f, %8.3f)(mm,mm)\n\r"</span>, center[1].x, center[1].y );
+
+        <span class="keywordflow">for</span>( ch=0; ch&lt;CHAN_N; ch++ ){
+            <span class="comment">/* 「ＸＹθステージ座標系上の基準点」を中心として＋Δθ移動した時の座標取得 */</span>
+            calc_correct_calib_pos( center[ch].x, center[ch].y,   rot_q / 2.0, &amp;x_cor, &amp;y_cor, &amp;q_cor );
+            now_x  = x_cor;     now_y = y_cor;      now_q  = q_cor;
+            simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch], 
+                      now_x, now_y, now_q,
+                      d_tXm[ch], d_tYm[ch],
+                      &amp;correc[ch][0].x, &amp;correc[ch][0].y );
+
+            <span class="comment">/* 「ＸＹθステージ座標系上の基準点」を中心として－Δθ移動した時の座標取得 */</span>
+            calc_correct_calib_pos( center[ch].x, center[ch].y, - rot_q / 2.0, &amp;x_cor, &amp;y_cor, &amp;q_cor );
+            now_x  = x_cor;     now_y = y_cor;      now_q  = q_cor;
+            simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch], 
+                      now_x, now_y, now_q,
+                      d_tXm[ch], d_tYm[ch],
+                      &amp;correc[ch][1].x, &amp;correc[ch][1].y );
+        }
+
+        <span class="comment">/*******************************************</span>
+<span class="comment">        「ＸＹθステージ座標系上の基準点」の座標補正</span>
+<span class="comment">         *******************************************/</span>
+        <a class="code" href="group__fie__xyqn.html#g9c41a28641e9140f0eda7442426e6021" title="基準点座標の補正計算">fnFIE_xyqn_correction</a>( hxyqn, (<span class="keyword">const</span> <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *)correc );
+    }
+    <span class="comment">/* 誤差が全く無い場合には、ここで求まる correc はBASEと同じ値である</span>
+<span class="comment">      （ステージは動いているが、画面上に写る(計測される)マーク位置は移動しない）*/</span>
+    printf( <span class="stringliteral">"CORREC DATA:%d\n\r"</span>, loop + 1 );
+    printf( <span class="stringliteral">"MRK1 CROT+(%8.3f, %8.3f)(画素,画素)\n\r"</span>, correc[0][0].x, correc[0][0].y );
+    printf( <span class="stringliteral">"MRK1 CROT-(%8.3f, %8.3f)(画素,画素)\n\r"</span>, correc[0][1].x, correc[0][1].y );
+    printf( <span class="stringliteral">"MRK2 CROT+(%8.3f, %8.3f)(画素,画素)\n\r"</span>, correc[1][0].x, correc[1][0].y );
+    printf( <span class="stringliteral">"MRK2 CROT-(%8.3f, %8.3f)(画素,画素)\n\r"</span>, correc[1][1].x, correc[1][1].y );
+
+    <span class="comment">// ストリームの準備</span>
+    strm.read   = read_data;
+    strm.write  = write_data;
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = NULL;
+    <span class="comment">/************************************</span>
+<span class="comment">     パラメータステージをファイルに保管 </span>
+<span class="comment">     ************************************/</span>
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = fopen( file_name, <span class="stringliteral">"wb"</span> );
+    <a class="code" href="group__fie__xyqn.html#gee5ab6f3cb749b0faac6a2bff6ce6e94" title="キャリブレーションデータのストリーム書き込み">fnFIE_xyqn_save</a>( hxyqn, &amp;strm );
+    fclose( (FILE*)strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> );
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = NULL;
+    
+    status = 0;
+exit:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hxyqn );
+    
+    <span class="keywordflow">return</span>( status );
+}
+
+
+<span class="comment">/* 位置合わせ */</span>
+<span class="keyword">static</span>  INT alignment( <span class="keywordtype">char</span> * file_name <span class="comment">/* 入力：使用するパラメータファイルの名称 */</span> ){
+    INT     ch;
+    INT     status = -1;
+    INT     retry, err_cnt;
+    DOUBLE  x, y, q;
+    DOUBLE  now_x, now_y, now_q;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  base_on_cam[CHAN_N], mark_on_cam[CHAN_N];
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  base_on_xyq[CHAN_N], mark_on_xyq[CHAN_N];
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  residual[CHAN_N];
+    FHANDLE hxyqn;
+    
+    <span class="keyword">const</span> DOUBLE cam_x[CHAN_N]   = { CAM1_X, CAM2_X };
+    <span class="keyword">const</span> DOUBLE cam_y[CHAN_N]   = { CAM1_Y, CAM2_Y };
+    <span class="keyword">const</span> DOUBLE cam_q[CHAN_N]   = { CAM1_Q, CAM2_Q };
+    <span class="keyword">const</span> DOUBLE cam_res[CHAN_N] = { CAM1_RES, CAM2_RES };
+
+    DOUBLE  d_tXtm[CHAN_N], d_tYtm[CHAN_N];
+    DOUBLE  d_tXom[CHAN_N], d_tYom[CHAN_N];
+ 
+    <a class="code" href="structfvstream.html" title="データストリーム">fvstream</a>    strm;   <span class="comment">// データストリーム</span>
+
+    <span class="comment">/*  キャリブレーションシステムのオープン  */</span>
+    <span class="keywordflow">if</span>( NULL == ( hxyqn = <a class="code" href="group__fie__xyqn.html#gc2cd63572c1eccb7e253ff8ef867c31f" title="キャリブレーションシステムのオープン">fnFIE_xyqn_open</a>() ) ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">/* アライメントターゲットマークステージ上の位置 */</span>
+    d_tXtm[0] = ATGT_MARK1_X;           d_tYtm[0] = ATGT_MARK1_Y;
+    d_tXtm[1] = ATGT_MARK2_X;           d_tYtm[1] = ATGT_MARK2_Y;
+
+    <span class="comment">/* アライメントオブジェクトマークステージ上の位置 */</span>
+    d_tXom[0] = AOBJ_MARK1_X;           d_tYom[0] = AOBJ_MARK1_Y;
+    d_tXom[1] = AOBJ_MARK2_X;           d_tYom[1] = AOBJ_MARK2_Y;
+
+    <span class="comment">// ストリームの準備</span>
+    strm.read   = read_data;
+    strm.write  = write_data;
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = NULL;
+    
+    <span class="comment">/***************************************************</span>
+<span class="comment">                アライメントデータのオープン</span>
+<span class="comment">     ***************************************************/</span>
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = fopen( file_name, <span class="stringliteral">"rb"</span> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != <a class="code" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load</a>( hxyqn, &amp;strm ) ) <span class="keywordflow">goto</span> exit;
+    fclose( (FILE*)strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> );
+
+    <span class="comment">/* ステージ初期位置は原点 */</span>
+    now_x = 0.0;    now_y = 0.0;    now_q = 0.0;
+    
+    <span class="comment">/* 「カメラ座標系上の到達点（ターゲット位置）」の座標取得 */</span>
+    <span class="keywordflow">for</span>( ch=0; ch&lt;CHAN_N; ch++ ){
+        simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch],
+                  now_x, now_y, now_q,
+                  d_tXtm[ch], d_tYtm[ch],
+                  &amp;base_on_cam[ch].x, &amp;base_on_cam[ch].y );
+    }
+    
+    <span class="comment">/************************************************</span>
+<span class="comment">      「ｘｙθステージ座標系上の到達点」の座標算出</span>
+<span class="comment">     ************************************************/</span>
+    <a class="code" href="group__fie__xyqn.html#g2b5d76ee6afd113df92b07ecb19e3632" title="カメラ座標からＸＹθテーブル座標へ変換">fnFIE_xyqn_trans_coord</a>( hxyqn, base_on_cam, base_on_xyq );
+
+    <span class="keywordflow">for</span>( retry = 0; retry &lt; RETRY_N; retry++ ){
+        <span class="comment">/* 「カメラ座標系上の対象点（オブジェクト位置）」の座標取得 */</span>
+        <span class="keywordflow">for</span>( ch=0; ch&lt;CHAN_N; ch++ ){
+            simu_vTt( cam_x[ch], cam_y[ch], cam_q[ch], cam_res[ch], 
+                      now_x, now_y, now_q,
+                      d_tXom[ch], d_tYom[ch],
+                      &amp;mark_on_cam[ch].x, &amp;mark_on_cam[ch].y );
+        }
+        
+        <span class="comment">/************************************************</span>
+<span class="comment">          「ｘｙθステージ座標系上の対象点」の座標算出 </span>
+<span class="comment">         ************************************************/</span>
+        <a class="code" href="group__fie__xyqn.html#g2b5d76ee6afd113df92b07ecb19e3632" title="カメラ座標からＸＹθテーブル座標へ変換">fnFIE_xyqn_trans_coord</a>( hxyqn, mark_on_cam, mark_on_xyq );
+
+        <span class="comment">/* 到達点と対象点の距離を計算 */</span>
+        <span class="comment">/* 現在のステージ上のマーク位置のずれをチェック */</span>
+        <span class="keywordflow">for</span>( ch = 0; ch &lt; CHAN_N; ch++ ){
+            residual[ch].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = base_on_xyq[ch].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> - mark_on_xyq[ch].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+            residual[ch].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = base_on_xyq[ch].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> - mark_on_xyq[ch].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>;
+
+            <span class="comment">/* 状況報告 */</span>
+            printf( <span class="stringliteral">"MRK%2d DIFF(%8.3f, %8.3f)(mm,mm)\n\r"</span>, ch, residual[ch].x, residual[ch].y );
+        }
+        
+        err_cnt = 0;
+        
+        <span class="comment">/* マーク間距離の検証 */</span>
+        <span class="keywordflow">for</span>( ch = 0; ch &lt; CHAN_N; ch++ ){
+            <span class="comment">/* アライメントの規格として、マーク間距離を判断 */</span>
+            <span class="keywordflow">if</span>( ( LIMIT&lt;fabs( residual[ch].x ) ) || ( LIMIT&lt;fabs( residual[ch].y )) ){
+                err_cnt++;
+                <span class="keywordflow">break</span>;
+            }
+        }
+
+        <span class="keywordflow">if</span>( err_cnt ){
+            <span class="comment">/****************************</span>
+<span class="comment">                   アライメント実行</span>
+<span class="comment">             ****************************/</span>
+            <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != <a class="code" href="group__fie__xyqn.html#g95f67714fe99a13d4c1fc288b9cb31ea" title="位置あわせをする際の位置・姿勢算出">fnFIE_xyqn_trans_execute</a>( hxyqn, base_on_cam, mark_on_cam, now_x, now_y, now_q, &amp;x, &amp;y, &amp;q ) )
+                <span class="keywordflow">goto</span> exit;
+            
+            printf( <span class="stringliteral">"ALIGN:%d\n\r"</span>, retry + 1 );
+            printf( <span class="stringliteral">"PRE TPOS  (%8.3f, %8.3f, %8.3f)(mm,mm,度)\n\r"</span>, now_x, now_y, now_q * PI_DEG / PI_RAD );
+            printf( <span class="stringliteral">"NXT TPOS  (%8.3f, %8.3f, %8.3f)(mm,mm,度)\n\r"</span>, x, y, q * PI_DEG / PI_RAD );
+            <span class="comment">/* 現在のＸＹθステージ位置・姿勢を更新する  */</span>
+            now_x = x;      now_y = y;      now_q = q;
+        }<span class="keywordflow">else</span>{
+            <span class="comment">/* アライメントが規格内に収まった */</span>
+            <span class="keywordflow">break</span>;
+        }
+    }
+    
+    <span class="comment">//アライメント結果表示（正常終了時にはステージを移動させた回数も）</span>
+    <span class="keywordflow">if</span>( err_cnt ) printf( <span class="stringliteral">"ALIGNMENT FAILED !!\n\r"</span> );
+    <span class="keywordflow">else</span>          printf( <span class="stringliteral">"ALIGNMENT SUCCESS !!(%d)\n\r"</span>, retry );
+
+    status = 0;
+exit:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hxyqn );
+
+    <span class="keywordflow">return</span>( status );
+}
+
+
+
+<span class="comment">/****************************************************************</span>
+<span class="comment">    fnFIE_xyqn_correction();に使用するステージ位置の計算</span>
+<span class="comment">    下記パラメータ(xc,xc)を中心にステージをqc回転させる時のステージの移動量を求めている。</span>
+<span class="comment"> ****************************************************************/</span>
+<span class="keyword">static</span>  VOID    calc_correct_calib_pos(
+DOUBLE  xc,         <span class="comment">/* 入力：ＸＹθステージ座標系上の基準点Ｘ座標                       */</span>
+DOUBLE  yc,         <span class="comment">/* 入力：ＸＹθステージ座標系上の基準点Ｙ座標                       */</span>
+DOUBLE  qc,         <span class="comment">/* 入力：ＸＹθステージ座標系上の基準点を中心としてqc分回転させる  */</span>
+DOUBLE  *x_cor,     <span class="comment">/* 出力：ＸＹθステージのＸ移動量                                 */</span>
+DOUBLE  *y_cor,     <span class="comment">/* 出力：ＸＹθステージのＹ移動量                                 */</span>
+DOUBLE  *q_cor      <span class="comment">/* 出力：ＸＹθステージのθ移動量                                  */</span> ){
+    DOUBLE  ksin, kcos;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  p_new, p_old;
+
+    p_old.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = xc;   p_old.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = yc;
+
+    ksin = sin( qc );   kcos = cos( qc );
+
+    p_new.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = p_old.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> * kcos - p_old.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> * ksin;
+    p_new.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = p_old.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> * ksin + p_old.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> * kcos;
+
+    *x_cor = p_old.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> - p_new.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+    *y_cor = p_old.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> - p_new.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>;
+    *q_cor = qc;
+}
+
+
+
+<span class="comment">/******************************************</span>
+<span class="comment">   カメラ シミュレーションデータの生成  ステージ上のマーク位置をビデオ座標上の計測位置にする。</span>
+<span class="comment"> ******************************************/</span>
+<span class="keyword">static</span>  INT simu_vTt(
+DOUBLE  dX,             <span class="comment">/* 入力：カメラ取り付け位置Ｘ              */</span>
+DOUBLE  dY,             <span class="comment">/* 入力：カメラ取り付け位置Ｙ              */</span>
+DOUBLE  dQ,             <span class="comment">/* 入力：カメラ取り付け位置θ(rad)          */</span>
+DOUBLE  dRes,           <span class="comment">/* 入力：スケール値 1(画素) ＝ dRes(mm)      */</span>
+DOUBLE  dTblX,          <span class="comment">/* 入力：ステージ位置Ｘ                       */</span>
+DOUBLE  dTblY,          <span class="comment">/* 入力：ステージ位置Ｙ                       */</span>
+DOUBLE  dTblQ,          <span class="comment">/* 入力：ステージ位置θ(rad)               */</span>
+DOUBLE  d_tXm,          <span class="comment">/* 入力：ステージ上のマーク位置Ｘ            */</span>
+DOUBLE  d_tYm,          <span class="comment">/* 入力：ステージ上のマーク位置Ｙ            */</span>
+DOUBLE  *dp_vXm,        <span class="comment">/* 出力：画面に映った上のマークの計測位置Ｘ */</span>
+DOUBLE  *dp_vYm         <span class="comment">/* 出力：画面に映った上のマークの計測位置Ｙ */</span> ){
+    INT     status = -1;
+    DOUBLE  rad_q;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_res = NULL, *imat_cam = NULL, *mat_tbl = NULL, *mat_wrk = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_vTt = NULL;
+    <a class="code" href="structFVECTOR.html" title="ベクトル">FVECTOR</a> *vect_v  = NULL, *vect_t = NULL;
+
+    <span class="keywordflow">if</span> ( NULL == ( mat_res  = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> ( NULL == ( imat_cam = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> ( NULL == ( mat_tbl  = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> ( NULL == ( mat_vTt  = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> ( NULL == ( mat_wrk  = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> ( NULL == ( vect_v   = <a class="code" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2" title="ベクトルの生成">fnFIE_mat_valloc</a>( 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> ( NULL == ( vect_t   = <a class="code" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2" title="ベクトルの生成">fnFIE_mat_valloc</a>( 3 ) ) ) <span class="keywordflow">goto</span> exit;
+    
+    <span class="comment">//スケール</span>
+    mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = cos(0.0)/dRes; mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = -sin(0.0)/dRes; mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][2] = 0.0;
+    mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = sin(0.0)/dRes; mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] =  cos(0.0)/dRes; mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][2] = 0.0;
+    mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][0] = 0.0;           mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][1] = 0.0;            mat_res-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][2] = 1.0;
+    
+    <span class="comment">//カメラ位置</span>
+    rad_q = dQ;
+    imat_cam-&gt;m[0][0] = cos(rad_q); imat_cam-&gt;m[0][1] = -sin(rad_q); imat_cam-&gt;m[0][2] = dX;
+    imat_cam-&gt;m[1][0] = sin(rad_q); imat_cam-&gt;m[1][1] =  cos(rad_q); imat_cam-&gt;m[1][2] = dY;
+    imat_cam-&gt;m[2][0] = 0.0;        imat_cam-&gt;m[2][1] = 0.0;         imat_cam-&gt;m[2][2] = 1.0;
+    <a class="code" href="group__fie__math__matrix__lalgebra.html#gceaa47357e18c0db897451fd433b17a7" title="逆行列の算出">fnFIE_mat_inverse</a>( imat_cam );
+    
+    <span class="comment">//ステージ</span>
+    rad_q = dTblQ;
+    mat_tbl-&gt;m[0][0] = cos(rad_q); mat_tbl-&gt;m[0][1] = -sin(rad_q); mat_tbl-&gt;m[0][2] = dTblX;
+    mat_tbl-&gt;m[1][0] = sin(rad_q); mat_tbl-&gt;m[1][1] =  cos(rad_q); mat_tbl-&gt;m[1][2] = dTblY;
+    mat_tbl-&gt;m[2][0] = 0.0;        mat_tbl-&gt;m[2][1] = 0.0;         mat_tbl-&gt;m[2][2] = 1.0;
+    
+    <span class="comment">//ステージ上の座標-&gt;(ワールド座標-&gt;)カメラ座標変換行列を生成</span>
+    <a class="code" href="group__fie__math__matrix__lalgebra.html#gf07026dd5d66b39c550bb03aa3eea381" title="行列と行列のかけ算">fnFIE_mat_mul_aa</a>( mat_res, imat_cam, mat_wrk );
+    <a class="code" href="group__fie__math__matrix__lalgebra.html#gf07026dd5d66b39c550bb03aa3eea381" title="行列と行列のかけ算">fnFIE_mat_mul_aa</a>( mat_wrk, mat_tbl, mat_vTt );
+
+    <span class="comment">//座標変換</span>
+    vect_t-&gt;v[0] = d_tXm;
+    vect_t-&gt;v[1] = d_tYm;
+    vect_t-&gt;v[2] = 1.0;
+    <a class="code" href="group__fie__math__matrix__lalgebra.html#g86591183d64acc68b4c2848cf07c884e" title="行列とベクトルのかけ算">fnFIE_mat_mul_av</a>( mat_vTt, vect_t, vect_v );
+
+    *dp_vXm = vect_v-&gt;<a class="code" href="structFVECTOR.html#cbb7effe57fe4edcde0378e384950ae4">v</a>[0];
+    *dp_vYm = vect_v-&gt;<a class="code" href="structFVECTOR.html#cbb7effe57fe4edcde0378e384950ae4">v</a>[1];
+    status = 0;
+exit:
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( imat_cam );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( mat_res );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( mat_tbl );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( mat_vTt );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( mat_wrk );
+    <a class="code" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree</a>( vect_t );
+    <a class="code" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree</a>( vect_v );
+    
+    <span class="keywordflow">return</span>( status );
+}
+
+
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#gc2cd63572c1eccb7e253ff8ef867c31f">fnFIE_xyqn_open</a> (VOID)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キャリブレーションシステムのオープン  <a href="#gc2cd63572c1eccb7e253ff8ef867c31f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007">fnFIE_xyqn_calc_table</a> (FHANDLE hcalib, DOUBLE delt_x, DOUBLE delt_y, DOUBLE delt_q, INT channels, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pos_tbl)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キャリブレーションテーブルの計算  <a href="#g2d1c8c2e72fc4417c085727e44332007"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#gce300a3e82097a6fa86b8136a17be802">fnFIE_xyqn_get_channels</a> (FHANDLE hcalib, INT *channels)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カメラチャネル数の取得  <a href="#gce300a3e82097a6fa86b8136a17be802"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#gc6c74fdc09cc6622582968a4eff6956c">fnFIE_xyqn_get_center</a> (FHANDLE hcalib, <a class="el" href="structDPNT__T.html">DPNT_T</a> *ch_center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">補正計算用回転中心の取得  <a href="#gc6c74fdc09cc6622582968a4eff6956c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#g9c41a28641e9140f0eda7442426e6021">fnFIE_xyqn_correction</a> (FHANDLE hcalib, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pos_tbl)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">基準点座標の補正計算  <a href="#g9c41a28641e9140f0eda7442426e6021"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#g2b5d76ee6afd113df92b07ecb19e3632">fnFIE_xyqn_trans_coord</a> (FHANDLE hcalib, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *inp, <a class="el" href="structDPNT__T.html">DPNT_T</a> *out)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カメラ座標からＸＹθテーブル座標へ変換  <a href="#g2b5d76ee6afd113df92b07ecb19e3632"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#g95f67714fe99a13d4c1fc288b9cb31ea">fnFIE_xyqn_trans_execute</a> (FHANDLE hcalib, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *base_on_cam, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *mark_on_cam, DOUBLE xo, DOUBLE yo, DOUBLE qo, DOUBLE *x, DOUBLE *y, DOUBLE *q)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">位置あわせをする際の位置・姿勢算出  <a href="#g95f67714fe99a13d4c1fc288b9cb31ea"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8">fnFIE_xyqn_load</a> (FHANDLE hcalib, <a class="el" href="structfvstream.html">fvstream</a> *strm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キャリブレーションデータのストリーム読み込み  <a href="#g1d39f4c3957b5d179c1c76f930e783d8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#gee5ab6f3cb749b0faac6a2bff6ce6e94">fnFIE_xyqn_save</a> (FHANDLE hcalib, <a class="el" href="structfvstream.html">fvstream</a> *strm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キャリブレーションデータのストリーム書き込み  <a href="#gee5ab6f3cb749b0faac6a2bff6ce6e94"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__xyqn.html#g9490a9f1de21271e9f7b215f360fa931">fnFIE_xyqn_get_status</a> (FHANDLE hcalib, INT *status)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キャリブレーション状態の確認  <a href="#g9490a9f1de21271e9f7b215f360fa931"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gc2cd63572c1eccb7e253ff8ef867c31f"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_open" ref="gc2cd63572c1eccb7e253ff8ef867c31f" args="(VOID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_xyqn_open           </td>
+          <td>(</td>
+          <td class="paramtype">VOID&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キャリブレーションシステムのオープン 
+<p>
+キャリブレーションシステムをオープンします。 本関数でオープンしたオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、キャリブレーションシステムのハンドルを返します。 異常終了した場合は NULL を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2d1c8c2e72fc4417c085727e44332007"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_calc_table" ref="g2d1c8c2e72fc4417c085727e44332007" args="(FHANDLE hcalib, DOUBLE delt_x, DOUBLE delt_y, DOUBLE delt_q, INT channels, const DPNT_T *pos_tbl)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_calc_table           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>delt_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>delt_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>delt_q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pos_tbl</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キャリブレーションテーブルの計算 
+<p>
+与えられたシフト量・回転量及び座標値群から ｘｙθテーブルによる位置合わせに必要なパラメータテーブルを生成します。<p>
+最終目標であるアライメントを行うために、ステージとカメラの位置関係を求める必要があります。 その際に、ステージを指定通りに移動させ、『ステージの移動量』と『それに追従して移動するマークの計測位置』 の関係を用いることでステージとカメラの位置関係を計算します。 そのために本ライブラリでは、ステージに対して「ＸＹの平行移動」、「＋回転」、「－回転」への指定量の移動が必要になります。<p>
+<em>pos_tbl</em> は、テーブルを平行移動(移動量：<em>delt_x</em> , <em>delt_y</em> )、＋回転(移動量：<em>delt_q</em> / 2.0 )、－回転(移動量：<em>-</em> delt_q / 2.0 )を行ったときのマーク位置配列で、 次のような配置で、 チャネル( <em>channels</em> )数分だけ配置します。<p>
+<pre>
+		<em>pos_tbl</em>[0] ch0 の基準マーク位置座標
+		<em>pos_tbl</em>[1] ch0 の平行移動時マーク位置座標
+		<em>pos_tbl</em>[2] ch0 の＋回転時マーク位置座標
+		<em>pos_tbl</em>[3] ch0 の－回転時マーク位置座標
+		<em>pos_tbl</em>[4] ch1 の基準マーク位置座標
+		<em>pos_tbl</em>[5] ch1 の平行移動時マーク位置座標
+		<em>pos_tbl</em>[6] ch1 の＋回転時マーク位置座標
+		<em>pos_tbl</em>[7] ch1 の－回転時マーク位置座標
+		<em>pos_tbl</em>[8] ch2 の基準マーク位置座標
+		・・・
+		・・・
+		・・・
+		<em>pos_tbl</em>[ ( <em>channels</em> - 2 ) * 4 + 3 ] ch( <em>channels</em> -2) の－回転時マーク位置座標
+		<em>pos_tbl</em>[ ( <em>channels</em> - 1 ) * 4     ] ch( <em>channels</em> -1) の基準マーク位置座標
+		<em>pos_tbl</em>[ ( <em>channels</em> - 1 ) * 4 + 1 ] ch( <em>channels</em> -1) の平行移動時マーク位置座標
+		<em>pos_tbl</em>[ ( <em>channels</em> - 1 ) * 4 + 2 ] ch( <em>channels</em> -1) の＋回転時マーク位置座標
+		<em>pos_tbl</em>[ ( <em>channels</em> - 1 ) * 4 + 3 ] ch( <em>channels</em> -1) の－回転時マーク位置座標
+	</pre><p>
+<div align="center">
+<img src="xyqn_calib.png" alt="xyqn_calib.png">
+<p><strong>fig.キャリブレーションに使用するデータ（チャネル( <em>channels</em> )数は 2） </strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>delt_x</em>&nbsp;</td><td>平行移動キャリブレーション時のＸ方向シフト量Δｘ(mm):符号付きの数値で指定 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>delt_y</em>&nbsp;</td><td>平行移動キャリブレーション次のＹ方向シフト量Δｙ(mm):符号付きの数値で指定 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>delt_q</em>&nbsp;</td><td>回転量Δθ(rad):符号無しの数値で指定 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channels</em>&nbsp;</td><td>カメラチャネル数(２以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pos_tbl</em>&nbsp;</td><td>キャリブレーションデータテーブル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>与えられた座標で計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>ステージ移動後にマークを計測する関係上、移動量はマークが視野の外に出ない程度の範囲で移動量を指定してください(なるべく大きな値を指定した方が精度には有利です)。 本関数だけでもキャリブレーションは終了しますが、一般的に精度があまり良くありません。更なる精度向上のために <a class="el" href="group__fie__xyqn.html#g9c41a28641e9140f0eda7442426e6021" title="基準点座標の補正計算">fnFIE_xyqn_correction()</a> を使用してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gce300a3e82097a6fa86b8136a17be802"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_get_channels" ref="gce300a3e82097a6fa86b8136a17be802" args="(FHANDLE hcalib, INT *channels)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_get_channels           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>channels</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カメラチャネル数の取得 
+<p>
+<a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> 実行時に指定されたカメラチャネル数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>channels</em>&nbsp;</td><td>カメラチャネル数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>channels</em> がNULL </li>
+<li>事前に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> または <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc6c74fdc09cc6622582968a4eff6956c"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_get_center" ref="gc6c74fdc09cc6622582968a4eff6956c" args="(FHANDLE hcalib, DPNT_T *ch_center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_get_center           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>ch_center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+補正計算用回転中心の取得 
+<p>
+ｘｙθテーブル座標系上の各々の基準点座標を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ch_center</em>&nbsp;</td><td>各チャネルの基準点座標配列 <br>
+ <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> 実行時に指定したチャネル数分の領域が必要です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>ch_center</em> がNULL </li>
+<li>事前に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> または <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9c41a28641e9140f0eda7442426e6021"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_correction" ref="g9c41a28641e9140f0eda7442426e6021" args="(FHANDLE hcalib, const DPNT_T *pos_tbl)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_correction           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pos_tbl</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+基準点座標の補正計算 
+<p>
+<a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> で計算された基準点座標を補正します。<p>
+弊社では、本関数の使用により、一般的に考えられるキャリブレーション手法に一工夫加えることで補正を行い、より精度の良いキャリブレーションを実現しております。<br>
+ なお、補正計算処理には適切なデータを入力する必要がありますので、次の手順で使用してください。<p>
+<div align="center">
+<img src="xyqn_correc.png" alt="xyqn_correc.png">
+<p><strong>fig.基準点座標補正の手順</strong></p></div>
+ <b> ※ステージ補正移動の計算について</b><br>
+ 補正計算にも、ステージ移動とマーク計測を利用します。そのため、所定の位置にステージを移動させてマークの計測を行う必要があります。<br>
+ 補正のためのステージ位置 (pos_x,pos_y) の計算方法については、次の計算式を用いてください。<br>
+ <a class="el" href="group__fie__xyqn.html#gc6c74fdc09cc6622582968a4eff6956c" title="補正計算用回転中心の取得">fnFIE_xyqn_get_center()</a> で得られた基準点座標を(x,y)，θ移動量を rev_q とすると、<ul>
+<li>pos_x = x - ( x・cos(rev_q) - y・sin(rev_q) )</li><li>pos_y = y - ( x・sin(rev_q) + y・cos(rev_q) )</li></ul>
+<p>
+で表され、実際に回転補正を行うための rev_q には <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a>で使用した回転量である <em>delt_q/2.0</em>, -<em>delt_q/2.0</em> を指定してください。 補正移動のイメージとしては、キャリブレーション時に使用したマークに対してθ回転を行い、その回転によって移動した量をＸＹ移動で元に戻すような移動です。 キャリブレーション時の精度が良い場合には、±θ補正移動をした後のマークの位置が基準時のマーク位置の近くへと戻ります。<p>
+<div align="center">
+<img src="xyqn_correc_mov.png" alt="xyqn_correc_mov.png">
+<p><strong>fig.キャリブレーション補正時のステージ及び、画像上のマーク移動</strong></p></div>
+ <em>pos_tbl</em> は、 <a class="el" href="group__fie__xyqn.html#gc6c74fdc09cc6622582968a4eff6956c" title="補正計算用回転中心の取得">fnFIE_xyqn_get_center()</a> で得られた回転中心を中心として、 テーブルを＋回転補正移動、－回転補正移動を行ったときのマーク位置配列で、 次のような配置で、 <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> 実行時に指定したチャネル数分だけ配置します。<p>
+<pre>
+		<em>pos_tbl</em>[0] ch0 の＋回転補正時マーク位置座標
+		<em>pos_tbl</em>[1] ch0 の－回転補正時マーク位置座標
+		<em>pos_tbl</em>[2] ch1 の＋回転補正時マーク位置座標
+		<em>pos_tbl</em>[3] ch1 の－回転補正時マーク位置座標
+		<em>pos_tbl</em>[4] ch2 の＋回転補正時マーク位置座標
+		・・・
+		・・・
+		・・・
+		<em>pos_tbl</em>[ ( <em>channels</em> - 2 ) * 2 + 1 ] ch( <em>channels</em> -2) の－回転補正時マーク位置座標
+		<em>pos_tbl</em>[ ( <em>channels</em> - 1 ) * 2 + 0 ] ch( <em>channels</em> -1) の＋回転補正時マーク位置座標
+		<em>pos_tbl</em>[ ( <em>channels</em> - 1 ) * 2 + 1 ] ch( <em>channels</em> -1) の－回転補正時マーク位置座標
+	</pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pos_tbl</em>&nbsp;</td><td>補正計算用座標値群を格納したテーブル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>pos_tbl</em> がNULL </li>
+<li>事前に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> または <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>補正処理を何度も繰り返すことでキャリブレーションの精度を上げていくことが可能です。終了する目安は、±θ補正移動時の画像上のマーク位置が安定してきたことで判断可能です。 本処理を繰り返すうちにマークが視野外に出てしまう場合には、再度 <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> からやり直すか、ステージの構成を見直す必要があります。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2b5d76ee6afd113df92b07ecb19e3632"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_trans_coord" ref="g2b5d76ee6afd113df92b07ecb19e3632" args="(FHANDLE hcalib, const DPNT_T *inp, DPNT_T *out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_trans_coord           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>inp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カメラ座標からＸＹθテーブル座標へ変換 
+<p>
+カメラ座標系上の座標値をｘｙθテーブル座標系上の座標値に変換します。<p>
+<em>inp</em> と <em>out</em> はカメラ座標の配列です。 要素数は共に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> 実行時に指定したチャネル数となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>inp</em>&nbsp;</td><td>各カメラ座標配列（カメラ座標系） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>各カメラ座標配列（ＸＹθ座標系）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>inp</em> または <em>out</em> がNULL </li>
+<li>事前に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> または <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g95f67714fe99a13d4c1fc288b9cb31ea"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_trans_execute" ref="g95f67714fe99a13d4c1fc288b9cb31ea" args="(FHANDLE hcalib, const DPNT_T *base_on_cam, const DPNT_T *mark_on_cam, DOUBLE xo, DOUBLE yo, DOUBLE qo, DOUBLE *x, DOUBLE *y, DOUBLE *q)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_trans_execute           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>base_on_cam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>mark_on_cam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>xo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>yo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>qo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>q</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+位置あわせをする際の位置・姿勢算出 
+<p>
+与えられた座標値( <em>base_on_cam</em>[] , <em>mark_on_cam</em>[] )を利用してｘｙθテーブルの移動量を決定します。 <em>base_on_cam</em> と <em>mark_on_cam</em> は座標の配列です。 要素数は共に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> 実行時に指定したチャネル数となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>base_on_cam</em>&nbsp;</td><td>カメラ座標系上のｎチャネル分の基準座標配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mark_on_cam</em>&nbsp;</td><td>カメラ座標系上のｎチャネル分のマーク座標配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>xo</em>&nbsp;</td><td>テーブル現在位置Ｘ座標(mm) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>yo</em>&nbsp;</td><td>テーブル現在位置Ｙ座標(mm) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>qo</em>&nbsp;</td><td>テーブル現在位置θ座標(rad) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>テーブル移動後Ｘ座標(mm) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>テーブル移動後Ｙ座標(mm) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>q</em>&nbsp;</td><td>テーブル移動後θ座標(rad)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>base_on_cam</em> , <em>mark_on_cam</em> , <em>x</em> , <em>y</em> または <em>q</em> がNULL </li>
+<li>事前に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> または <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>キャリブレーションの精度があまり良くない、または要求精度が厳しい場合等、本処理一回でアライメントの精度が出ないことがあります。 そのような場合は再度ステージを移動した後にマークを撮像し、繰り返しアライメントを行ってください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1d39f4c3957b5d179c1c76f930e783d8"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_load" ref="g1d39f4c3957b5d179c1c76f930e783d8" args="(FHANDLE hcalib, fvstream *strm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_load           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>strm</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キャリブレーションデータのストリーム読み込み 
+<p>
+キャリブレーションデータを、指定のデータストリームから読み込みます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>strm</em>&nbsp;</td><td>データストリーム</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gee5ab6f3cb749b0faac6a2bff6ce6e94"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_save" ref="gee5ab6f3cb749b0faac6a2bff6ce6e94" args="(FHANDLE hcalib, fvstream *strm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_save           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>strm</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キャリブレーションデータのストリーム書き込み 
+<p>
+キャリブレーションデータを、指定のデータストリームに書き込みます。<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>strm</em>&nbsp;</td><td>データストリーム</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>strm</em> が不正 </li>
+<li>事前に <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> または <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9490a9f1de21271e9f7b215f360fa931"></a><!-- doxytag: member="fie_xyqn.c::fnFIE_xyqn_get_status" ref="g9490a9f1de21271e9f7b215f360fa931" args="(FHANDLE hcalib, INT *status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_xyqn_get_status           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hcalib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>status</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キャリブレーション状態の確認 
+<p>
+オープン後、キャリブレーションデータが作成されているかどうか、 つまり、 <a class="el" href="group__fie__xyqn.html#g2d1c8c2e72fc4417c085727e44332007" title="キャリブレーションテーブルの計算">fnFIE_xyqn_calc_table()</a> もしくは <a class="el" href="group__fie__xyqn.html#g1d39f4c3957b5d179c1c76f930e783d8" title="キャリブレーションデータのストリーム読み込み">fnFIE_xyqn_load()</a> が実行されたかを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hcalib</em>&nbsp;</td><td>キャリブレーションシステムのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>status</em>&nbsp;</td><td>キャリブレーションデータの状態 <ul>
+<li>TRUE キャリブレーション済み </li>
+<li>FALSE 未キャリブレーション</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 擬似乱数生成</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>擬似乱数生成<br>
+<small>
+[<a class="el" href="group__fie__low__level__func.html">低レベル処理関数</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+Mersenne twister(MT19937) アルゴリズムによる疑似乱数生成を行うライブラリです。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>このライブラリはBSDライセンスのfreeライブラリを元に作成しました。</dd></dl>
+<pre>
+   A C-program for MT19937, with initialization improved 2002/1/26.
+   Coded by Takuji Nishimura and Makoto Matsumoto.</pre><p>
+<pre>   Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
+   All rights reserved.                          
+   Copyright (C) 2005, Mutsuo Saito,
+   All rights reserved.</pre><p>
+<pre>   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:</pre><p>
+<pre>     1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.</pre><p>
+<pre>     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.</pre><p>
+<pre>     3. The names of its contributors may not be used to endorse or promote 
+        products derived from this software without specific prior written 
+        permission.</pre><p>
+<pre>   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre><p>
+<pre>   Any feedback is very welcome.
+   <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html</a>
+   email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
+   </pre> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">擬似乱数用構造体  <a href="structF__RANDDESC.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798">fnFIE_mtrand_init</a> (UINT seed, <a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似乱数初期化ルーチン  <a href="#ge2e934bcfe30c288b5ff0a586a420798"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165">fnFIE_mtrand_init_by_array</a> (UINT init_key[], INT key_length, <a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似乱数初期化ルーチン  <a href="#g034e764b96129382f94e88d38e558165"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">UINT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#g755b6640c19a2371d5dc1018069cb4cc">fnFIE_mtrand</a> (<a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似一様乱数を生成します  <a href="#g755b6640c19a2371d5dc1018069cb4cc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#ga5461a5eb4846eddb702b165f778d490">fnFIE_mtrand_gauss</a> (<a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似正規乱数を生成します  <a href="#ga5461a5eb4846eddb702b165f778d490"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#g9750e5cae267bc734bcd3ccc65371a70">fnFIE_mtrand_real1</a> (<a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  [0,1]区間内の実数値の擬似乱数を生成します  <a href="#g9750e5cae267bc734bcd3ccc65371a70"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#g019f8d418f53552b1eab5861a9afd6bd">fnFIE_mtrand_real2</a> (<a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  [0,1)区間内の実数値の擬似乱数を生成します  <a href="#g019f8d418f53552b1eab5861a9afd6bd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#g82b06647836ae688a325ddcf159d54f5">fnFIE_mtrand_real3</a> (<a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  (0,1)区間内の実数値の擬似乱数を生成します  <a href="#g82b06647836ae688a325ddcf159d54f5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__random.html#g02989951a5baebc2525c1ca77147ac49">fnFIE_mtrand_res53</a> (<a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *r)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  [0,1)区間内の実数値の擬似乱数を53-bit resolutionで生成します  <a href="#g02989951a5baebc2525c1ca77147ac49"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="ge2e934bcfe30c288b5ff0a586a420798"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_init" ref="ge2e934bcfe30c288b5ff0a586a420798" args="(UINT seed, F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_mtrand_init           </td>
+          <td>(</td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似乱数初期化ルーチン 
+<p>
+指定のseed値で擬似乱数列生成用データを初期化します。 同じseedで初期化すると同じ擬似乱数列が得られます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>seed</em>&nbsp;</td><td>擬似乱数列のseed </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g034e764b96129382f94e88d38e558165"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_init_by_array" ref="g034e764b96129382f94e88d38e558165" args="(UINT init_key[], INT key_length, F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_mtrand_init_by_array           </td>
+          <td>(</td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>init_key</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>key_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似乱数初期化ルーチン 
+<p>
+複数のseed値を使って擬似乱数列生成用データを初期化します。 同じseedで初期化すると同じ擬似乱数列が得られます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>init_key</em>&nbsp;</td><td>擬似乱数列のseedの数列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>key_length</em>&nbsp;</td><td>seed数列の要素数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g755b6640c19a2371d5dc1018069cb4cc"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand" ref="g755b6640c19a2371d5dc1018069cb4cc" args="(F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UINT FVALGAPI fnFIE_mtrand           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似一様乱数を生成します 
+<p>
+生成される擬似乱数の値は区間[0,0xffffffff]内の整数値です。 少なくとも１回は <a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init()</a> または <a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init_by_array()</a> で初期化されている擬似乱数列生成用データ r を 指定してください。（毎回初期化しておく必要はありません）<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>擬似一様乱数：[0,0xffffffff]区間内の整数 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga5461a5eb4846eddb702b165f778d490"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_gauss" ref="ga5461a5eb4846eddb702b165f778d490" args="(F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_mtrand_gauss           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  擬似正規乱数を生成します 
+<p>
+平均0.0,分散1.0の（擬似）正規乱数を生成します。 少なくとも１回は <a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init()</a> または <a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init_by_array()</a> で初期化されている擬似乱数列生成用データ r を 指定してください。（毎回初期化しておく必要はありません）<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>擬似正規乱数：平均0.0,分散1.0 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9750e5cae267bc734bcd3ccc65371a70"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_real1" ref="g9750e5cae267bc734bcd3ccc65371a70" args="(F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_mtrand_real1           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  [0,1]区間内の実数値の擬似乱数を生成します 
+<p>
+生成される擬似乱数の値は 0≦v≦1 の実数値です。 少なくとも１回は <a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init()</a> または <a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init_by_array()</a> で初期化されている擬似乱数列生成用データ r を 指定してください。（毎回初期化しておく必要はありません）<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>擬似乱数：[0,1]区間内の実数値 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g019f8d418f53552b1eab5861a9afd6bd"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_real2" ref="g019f8d418f53552b1eab5861a9afd6bd" args="(F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_mtrand_real2           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  [0,1)区間内の実数値の擬似乱数を生成します 
+<p>
+生成される擬似乱数の値は 0≦v＜1 の実数値です。 少なくとも１回は <a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init()</a> または <a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init_by_array()</a> で初期化されている擬似乱数列生成用データ r を 指定してください。（毎回初期化しておく必要はありません）<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>擬似乱数：[0,1)区間内の実数値 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g82b06647836ae688a325ddcf159d54f5"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_real3" ref="g82b06647836ae688a325ddcf159d54f5" args="(F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_mtrand_real3           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  (0,1)区間内の実数値の擬似乱数を生成します 
+<p>
+生成される擬似乱数の値は 0&lt;v&lt;1 の実数値です。 少なくとも１回は <a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init()</a> または <a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init_by_array()</a> で初期化されている擬似乱数列生成用データ r を 指定してください。（毎回初期化しておく必要はありません）<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>擬似乱数：(0,1)区間内の実数値 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g02989951a5baebc2525c1ca77147ac49"></a><!-- doxytag: member="fie_rand.c::fnFIE_mtrand_res53" ref="g02989951a5baebc2525c1ca77147ac49" args="(F_RANDDESC *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_mtrand_res53           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__RANDDESC.html">F_RANDDESC</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  [0,1)区間内の実数値の擬似乱数を53-bit resolutionで生成します 
+<p>
+生成される擬似乱数の値は 0≦v＜1 の実数値です。 少なくとも１回は <a class="el" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init()</a> または <a class="el" href="group__fie__random.html#g034e764b96129382f94e88d38e558165" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  擬似乱数初期...">fnFIE_mtrand_init_by_array()</a> で初期化されている擬似乱数列生成用データ r を 指定してください。（毎回初期化しておく必要はありません）<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>擬似乱数列生成用データ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>擬似乱数：[0,1)区間内の実数値 with 53-bit resolution </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

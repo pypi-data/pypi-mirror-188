@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: サポートベクターマシン</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>サポートベクターマシン<br>
+<small>
+[<a class="el" href="group__fie__machine__leaning.html">機械学習</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>モジュール</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__svm__doc.html">説明</a></td></tr>
+
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__svm.html#g0dd699f0f602eb25781e7718c03e493e">f_ml_svm_type</a> { <a class="el" href="group__fie__ml__svm.html#gg0dd699f0f602eb25781e7718c03e493e05390be800467640a975a04716b12113">F_ML_SVM_TYPE_C_SVM</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">サポートベクターマシンのタイプ  <a href="group__fie__ml__svm.html#g0dd699f0f602eb25781e7718c03e493e">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__svm.html#g0a535308d0a4bcc6129b74ee7abb1310">f_ml_svm_kernel_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__ml__svm.html#gg0a535308d0a4bcc6129b74ee7abb13101f2b176c35e66cf01a2efd6ccaee4ce3">F_ML_SVM_KERNEL_LINEAR</a> =  1, 
+<a class="el" href="group__fie__ml__svm.html#gg0a535308d0a4bcc6129b74ee7abb13103c446abad545af15baebbd77c0691f0d">F_ML_SVM_KERNEL_POLYNOMIAL</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__ml__svm.html#gg0a535308d0a4bcc6129b74ee7abb13105be64e52652a79aa0c7036c268c9fcd3">F_ML_SVM_KERNEL_RBF</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">サポートベクターマシンのカーネル関数のタイプ  <a href="group__fie__ml__svm.html#g0a535308d0a4bcc6129b74ee7abb1310">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__svm.html#g54131a68d96ed497cb1e3ae7a1dc5129">fnFIE_ml_do_train_svm</a> (FHANDLE hMl_sample, INT svm_type, DOUBLE margin, DOUBLE stop_rate, INT kernel_type, DOUBLE gamma, DOUBLE coeff_0, UINT degree, INT preprocess, INT train_time_sec, INT *error_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">サポートベクターマシンによる機械学習  <a href="#g54131a68d96ed497cb1e3ae7a1dc5129"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__svm.html#gcccd39107280fea973c8cd0a3905b466">fnFIE_ml_get_svm_param</a> (FHANDLE hMl, INT *svm_type, DOUBLE *margin, DOUBLE *stop_rate, INT *kernel_type, DOUBLE *gamma, DOUBLE *coeff_0, UINT *degree, INT *preprocess)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">サポートベクターマシンのパラメータを取得する  <a href="#gcccd39107280fea973c8cd0a3905b466"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g0dd699f0f602eb25781e7718c03e493e"></a><!-- doxytag: member="fie.h::f_ml_svm_type" ref="g0dd699f0f602eb25781e7718c03e493e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__ml__svm.html#g0dd699f0f602eb25781e7718c03e493e">f_ml_svm_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+サポートベクターマシンのタイプ 
+<p>
+サポートベクターマシンの種類を指定する定数です <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg0dd699f0f602eb25781e7718c03e493e05390be800467640a975a04716b12113"></a><!-- doxytag: member="F_ML_SVM_TYPE_C_SVM" ref="gg0dd699f0f602eb25781e7718c03e493e05390be800467640a975a04716b12113" args="" -->F_ML_SVM_TYPE_C_SVM</em>&nbsp;</td><td>
+データのはずれ値に対するペナルティパラメータを持つ、多クラス識別SVM。最も基本的なアルゴリズム </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0a535308d0a4bcc6129b74ee7abb1310"></a><!-- doxytag: member="fie.h::f_ml_svm_kernel_type" ref="g0a535308d0a4bcc6129b74ee7abb1310" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__ml__svm.html#g0a535308d0a4bcc6129b74ee7abb1310">f_ml_svm_kernel_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+サポートベクターマシンのカーネル関数のタイプ 
+<p>
+サポートベクターマシンの学習において用いる、カーネル関数の種類を指定する関数です <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg0a535308d0a4bcc6129b74ee7abb13101f2b176c35e66cf01a2efd6ccaee4ce3"></a><!-- doxytag: member="F_ML_SVM_KERNEL_LINEAR" ref="gg0a535308d0a4bcc6129b74ee7abb13101f2b176c35e66cf01a2efd6ccaee4ce3" args="" -->F_ML_SVM_KERNEL_LINEAR</em>&nbsp;</td><td>
+線形カーネル　高次元への写像は行わず、もとの特徴空間内で線形分離が行われる </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg0a535308d0a4bcc6129b74ee7abb13103c446abad545af15baebbd77c0691f0d"></a><!-- doxytag: member="F_ML_SVM_KERNEL_POLYNOMIAL" ref="gg0a535308d0a4bcc6129b74ee7abb13103c446abad545af15baebbd77c0691f0d" args="" -->F_ML_SVM_KERNEL_POLYNOMIAL</em>&nbsp;</td><td>
+多項式カーネル 指定した多項式に応じた、高次元空間へ写像を行う </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg0a535308d0a4bcc6129b74ee7abb13105be64e52652a79aa0c7036c268c9fcd3"></a><!-- doxytag: member="F_ML_SVM_KERNEL_RBF" ref="gg0a535308d0a4bcc6129b74ee7abb13105be64e52652a79aa0c7036c268c9fcd3" args="" -->F_ML_SVM_KERNEL_RBF</em>&nbsp;</td><td>
+動径基底関数カーネル　ほとんどの場合，適切に動作する </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g54131a68d96ed497cb1e3ae7a1dc5129"></a><!-- doxytag: member="fie_ml_svm.c::fnFIE_ml_do_train_svm" ref="g54131a68d96ed497cb1e3ae7a1dc5129" args="(FHANDLE hMl_sample, INT svm_type, DOUBLE margin, DOUBLE stop_rate, INT kernel_type, DOUBLE gamma, DOUBLE coeff_0, UINT degree, INT preprocess, INT train_time_sec, INT *error_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_ml_do_train_svm           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl_sample</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>svm_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>margin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>stop_rate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>kernel_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>coeff_0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>degree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>preprocess</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>train_time_sec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>error_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+サポートベクターマシンによる機械学習 
+<p>
+<em>hMl_sample</em> で指定された教師データを用いて、サポートベクターマシン(SVM)による 学習を行い、その結果を保持した学習オブジェクトのハンドルを返します。<br>
+<p>
+<em>hMl_sample</em> には、学習で用いる教師データを設定した教師データオブジェクトを 設定します。<em>hMl_sample</em> には2クラス以上の教師データが設定されている必要があります。 <em>hMl_sample</em> に2クラス以上の教師データが設定されていない場合は、返却されるハンドルはNULLとなります。 また、後述の <em>error_code</em> が設定されていた場合は、F_ERR_CALC_IMPOSSIBLE が出力されます。<br>
+<p>
+<em>svm_type</em> には、学習で用いるSVMのタイプ(モデル)を指定します。以下の値にて指定してください。<br>
+<p>
+<ul>
+<li>F_ML_SVM_TYPE_C_SVM<br>
+ C-SVMを用います。教師データの誤分類に対するペナルティパラメータを持つ多クラス識別SVMであり、最も標準的なSVMモデルです</li></ul>
+<p>
+<em>margin</em> はソフトマージンおける誤分類の許容パラメータです。<em>svm_type</em> で指定したSVMのタイプによって、パラメータの意味や 取りうる値の範囲、ディフォルト値は以下のようになります。<p>
+<ul>
+<li>F_ML_SVM_TYPE_C_SVMの場合<br>
+ 0 &lt; <em>margin</em> の値を設定します。値が小さいほどソフトマージン、大きいほどハードマージンとなります。(ディフォルト値 : 1.0)<br>
+</li></ul>
+<p>
+<em>stop_rate</em> はSVMの学習を終了する収束条件の値を設定します。この値を大きくすると、学習時間は短くなりますが、 識別精度は悪くなります。通常、この値はディフォルト値から変更する必要はありません。(ディフォルト値 ： 0.001)<br>
+<p>
+<em>kernel_type</em> はSVMで用いるカーネル関数のタイプを指定します。以下の値にて指定してください。<br>
+<p>
+<ul>
+<li>F_ML_SVM_KERNEL_LINEAR <br>
+ 線形カーネルを用います。次の式で与えられるカーネル関数です。</li></ul>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ K( {\bf x_{1}},{\bf x_{2}}) = {\bf x_{1}} \cdot {\bf x_{2}} \]" src="form_466.png">
+<p>
+<p>
+<ul>
+<li>F_ML_SVM_KERNEL_POLYNOMIAL<br>
+ 多項式カーネルを用います。次の式で与えられるカーネル関数です。</li></ul>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ K( {\bf x_{1}},{\bf x_{2}}) = (\gamma ({\bf x_{1}} \cdot {\bf x_{2}}) + c)^d \]" src="form_467.png">
+<p>
+<p>
+<ul>
+<li>F_ML_SVM_KERNEL_RBF<br>
+ 動径基底関数カーネル(RBFカーネル)を用います。次の式で与えられるカーネル関数です。</li></ul>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ K( {\bf x_{1}},{\bf x_{2}}) = \exp(- \gamma \|{\bf x_{1}} - {\bf x_{2}}\|^2 ) \]" src="form_473.png">
+<p>
+<p>
+<em>gamma</em> , <em>coeff_0</em> , <em>degree</em> は上記カーネル関数の変数 <img class="formulaInl" alt="$ \gamma $" src="form_762.png">, <img class="formulaInl" alt="$c$" src="form_440.png">, <img class="formulaInl" alt="$d$" src="form_472.png"> の値となります。 式中に現れない変数は、実行時には無視されます。<br>
+<p>
+<em>gamma</em> は 0 &lt; <em>gamma</em> となる実数を設定します。ディフォルト値は、<em>kernel_type</em> の設定に応じて、以下のようになります。<br>
+<ul>
+<li>F_ML_SVM_KERNEL_POLYNOMIAL : ディフォルト値 : 1.0 <br>
+</li><li>F_ML_SVM_KERNEL_RBF : ディフォルト値 : 1/k ( k : 学習する特徴ベクトルの次元)<br>
+</li></ul>
+<p>
+<em>coeff_0</em> は 0 &lt;= <em>coeff_0</em> となる実数を設定します。ディフォルト値は1.0です。<br>
+<p>
+<em>degree</em> は 1 &lt;= <em>degree</em> となる整数を設定します。ディフォルト値は3です。<br>
+<p>
+<em>preprocess</em> は学習を開始する前に、与えられた教師データに行う前処理を指定します。 前処理を適切に行うことで、学習時間の短縮や、識別精度の向上が期待できます。<br>
+ 値は以下のdefineをORで指定します。それ以外の値は無視されるので注意してください。 また、前処理が不要な場合は0を指定してください。<br>
+<p>
+<ul>
+<li><a class="el" href="group__fie__machine__leaning.html#g3e0bbb57e553eeb76abf8ad22203cf48">F_ML_PRE_TRIM_VECTOR</a> : 重複した教師データの削除 <br>
+</li><li><a class="el" href="group__fie__machine__leaning.html#g3de91d3be70c2e2d58b68d261b5def11">F_ML_PRE_SCALE_VECTOR</a> : 特徴ベクトルの各成分の正規化 <br>
+</li></ul>
+<p>
+SVMでは「 <a class="el" href="group__fie__machine__leaning.html#g3de91d3be70c2e2d58b68d261b5def11">F_ML_PRE_SCALE_VECTOR</a> 」を指定しておくことを推奨します。<br>
+ なお、教師データに対する前処理を行う際は、内部で教師データオブジェクトのコピーを 作成し、そのデータに対して処理を行います。そのため、入力の <em>hMl_sample</em> は変更されません。<p>
+<em>train_time_sec</em> は 学習時間の上限値を秒単位で設定します。この値が設定されていた場合、 内部で学習開始からの経過時間の監視を行います。指定された時間を経過した場合、 学習を打ち切り、処理を終了します。学習の打ち切りが発生した場合、 返却されるハンドルはNULLとなります。また、後述の <em>error_code</em> が設定されていた場合は、 F_ERR_TIMEOUT が設定されます。<p>
+3クラス以上の多クラス識別の場合、各クラス同士のペアの学習毎にこの時間が 適応されます。よって、Nクラスでの学習の場合、最大で <em>train_time_sec</em> * ( N(N-1) / 2 ) だけ 学習が行われます。タイムアウトが1回でも発生した場合は、エラー扱いとなります。<br>
+<p>
+学習時間の監視が不要な場合は <em>train_time_sec</em> に0を設定します。このときは、 終了条件が成立するまで、無制限に学習を続けます。<br>
+<p>
+<em>error_code</em> には、学習を行った際のエラーコードを設定されます。学習が正常終了した場合は F_ERR_NONE が 設定されます。なお、エラーコードを受け取る必要が無い場合はNULLを指定してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_sample</em>&nbsp;</td><td>学習に用いる教師データ教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>svm_type</em>&nbsp;</td><td>サポートベクターマシンのタイプ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>margin</em>&nbsp;</td><td>ソフトマージンにおける許容パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>stop_rate</em>&nbsp;</td><td>学習を終了する収束条件 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>kernel_type</em>&nbsp;</td><td>使用するカーネル関数の種類 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gamma</em>&nbsp;</td><td>カーネル関数パラメータ <img class="formulaInl" alt="$ \gamma $" src="form_762.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coeff_0</em>&nbsp;</td><td>カーネル関数パラメータ 定数項 <img class="formulaInl" alt="$c$" src="form_440.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>degree</em>&nbsp;</td><td>カーネル関数パラメータ 次数 <img class="formulaInl" alt="$d$" src="form_472.png"> </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>preprocess</em>&nbsp;</td><td>学習の前処理指定パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>train_time_sec</em>&nbsp;</td><td>学習時間の上限値(単位：秒) 指定しない場合は0 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>error_code</em>&nbsp;</td><td>エラー発生時のエラーコード エラーコードを受け取る必要の無い場合は、NULLを指定します。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_PARAM 入力されたパラメータが不正</li><li>F_ERR_INVALID_OBJECT 入力された教師データオブジェクトが不正</li><li>F_ERR_TIMEOUT 指定された学習時間内で学習が終了しなかった</li><li>F_ERR_NOMEMORY メモリ不足による領域確保エラー</li><li>F_ERR_CALC_IMPOSSIBLE 計算不能エラー</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保された機械学習オブジェクトのハンドル エラーにより学習に失敗した場合はNULLを返します</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__ml.html#g8a2df349dd2fb1029049337851d06be8" title="機械学習に基づいた、入力データの判別">fnFIE_ml_predict()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcccd39107280fea973c8cd0a3905b466"></a><!-- doxytag: member="fie_ml_svm.c::fnFIE_ml_get_svm_param" ref="gcccd39107280fea973c8cd0a3905b466" args="(FHANDLE hMl, INT *svm_type, DOUBLE *margin, DOUBLE *stop_rate, INT *kernel_type, DOUBLE *gamma, DOUBLE *coeff_0, UINT *degree, INT *preprocess)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_get_svm_param           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>svm_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>margin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>stop_rate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>kernel_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>coeff_0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>degree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>preprocess</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+サポートベクターマシンのパラメータを取得する 
+<p>
+<em>hMl</em> で指定したサポートベクターマシンのパラメータを取得します。<p>
+取得できるパラメータは、サポートベクターマシンのタイプ、指定マージン、停止条件、 カーネル関数のタイプ、カーネル関数に指定した各パラメータ値、学習の前処理指定パラメータです。<br>
+<p>
+出力先の引数は全てNULLポインタチェックがされるため、必要の無いものについてはNULL指定が可能です。 このとき、 <em>hMl</em> 以外のパラメータがNULLであっても、エラーにはならず正常終了します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_sample</em>&nbsp;</td><td>情報を取得するサポートベクターマシンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>svm_type</em>&nbsp;</td><td>サポートベクターマシンのタイプ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>margin</em>&nbsp;</td><td>ソフトマージンにおける許容パラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>stop_rate</em>&nbsp;</td><td>学習を終了する収束条件 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>kernel_type</em>&nbsp;</td><td>使用するカーネル関数の種類 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>gamma</em>&nbsp;</td><td>カーネル関数パラメータ <img class="formulaInl" alt="$ \gamma $" src="form_762.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>coeff_0</em>&nbsp;</td><td>カーネル関数パラメータ 定数項 <img class="formulaInl" alt="$c$" src="form_440.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>degree</em>&nbsp;</td><td>カーネル関数パラメータ 次数 <img class="formulaInl" alt="$d$" src="form_472.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>preprocess</em>&nbsp;</td><td>学習の前処理指定パラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

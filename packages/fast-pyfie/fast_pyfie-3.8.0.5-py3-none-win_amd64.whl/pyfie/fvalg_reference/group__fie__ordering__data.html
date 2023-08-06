@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 辞書式順序ソート</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>辞書式順序ソート<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ordering__data.html#g84e66d71a20c20e28bf9aed6e92b0fae">fnFIE_cg_ordering_data_sort</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT pnt_num, <a class="el" href="structPNT__T.html">PNT_T</a> **ord_pnts, INT *ord_pnt_num, INT **org_to_ord, INT **ord_to_org)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点データの辞書式順序ソートの実行  <a href="#g84e66d71a20c20e28bf9aed6e92b0fae"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g84e66d71a20c20e28bf9aed6e92b0fae"></a><!-- doxytag: member="fie_cg.c::fnFIE_cg_ordering_data_sort" ref="g84e66d71a20c20e28bf9aed6e92b0fae" args="(const PNT_T *pnts, INT pnt_num, PNT_T **ord_pnts, INT *ord_pnt_num, INT **org_to_ord, INT **ord_to_org)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_ordering_data_sort           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>ord_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ord_pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>org_to_ord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>ord_to_org</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点データの辞書式順序ソートの実行 
+<p>
+計算幾何学ライブラリの幾つかのものは <ul>
+<li>入力点に重複がないこと </li>
+<li>入力点が辞書式順序にソートされている</li>
+</ul>
+を仮定しています。 このために本関数が用意されています。<p>
+出力値( <em>ord_pnts</em> , <em>org_to_ord</em> , <em>ord_to_org</em> )は、関数内部でメモリ領域が確保されます。 確保された配列の要素数は、 <em>pnt_num</em> となります。 ただし、<em>ord_pnts</em> と <em>ord_to_org　は、</em> <em>ord_pnt_num</em> の要素のみが有効となります。 各出力値が必要なくなった場合は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて解放してください。 <br>
+ なお、 <em>*ord_pnts</em> , <em>*org_to_ord</em> , <em>*ord_to_org</em> はNULLで初期化されていない場合は F_ERR_INVALID_PARAM が返されます。<p>
+本関数では与えられた点列を、下図のような順序に並び替えます。 また、点列に重複点が合った場合には、重複した点は取り除かれます。<p>
+<div align="center">
+<img src="fie_cg_sort.png" alt="fie_cg_sort.png">
+<p><strong>Fig1. 辞書式順序</strong></p></div>
+ 辞書式順序ソートの処理速度のオーダーはＯ( n log n ) です。 なお、以下では辞書式順序でソートされたデータを単に「順序データ」と呼びます。<p>
+入力された点データ(以後「入力データ」という)を辞書式順序にソートし、同時に重複する点を省きます。 ここでの辞書式順序とは、Fig1の (1) になります。 重複を取り除くように実行された辞書式順序ソートの結果を呼出し側に引き渡します。 辞書式順序ソートは重複を取り除くように実行されるので、入力された点データの数よりも ソート後のデータの数が少なくなっている場合があります。 出力として <em>ord_pnt_num</em> があるのはそのためです。<p>
+<em>pnt_num</em> は１以上の値を入力してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力元データ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>入力元データの点の数( <em>pnts</em> の要素数 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ord_pnts</em>&nbsp;</td><td>ソートデータ配列 <ul>
+<li>確保されている要素数： <em>pnt_num</em> </li>
+<li>有効な要素数： <em>ord_pnt_num</em> </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ord_pnt_num</em>&nbsp;</td><td>ソートデータの点の数( <em>ord_pnts</em> の有効な要素数 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>org_to_ord</em>&nbsp;</td><td>元データ番号からソートデータ番号への変換表 <ul>
+<li>確保されている要素数： <em>pnt_num</em> </li>
+<li>有効な要素数： <em>pnt_num</em> </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ord_to_org</em>&nbsp;</td><td>ソートデータ番号から元データ番号への変換表 <ul>
+<li>確保されている要素数： <em>pnt_num</em> </li>
+<li>有効な要素数： <em>ord_pnt_num</em> </li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

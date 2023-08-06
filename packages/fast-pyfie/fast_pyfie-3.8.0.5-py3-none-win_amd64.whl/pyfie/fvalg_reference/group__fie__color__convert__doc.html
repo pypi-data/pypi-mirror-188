@@ -1,0 +1,1927 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__color__convert.html">色空間変換</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="fie_color_convert_space">
+色空間と色空間変換</a></h2>
+本章では、簡単な色空間の説明と、色空間変換に用いた定義式を示します。 以下に示す色空間のうち、FAST独自仕様と表記されているものは、弊社独自の色空間定義です。 当社旧ライブラリ(FVL,FVXなど)での色空間の定義では、いくつか一般的な定義と異なるものが あったため、今回のライブラリではそれらをより一般的なものに変更しております。 そこで、これら当社旧ライブラリとの互換性を保つために、変更された色空間を 当社独自仕様として別途用意しました。 なお、特に表記がない色空間は、旧ライブラリと同一の仕様か、 または旧ライブラリに存在しなかった色空間です。<h3><a class="anchor" name="fie_color_convert_space_rgb">
+RGB</a></h3>
+本ライブラリでは、基準色空間としてRGB色空間を定義しています。 Fig1に基準色空間であるRGB色空間を示します。<p>
+<div align="center">
+<img src="color_convert_rgb.png" alt="color_convert_rgb.png">
+<p><strong>Fig1. RGB色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のRGB色空間を (R',G',B') とします。 なお、DOUBLE -&gt; DOUBLE 、UC8 -&gt; UC8 の同一の画素タイプへの変換には、 <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} R' \\ G' \\ B' \\ \end{array} \right) = \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_75.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R', G', B' \le 255 \]" src="form_77.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_gray">
+グレースケール</a></h3>
+本変換は、RGB色空間との相互変換が不可な変換です。 つまり、RGBからグレースケール画像へ変換した画像から逆変換によりRGBに戻した画像は、変換前の画像と等しくなりません。 もし、グレースケールで何らかの処理をした後、変換前のRGBを使用したい場合には、RGB画像を保持しておく必要があります。<br>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; Gray への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Gray = 0.299 \times R + 0.587 \times G + 0.114 \times B \]" src="form_78.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Gray \le 255 \]" src="form_79.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>Gray -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) = \left( \begin{array}{lll} +1.00000 &amp; +0.00000 &amp; +0.00000 \\ +0.00000 &amp; +1.00000 &amp; +0.00000 \\ +0.00000 &amp; +0.00000 &amp; +1.00000 \\ \end{array} \right) \left( \begin{array}{l} Gray \\ Gray \\ Gray \\ \end{array} \right) \\ \]" src="form_80.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Gray \le 255 \]" src="form_79.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>Gray -&gt; Gray への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のGray色空間をGray'とします。 なお、DOUBLE -&gt; DOUBLE 、UC8 -&gt; UC8の同一の画素タイプへの変換には、 <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Gray' = Gray \]" src="form_81.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Gray \le 255 \]" src="form_79.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Gray' \le 255 \]" src="form_82.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_xyz">
+XYZ</a></h3>
+RGB表色系では、等色関数に負の値があります。 そのため、等色関数の値がすべて非負となるようにXYZ表色系が導入されました。 XYZ表色系は他のCIE表色系の基礎となります。<br>
+ Fig2にXYZ色空間を示します。<p>
+<div align="center">
+<img src="color_convert_xyz.png" alt="color_convert_xyz.png">
+<p><strong>Fig2. XYZ色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; XYZ への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) = \left( \begin{array}{lll} +2.768900 &amp; +1.751700 &amp; +1.130200 \\ +1.000000 &amp; +4.590700 &amp; +0.060100 \\ +0.000000 &amp; +0.056500 &amp; +5.594300 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_83.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 1440.954 \]" src="form_84.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; XYZ への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) = \left( \begin{array}{lll} +0.490001 &amp; +0.309992 &amp; +0.200007 \\ +0.176966 &amp; +0.812398 &amp; +0.010636 \\ +0.000000 &amp; +0.009999 &amp; +0.990001 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_85.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>XYZ -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{lll} +2.768900 &amp; +1.751700 &amp; +1.130200 \\ +1.000000 &amp; +4.590700 &amp; +0.060100 \\ +0.000000 &amp; +0.056500 &amp; +5.594300 \\ \end{array} \right)^{-1} \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right)\\ &amp;=&amp; \left( \begin{array}{lll} +0.418452 &amp; -0.158652 &amp; -0.082834 \\ -0.091164 &amp; +0.252424 &amp; +0.015706 \\ +0.000921 &amp; -0.002549 &amp; +0.178595 \\ \end{array} \right) \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ \end{eqnarray*}" src="form_87.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 1440.954 \]" src="form_84.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>XYZ -&gt; RGB への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) = \left( \begin{array}{lll} +2.364591 &amp; -0.896501 &amp; -0.468080 \\ -0.515151 &amp; +1.426401 &amp; +0.088750 \\ +0.005203 &amp; -0.014407 &amp; +1.009204 \\ \end{array} \right) \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ \]" src="form_88.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>XYZ -&gt; XYZ への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のXYZ色空間を(X',Y',Z')とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} X' \\ Y' \\ Z' \\ \end{array} \right) = \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ \]" src="form_89.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLEの場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 1440.954 \]" src="form_84.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X', Y', Z' \le 1440.954 \]" src="form_90.png">
+<p>
+ 変換の画素タイプがUC8 -&gt; UC8の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X', Y', Z' \le 255 \]" src="form_91.png">
+<p>
+ となります。<p>
+<dl class="user" compact><dt><b>XYZ -&gt; XYZ への変換（スケーリングあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のXYZ色空間を(X',Y',Z')とします。 そして、 <img class="formulaInl" alt="$ 0 \le X', Y', Z' \le 255 $" src="form_92.png"> とするためのスケーリング行列をSとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{1440.954000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{1440.954000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{1440.954000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.176966 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.176966 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.176966 \\ \end{array} \right) \end{eqnarray*}" src="form_93.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} X' \\ Y' \\ Z' \\ \end{array} \right) &amp;=&amp; S \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.176966 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.176966 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.176966 \\ \end{array} \right) \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ \end{eqnarray*}" src="form_94.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 1440.954 \]" src="form_84.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X', Y', Z' \le 255 \]" src="form_91.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>XYZ -&gt; XYZ への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のXYZ色空間を(X',Y',Z')とします。 そして、 <img class="formulaInl" alt="$ 0 \le X', Y', Z' \le 1440.954 $" src="form_95.png"> とするためのスケーリング行列をSとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{1440.954000}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{1440.954000}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{1440.954000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +5.650800 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +5.650800 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +5.650800 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_96.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} X' \\ Y' \\ Z' \\ \end{array} \right) &amp;=&amp; S \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +5.650800 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +5.650800 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +5.650800 \\ \end{array} \right) \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ \end{eqnarray*}" src="form_97.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255.0 \]" src="form_98.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X', Y', Z' \le 1440.954 \]" src="form_90.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_yuv">
+YUV</a></h3>
+YUV(PAL/SECAM)はアジアやヨーロッパでのTVの信号の規格です。 Y成分(輝度)についてはCIE1931XYZに従います。 ここで、CIE1931XYZ表色系とは、CIE（国際照明委員会）で 1931年に採択した等色関数 <img class="formulaInl" alt="$x\left(\lambda \right)$" src="form_99.png"> 、 <img class="formulaInl" alt="$y\left(\lambda \right)$" src="form_100.png"> 、 <img class="formulaInl" alt="$z\left(\lambda \right)$" src="form_101.png"> に基づく三色表色系です（2°視野 XYZ表色系ともいいます）。<br>
+ Fig3にYUV色空間を示します。 なお、出力画像オブジェクトの画素タイプがF_IMG_UC8などで、 スケーリング処理された場合は、Fig3と異なります。<p>
+<div align="center">
+<img src="color_convert_yuv.png" alt="color_convert_yuv.png">
+<p><strong>Fig3. YUV色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; YUV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) = \left( \begin{array}{lll} +0.299000 &amp; +0.587000 &amp; +0.114000 \\ -0.147000 &amp; -0.289000 &amp; +0.437000 \\ +0.615000 &amp; -0.515000 &amp; -0.100000 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_102.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -111.18 \le U \le 111.435 \]" src="form_104.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -156.825 \le V \le 156.825 \]" src="form_105.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; YUV への変換（スケーリング、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+<img class="formulaInl" alt="$ 0 \le Y, U, V \le 255 $" src="form_106.png"> とするためのスケーリング行列をS 、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{222.615000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{313.650000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.145475 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.813008 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_107.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \vspace{.5em} \\ +\dfrac{255.000000}{222.615000} \times 111.180000 \vspace{.5em} \vspace{.5em} \\ +\dfrac{255.000000}{313.650000} \times 156.825000 \vspace{.5em} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.000000 \\ +127.353952 \\ +127.500000 \\ \end{array} \right)\\ \end{eqnarray*}" src="form_108.png">
+<p>
+<p>
+YUV色空間への変換行列をMとすると、以下の通りとなります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) = SM \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) + T \]" src="form_109.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) = \left( \begin{array}{llll} +0.299000 &amp; +0.587000 &amp; +0.114000 &amp; 0.000000 \\ -0.168385 &amp; -0.331042 &amp; +0.500573 &amp; 127.353952 \\ +0.500000 &amp; -0.418699 &amp; -0.081301 &amp; 127.500000 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) \\ \]" src="form_110.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, U, V \le 255 \]" src="form_111.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YUV -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{lll} +0.299000 &amp; +0.587000 &amp; +0.114000 \\ -0.147000 &amp; -0.289000 &amp; +0.437000 \\ +0.615000 &amp; -0.515000 &amp; -0.100000 \\ \end{array} \right)^{-1} \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; -0.000039 &amp; +1.139828 \\ +1.000394 &amp; -0.393810 &amp; -0.580501 \\ +0.997972 &amp; +2.027879 &amp; -0.000480 \\ \end{array} \right) \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_112.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -111.18 \le U \le 111.435 \]" src="form_104.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -156.825 \le V \le 156.825 \]" src="form_105.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YUV -&gt; RGB への変換（スケーリング、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{llll} +0.299000 &amp; +0.587000 &amp; +0.114000 &amp; 0.000000 \\ -0.168385 &amp; -0.331042 &amp; +0.500573 &amp; 127.353952 \\ +0.500000 &amp; -0.418699 &amp; -0.081301 &amp; 127.500000 \\ +0.000000 &amp; +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right)^{-1} \left( \begin{array}{l} Y \\ U \\ V \\ 1 \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{llll} +1.000000 &amp; -0.000034 &amp; +1.401989 &amp; -178.749237 \\ +1.000394 &amp; -0.343796 &amp; -0.714016 &amp; +134.820834 \\ +0.997971 &amp; +1.770337 &amp; -0.000590 &amp; -225.384277 \\ +0.000000 &amp; +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ U \\ V \\ 1 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_113.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, U, V \le 255 \]" src="form_111.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YUV -&gt; YUV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のYUV色空間を(Y',U',V') とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ U' \\ V' \\ \end{array} \right) = \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) \\ \]" src="form_114.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLEの場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -111.18 \le U \le 111.435 \]" src="form_104.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -156.825 \le V \le 156.825 \]" src="form_105.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y' \le 255 \]" src="form_115.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -111.18 \le U' \le 111.435 \]" src="form_116.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -156.825 \le V' \le 156.825 \]" src="form_117.png">
+<p>
+ 変換の画素タイプがUC8 -&gt; UC8の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, U, V \le 255 \]" src="form_111.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y', U', V' \le 255 \]" src="form_118.png">
+<p>
+ となります。<p>
+<dl class="user" compact><dt><b>YUV -&gt; YUV への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のYUV色空間を(Y',U',V')とします。 そして、 <img class="formulaInl" alt="$ 0 \le Y', U', V' \le 255 $" src="form_119.png"> とするためのスケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{222.615000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{313.650000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.145475 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.813008 \\ \end{array} \right) \end{eqnarray*}" src="form_120.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \vspace{.5em} \\ +\dfrac{255.000000}{222.615000}\times 111.180000 \vspace{.5em} \\ +\dfrac{255.000000}{313.650000}\times 156.825000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.000000 \\ +127.353952 \\ +127.500000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_121.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ U' \\ V' \\ \end{array} \right) = S \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) + T \]" src="form_122.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ U' \\ V' \\ \end{array} \right) = \left( \begin{array}{llll} +1.000000 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.145475 &amp; +0.000000 &amp; +127.353952 \\ +0.000000 &amp; +0.000000 &amp; +0.813008 &amp; +127.500000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ U \\ V \\ 1 \\ \end{array} \right) \\ \]" src="form_123.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -111.18 \le U \le 111.435 \]" src="form_104.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -156.825 \le V \le 156.825 \]" src="form_105.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y', U', V' \le 255 \]" src="form_118.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YUV -&gt; YUV への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のYUV色空間を(Y',U',V')とします。 そして、 <img class="formulaInl" alt="$ 0 \le Y' \le 255 $" src="form_124.png"> 、 <img class="formulaInl" alt="$ -111.18 \le U' \le 111.435 $" src="form_125.png"> 、 <img class="formulaInl" alt="$ -156.825 \le V' \le 156.825 $" src="form_126.png"> とするためのスケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{222.615000}{255.0000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{313.650000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.873000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.230000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_127.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = \left( \begin{array}{l} +0.000000 \\ -111.180000 \\ -156.825000 \\ \end{array} \right) \\ \]" src="form_128.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ U' \\ V' \\ \end{array} \right) = S \left( \begin{array}{l} Y \\ U \\ V \\ \end{array} \right) + T \]" src="form_122.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ I' \\ V' \\ \end{array} \right) = \left( \begin{array}{llll} +1.000000 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.873000 &amp; +0.000000 &amp; -111.180000 \\ +0.000000 &amp; +0.000000 &amp; +1.230000 &amp; -156.825000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ U \\ V \\ 1 \\ \end{array} \right) \\ \]" src="form_129.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, U, V \le 255 \]" src="form_111.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y' \le 255 \]" src="form_115.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -111.18 \le U' \le 111.435 \]" src="form_116.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -156.825 \le V' \le 156.825 \]" src="form_117.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_yiq">
+YIQ</a></h3>
+YIQ(NTSC)は北アメリカでのTVの信号の規格です。 Y成分(輝度)についてはCIE1931XYZに従います。<br>
+ Fig4にYIQ色空間を示します。 なお、出力画像オブジェクトの画素タイプがF_IMG_UC8などで、 スケーリング処理された場合は、Fig4と異なります。<p>
+<div align="center">
+<img src="color_convert_yiq.png" alt="color_convert_yiq.png">
+<p><strong>Fig4. YIQ色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; YIQ への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) = \left( \begin{array}{lll} +0.299000 &amp; +0.587000 &amp; +0.114000 \\ +0.596000 &amp; -0.274000 &amp; -0.322000 \\ +0.211000 &amp; -0.523000 &amp; +0.312000 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_130.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -151.98 \le I \le 151.98 \]" src="form_131.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -133.365 \le Q \le 133.365 \]" src="form_132.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; YIQ への変換（スケーリング、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+<img class="formulaInl" alt="$ 0 \le Y, I, Q \le 255 $" src="form_133.png"> とするためのスケーリング行列をS 、平行移動行列をTとします<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{303.960000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{266.730000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.838926 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.956023 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_134.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \vspace{.5em} \\ +\dfrac{255.000000}{303.960000}\times 151.980000 \vspace{.5em} \\ +\dfrac{255.000000}{266.730000}\times 133.365000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.000000 \\ +127.500000 \\ +127.500000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_135.png">
+<p>
+<p>
+YIQ色空間への変換行列をMとすると、以下の通りとなります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) = SM \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) + T \]" src="form_136.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) = \left( \begin{array}{llll} +0.299000 &amp; +0.587000 &amp; +0.114000 &amp; 0.000000 \\ +0.500000 &amp; -0.229866 &amp; -0.270134 &amp; 127.500000 \\ +0.201721 &amp; -0.500000 &amp; +0.298279 &amp; 127.500000 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) \\ \]" src="form_137.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, I, Q \le 255 \]" src="form_138.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YIQ -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{lll} +0.299000 &amp; +0.587000 &amp; +0.114000 \\ -0.596000 &amp; -0.274000 &amp; -0.322000 \\ +0.211000 &amp; -0.523000 &amp; -0.312000 \\ \end{array} \right)^{-1} \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.956171 &amp; +0.621430 \\ +1.000000 &amp; -0.272689 &amp; -0.646813 \\ +1.000000 &amp; -1.103744 &amp; +1.700623 \\ \end{array} \right) \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) \\ \end{eqnarray*}" src="form_139.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -151.98 \le I \le 151.98 \]" src="form_131.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -133.365 \le Q \le 133.365 \]" src="form_132.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YIQ -&gt; RGB への変換（スケーリング、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{llll} +0.299000 &amp; +0.587000 &amp; +0.114000 &amp; 0.000000 \\ +0.500000 &amp; -0.229866 &amp; -0.270134 &amp; 127.500000 \\ +0.204721 &amp; -0.500000 &amp; +0.298279 &amp; 127.500000 \\ +0.000000 &amp; +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right)^{-1} \left( \begin{array}{l} Y \\ I \\ Q \\ 1 \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{llll} +1.000000 &amp; +1.139756 &amp; +0.650018 &amp; -228.196109 \\ +1.000000 &amp; -0.325045 &amp; -0.676567 &amp; +127.705429 \\ +1.000000 &amp; -1.135664 &amp; +1.778853 &amp; -59.056581 \\ +0.000000 &amp; +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ I \\ Q \\ 1 \\ \end{array} \right) \end{eqnarray*}" src="form_140.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, I, Q \le 255 \]" src="form_138.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YIQ -&gt; YIQ への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のYIQ色空間を(Y',I',Q')とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ I' \\ Q' \\ \end{array} \right) = \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) \\ \]" src="form_141.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLEの場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -151.98 \le I \le 151.98 \]" src="form_131.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -133.365 \le Q \le 133.365 \]" src="form_132.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y' \le 255 \]" src="form_115.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -151.98 \le I' \le 151.98 \]" src="form_142.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -133.365 \le Q' \le 133.365 \]" src="form_143.png">
+<p>
+ 変換の画素タイプがUC8 -&gt; UC8の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y, I, Q \le 255 \]" src="form_138.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y', I', Q' \le 255 \]" src="form_144.png">
+<p>
+ となります。<p>
+<dl class="user" compact><dt><b>YIQ -&gt; YIQ への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のYIQ色空間(Y',I',Q')とします。 そして、 <img class="formulaInl" alt="$ 0 \le Y', I', Q' \le 255 $" src="form_145.png"> とするためのスケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{303.960000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{266.730000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.838926 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.956023 \\ \end{array} \right) \end{eqnarray*}" src="form_146.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = \left( \begin{array}{l} +0.0 \\ +127.5 \\ +127.5 \\ \end{array} \right) \\ \]" src="form_147.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ I' \\ Q' \\ \end{array} \right) = S \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) + T \]" src="form_148.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ I' \\ Q' \\ \end{array} \right) = \left( \begin{array}{llll} +1.000000 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.838926 &amp; +0.000000 &amp; +127.500000 \\ +0.000000 &amp; +0.000000 &amp; +0.956023 &amp; +127.500000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ I \\ Q \\ 1 \\ \end{array} \right) \\ \]" src="form_149.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -151.98 \le I \le 151.98 \]" src="form_131.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -133.365 \le Q \le 133.365 \]" src="form_132.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y', I', Q' \le 255 \]" src="form_144.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>YIQ -&gt; YIQ への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のYIQ色空間を(Y',I',Q')とします。 そして、 <img class="formulaInl" alt="$ 0 \le Y' \le 255 $" src="form_124.png"> 、 <img class="formulaInl" alt="$ -151.98 \le I' \le 151.98 $" src="form_150.png"> 、 <img class="formulaInl" alt="$ -133.365 \le V' \le 133.365 $" src="form_151.png"> とするためのスケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{303.960000}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{266.730000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.192000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.046000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_152.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = \left( \begin{array}{l} +0.000000 \\ -151.980000 \\ -133.365000 \\ \end{array} \right) \\ \]" src="form_153.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ I' \\ Q' \\ \end{array} \right) = S \left( \begin{array}{l} Y \\ I \\ Q \\ \end{array} \right) + T \]" src="form_148.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y' \\ I' \\ Q' \\ \end{array} \right) = \left( \begin{array}{llll} +1.000000 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.192000 &amp; +0.000000 &amp; -151.980000 \\ +0.000000 &amp; +0.000000 &amp; +1.046000 &amp; -133.365000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ I \\ Q \\ 1 \\ \end{array} \right) \\ \]" src="form_154.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -151.98 \le I \le 151.98 \]" src="form_131.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -133.365 \le Q \le 133.365 \]" src="form_132.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y', I', Q' \le 255 \]" src="form_144.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_i1i2i3">
+I1I2I3</a></h3>
+RGB色空間はRGBの3値が互いに相関を持っているため情報の重複があると考えらます。 このRGBを無相関な3値に変換しようというのがI1I2I3色空間です。<br>
+ Fig5にI1I2I3色空間を示します。<p>
+<div align="center">
+<img src="color_convert_i1i2i3.png" alt="color_convert_i1i2i3.png">
+<p><strong>Fig5. I1I2I3色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; I1I2I3 への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) = \left( \begin{array}{lll} +\dfrac{1}{3} &amp; +\dfrac{1}{3} &amp; +\dfrac{1}{3} \vspace{.5em} \\ +\dfrac{1}{2} &amp; +0 &amp; -\dfrac{1}{2} \vspace{.5em} \\ -\dfrac{1}{4} &amp; +\dfrac{1}{2} &amp; -\dfrac{1}{4} \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right)\\ \]" src="form_155.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1 \le 255 \]" src="form_156.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le I2, I3 \le 127.5 \]" src="form_157.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; I1I2I3 への変換（オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+<img class="formulaInl" alt="$ 0 \le I1', I2', I3' \le 255 $" src="form_158.png"> とするための平行移動行列をT とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = \left( \begin{array}{l} +0 \vspace{.5em} \\ +\dfrac{255}{2} \vspace{.5em} \\ +\dfrac{255}{2} \vspace{.5em} \\ \end{array} \right) \\ \]" src="form_159.png">
+<p>
+<p>
+I1I2I3色空間への変換行列をMとすると、以下の通りとなります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) = M \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) + T \]" src="form_160.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) = \left( \begin{array}{llll} +\dfrac{1}{3} &amp; +\dfrac{1}{3} &amp; +\dfrac{1}{3} &amp; +0 \vspace{.5em} \\ +\dfrac{1}{2} &amp; +0 &amp; -\dfrac{1}{2} &amp; +\dfrac{255}{2} \vspace{.5em} \\ -\dfrac{1}{4} &amp; +\dfrac{1}{2} &amp; -\dfrac{1}{4} &amp; +\dfrac{255}{2} \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right)\\ \]" src="form_161.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1, I2, I3 \le 255 \]" src="form_162.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>I1I2I3 -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{lll} +\dfrac{1}{3} &amp; +\dfrac{1}{3} &amp; +\dfrac{1}{3} \vspace{.5em} \\ +\dfrac{1}{2} &amp; +0 &amp; -\dfrac{1}{2} \vspace{.5em} \\ -\dfrac{1}{4} &amp; +\dfrac{1}{2} &amp; -\dfrac{1}{4} \vspace{.5em} \\ \end{array} \right)^{-1} \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +1 &amp; +1 &amp; -\dfrac{2}{3} \vspace{.5em} \\ +1 &amp; +0 &amp; +\dfrac{4}{3} \vspace{.5em} \\ +1 &amp; -1 &amp; -\dfrac{2}{3} \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_163.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1 \le 255 \]" src="form_156.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le I2, I3 \le 127.5 \]" src="form_157.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>I1I2I3 -&gt; RGB への変換（オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) &amp;=&amp; \left( \begin{array}{llll} +\dfrac{1}{3} &amp; +\dfrac{1}{3} &amp; +\dfrac{1}{3} &amp; +0 \vspace{.5em} \\ +\dfrac{1}{2} &amp; +0 &amp; -\dfrac{1}{2} &amp; +\dfrac{255}{2} \vspace{.5em} \\ -\dfrac{1}{4} &amp; +\dfrac{1}{2} &amp; -\dfrac{1}{4} &amp; +\dfrac{255}{2} \vspace{.5em} \\ +0 &amp; +0 &amp; +0 &amp; +1 \vspace{.5em} \\ \end{array} \right)^{-1} \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ 1 \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{llll} +1 &amp; +1 &amp; -\dfrac{2}{3} &amp; -\dfrac{85}{2} \vspace{.5em} \\ +1 &amp; +0 &amp; +\dfrac{4}{3} &amp; -170 \vspace{.5em} \\ +1 &amp; -1 &amp; -\dfrac{2}{3} &amp; +\dfrac{425}{2} \vspace{.5em} \\ +0 &amp; +0 &amp; +0 &amp; +1 \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ 1 \\ \end{array} \right) \end{eqnarray*}" src="form_164.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1, I2, I3 \le 255 \]" src="form_162.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>I1I2I3 -&gt; I1I2I3 への変換（オフセットなし）</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のI1I2I3色空間を(I1',I2',I3')とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1' \\ I2' \\ I3' \\ \end{array} \right) = \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) \\ \]" src="form_165.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLEの場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1 \le 255 \]" src="form_156.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le I2, I3 \le 127.5 \]" src="form_157.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1' \le 255 \]" src="form_166.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le I2', I3' \le 127.5 \]" src="form_167.png">
+<p>
+ 変換の画素タイプがUC8 -&gt; UC8の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1, I2, I3 \le 255 \]" src="form_162.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1', I2', I3' \le 255 \]" src="form_168.png">
+<p>
+ となります。<p>
+<dl class="user" compact><dt><b>I1I2I3 -&gt; I1I2I3 への変換（オフセットあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のI1I2I3色空間を(I1',I2',I3') とします。 そして、 <img class="formulaInl" alt="$ 0 \le I1', I2', I3' \le 255 $" src="form_158.png"> とするための平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = \left( \begin{array}{l} +0 \vspace{.5em} \\ +\dfrac{255}{2} \vspace{.5em} \\ +\dfrac{255}{2} \vspace{.5em} \\ \end{array} \right) \]" src="form_169.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1' \\ I2' \\ I3' \\ \end{array} \right) = \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) + T \]" src="form_170.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1' \\ I2' \\ I3' \\ \end{array} \right) = \left( \begin{array}{llll} +1 &amp; +0 &amp; +0 &amp; +0 \vspace{.5em} \\ +0 &amp; +1 &amp; +0 &amp; +\dfrac{255}{2} \vspace{.5em} \\ +0 &amp; +0 &amp; +1 &amp; +\dfrac{255}{2} \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) \\ \]" src="form_171.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1 \le 255 \]" src="form_156.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le I2, I3 \le 127.5 \]" src="form_157.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1', I2', I3' \le 255 \]" src="form_168.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>I1I2I3 -&gt; I1I2I3 への変換（オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のI1I2I3色空間を(I1',I2',I3')とします。 そして、 <img class="formulaInl" alt="$ -127.5 \le I1', I2', I3' \le 127.5 $" src="form_172.png"> とするための平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0 \vspace{.5em} \\ -\dfrac{255}{2} \vspace{.5em} \\ -\dfrac{255}{2} \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} I1' \\ I2' \\ I3' \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{l} I1 \\ I2 \\ I3 \\ \end{array} \right) + T \end{eqnarray*}" src="form_173.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} I1' \\ I2' \\ I3' \\ \end{array} \right) = \left( \begin{array}{llll} +1 &amp; +0 &amp; +0 &amp; +0 \vspace{.5em} \\ +0 &amp; +1 &amp; +0 &amp; -\dfrac{255}{2} \vspace{.5em} \\ +0 &amp; +0 &amp; +1 &amp; -\dfrac{255}{2} \vspace{.5em} \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ 1 \\ \end{array} \right) \\ \]" src="form_174.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1, I2, I3 \le 255 \]" src="form_162.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le I1' \le 255 \]" src="form_166.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le I2', I3' \le 127.5 \]" src="form_167.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_hsvs">
+HSV（Smithの六角錐モデル）</a></h3>
+RGB色空間では、人間の感覚に合った色彩に関する処理を行うことは難しいです。 そこで、直感的にわかりやすいマンセル表色系に近い色相、彩度、明度の三属性からなる色空間です。 HSV色空間には、いくつかのモデルが存在します。 ここでは、Smithの六角錐モデルを示します。<br>
+ Fig6にHSV（Smithの六角錐モデル）色空間を示します。 なお、出力画像オブジェクトの画素タイプがF_IMG_UC8などで、 スケーリング処理された場合は、Fig6と異なります。<p>
+<div align="center">
+<img src="color_convert_hsv_smith.png" alt="color_convert_hsv_smith.png">
+<p><strong>Fig6. HSV（Smithの六角錐モデル）色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; HSV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ H=\left \{ \begin{array}{ll} \dfrac{\pi}{3}(b -g) &amp; \mbox{if}\ R = \max \left\{ R, G, B \right\} \vspace{.5em} \\ \dfrac{\pi}{3}(2 + r - b) &amp; \mbox{if}\ G = \max \left\{ R, G, B \right\} \vspace{.5em} \\ \dfrac{\pi}{3}(4 + g - r) &amp; \mbox{if}\ B = \max \left\{ R, G, B \right\} \vspace{.5em} \\ \end{array} \right. \]" src="form_175.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ S=\frac{\max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}}{\max \left\{ R, G, B \right\}} \]" src="form_176.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ V=\frac{\max \left\{ R, G, B \right\}}{255} \]" src="form_177.png">
+<p>
+</dd></dl>
+ここで、<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ r=\frac{\max \left\{ R, G, B \right\} - R}{\max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}} \]" src="form_178.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ g=\frac{\max \left\{ R, G, B \right\} - G}{\max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}} \]" src="form_179.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ b=\frac{\max \left\{ R, G, B \right\} - B}{\max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}} \]" src="form_180.png">
+<p>
+<p>
+<img class="formulaInl" alt="$H<0$" src="form_181.png"> のとき、 <img class="formulaInl" alt="$H$" src="form_182.png"> に <img class="formulaInl" alt="$2\pi$" src="form_183.png"> を加えます。 <img class="formulaInl" alt="$\max \left\{ R, G, B \right\}=0$" src="form_184.png"> のとき <br>
+ <img class="formulaInl" alt="$S=0,H=$" src="form_185.png">不定となります。<br>
+ ただし、本ライブラリでは、 <img class="formulaInl" alt="$H=$" src="form_186.png"> 不定の場合、 <img class="formulaInl" alt="$H=0$" src="form_187.png"> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+先に求められたH, S, Vが、 <img class="formulaInl" alt="$ 0 \le H, S, V \le 255 $" src="form_190.png"> となるようにスケーリング処理をします。 変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{2\pi} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_191.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_192.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ h=floor\left(\frac{H}{\pi/3} \right) \]" src="form_194.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ V' = V \times 255 \]" src="form_195.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ P=V'\times \left(1 - S\right) \]" src="form_196.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Q=V'\times \left\{1 - S\times \left(H - h\right)\right\} \]" src="form_197.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T=V'\times \left\{1 - S\times \left(1 - H + h\right)\right\} \]" src="form_198.png">
+<p>
+</dd></dl>
+<img class="formulaInl" alt="$h=0$" src="form_199.png"> のとき<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = V',\qquad G = T,\qquad B = P \]" src="form_200.png">
+<p>
+ <img class="formulaInl" alt="$h=1$" src="form_201.png"> のとき<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = Q,\qquad G = V',\qquad B = P \]" src="form_202.png">
+<p>
+ <img class="formulaInl" alt="$h=2$" src="form_203.png"> のとき<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = P,\qquad G = V',\qquad B = T \]" src="form_204.png">
+<p>
+ <img class="formulaInl" alt="$h=3$" src="form_205.png"> のとき<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = P,\qquad G = Q,\qquad B = V' \]" src="form_206.png">
+<p>
+ <img class="formulaInl" alt="$h=4$" src="form_207.png"> のとき<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = T,\qquad G = P,\qquad B = V' \]" src="form_208.png">
+<p>
+ <img class="formulaInl" alt="$h=5$" src="form_209.png"> のとき<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = V',\qquad G = P,\qquad B = Q \]" src="form_210.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; RGB への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+まず、与えられたH,S,Vを <img class="formulaInl" alt="$ 0 \le H \le 2\pi $" src="form_211.png">、 <img class="formulaInl" alt="$ 0 \le S, V \le 1 $" src="form_212.png"> となるようにスケーリング処理をします。 変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{2\pi}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{1.000000}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{1.000000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_213.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_214.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H' \le 2\pi \]" src="form_216.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S', V' \le 1 \]" src="form_217.png">
+<p>
+<p>
+以後の計算は、スケーリングがない場合と同様です。<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) = \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \]" src="form_218.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLEの場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H' \le 2\pi \]" src="form_216.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S', V' \le 1 \]" src="form_217.png">
+<p>
+ 変換の画素タイプがUC8 -&gt; UC8の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+ となります<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{2\pi} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_191.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_192.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{2\pi}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{1.000000}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{1.000000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_213.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_214.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H' \le 2\pi \]" src="form_216.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S', V' \le 1 \]" src="form_217.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_hsvj">
+HSV（Jobloveらの双六角錐モデル）</a></h3>
+双六角錐モデルは、Smithの六角錐モデルをより精密にしたもので、デザイン分野で利用されるオストワルト表色系に近いモデルです。<br>
+ Fig7にHSV（Jobloveらの双六角錐モデル）色空間を示します。 なお、出力画像オブジェクトの画素タイプがF_IMG_UC8などで、 スケーリング処理された場合は、Fig7と異なります。 Fig7のHueはH、DiffはS、SumはVを表しています。<p>
+<div align="center">
+<img src="color_convert_hsv_joblove.png" alt="color_convert_hsv_joblove.png">
+<p><strong>Fig7. HSV（Jobloveらの双六角錐モデル）色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; HSV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ H=\left \{ \begin{array}{ll} \dfrac{\pi}{3}(b - g) &amp; \mbox{if}\ R = \max \left\{ R, G, B \right\} \vspace{.5em} \\ \dfrac{\pi}{3}(2 + r - b) &amp; \mbox{if}\ G = \max \left\{ R, G, B \right\} \vspace{.5em} \\ \dfrac{\pi}{3}(4 + g - r) &amp; \mbox{if}\ B = \max \left\{ R, G, B \right\} \vspace{.5em} \\ \end{array} \right. \]" src="form_219.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ S=\left \{ \begin{array}{ll} \dfrac{\max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}}{\max \left\{ R, G, B \right\} + \min \left\{ R, G, B \right\}} &amp; \mbox{if}\ V\le 0.5 \vspace{.5em} \\ \dfrac{\max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}}{(2\times 255) - \max \left\{ R, G, B \right\} - \min \left\{ R, G, B \right\}} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right.\]" src="form_220.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ V=\frac{\max \left\{ R, G, B \right\} + \min \left\{ R, G, B \right\}}{2\times 255} \]" src="form_221.png">
+<p>
+</dd></dl>
+<img class="formulaInl" alt="$r, g, b$" src="form_222.png"> は、Smithの六角錐モデルと同定義です。<br>
+ <img class="formulaInl" alt="$H<0$" src="form_181.png"> のとき、 <img class="formulaInl" alt="$H$" src="form_182.png"> に <img class="formulaInl" alt="$2\pi$" src="form_183.png"> を加えます。<br>
+ <img class="formulaInl" alt="$\max \left\{ R, G, B \right\}=0$" src="form_184.png"> のとき <br>
+ <img class="formulaInl" alt="$S=0,H=$" src="form_185.png">不定となります。<br>
+ ただし、本ライブラリでは、 <img class="formulaInl" alt="$H=$" src="form_186.png"> 不定の場合、 <img class="formulaInl" alt="$H=0$" src="form_187.png"> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+先に求められたH, S, Vが、 <img class="formulaInl" alt="$ 0 \le H, S, V \le 255 $" src="form_190.png"> となるようにスケーリング処理をします。 変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{2\pi} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \end{eqnarray*}" src="form_223.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_192.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = X\qquad \left(h = H + \frac{2}{3} \pi\right) \]" src="form_224.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ G = X\qquad \left(h = H\right) \]" src="form_225.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ B = X\qquad \left(h = H - \frac{2}{3} \pi\right) \]" src="form_226.png">
+<p>
+</dd></dl>
+Xは必要に応じて以下の処理で求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ h'=\left \{ \begin{array}{ll} h + 2\pi &amp; \mbox{if}\ h<0 \\ h - 2\pi &amp; \mbox{if}\ h>2\pi \\ h &amp; \mbox{if}\ otherwise \\ \end{array} \right. \]" src="form_227.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ M_{2}=\left \{ \begin{array}{ll} V\times \left(1 + S\right) &amp; \mbox{if}\ V\le 0.5 \\ V + S - V\times S &amp; \mbox{if}\ otherwise \\ \end{array} \right. \]" src="form_228.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ M_{1}=2V - M_{2} \]" src="form_229.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ X=\left \{ \begin{array}{ll} \dfrac{M_{1} + \left(M_{2} - M_{1}\right)\times h'}{\pi/3} &amp; \mbox{if}\ h'<\dfrac{\pi}{3} \\ M_{2} &amp; \mbox{if}\ \dfrac{\pi}{3} \le h' < \pi \vspace{.5em} \\ \dfrac{M_{1} + \left(M_{2} - M_{1}\right)\times \left(\dfrac{4}{3} \pi - h'\right)}{\pi/3} &amp; \mbox{if}\ \pi \le h' < \dfrac{4}{3}\pi \vspace{.5em} \\ M_{1} &amp; \mbox{if}\ \dfrac{4}{3}\pi \le h' < 2\pi \vspace{.5em} \\ \end{array} \right. \]" src="form_230.png">
+<p>
+<p>
+S=0のとき、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ R = G = B = V \]" src="form_231.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; RGB への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+まず、与えられたH,S,Vを <img class="formulaInl" alt="$ 0 \le H \le 2\pi $" src="form_211.png">、 <img class="formulaInl" alt="$ 0 \le S, V \le 1 $" src="form_212.png"> となるようにスケーリング処理をします。 変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{2\pi}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{1.000000}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{1.000000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_213.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_214.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H' \le 2\pi \]" src="form_216.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S', V' \le 1 \]" src="form_217.png">
+<p>
+<p>
+以後の計算は、スケーリングがない場合と同様です。<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) = \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \]" src="form_218.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLEの場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H' \le 2\pi \]" src="form_216.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S', V' \le 1 \]" src="form_217.png">
+<p>
+ 変換の画素タイプがUC8 -&gt; UC8の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+ となります<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{2\pi} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_191.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +255.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +255.000000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_192.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H \le 2\pi \]" src="form_188.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S, V \le 1 \]" src="form_189.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を SCALE とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{2\pi}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{1.000000}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{1.000000}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \end{eqnarray*}" src="form_232.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.003922 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.003922 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_214.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H' \le 2\pi \]" src="form_216.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S', V' \le 1 \]" src="form_217.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_lab">
+L*a*b*</a></h3>
+CIEが均等知覚色空間の標準化のために推奨した表色系です。 この表色系は、三刺激値X,Y,Zで均等色空間を近似することを目的に設計され、L*a*b* の直交座標系で定義されています。<br>
+ ただし、RGBから L*a*b* 色空間変換で L*a*b* の画素タイプがF_IMG_UC8であった場合、 スケーリング、オフセット処理が施されるため、均等色空間としての意味を成しませんので注意してください。<br>
+ Fig8に L*a*b* 色空間を示します。 なお、出力画像オブジェクトの画素タイプがF_IMG_UC8などで、 スケーリング処理された場合は、Fig8と異なります。<p>
+<div align="center">
+<img src="color_convert_lab.png" alt="color_convert_lab.png">
+<p><strong>Fig8. L*a*b*色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; L*a*b* への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) = \left( \begin{array}{lll} +0.490001 &amp; +0.309992 &amp; +0.200007 \\ +0.176966 &amp; +0.812398 &amp; +0.010636 \\ +0.000000 &amp; +0.009999 &amp; +0.990001 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right)\\ \]" src="form_233.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ L^*=\left \{ \begin{array}{ll} 116\times \left(\dfrac{Y}{Y_{n}}\right)^{\dfrac{1}{3}} - 16 &amp; \mbox{if}\ \dfrac{Y}{Y_{n}} > 0.008856 \vspace{.5em} \\ 116\times \left\{7.787\left(\dfrac{Y}{Y_{n}}\right) + \dfrac{16}{116}\right\} - 16\\ = 903.3\left(\dfrac{Y}{Y_{n}}\right) &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_234.png">
+<p>
+ ※CIEが修正式を勧告しています。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ a^*=500\left\{f\left(\frac{X}{X_{n}}\right) - f\left(\frac{Y}{Y_{n}}\right)\right\} \]" src="form_235.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ b^*=200\left\{f\left(\frac{Y}{Y_{n}}\right) - f\left(\frac{Z}{Z_{n}}\right)\right\} \]" src="form_236.png">
+<p>
+<p>
+関数 <img class="formulaInl" alt="$f\left(\frac{X}{X_{n}}\right)$" src="form_237.png"> は、以下の通りです。<br>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f\left(\frac{X}{X_{n}}\right)=\left \{ \begin{array}{ll} \left(\dfrac{X}{X_{n}}\right)^{\dfrac{1}{3}} &amp; \mbox{if}\ \dfrac{X}{X_{n}} > 0.008856 \vspace{.5em} \\ 7.787\left(\dfrac{X}{X_{n}}\right) + \dfrac{16}{116} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_238.png">
+<p>
+<p>
+<img class="formulaInl" alt="$f\left(\frac{Y}{Y_{n}}\right)$" src="form_239.png"> 、 <img class="formulaInl" alt="$f\left(\frac{Z}{Z_{n}}\right)$" src="form_240.png"> も同様です。<br>
+ <img class="formulaInl" alt="$X_{n}$" src="form_241.png"> 、 <img class="formulaInl" alt="$Y_{n}$" src="form_242.png"> 、 <img class="formulaInl" alt="$Z_{n}$" src="form_243.png"> は、対象と同一照明下の標準白色に対する三刺激値です。 照明の種類毎に指定する必要となります。 ただし、本ライブラリでは照明の種類が特定できないため、 <img class="formulaInl" alt="$X_{n}=Y_{n}=Z_{n}=255$" src="form_244.png"> と定義します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^* \le 100 \]" src="form_245.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le a^* \le 182.446523 \]" src="form_246.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le b^* \le 156.201147 \]" src="form_247.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; L*a*b* への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+本処理では、最終的に<img class="formulaInl" alt="$ 0 \le L^{*},a^{*},b^{*} \le 255 $" src="form_248.png"> となるため、一部の計算を省略可能となります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) = \left( \begin{array}{lll} +0.490001 &amp; +0.309992 &amp; +0.200007 \\ +0.176966 &amp; +0.812398 &amp; +0.010636 \\ +0.000000 &amp; +0.009999 &amp; +0.990001 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_85.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ L^{*}=f\left(\frac{Y}{Y_{n}}\right) \]" src="form_249.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ a^{*}=f\left(\frac{X}{X_{n}}\right) - f\left(\frac{Y}{Y_{n}}\right) \]" src="form_250.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ b^{*}=f\left(\frac{Y}{Y_{n}}\right) - f\left(\frac{Z}{Z_{n}}\right) \]" src="form_251.png">
+<p>
+<p>
+関数 <img class="formulaInl" alt="$f\left(\frac{X}{X_{n}}\right)$" src="form_237.png"> は、以下の通りです。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f\left(\frac{X}{X_{n}}\right)=\left \{ \begin{array}{ll} \left(\dfrac{X}{X_{n}}\right)^{\dfrac{1}{3}} &amp; \mbox{if}\ \dfrac{X}{X_{n}} > 0.008856 \vspace{.5em} \\ 7.787\left(\dfrac{X}{X_{n}}\right) + \dfrac{16}{116} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_238.png">
+<p>
+<p>
+<img class="formulaInl" alt="$f\left(\frac{Y}{Y_{n}}\right)$" src="form_239.png"> 、 <img class="formulaInl" alt="$f\left(\frac{Z}{Z_{n}}\right)$" src="form_240.png"> も同様です。<p>
+<img class="formulaInl" alt="$X_{n}$" src="form_241.png"> 、 <img class="formulaInl" alt="$Y_{n}$" src="form_242.png"> 、 <img class="formulaInl" alt="$Z_{n}$" src="form_243.png"> は、対象と同一照明下の標準白色に対する三刺激値です。 照明の種類毎に指定する必要があります。 ただし、本ライブラリでは照明の種類が特定できないため、 <img class="formulaInl" alt="$X_{n}=Y_{n}=Z_{n}=255$" src="form_244.png"> と定義します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0.137931 \le L^{*} \le 1.00 \]" src="form_252.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -0.256305 \le a^{*} \le 0.364893 \]" src="form_253.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -0.776739 \le b^{*} \le 0.781006 \]" src="form_254.png">
+<p>
+<p>
+<img class="formulaInl" alt="$ 0 \le L^{*},a^{*},b^{*} \le 255 $" src="form_248.png"> とするためのスケーリング行列をS 、平行移動行列をTとします。 変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right) $" src="form_255.png"> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{1.137931} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{0.621198} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{1.557745} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +295.799988 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +410.497136 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +163.698166 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_256.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} -\dfrac{255.000000}{1.137931}\times 0.137931 \vspace{.5em} \\ +\dfrac{255.000000}{0.621198}\times 0.256305 \vspace{.5em} \\ +\dfrac{255.000000}{1.557745}\times 0.776739 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} -30.909084 \\ +105.212468 \\ +127.150750 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_257.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = S \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) + T \]" src="form_258.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{llll} +295.799988 &amp; +0.000000 &amp; +0.000000 &amp; -30.909084 \\ +0.000000 &amp; +410.497136 &amp; +0.000000 &amp; +105.212468 \\ +0.000000 &amp; +0.000000 &amp; +163.698166 &amp; +127.150750 \\ \end{array} \right) \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ 1 \\ \end{array} \right) \\ \]" src="form_259.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L'^{*},a'^{*},b'^{*} \le 255 \]" src="form_260.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ x=\left \{ \begin{array}{ll} f_{x}^{3} &amp; \mbox{if}\ f_{x}^{3} > 0.008856 \vspace{.5em} \\ \dfrac{116\times f_{x} - 16}{903.3} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_261.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ y=\left \{ \begin{array}{ll} \left\{\dfrac{L + 16}{116}\right\}^{3} &amp; \mbox{if}\ L > 903.3\times 0.008856 \vspace{.5em} \\ \dfrac{L}{903.3} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_262.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ z=\left \{ \begin{array}{ll} f_{z}^{3} &amp; \mbox{if}\ f_{z}^{3} > 0.008856 \vspace{.5em} \\ \dfrac{116\times f_{z} - 16}{903.3} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_263.png">
+<p>
+ ここで、 <img class="formulaInl" alt="$f_{x}$" src="form_264.png"> 、 <img class="formulaInl" alt="$ f_{y}$" src="form_265.png"> 、 <img class="formulaInl" alt="$f_{z}$" src="form_266.png">は以下の通りです。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f_{x} = f_{y} + \frac{a}{500} \]" src="form_267.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f_{y}=\left \{ \begin{array}{ll} \dfrac{L + 16}{116} &amp; \mbox{if}\ y > 0.008856 \vspace{.5em} \\ \dfrac{903.3\times y + 16}{116} &amp; \mbox{if}\ otherwise \vspace{.5em} \\ \end{array} \right. \]" src="form_268.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f_{z} = f_{y} + \frac{b}{200} \]" src="form_269.png">
+<p>
+ 求められた <img class="formulaInl" alt="$x$" src="form_270.png"> 、 <img class="formulaInl" alt="$y$" src="form_271.png"> 、 <img class="formulaInl" alt="$z$" src="form_272.png"> より、 <img class="formulaInl" alt="$X$" src="form_273.png"> 、 <img class="formulaInl" alt="$Y$" src="form_274.png"> 、 <img class="formulaInl" alt="$Z$" src="form_275.png"> を求めます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ X = x\times X_{n} \]" src="form_276.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Y = y\times Y_{n} \]" src="form_277.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Z = z\times Z_{n} \]" src="form_278.png">
+<p>
+ <img class="formulaInl" alt="$X_{n}$" src="form_241.png"> 、 <img class="formulaInl" alt="$Y_{n}$" src="form_242.png"> 、 <img class="formulaInl" alt="$Z_{n}$" src="form_243.png"> は、対象と同一照明下の標準白色に対する三刺激値です。 照明の種類毎に指定する必要があります。 ただし、本ライブラリでは照明の種類が特定できないため、 <img class="formulaInl" alt="$X_{n}=Y_{n}=Z_{n}=255$" src="form_244.png"> と定義します。</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) = \left( \begin{array}{lll} +2.364591 &amp; -0.896501 &amp; -0.468080 \\ -0.515151 &amp; +1.426401 &amp; +0.088750 \\ +0.005203 &amp; -0.014407 &amp; +1.009204 \\ \end{array} \right) \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right)\\ \]" src="form_279.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^* \le 100 \]" src="form_245.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le a^* \le 182.446523 \]" src="form_246.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le b^* \le 156.201147 \]" src="form_247.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; RGB への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+まず、与えられた L*a*b* を <img class="formulaInl" alt="$ 0 \le L^{*} \le 100 $" src="form_280.png"> 、 <img class="formulaInl" alt="$ -128.152308 \le a^{*} \le 182.446523 $" src="form_281.png"> 、 <img class="formulaInl" alt="$ -155.347701 \le b^{*} \le 156.201147 $" src="form_282.png"> となるようにスケーリング処理をします。 変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 ここで、スケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{100.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{310.598831} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{311.548848} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +2.550000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.820995 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.818491 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_284.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \vspace{.5em} \\ +\dfrac{255.000000}{310.598831}\times 128.152308 \vspace{.5em} \\ +\dfrac{255.000000}{311.548848}\times 156.201147 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{l} +0.000000 \\ +105.212368 \\ +127.150731 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_285.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = S \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) + T \]" src="form_258.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{llll} +2.550000 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.820995 &amp; +0.000000 &amp; +105.212368 \\ +0.000000 &amp; +0.000000 &amp; +0.818491 &amp; +127.150731 \\ \end{array} \right) \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ 1 \\ \end{array} \right) \\ \]" src="form_286.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le \acute{L^{*}} \le 100 \]" src="form_288.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le \acute{a^{*}} \le 182.446523 \]" src="form_289.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le \acute{b^{*}} \le 156.201147 \]" src="form_290.png">
+<p>
+<p>
+以後の計算は、スケーリングなし、オフセットなしの場合と同様です。<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; L*a*b* への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) \\ \]" src="form_291.png">
+<p>
+<p>
+変換の画素タイプがDOUBLE -&gt; DOUBLE の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*} \le 100 \]" src="form_292.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le a^{*} \le 182.446523 \]" src="form_293.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le b^{*} \le 156.201147 \]" src="form_294.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le \acute{L^{*}} \le 100 \]" src="form_288.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le \acute{a^{*}} \le 182.446523 \]" src="form_289.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le \acute{b^{*}} \le 156.201147 \]" src="form_290.png">
+<p>
+ 変換の画素タイプが UC8 -&gt; UC8 の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le \acute{L^{*}},\acute{a^{*}},\acute{b^{*}} \le 255 \]" src="form_295.png">
+<p>
+ となります<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; L*a*b* への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 ここで、スケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{100.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{310.598831} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{311.548848} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +2.550000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.820995 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.818491 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_284.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \vspace{.5em} \\ +\dfrac{255.000000}{310.598831}\times 128.152308 \vspace{.5em} \\ +\dfrac{255.000000}{311.548848}\times 155.347701 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{l} +0.000000 \\ +105.212368 \\ +127.150731 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_296.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = S \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) + T \]" src="form_258.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{llll} +2.550000 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.820995 &amp; +0.000000 &amp; +105.212368 \\ +0.000000 &amp; +0.000000 &amp; +0.818491 &amp; +127.150731 \\ \end{array} \right) \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ 1 \\ \end{array} \right) \\ \]" src="form_286.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*} \le 100 \]" src="form_292.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le a^{*} \le 182.446523 \]" src="form_293.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le b^{*} \le 156.201147 \]" src="form_294.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le \acute{L^{*}}, \acute{a^{*}}, \acute{b^{*}} \le 255 \]" src="form_297.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; L*a*b* への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 ここで、スケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{100.000000}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{310.598831}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{311.548848}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.392157 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.218035 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.221760 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_298.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \\ -128.152308 \\ -155.347701 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_299.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = S \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) + T \]" src="form_258.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{llll} +0.392157 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.218035 &amp; +0.000000 &amp; -128.152308 \\ +0.000000 &amp; +0.000000 &amp; +1.221760 &amp; -155.347701 \\ \end{array} \right) \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ 1 \\ \end{array} \right) \\ \]" src="form_300.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le \acute{L^{*}} \le 100 \]" src="form_288.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -128.152308 \le \acute{a^{*}} \le 182.446523 \]" src="form_289.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -155.347701 \le \acute{b^{*}} \le 156.201147 \]" src="form_290.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_hsvf">
+HSV（FAST独自仕様）</a></h3>
+一般にはHLS色空間と呼ばれています。 上記のHSV色空間とは、彩度と輝度の考え方が異なります。<br>
+ 彩度は、純色から彩度が落ちることは、灰色になるという考えに基づいています。<br>
+ 輝度は輝度0を黒、100を白として、その中間を純色としています。 通常HSV色空間では、明度100を純色としています。<br>
+ Fig9にYC1C2色空間、Fig10にHSV色空間を示します。 なお、出力画像オブジェクトの画素タイプがF_IMG_UC8などで、 スケーリング処理された場合は、Fig10と異なります。 本色空間では、RGBをまずYC1C2に変換後、HSVに変換します。 Fig9のCrはC1、CbはC2を表しています。<p>
+<div align="center">
+<img src="color_convert_ycc.png" alt="color_convert_ycc.png">
+<p><strong>Fig9. YC1C2色空間</strong></p></div>
+ <div align="center">
+<img src="color_convert_hls.png" alt="color_convert_hls.png">
+<p><strong>Fig10. HSV（FAST独自仕様）色空間</strong></p></div>
+ <dl class="user" compact><dt><b>RGB -&gt; HSV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} Y \\ C1 \\ C2 \\ \end{array} \right) = \left( \begin{array}{lll} +0.299000 &amp; +0.587000 &amp; +0.114000 \\ +0.701000 &amp; -0.587000 &amp; -0.114000 \\ -0.299000 &amp; -0.587000 &amp; +0.886000 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right)\\ \]" src="form_301.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le C1, C2 \le 127.5 \]" src="form_302.png">
+<p>
+<p>
+求められた <img class="formulaInl" alt="$ Y,C1,C2 $" src="form_303.png"> より、 <img class="formulaInl" alt="$ H,S,V $" src="form_304.png"> が求められます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ H=\arctan \left(\frac{C1}{C2}\right) \]" src="form_305.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ S=\sqrt{C1^{2}+C2^{2}} \]" src="form_306.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ V=Y \]" src="form_307.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H \le \pi \]" src="form_308.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S \le 227.792515 \]" src="form_309.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V \le 225 \]" src="form_310.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>RGB -&gt; HSV への変換（スケーリングあり、オフセットあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+先で求められたH, S, Vが、 <img class="formulaInl" alt="$ 0 \le H, S, V \le 255 $" src="form_190.png"> となるようにスケーリング処理をします。 変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を <em>SCALE</em> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{2\pi} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{227.792515} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.119440 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_311.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.119440 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_312.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; RGB</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Y = V \]" src="form_313.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ C1 = S\times \sin \left(H\right) \]" src="form_314.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ C2 = S\times \cos \left(H\right) \]" src="form_315.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H \le \pi \]" src="form_308.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S \le 227.792515 \]" src="form_309.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V \le 225 \]" src="form_310.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le C1, C2 \le 127.5 \]" src="form_302.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) = \left( \begin{array}{lll} +1.000000 &amp; +1.000000 &amp; +0.000000 \\ +1.000000 &amp; -0.509370 &amp; -0.194208 \\ +1.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \left( \begin{array}{l} Y \\ C1 \\ C2 \\ \end{array} \right) \\ \]" src="form_316.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -127.5 \le C1, C2 \le 127.5 \]" src="form_302.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; RGB への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; UC8 </li>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+まず、与えられたH,S,Vを <img class="formulaInl" alt="$ -\pi \le H \le \pi $" src="form_317.png">、 <img class="formulaInl" alt="$ 0 \le S, V \le 1 $" src="form_212.png"> となるようにスケーリング処理をします。 変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を <em>SCALE</em> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{2\pi}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{227.792515}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.893304 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.100000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_318.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.893304 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.100000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_319.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H' \le \pi \]" src="form_320.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S' \le 227.792515 \]" src="form_321.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V' \le 225 \]" src="form_322.png">
+<p>
+<p>
+以後の計算は、スケーリングなしと同様です。<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 なお、変換には <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) = \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \]" src="form_218.png">
+<p>
+<p>
+変換の画素タイプが DOUBLE -&gt; DOUBLE の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H \le \pi \]" src="form_308.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S \le 227.792515 \]" src="form_309.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V \le 255 \]" src="form_323.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H' \le \pi \]" src="form_320.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S' \le 227.792515 \]" src="form_321.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V' \le 255 \]" src="form_324.png">
+<p>
+ 変換の画素タイプが UC8 -&gt; UC8 の場合は、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+ となります<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V') とします。 ここで、スケーリング行列を <em>SCALE</em> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{2\pi} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{227.792515} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.119440 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_311.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.584510 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +1.119440 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_312.png">
+<p>
+<p>
+ただし、 <img class="formulaInl" alt="$H'<0$" src="form_325.png"> ならば <img class="formulaInl" alt="$ H' \gets H' + 255 $" src="form_326.png"><p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H \le \pi \]" src="form_308.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S \le 227.792515 \]" src="form_309.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V \le 255 \]" src="form_323.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H', S', V' \le 255 \]" src="form_193.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>HSV -&gt; HSV への変換（スケーリングあり）</b></dt><dd><ul>
+<li>UC8 -&gt; DOUBLE </li>
+</ul>
+</dd></dl>
+変換後のHSV色空間を(H',S',V')とします。 ここで、スケーリング行列を <em>SCALE</em> とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} SCALE &amp;=&amp; \left( \begin{array}{lll} +\dfrac{2\pi}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{227.792515}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +1.000000 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.893304 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.100000 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_318.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \left( \begin{array}{l} H' \\ S' \\ V' \\ \end{array} \right) &amp;=&amp; SCALE \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024640 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.893304 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.100000 \\ \end{array} \right) \left( \begin{array}{l} H \\ S \\ V \\ \end{array} \right) \\ \end{eqnarray*}" src="form_319.png">
+<p>
+<p>
+ただし、 <img class="formulaInl" alt="$H' > \pi$" src="form_327.png"> ならば <img class="formulaInl" alt="$ H' \gets H' - 2\pi $" src="form_328.png"><p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le H, S, V \le 255 \]" src="form_215.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -\pi \le H' \le \pi \]" src="form_320.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le S' \le 227.792515 \]" src="form_321.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le V' \le 255 \]" src="form_324.png">
+<p>
+<h3><a class="anchor" name="fie_color_convert_space_labf">
+L*a*b*（FAST独自仕様）</a></h3>
+本変換では、処理の高速化のため、一部の変換式を省略して処理が行われています。 また、上記した本ライブラリでの L*a*b* 色空間の変換とは異なり、 RGBから L*a*b* 色空間変換で L*a*b* の画素タイプがF_IMG_UC8であった場合のみではなく、 全ての変換で、等色空間としての意味を成しませんので注意してください。<br>
+ 本色空間は、上記した L*a*b* の各成分をスケーリング変換したものとほぼ同等です。 前述したように、一部の変換式を省略して処理が行われているために、完全には一致しません。<p>
+RGB -&gt; L*a*b* 、L*a*b* -&gt; RGB 共に、画素タイプがUC8 -&gt; UC8の変換では、数値テーブルを利用します。<p>
+<dl class="user" compact><dt><b>RGB -&gt; L*a*b* への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8</li>
+</ul>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) = \left( \begin{array}{lll} +0.501053 &amp; +0.314737 &amp; +0.184211 \\ +0.262000 &amp; +0.656000 &amp; +0.082000 \\ +0.018349 &amp; +0.147706 &amp; +0.833945 \\ \end{array} \right) \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) \\ \]" src="form_329.png">
+<p>
+</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X, Y, Z \le 255 \]" src="form_86.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ L^{*}=\sqrt[3]{Y} \]" src="form_330.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ a^{*}=\sqrt[3]{X} - \sqrt[3]{Y} \]" src="form_331.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ b^{*}=\sqrt[3]{Y} - \sqrt[3]{Z} \]" src="form_332.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 < L^{*} < 6.341326 \]" src="form_333.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -1.196460 < a^{*} < 1.147458 \]" src="form_334.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -3.213898 < b^{*} < 2.677538 \]" src="form_335.png">
+<p>
+<p>
+変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 ここで、スケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{255.000000}{6.341326} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{255.000000}{2.343919} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{255.000000}{5.891436} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +40.212410 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +108.792155 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +43.283166 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_336.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} T &amp;=&amp; \left( \begin{array}{l} +0.000000 \vspace{.5em} \\ +\dfrac{255.000000}{2.343919}\times 1.196459 \vspace{.5em} \\ +\dfrac{255.000000}{5.891436}\times 3.213898 \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.000000\\ +130.165353 \\ +139.107679 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_337.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = S \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) + T \]" src="form_258.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{llll} +40.212410 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +108.792155 &amp; +0.000000 &amp; +130.165353 \\ +0.000000 &amp; +0.000000 &amp; +43.283166 &amp; +139.107679 \\ \end{array} \right) \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ 1 \\ \end{array} \right) \\ \]" src="form_338.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; RGB への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+まず、与えられた L*a*b* を <img class="formulaInl" alt="$ 0 \le L^{*} \le 6.431326 $" src="form_339.png"> 、 <img class="formulaInl" alt="$ -1.196459 \le a^{*} \le 1.147460 $" src="form_340.png"> 、 <img class="formulaInl" alt="$ -3.213898 \le b^{*} \le 2.677538 $" src="form_341.png"> となるようにスケーリング処理をします。 変換後の L*a*b* 色空間を <img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 ここで、スケーリング行列をS、平行移動行列をTとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} S &amp;=&amp; \left( \begin{array}{lll} +\dfrac{6.341326}{255.000000} &amp; +0.000000 &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +\dfrac{2.343919}{255.000000} &amp; +0.000000 \vspace{.5em} \\ +0.000000 &amp; +0.000000 &amp; +\dfrac{5.891436}{255.000000} \vspace{.5em} \\ \end{array} \right) \\ &amp;=&amp; \left( \begin{array}{lll} +0.024868 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.009192 &amp; +0.000000 \\ +0.000000 &amp; +0.000000 &amp; +0.023104 \\ \end{array} \right) \\ \end{eqnarray*}" src="form_342.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = \left( \begin{array}{l} +0.000000 \\ +1.196459 \\ +3.213898 \\ \end{array} \right) \\ \]" src="form_343.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = S \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) + T \]" src="form_258.png">
+<p>
+<p>
+ここで、上式を斉次座標を用いて表します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{llll} +0.024868 &amp; +0.000000 &amp; +0.000000 &amp; +0.000000 \\ +0.000000 &amp; +0.009192 &amp; +0.000000 &amp; +1.196459 \\ +0.000000 &amp; +0.000000 &amp; +0.023104 &amp; +3.213898 \\ \end{array} \right) \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ 1 \\ \end{array} \right) \\ \]" src="form_344.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 < \acute{L^{*}} < 6.341326 \]" src="form_345.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -1.196460 < \acute{a^{*}} < 1.147458 \]" src="form_346.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ -3.213898 < \acute{b^{*}} < 2.677538 \]" src="form_347.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ X = \left(\acute{L^{*3}} + \acute{a^{*3}}\right)^{3} \]" src="form_348.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Y = \acute{L^{*3}} \]" src="form_349.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Z = \left(\acute{L^{*3}} - \acute{b^{*3}}\right)^{3} \]" src="form_350.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le X \le 242.25 \]" src="form_351.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Y \le 255 \]" src="form_103.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le Z \le 277.95 \]" src="form_352.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} R \\ G \\ B \\ \end{array} \right) = \left( \begin{array}{lll} +2.613898 &amp; -1.149547 &amp; -0.464354 \\ -1.060250 &amp; +2.025183 &amp; +0.035068 \\ +0.130276 &amp; -0.333402 &amp; +1.203126 \\ \end{array} \right) \left( \begin{array}{l} X \\ Y \\ Z \\ \end{array} \right) \\ \]" src="form_353.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le R, G, B \le 255 \]" src="form_76.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>L*a*b* -&gt; L*a*b* への変換</b></dt><dd><ul>
+<li>DOUBLE -&gt; DOUBLE </li>
+<li>UC8 -&gt; DOUBLE </li>
+<li>UC8 -&gt; UC8 </li>
+<li>DOUBLE -&gt; UC8 </li>
+</ul>
+</dd></dl>
+変換後のL*a*b* 色空間を<img class="formulaInl" alt="$\left(\acute{L^{*}},\acute{a^{*}},\acute{b^{*}}\right)$" src="form_283.png"> とします。 なお、DOUBLE -&gt; DOUBLE 、UC8 -&gt; UC8 の同一の画素タイプへの変換には、 <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> を使用しています。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{l} \acute{L^{*}} \\ \acute{a^{*}} \\ \acute{b^{*}} \\ \end{array} \right) = \left( \begin{array}{l} L^{*} \\ a^{*} \\ b^{*} \\ \end{array} \right) \\ \]" src="form_291.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le L^{*},a^{*},b^{*} \le 255 \]" src="form_287.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 0 \le \acute{L^{*}},\acute{a^{*}},\acute{b^{*}} \le 255 \]" src="form_295.png">
+<p>
+<p>
+<hr>
+ 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

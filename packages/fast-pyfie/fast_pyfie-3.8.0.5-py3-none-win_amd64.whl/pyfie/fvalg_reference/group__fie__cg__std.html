@@ -1,0 +1,3222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 一般計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>一般計算<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7c16689a49aff267fe3561626c6c0c683d">F_LINE_DIRECT_NORMAL</a> =  0, 
+<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7c6558cbb32fbc74e0ffb9409eb5a16ea7">F_LINE_DIRECT_NUM</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7cb13e0b499c79f210c90f6873bbd35b0c">F_LINE_DIRECT_DIST_A</a> =  2, 
+<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7cf08aecc9911b582689b41a51f423c9d7">F_LINE_DIRECT_DIST_B</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7c94276f5513f68571a4237212d7bdbf28">F_LINE_DETECTION_NORMAL</a> =  0, 
+<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7ce6d653aed0fac390f621c437577016f9">F_LINE_DETECTION_NUM</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7c9c41683d2ebe67fe4f770534ab21786f">F_LINE_DETECTION_DIST_A</a> =  1, 
+<a class="el" href="group__fie__cg__std.html#ggd831e8595c3966aabc87b094c9557d7c33928b8061bd031c868d9518edbf3bb6">F_LINE_DETECTION_DIST_B</a> =  3
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線検出モード  <a href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g2673675ae69838fbbb739237d985fef5">fnFIE_cg_calc_angle_for_line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> line, enum <a class="el" href="group__fie__filter.html#g824bd9c999d5c38c9271a72510a9fad3">f_direction</a> direction, DOUBLE *angle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線の角度の算出  <a href="#g2673675ae69838fbbb739237d985fef5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g4c04f6b1fc68a6e245370ee5aa11a897">fnFIE_cg_calc_distance_point_to_line</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt, <a class="el" href="structDLINE__T.html">DLINE_T</a> line, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点から直線までの距離の算出  <a href="#g4c04f6b1fc68a6e245370ee5aa11a897"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gda3546910b64eaaa222e874291469f63">fnFIE_cg_calc_vertical_line_point_and_line</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt, <a class="el" href="structDLINE__T.html">DLINE_T</a> line, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line_ans)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">任意の点を通り，直線２に垂直な直線１の算出  <a href="#gda3546910b64eaaa222e874291469f63"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g5760d3c869f46dde10ff0a0457870ebf">fnFIE_cg_calc_line_2pointA</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点から直線を算出  <a href="#g5760d3c869f46dde10ff0a0457870ebf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g5fb7cade2a9ec49f8b7a35eb481066d1">fnFIE_cg_calc_line_2pointB</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line, DOUBLE *angle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点から直線とその角度の算出  <a href="#g5fb7cade2a9ec49f8b7a35eb481066d1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g3652bf24f537a789b851d652124f4bd9">fnFIE_cg_calc_line_npoint</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line, DOUBLE *angle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群から直線を算出（直線近似）  <a href="#g3652bf24f537a789b851d652124f4bd9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gfee11b72ff90c91dc35153791384df86">fnFIE_cg_calc_center_2pointA</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点の中点座標の算出  <a href="#gfee11b72ff90c91dc35153791384df86"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g049da02c70cadda557e38e6632dfe188">fnFIE_cg_calc_center_2pointB</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点の中点座標と距離の算出  <a href="#g049da02c70cadda557e38e6632dfe188"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g62a0af02765725e87e705b75255f0e85">fnFIE_cg_calc_center_point_and_lineA</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点を通る直線と点までの距離と中点座標の算出（３点指定）  <a href="#g62a0af02765725e87e705b75255f0e85"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gae5d06942c16c6607a8de94c759ac1fb">fnFIE_cg_calc_center_point_and_lineB</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群を通る直線と点までの距離と中点座標の算出（点群と１点指定）  <a href="#gae5d06942c16c6607a8de94c759ac1fb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gc2b8e6e3333543ff6566de1b791429f7">fnFIE_cg_calc_center_point_and_lineC</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> line, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線と点までの距離と中点座標の算出（直線と１点指定）  <a href="#gc2b8e6e3333543ff6566de1b791429f7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gc18b0df1d56432647f0f0d16cf3157ea">fnFIE_cg_calc_crosspoint_2line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> line1, <a class="el" href="structDLINE__T.html">DLINE_T</a> line2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線の交点の算出  <a href="#gc18b0df1d56432647f0f0d16cf3157ea"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gc2d8463366d8221ba21fd5bea6b164ef">fnFIE_cg_calc_cross_2lineA</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt4, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross, DOUBLE *angle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線（２点指定×２）の交点座標と交角の角度の算出  <a href="#gc2d8463366d8221ba21fd5bea6b164ef"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g1626a074e5c32f8bbd607f0eba609c02">fnFIE_cg_calc_cross_2lineB</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts1, INT num1, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts2, INT num2, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross, DOUBLE *angle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線（２点群指定）の交点座標と交角の角度の算出  <a href="#g1626a074e5c32f8bbd607f0eba609c02"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gd6f692a65d12cf517bb00b989859ffa5">fnFIE_cg_calc_cross_2lineC</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> line1, <a class="el" href="structDLINE__T.html">DLINE_T</a> line2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross, DOUBLE *angle)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線の交点座標と交角の角度の算出  <a href="#gd6f692a65d12cf517bb00b989859ffa5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gde32fb39c8e49743edc91cfa1725aaa8">fnFIE_cg_calc_circle_npoints</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> **pnts_set, const INT *num_set, INT set_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複数点群を通る円の中心座標と半径の算出  <a href="#gde32fb39c8e49743edc91cfa1725aaa8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g2fa7fd0a528e86364ed02af1f90fbbfc">fnFIE_cg_calc_cross_circle_and_lineA</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, INT *cross_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross1, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群を通る円と２点を通る直線の交点  <a href="#g2fa7fd0a528e86364ed02af1f90fbbfc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g976b54f98ab01a000c750c71293e1175">fnFIE_cg_calc_cross_circle_and_lineB</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE radius, <a class="el" href="structDLINE__T.html">DLINE_T</a> line, INT *cross_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross1, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">円と直線の交点の算出  <a href="#g976b54f98ab01a000c750c71293e1175"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g0d619f65dc556cde91e74e800ce2664d">fnFIE_cg_calc_cross_2circleA</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts1, INT num1, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts2, INT num2, INT *cross_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross1, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群１を通る円１と点群２を通る円２の交点の算出  <a href="#g0d619f65dc556cde91e74e800ce2664d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#ge35157a1cc5b93fd82614d75cfd4c8fd">fnFIE_cg_calc_cross_2circleB</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> center1, DOUBLE radius1, <a class="el" href="structDPNT__T.html">DPNT_T</a> center2, DOUBLE radius2, INT *cross_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross1, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２つの円の交点の算出  <a href="#ge35157a1cc5b93fd82614d75cfd4c8fd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g29eb406811e47dd7a876866df8dd999c">fnFIE_cg_calc_rectangle_5point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt4, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt5, DOUBLE *long_len, DOUBLE *short_len, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">５点を通る辺を持つ四角形の中心座標  <a href="#g29eb406811e47dd7a876866df8dd999c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g513cc47a3dc275e634d0e30ff6ab793e">fnFIE_cg_calc_distance_2point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点間の距離の算出  <a href="#g513cc47a3dc275e634d0e30ff6ab793e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g698d44e4d38ee95d5246c9c5527cd207">fnFIE_cg_calc_distance_npoint</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num, DOUBLE *dist)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ｎ点間の距離の算出  <a href="#g698d44e4d38ee95d5246c9c5527cd207"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gc7386db0a3ae8a854e388b3600096478">fnFIE_cg_calc_centerline_2npoint</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts1, INT num1, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts2, INT num2, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線の中心を通る直線の算出（２点群指定）  <a href="#gc7386db0a3ae8a854e388b3600096478"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g41043c620e9ca7e2d0ec4a1b7365ec6d">fnFIE_cg_calc_centerline_4point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt4, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線の中心を通る直線の算出（４点指定）  <a href="#g41043c620e9ca7e2d0ec4a1b7365ec6d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gd0418146695b6b3dc593f2626d589077">fnFIE_cg_calc_centerline_2line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> line1, <a class="el" href="structDLINE__T.html">DLINE_T</a> line2, <a class="el" href="structDLINE__T.html">DLINE_T</a> *center_line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２直線の中心を通る直線の算出  <a href="#gd0418146695b6b3dc593f2626d589077"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g55814436cb630dc8b5fb60d3f5224a4f">fnFIE_cg_calc_cross_4line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> line1, <a class="el" href="structDLINE__T.html">DLINE_T</a> line2, <a class="el" href="structDLINE__T.html">DLINE_T</a> line3, <a class="el" href="structDLINE__T.html">DLINE_T</a> line4, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２組の２直線の中心を通る直線の交点の検出（４直線指定）  <a href="#g55814436cb630dc8b5fb60d3f5224a4f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g4b673b9e892b4517fafc763467a75114">fnFIE_cg_calc_cross_4npoint</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts1, INT num1, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts2, INT num2, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts3, INT num3, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts4, INT num4, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２組の２直線の中心を通る直線の交点の算出（４点群指定）  <a href="#g4b673b9e892b4517fafc763467a75114"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gd03f4317c16f2588e1b37e1011db3502">fnFIE_cg_calc_cross_8point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt4, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt5, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt6, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt7, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt8, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２組の２直線の中心を通る直線の交点の算出（８点指定）  <a href="#gd03f4317c16f2588e1b37e1011db3502"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g04d85cf9d976af15287e062e9fd46485">fnFIE_cg_calc_rectangle_4line</a> (<a class="el" href="structDLINE__T.html">DLINE_T</a> lineAB, <a class="el" href="structDLINE__T.html">DLINE_T</a> lineBC, <a class="el" href="structDLINE__T.html">DLINE_T</a> lineCD, <a class="el" href="structDLINE__T.html">DLINE_T</a> lineDA, DOUBLE *long1, DOUBLE *short1, DOUBLE *long2, DOUBLE *short2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">四角形の中心座標の算出（４直線指定）  <a href="#g04d85cf9d976af15287e062e9fd46485"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g51614fdd74ed34ea40928f7c6e0aaaa9">fnFIE_cg_calc_rectangle_4npoint</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntsAB, INT numAB, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntsBC, INT numBC, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntsCD, INT numCD, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pntsDA, INT numDA, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param, DOUBLE *long1, DOUBLE *short1, DOUBLE *long2, DOUBLE *short2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">四角形の中心座標の算出（４点群指定）  <a href="#g51614fdd74ed34ea40928f7c6e0aaaa9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gfcbb168642c2661590787e98253bfc43">fnFIE_cg_calc_cross_mark</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt4, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt5, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt6, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt7, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt8, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">トンボマークの中心の算出  <a href="#gfcbb168642c2661590787e98253bfc43"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g7b3bb88b45aa09ac595cb762fb1b5756">fnFIE_cg_calc_long_hole_6point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt3, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt4, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt5, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt6, DOUBLE *long1, DOUBLE *short1, DOUBLE *long2, DOUBLE *short2, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">長穴の測定（6点指定）  <a href="#g7b3bb88b45aa09ac595cb762fb1b5756"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#gebd698a6dd695e724e7a239d6d17fd7b">fnFIE_cg_calc_tangent_line</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> pnt, <a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE radius, <a class="el" href="structDLINE__T.html">DLINE_T</a> *line)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">円の接線の方程式の算出  <a href="#gebd698a6dd695e724e7a239d6d17fd7b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g92ac36e001068d60cc444a63ec2f6c05">fnFIE_cg_calc_cross_ellipse_and_line</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE major, DOUBLE minor, DOUBLE theta, <a class="el" href="structDLINE__T.html">DLINE_T</a> line, INT *cross_num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross1, <a class="el" href="structDPNT__T.html">DPNT_T</a> *cross2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">楕円と直線の交点の算出  <a href="#g92ac36e001068d60cc444a63ec2f6c05"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__std.html#g7e1b4413bb72ddf5a13599c469721b5b">fnFIE_cg_calc_distance_ellipse_to_point</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> center, DOUBLE major, DOUBLE minor, DOUBLE theta, <a class="el" href="structDPNT__T.html">DPNT_T</a> point, DOUBLE *distance, <a class="el" href="structDPNT__T.html">DPNT_T</a> *nearest_point, BOOL *outer)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">楕円と点の距離  <a href="#g7e1b4413bb72ddf5a13599c469721b5b"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gd831e8595c3966aabc87b094c9557d7c"></a><!-- doxytag: member="fie.h::f_line_detection_mode" ref="gd831e8595c3966aabc87b094c9557d7c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線検出モード 
+<p>
+幾何計算での直線検出モードを指定します。<p>
+<ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード <br>
+ 1. 点群に対して直線検出を行います。</li>
+</ul>
+<ul>
+<li>F_LINE_DETECTION_NUM 回数指定モード <br>
+ 1. 点群に対して直線検出を行います。 <br>
+ 2. 直線の検出に使用した各点と直線との距離を求め、その直線から一番大きくはずれている１点をエラー点とします。<br>
+ 3. ２でエラーとみなした１点を削除し、残った点で直線検出を行います。<br>
+ 4. ２、３の処理を指定回数だけ繰り返します。<br>
+ 回数指定モードにて指定回数を０にすると、通常直線モードとまったく同じになります。</li>
+</ul>
+<ul>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１<br>
+ 1. 点群に対して直線検出を行います。<br>
+ 2. 直線の検出に使用した各点と直線との距離を求め,その距離が設定中のパラメータ以上はずれた点をエラー点とします。<br>
+ 3. ２でエラーとみなした各点を削除し、残った点で直線検出を行います。<br>
+ 4. ２、３の処理をエラー点がなくなるまで繰り返します。（距離による判定）</li>
+</ul>
+<ul>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２<br>
+ 1. 点群に対して直線検出を行います。<br>
+ 2. 入力点群のすべての点と求めた直線との距離を求め、設定中のパラメータ以上はずれた点をエラー点とします。<br>
+ 3. ２でエラーではない点を抜き出し、抜き出した点で直線検出を行います。<br>
+ 4. ２、３の処理を直線係数が収束するまで繰り返します。</li>
+</ul>
+F_LINE_DETECTION_DIST_A と F_LINE_DETECTION_DIST_B の違いは、 F_LINE_DETECTION_DIST_A では一度エラーと みなした点は削除し、以降の直線検出には使用しないのに対し、 F_LINE_DETECTION_DIST_B で はエラーとみなした点を一時除外して直線を検出した後にも直線との距離の比較を常 にすべての点に対して行うことです。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7c16689a49aff267fe3561626c6c0c683d"></a><!-- doxytag: member="F_LINE_DIRECT_NORMAL" ref="ggd831e8595c3966aabc87b094c9557d7c16689a49aff267fe3561626c6c0c683d" args="" -->F_LINE_DIRECT_NORMAL</em>&nbsp;</td><td>
+旧・通常直線検出モード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7c6558cbb32fbc74e0ffb9409eb5a16ea7"></a><!-- doxytag: member="F_LINE_DIRECT_NUM" ref="ggd831e8595c3966aabc87b094c9557d7c6558cbb32fbc74e0ffb9409eb5a16ea7" args="" -->F_LINE_DIRECT_NUM</em>&nbsp;</td><td>
+旧・回数指定モード ( バグのため非推奨 互換性のために残されています ) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7cb13e0b499c79f210c90f6873bbd35b0c"></a><!-- doxytag: member="F_LINE_DIRECT_DIST_A" ref="ggd831e8595c3966aabc87b094c9557d7cb13e0b499c79f210c90f6873bbd35b0c" args="" -->F_LINE_DIRECT_DIST_A</em>&nbsp;</td><td>
+旧・距離指定モード１ ( バグのため非推奨 互換性のために残されています ) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7cf08aecc9911b582689b41a51f423c9d7"></a><!-- doxytag: member="F_LINE_DIRECT_DIST_B" ref="ggd831e8595c3966aabc87b094c9557d7cf08aecc9911b582689b41a51f423c9d7" args="" -->F_LINE_DIRECT_DIST_B</em>&nbsp;</td><td>
+旧・距離指定モード２ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7c94276f5513f68571a4237212d7bdbf28"></a><!-- doxytag: member="F_LINE_DETECTION_NORMAL" ref="ggd831e8595c3966aabc87b094c9557d7c94276f5513f68571a4237212d7bdbf28" args="" -->F_LINE_DETECTION_NORMAL</em>&nbsp;</td><td>
+通常直線検出モード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7ce6d653aed0fac390f621c437577016f9"></a><!-- doxytag: member="F_LINE_DETECTION_NUM" ref="ggd831e8595c3966aabc87b094c9557d7ce6d653aed0fac390f621c437577016f9" args="" -->F_LINE_DETECTION_NUM</em>&nbsp;</td><td>
+回数指定モード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7c9c41683d2ebe67fe4f770534ab21786f"></a><!-- doxytag: member="F_LINE_DETECTION_DIST_A" ref="ggd831e8595c3966aabc87b094c9557d7c9c41683d2ebe67fe4f770534ab21786f" args="" -->F_LINE_DETECTION_DIST_A</em>&nbsp;</td><td>
+距離指定モード１ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd831e8595c3966aabc87b094c9557d7c33928b8061bd031c868d9518edbf3bb6"></a><!-- doxytag: member="F_LINE_DETECTION_DIST_B" ref="ggd831e8595c3966aabc87b094c9557d7c33928b8061bd031c868d9518edbf3bb6" args="" -->F_LINE_DETECTION_DIST_B</em>&nbsp;</td><td>
+距離指定モード２ </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g2673675ae69838fbbb739237d985fef5"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_angle_for_line" ref="g2673675ae69838fbbb739237d985fef5" args="(DLINE_T line, enum f_direction direction, DOUBLE *angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_angle_for_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__filter.html#g824bd9c999d5c38c9271a72510a9fad3">f_direction</a>&nbsp;</td>
+          <td class="paramname"> <em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>angle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線の角度の算出 
+<p>
+指定された直線の角度を計算します。<p>
+<ul>
+<li>x座標から画像右端：角度範囲(単位：ラジアン): [ <img class="formulaInl" alt="$-\pi/2$" src="form_524.png"> , <img class="formulaInl" alt="$\pi/2$" src="form_362.png"> ] <br>
+ </li>
+<li>x座標から画像左端：角度範囲(単位：ラジアン): [ <img class="formulaInl" alt="$\pi/2$" src="form_362.png"> , <img class="formulaInl" alt="$\pi$" src="form_74.png"> ] &amp; [ <img class="formulaInl" alt="$-\pi/2$" src="form_524.png"> , <img class="formulaInl" alt="$-\pi$" src="form_73.png"> ] <br>
+ </li>
+<li>x座標から画像下端：角度範囲(単位：ラジアン): [ 0, <img class="formulaInl" alt="$\pi$" src="form_74.png"> ] <br>
+</li>
+</ul>
+<div align="center">
+<img src="fie_cg_calc_angle_for_line.png" alt="fie_cg_calc_angle_for_line.png">
+</div>
+<p>
+左より、F_DIRECT_RIGHT 、 F_DIRECT_LEFT 、 F_DIRECT_DOWN を指定した場合の角度範囲を示しています。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direction</em>&nbsp;</td><td>直線の方向 <ul>
+<li>F_DIRECT_RIGHT 角度範囲(単位：ラジアン): [ <img class="formulaInl" alt="$-\pi/2$" src="form_524.png"> , <img class="formulaInl" alt="$\pi/2$" src="form_362.png"> ] </li>
+<li>F_DIRECT_LEFT 角度範囲(単位：ラジアン): [ <img class="formulaInl" alt="$\pi/2$" src="form_362.png"> , <img class="formulaInl" alt="$\pi$" src="form_74.png"> ] &amp; [ <img class="formulaInl" alt="$-\pi/2$" src="form_524.png"> , <img class="formulaInl" alt="$-\pi$" src="form_73.png"> ] </li>
+<li>F_DIRECT_DOWN 角度範囲(単位：ラジアン): [ 0, <img class="formulaInl" alt="$\pi$" src="form_74.png"> ] </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>直線の角度(単位：ラジアン)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4c04f6b1fc68a6e245370ee5aa11a897"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_distance_point_to_line" ref="g4c04f6b1fc68a6e245370ee5aa11a897" args="(DPNT_T pnt, DLINE_T line, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_distance_point_to_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点から直線までの距離の算出 
+<p>
+点P1 <img class="formulaInl" alt="$(x1,y1)$" src="form_525.png"> と直線L1 <img class="formulaInl" alt="$ax+by+c=0$" src="form_526.png"> の距離dを公式 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d=\frac{|ax+by+c|}{\sqrt{a^2+b^2}} \]" src="form_527.png">
+<p>
+ によって求めます。<p>
+<div align="center">
+<img src="fie_cg_calc_distance_point_to_line.png" alt="fie_cg_calc_distance_point_to_line.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線L1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>距離d</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gda3546910b64eaaa222e874291469f63"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_vertical_line_point_and_line" ref="gda3546910b64eaaa222e874291469f63" args="(DPNT_T pnt, DLINE_T line, DLINE_T *line_ans)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_vertical_line_point_and_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line_ans</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+任意の点を通り，直線２に垂直な直線１の算出 
+<p>
+点P1を通る、直線L2に垂直な直線L1の方程式の係数 a, b, c を求めます。 <div align="center">
+<img src="fie_cg_calc_vertical_line_point_and_line.png" alt="fie_cg_calc_vertical_line_point_and_line.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>直線L1が通る点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>求める直線L1に垂直な直線L2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line_ans</em>&nbsp;</td><td>求められた垂直な直線L1</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5760d3c869f46dde10ff0a0457870ebf"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_line_2pointA" ref="g5760d3c869f46dde10ff0a0457870ebf" args="(DPNT_T pnt1, DPNT_T pnt2, DLINE_T *line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_line_2pointA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点から直線を算出 
+<p>
+任意の２点P1とP2からなる、直線L12の方程式の係数 a, b, c を求めます。<p>
+<div align="center">
+<img src="fie_cg_calc_line_2pointA.png" alt="fie_cg_calc_line_2pointA.png">
+</div>
+<p>
+P1とP2が同一座標の場合は、直線が定まらないため、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線を生成する座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線を生成する座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線L12</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5fb7cade2a9ec49f8b7a35eb481066d1"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_line_2pointB" ref="g5fb7cade2a9ec49f8b7a35eb481066d1" args="(DPNT_T pnt1, DPNT_T pnt2, DLINE_T *line, DOUBLE *angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_line_2pointB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>angle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点から直線とその角度の算出 
+<p>
+任意の２点P1とP2からなる、直線L12の方程式の係数 a, b, c と角度 <img class="formulaInl" alt="$ \theta $" src="form_528.png"> を求めます。 <div align="center">
+<img src="fie_cg_calc_line_2pointB.png" alt="fie_cg_calc_line_2pointB.png">
+</div>
+<p>
+P1とP2が同一座標の場合は、直線が定まらないため、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線を生成する座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線を生成する座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>生成された直線L12 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>生成された直線の傾き（単位：ラジアン [<img class="formulaInl" alt="$-\pi/2$" src="form_524.png"> ～ <img class="formulaInl" alt="$\pi/2$" src="form_362.png">] ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3652bf24f537a789b851d652124f4bd9"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_line_npoint" ref="g3652bf24f537a789b851d652124f4bd9" args="(const DPNT_T *pnts, INT num, enum f_line_detection_mode lsm_mode, INT lsm_param, DLINE_T *line, DOUBLE *angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_line_npoint           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>angle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群から直線を算出（直線近似） 
+<p>
+最小２乗法により、点群G1から直線L1の方程式の係数 a, b, c を求めます。 <div align="center">
+<img src="fie_cg_calc_line_npoint.png" alt="fie_cg_calc_line_npoint.png">
+</div>
+<p>
+G1は2～1000点の範囲内で設定出来ます。<p>
+直線生成パラメータ( <em>lsm_param</em> )は、直線生成モードにより意味が異なります。 パラメータの意味は以下の通りです。 <ul>
+<li>F_LINE_DETECTION_NORMAL 無視されます </li>
+<li>F_LINE_DETECTION_NUM 繰り返し回数を指定します </li>
+<li>F_LINE_DETECTION_DIST_A 求められた直線と点との閾値（距離）を指定します </li>
+<li>F_LINE_DETECTION_DIST_B 求められた直線と点との閾値（距離）を指定します</li>
+</ul>
+なお、距離指定モード１、２のいずれかを指定した場合、繰り返し求められる直線と各点との閾値（距離） 以内の点の数が２以下になった場合、 F_ERR_CALC_IMPOSSIBLE となります。 例えば、点群の各点のばらつきが大きい場合などに発生します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>直線を生成する座標点群G1。 <em>num</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点群に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線生成のモード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線生成のパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>求められた直線L1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>求められた直線の傾き（単位：ラジアン [<img class="formulaInl" alt="$-\pi/2$" src="form_524.png"> ～ <img class="formulaInl" alt="$\pi/2$" src="form_362.png">] ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfee11b72ff90c91dc35153791384df86"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_center_2pointA" ref="gfee11b72ff90c91dc35153791384df86" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_center_2pointA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点の中点座標の算出 
+<p>
+点P1とP2の中点座標Pcを求めます。<p>
+<div align="center">
+<img src="fie_cg_calc_center_2pointA.png" alt="fie_cg_calc_center_2pointA.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>中点座標Pc</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g049da02c70cadda557e38e6632dfe188"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_center_2pointB" ref="g049da02c70cadda557e38e6632dfe188" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T *center, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_center_2pointB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点の中点座標と距離の算出 
+<p>
+点P1とP2の中点座標Pcと距離dを求めます。 <a class="el" href="group__fie__cg__std.html#gfee11b72ff90c91dc35153791384df86" title="２点の中点座標の算出">fnFIE_cg_calc_center_2pointA()</a> との違いは距離が求められることです。 <div align="center">
+<img src="fie_cg_calc_center_2pointB.png" alt="fie_cg_calc_center_2pointB.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>２点の中点座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>２点間の距離d</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g62a0af02765725e87e705b75255f0e85"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_center_point_and_lineA" ref="g62a0af02765725e87e705b75255f0e85" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T *center, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_center_point_and_lineA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点を通る直線と点までの距離と中点座標の算出（３点指定） 
+<p>
+点P1とP2からなる直線L1と点P3との距離dと中点座標Pcを求めます。 <div align="center">
+<img src="fie_cg_calc_center_point_and_lineA.png" alt="fie_cg_calc_center_point_and_lineA.png">
+</div>
+<p>
+P1とP2が同一座標の場合は、直線が定まらないため、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線を決定する座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線を決定する座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>直線との距離を求める座標点P3 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>直線と点３との中点座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>直線と点３との距離d</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gae5d06942c16c6607a8de94c759ac1fb"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_center_point_and_lineB" ref="gae5d06942c16c6607a8de94c759ac1fb" args="(const DPNT_T *pnts, INT num, DPNT_T pnt, enum f_line_detection_mode lsm_mode, INT lsm_param, DPNT_T *center, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_center_point_and_lineB           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群を通る直線と点までの距離と中点座標の算出（点群と１点指定） 
+<p>
+点群G1の作る直線L1と点P1との距離dと中点座標Pcを求めます。 <div align="center">
+<img src="fie_cg_calc_center_point_and_lineB.png" alt="fie_cg_calc_center_point_and_lineB.png">
+</div>
+<p>
+G1に指定できる点の数は２個から１０００個です。 点の数がこの範囲にない場合は、F_ERR_INVALID_PARAM を返します。<p>
+直線生成パラメータ( <em>lsm_param</em> )は、直線生成モードにより意味が異なります。 パラメータの意味は以下の通りです。 <ul>
+<li>F_LINE_DETECTION_NORMAL 無視されます </li>
+<li>F_LINE_DETECTION_NUM 繰り返し回数を指定します </li>
+<li>F_LINE_DETECTION_DIST_A 求められた直線と点との閾値（距離）を指定します </li>
+<li>F_LINE_DETECTION_DIST_B 求められた直線と点との閾値（距離）を指定します</li>
+</ul>
+なお、距離指定モード１、２のいずれかを指定した場合、繰り返し求められる直線と各点との閾値（距離） 以内の点の数が２以下になった場合、 F_ERR_CALC_IMPOSSIBLE となります。 例えば、点群の各点のばらつきが大きい場合などに発生します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>直線を生成する座標点群G1。 <em>num</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点群に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>距離と中点を求めるための座標点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線生成のモード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線生成のパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>直線L1と点P1との中点座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>直線L1と点P1との距離d</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc2b8e6e3333543ff6566de1b791429f7"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_center_point_and_lineC" ref="gc2b8e6e3333543ff6566de1b791429f7" args="(DLINE_T line, DPNT_T pnt, DPNT_T *center, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_center_point_and_lineC           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線と点までの距離と中点座標の算出（直線と１点指定） 
+<p>
+直線L1と点P1との距離dと中点座標Pcを求めます。 <div align="center">
+<img src="fie_cg_calc_center_point_and_lineC.png" alt="fie_cg_calc_center_point_and_lineC.png">
+</div>
+<p>
+不正な直線を与えた場合は F_ERR_CALC_IMPOSSIBLE を返します。 例えば直線の方程式の係数a, bが共に０のような直線が不正な直線となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>直線L1と点P1の中点座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>直線L1と点P1の距離d</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc18b0df1d56432647f0f0d16cf3157ea"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_crosspoint_2line" ref="gc18b0df1d56432647f0f0d16cf3157ea" args="(DLINE_T line1, DLINE_T line2, DPNT_T *cross)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_crosspoint_2line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線の交点の算出 
+<p>
+２直線L1とL2が交わる点Pcの座標を計算します。 <div align="center">
+<img src="fie_cg_calc_crosspoint_2line.png" alt="fie_cg_calc_crosspoint_2line.png">
+</div>
+<p>
+２直線が平行で交わらない場合は、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line1</em>&nbsp;</td><td>交点を求めるための対象となる直線L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line2</em>&nbsp;</td><td>交点を求めるための対象となる直線L2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>交点座標Pc</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー（２直線が平行で、交点が求まらない） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc2d8463366d8221ba21fd5bea6b164ef"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_2lineA" ref="gc2d8463366d8221ba21fd5bea6b164ef" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T pnt4, DPNT_T *cross, DOUBLE *angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_2lineA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>angle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線（２点指定×２）の交点座標と交角の角度の算出 
+<p>
+点P1とP2の作る直線L12と、 点P3とP4作る直線L34の交点座標Pcと交角の角度を求めます。 <div align="center">
+<img src="fie_cg_calc_cross_2lineA.png" alt="fie_cg_calc_cross_2lineA.png">
+</div>
+<p>
+P1とP2 、またはP3とP4が同一座標の場合は F_ERR_CALC_IMPOSSIBLE を返します。 また、それぞれ求められた直線L12とL34が平行だった場合にも F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線L12も求めるための座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線L12も求めるための座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>直線L34も求めるための座標点P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt4</em>&nbsp;</td><td>直線L34も求めるための座標点P4 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>２直線が作る交点座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>２直線のなす角のうち、小さい方の角度（単位：ラジアン [0,<img class="formulaInl" alt="$\pi/2$" src="form_362.png">] ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1626a074e5c32f8bbd607f0eba609c02"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_2lineB" ref="g1626a074e5c32f8bbd607f0eba609c02" args="(const DPNT_T *pnts1, INT num1, const DPNT_T *pnts2, INT num2, enum f_line_detection_mode lsm_mode, INT lsm_param, DPNT_T *cross, DOUBLE *angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_2lineB           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>angle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線（２点群指定）の交点座標と交角の角度の算出 
+<p>
+点群G1の作る直線とL1、点群G2の作る直線L2の交点座標P1と交角の角度を求めます。 <div align="center">
+<img src="fie_cg_calc_cross_2lineB.png" alt="fie_cg_calc_cross_2lineB.png">
+</div>
+<p>
+直線生成パラメータ( <em>lsm_param</em> )は、直線生成モードにより意味が異なります。 パラメータの意味は以下の通りです。 <ul>
+<li>F_LINE_DETECTION_NORMAL 無視されます </li>
+<li>F_LINE_DETECTION_NUM 繰り返し回数を指定します </li>
+<li>F_LINE_DETECTION_DIST_A 求められた直線と点との閾値（距離）を指定します </li>
+<li>F_LINE_DETECTION_DIST_B 求められた直線と点との閾値（距離）を指定します</li>
+</ul>
+なお、距離指定モード１、２のいずれかを指定した場合、繰り返し求められる直線と各点との閾値（距離） 以内の点の数が２以下になった場合、 F_ERR_CALC_IMPOSSIBLE となります。 例えば、点群の各点のばらつきが大きい場合などに発生します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts1</em>&nbsp;</td><td>座標点群G1(2～1000)。 <em>num1</em> 個の点が必要。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num1</em>&nbsp;</td><td>点群G1に入っている点の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts2</em>&nbsp;</td><td>座標点群G2(2～1000)。 <em>num2</em> 個の点が必要。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num2</em>&nbsp;</td><td>点群G2に入っている点の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線生成のモード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線生成のパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>２直線が作る交点座標P1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>２直線のなす角のうち、小さい方の角度（単位：ラジアン [0,<img class="formulaInl" alt="$\pi/2$" src="form_362.png">] ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd6f692a65d12cf517bb00b989859ffa5"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_2lineC" ref="gd6f692a65d12cf517bb00b989859ffa5" args="(DLINE_T line1, DLINE_T line2, DPNT_T *cross, DOUBLE *angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_2lineC           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>angle</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線の交点座標と交角の角度の算出 
+<p>
+直線L1とL2の交点座標Pcと交角の角度を求めます。 <div align="center">
+<img src="fie_cg_calc_cross_2lineC.png" alt="fie_cg_calc_cross_2lineC.png">
+</div>
+<p>
+２直線が平行で、交わらない場合は、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line1</em>&nbsp;</td><td>直線L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line2</em>&nbsp;</td><td>直線L2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>２直線の交点座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>２直線のなす角のうち、小さい方の角度（単位：ラジアン [0, <img class="formulaInl" alt="$\pi/2$" src="form_362.png">] ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー（２直線が平行で、交点が求まらない） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gde32fb39c8e49743edc91cfa1725aaa8"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_circle_npoints" ref="gde32fb39c8e49743edc91cfa1725aaa8" args="(DPNT_T **pnts_set, const INT *num_set, INT set_num, DPNT_T *center, DOUBLE *radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_circle_npoints           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>pnts_set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT *&nbsp;</td>
+          <td class="paramname"> <em>num_set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>set_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複数点群を通る円の中心座標と半径の算出 
+<p>
+Ｎ個の点群Gn{n = 1,2,…N}を通る円の中心座標Pcと半径rを求めます。 各点群の点数を合計した個数が１６個以上の時は、各点群の配列の最初から順番に点を取りだして行き、１６個を選びます。 <div align="center">
+<img src="fie_cg_calc_circle_npoints.png" alt="fie_cg_calc_circle_npoints.png">
+</div>
+<p>
+各点群には１個以上の点がなければいけません。 点が０個の点群が含まれていた場合は、 F_ERR_INVALID_PARAM を返します。 また、すべての点が同一座標であったなど不正な点群を与えた場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_set</em>&nbsp;</td><td>複数の座標点群Gnの配列。 3個以上の要素が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_set</em>&nbsp;</td><td>各点群に入っている点の個数の配列。 <em>set_num</em> 個分の要素が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>set_num</em>&nbsp;</td><td>点群数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>円の中心座標Pc </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>円の半径r</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2fa7fd0a528e86364ed02af1f90fbbfc"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_circle_and_lineA" ref="g2fa7fd0a528e86364ed02af1f90fbbfc" args="(const DPNT_T *pnts, INT num, DPNT_T pnt1, DPNT_T pnt2, INT *cross_num, DPNT_T *cross1, DPNT_T *cross2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_circle_and_lineA           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>cross_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群を通る円と２点を通る直線の交点 
+<p>
+点群G1を通る円と２点P1とP2を通る直線L1の交点Pi1とPi2を求めます。 交点が１個のときはPi2の値は意味を持ちません。 交点が見つからない（交点が０個）ときはPi1とPi2の値は両方とも意味を持ちません。 <div align="center">
+<img src="fie_cg_calc_cross_circle_and_lineA.png" alt="fie_cg_calc_cross_circle_and_lineA.png">
+</div>
+<p>
+円を生成するG1は、点の数が3～16個の範囲でなければいけません。 違った場合は、 F_ERR_INVALID_PARAM を返します。 <br>
+ また、例えば直線の方程式の係数a, bが共に０のような直線が不正な直線を与えた場合は F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>円を生成する座標点群G1。 <em>num</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点群の点数(3～16個) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線を構成する座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線を構成する座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross_num</em>&nbsp;</td><td>交点数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross1</em>&nbsp;</td><td>交点座標Pi1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross2</em>&nbsp;</td><td>交点座標Pi2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g976b54f98ab01a000c750c71293e1175"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_circle_and_lineB" ref="g976b54f98ab01a000c750c71293e1175" args="(DPNT_T center, DOUBLE radius, DLINE_T line, INT *cross_num, DPNT_T *cross1, DPNT_T *cross2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_circle_and_lineB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>cross_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+円と直線の交点の算出 
+<p>
+円C1と直線L1の交点Pi1とPi2を求めます。 交点が１個のときはPi2の値は意味を持ちません。 交点が見つからないとき（交点が０個）はPi1とPi2の値は両方とも意味を持ちません。 <div align="center">
+<img src="fie_cg_calc_cross_circle_and_lineB.png" alt="fie_cg_calc_cross_circle_and_lineB.png">
+</div>
+<p>
+例えば直線の方程式の係数a, bが共に０のような直線が不正な直線を与えた場合は F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>円の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>円の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線L1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross_num</em>&nbsp;</td><td>交点数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross1</em>&nbsp;</td><td>交点座標Pi1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross2</em>&nbsp;</td><td>交点座標Pi2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0d619f65dc556cde91e74e800ce2664d"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_2circleA" ref="g0d619f65dc556cde91e74e800ce2664d" args="(const DPNT_T *pnts1, INT num1, const DPNT_T *pnts2, INT num2, INT *cross_num, DPNT_T *cross1, DPNT_T *cross2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_2circleA           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>cross_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群１を通る円１と点群２を通る円２の交点の算出 
+<p>
+点群G1を通る円C1と点群G2を通る円C2の交点Pi1とPi2を求めます。 交点が１個のときはPi2の値は意味を持ちません。 交点が見つからない（交点が０個）ときはPi1とPi2の値は両方とも意味を持ちません。 <div align="center">
+<img src="fie_cg_calc_cross_2circleA.png" alt="fie_cg_calc_cross_2circleA.png">
+</div>
+<p>
+G1およびG2に指定される点群は、それぞれ点の数が3～16個の範囲 でなければいけません。違っている場合は、 F_ERR_INVALID_PARAM を返します。 また、円１と円２が重なった場合や、すべての点が同一座標であったなど不正な点群を与えた場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts1</em>&nbsp;</td><td>円１を生成する座標点群G1。 <em>num1</em> 個の点が必要。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num1</em>&nbsp;</td><td>点群<em>pnts1</em> に入っている点の数(3～16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts2</em>&nbsp;</td><td>円２を生成する座標点群G2。 <em>num2</em> 個の点が必要。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num2</em>&nbsp;</td><td>点群 <em>pnts2</em> に入っている点の数(3～16) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross_num</em>&nbsp;</td><td>交点数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross1</em>&nbsp;</td><td>交点座標Pi1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross2</em>&nbsp;</td><td>交点座標Pi2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge35157a1cc5b93fd82614d75cfd4c8fd"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_2circleB" ref="ge35157a1cc5b93fd82614d75cfd4c8fd" args="(DPNT_T center1, DOUBLE radius1, DPNT_T center2, DOUBLE radius2, INT *cross_num, DPNT_T *cross1, DPNT_T *cross2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_2circleB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>cross_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２つの円の交点の算出 
+<p>
+円C1と円C2の交点Pi1とPi2を求めます。 交点が１個のときはPi2の値は意味を持ちません。 交点が見つからない（交点が０個）ときはPi1とPi2の値は意味を持ちません。 <div align="center">
+<img src="fie_cg_calc_cross_2circleB.png" alt="fie_cg_calc_cross_2circleB.png">
+</div>
+<p>
+円１と円２が重なっているときには、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center1</em>&nbsp;</td><td>円１の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius1</em>&nbsp;</td><td>円１の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center2</em>&nbsp;</td><td>円２の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius2</em>&nbsp;</td><td>円２の半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross_num</em>&nbsp;</td><td>交点の個数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross1</em>&nbsp;</td><td>交点座標Pi1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross2</em>&nbsp;</td><td>交点座標Pi2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g29eb406811e47dd7a876866df8dd999c"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_rectangle_5point" ref="g29eb406811e47dd7a876866df8dd999c" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T pnt4, DPNT_T pnt5, DOUBLE *long_len, DOUBLE *short_len, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_rectangle_5point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+５点を通る辺を持つ四角形の中心座標 
+<p>
+５点Pn{n=1,2,3,4,5}で決定される四角形の中心座標Pcを求めます。 <div align="center">
+<img src="fie_cg_calc_rectangle_5point.png" alt="fie_cg_calc_rectangle_5point.png">
+</div>
+<p>
+求められた直線が平行で交点が求められない場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>四角形の基準となる辺を作る直線Ｌのための点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>四角形の基準となる辺を作る直線Ｌのための点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>直線Ｌと隣り合う辺を作る点P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt4</em>&nbsp;</td><td>直線Ｌと向かい合う辺を作る点P4 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt5</em>&nbsp;</td><td>直線Ｌと隣り合う辺を作る点P5 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long_len</em>&nbsp;</td><td>長方形の長辺の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short_len</em>&nbsp;</td><td>長方形の短辺の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>長方形の中心座標点</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g513cc47a3dc275e634d0e30ff6ab793e"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_distance_2point" ref="g513cc47a3dc275e634d0e30ff6ab793e" args="(DPNT_T pnt1, DPNT_T pnt2, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_distance_2point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点間の距離の算出 
+<p>
+下記式により、点P1 <img class="formulaInl" alt="$(x1,y1)$" src="form_525.png"> とP2 <img class="formulaInl" alt="$(x2,y2)$" src="form_529.png"> の距離dを求めます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d=\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2} \]" src="form_530.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_cg_calc_distance_2point.png" alt="fie_cg_calc_distance_2point.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>２点間の距離d</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g698d44e4d38ee95d5246c9c5527cd207"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_distance_npoint" ref="g698d44e4d38ee95d5246c9c5527cd207" args="(const DPNT_T *pnts, INT num, DOUBLE *dist)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_distance_npoint           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dist</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Ｎ点間の距離の算出 
+<p>
+点群G1のN個の点Pn{n=1,2,3,4,5}に関して格納している順番に前後の点の距離の積算を求めます。 <div align="center">
+<img src="fie_cg_calc_distance_npoint.png" alt="fie_cg_calc_distance_npoint.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>座標点群G1。 <em>num</em> 個の点が必要です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点群 <em>pnts</em> に入っている点の数N </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dist</em>&nbsp;</td><td>積算距離</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc7386db0a3ae8a854e388b3600096478"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_centerline_2npoint" ref="gc7386db0a3ae8a854e388b3600096478" args="(const DPNT_T *pnts1, INT num1, const DPNT_T *pnts2, INT num2, enum f_line_detection_mode lsm_mode, INT lsm_param, DLINE_T *line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_centerline_2npoint           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線の中心を通る直線の算出（２点群指定） 
+<p>
+点群G1とG2が作る２直線L1とL2から等距離にある点群が生成する直線の検出します。 <div align="center">
+<img src="fie_cg_calc_centerline_2npoint.png" alt="fie_cg_calc_centerline_2npoint.png">
+</div>
+<p>
+G1およびG2に指定する点群の点の数は、それぞれ2～1000個の範囲でなければいけません。 違っている場合は F_ERR_INVALID_PARAM を返します。 また、すべての点が同一座標であったなど不正な点群を与えた場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts1</em>&nbsp;</td><td>直線L1を生成する座標点群G1。 <em>num1</em> 個の点が必要。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num1</em>&nbsp;</td><td>点群 <em>pnts1</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts2</em>&nbsp;</td><td>直線L2を生成する座標点群G2。 <em>num2</em> 個の点が必要。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num2</em>&nbsp;</td><td>点群 <em>pnts2</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線生成のモード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線生成のパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>２直線の中心を通る直線</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g41043c620e9ca7e2d0ec4a1b7365ec6d"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_centerline_4point" ref="g41043c620e9ca7e2d0ec4a1b7365ec6d" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T pnt4, DLINE_T *line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_centerline_4point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線の中心を通る直線の算出（４点指定） 
+<p>
+点P1とP2、 P3と4が作る２本の直線L1とL2から、等距離にある点群が生成する直線L1の検出します。 <div align="center">
+<img src="fie_cg_calc_centerline_4point.png" alt="fie_cg_calc_centerline_4point.png">
+</div>
+<p>
+P1とP2、またはP3とP4が同一座標であったなど不正な点群を与えた場合、 F_ERR_CALC_IMPOSSIBLE を返します。 また、求められた２直線が直交する場合には、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線L1を作る座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線L1を作る座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>直線L2を作る座標点P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt4</em>&nbsp;</td><td>直線L2を作る座標点P4 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>２直線の中心を通る直線</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd0418146695b6b3dc593f2626d589077"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_centerline_2line" ref="gd0418146695b6b3dc593f2626d589077" args="(DLINE_T line1, DLINE_T line2, DLINE_T *center_line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_centerline_2line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center_line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２直線の中心を通る直線の算出 
+<p>
+２つの直線L1とL2の中心を通る直線Lcを求めます。 ２直線の交角の狭い方の中心線を検出します。 <div align="center">
+<img src="fie_cg_calc_centerline_2line.png" alt="fie_cg_calc_centerline_2line.png">
+</div>
+<p>
+２直線が直交する場合には、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line1</em>&nbsp;</td><td>直線L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line2</em>&nbsp;</td><td>直線L2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center_line</em>&nbsp;</td><td>２直線の中心を通る直線L3</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g55814436cb630dc8b5fb60d3f5224a4f"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_4line" ref="g55814436cb630dc8b5fb60d3f5224a4f" args="(DLINE_T line1, DLINE_T line2, DLINE_T line3, DLINE_T line4, DPNT_T *cross)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_4line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２組の２直線の中心を通る直線の交点の検出（４直線指定） 
+<p>
+４直線から２本の中心線を作り、その２本の中心線の交点を求めます。<p>
+直線L1とL2の中心を通る直線Lc1を求めます。 次に、直線L3とL4の中心を通る直線Lc2を求めます。 求められた中心線Lc1とLc2の交点Pc1を求め、これを結果として返します。 <div align="center">
+<img src="fie_cg_calc_cross_4line.png" alt="fie_cg_calc_cross_4line.png">
+</div>
+<p>
+L1とL2が直交している場合、またはL3とL4が直交している場合は、 Lc1またはLc2が求まらないためエラーとなり、 F_ERR_CALC_IMPOSSIBLE を返します。 また、Lc1とLc2が平行となる場合は、交点が求まらないためエラーとなり、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line1</em>&nbsp;</td><td>直線L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line2</em>&nbsp;</td><td>直線L2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line3</em>&nbsp;</td><td>直線L3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line4</em>&nbsp;</td><td>直線L4 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>中心線Lc1と中心線Lc2の交点座標Pc1</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4b673b9e892b4517fafc763467a75114"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_4npoint" ref="g4b673b9e892b4517fafc763467a75114" args="(const DPNT_T *pnts1, INT num1, const DPNT_T *pnts2, INT num2, const DPNT_T *pnts3, INT num3, const DPNT_T *pnts4, INT num4, enum f_line_detection_mode lsm_mode, INT lsm_param, DPNT_T *cross)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_4npoint           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２組の２直線の中心を通る直線の交点の算出（４点群指定） 
+<p>
+点群G1とG2が作る２直線L1とL2から等距離にある点群が生成する中心線Lc1の検出します。 点群G3とG4が作る２直線L3とL4から等距離にある点群が生成する中心線Lc2の検出します。 中心線Lc1と中心線Lc2の交点Pc1を求めます。 <div align="center">
+<img src="fie_cg_calc_cross_4npoint.png" alt="fie_cg_calc_cross_4npoint.png">
+</div>
+<p>
+各点群の点の数は2～1000個の範囲でなければいけません。 違っている場合は、 F_ERR_INVALID_PARAM を返します。 L1とL2が直交している場合、またはL3とL4が直交している場合は、 Lc1またはLc2が求まらないためエラーとなり、 F_ERR_CALC_IMPOSSIBLE を返します。 また、Lc1とLc2が平行となる場合は、交点が求まらないためエラーとなり、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts1</em>&nbsp;</td><td>直線L1を生成する座標点群G1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num1</em>&nbsp;</td><td>点群 <em>pnts1</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts2</em>&nbsp;</td><td>直線L2を生成する座標点群G2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num2</em>&nbsp;</td><td>点群 <em>pnts2</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts3</em>&nbsp;</td><td>直線L3を生成する座標点群G3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num3</em>&nbsp;</td><td>点群 <em>pnts3</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts4</em>&nbsp;</td><td>直線L4を生成する座標点群G4 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num4</em>&nbsp;</td><td>点群 <em>pnts4</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線生成のモード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線生成のパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>中心線Lc1と中心線Lc2の交点座標Pc1</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd03f4317c16f2588e1b37e1011db3502"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_8point" ref="gd03f4317c16f2588e1b37e1011db3502" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T pnt4, DPNT_T pnt5, DPNT_T pnt6, DPNT_T pnt7, DPNT_T pnt8, DPNT_T *cross)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_8point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt6</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt7</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt8</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２組の２直線の中心を通る直線の交点の算出（８点指定） 
+<p>
+８点Pn{n=1,2,3,4,5,6,7,8}が作る４直線Ln{n = 1,2,3,4}の２本の中心線Lc1とLc2の交点座標Pc1の検出をします。 <ul>
+<li>P1、２P2、P3、P4、P5、P5、P7、P8の各直線を４つ検出 <br>
+ </li>
+<li>L1とL2、L3とL4の２本の中心を検出 <br>
+ </li>
+<li>２で求めた２本の直線Lc1とLc2の交点Pc1の検出 <div align="center">
+<img src="fie_cg_calc_cross_8point.png" alt="fie_cg_calc_cross_8point.png">
+</div>
+</li>
+</ul>
+以下の場合は、エラーとなり、 F_ERR_CALC_IMPOSSIBLE を返します。 <ul>
+<li>各直線を設定する２点が同一点の場合(直線が求まらない) </li>
+<li>L1とL2が直交している場合、、またはL3とL4が直交している場合 (中心線Lc1、またはLc2が求まらないため) </li>
+<li>中心線Lc1とLc2が平行となる場合(交点が求まらないため)</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>直線L1を設定する座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>直線L1を設定する座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>直線L2を設定する座標点P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt4</em>&nbsp;</td><td>直線L2を設定する座標点P4 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt5</em>&nbsp;</td><td>直線L3を設定する座標点P5 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt6</em>&nbsp;</td><td>直線L3を設定する座標点P6 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt7</em>&nbsp;</td><td>直線L4を設定する座標点P7 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt8</em>&nbsp;</td><td>直線L4を設定する座標点P8 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross</em>&nbsp;</td><td>中心線Lc1とLc2の交点座標Pc1</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g04d85cf9d976af15287e062e9fd46485"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_rectangle_4line" ref="g04d85cf9d976af15287e062e9fd46485" args="(DLINE_T lineAB, DLINE_T lineBC, DLINE_T lineCD, DLINE_T lineDA, DOUBLE *long1, DOUBLE *short1, DOUBLE *long2, DOUBLE *short2, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_rectangle_4line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>lineAB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>lineBC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>lineCD</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>lineDA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+四角形の中心座標の算出（４直線指定） 
+<p>
+４つの直線AB、BC、CD、DAが作る四角形の中心座標（対角線の交点）Pcと長辺、短辺の長さを求めます。<p>
+長辺と短辺を格納する <em>long1</em> と <em>short1</em> は、四角形の辺ABと辺BCの長さを比較して長い方が <em>long1</em> に格納され、短い方は <em>short1</em> に格納されます。 また、<em>long2</em> と <em>short2</em> については <em>long1</em> に辺ABが入った場合には <em>long2</em> は辺CD、 <em>short2</em> には辺DAのように辺ABと辺CD、辺BCと辺DAの向かい合う辺同士が対応して <em>long</em> と <em>short</em> に格納されます。 <div align="center">
+<img src="fie_cg_calc_rectangle_4line.png" alt="fie_cg_calc_rectangle_4line.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lineAB</em>&nbsp;</td><td>辺ＡＢ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lineBC</em>&nbsp;</td><td>辺ＢＣ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lineCD</em>&nbsp;</td><td>辺ＣＤ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lineDA</em>&nbsp;</td><td>辺ＤＡ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long1</em>&nbsp;</td><td>長辺１の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short1</em>&nbsp;</td><td>短辺１の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long2</em>&nbsp;</td><td>長辺２の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short2</em>&nbsp;</td><td>短辺２の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>中心点座標</td></tr>
+  </table>
+</dl>
+直線が平行で交点が求められない場合や向かい合う直線が同一の場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g51614fdd74ed34ea40928f7c6e0aaaa9"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_rectangle_4npoint" ref="g51614fdd74ed34ea40928f7c6e0aaaa9" args="(const DPNT_T *pntsAB, INT numAB, const DPNT_T *pntsBC, INT numBC, const DPNT_T *pntsCD, INT numCD, const DPNT_T *pntsDA, INT numDA, enum f_line_detection_mode lsm_mode, INT lsm_param, DOUBLE *long1, DOUBLE *short1, DOUBLE *long2, DOUBLE *short2, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_rectangle_4npoint           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntsAB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>numAB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntsBC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>numBC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntsCD</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>numCD</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pntsDA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>numDA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+四角形の中心座標の算出（４点群指定） 
+<p>
+４つの点群から得られる４つの直線AB、BC、CD、DAが作る四角形の中心座標（対角線の交点）Pcと長辺、 短辺の長さを求めます。<p>
+長辺と短辺を格納する <em>long1</em> と <em>short1</em> は、四角形の辺ＡＢと辺ＢＣの長さを比較して 長い方が <em>long1</em> に格納され、短い方は <em>short1</em> に格納されます。 また、 <em>long2</em> と <em>short2</em> については <em>long1</em> に辺ＡＢが入った場合には <em>long2</em> は 辺ＣＤ、 <em>short2</em> には辺ＤＡのように辺ＡＢと辺ＣＤ、 辺ＢＣと辺ＤＡの向かい合う辺同士が対応して <em>long</em> と <em>short</em> に格納されます。 <div align="center">
+<img src="fie_cg_calc_rectangle_4npoint.png" alt="fie_cg_calc_rectangle_4npoint.png">
+</div>
+<p>
+直線生成パラメータ( <em>lsm_param</em> )は、直線生成モードにより意味が異なります。 パラメータの意味は以下の通りです。 <ul>
+<li>F_LINE_DETECTION_NORMAL 無視されます </li>
+<li>F_LINE_DETECTION_NUM 繰り返し回数を指定します </li>
+<li>F_LINE_DETECTION_DIST_A 求められた直線と点との閾値（距離）を指定します </li>
+<li>F_LINE_DETECTION_DIST_B 求められた直線と点との閾値（距離）を指定します</li>
+</ul>
+なお、距離指定モード１、２のいずれかを指定した場合、繰り返し求められる直線と各点との閾値（距離） 以内の点の数が２以下になった場合、 F_ERR_CALC_IMPOSSIBLE となります。 例えば、点群の各点のばらつきが大きい場合などに発生します。 また、各座標群においてすべての点が同一座標であったなど不正な点群を与えた場合、 直線が平行で交点が求められない場合や向かい合う直線が同一の場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntsAB</em>&nbsp;</td><td>辺ＡＢを作る座標点群。 <em>numAB</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>numAB</em>&nbsp;</td><td>点群 <em>pntsAB</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntsBC</em>&nbsp;</td><td>辺ＢＣを作る座標点群。 <em>numBC</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>numBC</em>&nbsp;</td><td>点群 <em>pntsBC</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntsCD</em>&nbsp;</td><td>辺ＣＤを作る座標点群。 <em>numCD</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>numCD</em>&nbsp;</td><td>点群 <em>pntsCD</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pntsDA</em>&nbsp;</td><td>辺ＤＡを作る座標点群。 <em>numDA</em> 個の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>numDA</em>&nbsp;</td><td>点群 <em>pntsDA</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線生成のモード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線生成のパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long1</em>&nbsp;</td><td>長辺１の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short1</em>&nbsp;</td><td>短辺１の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long2</em>&nbsp;</td><td>長辺２の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short2</em>&nbsp;</td><td>短辺２の長さ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>中心点座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfcbb168642c2661590787e98253bfc43"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_mark" ref="gfcbb168642c2661590787e98253bfc43" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T pnt4, DPNT_T pnt5, DPNT_T pnt6, DPNT_T pnt7, DPNT_T pnt8, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_mark           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt6</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt7</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt8</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+トンボマークの中心の算出 
+<p>
+トンボマークの中心座標の検出をします。 <ul>
+<li>点P1とP2、P3とP4、P5とP6、P7とP8の４つの中点Pcn{n = 12, 34, 56, 78}検出 <br>
+ </li>
+<li>Pc12とPc56、Pc34とPc78を通る２本の直線L1とL2の検出 <br>
+ </li>
+<li>L1とL2の交点Pcの検出 <div align="center">
+<img src="fie_cg_calc_cross_mark.png" alt="fie_cg_calc_cross_mark.png">
+</div>
+</li>
+</ul>
+上記した各点の組み合わせで、同一座標であったなど不正な点群を与えた場合、 F_ERR_CALC_IMPOSSIBLE を返します。 また、求められた２直線が平行な場合には、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>座標点P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt4</em>&nbsp;</td><td>座標点P4 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt5</em>&nbsp;</td><td>座標点P5 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt6</em>&nbsp;</td><td>座標点P6 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt7</em>&nbsp;</td><td>座標点P7 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt8</em>&nbsp;</td><td>座標点P8 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>中心座標Pc1</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7b3bb88b45aa09ac595cb762fb1b5756"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_long_hole_6point" ref="g7b3bb88b45aa09ac595cb762fb1b5756" args="(DPNT_T pnt1, DPNT_T pnt2, DPNT_T pnt3, DPNT_T pnt4, DPNT_T pnt5, DPNT_T pnt6, DOUBLE *long1, DOUBLE *short1, DOUBLE *long2, DOUBLE *short2, DPNT_T *center)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_long_hole_6point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt6</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>long2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>short2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+長穴の測定（6点指定） 
+<p>
+入力6点によって作られる長穴の測定を行います。<p>
+<dl class="user" compact><dt><b>長穴の作る四角形の検出について</b></dt><dd>以下に処理内容を順に示します。</dd></dl>
+<ul>
+<li>(1)P1～P6が与えられます。 <div align="center">
+<img src="fie_cg_calc_long_hole_6point1.png" alt="fie_cg_calc_long_hole_6point1.png">
+</div>
+</li>
+</ul>
+<ul>
+<li>(2)P1とP2、P4とP5の作る各直線(L12,L45)を求め、２直線の中心線Lcの検出します。 <div align="center">
+<img src="fie_cg_calc_long_hole_6point2.png" alt="fie_cg_calc_long_hole_6point2.png">
+</div>
+</li>
+</ul>
+<ul>
+<li>(3)P2とP3とP4の作る円C1、 P5とP6とP1の作る円C2の検出します。 <div align="center">
+<img src="fie_cg_calc_long_hole_6point3.png" alt="fie_cg_calc_long_hole_6point3.png">
+</div>
+</li>
+</ul>
+<ul>
+<li>(4)円C1と中心線Lcの外側の交点 Pi1 、円C2と中心線の外側の交点 Pi2 を求めます。 <div align="center">
+<img src="fie_cg_calc_long_hole_6point4.png" alt="fie_cg_calc_long_hole_6point4.png">
+</div>
+</li>
+</ul>
+<ul>
+<li>(5)Pi1上での接線TL1、Pi2上での接線TL2を求めます。 <div align="center">
+<img src="fie_cg_calc_long_hole_6point5.png" alt="fie_cg_calc_long_hole_6point5.png">
+</div>
+</li>
+</ul>
+<ul>
+<li>(6)以上のL12、TL1、L45、TL2の４つの直線が作る四角形から長穴の測定します。 <div align="center">
+<img src="fie_cg_calc_long_hole_6point.png" alt="fie_cg_calc_long_hole_6point.png">
+</div>
+</li>
+</ul>
+<dl class="user" compact><dt><b>長辺と短辺について</b></dt><dd>長辺と短辺を格納する <em>long1</em> と <em>short1</em> は、四角形のL12とTL1の長さを比較して長い方が <em>long1</em> に格納され、短い方は <em>short1</em> に格納されます。 <em>long2</em> と <em>short2</em> については <em>long1</em> にL12が入った場合には <em>long2</em> はL45、 <em>short2</em> にはTL2のようにL12とL45、TL1とTL2の向かい合う辺同士が対応して <em>long</em> と <em>short</em> に格納されます。<br>
+</dd></dl>
+上記した各点の直線や円を求めるための組み合わせで、同一座標であったなど不正な点群を与えた場合、 F_ERR_CALC_IMPOSSIBLE を返します。 また、求められた４直線から四角形を求められない場合は、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt1</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt2</em>&nbsp;</td><td>座標点P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt3</em>&nbsp;</td><td>座標点P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt4</em>&nbsp;</td><td>座標点P4 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt5</em>&nbsp;</td><td>座標点P5 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt6</em>&nbsp;</td><td>座標点P6 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long1</em>&nbsp;</td><td>長穴の作る四角形の長辺1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short1</em>&nbsp;</td><td>長穴の作る四角形の短辺2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>long2</em>&nbsp;</td><td>長穴の作る四角形の長辺2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>short2</em>&nbsp;</td><td>長穴の作る四角形の短辺2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>長穴の作る四角形の中心座標Pc</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gebd698a6dd695e724e7a239d6d17fd7b"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_tangent_line" ref="gebd698a6dd695e724e7a239d6d17fd7b" args="(DPNT_T pnt, DPNT_T center, DOUBLE radius, DLINE_T *line)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_tangent_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+円の接線の方程式の算出 
+<p>
+中心Pc1、半径rの円上の点P1における接線Lを求めます。 円上の点の指定は、厳密にいえば整数型の指定では誤差が出てしまいます。 よって本関数では、誤差を四捨五入して１画素未満であれば円の方程式により正しい円上の点を導きだし、その点上での接線の方程式を求めます。 <div align="center">
+<img src="fie_cg_calc_tangent_line.png" alt="fie_cg_calc_tangent_line.png">
+</div>
+<p>
+P1が円上の点でない場合、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>円上にある点P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>円の中心座標C1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>円の半径r </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>接線L</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g92ac36e001068d60cc444a63ec2f6c05"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_cross_ellipse_and_line" ref="g92ac36e001068d60cc444a63ec2f6c05" args="(DPNT_T center, DOUBLE major, DOUBLE minor, DOUBLE theta, DLINE_T line, INT *cross_num, DPNT_T *cross1, DPNT_T *cross2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_cross_ellipse_and_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>major</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>minor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>cross_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>cross2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+楕円と直線の交点の算出 
+<p>
+楕円Eと直線Lの交点Pi1とPi2を求めます。 <div align="center">
+<img src="fie_cg_calc_cross_ellipse_and_line.png" alt="fie_cg_calc_cross_ellipse_and_line.png">
+</div>
+<p>
+交点が１個のときはPi2の値は意味を持ちません。 交点が見つからないとき（交点が０個）はPi1とPi2の値は両方とも意味を持ちません。 交点が2個の場合は、次のような条件で結果を出力します。<p>
+<dl class="user" compact><dt><b>2つの交点のx座標が異なる場合</b></dt><dd>x座標の値が小さい方をPi1、大きい方をPi2として出力します。<br>
+</dd></dl>
+<dl class="user" compact><dt><b>2つの交点のx座標が等しい場合</b></dt><dd>y座標の値が小さい方をPi1、大きい方をPi2として出力します。<br>
+</dd></dl>
+直線の方程式の係数a, bが共に０のような、パラメータが不正な直線を与えた場合は F_ERR_CALC_IMPOSSIBLE を返します。 また、係数a, bの絶対値が共に極端に小さい値である場合、交点の算出ができない可能性があります。その場合はF_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>楕円の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>major</em>&nbsp;</td><td>楕円の主軸長 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>minor</em>&nbsp;</td><td>楕円の副軸長 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>楕円の主軸傾き ( 単位：ラジアン ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線L </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross_num</em>&nbsp;</td><td>交点数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross1</em>&nbsp;</td><td>交点座標Pi1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cross2</em>&nbsp;</td><td>交点座標Pi2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7e1b4413bb72ddf5a13599c469721b5b"></a><!-- doxytag: member="fie_cg_caliper.c::fnFIE_cg_calc_distance_ellipse_to_point" ref="g7e1b4413bb72ddf5a13599c469721b5b" args="(DPNT_T center, DOUBLE major, DOUBLE minor, DOUBLE theta, DPNT_T point, DOUBLE *distance, DPNT_T *nearest_point, BOOL *outer)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_calc_distance_ellipse_to_point           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>major</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>minor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>nearest_point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL *&nbsp;</td>
+          <td class="paramname"> <em>outer</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+楕円と点の距離 
+<p>
+点P1 <img class="formulaInl" alt="$(x1,y1)$" src="form_525.png"> と、点P1に最も近い楕円E上の点P2を算出し、その最短距離dを求めます。 また、点P1と楕円Eの内外判定も併せて求めます<br>
+ <div align="center">
+<img src="fie_cg_calc_distance_ellipse_to_point.png" alt="fie_cg_calc_distance_ellipse_to_point.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>最短距離について</b></dt><dd>点P1と楕円Eの最短距離dは、P1とEの位置関係(点P1が楕円の内部か、外部か)に関係なく、 単純に楕円までの最短距離のみを求めます。<br>
+</dd></dl>
+<dl class="user" compact><dt><b>点P1の内外判定について</b></dt><dd>点P1が楕円の外部か否かの判定は、<em>outer</em> に設定されます。判定結果は以下のようになります。</dd></dl>
+<ul>
+<li>P1が楕円の外部 : <em>outer</em> にTRUEが設定されます</li><li>P1が楕円の内部か楕円上 : <em>outer</em> にFALSEが設定されます</li></ul>
+<p>
+<dl class="user" compact><dt><b>楕円上の点P2について</b></dt><dd>点P1との最短距離を与える楕円上の点P2は、一般的には唯一に定まります。 しかし、点P1と楕円Eの位置関係や、楕円Eの形状が特殊な場合は、そのような点が 複数存在するケースがあります。その場合は、以下の条件に合わせて1点を選び、 その値を出力します。</dd></dl>
+<ul>
+<li>各点の座標を比較し、x座標が最大となるものを選びます。この時点で点がひとつに定まった場合は、この点を出力します</li><li>x座標が最大となる点が複数ある場合は、その中でさらにy座標の比較を行い、y座標が最大となる点を出力します</li></ul>
+<p>
+出力側の引数( <em>distance</em> , <em>nearest_point</em> , <em>outer</em> )は、必要無いものについてはNULL指定が可能です。 例えば、距離のみを算出したい場合は、<em>distance</em> のみ有効なポインタを設定し、他の2つはNULLを指定すれば 良いです。全ての引数にNULLを指定した場合は、何もせずそのまま正常終了します。<br>
+<p>
+楕円の長軸や短軸が0以下のような、パラメータが不正な楕円を与えた場合は、 F_ERR_CALC_IMPOSSIBLE を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>楕円Eの中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>major</em>&nbsp;</td><td>楕円Eの主軸長 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>minor</em>&nbsp;</td><td>楕円Eの副軸長 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>楕円Eの主軸傾き ( 単位：ラジアン ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>point</em>&nbsp;</td><td>座標点P1 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>distance</em>&nbsp;</td><td>楕円EとP1との最短距離d </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>nearest_point</em>&nbsp;</td><td>楕円EとP1との最短距離dを与える、楕円E上の点P2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>outer</em>&nbsp;</td><td>P1が楕円Eの外部か内部かの判定結果( TRUE:楕円外部 / FALSE:楕円上か楕円内)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

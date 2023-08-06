@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 1.8.1</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel1_8_1">release 1.8.1 </a></h1><div style="text-align:right">2008/11/05</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel1_8_1.html#fie1_8_1">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie1_8_1">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">機能追加及び仕様変更</h3>
+<p>
+<ul>
+<li><b>特徴点応用マッチングのエッジ抽出精度の向上</b><br>
+ これまで不適当と判断された候補点に対して、その周囲でサブピクセル位置を求めることになり、除去を抑え ることが可能となり、斜め方向のエッジを取得する場合に途切れてしまう傾向があった点を修正しました。<ul>
+<li>fnFIE_fpm_*</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><b>特徴点応用マッチングに高精度モードを追加</b><br>
+ 非極大抑制しきい値を大きくした場合のエッジの勾配方向の精度が悪化することに対して、エッジ勾配方向の 算時の参照データの見直した(非極大抑制に依存させない)高精度モードを追加しました。<br>
+ また、現状、高精度ポーズ推定が収束しない場合には粗サーチの回答をそのまま返しています。<br>
+ このため、本現象が起こった場合には(スコアは低下するものの)精度の悪い位置を返してしまいます。<br>
+ このような状況を回避するために、高精度ポーズ推定が収束しなかった場合にはその回答を削除するような高精度ポーズ推定の動作モードを選択できるような関数を追加します。<ul>
+<li>fnFIE_fpm_*, fnFIE_edge_sobel</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><b>画像間算術演算関数の2値画像への対応</b><br>
+ 画像間算術演算関数を2値画像(F_IMG_BIN)に対応させました。<ul>
+<li><a class="el" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add()</a></li><li><a class="el" href="group__fie__filter__arithm.html#g1761e39a0fdc86fcd4960e8c22e15cb3" title="画像間最大値">fnFIE_img_max()</a></li><li><a class="el" href="group__fie__filter__arithm.html#g918d1ae0848da5d8141efea75a8ae7b2" title="画像間最小値">fnFIE_img_min()</a></li><li><a class="el" href="group__fie__filter__arithm.html#g25aa8fad18bd9ec340ddca15bfd2ac67" title="画像間乗算">fnFIE_img_mul()</a></li><li><a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a></li><li><a class="el" href="group__fie__filter__logical.html#gafcabf7d69c5bc74864ee0bd808c9638" title="画像間XOR演算">fnFIE_img_xor()</a></li><li><a class="el" href="group__fie__filter__arithm.html#ge0ddc45d900ee4e572c26f266257ad54" title="画像間差分計算">fnFIE_img_diff()</a> </li></ul>
+</li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:32 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

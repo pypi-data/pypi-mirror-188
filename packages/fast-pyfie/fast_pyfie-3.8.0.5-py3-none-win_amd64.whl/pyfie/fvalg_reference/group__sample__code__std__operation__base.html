@@ -1,0 +1,500 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 画像操作 実装例</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>画像操作 実装例<br>
+<small>
+[<a class="el" href="group__fie__sample__code__list.html">サンプルコード一覧</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="smp_packing_color_img">
+画像のPack/Unpack/チャネル統合/結合/分割</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">1ch, 24bit(あるいは32bit)のパッキングカラー画像を操作するサンプルです。</span>
+<span class="comment">以下の3種類を提示します。</span>
+<span class="comment"></span>
+<span class="comment">-   3ch, 8bitのカラー画像に変換し、特定のチャネルのみに処理を行う。</span>
+<span class="comment">    処理を行った後、1ch, 24bit(あるいは32bit)のカラー画像に戻し、出力する。</span>
+<span class="comment"></span>
+<span class="comment">-   3ch, 8bitのカラー画像に変換し、特定のチャネルを切り出して処理を行う。</span>
+<span class="comment">    処理を行った後、パッキングカラー画像を直接操作し、出力する。</span>
+<span class="comment"></span>
+<span class="comment">-   1ch, 8bitのグレースケール画像に変換し、処理を行う。</span>
+<span class="comment">*/</span>
+
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 関数プロトタイプ</span>
+
+INT fnSMP_mul_single_color(FHANDLE hsrc, FHANDLE hdst, INT ch, DOUBLE val);
+INT fnSMP_edge_detection_single_color(FHANDLE hsrc, FHANDLE hdst, INT ch, DOUBLE* f_color, <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a>* params);
+INT fnSMP_binarize_packing_color_img(FHANDLE hsrc, FHANDLE hdst, DOUBLE thresh);
+
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// パッキングカラー画像操作の実装</span>
+
+<span class="comment">/*</span>
+<span class="comment">3ch, 8bitのカラー画像に変換して特定のチャネルのみに処理を行う例。</span>
+<span class="comment"></span>
+<span class="comment">fnFIE_unpacking_rgb()関数により、画像をアンパッキングし、3ch, 8bitのカラー画像に変換します。</span>
+<span class="comment">変換された画像の単一チャネルに、fnFIE_img_child_alloc_single_ch()関数を用いて子画像を割り当てます。</span>
+<span class="comment">割り当てられた子画像に対して処理(ここでは定数valをかける演算)を行うことで、目的のチャネルのみを操作します。</span>
+<span class="comment">演算を行った後、fnFIE_packing_rgb()関数により、画像をパッキングし、出力します。</span>
+<span class="comment"></span>
+<span class="comment">引数：</span>
+<span class="comment">    [in]    hsrc    入力画像(type: F_IMG_RGBQUAD, F_IMG_RGBTRIPLE, ch: 1)</span>
+<span class="comment">    [out]   hdst    出力画像(type: F_IMG_RGBQUAD, F_IMG_RGBTRIPLE, ch: 1)</span>
+<span class="comment">    [in]    ch      目的のチャネル(0以上2以下)</span>
+<span class="comment">    [in]    val     倍率</span>
+<span class="comment"></span>
+<span class="comment">戻り値:</span>
+<span class="comment">    F_ERR_NONE              正常終了</span>
+<span class="comment">    F_ERR_INVALID_IMAGE     画像が不正のとき</span>
+<span class="comment">    F_ERR_INVALID_PARAM     パラメータ不正</span>
+<span class="comment">    F_ERR_NOMEMORY          メモリ不足エラー</span>
+<span class="comment">    F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+INT fnSMP_mul_single_color(FHANDLE hsrc, FHANDLE hdst, INT ch, DOUBLE val)
+{
+    INT err;
+
+    FHANDLE hsrc_unpacked = NULL;
+    FHANDLE hdst_unpacked = NULL;
+    FHANDLE hsrc_child = NULL;
+    FHANDLE hdst_child = NULL;
+
+    INT channels_src, channels_dst;
+    INT type_src, type_dst;
+    INT width_src, width_dst;
+    INT height_src, height_dst;
+
+    INT offset_x, offset_y;
+
+    <span class="comment">// 画像パラメータの取得</span>
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, &amp;channels_src, &amp;type_src, NULL, &amp;width_src, &amp;height_src);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hdst, &amp;channels_dst, &amp;type_dst, NULL, &amp;width_dst, &amp;height_dst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// エラーチェック</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span> (channels_src != 1) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (channels_dst != 1) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (type_src != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> &amp;&amp; type_src != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" title="24bitパッキングカラー画像">F_IMG_RGBTRIPLE</a>) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (type_dst != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> &amp;&amp; type_dst != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" title="24bitパッキングカラー画像">F_IMG_RGBTRIPLE</a>) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (width_src != width_dst) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (height_src != height_dst) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> (ch &lt; 0 || 2 &lt; ch) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// アンパッキングカラー画像の領域確保(uc8, 3ch)</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hsrc_unpacked = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, width_src, height_src);
+    <span class="keywordflow">if</span> (hsrc_unpacked == NULL) <span class="keywordflow">goto</span> exit;
+    hdst_unpacked = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, width_dst, height_dst);
+    <span class="keywordflow">if</span> (hdst_unpacked == NULL) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 画像のアンパッキング</span>
+    err = <a class="code" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb</a>(hsrc, hsrc_unpacked);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 画像コピー</span>
+    err = <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc_unpacked, hdst_unpacked);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 子画像の割り当て</span>
+    <span class="comment">// fnFIE_img_child_alloc_single_ch()関数によって、指定したチャネルの濃淡画像を取り出すことができます。</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    offset_x = 0;
+    offset_y = 0;
+    hsrc_child = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hsrc_unpacked, ch, offset_x, offset_y, width_src, height_src);
+    <span class="keywordflow">if</span> (hsrc_child == NULL) <span class="keywordflow">goto</span> exit;
+    hdst_child = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst_unpacked, ch, offset_x, offset_y, width_dst, height_dst);
+    <span class="keywordflow">if</span> (hdst_child == NULL) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 子画像で演算</span>
+    err = <a class="code" href="group__fie__filter__arithm.html#g9ecbc49d4897dce5b48927090b1764e6" title="画像と定数の乗算">fnFIE_img_mul_const</a>(hsrc_child, val, hdst_child);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 画像のパッキング</span>
+    err = <a class="code" href="group__fie__std__operation.html#g8b4f6bd6f33435bc868ae30432866a8b" title="RGBQUAD / RGBTRIPLE パッキング関数">fnFIE_packing_rgb</a>(hdst_unpacked, hdst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="comment">// 子画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_child);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst_child);
+
+    <span class="comment">// 画像解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_unpacked);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst_unpacked);
+
+    <span class="keywordflow">return</span> err;
+}
+
+<span class="comment">/*</span>
+<span class="comment">3ch, 8bitのカラー画像に変換し、単一チャネルの画像を切り出して処理を行う例。</span>
+<span class="comment"></span>
+<span class="comment">この例では、特定の色成分でエッジ検出をし、入力画像にエッジ点をプロットし出力します。</span>
+<span class="comment"></span>
+<span class="comment">fnFIE_unpacking_rgb()関数により、画像をアンパッキングし、3ch, 8bitのカラー画像に変換します。</span>
+<span class="comment">fnFIE_img_child_alloc()関数を用いて子画像を確保し、</span>
+<span class="comment">fnFIE_img_child_attach_single_ch()関数によって割り当て先を変更します。</span>
+<span class="comment">割り当てられた子画像に対してエッジ検出を行います。</span>
+<span class="comment">パッキングカラー画像に直接描画して、結果を出力します。</span>
+<span class="comment"></span>
+<span class="comment">引数：</span>
+<span class="comment">    [in]    hsrc        入力画像(type: F_IMG_RGBQUAD, F_IMG_RGBTRIPLE, ch: 1)</span>
+<span class="comment">    [out]   hdst        出力画像(type: F_IMG_RGBQUAD, F_IMG_RGBTRIPLE, ch: 1)</span>
+<span class="comment">    [in]    ch          目的のチャネル</span>
+<span class="comment">    [in]    f_color     エッジ点の描画色</span>
+<span class="comment">    [in]    params      エッジ検出パラメータ</span>
+<span class="comment"></span>
+<span class="comment">戻り値:</span>
+<span class="comment">    F_ERR_NONE              正常終了</span>
+<span class="comment">    F_ERR_INVALID_IMAGE     画像が不正のとき</span>
+<span class="comment">    F_ERR_INVALID_PARAM     パラメータ不正</span>
+<span class="comment">    F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">    F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+INT fnSMP_edge_detection_single_color(
+    FHANDLE hsrc, FHANDLE hdst, INT ch, DOUBLE* f_color, <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a>* params)
+{
+    INT err;
+
+    FHANDLE hsrc_unpacked = NULL;
+    FHANDLE hsrc_child = NULL;
+    
+    INT channels_src, channels_dst;
+    INT type_src, type_dst;
+    INT width_src, width_dst;
+    INT height_src, height_dst;
+
+    UINT feat_mode;
+    INT border_mode;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> offset;
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> * pedges = NULL;
+    INT edge_num;
+
+    INT i;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnt;
+    
+    <span class="comment">// 画像パラメータの取得</span>
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, &amp;channels_src, &amp;type_src, NULL, &amp;width_src, &amp;height_src);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hdst, &amp;channels_dst, &amp;type_dst, NULL, &amp;width_dst, &amp;height_dst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// エラーチェック</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span> (channels_src != 1) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (channels_dst != 1) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (type_src != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> &amp;&amp; type_src != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" title="24bitパッキングカラー画像">F_IMG_RGBTRIPLE</a>) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (type_dst != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> &amp;&amp; type_dst != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" title="24bitパッキングカラー画像">F_IMG_RGBTRIPLE</a>) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (width_src != width_dst) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (height_src != height_dst) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> (ch &lt; 0 || 2 &lt; ch) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (f_color == NULL) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (params == NULL) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 出力画像に入力画像をコピー</span>
+    err = <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc, hdst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// アンパッキングカラー画像の領域確保(uc8, 3ch)</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hsrc_unpacked = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, width_src, height_src);
+    <span class="keywordflow">if</span> (hsrc_unpacked == NULL) <span class="keywordflow">goto</span> exit;
+    
+    <span class="comment">// 画像のアンパッキング</span>
+    err = <a class="code" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb</a>(hsrc, hsrc_unpacked);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 子画像の割り当て</span>
+    <span class="comment">// fnFIE_img_child_alloc_single_ch()関数によって、指定したチャネルの濃淡画像を取り出すことができます。</span>
+    hsrc_child = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hsrc_unpacked, ch, 0, 0, width_src, height_src);
+    <span class="keywordflow">if</span> (hsrc_child == NULL) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// ソーベルフィルタを利用したエッジ検出(サブピクセル精度)</span>
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#g2e668b3309be953805977e5f77e23461" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向、強度供に取得し...">F_EDGE_FEAT_NONE</a>;
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0.0;
+    offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0.0;
+    err = <a class="code" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix</a>(hsrc_child, NULL, params, feat_mode, border_mode, offset, &amp;pedges, &amp;edge_num);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 取得したエッジ点をプロット</span>
+    <span class="keywordflow">for</span> (i = 0; i &lt; edge_num; i++) {
+        pnt.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pedges[i].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;
+        pnt.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pedges[i].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;
+        err = <a class="code" href="group__fie__img__draw.html#g1b6fc1f2fec4bc09638f042ced117401" title="点の描画">fnFIE_draw_point</a>(hdst, f_color, pnt);
+        <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    }
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="comment">// エッジ点解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);
+
+    <span class="comment">// 子画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_child);
+
+    <span class="comment">// 画像解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_unpacked);
+
+    <span class="keywordflow">return</span> err;
+}
+
+<span class="comment">/*</span>
+<span class="comment">1ch, 8bitのグレースケール画像に変換し、処理を行う例。</span>
+<span class="comment"></span>
+<span class="comment">この例では、1chの二値画像を生成します。</span>
+<span class="comment"></span>
+<span class="comment">fnFIE_img_rgb_to_gray()関数によって、グレースケール化を行います。</span>
+<span class="comment">得られたグレースケール画像を指定されたしきい値によって固定しきい値二値化し、結果を出力します。</span>
+<span class="comment"></span>
+<span class="comment">引数：</span>
+<span class="comment">    [in]    hsrc    入力画像(type: F_IMG_RGBQUAD, F_IMG_RGBTRIPLE, ch: 1)</span>
+<span class="comment">    [out]   hdst    出力画像(type: F_IMG_BIN, ch: 1)</span>
+<span class="comment">    [in]    thresh  二値化閾値</span>
+<span class="comment"></span>
+<span class="comment">戻り値:</span>
+<span class="comment">    F_ERR_NONE              正常終了</span>
+<span class="comment">    F_ERR_INVALID_IMAGE     画像が不正のとき</span>
+<span class="comment">    F_ERR_INVALID_PARAM     パラメータ不正</span>
+<span class="comment">    F_ERR_NOMEMORY          メモリ不足エラー</span>
+<span class="comment">    F_ERR_CALC_IMPOSSIBLE   計算ができない</span>
+<span class="comment">    F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+INT fnSMP_binarize_packing_color_img(FHANDLE hsrc, FHANDLE hdst, DOUBLE thresh)
+{
+    INT err;
+    
+    FHANDLE hsrc_rgbq = NULL;
+    FHANDLE hsrc_gray = NULL;
+
+    INT channels_src, channels_dst;
+    INT type_src, type_dst;
+    INT width_src, width_dst;
+    INT height_src, height_dst;
+
+    DOUBLE coeff_r, coeff_g, coeff_b;
+    INT mode;
+
+    <span class="comment">// 画像パラメータの取得</span>
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, &amp;channels_src, &amp;type_src, NULL, &amp;width_src, &amp;height_src);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hdst, &amp;channels_dst, &amp;type_dst, NULL, &amp;width_dst, &amp;height_dst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// エラーチェック</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span> (channels_src != 1) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (channels_dst != 1) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (type_src != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> &amp;&amp; type_src != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" title="24bitパッキングカラー画像">F_IMG_RGBTRIPLE</a>) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (type_dst != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (width_src != width_dst) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span> (height_src != height_dst) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// fnFIE_img_rgb_to_gray()関数は F_IMG_RGBTRIPLE に非対応なので、</span>
+    <span class="comment">// F_IMG_RGBQUAD の画像に入力画像をコピーしておく</span>
+    <span class="keywordflow">if</span> (type_src == <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" title="24bitパッキングカラー画像">F_IMG_RGBTRIPLE</a>) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        hsrc_rgbq = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a>, 1, width_src, height_src);
+        <span class="keywordflow">if</span> (hsrc_rgbq == NULL) <span class="keywordflow">goto</span> exit;
+        err = <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc, hsrc_rgbq);
+        <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+        hsrc = hsrc_rgbq;
+    }
+
+    <span class="comment">// グレースケール画像の領域確保</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hsrc_gray = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width_src, height_src);
+    <span class="keywordflow">if</span> (hsrc_gray == NULL) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// グレースケール化</span>
+    coeff_r = 0.299;
+    coeff_g = 0.587;
+    coeff_b = 0.114;
+    mode = 0;
+    err = <a class="code" href="group__fie__std__operation.html#g88bfd65a3aa1fd0b1d3b1167d57e7fbe" title="係数指定付き濃淡化">fnFIE_img_rgb_to_gray</a>(hsrc, hsrc_gray, coeff_r, coeff_g, coeff_b, mode);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 二値化</span>
+    err = <a class="code" href="group__fie__threshold.html#g2579ad0d6e126004f769e3ca32af0f64" title="固定しきい値による２値化">fnFIE_binarize</a>(hsrc_gray, hdst, thresh);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="comment">// 画像解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_rgbq);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc_gray);
+
+    <span class="keywordflow">return</span> err;
+}
+
+<span class="comment">/*</span>
+<span class="comment">24bit(あるいは32bit)パッキングカラー画像を操作する実行サンプル関数。</span>
+<span class="comment">パッキングカラー画像のファイルを読込み、出力画像をファイルに保存します。</span>
+<span class="comment">*/</span>
+INT execute()
+{
+    INT err;
+
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst_amp_r = NULL;
+    FHANDLE hdst_edge = NULL;
+    FHANDLE hdst_bin = NULL;
+
+    INT width, height;
+    INT channels;
+
+    INT ch;
+    DOUBLE val;
+    DOUBLE f_color[3] = {0, 0, 0};
+    DOUBLE thresh;
+
+    <span class="comment">// エッジ検出パラメータ</span>
+    <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a> params;
+
+    <span class="comment">// 1ch, 24bit(あるいは32bit)カラー画像の読込</span>
+    <span class="comment">// 適当な画像を指定してください</span>
+    err = <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>(<span class="stringliteral">"test.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9a07e38d9ea89596d3161c15fb9dbaa9d7" title="F_IMG_RGBQUAD, 1chで保存">F_COLOR_IMG_TYPE_RGBQ</a>);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 画像の幅と高さの取得</span>
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, NULL, NULL, NULL, &amp;width, &amp;height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 出力画像の領域確保</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    channels = 1;
+    hdst_amp_r = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a>, channels, width, height);
+    <span class="keywordflow">if</span> (hdst_amp_r == NULL) <span class="keywordflow">goto</span> exit;
+    hdst_edge = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a>, channels, width, height);
+    <span class="keywordflow">if</span> (hdst_edge == NULL)  <span class="keywordflow">goto</span> exit;
+    hdst_bin = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, channels, width, height);
+    <span class="keywordflow">if</span> (hdst_bin == NULL) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 赤成分のみを2倍する</span>
+    ch = 0;
+    val = 2;
+    err = fnSMP_mul_single_color(hsrc, hdst_amp_r, ch, val);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 緑成分のエッジ検出し、元画像にエッジをプロットしたものを出力する</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">mag_threshold</a> = 40;      <span class="comment">// 強度しきい値</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">nms_length</a> = 1;          <span class="comment">// 非極大抑制のフィルタ片幅</span>
+    ch = 1;
+    f_color[1] = UC8_MAX;
+    err = fnSMP_edge_detection_single_color(hsrc, hdst_edge, ch, f_color, &amp;params);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 1ch二値画像にする</span>
+    thresh = 128;
+    err = fnSMP_binarize_packing_color_img(hsrc, hdst_bin, thresh);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 画像保存</span>
+    <span class="comment">// 適当にファイル名を指定してください</span>
+    err = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result_amp_r.png"</span>, hdst_amp_r, -1);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result_edge.png"</span>, hdst_edge, -1);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result_bin.png"</span>, hdst_bin, -1);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="comment">// 画像解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst_amp_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst_edge);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst_bin);
+
+    <span class="keywordflow">return</span> err;
+}
+
+
+INT main()
+{
+    INT err;
+
+    <span class="comment">// ライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    err = execute();
+
+    <span class="comment">// ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> err;
+}
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

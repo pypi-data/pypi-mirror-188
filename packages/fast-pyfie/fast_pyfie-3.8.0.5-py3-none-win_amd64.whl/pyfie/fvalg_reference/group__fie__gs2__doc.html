@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__gs2.html">グレイサーチ(正規化相関サーチ)</a>]</small>
+</h1><dl class="user" compact><dt><b>グレイサーチとは</b></dt><dd>グレイサーチとは、正規化相関による8bit濃淡画像のパターンマッチングを利用したサーチプログラムの当社での通称です。 <div align="center">
+<img src="gs2_patmat.png" alt="gs2_patmat.png">
+<p><strong>パターンマッチングの基本</strong></p></div>
+<ul>
+<li>M : サーチの基準にする、事前に用意した画像（パタン画像）</li><li>I : サーチの対象にする、撮像したばかりの画像（サーチ対象画像）</li><li>B : Mと比較するための、サーチ対象画像の部分画像 <br>
+<br>
+ 上記の図において、パタン画像Mがサーチ対象画像Iのどこにあるかを探したいとします。 Mと同じサイズのIの部分画像B1とB2を取り出してきた時に、Mとどちらがより似ているかを数値化できれば、 Iの中の全ての部分画像に対して同様に比べることで最もMに似ている部分画像を見つけることができます。 グレイサーチではその似ている・似ていないという情報を相互相関係数として数値化し、一番似ている所を探します。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>相互相関係数とは</b></dt><dd>いかなる画像であっても、相互相関係数 <img class="formulaInl" alt="$R$" src="form_411.png"> は <img class="formulaInl" alt="$-1.0 \leq R \leq 1.0$" src="form_412.png"> となります。 また、 <img class="formulaInl" alt="$ R = 1.0 $" src="form_413.png"> の場合が最もよく似ており、 <img class="formulaInl" alt="$ R= -1.0 $" src="form_414.png"> の場合が濃度反転している状況です。 分散を使用して計算しているため、パタン画像に対してサーチ対象画像の視野の明るさが変動した場合でも 相関係数の値はあまり変動しません。（サーチ対象画像の線形な輝度変動に対して頑健） <br>
+ <img class="formulaInl" alt="$R$" src="form_411.png">は以下の式で与えられます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} R &amp;=&amp; \frac{ V_{im} }{ \sqrt{ V_{input} \cdot V_{master} } }\\ V_{master} &amp;=&amp; \frac{1}{N}\sum_{n = 0}^{N-1}(M_n ^2) - \frac{1}{N^2}( \sum_{n = 0}^{N-1}M_n )^2\\ V_{input} &amp;=&amp; \frac{1}{N}\sum_{n = 0}^{N-1}(I_n ^2) - \frac{1}{N^2}( \sum_{n = 0}^{N-1}I_n )^2\\ V_{im} &amp;=&amp; \frac{1}{N}\sum_{n = 0}^{N-1}(M_n \cdot I_n) - \frac{1}{N^2} \sum_{n = 0}^{N-1}M_n \cdot \sum_{n = 0}^{N-1}I_n \end{eqnarray*}" src="form_415.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>ただし、<ul>
+<li><img class="formulaInl" alt="$N$" src="form_0.png"> : サーチするパタンのPixel数</li><li><img class="formulaInl" alt="$M_n$" src="form_416.png"> : パタン画像の第nピクセルの濃度値</li><li><img class="formulaInl" alt="$I_n$" src="form_417.png"> : サーチエリアの部分画像の第nピクセルの濃度値</li><li><img class="formulaInl" alt="$R$" src="form_411.png"> : 相互相関係数</li><li><img class="formulaInl" alt="$V$" src="form_418.png"> : 分散</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>粗密探索と画像圧縮</b></dt><dd>パタン画像とサーチ対象画像の部分画像の間で全ての組み合わせを試し、 最も似ている部分画像を決定できればサーチ完了となります。 しかし、大きな画像でサーチすると極めて大きな処理時間がかかります。 小さな画像同士なら高速に計算できるため、サーチ前に画像を小さくしてからサーチを行います。 <div align="center">
+<img src="gs2_pyramid1.png" alt="gs2_pyramid1.png">
+<p><strong>画像ピラミッド</strong></p></div>
+ グレイサーチでは縦横半分に縮小した画像「圧縮画像」を作成し、 圧縮画像をさらに複数回圧縮して複数枚の画像を持つ「画像ピラミッド」を生成します。 圧縮していない画像を圧縮度0の画像と呼び、縦横を <img class="formulaInl" alt="$\frac{1}{2^{n}}$" src="form_419.png"> にした画像を圧縮度nの画像と呼びます。 <div align="center">
+<img src="gs2_pyramid2.png" alt="gs2_pyramid2.png">
+<p><strong>粗密探索</strong></p></div>
+ はじめに最も圧縮された小さな画像（図のLV3）においてサーチを実行し、回答候補を算出します。 候補点の周囲だけ次の大きさの画像（図のLV2）でサーチを行い、次第に大きな画像でサーチすることでわずかな処理時間で回答の精度を高めています。</dd></dl>
+<dl class="user" compact><dt><b>FIEグレイサーチの簡単な使い方</b></dt><dd><div align="center">
+<img src="gs2_how2use.png" alt="gs2_how2use.png">
+<p><strong>使い方</strong></p></div>
+ FIEグレイサーチライブラリは3つの関数を使うだけでサーチを行うことができます。<ul>
+<li><a class="el" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc()</a></li><li><a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc()</a></li><li><a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a> または <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a></li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>まず <a class="el" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc()</a> で作業領域となるFIEグレイサーチオブジェクトを作成し、 次に <a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc()</a> でパターンにする画像からFIEグレイサーチパターンオブジェクトを作成します。 最後に <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a> または <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> のどちらかに上記二つのオブジェクトとサーチ対象にする画像を与えればサーチ完了です。 具体的なコードのサンプルは <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a> や <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> のドキュメントを参照してください。</dd></dl>
+<dl class="user" compact><dt><b>FIEグレイサーチのデータとシリアライズ</b></dt><dd><ul>
+<li>FIEグレイサーチオブジェクトにはサーチ実行のための一時領域と継続サーチのための画像ピラミッドが格納されています。保存の必要はありません。</li><li>FIEグレイサーチパターンオブジェクトには以下のような情報が含まれています。 <div align="center">
+<img src="gs2_pattern.png" alt="gs2_pattern.png">
+</div>
+<ul>
+<li>パタン画像</li><li>マスク画像</li><li>回答位置オフセット</li><li>画像ピラミッド生成に使用したフィルタ</li></ul>
+</li><li>パタンを保存する場合、以下の4種の情報取得関数でパタンから情報や画像オブジェクトを取得し、個別に保存してください。 <a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc()</a> に以下で取得した情報を与えればまったく同じパタンが作成できます。<ul>
+<li><a class="el" href="group__fie__gs2__pattern.html#g204bc0ffed285e59439bc98bfc01e1b5" title="パターン画像を取得する">fnFIE_gs2_pattern_get_image()</a></li><li><a class="el" href="group__fie__gs2__pattern.html#geacae698b14ed2dcc7d5cc93b0e51cc2" title="マスク画像を取得する">fnFIE_gs2_pattern_get_mask()</a></li><li><a class="el" href="group__fie__gs2__pattern.html#g29baca055d293242f7d8a6d4ff63af35" title="通知座標オフセットの取得">fnFIE_gs2_pattern_get_offset()</a></li><li><a class="el" href="group__fie__gs2__pattern.html#g13db6804c49b679211ce650723271daa" title="圧縮フィルタ種別の取得">fnFIE_gs2_pattern_get_comp_filter()</a></li></ul>
+</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>パラメータ解説</b></dt><dd><a class="anchor" name="GS2PARAMEXPLANATION"></a> <b>圧縮フィルタ</b> <em>filter</em> <br>
+ ( <a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc()</a>, <a class="el" href="group__fie__gs2__pattern.html#g13db6804c49b679211ce650723271daa" title="圧縮フィルタ種別の取得">fnFIE_gs2_pattern_get_comp_filter()</a>, <a class="el" href="group__fie__gs2__pattern.html#g9612814decc7d070349df303caa0b3c5" title="圧縮フィルタの変更">fnFIE_gs2_pattern_set_comp_filter()</a> )<br>
+ 圧縮画像生成時に使用するフィルタを指定します。<ul>
+<li>通常（平均）フィルタ <em>F_COMP_MODE_SMOOTH</em> <br>
+ 2x2の平均を圧縮画像の画素値とします。特に問題がなければこれを使用します。</li><li>最小値フィルタ <em>F_COMP_MODE_MIN</em> <br>
+ 2x2の最小値を圧縮画像の画素値とします。パタンが黒い細線で構成されているような場合に指定します。</li><li>最大値フィルタ <em>F_COMP_MODE_MAX</em> <br>
+ 2x2の最大値を圧縮画像の画素値とします。パタンが白い細線で構成されているような場合に指定します。</li><li>再平均フィルタ <em>F_COMP_MODE_AVERAGE2</em> <br>
+ 通常フィルタのあと再度平均化を行うフィルタです。画像にノイズが多い場合に指定します。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>マークオフセット</b> <em>mark_offsetx</em>, <em>mark_offsety</em> <br>
+ ( <a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc()</a>, <a class="el" href="group__fie__gs2__pattern.html#g29baca055d293242f7d8a6d4ff63af35" title="通知座標オフセットの取得">fnFIE_gs2_pattern_get_offset()</a>, <a class="el" href="group__fie__gs2__pattern.html#g5a32f6b8ff950f17a94adae4ea9bd599" title="通知座標オフセットの設定">fnFIE_gs2_pattern_set_offset()</a> )<br>
+ パタンの左上画素と、出力する回答位置の差をピクセル座標の100倍値で指定します。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>サーチウインドウ</b> <em>search_window</em> <br>
+( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ <div align="center">
+<img src="gs2_window.png" alt="gs2_window.png">
+</div>
+ サーチする範囲をサーチ対象画像上の座標で指定します。もし画像が512x480のサイズなら、(0,0)～(511,479)が最大で画像の外に出るような指定はできません。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>途中相関値</b> <em>threshold_mid</em> <br>
+ ( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ サーチ途中での候補の絞り込みに使います。 値は 0 ～ 9999 で、相互相関係数の一万倍値です。 サーチ開始圧縮度の処理からサーチ終了圧縮度の処理まで共通して利用します。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>最終相関値</b> <em>threshold_final</em> <br>
+ ( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ サーチ完了時での回答の絞り込みに使います。値は 0 ～ 9999 で、相互相関係数の一万倍値です。 サーチ終了圧縮度での処理で利用します。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>反転パタン検出モード</b> <em>reverse_mode</em> <br>
+ ( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ <div align="center">
+<img src="gs2_rvsptn.png" alt="gs2_rvsptn.png">
+</div>
+ TRUEのとき反転パタンを検出し、FALSEのときは検出しません。 圧縮フィルタ指定で最小値フィルタや最大値フィルタを指定している場合には、 反転パタンは圧縮度が上がるほどスコアが落ちるので反転パタン検出モードTRUEとの組み合わせはお勧めしません。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>サーチウインドウ周囲接触フラグ</b> <em>edge_detect</em> <br>
+ ( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ <div align="center">
+<img src="gs2_window_edge_detect.png" alt="gs2_window_edge_detect.png">
+</div>
+ 図のaとcはフラグにかかわらずサーチしますが、bをサーチするかどうかに影響します。 （回答位置がサーチウインドウに接触した場合の処理ではなく、パタン画像がサーチウインドウに接触した場合の処理に影響します。） TRUEで検出、FALSEで検出しません。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>ピッチ</b> <em>pitch_x</em>, <em>pitch_y</em> <br>
+ ( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ グレイサーチでは近い範囲に複数のサーチ結果が出た場合、相関係数がより1.0に近いものだけを残します。 <br>
+ <div align="center">
+<img src="gs2_pitch.png" alt="gs2_pitch.png">
+</div>
+ 図で X_diff &lt; Pitch_x かつ Y_diff &lt; Pitch_y のとき、サーチ結果は相関値の高いほうのみ採用されます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>サーチ開始圧縮度、サーチ終了圧縮度、サーチ複雑度、サーチ精度</b> <br>
+<ul>
+<li><em>first_unit</em>, <em>last_unit</em> ( <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )</li><li><em>search_type</em>, <em>search_mode</em> ( <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a> )</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><div align="center">
+<img src="gs2_comp_level.png" alt="gs2_comp_level.png">
+</div>
+ 超高精度・高精度・通常精度の精度指定はサーチ終了圧縮度を直接指定するのと同じです。 複雑度指定を使うと、パタン画像の分散値を考慮してサーチ開始圧縮度を自動決定してくれます。 複雑度を高く設定するほど、開始圧縮度が低めになります。<br>
+ ウルトラ超高精度の精度指定はサーチ終了圧縮度を0に指定し、サブピクセル推定の近傍指定を8近傍に指定するのと同じです。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>精サーチ・サブピクセル推定の近傍指定</b> <em>subpxl_neib</em> <br>
+ ( <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> )<br>
+ サーチ終了圧縮度でサーチ位置のサブピクセル推定に用いる近傍の数を指定します。 8近傍の方が精度向上します。4近傍ではFVLのグレイサーチ等従来の製品と同じアルゴリズムで計算します。</dd></dl>
+<dl class="user" compact><dt><b>サーチ精度指定あるいは近傍指定による精サーチ・サブピクセル推定の違い</b></dt><dd>通常精度、高精度、超高精度の各精度の指定、あるいは4近傍指定では、 各座標軸方向独立に、相関値に2次関数をあてはめ、その頂点位置を各方向におけるサブピクセル位置としています。 このため，例えば下図のように、ｘ軸方向における相関値のピーク点 γ が真値 α からずれてしまうことがあります。 <div align="center">
+<img src="gs2_subpixel.png" alt="gs2_subpixel.png">
+</div>
+ 一方、ウルトラ超高精度の指定、あるいは8近傍指定では、 相関値ピーク点近傍9点に2次元ガウス関数をあてはめ、その頂点位置をサブピクセル位置としているため、 精度良く位置推定を行うことができます。 <div align="center">
+<img src="gs2_2dim_gaussian.png" alt="gs2_2dim_gaussian.png">
+<p><strong>2次元ガウス関数</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b>TIPS:</b></dt><dd>うまくみつからないときは<ul>
+<li>サーチ開始圧縮度でパタンが圧縮されすぎて形状が崩れているのが原因の場合、 サーチ開始圧縮度を下げてあまり圧縮されていないパターンにすればみつかります。</li><li>パターンが幅数画素程度の白くて細い線でつくられていて、サーチ開始圧縮度でパタンが圧縮されすぎて形状が崩れているのが原因の場合、 圧縮フィルタを F_COMP_MODE_MAX にすればみつかります。</li><li>パターンが幅数画素程度の黒くて細い線でつくられていて、サーチ開始圧縮度でパタンが圧縮されすぎて形状が崩れているのが原因の場合、 圧縮フィルタを F_COMP_MODE_MIN にすればみつかります。</li><li><a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a> で自動決定された圧縮度が高すぎるのが原因の場合、 <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a> ,<a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> を使ってサーチ開始圧縮度を下げて強制指定すればみつかります。</li><li>サーチ対象画像においてサーチしたいものがノイズが多かったり形が安定しないような場合、パターン画像との相関値があまり高くなりません。 途中相関値や最終相関値を下げると、それまで厳しすぎて候補から外していたサーチ対象を発見できます。</li><li>サーチウインドウが狭すぎたり、マークオフセットを含めた座標を指定するのだと誤解して指定しているのが原因で、 サーチするべき場所を探していない場合があります。適切に設定すれば見つかります。</li><li>サーチ結果取得個数が少なすぎるのが原因でほしい個数の結果が得られないことがあります。増やせば見つかります。</li><li>サーチ結果取得個数を少なく設定していると、極めて類似したものがサーチウインドウ内に混在し、そちらを優先的に見つけて要求した個数に達しているために発見したい方の対象を回答しないことがあります。 サーチ取得個数を増やせばみつかるので他の手段で判別してください。類似のものをサーチウインドウから外してサーチすることでもみつかります。</li><li>ピッチを広く指定した場合、ピッチ内でもっとも相関値の高いもの一つだけを回答するので距離の近いものはサーチしません。ピッチを狭く設定するとみつかります。 デフォルトの0を指定した場合にもパターンサイズの半分が採用されるため1以上で明示的に指定します。</li><li>圧縮フィルタが F_COMP_MODE_MIN や F_COMP_MODE_MAX になっていると、反転パタンを上手く検出できないことがあります。 画像圧縮の過程で元の画像を反転してから圧縮する場合と圧縮してから反転する場合の画像が大きく異なるためです。 圧縮フィルタをF_COMP_MODE_SMOOTH にするとみつかります。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>サーチが遅いときは<ul>
+<li>処理する画像が大きいと遅くなります。<ul>
+<li>パターン画像が不必要に大きくないか検討し、小さくします。</li><li>サーチ対象画像を画像全体ではなく小さなチャイルド画像にします。 同じサーチ対象画像に対して様々なサーチウインドウで継続サーチを行う場合を除き、サーチウインドウを小さくするより効果的です。 ただし、チャイルド画像の原点がサーチ結果やサーチウインドウの原点になってしまうので注意。</li></ul>
+</li><li>圧縮度の設定が適切でないと遅くなります。<ul>
+<li>サーチ開始圧縮度での探索はサーチ対象画像とパターン画像を全ての組み合わせで比較するため時間がかかります。サーチ開始圧縮度をあげると小さな画像同士で比較するため高速になります。</li><li>高精度な結果を求めるには時間がかかります。サーチ精度を通常精度にしたり、サーチ終了圧縮度をあげたりしてみましょう。</li></ul>
+</li><li>サーチ結果の候補が多数になると遅くなります。<ul>
+<li>途中相関値を上げると探索の途中で断念する候補が増え、高速になります。</li><li>サーチウインドウを小さくして探索の当初から候補を減らすと高速になります。</li></ul>
+</li><li>マスクのあるパターンの処理はマスクのないパターンより時間がかかるので、可能ならマスクをはずします。</li><li>同一のサーチ対象画像の圧縮ピラミッドを何度も作成すると無駄に時間がかかります。 全く同一のサーチ対象画像に対して複数のパタンをサーチする場合、継続サーチにすると一度で済ませることができます。 </li></ul>
+</dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

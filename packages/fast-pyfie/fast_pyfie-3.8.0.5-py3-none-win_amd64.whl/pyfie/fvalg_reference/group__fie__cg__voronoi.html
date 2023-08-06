@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ボロノイ図</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ボロノイ図<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+２次元ボロノイ図を「逐次四分添加法」によって作成します。 最悪の処理速度のオーダーはＯ( n^2 )ですが、平均的にはＯ( n )であることが知られており、 分割統治法(処理速度オーダーはＯ( n log n ))より実用的です。<p>
+与えられた点集合の各点(以下「母点」といいます)に対して１つの領域が対応しており、その領域に おいては対応する母点が全母点の中で一番近い点になっているような平面の分割図のことをボロノイ図 と言います。(下図を参照してください)。 <div align="center">
+<img src="fie_cg_voronoi.png" alt="fie_cg_voronoi.png">
+</div>
+ 点集合の「各点間の近さを表わす地図」のようなものと考えられます。 図の各辺は両隣の母点の垂直２等分線になっています。 細胞が最初は点とみなせて同じ速度で成長する場合に収束状態で出来る図がこのボロノイ図であり、 実際に各領域は「ボロノイ細胞」とも呼ばれます。 また、ボロノイ図のことを「ボロノイ勢力図」等とも呼び、工学はもとより、生物学、考古学、社会学等幅広い分野に応用されています。<p>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>伊理正夫 監修・腰塚武志 編集 「計算幾何学と地理情報処理」第２版 §4.8.4 (共立出版) 1993</li>
+</ul>
+<dl class="user" compact><dt><b>用語説明 </b></dt><dd><pre>
+	「母点」、「頂点」、「辺」
+		それぞれ、ボロノイ母点、ボロノイ頂点、ボロノイ辺、のこととします。
+	「辺リスト」
+		ボロノイ辺リストのことです。
+		例えば、ある母点の周囲辺を記録するためにこの辺リストを用います。
+		ボロノイ辺構造体は複数の母点・頂点に共有されるため、このような辺リストを各母点・頂点に与えます。
+		各辺リストは辺情報の実体のある辺構造体へのポインタを持つことで情報の取得を可能にしています。
+		辺リスト自体は辺の接続関係(グラフ構造)を表わすためだけに用いられています。
+		なお、辺構造体も動的に管理されるため、全体として双方向循環リストを構成しているが、
+		混同しないように注意してください(この「辺リスト」も双方向循環リスト構造をなしています)。
+	「入力母点」
+		入力点のことです。
+		これらはボロノイ図ではボロノイ母点と呼ばれます。
+	「ボロノイ図の有効領域」
+		矩形型領域で指定されています。
+		入力母点はこの有効領域の内部になくてはなりません。
+		また、構成されるボロノイ図はこの有効領域において正しい情報を与えることが保証されます。
+	「最近母点」
+		ある点に対して一番近い母点のことです。
+	「隣接母点」
+		ある点の属するボロノイ領域の母点と、その領域に隣接する領域の母点のことです。
+	「便宜付加母点」
+		ボロノイ図構成時に無限ボロノイ領域を扱うことを回避するために、有効領域の外側に
+		便宜的に付加される点のことです。
+		正三角形の頂点上に３点が付加されます。
+	「探索出発母点」
+		母点を逐次添加していく際に、既に添加した母点の中で最近母点を探索しなければなりません。
+		その際の探索の初期母点を探索出発母点といいます。
+		最近母点を探索する際には探索出発母点の隣接母点と添加する母点との距離を調べていき、
+		より近い母点があればそこに移って同様のことを行なう、という処理を繰り返します。
+</pre> </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__CG__VE__INFO.html">F_CG_VE_INFO</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ボロノイ図 辺情報構造体  <a href="structF__CG__VE__INFO.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__CG__VG__INFO.html">F_CG_VG_INFO</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ボロノイ図母点情報構造体  <a href="structF__CG__VG__INFO.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__voronoi.html#g48b9c0af1dea936328e35a7e87a1e8b8">f_cg_vrni_egde_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__voronoi.html#gg48b9c0af1dea936328e35a7e87a1e8b89cbed7f1048a138213b23ce03b2be8c2">F_CG_SEGMENT_TYPE</a> =  0, 
+<a class="el" href="group__fie__cg__voronoi.html#gg48b9c0af1dea936328e35a7e87a1e8b8a63f1d8d056c09c06e77729c8678e129">F_CG_ST_PNT_RAY</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__voronoi.html#gg48b9c0af1dea936328e35a7e87a1e8b83f71a3ec9b9175a61e3a8afd0123408b">F_CG_ED_PNT_RAY</a> =  2, 
+<a class="el" href="group__fie__cg__voronoi.html#gg48b9c0af1dea936328e35a7e87a1e8b85c502d2b9862f62675e2725f660f8ed8">F_CG_LINE_TYPE</a> =  3
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ボロノイ辺の種類  <a href="group__fie__cg__voronoi.html#g48b9c0af1dea936328e35a7e87a1e8b8">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__voronoi.html#g2c27b1e0225e3db0274ad97d9f7306c7">f_cg_vrni_region_bound</a> { <a class="el" href="group__fie__cg__voronoi.html#gg2c27b1e0225e3db0274ad97d9f7306c7bccee4b6d6619307db167c547cc825fb">F_CG_BND_RGN</a> =  0, 
+<a class="el" href="group__fie__cg__voronoi.html#gg2c27b1e0225e3db0274ad97d9f7306c7a364ec653155a602b8e06c7ff947d5fb">F_CG_UNBND_RGN</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ボロノイ領域の境界  <a href="group__fie__cg__voronoi.html#g2c27b1e0225e3db0274ad97d9f7306c7">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__voronoi.html#g202d24af50253a87d0a49d34b610c6a7">fnFIE_cg_voronoi_open</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT num, INT sx, INT sy, INT ex, INT ey)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２次元ボロノイ図のオープン  <a href="#g202d24af50253a87d0a49d34b610c6a7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__voronoi.html#g29bf877611481fc3d862da7cc134ab8b">fnFIE_cg_voronoi_nearest_gnrt</a> (FHANDLE hvrni, <a class="el" href="structPNT__T.html">PNT_T</a> pnt, INT *near_gnrt_no)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最も近い入力点（母点）の探索  <a href="#g29bf877611481fc3d862da7cc134ab8b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__voronoi.html#g63805a0b772950c279d5f4f027a252aa">fnFIE_cg_voronoi_get_gnrt_info</a> (FHANDLE hvrni, INT gnrt_no, <a class="el" href="structF__CG__VG__INFO.html">F_CG_VG_INFO</a> **info)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２次元ボロノイ図の各母点に関する情報の取得  <a href="#g63805a0b772950c279d5f4f027a252aa"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g48b9c0af1dea936328e35a7e87a1e8b8"></a><!-- doxytag: member="fie.h::f_cg_vrni_egde_type" ref="g48b9c0af1dea936328e35a7e87a1e8b8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__voronoi.html#g48b9c0af1dea936328e35a7e87a1e8b8">f_cg_vrni_egde_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ボロノイ辺の種類 
+<p>
+ボロノイ辺の種類を表します。 通常、ボロノイ辺が F_CG_LINE_TYPE となることはありません。 F_CG_SEGMENT_TYPE 、 F_CG_ST_PNT_RAY 、 F_CG_ED_PNT_RAY のいづれかとなります。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg48b9c0af1dea936328e35a7e87a1e8b89cbed7f1048a138213b23ce03b2be8c2"></a><!-- doxytag: member="F_CG_SEGMENT_TYPE" ref="gg48b9c0af1dea936328e35a7e87a1e8b89cbed7f1048a138213b23ce03b2be8c2" args="" -->F_CG_SEGMENT_TYPE</em>&nbsp;</td><td>
+線分であるボロノイ辺(始点、終点共に有効領域内に含まれる) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg48b9c0af1dea936328e35a7e87a1e8b8a63f1d8d056c09c06e77729c8678e129"></a><!-- doxytag: member="F_CG_ST_PNT_RAY" ref="gg48b9c0af1dea936328e35a7e87a1e8b8a63f1d8d056c09c06e77729c8678e129" args="" -->F_CG_ST_PNT_RAY</em>&nbsp;</td><td>
+始点を持つ半直線であるボロノイ辺(始点のみが有効領域内に含まれる) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg48b9c0af1dea936328e35a7e87a1e8b83f71a3ec9b9175a61e3a8afd0123408b"></a><!-- doxytag: member="F_CG_ED_PNT_RAY" ref="gg48b9c0af1dea936328e35a7e87a1e8b83f71a3ec9b9175a61e3a8afd0123408b" args="" -->F_CG_ED_PNT_RAY</em>&nbsp;</td><td>
+終点を持つ半直線であるボロノイ辺(終点のみが有効領域内に含まれる) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg48b9c0af1dea936328e35a7e87a1e8b85c502d2b9862f62675e2725f660f8ed8"></a><!-- doxytag: member="F_CG_LINE_TYPE" ref="gg48b9c0af1dea936328e35a7e87a1e8b85c502d2b9862f62675e2725f660f8ed8" args="" -->F_CG_LINE_TYPE</em>&nbsp;</td><td>
+直線であるボロノイ辺(始点、終点共に有効領域内に含まれない) </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2c27b1e0225e3db0274ad97d9f7306c7"></a><!-- doxytag: member="fie.h::f_cg_vrni_region_bound" ref="g2c27b1e0225e3db0274ad97d9f7306c7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__voronoi.html#g2c27b1e0225e3db0274ad97d9f7306c7">f_cg_vrni_region_bound</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ボロノイ領域の境界 
+<p>
+ボロノイ領域の境界を表します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg2c27b1e0225e3db0274ad97d9f7306c7bccee4b6d6619307db167c547cc825fb"></a><!-- doxytag: member="F_CG_BND_RGN" ref="gg2c27b1e0225e3db0274ad97d9f7306c7bccee4b6d6619307db167c547cc825fb" args="" -->F_CG_BND_RGN</em>&nbsp;</td><td>
+有限領域であるボロノイ領域 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2c27b1e0225e3db0274ad97d9f7306c7a364ec653155a602b8e06c7ff947d5fb"></a><!-- doxytag: member="F_CG_UNBND_RGN" ref="gg2c27b1e0225e3db0274ad97d9f7306c7a364ec653155a602b8e06c7ff947d5fb" args="" -->F_CG_UNBND_RGN</em>&nbsp;</td><td>
+無限領域であるボロノイ領域 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g202d24af50253a87d0a49d34b610c6a7"></a><!-- doxytag: member="fie_cg_voronoi.c::fnFIE_cg_voronoi_open" ref="g202d24af50253a87d0a49d34b610c6a7" args="(const PNT_T *pnts, INT num, INT sx, INT sy, INT ex, INT ey)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_cg_voronoi_open           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>sx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>sy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ey</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２次元ボロノイ図のオープン 
+<p>
+入力された２次元点データから、逐次四分添加法を使用してボロノイ図オブジェクトを作成します。<p>
+与えられる入力母点は「順序データ」である必要はありませんが、重複点がないことを仮定しています。 これに従わない入力に関しては結果を保証しません。<p>
+パラメータ <em>sx</em> , <em>sy</em> , <em>ex</em> , <em>ey</em> はボロノイ図の有効領域です。 この有効領域内においてボロノイ図の結果が保証されます。 したがって、この有効領域の外部での結果は本来得られるはずのボロノイ図とは異なる 平面グラフが構成されている場合があります。 有効領域は、以下の条件を満たしてください。 <ul>
+<li>ex &gt;= sx </li>
+<li>ey &gt;= sy</li>
+</ul>
+なお、入力母点数は１以上を入力してください。<p>
+本関数で生成したオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力母点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>入力母点数( <em>pnts</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sx</em>&nbsp;</td><td>ボロノイ図有効領域左上Ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sy</em>&nbsp;</td><td>ボロノイ図有効領域左上Ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ex</em>&nbsp;</td><td>ボロノイ図有効領域右下Ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ey</em>&nbsp;</td><td>ボロノイ図有効領域右下Ｙ座標</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、デスクリプタを返します。 メモリ確保に失敗や不正なパラメータが与えられた場合、 ライセンスエラー、または未初期化エラーが発生した場合など、異常終了した場合はNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g29bf877611481fc3d862da7cc134ab8b"></a><!-- doxytag: member="fie_cg_voronoi.c::fnFIE_cg_voronoi_nearest_gnrt" ref="g29bf877611481fc3d862da7cc134ab8b" args="(FHANDLE hvrni, PNT_T pnt, INT *near_gnrt_no)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_voronoi_nearest_gnrt           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvrni</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>near_gnrt_no</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最も近い入力点（母点）の探索 
+<p>
+入力された点データの中から調査点に一番近い点を探します。 本関数は、ボロノイ図が正常に作成されていることを前提にして、最も近い点の高速な探索を行ないます。 回答は戻り値として調査点に最も近い母点の番号が返されます。 この番号は入力された入力母点群の配列での要素番号です。<p>
+調査点はボロノイ図構成時に指定した有効領域内になければいけません。 回答が複数ある場合でも、そのうちの１つのみを回答として出力します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvrni</em>&nbsp;</td><td>２次元ボロノイ図のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>調査点 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>near_gnrt_no</em>&nbsp;</td><td>最近母点の番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された <ul>
+<li>オブジェクトがボロノイ図ではない </li>
+<li>オープンが完了していないか </li>
+<li>ボロノイ図が作成されていないか </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>調査点がボロノイ図の有効範囲に入っていない </li>
+<li><em>near_gnrt_no</em> にヌルポインタが渡された </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g63805a0b772950c279d5f4f027a252aa"></a><!-- doxytag: member="fie_cg_voronoi.c::fnFIE_cg_voronoi_get_gnrt_info" ref="g63805a0b772950c279d5f4f027a252aa" args="(FHANDLE hvrni, INT gnrt_no, F_CG_VG_INFO **info)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_voronoi_get_gnrt_info           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hvrni</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>gnrt_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__CG__VG__INFO.html">F_CG_VG_INFO</a> **&nbsp;</td>
+          <td class="paramname"> <em>info</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２次元ボロノイ図の各母点に関する情報の取得 
+<p>
+ボロノイ図に関して、指定された母点(＝入力母点群)の領域の情報を取得します。 回答データは本ライブラリを再度コールするかボロノイ図をクローズするまで保持されます。<p>
+なお、調査母点番号の上限は入力母点数未満の値を入力してください。 下限は０以上の値を入力してください。<p>
+母点情報構造体 <em>info</em> は <a class="el" href="group__fie__cg__voronoi.html#g202d24af50253a87d0a49d34b610c6a7" title="２次元ボロノイ図のオープン">fnFIE_cg_voronoi_open()</a> にて確保されているため、呼び出し側が確保する必要はありません。 この配列は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> により２次元ボロノイ図のハンドルが解放される時に、同時に解放されます。 ユーザー側で個別に解放はしないでください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hvrni</em>&nbsp;</td><td>２次元ボロノイ図のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gnrt_no</em>&nbsp;</td><td>調査母点番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>info</em>&nbsp;</td><td>母点情報構造体</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された <ul>
+<li>オブジェクトがボロノイ図ではない </li>
+<li>オープンが完了していないか </li>
+<li>ボロノイ図が作成されていないか </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>調査点がボロノイ図の有効範囲に入っていない </li>
+<li><em>info</em> にヌルポインタが渡された </li>
+<li><em>*info</em> がNULLで初期化されていない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

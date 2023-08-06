@@ -1,0 +1,438 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 統計画像生成</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>統計画像生成<br>
+<small>
+[<a class="el" href="group__fie__img__statistics.html">画像統計量</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multi__img__stats.html#g2d9495f971a773a0d20cb3a5fe816f52">fnFIE_stats_img_average</a> (FHANDLE *himgs, INT num_imgs, FHANDLE *himg_average, enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a> dst_img_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">平均値画像作成  <a href="#g2d9495f971a773a0d20cb3a5fe816f52"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multi__img__stats.html#g852da6abc4566536370d68be12b0ac2e">fnFIE_stats_img_median</a> (FHANDLE *himgs, INT num_imgs, FHANDLE *himg_median)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">中央値画像作成  <a href="#g852da6abc4566536370d68be12b0ac2e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multi__img__stats.html#gd2a1e244df9bdbba89cb2946c7cd87f6">fnFIE_stats_img_median_absdev</a> (FHANDLE *himgs, INT num_imgs, FHANDLE *himg_median_absdev, enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a> dst_img_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">絶対偏差の中央値画像作成  <a href="#gd2a1e244df9bdbba89cb2946c7cd87f6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multi__img__stats.html#gfeeeb88e5f3f6073f46f9e0193576c65">fnFIE_stats_img_stddev</a> (FHANDLE *himgs, INT num_imgs, FHANDLE *himg_stddev, enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a> dst_img_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">標準偏差画像作成  <a href="#gfeeeb88e5f3f6073f46f9e0193576c65"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g2d9495f971a773a0d20cb3a5fe816f52"></a><!-- doxytag: member="fie_stats_img.c::fnFIE_stats_img_average" ref="g2d9495f971a773a0d20cb3a5fe816f52" args="(FHANDLE *himgs, INT num_imgs, FHANDLE *himg_average, enum f_imgtype dst_img_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_stats_img_average           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_imgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himg_average</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a>&nbsp;</td>
+          <td class="paramname"> <em>dst_img_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+平均値画像作成 
+<p>
+複数の入力画像から各画素位置毎の平均値を計算し、内部で生成した出力画像オブジェクトに格納します。<br>
+ 出力画像<img class="formulaInl" alt="$ himg\_average$" src="form_877.png">の、位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値 <img class="formulaInl" alt="$ himg\_average_{(x,y)} $" src="form_878.png"> は次の式で求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ himg\_average_{(x,y)} = \frac{1}{N}\sum_{i=0}^{N-1}{himgs[i]_{(x,y)}}\ \ \ (N=num\_imgs)\]" src="form_879.png">
+<p>
+<p>
+ただし<ul>
+<li><img class="formulaInl" alt="$ himgs[i] $" src="form_880.png">は、入力画像格納配列<img class="formulaInl" alt="$ himgs $" src="form_881.png">の<img class="formulaInl" alt="$ i $" src="form_882.png">番目に格納された画像</li><li><img class="formulaInl" alt="$ himgs[i]_{(x,y)} $" src="form_883.png"> は、画像 <img class="formulaInl" alt="$ himgs[i] $" src="form_880.png"> の任意の画素位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値</li></ul>
+<p>
+とします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himgs</em>&nbsp;</td><td>複数の画像オブジェクト格納配列(type: uc8, s16, us16, double )<br>
+ <em>himgs</em> に格納される画像は全て同じサイズ、同じ画像タイプで、さらにチャネル数が１でなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_imgs</em>&nbsp;</td><td><em>himg</em> に格納された画像オブジェクトの数(2≦<em>num_imgs≦65535</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg_average</em>&nbsp;</td><td>生成した結果画像オブジェクト。<em>*himg_average</em> は必ず NULLで初期化しなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_img_type</em>&nbsp;</td><td>出力画像タイプの指定<ul>
+<li>入力画像オブジェクトと同じ画像タイプ、もしくは F_IMG_DOUBLE のみの対応です。</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_stats_srcs.png" alt="fie_stats_srcs.png">
+<p><strong>入力画像(num_imgs=5, 結果を分かりやすくするために、位置をずらした画像を用いています)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_stats_dst_ave.png" alt="fie_stats_dst_ave.png">
+<p><strong>出力画像(平均値画像)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>生成される平均画像の小数点以下の値は四捨五入処理を行います。(出力画像type:uc8, s16, us16 の場合)</li><li>本関数で生成した結果画像オブジェクトは、不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__multi__img__stats.html#g852da6abc4566536370d68be12b0ac2e" title="中央値画像作成">fnFIE_stats_img_median()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g852da6abc4566536370d68be12b0ac2e"></a><!-- doxytag: member="fie_stats_img.c::fnFIE_stats_img_median" ref="g852da6abc4566536370d68be12b0ac2e" args="(FHANDLE *himgs, INT num_imgs, FHANDLE *himg_median)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_stats_img_median           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_imgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himg_median</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+中央値画像作成 
+<p>
+複数の入力画像から各画素位置毎の中央値を求め、内部で生成した出力画像オブジェクトに格納します。<br>
+ 出力画像<img class="formulaInl" alt="$ himg\_median$" src="form_884.png">の、位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値 <img class="formulaInl" alt="$ himg\_median_{(x,y)} $" src="form_885.png"> は次の式で求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ himg\_median_{(x,y)} = MEDIAN( himgs[i]_{(x,y)} )\ \ (i=0, \ldots ,num\_imgs-1)\]" src="form_886.png">
+<p>
+<p>
+ただし<ul>
+<li><em>MEDIAN</em> は入力値を並べ替えた際の中央値を選択する処理</li><li><img class="formulaInl" alt="$ himgs[i] $" src="form_880.png">は、入力画像格納配列<img class="formulaInl" alt="$ himgs $" src="form_881.png">の<img class="formulaInl" alt="$ i $" src="form_882.png">番目に格納された画像</li><li><img class="formulaInl" alt="$ himgs[i]_{(x,y)} $" src="form_883.png"> は、画像 <img class="formulaInl" alt="$ himgs[i] $" src="form_880.png"> の任意の画素位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値</li></ul>
+<p>
+とします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himgs</em>&nbsp;</td><td>複数の画像オブジェクト格納配列(type: uc8, s16, us16, double )<br>
+ <em>himgs</em> に格納される画像は全て同じサイズ、同じ画像タイプで、さらにチャネル数が１でなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_imgs</em>&nbsp;</td><td><em>himg</em> に格納された画像オブジェクトの数(2≦<em>num_imgs≦65535</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg_median</em>&nbsp;</td><td>生成した結果画像オブジェクト。<em>*himg_median</em> は必ず NULLで初期化しなければなりません。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_stats_srcs.png" alt="fie_stats_srcs.png">
+<p><strong>入力画像(num_imgs=5, 結果を分かりやすくするために、位置をずらした画像を用いています)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_stats_dst_med.png" alt="fie_stats_dst_med.png">
+<p><strong>出力画像(中央値画像)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>出力画像は入力画像と同じ画像タイプで生成されます。</li><li><em>num_imgs</em> に偶数が指定された場合には、中央値が１つに特定できません。その場合、中央に存在する２つの値のうち、昇順で並べた際に先に来る(小さい)値が適用されます。</li><li>本関数で生成した結果画像オブジェクトは、不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__multi__img__stats.html#g2d9495f971a773a0d20cb3a5fe816f52" title="平均値画像作成">fnFIE_stats_img_average()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd2a1e244df9bdbba89cb2946c7cd87f6"></a><!-- doxytag: member="fie_stats_img.c::fnFIE_stats_img_median_absdev" ref="gd2a1e244df9bdbba89cb2946c7cd87f6" args="(FHANDLE *himgs, INT num_imgs, FHANDLE *himg_median_absdev, enum f_imgtype dst_img_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_stats_img_median_absdev           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_imgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himg_median_absdev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a>&nbsp;</td>
+          <td class="paramname"> <em>dst_img_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+絶対偏差の中央値画像作成 
+<p>
+複数の入力画像から各画素位置毎の絶対偏差の中央値を求め、内部で生成した出力画像オブジェクトに格納します。<br>
+ 出力画像<img class="formulaInl" alt="$ himg\_median\_absdev$" src="form_887.png">の、位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値 <img class="formulaInl" alt="$ himg\_median\_absdev_{(x,y)} $" src="form_888.png"> は次の式で求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ himg\_median\_absdev_{(x,y)} = MEDIAN( | himgs[i]_{(x,y)} - himg\_average_{(x,y)} | )\ \ (i=0,\ldots,num\_imgs-1)\]" src="form_889.png">
+<p>
+<p>
+ただし<ul>
+<li><em>MEDIAN</em> は入力値を並べ替えた際の中央値を選択する処理</li><li><img class="formulaInl" alt="$ himgs[i] $" src="form_880.png">は、入力画像格納配列<img class="formulaInl" alt="$ himgs $" src="form_881.png">の<img class="formulaInl" alt="$ i $" src="form_882.png">番目に格納された画像</li><li><img class="formulaInl" alt="$ himgs[i]_{(x,y)} $" src="form_883.png"> は、画像 <img class="formulaInl" alt="$ himgs[i] $" src="form_880.png"> の任意の画素位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値</li><li><img class="formulaInl" alt="$ himg\_average $" src="form_890.png"> は、画像 <img class="formulaInl" alt="$ himgs $" src="form_881.png"> 配列内に格納された画像の平均値画像</li><li><img class="formulaInl" alt="$ himg\_average_{(x,y)} $" src="form_878.png"> は、<img class="formulaInl" alt="$ himg\_average $" src="form_890.png"> の任意の画素位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値で、その値は次の式で求める <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ himg\_average_{(x,y)} = \frac{1}{N}\sum_{i=0}^{N-1}{himgs[i]_{(x,y)}}\ \ \ (N=num\_imgs)\]" src="form_879.png">
+<p>
+</li></ul>
+<p>
+とします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himgs</em>&nbsp;</td><td>複数の画像オブジェクト格納配列(type: uc8, s16, us16, double )<br>
+ <em>himgs</em> に格納される画像は全て同じサイズ、同じ画像タイプで、さらにチャネル数が１でなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_imgs</em>&nbsp;</td><td><em>himgs</em> に格納された画像オブジェクトの数(2≦<em>num_imgs≦65535</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg_median_absdev</em>&nbsp;</td><td>生成した結果画像オブジェクト。<em>*himg_median_avsdev</em> は必ず NULLで初期化しなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_img_type</em>&nbsp;</td><td>出力画像タイプの指定<ul>
+<li>入力画像オブジェクトと同じ画像タイプ、もしくは F_IMG_DOUBLE のみの対応です。</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_stats_srcs.png" alt="fie_stats_srcs.png">
+<p><strong>入力画像(num_imgs=5, 結果を分かりやすくするために、位置をずらした画像を用いています)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_stats_dst_medabsdev.png" alt="fie_stats_dst_medabsdev.png">
+<p><strong>出力画像(絶対偏差の中央値画像)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>生成される平均画像の小数点以下の値は四捨五入処理を行います。(出力画像type:uc8, s16, us16 の場合)</li><li><em>num_imgs</em> に偶数が指定された場合には、中央値が１つに特定できません。その場合、中央に存在する２つの値のうち、昇順で並べた際に先に来る(小さい)値が適用されます。</li><li>本関数で生成した結果画像オブジェクトは、不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__multi__img__stats.html#gfeeeb88e5f3f6073f46f9e0193576c65" title="標準偏差画像作成">fnFIE_stats_img_stddev()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfeeeb88e5f3f6073f46f9e0193576c65"></a><!-- doxytag: member="fie_stats_img.c::fnFIE_stats_img_stddev" ref="gfeeeb88e5f3f6073f46f9e0193576c65" args="(FHANDLE *himgs, INT num_imgs, FHANDLE *himg_stddev, enum f_imgtype dst_img_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_stats_img_stddev           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_imgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himg_stddev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a>&nbsp;</td>
+          <td class="paramname"> <em>dst_img_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+標準偏差画像作成 
+<p>
+複数の入力画像から各画素位置毎の標準偏差を計算し、内部で生成した出力画像オブジェクトに格納します。<br>
+ 出力画像<img class="formulaInl" alt="$ himg\_stddev$" src="form_891.png">の、位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値 <img class="formulaInl" alt="$ himg\_stddev_{(x,y)} $" src="form_892.png"> は次の式で求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ himg\_stddev_{(x,y)} = \sqrt{\frac{1}{N}\sum_{i=0}^{N-1}{(himgs[i]_{(x,y)})^2} - ( himg\_average_{(x,y)})^2}\ \ \ \ (N=num\_imgs)\]" src="form_893.png">
+<p>
+<p>
+ただし<ul>
+<li><img class="formulaInl" alt="$ himgs[i] $" src="form_880.png">は、入力画像格納配列<img class="formulaInl" alt="$ himgs $" src="form_881.png">の<img class="formulaInl" alt="$ i $" src="form_882.png">番目に格納された画像</li><li><img class="formulaInl" alt="$ himgs[i]_{(x,y)} $" src="form_883.png"> は、画像 <img class="formulaInl" alt="$ himgs[i] $" src="form_880.png"> の任意の画素位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値</li><li><img class="formulaInl" alt="$ himg\_average $" src="form_890.png"> は、画像 <img class="formulaInl" alt="$ himgs $" src="form_881.png"> 配列内に格納された画像の平均値画像</li><li><img class="formulaInl" alt="$ himg\_average_{(x,y)} $" src="form_878.png"> は、<img class="formulaInl" alt="$ himg\_average $" src="form_890.png"> の任意の画素位置<img class="formulaInl" alt="$(x,y)$" src="form_508.png">の値で、その値は次の式で求める <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ himg\_average_{(x,y)} = \frac{1}{N}\sum_{i=0}^{N-1}{himgs[i]_{(x,y)}}\ \ \ (N=num\_imgs)\]" src="form_879.png">
+<p>
+</li></ul>
+<p>
+とします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himgs</em>&nbsp;</td><td>複数の画像オブジェクト格納配列(type: uc8, s16, us16, double )<br>
+ <em>himgs</em> に格納される画像は全て同じサイズ、同じ画像タイプで、さらにチャネル数が１でなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_imgs</em>&nbsp;</td><td><em>himgs</em> に格納された画像オブジェクトの数(2≦<em>num_imgs≦65535</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg_stddev</em>&nbsp;</td><td>生成した結果画像オブジェクト。<em>*himg_stddev</em> は必ず NULLで初期化しなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_img_type</em>&nbsp;</td><td>出力画像タイプの指定<ul>
+<li>入力画像オブジェクトと同じ画像タイプ、もしくは F_IMG_DOUBLE のみの対応です。</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの値エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_stats_srcs.png" alt="fie_stats_srcs.png">
+<p><strong>入力画像(num_imgs=5, 結果を分かりやすくするために、位置をずらした画像を用いています)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_stats_dst_stddev.png" alt="fie_stats_dst_stddev.png">
+<p><strong>出力画像(標準偏差画像)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>生成される平均画像の小数点以下の値は四捨五入処理を行います。(出力画像type:uc8, s16, us16 の場合)</li><li>出力値がオーバーフローする場合には、サチュレーション処理を行って格納します。</li><li>本関数で生成した結果画像オブジェクトは、不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__multi__img__stats.html#gd2a1e244df9bdbba89cb2946c7cd87f6" title="絶対偏差の中央値画像作成">fnFIE_stats_img_median_absdev()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: サンプル</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>サンプル<br>
+<small>
+[<a class="el" href="group__fie__fpm.html">FPM(特徴点応用マッチング)</a>]</small>
+</h1><h2><a class="anchor" name="fie_fpm_example">
+FPM サンプルコード</a></h2>
+<h3><a class="anchor" name="smp_fie_fpm_corr">
+サンプルコード1 相関エッジ検出によるサーチ</a></h3>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー発生時の処理は省略していますので、注意して下さい</span>
+
+<span class="preprocessor">#include "fie.h"</span>    <span class="comment">//ライブラリ使用ヘッダ</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+<span class="preprocessor">#define RESULT_N 5      //マッチングの最大検出数</span>
+<span class="preprocessor"></span>
+
+
+<span class="comment">/*</span>
+<span class="comment">    相関エッジ検出によるサーチ</span>
+<span class="comment"></span>
+<span class="comment">    このサンプルでは、入力画像からチャイルド画像を作成し、</span>
+<span class="comment">    それをマスターパタンに登録しています。</span>
+<span class="comment">    つまりサーチ結果は、チャイルド画像の位置と同じになります</span>
+<span class="comment">*/</span>
+VOID sample_fpm_corr_edge()
+{
+    FHANDLE hImage = NULL ;         <span class="comment">// 入力画像用ハンドル</span>
+    FHANDLE hImageChild = NULL;     <span class="comment">// 入力画像のチャイルド画像設定用</span>
+    FHANDLE hfpm = NULL ;           <span class="comment">// FPMオブジェクト用ハンドル</span>
+
+
+    <a class="code" href="unionF__FPM__FEATURE.html" title="特徴量計測用共用体">F_FPM_FEATURE</a>       feature_param;      <span class="comment">// 特徴量抽出を行う際のパラメータ設定用共用体 </span>
+    <a class="code" href="structF__FPM__MATCH.html" title="マッチングパラメータ構造体">F_FPM_MATCH</a>         matching_param;     <span class="comment">// マッチングを行う際のパラメータ設定用構造体</span>
+    <a class="code" href="structF__FPM__AREASCORE.html" title="エリアスコア再計算パラメータ構造体">F_FPM_AREASCORE</a>     areascore_param;    <span class="comment">// 領域スコア再計算を行う際のパラメータ設定用構造体</span>
+
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9" title="マッチングモード">f_fpm_mode</a> matching_mode;          <span class="comment">// マッチングモードの指定用</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e" title="特徴量計測手法">f_fpm_featedge</a> method;             <span class="comment">// 特徴量を取得する際のエッジ取得方法の指定用</span>
+
+    <a class="code" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a>  corr;           <span class="comment">// 相関エッジ検出用パラメータ</span>
+    
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>   win;                        <span class="comment">// マッチングエリア指定の矩形設定用</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  offset;                     <span class="comment">// マッチング回答オフセット値  </span>
+    INT  result_num;                    <span class="comment">// マッチング結果の個数</span>
+    <a class="code" href="structF__SEARCH__RESULT.html" title="マッチング回答格納構造体">F_SEARCH_RESULT</a> result[ RESULT_N ]; <span class="comment">// マッチング結果の格納用配列</span>
+
+    INT image_width, image_height;      <span class="comment">// 入力画像の幅、高さ</span>
+    INT child_sx, child_sy;             <span class="comment">// チャイルド画像の始点</span>
+    INT child_width, child_height;      <span class="comment">// チャイルド画像の幅、高さ</span>
+    INT err_code;                       <span class="comment">// エラーコード取得用</span>
+
+    <span class="comment">// サーチのパラメータ準備</span>
+<span class="comment"></span>
+    <span class="comment">// サーチの手法設定</span>
+    matching_mode = <a class="code" href="group__fie__fpm__define.html#gg2abf4a25fb075cb288fb565f77fcc8f9c5a6182a3f191bfbeb2677fe19a81129" title="通常モード">F_FPM_NORMAL_MODE</a>;  <span class="comment">// マッチングモードは通常モード</span>
+    method = <a class="code" href="group__fie__fpm__define.html#gg572c7a749698853a9d9acf780f0eae2eee414d1d77431ab1eb7eb39558a561a9" title="相関エッジ">F_FPM_CORR_EDGE</a>;           <span class="comment">// エッジ取得方法は相関エッジ</span>
+    
+    <span class="comment">// サーチのマッチングパラメータ設定</span>
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#1ee0f264d589e598774a92d3a6a807fa">require_result_num</a> = RESULT_N;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#e83ebc8e011298709c7b0b9fa4e8adc1">min_angle</a>  =  -45;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#b72992d46cdd1b84fabcae91aba257be">max_angle</a>  =   45;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#74edc4656a38847ac743a29c6b093815">min_scale</a>  = 100;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#36908168e39880501c25734da8e504a8">max_scale</a>  = 100;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#a25f2505f6223977b62ad8ce892c3160">polarity</a>   = <a class="code" href="group__fie__fpm__define.html#ggc83dd3bce8ce1edadd4638e134bd57be1c12d0f31f40edaba3b11f09edffa5f8" title="極性なし">F_FPM_SAME_POLARITY</a>;
+
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#a733994b4464658c50b81163cfb83b20">coarse_highcomp_threshold</a> = 50;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#5ae666ef0e023618bf6191087eb9d181">coarse_lowcomp_threshold</a>  = 60;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#b1c18716060dc574caced60d35c564f6">coarse_err_wide</a>           = 1;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#81a03d6da2e5d0c709a7c5f82abb3c12">coarse_comp_rate</a>          = 3;
+
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#6288e84b99af50a5f18524952cb72cc2">refine_execute</a>   = TRUE;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#f86e328199cb9503f2776aa75194197f">refine_err_wide</a>  = 1;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#39b7eec4a511f217972e2d7689c1e340">refine_threshold</a> = 70;
+
+
+    <span class="comment">//領域スコア再計算パラメータ設定</span>
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#c170aebfa7d57963dd2047e8a5bd30d2">err_wide</a>     = 1;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#637981b8b3117171a19be10ee45470f7">err_wide_tx</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#3c3835de609fa9b9fcffdc711fc978e7">err_wide_ty</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#a8f2e6402576e03ca60cb3b45f5ff610">err_wide_tq</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#c7e20d42db4ccbd3dd87a4b74d056144">err_wide_ts</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#69630f7af2022d2c452429b33f55123a">noise_weight</a> = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#cd37288d9455a890e23c494c149cb0f0">threshold</a>    = 70;
+
+
+    <span class="comment">//相関エッジパラメータ設定</span>
+    corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6" title="相関エッジフィルタの長さ">width</a>          = 13;
+    corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2" title="相関エッジフィルタの高さ">height</a>         = 5;
+    corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b" title="シグモイド係数">sigmoid_k</a>      = 1.0;
+    corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e" title="分散しきい値">var_threshold</a>  = 25;
+    corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512" title="強度しきい値">mag_threshold</a>  = 160;
+    corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236" title="非極大抑制のフィルタ片幅">nms_length</a>     = corr.<a class="code" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6" title="相関エッジフィルタの長さ">width</a>/2;
+    feature_param.<a class="code" href="unionF__FPM__FEATURE.html#690d5430d2a6398147bf6508857578ca">corr_edge</a>  = corr;    <span class="comment">//特徴量抽出用の共用体に、相関エッジのパラメータをセット</span>
+
+
+    <span class="comment">// サーチの開始準備</span>
+<span class="comment"></span>    
+    
+    <span class="comment">//入力画像をロードし、マスターパタンとなるチャイルド画像を生成する</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"FPM_SampleSrc.bmp"</span>, &amp;hImage, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    image_width  = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a> ( hImage );
+    image_height = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hImage );
+
+    <span class="comment">//チャイルド画像のパラメータ設定(注：数値は適当な値になっています) </span>
+    child_sx = 100;
+    child_sy = 100;             
+    child_width = 150;
+    child_height = 150;
+    <span class="comment">//マスターパタン用チャイルド画像の生成</span>
+    hImageChild = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hImage, child_sx, child_sy, child_width, child_height );
+
+    <span class="comment">//マスターパタン生成用のパラメータ設定 </span>
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = child_width  /2.0;  <span class="comment">//回答位置は、マスターパタンのちょうど中央で設定</span>
+    offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = child_height /2.0;
+    <span class="comment">//マスターパタン登録 マスクは使用しないのでNULLで設定</span>
+    hfpm = <a class="code" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc</a>( hImageChild, NULL, offset, matching_mode, method, &amp;feature_param, &amp;err_code );
+
+
+    <span class="comment">// サーチの実行</span>
+<span class="comment"></span>
+    <span class="comment">//サーチ範囲は入力画像全体</span>
+    win.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    win.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    win.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = image_width  - 1;
+    win.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = image_height - 1;
+
+    <span class="comment">//サーチ実行 マスクは使用しないのでNULLで設定</span>
+     <a class="code" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching</a>( hfpm, hImage, NULL, win, method, &amp;feature_param, &amp;matching_param, &amp;areascore_param, result, &amp;result_num );
+
+     <span class="comment">//実行結果をコンソール出力</span>
+     {
+         INT i;
+         <span class="keywordflow">for</span>(i = 0; i &lt; result_num; i++ )
+         {
+             printf( <span class="stringliteral">"[x, y]=[%8.3f,%8.3f]  theta=[%8.3f] scale=[%8.3f]  score=[%3d] \n"</span>, result[i].x, result[i].y, result[i].q, result[i].s, result[i].score );
+         }
+     }
+    
+     <span class="comment">//オブジェクトの解放</span>
+     <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hImage );
+     <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hImageChild );
+     <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hfpm );
+}
+
+
+
+INT main(VOID)
+{
+
+    <span class="comment">//ライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">//サーチの実行処理</span>
+    sample_fpm_corr_edge();
+
+    <span class="comment">//ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div><h3><a class="anchor" name="smp_fie_fpm_sobel">
+サンプルコード2 ソーベルエッジ検出によるサーチ</a></h3>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー発生時の処理は省略していますので、注意して下さい</span>
+
+<span class="preprocessor">#include "fie.h"</span>    <span class="comment">//ライブラリ使用ヘッダ</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+<span class="preprocessor">#define RESULT_N 5      //マッチングの最大検出数</span>
+<span class="preprocessor"></span>
+
+
+<span class="comment">/*</span>
+<span class="comment">    ソーベルエッジ検出によるサーチ</span>
+<span class="comment"></span>
+<span class="comment">    このサンプルでは、入力画像からチャイルド画像を作成し、</span>
+<span class="comment">    それをマスターパタンに登録しています。</span>
+<span class="comment">    つまりサーチ結果は、チャイルド画像の位置と同じになります</span>
+<span class="comment">*/</span>
+VOID sample_fpm_sobel_edge()
+{
+    FHANDLE hImage = NULL ;         <span class="comment">// 入力画像用ハンドル</span>
+    FHANDLE hImageChild = NULL;     <span class="comment">// 入力画像のチャイルド画像設定用</span>
+    FHANDLE hfpm = NULL ;           <span class="comment">// FPMオブジェクト用ハンドル</span>
+
+
+    <a class="code" href="unionF__FPM__FEATURE.html" title="特徴量計測用共用体">F_FPM_FEATURE</a>       feature_param;      <span class="comment">// 特徴量抽出を行う際のパラメータ設定用共用体 </span>
+    <a class="code" href="structF__FPM__MATCH.html" title="マッチングパラメータ構造体">F_FPM_MATCH</a>         matching_param;     <span class="comment">// マッチングを行う際のパラメータ設定用構造体</span>
+    <a class="code" href="structF__FPM__AREASCORE.html" title="エリアスコア再計算パラメータ構造体">F_FPM_AREASCORE</a>     areascore_param;    <span class="comment">// 領域スコア再計算を行う際のパラメータ設定用構造体</span>
+
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fpm__define.html#g2abf4a25fb075cb288fb565f77fcc8f9" title="マッチングモード">f_fpm_mode</a> matching_mode;          <span class="comment">// マッチングモードの指定用</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e" title="特徴量計測手法">f_fpm_featedge</a> method;             <span class="comment">// 特徴量を取得する際のエッジ取得方法の指定用</span>
+
+    <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a> sobel;          <span class="comment">// ソーベルエッジ検出用パラメータ</span>
+    
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a>   win;                        <span class="comment">// マッチングエリア指定の矩形設定用</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  offset;                     <span class="comment">// マッチング回答オフセット値  </span>
+    INT  result_num;                    <span class="comment">// マッチング結果の個数</span>
+    <a class="code" href="structF__SEARCH__RESULT.html" title="マッチング回答格納構造体">F_SEARCH_RESULT</a> result[ RESULT_N ]; <span class="comment">// マッチング結果の格納用配列</span>
+
+    INT image_width, image_height;      <span class="comment">// 入力画像の幅、高さ</span>
+    INT child_sx, child_sy;             <span class="comment">// チャイルド画像の始点</span>
+    INT child_width, child_height;      <span class="comment">// チャイルド画像の幅、高さ</span>
+    INT err_code;                       <span class="comment">// エラーコード取得用</span>
+
+    <span class="comment">// サーチのパラメータ準備</span>
+<span class="comment"></span>
+    <span class="comment">// サーチの手法設定</span>
+    matching_mode = <a class="code" href="group__fie__fpm__define.html#gg2abf4a25fb075cb288fb565f77fcc8f9c5a6182a3f191bfbeb2677fe19a81129" title="通常モード">F_FPM_NORMAL_MODE</a>;  <span class="comment">// マッチングモードは通常モード</span>
+    method = <a class="code" href="group__fie__fpm__define.html#gg572c7a749698853a9d9acf780f0eae2e9d7c9db1230897cfc1b7e6906eefc1e5" title="ソーベルエッジ">F_FPM_SOBEL_EDGE</a>;          <span class="comment">// エッジ取得方法はソーベルエッジ</span>
+    
+    <span class="comment">// サーチのマッチングパラメータ設定</span>
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#1ee0f264d589e598774a92d3a6a807fa">require_result_num</a> = RESULT_N;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#e83ebc8e011298709c7b0b9fa4e8adc1">min_angle</a>  =  -45;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#b72992d46cdd1b84fabcae91aba257be">max_angle</a>  =   45;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#74edc4656a38847ac743a29c6b093815">min_scale</a>  = 100;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#36908168e39880501c25734da8e504a8">max_scale</a>  = 100;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#a25f2505f6223977b62ad8ce892c3160">polarity</a>   = <a class="code" href="group__fie__fpm__define.html#ggc83dd3bce8ce1edadd4638e134bd57be1c12d0f31f40edaba3b11f09edffa5f8" title="極性なし">F_FPM_SAME_POLARITY</a>;
+
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#a733994b4464658c50b81163cfb83b20">coarse_highcomp_threshold</a> = 50;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#5ae666ef0e023618bf6191087eb9d181">coarse_lowcomp_threshold</a>  = 60;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#b1c18716060dc574caced60d35c564f6">coarse_err_wide</a>           = 1;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#81a03d6da2e5d0c709a7c5f82abb3c12">coarse_comp_rate</a>          = 3;
+
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#6288e84b99af50a5f18524952cb72cc2">refine_execute</a>   = TRUE;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#f86e328199cb9503f2776aa75194197f">refine_err_wide</a>  = 1;
+    matching_param.<a class="code" href="structF__FPM__MATCH.html#39b7eec4a511f217972e2d7689c1e340">refine_threshold</a> = 70;
+
+
+    <span class="comment">//領域スコア再計算パラメータ設定</span>
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#c170aebfa7d57963dd2047e8a5bd30d2">err_wide</a>     = 1;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#637981b8b3117171a19be10ee45470f7">err_wide_tx</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#3c3835de609fa9b9fcffdc711fc978e7">err_wide_ty</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#a8f2e6402576e03ca60cb3b45f5ff610">err_wide_tq</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#c7e20d42db4ccbd3dd87a4b74d056144">err_wide_ts</a>  = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#69630f7af2022d2c452429b33f55123a">noise_weight</a> = 0.5;
+    areascore_param.<a class="code" href="structF__FPM__AREASCORE.html#cd37288d9455a890e23c494c149cb0f0">threshold</a>    = 70;
+
+
+    <span class="comment">//ソーベルエッジパラメータ設定</span>
+    sobel.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">nms_length</a>    = 1;
+    sobel.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">mag_threshold</a> = 40;
+    feature_param.<a class="code" href="unionF__FPM__FEATURE.html#63decc6bdc1ca989e253285e80635b56">sobel_edge</a> = sobel;    <span class="comment">//特徴量抽出用の共用体に、ソーベルエッジのパラメータをセット</span>
+
+
+    <span class="comment">// サーチの開始準備</span>
+<span class="comment"></span>    
+    
+    <span class="comment">//入力画像をロードし、マスターパタンとなるチャイルド画像を生成する</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"FPM_SampleSrc.bmp"</span>, &amp;hImage, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    image_width  = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a> ( hImage );
+    image_height = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hImage );
+
+    <span class="comment">//チャイルド画像のパラメータ設定(注：数値は適当な値になっています) </span>
+    child_sx = 100;
+    child_sy = 100;             
+    child_width = 150;
+    child_height = 150;
+    <span class="comment">//マスターパタン用チャイルド画像の生成</span>
+    hImageChild = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hImage, child_sx, child_sy, child_width, child_height );
+
+    <span class="comment">//マスターパタン生成用のパラメータ設定 </span>
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = child_width  /2.0;  <span class="comment">//回答位置は、マスターパタンのちょうど中央で設定</span>
+    offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = child_height /2.0;
+    <span class="comment">//マスターパタン登録 マスクは使用しないのでNULLで設定</span>
+    hfpm = <a class="code" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc</a>( hImageChild, NULL, offset, matching_mode, method, &amp;feature_param, &amp;err_code );
+
+
+    <span class="comment">// サーチの実行</span>
+<span class="comment"></span>
+    <span class="comment">//サーチ範囲は入力画像全体</span>
+    win.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    win.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    win.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = image_width  - 1;
+    win.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = image_height - 1;
+
+    <span class="comment">//サーチ実行 マスクは使用しないのでNULLで設定</span>
+     <a class="code" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching</a>( hfpm, hImage, NULL, win, method, &amp;feature_param, &amp;matching_param, &amp;areascore_param, result, &amp;result_num );
+
+     <span class="comment">//実行結果をコンソール出力</span>
+     {
+         INT i;
+         <span class="keywordflow">for</span>(i = 0; i &lt; result_num; i++ )
+         {
+             printf( <span class="stringliteral">"[x, y]=[%8.3f,%8.3f]  theta=[%8.3f] scale=[%8.3f]  score=[%3d] \n"</span>, result[i].x, result[i].y, result[i].q, result[i].s, result[i].score );
+         }
+     }
+    
+     <span class="comment">//オブジェクトの解放</span>
+     <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hImage );
+     <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hImageChild );
+     <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hfpm );
+}
+
+
+
+INT main(VOID)
+{
+
+    <span class="comment">//ライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">//サーチの実行処理</span>
+    sample_fpm_sobel_edge();
+
+    <span class="comment">//ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

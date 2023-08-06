@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 3.4.2</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel3_4_2">release 3.4.2 </a></h1><div style="text-align:right">2018/11/09</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel3_4_2.html#fie3_4_2">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie3_4_2">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">機能追加および、変更</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a><ul>
+<li>二値画像におけるF_BORDER_CONTINUOUSボーダー拡張を高速化</li></ul>
+</li><li><a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a>, <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a>, <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a><ul>
+<li>内部処理の細かな修正により、わずかに高速化</li></ul>
+</li><li><a class="el" href="group__fie__image.html#g90c008bc8b33aac5b443b16e714f3d4b" title="チャイルド画像をルート画像へ割り当てる">fnFIE_img_child_attach()</a><ul>
+<li>同じルート画像に割り当てたチャイルド画像に再割り当てする際の処理を高速化</li></ul>
+</li><li><a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs()</a>, <a class="el" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params()</a><ul>
+<li>チャイルド画像に対する処理を高速化</li></ul>
+</li><li>#626 <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278" title="構造要素指定 dilation">fnFIE_dilation_se()</a> と、これらに関連するモルフォロジ演算<ul>
+<li>高速化のため、ボーダー拡張の挙動を修正</li></ul>
+</li><li>本ライブラリをWindowsリモートデスクトップ経由で利用できるように変更。従来はリモートデスクトップ経由で使用しようとすると、ライセンスエラーとなっていた。</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g633a7e7079f25e06e605f34d900c20f0" title="画像の縦方向や横方向の投影を算出する">fnFIE_projection()</a><ul>
+<li>二値画像を処理する際、不要でも画像の終端より32bit先まで読み込んでしまう問題を修正</li></ul>
+</li><li>#591 <a class="el" href="group__fie__fpm__pattern.html#gf45acab5b9fc021ffe5f45788dfbf135" title="指定ポーズ下の対応点取得">fnFIE_fpm_get_relative_edge()</a><ul>
+<li>コピーしたFPMオブジェクトでは動作していなかった問題を修正</li></ul>
+</li><li>#677 <a class="el" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7" title="3×3erosion filter">fnFIE_erosion()</a>, <a class="el" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0" title="3×3dilation filter">fnFIE_dilation()</a> と、これらに関連するモルフォロジ演算<ul>
+<li>バージョン 3.4.0 でF_IMG_UC8型を除き処理速度が遅くなった問題（特にF_IMG_BIN型で顕著）を修正</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#678 <a class="el" href="group__fie__filter.html#g7dcf87c390cc69fb2005d5f0e515d58b" title="median filter">fnFIE_median()</a>, <a class="el" href="group__fie__filter.html#g97bf281fad17a64bf5daf5e1eb59e3d6" title="rank filter">fnFIE_rank_filter()</a><ul>
+<li>画像の幅または高さが3未満のときに、画像の領域外を参照する問題を修正</li></ul>
+</li><li><a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a><ul>
+<li>特定の環境で処理が無限ループとなる問題を修正</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">ドキュメント修正</h3>
+<p>
+<ul>
+<li>モルフォロジ概要説明<ul>
+<li>boundary condition の説明を修正</li></ul>
+</li><li><a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278" title="構造要素指定 dilation">fnFIE_dilation_se()</a><ul>
+<li>境界部分処理の説明を修正 </li></ul>
+</li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

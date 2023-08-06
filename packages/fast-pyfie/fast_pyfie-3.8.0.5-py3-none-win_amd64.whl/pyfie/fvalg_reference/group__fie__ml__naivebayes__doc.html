@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__ml__naivebayes.html">ナイーブベイズ分類器</a>]</small>
+</h1><h2><a class="anchor" name="fie_Naivebayes">
+ナイーブベイズ分類器について</a></h2>
+ナイーブベイズ分類器は確率モデルに基づいた、単純ながら強力な識別器モデルです。 ナイーブベイズ分類器で構築される識別器の概念図を以下に示します。<p>
+<div align="center">
+<img src="fie_ml_naivebayes.png" alt="fie_ml_naivebayes.png">
+</div>
+<p>
+ナイーブベイズ分類器は、特徴量を要素ごと独立に出力が得られる確率を計算します。 その後得られた確率すべての積を取ることで統合し、確率が最大となるクラスを識別結果として出力します。 特徴量の独立性の仮定により学習と識別を単純に実行できることが、ナイーブベイズ分類器の利点となります。<p>
+<hr>
+ <h3><a class="anchor" name="Naivebayes_Principle">
+ナイーブベイズ分類器の原理</a></h3>
+ナイーブベイズ分類器はベイズの定理と単純な条件付独立の仮定に基づき、確率モデルを用いて多クラスの識別問題を解きます。<p>
+入力特徴ベクトル<img class="formulaInl" alt="${\bf x}$" src="form_439.png">から出力のラベル<img class="formulaInl" alt="$c$" src="form_440.png">を求める識別問題を考えます。 このとき、入力<img class="formulaInl" alt="${\bf x}$" src="form_439.png">が与えられたときに出力が<img class="formulaInl" alt="$c$" src="form_440.png">になる確率は、確率変数X, Cを用いて <img class="formulaInl" alt="$p(C = c|X = {\bf x})$" src="form_441.png">と表記されます。<p>
+このような識別問題の具体例としては、気温や湿度、風向から天気を求める問題（Xは{気温, 湿度, 風向}の3種類からなり、Cは{晴れ, 曇り, 雨, 雪}の4種類をとる）や、ワークの二値ブローブから外観検査を行う問題（Xは二値ブローブ特徴量からなり、Cは{良品, 欠品}の2種類をとる）が挙げられます。<p>
+<img class="formulaInl" alt="$p(c|{\bf x})$" src="form_442.png">が最大になるラベル<img class="formulaInl" alt="$c$" src="form_440.png">を求めることで識別問題を解くことができます。 しかし、ほとんどの場合<img class="formulaInl" alt="$p(c|{\bf x})$" src="form_442.png">は直接求められません。 そこで、ベイズの定理により<img class="formulaInl" alt="$p(c|{\bf x})$" src="form_442.png">を次のように変形します。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(c|{\bf x})=\frac{ p({\bf x}|c)p(c) }{ p({\bf x}) } \]" src="form_443.png">
+<p>
+<p>
+<img class="formulaInl" alt="${\bf x}$" src="form_439.png">は入力として与えられるので、<img class="formulaInl" alt="$p({\bf x})$" src="form_444.png">は定数とみなせます。すると<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(c|{\bf x}) \propto p({\bf x}|c)p(c) \]" src="form_445.png">
+<p>
+<p>
+となります。この右辺を最大化することで識別問題を解くことができます。<p>
+<img class="formulaInl" alt="$p(c)$" src="form_446.png">は事前確率と呼ばれ、<img class="formulaInl" alt="${\bf x}$" src="form_439.png">がわからないときの<img class="formulaInl" alt="$c$" src="form_440.png">の出現確率を表します。 一様であることを仮定したり、教師データのクラス数比率などにより推定されます。<p>
+<img class="formulaInl" alt="$p({\bf x}|c)$" src="form_447.png">は尤度と呼ばれます。 尤度は特徴ベクトルを要素ごとに<img class="formulaInl" alt="${\bf x} = (x_1, x_2, \dots, x_n)$" src="form_448.png">と置くことでさらに分解され、 <img class="formulaInl" alt="$p({\bf x}|c) = p(x_1, x_2, \dots, x_n|c)$" src="form_449.png"> と表現できます。 ここで、「特徴ベクトルの各次元同士は全く相関がない」という強い仮定（ナイーブな仮定）を置きます。 すると、ベイズの定理を繰り返し適用することにより、<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(x_1, x_2, \dots, x_n|c) = p(x_1|c) p(x_2|c) \dots p(x_n|c) = \prod_{i=1}^n p(x_i|c) \]" src="form_450.png">
+<p>
+<p>
+と変形できます。 この結果、<img class="formulaInl" alt="$p({\bf x}|c)$" src="form_447.png">が要素ごとに独立に<img class="formulaInl" alt="$p(x_i|c)$" src="form_451.png">を求めて積を取ることで求まるので、算出が容易になります。<p>
+この強い仮定は、多くの場合、実際に観測される事象と反しています。 例えば画像の画素値集合を特徴ベクトルとしたとき、「隣接する画素の画素値は多くの場合よく似ている」という情報を無視することになります。 しかしながら、単純な独立性仮定のもとでも性能の高い識別結果を得られることが知られています。<p>
+<hr>
+ <h3><a class="anchor" name="Naivebayes_Categocical_and_Numerical">
+カテゴリ属性と数値属性の扱い</a></h3>
+ナイーブベイズ分類器では、入力の特徴ベクトルの属性として、「数値属性」と「カテゴリ属性」を扱うことができます。<br>
+<p>
+数値属性とは、特徴ベクトルの各値が連続変数、つまり2つの異なる値が数値として比較可能なものであることを意味します。 例として、"画素の濃度"や"対象物の面積"のように、具体的に数値として観測されたものが当たります。<br>
+<p>
+カテゴリ属性とは、特徴ベクトルの各値が、離散的なクラスラベルを示す値であることを意味します。 例として「矩形 = 0」「円 = 1」「楕円 = 2」のように、特定の属性を数値と対応させ、その属性を示す ラベルとしたものが当たります。<br>
+<p>
+なお、カテゴリ属性のベクトルを扱う場合、特徴ベクトルの各値は全て整数値である必要があります。<p>
+<hr>
+ <h3><a class="anchor" name="Naivebayes_Models">
+尤度の確率分布モデル</a></h3>
+特徴ごとの尤度<img class="formulaInl" alt="$p(x_i|c)$" src="form_451.png">は適当な確率分布でモデル化されます。 本ライブラリでは次の3種類をサポートします。<p>
+<dl class="user" compact><dt><b>正規分布</b></dt><dd>数値属性の特徴ベクトルを用いる分布です。 次の式で表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(x_i|c) \propto \exp \left( - \frac{(x_i - \mu_i)^2}{2 \sigma_i^2} \right) \]" src="form_452.png">
+<p>
+ ここで、<img class="formulaInl" alt="$\mu_i$" src="form_453.png">, <img class="formulaInl" alt="$\sigma_i$" src="form_454.png">はそれぞれ分布の平均と標準偏差を表します。 特徴量に任意の実数を取ることができるため、様々な教師データに適用できる分布です。</dd></dl>
+<dl class="user" compact><dt><b>多変量多項分布</b></dt><dd>カテゴリ属性の特徴ベクトルを用いる分布です。 次の式で表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(x_i|c) = \begin{cases} p_{i,j} &amp; (x_i = j, \ j = 1 \dots m_i) \\ 0 &amp; (\text{otherwise}) \end{cases} \]" src="form_455.png">
+<p>
+ ここで、<img class="formulaInl" alt="$p_{i,j}$" src="form_456.png">は、<img class="formulaInl" alt="$m_i$" src="form_457.png">種類の値を取るカテゴリ属性の変数<img class="formulaInl" alt="$x_i$" src="form_458.png">について、<img class="formulaInl" alt="$x_i = j$" src="form_459.png">となる確率を表します (<img class="formulaInl" alt="$j = 1 \dots m_i$" src="form_460.png">, <img class="formulaInl" alt="$\sum_{j=1}^{m_i} p_{i,j} = 1$" src="form_461.png">)。 簡単のため、ここでは<img class="formulaInl" alt="$x_i \in \{1, \dots, m_i\}$" src="form_462.png">であるとします。実際は<img class="formulaInl" alt="$x_i$" src="form_458.png">は任意の整数値をとることができます。</dd></dl>
+<dl class="user" compact><dt><b>多項分布</b></dt><dd>ヒストグラムを特徴ベクトルとして用いる分布です。 ヒストグラムでは特徴ベクトルの各要素<img class="formulaInl" alt="$x_i$" src="form_458.png">が頻度を表します。 頻度とは、例えば文書分類において文書内にある単語が出現する回数のような、個数のカウントのことを表します。 次の式で表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p(x_i|c) \propto p_i^{x_i} \]" src="form_463.png">
+<p>
+ ここで、<img class="formulaInl" alt="$p_i$" src="form_464.png">はi番目のデータがn個の要素の中から現れる確率を表します(<img class="formulaInl" alt="$\sum_{i=1}^n p_i = 1$" src="form_465.png">)。 実用上は、頻度は重み付きでもよいため、非負の実数をとるヒストグラムを特徴量として使用することができます。 スパムメール判定などの文書分類で高い性能をもつことが知られています。 なお、多項分布となるのは尤度<img class="formulaInl" alt="$p({\bf x}|c)$" src="form_447.png">であり、上記の式は厳密な多項分布モデルではありません。</dd></dl>
+<hr>
+ <h3><a class="anchor" name="NaiveBayes_Training">
+ナイーブベイズ分類器の学習</a></h3>
+学習は特徴ごとの尤度<img class="formulaInl" alt="$p(x_i|c)$" src="form_451.png">の分布パラメータを最尤推定により求めることで行われます。 実際には、後述の特徴量が一定値になる場合の対策も同時に適応されます。<p>
+<dl class="user" compact><dt><b>正規分布</b></dt><dd>平均<img class="formulaInl" alt="$\mu_i$" src="form_453.png">と標準偏差<img class="formulaInl" alt="$\sigma_i$" src="form_454.png">を推定します。 ラベルがcとなる教師データの特徴量<img class="formulaInl" alt="$x_i$" src="form_458.png">の平均と標準偏差が用いられます。</dd></dl>
+<dl class="user" compact><dt><b>多変量多項分布</b></dt><dd><img class="formulaInl" alt="$x_i = j$" src="form_459.png">となる確率<img class="formulaInl" alt="$p_{i,j}$" src="form_456.png">を推定します。 ラベルがcとなる教師データのうち、<img class="formulaInl" alt="$x_i = j$" src="form_459.png">を満たすデータの個数がラベルcの全データの個数に占める割合として推定されます。</dd></dl>
+<dl class="user" compact><dt><b>多項分布</b></dt><dd><img class="formulaInl" alt="$i$" src="form_49.png">番目のデータが出現する確率<img class="formulaInl" alt="$p_i$" src="form_464.png">を推定します。 ラベルがcとなる教師データのうち、<img class="formulaInl" alt="$x_i$" src="form_458.png">の総和が全頻度の総和に占める割合として推定されます。</dd></dl>
+<hr>
+ <h3><a class="anchor" name="Naivebayes_Zero_Freq_Problem">
+特徴量が一定値になる場合の対策</a></h3>
+教師データにおいて特徴量のある要素が一定値であった場合、学習されたナイーブベイズ分類器が出力する確率値は常に0となってしまいます。 これは「ゼロ頻度問題」として広く知られているナイーブベイズ分類器の問題です。<p>
+この問題を回避するため、次の対策を行っています。<p>
+<ul>
+<li>正規分布：　一様分布を仮定し、一定値となった特徴要素を無視します。 </li>
+<li>多変量多項分布、多項分布：　スムージングと呼ばれる処理を適用します。実際に得られた頻度に対し、αだけ多く個数をカウントします。αは0以上の実数であり、パラメータとして指定されるものです。</li>
+</ul>
+<hr>
+ <h3><a class="anchor" name="Naivebayes_Parameter">
+ナイーブベイズ分類器のパラメータ</a></h3>
+ナイーブベイズ分類器で必要となるパラメータを説明します。精度の高い識別を行うためには、パラメータの調整が必要です。<p>
+<dl class="user" compact><dt><b>尤度のタイプ</b></dt><dd>学習で用いる尤度のタイプを設定します。 <ul>
+<li>F_ML_NB_GAUSSIAN : 正規分布。特徴ベクトルは数値属性である必要があります。 </li>
+<li>F_ML_NB_MULTINOMIAL_MULTIVARIATE : 多変量多項分布。特徴ベクトルはカテゴリ属性である必要があります。 </li>
+<li>F_ML_NB_MULTINOMIAL : 多項分布。特徴ベクトルは非負の実数であるヒストグラムである必要があります。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>事前分布のタイプ</b></dt><dd>学習で用いる事前分布のタイプを設定します。 <ul>
+<li>F_ML_NB_PRIOR_UNIFORM : 一様分布を仮定します。 </li>
+<li>F_ML_NB_PRIOR_PROPORTION : クラスごとの教師データ数の比率により推定します。クラスごとの教師データ数の偏りが実際のデータに即している場合に使用すると良いでしょう。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>スムージング係数α</b></dt><dd>ゼロ頻度問題に対処するためのパラメータです。 尤度として多変量多項分布または多項分布を指定した場合に使用されます。 0以上の実数を設定可能であり、1の場合はラプラススムージングと呼ばれ、多くの場合このラプラススムージングを指定することが推奨されます。 なお、0を指定した場合はスムージングなしとなります。</dd></dl>
+<dl class="user" compact><dt><b>事前処理</b></dt><dd>学習を開始する前に、与えられた教師データに行う前処理を指定します。 指定可能な事前処理は以下のものになり、これらは組み合わせて同時に指定可能です。</dd></dl>
+<ul>
+<li>重複した教師データの削除<br>
+ 入力された教師データの中で、特徴量がまったく同じデータが複数存在したときに、以下のルールに従って データを削除します。<ul>
+<li>同一クラス内の重複データ ：クラス内に一つだけ残るようにして、他を全て削除します。</li><li>複数クラス間での重複データ：「矛盾データ」と判断して、全て削除します。</li></ul>
+</li>
+</ul>
+<ul>
+<li>データの正規化<br>
+ 教師データとして与えられた特徴ベクトルの各成分ごとの最大値・最小値を探索し、その値で 全ての特徴ベクトルを一定の範囲に正規化します。入力される特徴ベクトルが極めて小さい場合など、 数値計算上の誤差が考えられる場合、正規化を行うことで、これを回避するなどの効果が期待できます。<br>
+ 値の範囲は、尤度が正規分布である場合は [-1.0, 1.0] とし、多項分布である場合は [0.0, 1.0] となります。<br>
+ なお、尤度が正規分布である場合は、内部的に平均と標準偏差が利用されるため、データの正規化はほとんど意味を持ちません。データの正規化以外のパラメータ調整を行うことを推奨します。</li>
+</ul>
+<dl class="user" compact><dt><b></b></dt><dd>教師データの特徴ベクトルがカテゴリ属性で合った場合は、事前処理の指定は無視されます。これは以下の理由によります<ul>
+<li>特徴ベクトルの値は属性を示すラベルを意味し、数値的な意味を持たない</li><li>カテゴリ属性の場合は、重複性は分岐を決定する上でむしろ情報となるため </li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>また、ナイーブベイズ分類器の学習では、まずは事前処理を指定せずに学習を行い、パラメータの調整で精度を上げていく事を推奨します。</dd></dl>
+<dl class="user" compact><dt><b>学習時間</b></dt><dd>学習を行う時間の上限を秒単位で設定します。教師データの内容や、パラメータ の指定によっては、学習に極端に時間がかかる場合があります。このパラメータで学習に用いる時間の 上限を設定しておくと、学習の終了条件を満たす前であっても学習を打ち切ります。 値を0にすると、終了条件を満たすまで学習を続ける設定になります。</dd></dl>
+<hr>
+ <h3><a class="anchor" name="NaiveBayes_Note">
+その他</a></h3>
+<dl class="user" compact><dt><b>ナイーブベイズ分類器の利点</b></dt><dd></dd></dl>
+<ul>
+<li>学習が高速で、識別も比較的高速<br>
+ 使用する尤度モデルに依りますが、学習は他の識別器と比べて非常に高速となります。識別も高速に動作します。 </li>
+<li>比較的少ない教師データ数でも精度のよい学習ができる<br>
+ 識別のルールが単純であるため、多くの場合で学習に大量のデータを必要としません。 </li>
+<li>過学習を起こしにくい<br>
+ 単純な確率モデルを使用しているため、教師データに対して過剰なフィッティングを起こしにくいという特徴があります。 </li>
+<li>高次元のデータに強い<br>
+ 特徴間の相関を考慮しないため、「次元の呪い」と呼ばれるような高次元の問題を緩和できます。</li>
+</ul>
+<dl class="user" compact><dt><b>ナイーブベイズ分類器の欠点</b></dt><dd></dd></dl>
+<ul>
+<li>クラス間・特徴量間の相関を考慮しないため、強い相関があると著しく性能が落ちる<br>
+ 画素値をそのまま特徴量とした場合のように、強い相関のある特徴量に対してはナイーブベイズは低い性能を示すことが予想されます。<br>
+ この問題を解決するには、特徴量の相関がなくすような処理を加えることや、他の特徴量、他の機械学習を用いることが考えられます。</li>
+</ul>
+<hr>
+ <dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>[1]元田 浩・山口 高平・津本 周作・沼尾 正行. データマイニングの基礎. オーム社. 2006. pp.35-39</li><li>[2]Sebastian Raschka. Naive Bayes and Text Classification I - Introduction and Theory. CoRR. abs/1410.5329. 2014. </li></ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>
