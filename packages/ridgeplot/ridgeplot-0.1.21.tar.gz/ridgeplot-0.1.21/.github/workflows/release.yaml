@@ -1,0 +1,22 @@
+name: Release workflow
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-python
+        with:
+          python-version: "3.7"
+          requirements-prefix: tox
+      - name: Generate release notes
+        run: ./bin/tox -e release-notes
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: LATEST_RELEASE_NOTES.md
