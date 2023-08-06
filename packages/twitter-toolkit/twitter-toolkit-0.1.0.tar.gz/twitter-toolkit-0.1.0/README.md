@@ -1,0 +1,168 @@
+Twitter tools
+=============
+
+This project contains different tools to help search and analyze in twitter.
+
+The analysis of tweets is often followed by doing the same pipeline for different projects.
+This toolkit is a compilation and wrapper of many tools to ease the pipeline of analysis in twitter.
+First of all it provides search utilities, either by searching by a twitter query or by identifier.
+Then it integrates some models to infer users age, gender, and if it is a person or an organisation. This inference should be used with caution since it is not perfect, but can yield an overview of the type of users analyzed.
+There is also a location of users inference for Spanish locations based on their _location_ text or _description_ in their Twitter profile.
+For the text analysis we provide a pipeline for Topic analysis using the LDA algorithm and some sentiment analysis too.
+Finally we provide a network creation of the tweets and users function for a network analysis.
+
+Twitter Search
+--------------
+
+### Credentials
+
+To run this you need to provide your Twitter API credentials in the form of 
+YAML file.  
+
+For example:
+```yaml
+search_tweets_api:
+  endpoint: https://api.twitter.com/2/tweets/search/all
+  consumer_key: XXXXXXXXXXXX
+  consumer_secret: XXXXXXXXXXXXXXXX
+  bearer_token: XXXXXXXXXXXXXXXXX
+```
+
+### Searching tweets
+
+You query tweets with `search_tweets_by_query`.  
+To have a more detailed for the parameters take a look at the [Twitter API](https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-all)
+
+
+```python
+from twitter_tools.search_tools import TweetSearchUtil
+
+tsu = TweetSearchUtil('path_to_yaml_creds')
+tweets = tsu.search_tweets_by_query(
+    "python OR #python"
+    ,tweet_fields="author_id,conversation_id,created_at,id,in_reply_to_user_id,lang,public_metrics,text"
+    )
+```
+
+### Searching by id
+
+You can also search retrieve tweets and users by their id.
+
+```python
+from twitter_tools.search_tools import TweetSearchUtil
+
+tsu = TweetSearchUtil('path_to_yaml_creds')
+tweets = tsu.retreive_tweets_by_id(
+    ['12341','12342']
+    ,tweet_fields="author_id,conversation_id,created_at,id,in_reply_to_user_id,lang,public_metrics,text"
+    )
+
+users = tsu.retreive_users_by_id(
+    ['4321','4322']
+    ,user_fields="created_at,description,id,name,profile_image_url,public_metrics,username"
+    )
+```
+
+
+Twitter Inference
+-----------------
+
+This is a Wrapper of [M3Inference](https://github.com/euagendas/m3inference)
+but with an ease to use and make a general pipeline with this set of tools.  
+
+```python
+from twitter_tools.user_inference import TwitterUserInference
+
+users = [{...},...]
+
+tui = TwitterUserInference()
+
+inference = tui.infer_users(users, lang='en')
+```
+
+Users Location
+--------------
+
+This tool is only available for Spain locations.  
+To feature other countries, a json in the format as `places_spain.json` should
+be added.  
+
+This tools checks the location of an user based otheir text location and
+description when no geolocation is available.
+Checks for city/country/region words in the user profile to try to identify for
+its location.
+
+```python
+from location.location_detector import LocationDetector
+
+user = {...}
+
+detector = LocationDetector('path_to_places_json')
+
+loc, method = detector.identify_location(user['location'], user['description'])
+
+```
+
+Topic analysis
+--------------
+
+This tool will do every step of topic analysis using LDA.  
+
+The typical pipeline can be represented by as follows.
+
+```python
+from twitter_tools.topic_analysis import TopicAnalysis
+
+tweets = [...]
+analyzer = TopicAnalysis(language='es')
+
+tweets_clean = analyser.clean_docs(tweets)
+tweets_lemmas = analyser.lemmatize(tweets_clean, 
+                                filter_postags=['ADJ', 'ADV', 'NOUN', 'VERB'])
+ldamodel, docs_dict = analyzer.topic_analysis(tweets_lemmas,
+                                            topics_nb=10, print_words=10)
+```
+
+Sentiment Analysis
+------------------
+
+Sentiment analysis of text using pretrained models.
+
+```python
+from twitter_tools.topic_analysis import TopicAnalysis
+
+tweets = [...]
+analyzer = TopicAnalysis(language='es')
+
+sentiments = [analyzer.sentiment_analysis(t) for t in tweets]
+```
+
+Network creation
+----------------
+
+This tool creates graphs based on the tweets and users interactions.  
+It can create the user and the tweet graph.
+
+The tweets dict like object must contain at least the following fields:
+`id`, `retweeted_by`, `favorited_by`.  
+The users dict like object must contain at least the following fields:
+`id`, `screen_name`.
+
+```python
+from twitter_tools.network_tools import create_tweets_network, create_users_network
+
+users = [...]
+tweets = [...]
+
+T = create_tweets_network(tweets)
+U = create_users_network(users, tweets)
+
+```
+
+Once the network create you can export it and open the file in Gephi to visualize it and analize it.
+
+```python
+import networkx as nx
+
+nx.write_gml(T, "tweets_network.gml")
+```
