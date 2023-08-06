@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "deepblu"
+packages = [
+    { include = "deepblu" },
+]
+version = "0.1.0"
+description = "Library for advanced architectures/patterns in modern Python. Domain-Driven Design (DDD), CQRS, Event Sourcing, Event-driven architectures, message queues, unit of work dependency injection and more."
+authors = ["Carlo Casorzo <carlo@deepblu.dev>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poe.tasks]
+test   = "pytest"
+'test:cov'   = "pytest --cov=pybase --cov-report=term-missing"
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 88
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.18.1"
+pre-commit = "^3.0.1"
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+black = "^22.12.0"
+isort = "^5.11.4"
+flake8 = "^6.0.0"
+bandit = "^1.7.4"
+safety = "^2.3.5"
+mypy = "^0.991"
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.0.6"
+mkdocstrings = {extras = ["python"], version = "^0.20.0"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
