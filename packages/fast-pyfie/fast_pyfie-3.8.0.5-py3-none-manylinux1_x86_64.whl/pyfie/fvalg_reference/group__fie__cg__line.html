@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 直線、線分</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>直線、線分<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<dl class="user" compact><dt><b>開直線・閉直線とは</b></dt><dd></dd></dl>
+両端点を含まない線分を開線分、両端点を含む線分を閉線分、と言います(下図を参照してください)。 <div align="center">
+<img src="fie_cg_std.png" alt="fie_cg_std.png">
+</div>
+ 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">f_cg_seg_status</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__line.html#gg68fdc38b4e168836ad1f9ddf32db0f5c8403a894d50c3cd767c198ade637574e">F_CG_SGMT_CROSS</a> =  1, 
+<a class="el" href="group__fie__cg__line.html#gg68fdc38b4e168836ad1f9ddf32db0f5cd3dda1580db74ab6c8444534a49001c2">F_CG_SGMT_NOT_CROSS</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__line.html#gg68fdc38b4e168836ad1f9ddf32db0f5c8710acf78b2adee4d88a0af2e4d84583">F_CG_SGMT_OVERLAP</a> =  3, 
+<a class="el" href="group__fie__cg__line.html#gg68fdc38b4e168836ad1f9ddf32db0f5c75c3453b4f651472acf30c657d510763">F_CG_SGMT_COINCIDE</a> =  4, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__line.html#gg68fdc38b4e168836ad1f9ddf32db0f5cdcf71d0c69ee1f74dcd99c3c3200ad5b">F_CG_SGMT_TOUCH</a> =  5, 
+<a class="el" href="group__fie__cg__line.html#gg68fdc38b4e168836ad1f9ddf32db0f5c21a69ae27e6b845aeb4258b8e5b57d62">F_CG_SGMT_JOINT</a> =  6
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２線分の交差状況  <a href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__line.html#g202f4526c8433a36fd4e548f438ae16a">fnFIE_cg_2segments_cross_status</a> (<a class="el" href="structSGMT__T.html">SGMT_T</a> sgmt1, <a class="el" href="structSGMT__T.html">SGMT_T</a> sgmt2, INT op_flag, enum <a class="el" href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">f_cg_seg_status</a> *seg_status)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２線分の交差状況(整数型)  <a href="#g202f4526c8433a36fd4e548f438ae16a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__line.html#g6dff5b2ae3007d9da0618518ca517284">fnFIE_cg_2segments_cross_status_d</a> (<a class="el" href="structDSGMT__T.html">DSGMT_T</a> sgmt1, <a class="el" href="structDSGMT__T.html">DSGMT_T</a> sgmt2, INT op_flag, enum <a class="el" href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">f_cg_seg_status</a> *seg_status)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２線分の交差状況(浮動小数点型)  <a href="#g6dff5b2ae3007d9da0618518ca517284"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g68fdc38b4e168836ad1f9ddf32db0f5c"></a><!-- doxytag: member="fie.h::f_cg_seg_status" ref="g68fdc38b4e168836ad1f9ddf32db0f5c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">f_cg_seg_status</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２線分の交差状況 
+<p>
+２線分の交差状況を表します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg68fdc38b4e168836ad1f9ddf32db0f5c8403a894d50c3cd767c198ade637574e"></a><!-- doxytag: member="F_CG_SGMT_CROSS" ref="gg68fdc38b4e168836ad1f9ddf32db0f5c8403a894d50c3cd767c198ade637574e" args="" -->F_CG_SGMT_CROSS</em>&nbsp;</td><td>
+内点同士で交わる </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg68fdc38b4e168836ad1f9ddf32db0f5cd3dda1580db74ab6c8444534a49001c2"></a><!-- doxytag: member="F_CG_SGMT_NOT_CROSS" ref="gg68fdc38b4e168836ad1f9ddf32db0f5cd3dda1580db74ab6c8444534a49001c2" args="" -->F_CG_SGMT_NOT_CROSS</em>&nbsp;</td><td>
+それ以外 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg68fdc38b4e168836ad1f9ddf32db0f5c8710acf78b2adee4d88a0af2e4d84583"></a><!-- doxytag: member="F_CG_SGMT_OVERLAP" ref="gg68fdc38b4e168836ad1f9ddf32db0f5c8710acf78b2adee4d88a0af2e4d84583" args="" -->F_CG_SGMT_OVERLAP</em>&nbsp;</td><td>
+２線分が部分的に重なる ただし、２線分は一致しない </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg68fdc38b4e168836ad1f9ddf32db0f5c75c3453b4f651472acf30c657d510763"></a><!-- doxytag: member="F_CG_SGMT_COINCIDE" ref="gg68fdc38b4e168836ad1f9ddf32db0f5c75c3453b4f651472acf30c657d510763" args="" -->F_CG_SGMT_COINCIDE</em>&nbsp;</td><td>
+２線分が完全に一致する </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg68fdc38b4e168836ad1f9ddf32db0f5cdcf71d0c69ee1f74dcd99c3c3200ad5b"></a><!-- doxytag: member="F_CG_SGMT_TOUCH" ref="gg68fdc38b4e168836ad1f9ddf32db0f5cdcf71d0c69ee1f74dcd99c3c3200ad5b" args="" -->F_CG_SGMT_TOUCH</em>&nbsp;</td><td>
+ある端点がもう一方の線分の内点に接触（閉線分のときのみ） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg68fdc38b4e168836ad1f9ddf32db0f5c21a69ae27e6b845aeb4258b8e5b57d62"></a><!-- doxytag: member="F_CG_SGMT_JOINT" ref="gg68fdc38b4e168836ad1f9ddf32db0f5c21a69ae27e6b845aeb4258b8e5b57d62" args="" -->F_CG_SGMT_JOINT</em>&nbsp;</td><td>
+端点で接続する </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g202f4526c8433a36fd4e548f438ae16a"></a><!-- doxytag: member="fie_cg.c::fnFIE_cg_2segments_cross_status" ref="g202f4526c8433a36fd4e548f438ae16a" args="(SGMT_T sgmt1, SGMT_T sgmt2, INT op_flag, enum f_cg_seg_status *seg_status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_2segments_cross_status           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSGMT__T.html">SGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>sgmt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSGMT__T.html">SGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>sgmt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>op_flag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">f_cg_seg_status</a> *&nbsp;</td>
+          <td class="paramname"> <em>seg_status</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２線分の交差状況(整数型) 
+<p>
+２線分の交差状況を判定します。 判定は、符号付三角形の符号を見ることにより線分に対して２点が反対側にあるかどうかという事実を用いています。<p>
+入力する線分は整数型となります。 入力する線分が浮動小数点型の場合は、 <a class="el" href="group__fie__cg__line.html#g6dff5b2ae3007d9da0618518ca517284" title="２線分の交差状況(浮動小数点型)">fnFIE_cg_2segments_cross_status_d()</a> を使用してください。<p>
+<div align="center">
+<img src="fie_cg_2segments_cross_status.png" alt="fie_cg_2segments_cross_status.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sgmt1</em>&nbsp;</td><td>線分１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sgmt2</em>&nbsp;</td><td>線分２ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>op_flag</em>&nbsp;</td><td>２線分の開・閉フラグ <ul>
+<li>0 ：２線分は開線分 </li>
+<li>1 ：２線分は閉線分 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>seg_status</em>&nbsp;</td><td>２線分の交差状況 <ul>
+<li>F_CG_SGMT_CROSS ：（内点同士で）交わる。 </li>
+<li>F_CG_SGMT_OVERLAP ：２線分が部分的に重なる。ただし、２線分は一致しない </li>
+<li>F_CG_SGMT_COINCIDE ：２線分が完全に一致する。 </li>
+<li>F_CG_SGMT_TOUCH ：(閉線分の場合のみ) 端点が他方の内点で接する。 </li>
+<li>F_CG_SGMT_JOINT ：(閉線分の場合のみ) 端点どうしで接する。ただし、２線分は一致しない。 </li>
+<li>F_CG_SGMT_NOT_CROSS ：それ以外（共通点はまったくない）</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__line.html#g6dff5b2ae3007d9da0618518ca517284" title="２線分の交差状況(浮動小数点型)">fnFIE_cg_2segments_cross_status_d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6dff5b2ae3007d9da0618518ca517284"></a><!-- doxytag: member="fie_cg.c::fnFIE_cg_2segments_cross_status_d" ref="g6dff5b2ae3007d9da0618518ca517284" args="(DSGMT_T sgmt1, DSGMT_T sgmt2, INT op_flag, enum f_cg_seg_status *seg_status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_2segments_cross_status_d           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>sgmt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>sgmt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>op_flag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__line.html#g68fdc38b4e168836ad1f9ddf32db0f5c">f_cg_seg_status</a> *&nbsp;</td>
+          <td class="paramname"> <em>seg_status</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２線分の交差状況(浮動小数点型) 
+<p>
+２線分の交差状況を判定します。 判定は、符号付三角形の符号を見ることにより線分に対して２点が反対側にあるかどうかという事実を用いています。 本関数では、符号付三角形の解は 5.0e-10 未満の場合、０に置き換えられます。 符号付三角形は、３点 <img class="formulaInl" alt="$ p_{1} \left( x_{1} , y_{1} \right) $" src="form_520.png"> 、 <img class="formulaInl" alt="$ p_{2} \left( x_{2} , y_{2} \right) $" src="form_521.png"> 、 <img class="formulaInl" alt="$ p_{3} \left( x_{3} , y_{3} \right) $" src="form_522.png"> が与えられた場合、以下のように求められます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ area = \frac{1}{2} * \left\{ \left( x_{1} - x_{2} \right) * \left( y_{3} - y_{2} \right) - \left( x_{3} - x_{2} \right) * \left( y_{1} - y_{2} \right) \right\} \]" src="form_523.png">
+<p>
+<p>
+入力する線分は浮動小数点型となります。 入力する線分が整数型の場合は、 <a class="el" href="group__fie__cg__line.html#g202f4526c8433a36fd4e548f438ae16a" title="２線分の交差状況(整数型)">fnFIE_cg_2segments_cross_status()</a> を使用してください。<p>
+<div align="center">
+<img src="fie_cg_2segments_cross_status.png" alt="fie_cg_2segments_cross_status.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sgmt1</em>&nbsp;</td><td>線分１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sgmt2</em>&nbsp;</td><td>線分２ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>op_flag</em>&nbsp;</td><td>２線分の開・閉フラグ <ul>
+<li>0 ：２線分は開線分 </li>
+<li>1 ：２線分は閉線分 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>seg_status</em>&nbsp;</td><td>２線分の交差状況 <ul>
+<li>F_CG_SGMT_CROSS ：（内点同士で）交わる。 </li>
+<li>F_CG_SGMT_OVERLAP ：２線分が部分的に重なる。ただし、２線分は一致しない </li>
+<li>F_CG_SGMT_COINCIDE ：２線分が完全に一致する。 </li>
+<li>F_CG_SGMT_TOUCH ：(閉線分の場合のみ) 端点が他方の内点で接する。 </li>
+<li>F_CG_SGMT_JOINT ：(閉線分の場合のみ) 端点どうしで接する。ただし、２線分は一致しない。 </li>
+<li>F_CG_SGMT_NOT_CROSS ：それ以外（共通点はまったくない）</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__line.html#g202f4526c8433a36fd4e548f438ae16a" title="２線分の交差状況(整数型)">fnFIE_cg_2segments_cross_status()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

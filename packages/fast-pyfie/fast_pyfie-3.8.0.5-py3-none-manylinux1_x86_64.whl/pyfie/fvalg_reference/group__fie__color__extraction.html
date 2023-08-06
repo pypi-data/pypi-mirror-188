@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 色抽出</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>色抽出<br>
+<small>
+[<a class="el" href="group__fie__color__inspection.html">色彩検査</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__extraction.html#g4a998dc4190f95795f5a510b29084e33">fnFIE_color_extraction</a> (const FHANDLE hsrc, FHANDLE hdst, const <a class="el" href="structF__COLOR__CHART.html">F_COLOR_CHART</a> *charts, INT num_chart, enum <a class="el" href="group__fie__color__inspection__doc.html#gd5a3cc17e83ecb6e72dd1bb70c67c371">f_colorcheck_norm_type</a> norm_type, const DOUBLE *weight, const DOUBLE *tolerance, INT back_clear)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">色抽出  <a href="#g4a998dc4190f95795f5a510b29084e33"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g4a998dc4190f95795f5a510b29084e33"></a><!-- doxytag: member="fie_color_extraction.c::fnFIE_color_extraction" ref="g4a998dc4190f95795f5a510b29084e33" args="(const FHANDLE hsrc, FHANDLE hdst, const F_COLOR_CHART *charts, INT num_chart, enum f_colorcheck_norm_type norm_type, const DOUBLE *weight, const DOUBLE *tolerance, INT back_clear)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_color_extraction           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__COLOR__CHART.html">F_COLOR_CHART</a> *&nbsp;</td>
+          <td class="paramname"> <em>charts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_chart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__color__inspection__doc.html#gd5a3cc17e83ecb6e72dd1bb70c67c371">f_colorcheck_norm_type</a>&nbsp;</td>
+          <td class="paramname"> <em>norm_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>tolerance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>back_clear</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色抽出 
+<p>
+指定した色票リスト（複数の色票）を基に、色抽出を実行します。 以下に、指定した１つの色票に対して色抽出結果を示します。 出力画像の上図は、出力画像の画素タイプが入力画像と同じ場合、下図は、出力画像が２値画像の場合の結果です。 なお色票リストを利用せずに、任意の閾値を指定して色抽出をしたい場合には、 <a class="el" href="group__fie__threshold.html#gccacc1973605b68ef276319a97528bae" title="２つの固定しきい値を用いたセグメンテーション処理">fnFIE_band_threshold_ch()</a> を使用してください。<p>
+<div align="center">
+<img src="color_extraction.png" alt="color_extraction.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>入力画像</b></dt><dd><ul>
+<li>入力画像は、画素タイプが F_IMG_UC8 / F_IMG_US16 / F_IMG_DOUBLE のいずれかでなければなりません。 </li>
+<li>チャネル数は、３でなければいけません。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>出力画像</b></dt><dd><ul>
+<li>画素タイプは、入力画像と画素タイプが同じか２値画像(F_IMG_BIN)でなければなりません。 </li>
+<li>チャネル数は、入力画像と同じ画素タイプでは３、２値画像では１でなければなりません。 </li>
+<li>サイズは、入力画像と同じでなければいけません。 </li>
+<li><em>back_clear</em> により、色抽出領域以外の画素の指定方法を決定します。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>ノルムタイプ</b></dt><dd>以下に、各ノルムタイプの特徴を挙げます。 <ul>
+<li>ユークリッドノルム、マンハッタンノルム、チェビシェフノルムの違いは <a class="el" href="group__fie__color__inspection__doc.html#fie_color_check_norm_space">距離空間</a> の項を参照してください。 </li>
+<li>同じ許容範囲を指定した場合には、マンハッタンノルム、ユークリッドノルム、チェビシェフノルムの順で、大抵の場合、抽出される領域が大きくなります。 </li>
+<li>許容範囲基準において、すべての許容範囲が同じ値の場合、同値の許容範囲を指定したチェビシェフノルムの結果と同じになります。 </li>
+<li>分散基準ではチャネル毎に、 <img class="formulaInl" alt="$\sigma\times tolerance[0 \sim 2]$" src="form_536.png"> の範囲で色抽出がなされます。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>重み付きユークリッドノルムの重み係数</b></dt><dd><em>weight</em> は、重み付きユークリッドノルムの計算に使用されます。 それ以外のノルムでは指定しても使用されません。 <em>norm_type</em> に F_CC_WEIGHTED_EUCLIDEAN 以外を指定する場合には使用されませんので <em>weight</em> にはNULL を指定してください。 ただし、NULL以外を指定してもエラーにはなりません。 また <em>weight</em> には、要素数３の配列でなければなりません。 要素数が３未満の場合の動作は保証されません。</dd></dl>
+<dl class="user" compact><dt><b>許容範囲</b></dt><dd><em>tolerance</em> により、色抽出の範囲が決定されます。 使用される <em>tolerance</em> のすべての要素は０以上の値でなければなりません。 また <em>tolerance</em> は要素数３の配列でなければなりません。 要素数が３未満の場合の動作は保証されません。 <em>tolerance</em> の意味は <em>norm_type</em> の指定により代わり、それぞれ次のようになります。 <ul>
+<li>F_CC_VARIANCE と F_CC_TOLERANCE 以外を指定した場合：<br>
+ <em>tolerance</em> 配列は <em>tolerance</em>[0] の値のみが使用されます。 </li>
+<li>F_CC_VARIANCE 又は F_CC_TOLERANCE を指定した場合：<br>
+ <em>tolerance</em>[0] ～ <em>tolerance</em>[2] を使用します。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,us16,double / ch:3） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像（type:uc8,us16,double / ch:3, type:bin / ch:1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>charts</em>&nbsp;</td><td>色票配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_chart</em>&nbsp;</td><td>色票数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>norm_type</em>&nbsp;</td><td>ノルムタイプ <ul>
+<li>F_CC_EUCLIDEAN（ユークリッドノルム） </li>
+<li>F_CC_WEIGHTED_EUCLIDEAN（重み付きユークリッドノルム） </li>
+<li>F_CC_MAHALANOBIS（マハラノビスノルム） </li>
+<li>F_CC_MANHATTAN（マンハッタンノルム） </li>
+<li>F_CC_CHEBYSHEV（チェビシェフノルム） </li>
+<li>F_CC_VARIANCE（分散基準） </li>
+<li>F_CC_TOLERANCE（許容範囲基準） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>weight</em>&nbsp;</td><td>重み付きユークリッドノルムの重み係数 <em>norm_type</em> に F_CC_WEIGHTED_EUCLIDEAN 以外を指定する場合は 本パラメータには NULL を指定してください。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>tolerance</em>&nbsp;</td><td>許容範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>back_clear</em>&nbsp;</td><td>背景処理法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#gccacc1973605b68ef276319a97528bae" title="２つの固定しきい値を用いたセグメンテーション処理">fnFIE_band_threshold_ch()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+VOID color_extraction_euclidean()
+{
+    <a class="code" href="structF__COLOR__CHART.html" title="色票構造体">F_COLOR_CHART</a> charts[2];
+    FHANDLE       hsrc = NULL;
+    FHANDLE       hdst = NULL;
+    FHANDLE       hchild = NULL;
+    INT           type, channel, width, height;
+    DOUBLE        tolerance;
+
+    <span class="comment">// 画像ファイルを読み込む</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"fie_colorcheck1.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;channel, &amp;type, NULL, &amp;width, &amp;height );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( type, channel, width, height );
+
+    <span class="comment">// 色票リストを作成する（色票の個数が２つ）</span>
+    hchild = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hsrc, 165, 350, 25, 25 );
+    <a class="code" href="group__fie__color__chart.html#g0ef2472d9f928879056ddfb4ac03dd3c" title="色票の計算（画像指定）">fnFIE_colorchart_calc_image</a>( hchild, NULL, &amp;(charts[0]) );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hchild );
+    hchild = NULL;
+
+    hchild = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hsrc, 320, 215, 25, 25 );
+    <a class="code" href="group__fie__color__chart.html#g0ef2472d9f928879056ddfb4ac03dd3c" title="色票の計算（画像指定）">fnFIE_colorchart_calc_image</a>( hchild, NULL, &amp;(charts[1]) );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hchild );
+    hchild = NULL;
+
+    tolerance = 10.0;
+
+    <span class="comment">// 色抽出（ユークリッドノルム基準）の実行する</span>
+    <span class="comment">// tolerance[0]のみ使用する</span>
+    <a class="code" href="group__fie__color__extraction.html#g4a998dc4190f95795f5a510b29084e33" title="色抽出">fnFIE_color_extraction</a>( hsrc, hdst, charts, 2, <a class="code" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c3718067bc76b3533d0c0dd202e97eeec5e6" title="ユークリッドノルム： ">F_CC_EUCLIDEAN</a>, NULL, &amp;tolerance, TRUE );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hchild );
+
+    <span class="keywordflow">return</span>;
+}
+
+VOID color_extraction_variance()
+{
+    <a class="code" href="structF__COLOR__CHART.html" title="色票構造体">F_COLOR_CHART</a> charts[2];
+    FHANDLE       hsrc = NULL;
+    FHANDLE       hdst = NULL;
+    FHANDLE       hchild = NULL;
+    INT           type, channel, width, height;
+    DOUBLE        tolerance[3];
+
+    <span class="comment">// 画像ファイルを読み込む</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"fie_colorcheck1.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;channel, &amp;type, NULL, &amp;width, &amp;height );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( type, channel, width, height );
+
+    <span class="comment">// 色票リストを作成する（色票の個数が２つ）</span>
+    hchild = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hsrc, 165, 350, 25, 25 );
+    <a class="code" href="group__fie__color__chart.html#g0ef2472d9f928879056ddfb4ac03dd3c" title="色票の計算（画像指定）">fnFIE_colorchart_calc_image</a>( hchild, NULL, &amp;(charts[0]) );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hchild );
+    hchild = NULL;
+
+    hchild = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hsrc, 320, 215, 25, 25 );
+    <a class="code" href="group__fie__color__chart.html#g0ef2472d9f928879056ddfb4ac03dd3c" title="色票の計算（画像指定）">fnFIE_colorchart_calc_image</a>( hchild, NULL, &amp;(charts[1]) );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hchild );
+    hchild = NULL;
+
+    tolerance[0] = 1.0;
+    tolerance[1] = 2.0;
+    tolerance[2] = 3.0;
+
+    <span class="comment">// 色抽出（分散基準）の実行する</span>
+    <span class="comment">// すべてのtoleranceの要素を使用する</span>
+    <a class="code" href="group__fie__color__extraction.html#g4a998dc4190f95795f5a510b29084e33" title="色抽出">fnFIE_color_extraction</a>( hsrc, hdst, charts, 2, <a class="code" href="group__fie__color__inspection__doc.html#ggd5a3cc17e83ecb6e72dd1bb70c67c3712f86ac102d11a49bb12b878cc7e48ad4" title="分散基準">F_CC_VARIANCE</a>, NULL, tolerance, TRUE );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hchild );
+
+    <span class="keywordflow">return</span>;
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    color_extraction_euclidean();
+    color_extraction_variance();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

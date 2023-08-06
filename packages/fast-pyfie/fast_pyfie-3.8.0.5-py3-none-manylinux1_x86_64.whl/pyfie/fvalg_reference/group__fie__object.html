@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: FIEオブジェクト</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>FIEオブジェクト<br>
+<small>
+[<a class="el" href="group__FIE.html">FIE module</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+FIEオブジェクトとは、画像、リージョン、StructureElement等のオブジェクト(データのまとまり) をＣ言語にて適切に扱えるよう設けられた、オブジェクトインスタンスハンドラです。 オブジェクトインスタンスをFHANDLE型にて扱うことによって、データのカプセル化・多様性を クラスの無いＣ言語で得ることができます。<p>
+オブジェクトの使用方法は、各オブジェクトの作成関数のリファレンスを参照して下さい。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a">f_objtag</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129af8467b4b7fcffda4f980d066fbdc56eb">F_OBJID_IMG_ROOT</a> =  1, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a37d65cd9ab1b9c73fb60b47f19379b78">F_OBJID_IMG_CHILD</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129ae8a043632e0d61670ccca168d2335397">F_OBJID_REGION</a> =  3, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129aafacfb9465910854c1f9acf6a7fb45bb">F_OBJID_MORPHOLOGY_SE</a> =  10, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a267e543554439c2feff185c766c0c5a0">F_OBJID_MEASURE_RESULT</a> =  11, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a440552e2221e2754a7c67d76ece59177">F_OBJID_FFTSPEC</a> =  20, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a36a67d1a50ea0d347da989de7489395d">F_OBJID_CS_TABLE</a> =  30, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a50c77a21e4254fea7b95359cd38957a9">F_OBJID_BARCODE1D</a> =  40, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a442d6b6c48a1c09bcba00c6579178bc9">F_OBJID_GS</a> =  50, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129acfd7c1808b8ccb132bb8530568d2de4c">F_OBJID_GS_PATTERN</a> =  51, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129ab03024c1d593160b7b26782493f7d9ef">F_OBJID_COLOR_CHECK</a> =  60, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a4c2807a306ef7bc902fd45dbbb33860e">F_OBJID_FPM</a> =  70, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a4e572d11ba9af4e5d35f9d54d9327569">F_OBJID_FPM_FEATURE</a> =  71, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a5478964da1f7fdb48b4fb1c42ab774f5">F_OBJID_GA_TABLE</a> =  80, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129aa4ed7fb00a119b99dab9daf4e90a4161">F_OBJID_NEURO</a> =  90, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a6dc5625675c242d439be64b45ed1ca26">F_OBJID_FUZZY</a> =  100, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129ab05d37d8a6b67f2ef90b90f1dd849069">F_OBJID_CALIB</a> =  110, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a79175aafd3d5c8869de8e5293cf16979">F_OBJID_LHOUGH</a> =  120, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a60d46bad745bcc1414ac0c37edc354c1">F_OBJID_CG_VORONOI</a> =  130, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129aa85b1764c277b5df875cc298305accc4">F_OBJID_CAMERA_CALIB_DATA</a> =  140, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a1134e81c21a5a79ddfa3044199628b8b">F_OBJID_QR2D</a> =  150, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a0d8161318e764b40fdcaba26322957d9">F_OBJID_DATAMATRIX</a> =  151, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129af1d3e6194786454804a7f00d1747d22a">F_OBJID_PRC_OBJECT</a> =  181, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a62b1c21116a54e3f350b95d754047aaa">F_OBJID_PRC_FONT_OBJECT</a> =  182, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129af572590fad850fff6acfe6d6085d4790">F_OBJID_PRC_LAYOUT_OBJECT</a> =  183, 
+<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a2d4992828a9970ee302a21bf05dfa41a">F_OBJID_ML</a> =  300, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__object.html#gg2316b584e020eeaca3a424d22e25129a27281838e01d2cb5e9812049ccf61b3d">F_OBJID_ML_SAMPLE</a> =  301
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FIEオブジェクト種別  <a href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__object.html#g6e3b3781ae08077f1b1e2d30881415c1">fnFIE_get_objtype</a> (FHANDLE h)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">オブジェクトタイプの取得  <a href="#g6e3b3781ae08077f1b1e2d30881415c1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c">fnFIE_free_object</a> (FHANDLE h)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">オブジェクトを解放  <a href="#g5255bfc98226503d087b8614fcbb240c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__object.html#g257c9e1516b24ef66ef86e084f6c19d7">fnFIE_copy_object</a> (FHANDLE hsrc)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">オブジェクトをコピー  <a href="#g257c9e1516b24ef66ef86e084f6c19d7"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g2316b584e020eeaca3a424d22e25129a"></a><!-- doxytag: member="fie.h::f_objtag" ref="g2316b584e020eeaca3a424d22e25129a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a">f_objtag</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FIEオブジェクト種別 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129af8467b4b7fcffda4f980d066fbdc56eb"></a><!-- doxytag: member="F_OBJID_IMG_ROOT" ref="gg2316b584e020eeaca3a424d22e25129af8467b4b7fcffda4f980d066fbdc56eb" args="" -->F_OBJID_IMG_ROOT</em>&nbsp;</td><td>
+ルート画像オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a37d65cd9ab1b9c73fb60b47f19379b78"></a><!-- doxytag: member="F_OBJID_IMG_CHILD" ref="gg2316b584e020eeaca3a424d22e25129a37d65cd9ab1b9c73fb60b47f19379b78" args="" -->F_OBJID_IMG_CHILD</em>&nbsp;</td><td>
+チャイルド画像オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129ae8a043632e0d61670ccca168d2335397"></a><!-- doxytag: member="F_OBJID_REGION" ref="gg2316b584e020eeaca3a424d22e25129ae8a043632e0d61670ccca168d2335397" args="" -->F_OBJID_REGION</em>&nbsp;</td><td>
+リージョンオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129aafacfb9465910854c1f9acf6a7fb45bb"></a><!-- doxytag: member="F_OBJID_MORPHOLOGY_SE" ref="gg2316b584e020eeaca3a424d22e25129aafacfb9465910854c1f9acf6a7fb45bb" args="" -->F_OBJID_MORPHOLOGY_SE</em>&nbsp;</td><td>
+Structure Element オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a267e543554439c2feff185c766c0c5a0"></a><!-- doxytag: member="F_OBJID_MEASURE_RESULT" ref="gg2316b584e020eeaca3a424d22e25129a267e543554439c2feff185c766c0c5a0" args="" -->F_OBJID_MEASURE_RESULT</em>&nbsp;</td><td>
+ブローブ解析結果オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a440552e2221e2754a7c67d76ece59177"></a><!-- doxytag: member="F_OBJID_FFTSPEC" ref="gg2316b584e020eeaca3a424d22e25129a440552e2221e2754a7c67d76ece59177" args="" -->F_OBJID_FFTSPEC</em>&nbsp;</td><td>
+FFT SPEC オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a36a67d1a50ea0d347da989de7489395d"></a><!-- doxytag: member="F_OBJID_CS_TABLE" ref="gg2316b584e020eeaca3a424d22e25129a36a67d1a50ea0d347da989de7489395d" args="" -->F_OBJID_CS_TABLE</em>&nbsp;</td><td>
+色空間変換テーブルオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a50c77a21e4254fea7b95359cd38957a9"></a><!-- doxytag: member="F_OBJID_BARCODE1D" ref="gg2316b584e020eeaca3a424d22e25129a50c77a21e4254fea7b95359cd38957a9" args="" -->F_OBJID_BARCODE1D</em>&nbsp;</td><td>
+Barcode 1D 認識オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a442d6b6c48a1c09bcba00c6579178bc9"></a><!-- doxytag: member="F_OBJID_GS" ref="gg2316b584e020eeaca3a424d22e25129a442d6b6c48a1c09bcba00c6579178bc9" args="" -->F_OBJID_GS</em>&nbsp;</td><td>
+グレイサーチオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129acfd7c1808b8ccb132bb8530568d2de4c"></a><!-- doxytag: member="F_OBJID_GS_PATTERN" ref="gg2316b584e020eeaca3a424d22e25129acfd7c1808b8ccb132bb8530568d2de4c" args="" -->F_OBJID_GS_PATTERN</em>&nbsp;</td><td>
+グレイサーチパタンオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129ab03024c1d593160b7b26782493f7d9ef"></a><!-- doxytag: member="F_OBJID_COLOR_CHECK" ref="gg2316b584e020eeaca3a424d22e25129ab03024c1d593160b7b26782493f7d9ef" args="" -->F_OBJID_COLOR_CHECK</em>&nbsp;</td><td>
+色判定用色票テーブルオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a4c2807a306ef7bc902fd45dbbb33860e"></a><!-- doxytag: member="F_OBJID_FPM" ref="gg2316b584e020eeaca3a424d22e25129a4c2807a306ef7bc902fd45dbbb33860e" args="" -->F_OBJID_FPM</em>&nbsp;</td><td>
+FPMオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a4e572d11ba9af4e5d35f9d54d9327569"></a><!-- doxytag: member="F_OBJID_FPM_FEATURE" ref="gg2316b584e020eeaca3a424d22e25129a4e572d11ba9af4e5d35f9d54d9327569" args="" -->F_OBJID_FPM_FEATURE</em>&nbsp;</td><td>
+FPM特徴量オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a5478964da1f7fdb48b4fb1c42ab774f5"></a><!-- doxytag: member="F_OBJID_GA_TABLE" ref="gg2316b584e020eeaca3a424d22e25129a5478964da1f7fdb48b4fb1c42ab774f5" args="" -->F_OBJID_GA_TABLE</em>&nbsp;</td><td>
+遺伝的アルゴリズムテーブルオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129aa4ed7fb00a119b99dab9daf4e90a4161"></a><!-- doxytag: member="F_OBJID_NEURO" ref="gg2316b584e020eeaca3a424d22e25129aa4ed7fb00a119b99dab9daf4e90a4161" args="" -->F_OBJID_NEURO</em>&nbsp;</td><td>
+ニューラルネットワークオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a6dc5625675c242d439be64b45ed1ca26"></a><!-- doxytag: member="F_OBJID_FUZZY" ref="gg2316b584e020eeaca3a424d22e25129a6dc5625675c242d439be64b45ed1ca26" args="" -->F_OBJID_FUZZY</em>&nbsp;</td><td>
+ファジィ推論テーブルのオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129ab05d37d8a6b67f2ef90b90f1dd849069"></a><!-- doxytag: member="F_OBJID_CALIB" ref="gg2316b584e020eeaca3a424d22e25129ab05d37d8a6b67f2ef90b90f1dd849069" args="" -->F_OBJID_CALIB</em>&nbsp;</td><td>
+キャリブレーションシステムオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a79175aafd3d5c8869de8e5293cf16979"></a><!-- doxytag: member="F_OBJID_LHOUGH" ref="gg2316b584e020eeaca3a424d22e25129a79175aafd3d5c8869de8e5293cf16979" args="" -->F_OBJID_LHOUGH</em>&nbsp;</td><td>
+新直線ハフ変換オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a60d46bad745bcc1414ac0c37edc354c1"></a><!-- doxytag: member="F_OBJID_CG_VORONOI" ref="gg2316b584e020eeaca3a424d22e25129a60d46bad745bcc1414ac0c37edc354c1" args="" -->F_OBJID_CG_VORONOI</em>&nbsp;</td><td>
+ボロノイ図オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129aa85b1764c277b5df875cc298305accc4"></a><!-- doxytag: member="F_OBJID_CAMERA_CALIB_DATA" ref="gg2316b584e020eeaca3a424d22e25129aa85b1764c277b5df875cc298305accc4" args="" -->F_OBJID_CAMERA_CALIB_DATA</em>&nbsp;</td><td>
+カメラキャリブレーションデータオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a1134e81c21a5a79ddfa3044199628b8b"></a><!-- doxytag: member="F_OBJID_QR2D" ref="gg2316b584e020eeaca3a424d22e25129a1134e81c21a5a79ddfa3044199628b8b" args="" -->F_OBJID_QR2D</em>&nbsp;</td><td>
+QR code 2D 認識オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a0d8161318e764b40fdcaba26322957d9"></a><!-- doxytag: member="F_OBJID_DATAMATRIX" ref="gg2316b584e020eeaca3a424d22e25129a0d8161318e764b40fdcaba26322957d9" args="" -->F_OBJID_DATAMATRIX</em>&nbsp;</td><td>
+DataMatrix 認識オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129af1d3e6194786454804a7f00d1747d22a"></a><!-- doxytag: member="F_OBJID_PRC_OBJECT" ref="gg2316b584e020eeaca3a424d22e25129af1d3e6194786454804a7f00d1747d22a" args="" -->F_OBJID_PRC_OBJECT</em>&nbsp;</td><td>
+PRC オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a62b1c21116a54e3f350b95d754047aaa"></a><!-- doxytag: member="F_OBJID_PRC_FONT_OBJECT" ref="gg2316b584e020eeaca3a424d22e25129a62b1c21116a54e3f350b95d754047aaa" args="" -->F_OBJID_PRC_FONT_OBJECT</em>&nbsp;</td><td>
+PRC フォントオブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129af572590fad850fff6acfe6d6085d4790"></a><!-- doxytag: member="F_OBJID_PRC_LAYOUT_OBJECT" ref="gg2316b584e020eeaca3a424d22e25129af572590fad850fff6acfe6d6085d4790" args="" -->F_OBJID_PRC_LAYOUT_OBJECT</em>&nbsp;</td><td>
+PRC レイアウト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a2d4992828a9970ee302a21bf05dfa41a"></a><!-- doxytag: member="F_OBJID_ML" ref="gg2316b584e020eeaca3a424d22e25129a2d4992828a9970ee302a21bf05dfa41a" args="" -->F_OBJID_ML</em>&nbsp;</td><td>
+機械学習オブジェクト </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg2316b584e020eeaca3a424d22e25129a27281838e01d2cb5e9812049ccf61b3d"></a><!-- doxytag: member="F_OBJID_ML_SAMPLE" ref="gg2316b584e020eeaca3a424d22e25129a27281838e01d2cb5e9812049ccf61b3d" args="" -->F_OBJID_ML_SAMPLE</em>&nbsp;</td><td>
+教師データオブジェクト </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g6e3b3781ae08077f1b1e2d30881415c1"></a><!-- doxytag: member="fie_object.c::fnFIE_get_objtype" ref="g6e3b3781ae08077f1b1e2d30881415c1" args="(FHANDLE h)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_get_objtype           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>h</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+オブジェクトタイプの取得 
+<p>
+指定されたハンドルのオブジェクトのタイプを返します。 オブジェクトハンドルにNULLが渡された場合は、0を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>h</em>&nbsp;</td><td>オブジェクトハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>オブジェクトタイプ </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5255bfc98226503d087b8614fcbb240c"></a><!-- doxytag: member="fie_object.c::fnFIE_free_object" ref="g5255bfc98226503d087b8614fcbb240c" args="(FHANDLE h)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_free_object           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>h</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+オブジェクトを解放 
+<p>
+指定されたハンドルオブジェクトを解放します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>h</em>&nbsp;</td><td>解放するオブジェクトのハンドル </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g257c9e1516b24ef66ef86e084f6c19d7"></a><!-- doxytag: member="fie_object.c::fnFIE_copy_object" ref="g257c9e1516b24ef66ef86e084f6c19d7" args="(FHANDLE hsrc)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_copy_object           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+オブジェクトをコピー 
+<p>
+指定されたハンドルオブジェクトをコピーします。 ただし、本関数では画像オブジェクトは （ルート画像とチャイルド画像共に）コピーすることが出来ません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>コピー元のオブジェクトのハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了にはコピーされたハンドルが返ります。 異常終了時には NULL を返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

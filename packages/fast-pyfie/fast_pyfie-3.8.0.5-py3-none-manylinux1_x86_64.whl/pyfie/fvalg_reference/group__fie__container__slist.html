@@ -1,0 +1,472 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 単方向リスト</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>単方向リスト<br>
+<small>
+[<a class="el" href="group__fie__low__level__func.html">低レベル処理関数</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+fnFIE_slist_* 関数群は、単方向リストを扱うための関数群です。 リストはF_SLIST_ELEM構造体のみによって構成され、下図のようになります。<p>
+<div align="center">
+<img src="slist.png" alt="slist.png">
+</div>
+<p>
+本リファレンスでは、図中黄色のF_SLIST_ELEM構造体のインスタンスを「要素」、 図中緑色の各要素が持つデータを「データ」と表現します。 本関数群でメモリ操作されるのは、要素のみであり、それぞれが持つデータに関しては 操作されません。従って、リストに要素を追加したり、削除したりする場合は、 それがもつデータをユーザー側が管理をしなければいけません。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">単方向リスト要素  <a href="structF__SLIST__ELEM.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#g8057594bddf8670ab772daa32b772570">fnFIE_slist_push_back</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">末尾に追加  <a href="#g8057594bddf8670ab772daa32b772570"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#g3ef83905f73981c68429dab12f20ba9e">fnFIE_slist_pop_back</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">末尾の要素を取り出して削除  <a href="#g3ef83905f73981c68429dab12f20ba9e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#g772901a95dc4fd8c02b15519fa4e905b">fnFIE_slist_push_front</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">先頭に追加  <a href="#g772901a95dc4fd8c02b15519fa4e905b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#gd24bb0e6e50bffc8ced3f9483a4eae0a">fnFIE_slist_pop_front</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">先頭から要素を取り出して削除  <a href="#gd24bb0e6e50bffc8ced3f9483a4eae0a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#g6975747d1dc3f6277ca1e527aa243eb3">fnFIE_slist_findit</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop, const VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">*pを持つ要素の番号を取得  <a href="#g6975747d1dc3f6277ca1e527aa243eb3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#g890080ffecec64bf926d52f92be5fc54">fnFIE_slist_erase</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop, INT idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">idx番目の要素を削除  <a href="#g890080ffecec64bf926d52f92be5fc54"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#gde6dc6e70fa1278a51a36878c1c13e8e">fnFIE_slist_clear</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素を全部削除  <a href="#gde6dc6e70fa1278a51a36878c1c13e8e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#gddded62b3bfe16616c561cc0e17b585b">fnFIE_slist_insert</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> *left, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素を挿入  <a href="#gddded62b3bfe16616c561cc0e17b585b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#gbe383cf2313d018574e3b09aea19771c">fnFIE_slist_get_sz</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リストのサイズを取得  <a href="#gbe383cf2313d018574e3b09aea19771c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__slist.html#g112945c024e853ac8e87d23dc481f936">fnFIE_slist_getat</a> (<a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **listtop, INT idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">idx番目のデータを取得  <a href="#g112945c024e853ac8e87d23dc481f936"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g8057594bddf8670ab772daa32b772570"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_push_back" ref="g8057594bddf8670ab772daa32b772570" args="(F_SLIST_ELEM **listtop, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_slist_push_back           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+末尾に追加 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>追加するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3ef83905f73981c68429dab12f20ba9e"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_pop_back" ref="g3ef83905f73981c68429dab12f20ba9e" args="(F_SLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_slist_pop_back           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+末尾の要素を取り出して削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了時は取り出した要素が持つデータのポインタを返します。 異常終了した場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g772901a95dc4fd8c02b15519fa4e905b"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_push_front" ref="g772901a95dc4fd8c02b15519fa4e905b" args="(F_SLIST_ELEM **listtop, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_slist_push_front           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+先頭に追加 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>追加するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd24bb0e6e50bffc8ced3f9483a4eae0a"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_pop_front" ref="gd24bb0e6e50bffc8ced3f9483a4eae0a" args="(F_SLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_slist_pop_front           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+先頭から要素を取り出して削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了時は取り出した要素が持つデータのポインタを返します。 異常終了した場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6975747d1dc3f6277ca1e527aa243eb3"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_findit" ref="g6975747d1dc3f6277ca1e527aa243eb3" args="(F_SLIST_ELEM **listtop, const VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_slist_findit           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+*pを持つ要素の番号を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>探し出すデータのアドレス</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>データが見つかった場合は、その要素番号を返します。 見つからなかった場合もしくは、入力が不正だった場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g890080ffecec64bf926d52f92be5fc54"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_erase" ref="g890080ffecec64bf926d52f92be5fc54" args="(F_SLIST_ELEM **listtop, INT idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_slist_erase           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+idx番目の要素を削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>削除する要素番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gde6dc6e70fa1278a51a36878c1c13e8e"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_clear" ref="gde6dc6e70fa1278a51a36878c1c13e8e" args="(F_SLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_slist_clear           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素を全部削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gddded62b3bfe16616c561cc0e17b585b"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_insert" ref="gddded62b3bfe16616c561cc0e17b585b" args="(F_SLIST_ELEM *left, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_slist_insert           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素を挿入 
+<p>
+<em>left</em> に指定された要素の後ろに新たな要素を追加します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>left</em>&nbsp;</td><td>挿入箇所の一つ手前の要素 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>挿入するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbe383cf2313d018574e3b09aea19771c"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_get_sz" ref="gbe383cf2313d018574e3b09aea19771c" args="(F_SLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_slist_get_sz           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リストのサイズを取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>リストの要素数を返します。入力が不正だった場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g112945c024e853ac8e87d23dc481f936"></a><!-- doxytag: member="fie_slist.c::fnFIE_slist_getat" ref="g112945c024e853ac8e87d23dc481f936" args="(F_SLIST_ELEM **listtop, INT idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_slist_getat           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__SLIST__ELEM.html">F_SLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+idx番目のデータを取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>取得する要素の番号</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は指定番号の要素が持つデータのポインタを返します。 入力が不正だった場合（<em>idx</em> が範囲外、<em>listtop</em> がNULL）は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

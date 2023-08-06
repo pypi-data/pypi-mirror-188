@@ -1,0 +1,494 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: テクスチャ解析</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>テクスチャ解析<br>
+<small>
+[<a class="el" href="group__fie__img__statistics.html">画像統計量</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__texture__analysis.html#g9599510efab77de27a7831d55d1aa9f8">fnFIE_texture_first_order_statistics</a> (FHANDLE hsrc, DOUBLE *ave, DOUBLE *sgm2, DOUBLE *skewness, DOUBLE *kurtosis)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">濃淡ヒストグラムの算出  <a href="#g9599510efab77de27a7831d55d1aa9f8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__texture__analysis.html#g97e0907b4ed11c8402c1449e6b8490e1">fnFIE_texture_coocurrence_matrix</a> (FHANDLE hsrc, INT dx, INT dy, INT gray_level, <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">同時生起行列の算出  <a href="#g97e0907b4ed11c8402c1449e6b8490e1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__texture__analysis.html#g46354e679dd1d49131a229c68c441c68">fnFIE_texture_calc_gcm_entropy</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE *entropy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">同時生起行列を用いたエントロピーの算出  <a href="#g46354e679dd1d49131a229c68c441c68"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__texture__analysis.html#g662149b436df4c795107744edb9b3012">fnFIE_texture_calc_gcm_energy</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE *energy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">同時生起行列を用いたエネルギーの算出  <a href="#g662149b436df4c795107744edb9b3012"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__texture__analysis.html#g67371fa646510e4f33f1e25ad7173317">fnFIE_texture_calc_gcm_inertia</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE *inertia)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">同時生起行列を用いた慣性の算出  <a href="#g67371fa646510e4f33f1e25ad7173317"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__texture__analysis.html#g2fa92f6cc5502b544c248c009d0a63ba">fnFIE_texture_calc_gcm_local_homogeneity</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, DOUBLE *lh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">同時生起行列を用いた局所一様性の算出  <a href="#g2fa92f6cc5502b544c248c009d0a63ba"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g9599510efab77de27a7831d55d1aa9f8"></a><!-- doxytag: member="fie_texture.c::fnFIE_texture_first_order_statistics" ref="g9599510efab77de27a7831d55d1aa9f8" args="(FHANDLE hsrc, DOUBLE *ave, DOUBLE *sgm2, DOUBLE *skewness, DOUBLE *kurtosis)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_texture_first_order_statistics           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>ave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>sgm2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>skewness</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>kurtosis</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+濃淡ヒストグラムの算出 
+<p>
+１次統計量である平均値（μ）、分散（<img class="formulaInl" alt="$\sigma^{2}$" src="form_896.png">）、そして特徴量の歪度(Skewness)、尖度(Kurtosis) を全体が１となるように正規化されたヒストグラムから算出します。 テクスチャ解析では濃淡ヒストグラムと呼ばれる手法です。 関数内部でのヒストグラムの作成には <a class="el" href="group__fie__histogram.html#g29e38794ce3eb94c4616092a035cddf0" title="画像ヒストグラム作成">fnFIE_make_histogram()</a> が利用されています。<p>
+歪度、尖度を求める式はそれぞれ <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Skewness = \left(\sum \left( i - \mu \right)^{3}H\left( i \right)\right) / \sigma^{3} \]" src="form_897.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ Kurtosis = \left(\sum \left( i - \mu \right)^{4}H\left( i \right)\right) / \sigma^{4} \]" src="form_898.png">
+<p>
+ となります。 ここで、歪度は、尖度は、それぞれ重心まわりの３次および４次モーメントとなります。 なお、歪度、尖度の計算にはσによる除算が必要ですが、σが０の場合は、<em>skewness</em> と <em>kurtosis</em> には０が代入されます。<p>
+なお <em>ave</em>, <em>sgm2</em>, <em>skewness</em>, <em>kurtosis</em> のうち、 取得する必要のない統計量がある場合は、そのパラメータに NULL を指定してください。 ただし、これら４つのすべてに NULL が指定された場合は F_ERR_INVALID_PARAM エラーとなります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type: uc8, us16 / ch : 1 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ave</em>&nbsp;</td><td>平均値(μ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sgm2</em>&nbsp;</td><td>分散(<img class="formulaInl" alt="$\sigma^{2}$" src="form_896.png">) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>skewness</em>&nbsp;</td><td>歪度(Skewness) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>kurtosis</em>&nbsp;</td><td>尖度(Kurtosis)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>ave</em>, <em>sgm2</em>, <em>skewness</em>, <em>kurtosis</em>, すべてがNULL </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g97e0907b4ed11c8402c1449e6b8490e1"></a><!-- doxytag: member="fie_texture.c::fnFIE_texture_coocurrence_matrix" ref="g97e0907b4ed11c8402c1449e6b8490e1" args="(FHANDLE hsrc, INT dx, INT dy, INT gray_level, FMATRIX *mat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_texture_coocurrence_matrix           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>gray_level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+同時生起行列の算出 
+<p>
+指定した領域の同時生起行列 <img class="formulaInl" alt="$ P_{\delta }\left(i,j\right) $" src="form_899.png"> を求めます。 同時生起行列とは、画像（領域）内の濃淡ｉのある基準点から ( <em>dx</em> , <em>dy</em> ) だけ 離れた点の濃淡がｊである確率をｉｊ成分とする行列のことです。 本関数では、上記確率に濃淡ｉの点から( <em>-dx</em> , <em>-dy</em> )だけ離れた点の濃淡が ｊである確率を加えており、求められる行列は対称行列となります。 なお、 | <em>dx</em> | と | <em>dy</em> | は、画像の幅と高さを <em>width</em> 、 <em>height</em> とした場合、 以下の条件を満たしている必要があります。 つまり、 ( <em>dx</em> , <em>dy</em> ) だけ離れた点が、画像内のどのような基準点にも存在しない場合は、 エラーとなります。<p>
+<ul>
+<li>| <em>dx</em> | &lt; width </li>
+<li>| <em>dy</em> | &lt; height</li>
+</ul>
+画像の階調数をＮとすると同時生起行列はＮ×Ｎの正方行列となります（値は 0～N-1）。 本関数では濃度階調数を <em>gray_level</em> によって自由に設定できますが、 入力画像の各画素の濃度値は 0 ～ <em>gray_level</em> の範囲に収まっていなければいけません。 さもなければ内部でメモリアクセス違反が発生します。 ただし、指定する階調数と同時生起行列（ <em>mat</em> ）の <em>mat-&gt;row</em> および、 <em>mat-&gt;col</em> は 同じ値である必要があり、FMATRIX が確保できるサイズに制限があるため、 <em>gray_level</em> には 16384 未満の値を指定しなければなりません。 また、出力の <em>mat</em> は、あらかじめ呼び出し側で必要なサイズを確保しておいてください。<p>
+同時生起行列を求めるための、簡単な例を示します。 画像が以下のように与えられたものとします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left| \begin{array}{c|c|c|c} \hline 0 &amp; 0 &amp; 1 &amp; 1 \\ \hline 0 &amp; 0 &amp; 1 &amp; 1 \\ \hline 0 &amp; 2 &amp; 2 &amp; 2 \\ \hline 2 &amp; 2 &amp; 3 &amp; 3 \\ \hline \end{array} \right| \]" src="form_900.png">
+<p>
+<p>
+この場合、階調数は４となり、同時生起行列は４×４となります。 ここで、 <em>dx=1</em> , <em>dy=0</em> を考えます。 注目画素が <img class="formulaInl" alt="$(x,y)=(1,0)$" src="form_901.png"> では濃度値が０、 <img class="formulaInl" alt="$(x+dx,y +dy)=(2,0)$" src="form_902.png"> の濃度値は１であるため、 同時生起行列を <img class="formulaInl" alt="$ P_{\delta} $" src="form_903.png"> とすると、 <img class="formulaInl" alt="$ P_{\delta}[0][1] $" src="form_904.png"> と <img class="formulaInl" alt="$ P_{\delta}[1][0] $" src="form_905.png"> に それぞれ１を加えます。 この処理を有効な画素に対して繰り返します。<br>
+<p>
+参考のために、 上記画像データに対して、 <em>dx</em> と <em>dy</em> を変化されたいくつかの同時生起行列を示します。 なお、下記の例では各要素の値をわかり易くするために整数値で表していますが、本関数で取得される実際の行列の 要素はすべて確率となっています。つまり、下記の例で示した行列の各値を要素の総数で割った値が実際の要素の値になります。<p>
+<em>dx=1</em> , <em>dy=0</em> <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ P1_{\delta } = \left[ \begin{array}{cccc} 4 &amp; 2 &amp; 1 &amp; 0 \\ 2 &amp; 4 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 6 &amp; 1 \\ 0 &amp; 0 &amp; 1 &amp; 2 \\ \end{array} \right] \]" src="form_906.png">
+<p>
+<p>
+<em>dx=0</em> , <em>dy=1</em> <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ P2_{\delta } = \left[ \begin{array}{cccc} 6 &amp; 0 &amp; 2 &amp; 0 \\ 0 &amp; 4 &amp; 2 &amp; 0 \\ 2 &amp; 2 &amp; 2 &amp; 2 \\ 0 &amp; 0 &amp; 2 &amp; 0 \\ \end{array} \right] \]" src="form_907.png">
+<p>
+<p>
+<em>dx=1</em> , <em>dy=1</em> <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ P3_{\delta } = \left[ \begin{array}{cccc} 2 &amp; 1 &amp; 3 &amp; 0 \\ 1 &amp; 2 &amp; 1 &amp; 0 \\ 3 &amp; 1 &amp; 0 &amp; 2 \\ 0 &amp; 0 &amp; 2 &amp; 0 \\ \end{array} \right] \]" src="form_908.png">
+<p>
+<p>
+<em>dx=-1</em> , <em>dy=1</em> <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ P4_{\delta } = \left[ \begin{array}{cccc} 4 &amp; 1 &amp; 0 &amp; 0 \\ 1 &amp; 2 &amp; 2 &amp; 0 \\ 0 &amp; 2 &amp; 4 &amp; 1 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ \end{array} \right] \]" src="form_909.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type : uc8, us16 / ch : 1 ) <ul>
+<li>幅、および高さは２以上 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dx</em>&nbsp;</td><td>水平方向パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dy</em>&nbsp;</td><td>垂直方向パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gray_level</em>&nbsp;</td><td>入力画像の階調数（１以上） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同時生起行列 <ul>
+<li><em>mat-&gt;row</em> == <em>mat-&gt;col</em> == <em>gray_level</em> </li>
+<li>1 &lt; <em>mat-&gt;row</em> &lt; 16384 かつ 1 &lt; <em>mat-&gt;col</em> &lt; 16384</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>| <em>dx</em> | &gt;= width または、 | <em>dy</em> | &gt;= height </li>
+<li><em>gray_level</em> が１未満 </li>
+<li>不正な <em>mat</em> </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>新編 画像解析ハンドブック, 高木幹雄 下田陽久, 東京大学出版会 ISBN 4-13-061119-4, 5.4.1.2 (pp.1262) </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="g46354e679dd1d49131a229c68c441c68"></a><!-- doxytag: member="fie_texture.c::fnFIE_texture_calc_gcm_entropy" ref="g46354e679dd1d49131a229c68c441c68" args="(const FMATRIX *mat, DOUBLE *entropy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_texture_calc_gcm_entropy           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>entropy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+同時生起行列を用いたエントロピーの算出 
+<p>
+<a class="el" href="group__fie__texture__analysis.html#g97e0907b4ed11c8402c1449e6b8490e1" title="同時生起行列の算出">fnFIE_texture_coocurrence_matrix()</a> にて求めた 同時生起行列 <img class="formulaInl" alt="$ P_{\delta }\left(i,j\right) $" src="form_899.png"> を用いて エントロピー( <em>entropy</em> )を計算します。 <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ entropy = - \sum_{i} \sum_{j} P_{\delta }\left(i,j\right)\log P_{\delta }\left(i,j\right) \]" src="form_910.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同時生起行列 <ul>
+<li><em>mat-&gt;row</em> == <em>mat-&gt;col</em> </li>
+<li>0 &lt; <em>mat-&gt;row</em> &lt; 16384 かつ 0 &lt; <em>mat-&gt;col</em> &lt; 16384 </li>
+<li><em>mat-&gt;row</em> を入力画像の階調数とする </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>entropy</em>&nbsp;</td><td>エントロピー</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g662149b436df4c795107744edb9b3012"></a><!-- doxytag: member="fie_texture.c::fnFIE_texture_calc_gcm_energy" ref="g662149b436df4c795107744edb9b3012" args="(const FMATRIX *mat, DOUBLE *energy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_texture_calc_gcm_energy           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>energy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+同時生起行列を用いたエネルギーの算出 
+<p>
+<a class="el" href="group__fie__texture__analysis.html#g97e0907b4ed11c8402c1449e6b8490e1" title="同時生起行列の算出">fnFIE_texture_coocurrence_matrix()</a> にて求めた 同時生起行列 <img class="formulaInl" alt="$ P_{\delta }\left(i,j\right) $" src="form_899.png"> を用いて エネルギー( <em>energy</em> )を計算します。 <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ energy = \sum_{i} \sum_{j} \left\{P_{\delta }\left(i,j\right) \right\}^{2} \]" src="form_911.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同時生起行列 <ul>
+<li><em>mat-&gt;row</em> == <em>mat-&gt;col</em> </li>
+<li>0 &lt; <em>mat-&gt;row</em> &lt; 16384 かつ 0 &lt; <em>mat-&gt;col</em> &lt; 16384 </li>
+<li><em>mat-&gt;row</em> を入力画像の階調数とする </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>energy</em>&nbsp;</td><td>エネルギー</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g67371fa646510e4f33f1e25ad7173317"></a><!-- doxytag: member="fie_texture.c::fnFIE_texture_calc_gcm_inertia" ref="g67371fa646510e4f33f1e25ad7173317" args="(const FMATRIX *mat, DOUBLE *inertia)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_texture_calc_gcm_inertia           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>inertia</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+同時生起行列を用いた慣性の算出 
+<p>
+<a class="el" href="group__fie__texture__analysis.html#g97e0907b4ed11c8402c1449e6b8490e1" title="同時生起行列の算出">fnFIE_texture_coocurrence_matrix()</a> にて求めた 同時生起行列 <img class="formulaInl" alt="$ P_{\delta }\left(i,j\right) $" src="form_899.png"> を用いて 慣性( <em>inertia</em> )を計算します。 <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ inertia = \sum_{i} \sum_{j}\left(i-j\right)^{2}P_{\delta }\left(i,j\right) \]" src="form_912.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同時生起行列 <ul>
+<li><em>mat-&gt;row</em> == <em>mat-&gt;col</em> </li>
+<li>0 &lt; <em>mat-&gt;row</em> &lt; 16384 かつ 0 &lt; <em>mat-&gt;col</em> &lt; 16384 </li>
+<li><em>mat-&gt;row</em> を入力画像の階調数とする </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>inertia</em>&nbsp;</td><td>慣性</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2fa92f6cc5502b544c248c009d0a63ba"></a><!-- doxytag: member="fie_texture.c::fnFIE_texture_calc_gcm_local_homogeneity" ref="g2fa92f6cc5502b544c248c009d0a63ba" args="(const FMATRIX *mat, DOUBLE *lh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_texture_calc_gcm_local_homogeneity           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>lh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+同時生起行列を用いた局所一様性の算出 
+<p>
+<a class="el" href="group__fie__texture__analysis.html#g97e0907b4ed11c8402c1449e6b8490e1" title="同時生起行列の算出">fnFIE_texture_coocurrence_matrix()</a> にて求めた 同時生起行列 <img class="formulaInl" alt="$ P_{\delta }\left(i,j\right) $" src="form_899.png"> を用いて 局所一様性( LH )を計算します。 <br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ LH = \sum_{i} \sum_{j} \frac{P_{\delta }\left(i,j\right)}{1+\left(i-j\right)^{2}} \]" src="form_913.png">
+<p>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>同時生起行列 <ul>
+<li><em>mat-&gt;row</em> == <em>mat-&gt;col</em> </li>
+<li>0 &lt; <em>mat-&gt;row</em> &lt; 16384 かつ 0 &lt; <em>mat-&gt;col</em> &lt; 16384 </li>
+<li><em>mat-&gt;row</em> を入力画像の階調数とする </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>lh</em>&nbsp;</td><td>局所一様性</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

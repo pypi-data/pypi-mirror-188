@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 構造体 F_FILTER_KERNEL_T</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>構造体 F_FILTER_KERNEL_T<br>
+<small>
+[<a class="el" href="group__fie__filter.html">フィルタ全般</a>]</small>
+</h1><!-- doxytag: class="F_FILTER_KERNEL_T" --><hr><a name="_details"></a><h2>説明</h2>
+フィルタカーネル構造体 
+<p>
+<a class="el" href="group__fie__filter.html#g920840acddd6cbe8a24a9a2b7a69eb89" title="任意カーネルフィルタ">fnFIE_kernel_filter()</a> 等で使用されるフィルタカーネル指定用構造体です。 カーネルの値は、可変長１次元配列 p により定義します。 p には、size_x * size_y * sizeof(DOUBLE) の領域が必要です。 カーネルの各値は、カーネルの値を K(x,y) と表記すれば、<p>
+K(x,y) = p[ (y+anchor_y) * size_x + (y+anchor_x) ] <br>
+ 但し <br>
+ -anchor_x ≦ x ≦ size_x-anchor_x-1 <br>
+ -anchor_y ≦ y ≦ size_y-anchor_y-1<p>
+と定義されます。 <table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>変数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FILTER__KERNEL__T.html#92af0bcefe88f10191da78b42b053756">p</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FILTER__KERNEL__T.html#1dc43fedf1e3efa8944ed7c8c907f6c9">denom</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FILTER__KERNEL__T.html#bc2418ea9f9118cc5f650dd3863ab715">size_x</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FILTER__KERNEL__T.html#61ffd1d741b0fff015e3e89ef6484e35">size_y</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FILTER__KERNEL__T.html#d2e9a035fe0709584832933e2e52fb95">anchor_x</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__FILTER__KERNEL__T.html#9c9367b4ba17568ff13181b6cd0b4251">anchor_y</a></td></tr>
+
+</table>
+<hr><h2>構造体</h2>
+<a class="anchor" name="92af0bcefe88f10191da78b42b053756"></a><!-- doxytag: member="F_FILTER_KERNEL_T::p" ref="92af0bcefe88f10191da78b42b053756" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE* <a class="el" href="structF__FILTER__KERNEL__T.html#92af0bcefe88f10191da78b42b053756">F_FILTER_KERNEL_T::p</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カーネルを表す１次元配列の先頭ポインタ 
+</div>
+</div><p>
+<a class="anchor" name="1dc43fedf1e3efa8944ed7c8c907f6c9"></a><!-- doxytag: member="F_FILTER_KERNEL_T::denom" ref="1dc43fedf1e3efa8944ed7c8c907f6c9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE <a class="el" href="structF__FILTER__KERNEL__T.html#1dc43fedf1e3efa8944ed7c8c907f6c9">F_FILTER_KERNEL_T::denom</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+フィルタコンボリューション時の除算値( != 0.0 ) 
+</div>
+</div><p>
+<a class="anchor" name="bc2418ea9f9118cc5f650dd3863ab715"></a><!-- doxytag: member="F_FILTER_KERNEL_T::size_x" ref="bc2418ea9f9118cc5f650dd3863ab715" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__FILTER__KERNEL__T.html#bc2418ea9f9118cc5f650dd3863ab715">F_FILTER_KERNEL_T::size_x</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カーネルのＸ方向サイズ( 1以上 ) 
+</div>
+</div><p>
+<a class="anchor" name="61ffd1d741b0fff015e3e89ef6484e35"></a><!-- doxytag: member="F_FILTER_KERNEL_T::size_y" ref="61ffd1d741b0fff015e3e89ef6484e35" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__FILTER__KERNEL__T.html#61ffd1d741b0fff015e3e89ef6484e35">F_FILTER_KERNEL_T::size_y</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カーネルのＹ方向サイズ( 1以上 ) 
+</div>
+</div><p>
+<a class="anchor" name="d2e9a035fe0709584832933e2e52fb95"></a><!-- doxytag: member="F_FILTER_KERNEL_T::anchor_x" ref="d2e9a035fe0709584832933e2e52fb95" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__FILTER__KERNEL__T.html#d2e9a035fe0709584832933e2e52fb95">F_FILTER_KERNEL_T::anchor_x</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カーネルのＸ方向アンカー位置( 0～(size_x-1) ) 
+</div>
+</div><p>
+<a class="anchor" name="9c9367b4ba17568ff13181b6cd0b4251"></a><!-- doxytag: member="F_FILTER_KERNEL_T::anchor_y" ref="9c9367b4ba17568ff13181b6cd0b4251" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__FILTER__KERNEL__T.html#9c9367b4ba17568ff13181b6cd0b4251">F_FILTER_KERNEL_T::anchor_y</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カーネルのＹ方向アンカー位置( 0～(size_y-1) ) 
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

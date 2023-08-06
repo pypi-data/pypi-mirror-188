@@ -1,0 +1,1366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 座標系変換行列生成</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>座標系変換行列生成<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標系変換行列生成用の構造体  <a href="structF__MODELVIEW.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e">fnFIE_modelview_alloc_param</a> (VOID)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標系変換行列生成用構造体のメモリ確保と初期化  <a href="#gcf7fefd2fe8f6f8bc73b62f67596929e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g03ab1d09e779a198fc51879d0d24356c">fnFIE_modelview_free_param</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標系変換行列生成用構造体のメモリ解放  <a href="#g03ab1d09e779a198fc51879d0d24356c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g3c7ae80723a6e2f663f0b44d19643753">fnFIE_modelview_reset_param</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標系変換行列生成用構造体の初期化  <a href="#g3c7ae80723a6e2f663f0b44d19643753"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gbaca0bb6f8079f3e8130cc3ccf733adf">fnFIE_modelview_set_param</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, DOUBLE angle, DOUBLE move_x, DOUBLE move_y, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標系変換行列の直接指定  <a href="#gbaca0bb6f8079f3e8130cc3ccf733adf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g1e95cd5714e3b607e03095afd94b3376">fnFIE_modelview_3pointA</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_y, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">３点から座標系変換行列の設定（その１）  <a href="#g1e95cd5714e3b607e03095afd94b3376"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g5086af25fafb632aa0590fd82e6794d6">fnFIE_modelview_3pointB</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x2, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_y, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">３点から座標系変換行列の設定（その２）  <a href="#g5086af25fafb632aa0590fd82e6794d6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gf0075e96c3f206e955470689d9755cc4">fnFIE_modelview_2pointA</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x2, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点から座標系変換行列の設定（その１）  <a href="#gf0075e96c3f206e955470689d9755cc4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gaa788846ecdae110e87e5e69b6179f81">fnFIE_modelview_2pointB</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_y1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_y2, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点から座標系変換行列の設定（その２）  <a href="#gaa788846ecdae110e87e5e69b6179f81"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gc9c2a4217180a760b6eee4d5f2ba2f9d">fnFIE_modelview_2pointC</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x1, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_x2, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２点から座標系変換行列の設定（その３）  <a href="#gc9c2a4217180a760b6eee4d5f2ba2f9d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g0f72f8738821bbf6fd07fb75c53afe8d">fnFIE_modelview_point_and_lineA</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_y, <a class="el" href="structDLINE__T.html">DLINE_T</a> line_x, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ｘ軸直線とＹ軸上の１点による座標系変換行列の設定  <a href="#g0f72f8738821bbf6fd07fb75c53afe8d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g8214b75adba77266f4c5b17a70cfd452">fnFIE_modelview_point_and_lineB</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin, <a class="el" href="structDLINE__T.html">DLINE_T</a> line_x, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ｘ軸に平行な直線と原点指定による座標系変換行列の設定  <a href="#g8214b75adba77266f4c5b17a70cfd452"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gc602fe075b793596f74f9cfe75bf8e44">fnFIE_modelview_npointA</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> pnt_y, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_x, INT pnt_num, DOUBLE scale_x, DOUBLE scale_y, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群と１点から座標系変換行列の設定（その１）  <a href="#gc602fe075b793596f74f9cfe75bf8e44"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#g5613ae66bff78ba13b721d19d0b26c28">fnFIE_modelview_npointB</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts_x, INT pnt_num, DOUBLE scale_x, DOUBLE scale_y, enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a> lsm_mode, INT lsm_param)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群と１点から座標系変換行列の設定（その２）  <a href="#g5613ae66bff78ba13b721d19d0b26c28"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gb6f2f985d418b431bbb4dbeaf722aaf9">fnFIE_modelview_parallel</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin, DOUBLE scale_x, DOUBLE scale_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標系変換行列の平行移動  <a href="#gb6f2f985d418b431bbb4dbeaf722aaf9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__modelview.html#gfbe4f50e09a43a308cc31fe3df35a3e7">fnFIE_modelview_set_points</a> (<a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *param, INT reverse_y, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *screen_pnts, const <a class="el" href="structDPNT__T.html">DPNT_T</a> *world_pnts, INT pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群の変換係数の算出による、座標系変換行列の生成  <a href="#gfbe4f50e09a43a308cc31fe3df35a3e7"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gcf7fefd2fe8f6f8bc73b62f67596929e"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_alloc_param" ref="gcf7fefd2fe8f6f8bc73b62f67596929e" args="(VOID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a>* FVALGAPI fnFIE_modelview_alloc_param           </td>
+          <td>(</td>
+          <td class="paramtype">VOID&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標系変換行列生成用構造体のメモリ確保と初期化 
+<p>
+座標系変換行列生成用の、 <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を確保し、内部係数を初期化します。 初期化後の座標変換係数は下記のように設定されます。<p>
+<ul>
+<li>Ｙ軸反転 : FALSE 反転無し(Ｙ軸正方向が下向き) <br>
+ </li>
+<li>回転( angle ) : 0.0 <br>
+ </li>
+<li>平行移動( move_x , move_y ) : 0.0 <br>
+ </li>
+<li>スケール( scale_x , scale_y ) : 1.0 <br>
+ </li>
+<li>行列( forward , backward ) : <em>E</em> ( ３×３の単位行列 )</li>
+</ul>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保された座標系変換行列生成用構造体を返します。 メモリ不足やライセンスエラー、または未初期化エラーで失敗した場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g03ab1d09e779a198fc51879d0d24356c"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_free_param" ref="g03ab1d09e779a198fc51879d0d24356c" args="(F_MODELVIEW *param)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_free_param           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標系変換行列生成用構造体のメモリ解放 
+<p>
+<a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数で確保した、座標系変換行列生成用構造体を解放します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>解放する座標系変換行列生成用構造体</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3c7ae80723a6e2f663f0b44d19643753"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_reset_param" ref="g3c7ae80723a6e2f663f0b44d19643753" args="(F_MODELVIEW *param)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_reset_param           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標系変換行列生成用構造体の初期化 
+<p>
+座標変換係数をリセットします。 リセット後の座標変換係数は、以下のように初期化されます。<p>
+<ul>
+<li>Ｙ軸反転 : FALSE 反転無し(Ｙ軸正方向が下向き) <br>
+ </li>
+<li>回転( angle ) : 0.0 <br>
+ </li>
+<li>平行移動( move_x , move_y ) : 0.0 <br>
+ </li>
+<li>スケール( scale_x , scale_y ) : 1.0 <br>
+ </li>
+<li>行列( forward , backward ) : <em>E</em> ( ３×３の単位行列 )</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>初期化する座標系変換行列生成用構造体</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbaca0bb6f8079f3e8130cc3ccf733adf"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_set_param" ref="gbaca0bb6f8079f3e8130cc3ccf733adf" args="(F_MODELVIEW *param, INT reverse_y, DOUBLE angle, DOUBLE move_x, DOUBLE move_y, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_set_param           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>move_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>move_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標系変換行列の直接指定 
+<p>
+座標変換係数をパラメ－タによって設定する関数です。 ( Δx , Δy )で指定した点を原点とし、 ｘ軸を <em>angle</em> だけ回転した直行座標系への座標変換係数を設定する関数です。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_set_param.png" alt="fie_modelview_set_param.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li>TRUE ：ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li>FALSE ：ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>angle</em>&nbsp;</td><td>変換座標系 傾き（単位：ラジアン） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>move_x</em>&nbsp;</td><td>変換座標系 ｘ移動量：Δx </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>move_y</em>&nbsp;</td><td>変換座標系 ｙ移動量：Δy </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1e95cd5714e3b607e03095afd94b3376"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_3pointA" ref="g1e95cd5714e3b607e03095afd94b3376" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_x1, DPNT_T pnt_x2, DPNT_T pnt_y, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_3pointA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+３点から座標系変換行列の設定（その１） 
+<p>
+座標変換係数を設定する関数です。 P1 と P2 で決定されるｘ軸と、 P3 を通りｘ軸に垂直な直線で決定されるｙ軸の直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_3pointA.png" alt="fie_modelview_3pointA.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における、１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li>TRUE ：ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li>FALSE ：ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x1</em>&nbsp;</td><td>ｘ軸を決定する点１：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x2</em>&nbsp;</td><td>ｘ軸を決定する点２：P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_y</em>&nbsp;</td><td>ｙ軸を決定する点：P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5086af25fafb632aa0590fd82e6794d6"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_3pointB" ref="g5086af25fafb632aa0590fd82e6794d6" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_x1, DPNT_T pnt_x2, DPNT_T pnt_y, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_3pointB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+３点から座標系変換行列の設定（その２） 
+<p>
+座標変換係数を設定する関数です。 P3 を原点とし、 P1 と P2 で決定される直線に平行なｘ軸の 直交座標系の座標変換係数を決定します。 ｘ軸を決定する２点 P1 と P2 は、同じ座標ではいけません。 同一で有った場合の結果は不定です。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_3pointB.png" alt="fie_modelview_3pointB.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて確保した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 これは、構造体内部の行列が正しく設定されている必要があるためです。 <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> により確保された <em>param</em> 以外では、 F_ERR_INVALID_PARAM が返されたり、メモリアクセス違反となる場合があります。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における、１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li>TRUE ：ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li>FALSE ：ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x1</em>&nbsp;</td><td>ｘ軸を決定する点１：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x2</em>&nbsp;</td><td>ｘ軸を決定する点２：P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_y</em>&nbsp;</td><td>ｙ軸を決定する点：P3 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf0075e96c3f206e955470689d9755cc4"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_2pointA" ref="gf0075e96c3f206e955470689d9755cc4" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_x1, DPNT_T pnt_x2, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_2pointA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点から座標系変換行列の設定（その１） 
+<p>
+座標変換係数を設定する関数です。 P1 と P2 で決定されるｘ軸をもち、その２点の中点を原点とする 直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_2pointA.png" alt="fie_modelview_2pointA.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における、１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li>TRUE ：ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li>FALSE ：ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x1</em>&nbsp;</td><td>ｘ軸を決定する点１：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x2</em>&nbsp;</td><td>ｘ軸を決定する点２：P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gaa788846ecdae110e87e5e69b6179f81"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_2pointB" ref="gaa788846ecdae110e87e5e69b6179f81" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_y1, DPNT_T pnt_y2, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_2pointB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_y2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点から座標系変換行列の設定（その２） 
+<p>
+座標変換係数を設定する関数です。 P1 と P2 で決定されるｙ軸をもち、その２点の中点を原点とする直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_2pointB.png" alt="fie_modelview_2pointB.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における、１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_y1</em>&nbsp;</td><td>ｙ軸を決定する点１：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_y2</em>&nbsp;</td><td>ｙ軸を決定する点２：P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc9c2a4217180a760b6eee4d5f2ba2f9d"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_2pointC" ref="gc9c2a4217180a760b6eee4d5f2ba2f9d" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_x1, DPNT_T pnt_x2, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_2pointC           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２点から座標系変換行列の設定（その３） 
+<p>
+座標変換係数を設定する関数です。 P1 と P2 で決定されるｘ軸をもち、 P1 を原点とする直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_2pointC.png" alt="fie_modelview_2pointC.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における、１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x1</em>&nbsp;</td><td>ｘ軸を決定する点１：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_x2</em>&nbsp;</td><td>ｘ軸を決定する点２：P2 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0f72f8738821bbf6fd07fb75c53afe8d"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_point_and_lineA" ref="g0f72f8738821bbf6fd07fb75c53afe8d" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_y, DLINE_T line_x, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_point_and_lineA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Ｘ軸直線とＹ軸上の１点による座標系変換行列の設定 
+<p>
+座標変換係数を設定する関数です。 直線 L1 によって決定されるｘ軸と、 P1 を通りｘ軸に垂直な直線で決定されるｙ軸の直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_point_and_lineA.png" alt="fie_modelview_point_and_lineA.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_y</em>&nbsp;</td><td>ｙ軸を決定する点：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line_x</em>&nbsp;</td><td>ｘ軸を表す直線：L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8214b75adba77266f4c5b17a70cfd452"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_point_and_lineB" ref="g8214b75adba77266f4c5b17a70cfd452" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T origin, DLINE_T line_x, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_point_and_lineB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDLINE__T.html">DLINE_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Ｘ軸に平行な直線と原点指定による座標系変換行列の設定 
+<p>
+座標変換係数を設定する関数です。 P1 を原点として、直線 L1 に平行なｘ軸で決定される直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_point_and_lineB.png" alt="fie_modelview_point_and_lineB.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin</em>&nbsp;</td><td>原点を決定する点：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line_x</em>&nbsp;</td><td>ｘ軸に平行な直線：L1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc602fe075b793596f74f9cfe75bf8e44"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_npointA" ref="gc602fe075b793596f74f9cfe75bf8e44" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T pnt_y, const DPNT_T *pnts_x, INT pnt_num, DOUBLE scale_x, DOUBLE scale_y, enum f_line_detection_mode lsm_mode, INT lsm_param)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_npointA           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群と１点から座標系変換行列の設定（その１） 
+<p>
+座標変換係数を設定する関数です。 点群 G1 で決定されるｘ軸と、 P1 を通りｘ軸に垂直な直線で決定されるｙ軸の直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_npointA.png" alt="fie_modelview_npointA.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて確保した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 これは、構造体内部の行列が正しく設定されている必要があるためです。 <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> により確保された <em>param</em> 以外では、 F_ERR_INVALID_PARAM が返されたり、メモリアクセス違反となる場合があります。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+なお、直線生成パラメータ( <em>lsm_param</em> )は、直線生成モードにより意味が異なります。 パラメータの意味は以下の通りです。 <ul>
+<li>F_LINE_DETECTION_NORMAL 無視されます </li>
+<li>F_LINE_DETECTION_NUM 繰り返し回数を指定します </li>
+<li>F_LINE_DETECTION_DIST_A 求められた直線と点との閾値（距離）を指定します </li>
+<li>F_LINE_DETECTION_DIST_B 求められた直線と点との閾値（距離）を指定します</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_y</em>&nbsp;</td><td>ｙ軸を決定する点：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_x</em>&nbsp;</td><td>ｘ軸を決定する点配列：G1。 <em>pnt_num</em> で指定した個数の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>点群 <em>pnts_xに入っている点の数</em>(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線係数決定モード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線係数決定パラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5613ae66bff78ba13b721d19d0b26c28"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_npointB" ref="g5613ae66bff78ba13b721d19d0b26c28" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T origin, const DPNT_T *pnts_x, INT pnt_num, DOUBLE scale_x, DOUBLE scale_y, enum f_line_detection_mode lsm_mode, INT lsm_param)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_npointB           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__std.html#gd831e8595c3966aabc87b094c9557d7c">f_line_detection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>lsm_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>lsm_param</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群と１点から座標系変換行列の設定（その２） 
+<p>
+座標変換係数を設定する関数です。 P1 を原点として、 点群 G1 から求められる直線に平行なｘ軸で決定される直交座標系の座標変換係数を決定します。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_npointB.png" alt="fie_modelview_npointB.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+なお、直線生成パラメータ( <em>lsm_param</em> )は、直線生成モードにより意味が異なります。 パラメータの意味は以下の通りです。 <ul>
+<li>F_LINE_DETECTION_NORMAL 無視されます </li>
+<li>F_LINE_DETECTION_NUM 繰り返し回数を指定します </li>
+<li>F_LINE_DETECTION_DIST_A 求められた直線と点との閾値（距離）を指定します </li>
+<li>F_LINE_DETECTION_DIST_B 求められた直線と点との閾値（距離）を指定します</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin</em>&nbsp;</td><td>原点を決定する点：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts_x</em>&nbsp;</td><td>ｘ軸を決定する点配列：G1。 <em>pnt_num</em> で指定した個数の点が必要 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>点群 <em>pnts_x</em> に入っている点の数(2～1000) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_mode</em>&nbsp;</td><td>直線係数決定モード <ul>
+<li>F_LINE_DETECTION_NORMAL 通常直線検出モード </li>
+<li>F_LINE_DETECTION_NUM 回数指定モード </li>
+<li>F_LINE_DETECTION_DIST_A 距離指定モード１ </li>
+<li>F_LINE_DETECTION_DIST_B 距離指定モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>lsm_param</em>&nbsp;</td><td>直線係数決定パラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb6f2f985d418b431bbb4dbeaf722aaf9"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_parallel" ref="gb6f2f985d418b431bbb4dbeaf722aaf9" args="(F_MODELVIEW *param, INT reverse_y, DPNT_T origin, DOUBLE scale_x, DOUBLE scale_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_parallel           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>scale_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標系変換行列の平行移動 
+<p>
+座標変換係数を設定する関数です。 P1 で指定した点を原点にするように、直行座標系を平行移動します。 既に <em>param</em> で指定されるアライメント係数が設定されていた場合は、その座標に関して平行移動を行います。 ｘ軸の正の方向は必ず画面向かって右側になります。<p>
+<div align="center">
+<img src="fie_modelview_parallel.png" alt="fie_modelview_parallel.png">
+</div>
+<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>scale_x</em> および <em>scale_y</em> に指定するスケール値は、スクリーン座標系における、１をワールド座標系でいくつとするかを決める倍率です。 つまり、スケール値として設定された値で座標系変換行列の各軸の単位を決定します。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin</em>&nbsp;</td><td>原点を決定する点：P1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_x</em>&nbsp;</td><td>ｘスケーリング </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>scale_y</em>&nbsp;</td><td>ｙスケーリング</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfbe4f50e09a43a308cc31fe3df35a3e7"></a><!-- doxytag: member="fie_modelview.c::fnFIE_modelview_set_points" ref="gfbe4f50e09a43a308cc31fe3df35a3e7" args="(F_MODELVIEW *param, INT reverse_y, const DPNT_T *screen_pnts, const DPNT_T *world_pnts, INT pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_modelview_set_points           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__MODELVIEW.html">F_MODELVIEW</a> *&nbsp;</td>
+          <td class="paramname"> <em>param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>screen_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>world_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群の変換係数の算出による、座標系変換行列の生成 
+<p>
+<em>screen_pnts</em> の各点を <em>world_pnts</em> に変換するような座標変換係数を 最小２乗法によって設定する関数です。 <em>world_pnts</em> 、 <em>screen_pnts</em> の要素数は <em>pnt_num</em> となります。 <em>world_pnts</em> と <em>screen_pnts</em> は、要素番号が同じ座標が対応しているものとして、変換行列を求めます。<p>
+<em>param</em> には必ず <a class="el" href="group__fie__modelview.html#gcf7fefd2fe8f6f8bc73b62f67596929e" title="座標系変換行列生成用構造体のメモリ確保と初期化">fnFIE_modelview_alloc_param()</a> 関数にて生成した <a class="el" href="structF__MODELVIEW.html" title="座標系変換行列生成用の構造体">F_MODELVIEW</a> 構造体を渡してください。 それ以外で生成した場合の動作は保証できません。<p>
+<em>reverse_y</em> には、ワールド座標のＹ軸の方向を指定します。 <ul>
+<li><em>reverse_y</em> が TRUE の時には、ｘ軸の正の向きを画面向かって右側としたとき、ｙ軸の正方向が画面上向きになるように設定されます。 </li>
+<li><em>reverse_y</em> が FALSE の時には、ｘ軸の正の向きを画面向かって右側としたときに、ｙ軸の正方向が画面下向きになるように設定されます。</li>
+</ul>
+点の数 <em>pnt_num</em> が3以上で、 <em>screen_pnts</em> の全ての点が同一直線上に並んでいる場合は、計算不能エラーを返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>param</em>&nbsp;</td><td>座標変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_y</em>&nbsp;</td><td>Ｙ軸方向 <ul>
+<li>TRUE 反転有り(Ｙ軸正方向が上向き) </li>
+<li>FALSE 反転無し(Ｙ軸正方向が下向き) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>screen_pnts</em>&nbsp;</td><td>変換前座標から見た点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>world_pnts</em>&nbsp;</td><td>変換後座標から見た点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>点群に入っている点の数(2～100)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

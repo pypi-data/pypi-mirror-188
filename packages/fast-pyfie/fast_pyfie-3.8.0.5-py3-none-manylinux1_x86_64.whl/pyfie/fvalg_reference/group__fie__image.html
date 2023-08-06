@@ -1,0 +1,1615 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 画像オブジェクト</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>画像オブジェクト<br>
+<small>
+[<a class="el" href="group__FIE.html">FIE module</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+本ライブラリ群は、FIEライブラリにおける画像オブジェクトを扱うための物です。 旧来、画像はメモリの先頭ポインタと必要な情報を生のまま渡すことによって扱われていましたが、 FIEでは、これらの画像に関する情報をまとめカプセル化した画像オブジェクトを使用します。 画像オブジェクトは、ルート画像とチャイルド画像の２種からなり、 これらの内部的な関係はおおよそ次図のようになります。<p>
+<div align="center">
+<img src="fie_image_object.png" alt="fie_image_object.png">
+</div>
+<p>
+ルート画像は実際に画像メモリを保持するオブジェクトであり、幅、高さ、種別等の情報を保持します。 チャイルド画像は実際には <b>画像メモリを保持しない</b> オブジェクトで有り、ルート画像と関連づけて、 そのルート画像の一部分のみを指定します。 １個のルート画像に対して、複数のチャイルド画像が割り当て可能です。 なお、ここで示している幅、高さ、等は全て内部的な情報であり、カプセル化されています。 そのため、ユーザーがこれらの値を取得する際は、getter関数群を使用する必要があります。 また、本画像オブジェクトはチャネル（レイヤ）の概念を持っており、１～１６チャネルの間で任意の チャネル数分の画像メモリを持つことができます。 但し、各チャネルの画像メモリは全て同じ種別・サイズであるという制限があります。 この制限はチャネルが主にカラー画像の処理に使用されることを想定しての設定であり、 UCHARの濃度値とDOUBLEの重みというような異なる型の情報を扱いたい場合は、 複数の画像オブジェクトのインスタンスにて実現してください。<p>
+<div align="center">
+<img src="fie_image_object_channels.png" alt="fie_image_object_channels.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>ルート画像とチャイルド画像</b></dt><dd>先に述べた通り、ルート画像が実際に画像メモリを保持するオブジェクトであり、 チャイルド画像はルート画像の一部分を指定するオブジェクトです。 ここでは、これらの画像メモリがどのように確保されているかを示します。 下図は21*16のルート画像の(6,7)-(15,13)の位置に10*7のチャイルド画像を割り当てた時の例です。 <div align="center">
+<img src="fie_image.png" alt="fie_image.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>画像のメモリ構造は、座標(0,0)を基準にして、常にアドレスが増加するトップダウン形式です。 本画像オブジェクトでは、画像の幅に４の倍数等の制限を設けていないため、 自由なサイズの画像を作成することができます。しかし、そうすると２値画像では パディングを設けなければ作成することができず、また濃淡画像の場合でも行先頭のアライメントがずれ、 パフォーマンス上好ましくないため、パディングの挿入を行っています。 そこで、このパディングを扱うために、幅と高さ以外に「ステップ」を設けています。 ステップは「(x,y)から(x,y+1)に移動するために必要な移動量」であり、単位は画素です。 （但し、画像形式が２値画像で有った場合は、単位は32bitブロックです。「２値画像について」を参照） 単位を画素としているのは、利便性を考えての事ですが、このため画像メモリには下記の制限があります。 当然 <a class="el" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc()</a> にて確保される画像メモリではこの条件を満たしていますが、 <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe">インポート </a> を利用する場合には注意が必要です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>（ 幅 *（１画素のバイト数）+（パディングのバイト数））mod（１画素のバイト数）＝ ０</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>ルート画像を確保すると、上記の形式にて適切なメモリ領域が確保され、利用可能な状態になります。 一方、チャイルド画像を確保した場合は、メモリは確保されません。これは先に述べたとおり、 チャイルド画像がルート画像の一部分を指定するためのものだからです。上図の例では、 チャイルド画像は(0,0)のルート画像座標系での座標(6,7) と、チャイルド画像の幅と高さのみを保持します。 ユーザーからチャイルド画像のメモリ領域への参照要請があった場合は、割り当てられているルート画像 から必要な情報を取得して、オフセット分を計算してから回答します。より詳しく言えば、 <a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs()</a> にてチャイルド画像のアドレスを取得すると、この関数の内部で 割り当てられているルート画像の(0,0)のアドレスを取得し、それに6+step*7を加えてルート画像座標系で (6,7)のアドレス＝チャイルド画像の(0,0)のアドレスを返すと言うことです。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>ところで、チャイルド画像のステップはルート画像のステップと同じ値になります。 これは、ステップが「(x,y)から(x,y+1)に移動するために必要な移動量」で有ると言うことを思い出せば 容易に理解できます。このステップによって、Ｙ座標の移動量が抽象化しているため、チャイルド画像か ルート画像かを意識することなく使用することができるのです。実際の例は次節の画像種別でサンプルを 交えて説明しているので参照してください。</dd></dl>
+<dl class="user" compact><dt><b>NULLチャイルド画像</b></dt><dd>NULLチャイルド画像とは、ルート画像に割り当てられていないが、 画像オブジェクトのインスタンスだけは存在しているチャイルド画像の事です。 例えば、ルート画像にチャイルド画像を割り当ててある状態で、割り当てられているルート画像を先に解放すると、 割り当てているチャイルド画像は割り当て先が無くなってしまうため、NULLチャイルド画像になります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>NULLチャイルド画像では、画像メモリがNULLの状態である画像であり、 メモリアドレス、チャネル数、画像種別、幅、高さ、ステップ、の各パラメータは全て0(NULL)として処理されます。 NULLチャイルド画像かどうかの判定は、これらパラメータのgetter関数群にて、返ってきた値が0かどうかで判定できます。 NULLチャイルド画像は、 <a class="el" href="group__fie__image.html#g90c008bc8b33aac5b443b16e714f3d4b" title="チャイルド画像をルート画像へ割り当てる">fnFIE_img_child_attach()</a> / <a class="el" href="group__fie__image.html#gd289152b7f5861a193eb6ab45253d16f" title="チャイルド画像をルート画像へ割り当てる">fnFIE_img_child_attach_single_ch()</a> 関数にて ルート画像への割り当てをし直すことで、NULLチャイルド画像ではなくなります。また、NULLチャイルド画像であっても、 不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> 関数にて解放しなければいけない点には注意が必要です。</dd></dl>
+<dl class="user" compact><dt><b>画素種別</b></dt><dd>現在、本画像オブジェクトで定義される画素タイプは次の１１種類です。 画素種別は enum f_imgtype にて定義されている値で指定します。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_BIN : ２値画像(１画素1bit) <br>
+ １画素１ビットで表されます。そのままでは扱えないため、４ＢＹＴＥ(UINT)３２画素をパッキングして保持しています。 ２値画像はパッキングされているため、取り扱いが特殊です。 実際の取り扱いについては、２値画像についての章を参照してください。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>なお、windowsのDIBでの２値画像とはパッキング形式が違う事に注意してください。 DIBは、１ＢＹＴＥ(UCHAR)８画素パッキングであるため、４ＢＹＴＥ(UINT)３２画素パッキングの本形式とは 並びが異なるためです。（リトルエンディアン⊃IA-32プロセッサの場合） 下図：メモリ上での２値画素の並び順 <div align="center">
+<img src="fie_image_binbit.png" alt="fie_image_binbit.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_UC8 ：8bit濃淡画像 <br>
+ １画素が符号無し８ビット(UCHAR)で表されます。つまり、濃度値は0～255の範囲となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_S16 ：符号付き16bit濃淡画像 <br>
+ １画素が符号付き１６ビット(SHORT)で表されます。つまり、濃度値は-32768～+32767の範囲となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_US16 ：16bit濃淡画像 <br>
+ １画素が符号無し１６ビット(USHORT)で表されます。つまり、濃度値は0～65535の範囲となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_DOUBLE ：倍精度浮動小数点画像 <br>
+ １画素が倍精度浮動小数点(DOUBLE)で表されます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_RGBQUAD ：32bitパッキングカラー <br>
+ １画素が32bitで、８ビットの値が４つパッキングされた形式です。通常、RGBQUAD構造体の配列として使用します。 なお、この形式は当社の従来ライブラリ(FVL, FVX 等)との互換性を意識して設けられた物であり、 FIEライブラリでの新規開発で使用することは推奨しません。 F_IMG_UC8形式でチャネルを使用してカラーを扱う事を推奨します。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_I32 ：符号付き32bit濃淡画像 <br>
+ １画素が符号付き３２ビット(INT)で表されます。つまり、濃度値は <img class="formulaInl" alt="$[-2^{31}, 2^{31}-1]$" src="form_420.png"> の範囲となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_UI32 ：32bit濃淡画像 <br>
+ １画素が符号無し３２ビット(UINT)で表されます。つまり、濃度値は <img class="formulaInl" alt="$[0, 2^{32}-1]$" src="form_421.png"> の範囲となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_I64 ：符号付き64bit濃淡画像 <br>
+ １画素が符号付き６４ビット(DLONG)で表されます。つまり、濃度値は <img class="formulaInl" alt="$[-2^{63}, 2^{63}-1]$" src="form_422.png"> の範囲となります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_FLOAT ：単精度浮動小数点画像 <br>
+ １画素が単精度浮動小数点(FLOAT)で表されます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>■ F_IMG_RGBTRIPLE ：24bitパッキングカラー <br>
+ １画素が24bitで、８ビットの値が３つパッキングされた形式です。UCHAR型にて扱います。</dd></dl>
+<a class="anchor" name="image_memory_access_description"></a> <dl class="user" compact><dt><b>画像メモリへのアクセス</b></dt><dd>２値画像形式(F_IMG_BIN)を除いて、特定の画素へアクセスするには、次の手順で行います。 <ul>
+<li><a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs()</a> にてアドレスを取得し、目的の型のポインタにキャスト＆代入 </li>
+<li><a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step()</a> or <a class="el" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params()</a> にてステップを取得 </li>
+<li>*( ポインタ + (Ｘ座標値) + ((ステップ)*(Ｙ座標値)) ) が目的の画素値です。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>上記の手順から分かる通り、このオブジェクトを使って処理を作る場合、 <b>ルート画像とチャイルド画像を区別する必要がありません。</b> つまり、処理座標範囲の指定をわざわざ設けなくとも、 このチャイルド画像を使えば同等の処理が可能になるわけです。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>以下は画像型が符号付き16bit濃淡(F_IMG_S16)の画像を作成し、 ルート画像、チャイルド画像それぞれの座標(3,5)の画素値を100にする例です。 ステップの取り扱い方、アドレスの計算法と共に、 ルート画像でもチャイルド画像でも処理ルーチンが同じ点に注意してください。 <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keywordtype">void</span> set_x3y5( FHANDLE himg )
+{
+    SHORT *adrs;
+    INT_PTR step;
+
+    <span class="comment">// 画像の(0,0)のアドレスを取得</span>
+    adrs = (SHORT*)<a class="code" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs</a>( himg, 0 );
+
+    <span class="comment">// ｙ座標を+1するために必要な移動量を取得</span>
+    step = <a class="code" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step</a>( himg );
+
+    <span class="comment">// 座標(3,5) の画素値を100に</span>
+    *(adrs + step*5 + 3) = 100;
+}
+
+
+INT main()
+{
+    FHANDLE himg, himg_child;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 100x100 のルート画像を確保</span>
+    himg = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939" title="符号付き16bit濃淡画像">F_IMG_S16</a>, 1, 100, 100 );
+
+    <span class="comment">// ルート画像の(10,10)-(49,49)をチャイルド画像として割り当て</span>
+    himg_child = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, 10, 10, 40, 40 );
+
+    <span class="comment">// ルート画像の座標(3,5)を100にセット</span>
+    set_x3y5( himg );
+
+    <span class="comment">// チャイルド画像の座標(3,5) (==ルート画像の座標系で(13,15)) を100にセット</span>
+    set_x3y5( himg_child );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg_child );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div></dd></dl>
+<a class="anchor" name="image_binary_access_description"></a> <dl class="user" compact><dt><b>２値画像について</b></dt><dd>F_IMG_BIN で示される２値画像は、UINTに３２画素がパッキングされているという特殊性から、 他の形式と比べてアドレスの扱い方が特殊です。他の画像形式では、メモリアドレスが確定すると、 画素が一意に決定されますが、２値画像では３２画素分パッキングされているため、アドレスが確定しても 画素が一意に決まりません。このため、２値画像のアドレス取得関数 <a class="el" href="group__fie__image.html#g86ce5d2cc721fcf4173ae18739d0f6c9" title="２値画像の画像アドレス取得">fnFIE_img_get_ch_binadrs()</a> , <a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs()</a> では、そのアドレスにおける画素のビット位置を取得するための変数が追加されています。</dd></dl>
+<div class="fragment"><pre class="fragment">    VOID <a class="code" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs</a>( FHANDLE himg, UINT** adrs, INT *bitpos )
+</pre></div><p>
+<dl class="user" compact><dt><b></b></dt><dd>アドレス値 <em>adrs</em> には画像 <em>himg</em> の座標(0,0)の画素が含まれるUINTブロックのアドレスが代入され、 そのブロック内のビット位置が <em>bitpos</em> に代入されます。 ビット位置変数 <em>bitpos</em> はブロック内一番左側、つまりＸ座標の一番小さい画素を０とする０～３１の値です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>また、 <a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step()</a> 関数にて取得するステップ値も他の形式とは性質が異なります。 ２値画像でのステップは単位が画素ではなく、「UINTブロック(32bitブロック)の数」にて表されます。 つまり、「(x,y)の画素がパッキングされているUINTブロック」から、 「(x,y+1)の画素がパッキングされているUINTブロック」へ移動するのに必要な移動量になっています。 以下は100x100の２値画像の(10,10)-(49,49)にチャイルド画像を割り当て、 そのチャイルド画像の(0,5)の画素値を１にするサンプルです。 <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE himg, himg_child;
+    UINT *adrs;
+    INT bpos;
+    INT_PTR step;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 100x100 のルート画像を確保します</span>
+    himg = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, 100, 100 );
+
+    <span class="comment">// ルート画像の(10,10)-(49,49)をチャイルド画像として割り当て</span>
+    himg_child = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, 10, 10, 40, 40 );
+
+    <span class="comment">// チャイルド画像の(0,0)が有る32bitブロックのアドレスを取得</span>
+    <a class="code" href="group__fie__image.html#g86ce5d2cc721fcf4173ae18739d0f6c9" title="２値画像の画像アドレス取得">fnFIE_img_get_ch_binadrs</a>( himg_child, 0, &amp;adrs, &amp;bpos );
+    <span class="comment">// ｙ座標を+1するために必要な移動量を取得</span>
+    step = <a class="code" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step</a>( himg_child );
+
+    <span class="comment">// 座標(0,5) の画素値を1に</span>
+    *(adrs+step*5) |= 0x80000000 &gt;&gt; bpos;
+
+    <span class="comment">// 座標(7,8) の画素値を0に</span>
+    *(adrs+step*8 + (bpos + 7) / 32) &amp;= ~(0x80000000 &gt;&gt; (bpos + 7) % 32);
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg_child );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div> </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gae6eaddba13918e14b8f7499b6a84194">F_IMG_MAX_CHANNELS</a>&nbsp;&nbsp;&nbsp;16</td></tr>
+
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92">F_IMG_BIN</a> =  1, 
+<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98">F_IMG_UC8</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939">F_IMG_S16</a> =  3, 
+<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb63726dfd831e50f091b93b401b6251a1">F_IMG_US16</a> =  4, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426">F_IMG_DOUBLE</a> =  5, 
+<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d">F_IMG_RGBQUAD</a> =  6, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb18264b2a4d7e23f45a8a99e9b5fb4b93">F_IMG_I32</a> =  7, 
+<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb3935be3abe2c82288be44d2d90c9765d">F_IMG_UI32</a> =  8, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb486b3f8ff973e652d4d2e1085adb97c3">F_IMG_I64</a> =  9, 
+<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbb19fdb5abbdd810f3ba4fe913fccd30c">F_IMG_FLOAT</a> =  11, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2">F_IMG_RGBTRIPLE</a> =  12
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像種別  <a href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g3f413ef7a0c0f9e8daf738f33985288a">fnFIE_img_set_padding_size</a> (INT exp)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">パディングサイズの設定  <a href="#g3f413ef7a0c0f9e8daf738f33985288a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491">fnFIE_img_root_alloc</a> (INT type, INT channels, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ルート画像の確保  <a href="#ge1fb319dbc93c5bbaba49d39904ca491"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe">fnFIE_img_root_import_alloc</a> (VOID **adrss, INT channels, INT type, INT_PTR step, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ルート画像の確保(import版)  <a href="#g794e246c5e143197b7199690cc51e0fe"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#ga6928157e9b22480de86a2725a2ec470">fnFIE_img_root_realloc</a> (FHANDLE himg, INT type, INT channels, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ルート画像の変更  <a href="#ga6928157e9b22480de86a2725a2ec470"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gff5d66c5c42523a8b3bab9c137765b58">fnFIE_img_root_copy</a> (FHANDLE hsrc, FHANDLE *hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ルート画像のコピー  <a href="#gff5d66c5c42523a8b3bab9c137765b58"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924">fnFIE_img_child_alloc</a> (FHANDLE hroot, INT offset_x, INT offset_y, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チャイルド画像の確保  <a href="#g167af7bb9b6ab179a806542d68b8b924"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g84df62546f80d2637fd822677456f757">fnFIE_img_child_alloc_single_ch</a> (FHANDLE hroot, INT ch, INT offset_x, INT offset_y, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チャイルド画像の確保(単一チャネル割り当て版)  <a href="#g84df62546f80d2637fd822677456f757"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g6a41b453f862196468fb2b8b6fcf20ba">fnFIE_img_child_detach</a> (FHANDLE hchild)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チャイルド画像のルート画像への割り当てを解除(NULLチャイルド画像にする)  <a href="#g6a41b453f862196468fb2b8b6fcf20ba"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g90c008bc8b33aac5b443b16e714f3d4b">fnFIE_img_child_attach</a> (FHANDLE hchild, FHANDLE hroot, INT x, INT y, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チャイルド画像をルート画像へ割り当てる  <a href="#g90c008bc8b33aac5b443b16e714f3d4b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gd289152b7f5861a193eb6ab45253d16f">fnFIE_img_child_attach_single_ch</a> (FHANDLE hchild, FHANDLE hroot, INT ch, INT x, INT y, INT width, INT height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チャイルド画像をルート画像へ割り当てる  <a href="#gd289152b7f5861a193eb6ab45253d16f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g926d9e9af5d98b052a5b07c2eee8d52e">fnFIE_img_child_free</a> (FHANDLE hchild)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チャイルド画像の解放  <a href="#g926d9e9af5d98b052a5b07c2eee8d52e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g86ce5d2cc721fcf4173ae18739d0f6c9">fnFIE_img_get_ch_binadrs</a> (FHANDLE himg, INT channel, UINT **adrs, INT *bitpos)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２値画像の画像アドレス取得  <a href="#g86ce5d2cc721fcf4173ae18739d0f6c9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f">fnFIE_img_get_binadrs</a> (FHANDLE himg, UINT **adrs, INT *bitpos)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２値画像の画像アドレス取得(チャネル０固定)  <a href="#ge870685c295727c24af459a0cc28734f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7">fnFIE_img_get_ch_adrs</a> (FHANDLE himg, INT channel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像アドレス取得  <a href="#g8d4ac6d20fe0ee761e461dc71af37ad7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479">fnFIE_img_get_adrs</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像アドレス取得(チャネル０固定)  <a href="#gd4800237fd3e04b0c751193ba5f75479"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae">fnFIE_img_get_params</a> (FHANDLE himg, INT *channels, INT *type, INT_PTR *step, INT *width, INT *height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得  <a href="#gbd877b77fb0ae99b4eabd32fa33044ae"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g1c950a7efa2a0f4ab46d2352b8b4f070">fnFIE_img_get_channels</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(チャネル数)  <a href="#g1c950a7efa2a0f4ab46d2352b8b4f070"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#ge802a3cc20d27553d51aa3baf2a2f804">fnFIE_img_get_type</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(画像タイプ)  <a href="#ge802a3cc20d27553d51aa3baf2a2f804"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT_PTR FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5">fnFIE_img_get_step</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(ステップ)  <a href="#g95f68f32c9adbfdfcdba3336b8c0e6e5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT_PTR FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gd6e49e68f84cb23cdee98996367d8c84">fnFIE_img_get_pixel_size</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(画素サイズ)  <a href="#gd6e49e68f84cb23cdee98996367d8c84"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT_PTR FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g4b5773d6f5fbe786897fe35adcb164be">fnFIE_img_get_step_as_bytes</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(メモリステップ)  <a href="#g4b5773d6f5fbe786897fe35adcb164be"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549">fnFIE_img_get_width</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(画像幅)  <a href="#gab7727792c2d3922f71e4b6af3356549"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575">fnFIE_img_get_height</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像情報取得(画像高さ)  <a href="#g277017697cdc16b19d971a9818c68575"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g4babf3959affecdfab0330592d719b47">fnFIE_img_get_root_params</a> (FHANDLE himg, FHANDLE *hroot, INT *channel, INT *offset_x, INT *offset_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像のルート情報取得  <a href="#g4babf3959affecdfab0330592d719b47"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__image.html#g7e7e688609d9a7b68528444d275fdce9">fnFIE_img_is_overlaped</a> (FHANDLE himg1, FHANDLE himg2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像オーバーラップ判定  <a href="#g7e7e688609d9a7b68528444d275fdce9"></a><br></td></tr>
+</table>
+<hr><h2>マクロ定義</h2>
+<a class="anchor" name="gae6eaddba13918e14b8f7499b6a84194"></a><!-- doxytag: member="fie.h::F_IMG_MAX_CHANNELS" ref="gae6eaddba13918e14b8f7499b6a84194" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_IMG_MAX_CHANNELS&nbsp;&nbsp;&nbsp;16          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FIE画像オブジェクトのチャネル数の最大値 
+</div>
+</div><p>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gd5e633c5daa48d827c052eb173c0effb"></a><!-- doxytag: member="fie.h::f_imgtype" ref="gd5e633c5daa48d827c052eb173c0effb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__image.html#gd5e633c5daa48d827c052eb173c0effb">f_imgtype</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像種別 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92"></a><!-- doxytag: member="F_IMG_BIN" ref="ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" args="" -->F_IMG_BIN</em>&nbsp;</td><td>
+２値画像(1bit/1画素) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98"></a><!-- doxytag: member="F_IMG_UC8" ref="ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" args="" -->F_IMG_UC8</em>&nbsp;</td><td>
+8bit濃淡画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939"></a><!-- doxytag: member="F_IMG_S16" ref="ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939" args="" -->F_IMG_S16</em>&nbsp;</td><td>
+符号付き16bit濃淡画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb63726dfd831e50f091b93b401b6251a1"></a><!-- doxytag: member="F_IMG_US16" ref="ggd5e633c5daa48d827c052eb173c0effb63726dfd831e50f091b93b401b6251a1" args="" -->F_IMG_US16</em>&nbsp;</td><td>
+16bit濃淡画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426"></a><!-- doxytag: member="F_IMG_DOUBLE" ref="ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" args="" -->F_IMG_DOUBLE</em>&nbsp;</td><td>
+倍精度浮動小数点画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d"></a><!-- doxytag: member="F_IMG_RGBQUAD" ref="ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" args="" -->F_IMG_RGBQUAD</em>&nbsp;</td><td>
+32bitパッキングカラー画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb18264b2a4d7e23f45a8a99e9b5fb4b93"></a><!-- doxytag: member="F_IMG_I32" ref="ggd5e633c5daa48d827c052eb173c0effb18264b2a4d7e23f45a8a99e9b5fb4b93" args="" -->F_IMG_I32</em>&nbsp;</td><td>
+符号付き32bit濃淡画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb3935be3abe2c82288be44d2d90c9765d"></a><!-- doxytag: member="F_IMG_UI32" ref="ggd5e633c5daa48d827c052eb173c0effb3935be3abe2c82288be44d2d90c9765d" args="" -->F_IMG_UI32</em>&nbsp;</td><td>
+32bit濃淡画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effb486b3f8ff973e652d4d2e1085adb97c3"></a><!-- doxytag: member="F_IMG_I64" ref="ggd5e633c5daa48d827c052eb173c0effb486b3f8ff973e652d4d2e1085adb97c3" args="" -->F_IMG_I64</em>&nbsp;</td><td>
+符号付き64bit濃淡画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effbb19fdb5abbdd810f3ba4fe913fccd30c"></a><!-- doxytag: member="F_IMG_FLOAT" ref="ggd5e633c5daa48d827c052eb173c0effbb19fdb5abbdd810f3ba4fe913fccd30c" args="" -->F_IMG_FLOAT</em>&nbsp;</td><td>
+単精度浮動小数点画像 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2"></a><!-- doxytag: member="F_IMG_RGBTRIPLE" ref="ggd5e633c5daa48d827c052eb173c0effbca7eadfc3cdc6bc23d7dcae4af401ba2" args="" -->F_IMG_RGBTRIPLE</em>&nbsp;</td><td>
+24bitパッキングカラー画像 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g3f413ef7a0c0f9e8daf738f33985288a"></a><!-- doxytag: member="fie_img.c::fnFIE_img_set_padding_size" ref="g3f413ef7a0c0f9e8daf738f33985288a" args="(INT exp)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_set_padding_size           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>exp</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+パディングサイズの設定 
+<p>
+<a class="el" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc()</a> 又は <a class="el" href="group__fie__image.html#ga6928157e9b22480de86a2725a2ec470" title="ルート画像の変更">fnFIE_img_root_realloc()</a> 時に、ステップ（画像メモリ幅）を 何バイト単位にするかを 2^n の指数nで設定します。画像幅がこの倍数で無い場合は、 適切なパディングが挿入され、ステップは 2^n の倍数バイトになります。 但し、１画素のバイト数が 2^n よりも大きい場合、ステップは１画素のバイト数の倍数になります。<p>
+本関数を１度も呼ばなかった場合のデフォルト値は n=3 です。 特別な理由が無い限りデフォルトの n=3 のまま使用することを推奨します。<p>
+<dl class="user" compact><dt><b>example</b></dt><dd><ul>
+<li>画像型 F_IMG_UC8 で n=0 の場合 → ステップは1byteの倍数</li><li>画像型 F_IMG_UC8 で n=4 の場合 → ステップは16byteの倍数</li><li>画像型 F_IMG_DOUBLE で n=0 の場合 → ステップは8byteの倍数</li><li>画像型 F_IMG_DOUBLE で n=4 の場合 → ステップは16byteの倍数</li></ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>exp</em>&nbsp;</td><td>ステップサイズ 2^n の乗数n (0≦n≦10) <br>
+ デフォルト==3</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>この関数で設定された値は、グローバル変数にて保持され、 以降の全ての <a class="el" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc()</a> , <a class="el" href="group__fie__image.html#ga6928157e9b22480de86a2725a2ec470" title="ルート画像の変更">fnFIE_img_root_realloc()</a> の動作に影響を及ぼすため注意してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge1fb319dbc93c5bbaba49d39904ca491"></a><!-- doxytag: member="fie_img.c::fnFIE_img_root_alloc" ref="ge1fb319dbc93c5bbaba49d39904ca491" args="(INT type, INT channels, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_img_root_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ルート画像の確保 
+<p>
+ルート画像を確保します。<p>
+生成された画像ハンドルが不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>確保する画像種別。下記のいずれかを指定。<ul>
+<li>F_IMG_BIN</li><li>F_IMG_UC8</li><li>F_IMG_S16</li><li>F_IMG_US16</li><li>F_IMG_DOUBLE</li><li>F_IMG_RGBQUAD</li><li>F_IMG_I32</li><li>F_IMG_UI32</li><li>F_IMG_I64</li><li>F_IMG_FLOAT</li><li>F_IMG_RGBTRIPLE </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channels</em>&nbsp;</td><td>チャネル数(1～16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>画像幅(1以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>画像高さ(1以上)</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保された画像のハンドル ライセンスエラー、未初期化エラー、またはメモリ不足で確保に失敗した場合はNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g794e246c5e143197b7199690cc51e0fe"></a><!-- doxytag: member="fie_img.c::fnFIE_img_root_import_alloc" ref="g794e246c5e143197b7199690cc51e0fe" args="(VOID **adrss, INT channels, INT type, INT_PTR step, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_img_root_import_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">VOID **&nbsp;</td>
+          <td class="paramname"> <em>adrss</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT_PTR&nbsp;</td>
+          <td class="paramname"> <em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ルート画像の確保(import版) 
+<p>
+外部で確保された画像メモリ空間を使用して、ルート画像を作成します。 本関数で作成したルート画像はリサイズすることができません。 また、本関数で作成されたルート画像では <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> 関数によって オブジェクトを解放しても、登録された画像メモリは解放しません。 このため、登録したメモリは登録したユーザー側で解放処理を行う必要が有ります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>adrss</em>&nbsp;</td><td>画像メモリのポインタ列。 (チャネル0から順番になった配列で <em>channels</em> パラメータ個分の要素が必要) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channels</em>&nbsp;</td><td>チャネル数(1～16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>画像種別<ul>
+<li>F_IMG_BIN</li><li>F_IMG_UC8</li><li>F_IMG_S16</li><li>F_IMG_US16</li><li>F_IMG_DOUBLE</li><li>F_IMG_RGBQUAD</li><li>F_IMG_I32</li><li>F_IMG_UI32</li><li>F_IMG_I64</li><li>F_IMG_FLOAT</li><li>F_IMG_RGBTRIPLE </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>step</em>&nbsp;</td><td>画像ステップ(メモリ横幅：画素サイズ単位) <br>
+ 但し、下記の画像型の場合は単位が変わります。<br>
+<ul>
+<li>F_IMG_BIN型の場合：UINTブロック数</li><li>F_IMG_RGBTRIPLE型の場合：バイト単位 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>画像幅(1以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>画像高さ(1以上)</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保された画像のハンドル ライセンスエラー、未初期化エラー、またはメモリ不足で確保に失敗した場合はNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga6928157e9b22480de86a2725a2ec470"></a><!-- doxytag: member="fie_img.c::fnFIE_img_root_realloc" ref="ga6928157e9b22480de86a2725a2ec470" args="(FHANDLE himg, INT type, INT channels, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_root_realloc           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ルート画像の変更 
+<p>
+ルート画像のサイズ等を変更します。<p>
+<dl class="user" compact><dt><b>注意</b></dt><dd>ルート画像をreallocすると、それまでattachされていたチャイルド画像はすべてNULLチャイルド画像になります。 また <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe" title="ルート画像の確保(import版)">fnFIE_img_root_import_alloc()</a> にて確保されたルート画像が指定された場合は、 F_ERR_INVALID_IMAGE エラーとなります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>サイズを変更する画像のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>確保する画像種別<ul>
+<li>F_IMG_BIN</li><li>F_IMG_UC8</li><li>F_IMG_S16</li><li>F_IMG_US16</li><li>F_IMG_DOUBLE</li><li>F_IMG_RGBQUAD</li><li>F_IMG_I32</li><li>F_IMG_UI32</li><li>F_IMG_I64</li><li>F_IMG_FLOAT</li><li>F_IMG_RGBTRIPLE </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channels</em>&nbsp;</td><td>チャネル数(1～16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>画像幅(1以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>画像高さ(1以上)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された(ハンドルが不正orインポートされていてリサイズ不可) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gff5d66c5c42523a8b3bab9c137765b58"></a><!-- doxytag: member="fie_img.c::fnFIE_img_root_copy" ref="gff5d66c5c42523a8b3bab9c137765b58" args="(FHANDLE hsrc, FHANDLE *hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_root_copy           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ルート画像のコピー 
+<p>
+<em>hsrc</em> に指定された画像と同じサイズのルート画像を新たに生成し、内容を複製して <em>*hdst</em> に返します。 <br>
+ <em>hsrc</em> に指定する画像は、ルート画像でもチャイルド画像でもかまいません。 大きなルート画像の小さな一部分を指し示すチャイルド画像を当関数でコピーした場合、元のルート画像の小さな一部分と同サイズの新たなルート画像が生成して返されます。<p>
+生成された画像ハンドル(*hdst)が不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>コピー元の画像のハンドル( type: all ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>コピーされたルート画像のハンドル <br>
+ 関数エントリー時 <em>*hdst</em> == NULL でなければなりません。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー( <em>hdst</em> がNULL または <em>*hdst</em> != NULL ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正画像エラー( <em>hsrc</em> が不正 ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g167af7bb9b6ab179a806542d68b8b924"></a><!-- doxytag: member="fie_img.c::fnFIE_img_child_alloc" ref="g167af7bb9b6ab179a806542d68b8b924" args="(FHANDLE hroot, INT offset_x, INT offset_y, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_img_child_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hroot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チャイルド画像の確保 
+<p>
+指定のルート画像の部分矩形領域をチャイルド画像に割り当てます。 割り当て先の画像( <em>hroot</em> パラメータ)には、ルート画像でもチャイルド画像でも どちらでも指定することができます。 <em>hroot</em> にルート画像が渡された場合は、 本関数で作成されたチャイルド画像は、そのルート画像のチャイルドになります。 <em>hroot</em> にチャイルド画像が渡された場合は、「 <em>hroot</em> に渡されたチャイルド画像が 割り当てているルート画像」のチャイルドになります。<p>
+ルート画像が２以上のチャネルを持っていた場合は、 作成されたチャイルド画像も同じチャネル数を持ちます。（下図参照）<p>
+<div align="center">
+<img src="fie_img_child_alloc.png" alt="fie_img_child_alloc.png">
+</div>
+<p>
+ルート画像の領域をはみ出すチャイルド画像を作成することはできません。 はみ出る領域を指定した場合には NULL を返します。 また、全パラメータに0を指定した場合は、ルート画像が割り当てられていない NULLチャイルド画像を生成します。<p>
+生成された画像ハンドルが不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hroot</em>&nbsp;</td><td>ルート画像のハンドル(チャイルド画像でも可) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset_x</em>&nbsp;</td><td>ルート座標系における、チャイルド領域左上x座標 (0≦ <em>offset_x</em> ≦ (ルート画像の幅 -1 - <em>width</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset_y</em>&nbsp;</td><td>ルート座標系における、チャイルド領域左上y座標 (0≦ <em>offset_y</em> ≦ (ルート画像の高さ -1 - <em>height</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>チャイルド領域幅 (1≦ <em>width</em> ≦(ルート画像の幅 - <em>offset_x</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>チャイルド領域高さ(1≦ <em>height</em> ≦(ルート画像の高さ - <em>offset_y</em> ))</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、確保されたチャイルド画像のハンドルを返す。 ライセンスエラー、未初期化エラー、パラメータ不正やメモリ確保失敗により異常終了した場合は、NULLを返す</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g84df62546f80d2637fd822677456f757"></a><!-- doxytag: member="fie_img.c::fnFIE_img_child_alloc_single_ch" ref="g84df62546f80d2637fd822677456f757" args="(FHANDLE hroot, INT ch, INT offset_x, INT offset_y, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_img_child_alloc_single_ch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hroot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チャイルド画像の確保(単一チャネル割り当て版) 
+<p>
+指定のルート画像の部分矩形領域をチャイルド画像に割り当てます。 割り当て先の画像( <em>hroot</em> パラメータ)には、ルート画像でもチャイルド画像でも どちらでも指定することができます。 <em>hroot</em> にルート画像が渡された場合は、 本関数で作成されたチャイルド画像は、そのルート画像のチャイルドになります。 <em>hroot</em> にチャイルド画像が渡された場合は、「 <em>hroot</em> に渡されたチャイルド画像が 割り当てているルート画像」のチャイルドになります。<p>
+作成されるチャイルド画像は、ルート画像の指定の単一チャネルのみに割り当てられます。（下図参照） <div align="center">
+<img src="fie_img_child_alloc_single_ch.png" alt="fie_img_child_alloc_single_ch.png">
+</div>
+<p>
+ルート画像の領域をはみ出すチャイルド画像を作成することはできません。 はみ出る領域を指定した場合には NULL を返します。 全パラメータに0を指定した場合は、ルート画像が割り当てられていない NULLチャイルド画像を生成します。<p>
+生成された画像ハンドルが不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hroot</em>&nbsp;</td><td>ルート画像のハンドル(チャイルド画像でも可) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ch</em>&nbsp;</td><td>チャイルド画像を割り当てる、ルート画像のチャネル(0≦ <em>ch</em> ≦(ルート画像のch数-1)) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset_x</em>&nbsp;</td><td>ルート座標系における、チャイルド領域左上x座標(0≦ <em>offset_x</em> ≦(ルート画像の幅 -1 - <em>width</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset_y</em>&nbsp;</td><td>ルート座標系における、チャイルド領域左上y座標(0≦ <em>offset_y</em> ≦(ルート画像の高さ -1 - <em>height</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>チャイルド領域幅 (1≦ <em>width</em> ≦(ルート画像の幅 - <em>offset_x</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>チャイルド領域高さ(1≦ <em>height</em> ≦(ルート画像の高さ - <em>offset_y</em> ))</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、確保されたチャイルド画像のハンドルを返します。 ライセンスエラー、未初期化エラー、パラメータ不正やメモリ確保失敗により異常終了した場合は、NULLを返します。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6a41b453f862196468fb2b8b6fcf20ba"></a><!-- doxytag: member="fie_img.c::fnFIE_img_child_detach" ref="g6a41b453f862196468fb2b8b6fcf20ba" args="(FHANDLE hchild)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_child_detach           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hchild</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チャイルド画像のルート画像への割り当てを解除(NULLチャイルド画像にする) 
+<p>
+チャイルド画像のルート画像への割り当てを解除します。 割り当てを解除されたチャイルド画像は画像を保持しない(NULLポインタを持つ) 画像ハンドラになります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hchild</em>&nbsp;</td><td>解除するチャイルド画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>異常終了(ハンドルにNULLが渡された or ルート画像が渡された) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g90c008bc8b33aac5b443b16e714f3d4b"></a><!-- doxytag: member="fie_img.c::fnFIE_img_child_attach" ref="g90c008bc8b33aac5b443b16e714f3d4b" args="(FHANDLE hchild, FHANDLE hroot, INT x, INT y, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_child_attach           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hchild</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hroot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チャイルド画像をルート画像へ割り当てる 
+<p>
+既存のチャイルド画像を、指定のルート画像に割り当て直します。 割り当て先の画像( <em>hroot</em> パラメータ)には、ルート画像でもチャイルド画像でも どちらでも指定することができます。 <em>hroot</em> にルート画像が渡された場合は、 本関数で作成されたチャイルド画像は、そのルート画像のチャイルドになります。 <em>hroot</em> にチャイルド画像が渡された場合は、「 <em>hroot</em> に渡されたチャイルド画像が 割り当てているルート画像」のチャイルドになります。<p>
+ルート画像が２以上のチャネルを持っていた場合は、 作成されたチャイルド画像も同じチャネル数を持ちます。（下図参照）<p>
+<div align="center">
+<img src="fie_img_child_alloc.png" alt="fie_img_child_alloc.png">
+</div>
+<p>
+ルート画像の領域をはみ出すチャイルド画像を作成することはできません。 はみ出る領域を指定した場合には F_ERR_INVALID_PARAM を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hchild</em>&nbsp;</td><td>割り当てるチャイルド画像 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hroot</em>&nbsp;</td><td>割り当てられるれるルート画像(チャイルド画像でも可) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>領域左上x座標 (0≦ <em>x</em> ≦(ルート画像の幅 -1 - <em>width</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>領域左上y座標 (0≦ <em>y</em> ≦(ルート画像の高さ -1 - <em>height</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>領域幅 (1≦ <em>width</em> ≦(ルート画像の幅 - <em>x</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>領域高さ (1≦ <em>height</em> ≦(ルート画像の高さ- <em>y</em> ))</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd289152b7f5861a193eb6ab45253d16f"></a><!-- doxytag: member="fie_img.c::fnFIE_img_child_attach_single_ch" ref="gd289152b7f5861a193eb6ab45253d16f" args="(FHANDLE hchild, FHANDLE hroot, INT ch, INT x, INT y, INT width, INT height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_child_attach_single_ch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hchild</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hroot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チャイルド画像をルート画像へ割り当てる 
+<p>
+既存のチャイルド画像を、指定のルート画像に割り当て直します。 割り当て先の画像( <em>hroot</em> パラメータ)には、ルート画像でもチャイルド画像でも どちらでも指定することができます。 <em>hroot</em> にルート画像が渡された場合は、 本関数で作成されたチャイルド画像は、そのルート画像のチャイルドになります。 <em>hroot</em> にチャイルド画像が渡された場合は、「 <em>hroot</em> に渡されたチャイルド画像が 割り当てているルート画像」のチャイルドになります。<p>
+作成されるチャイルド画像は、ルート画像の指定の単一チャネルのみに割り当てられます。（下図参照） <div align="center">
+<img src="fie_img_child_alloc_single_ch.png" alt="fie_img_child_alloc_single_ch.png">
+</div>
+<p>
+ルート画像の領域をはみ出すチャイルド画像を作成することはできません。 はみ出る領域を指定した場合には F_ERR_INVALID_PARAM を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hchild</em>&nbsp;</td><td>割り当てるチャイルド画像 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hroot</em>&nbsp;</td><td>割り当てられるルート画像(チャイルド画像でも可) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ch</em>&nbsp;</td><td>チャイルド画像を割り当てる、ルート画像のチャネル(0≦ <em>ch</em> ≦(ルート画像のch数-1)) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>領域左上x座標 (0≦ <em>x</em> ≦(ルート画像の幅 -1 - <em>width</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>領域左上y座標 (0≦ <em>y</em> ≦(ルート画像の高さ -1 - <em>height</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>領域幅 (1≦ <em>width</em> ≦(ルート画像の幅- <em>x</em> )) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>領域高さ (1≦ <em>height</em> ≦(ルート画像の高さ- <em>y</em> ))</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g926d9e9af5d98b052a5b07c2eee8d52e"></a><!-- doxytag: member="fie_img.c::fnFIE_img_child_free" ref="g926d9e9af5d98b052a5b07c2eee8d52e" args="(FHANDLE hchild)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_img_child_free           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hchild</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チャイルド画像の解放 
+<p>
+本関数は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> から呼び出される関数です。 直接本関数をコールすることはしないで下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hchild</em>&nbsp;</td><td>解放するチャイルド画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g86ce5d2cc721fcf4173ae18739d0f6c9"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_ch_binadrs" ref="g86ce5d2cc721fcf4173ae18739d0f6c9" args="(FHANDLE himg, INT channel, UINT **adrs, INT *bitpos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_img_get_ch_binadrs           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT **&nbsp;</td>
+          <td class="paramname"> <em>adrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>bitpos</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２値画像の画像アドレス取得 
+<p>
+<em>himg</em> パラメータで指定された２値画像の左上アドレスを返します。 画像が２値画像(typeがF_IMG_BIN)で無かった場合には <em>adrs</em>, <em>bitpos</em> 共に0を返します。<p>
+２値画像はUINTに32画素がパッキングされた特殊形式のため、 本関数を使用してアドレスを取得します。本関数では、adrsパラメータにて 画像左上の画素がパッキングされているブロックのアドレスを <em>adrs</em> に、 同画素のパッキングされているブロック内のビット位置を <em>bitpos</em> にて返します。 <em>bitpos</em> はブロック内一番 <b>左側</b> (X座標が小さい方)を0とする0～31の値になります。<p>
+２値画像以外の画像に対しては <a class="el" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479" title="画像アドレス取得(チャネル０固定)">fnFIE_img_get_adrs()</a> を使用して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>アドレスを取得する画像のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channel</em>&nbsp;</td><td>アドレスを取得するチャネルの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>adrs</em>&nbsp;</td><td>左上画素が含まれるブロックのアドレス </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>bitpos</em>&nbsp;</td><td>ブロック内の左上画素のビット位置。 ブロック内一番左側(X座標が小さい方)を0とする0～31の値。</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs()</a>, <a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge870685c295727c24af459a0cc28734f"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_binadrs" ref="ge870685c295727c24af459a0cc28734f" args="(FHANDLE himg, UINT **adrs, INT *bitpos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_img_get_binadrs           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT **&nbsp;</td>
+          <td class="paramname"> <em>adrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>bitpos</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２値画像の画像アドレス取得(チャネル０固定) 
+<p>
+<em>himg</em> パラメータで指定された２値画像の「チャネル０番の」左上アドレスを返します。 0番以外のチャネルのアドレスが取得したい場合は <a class="el" href="group__fie__image.html#g86ce5d2cc721fcf4173ae18739d0f6c9" title="２値画像の画像アドレス取得">fnFIE_img_get_ch_binadrs()</a> を使用して下さい。 画像が２値画像(F_IMG_BIN)で無かった場合には <em>adrs</em>, <em>bitpos</em> 共に0を返します。<p>
+２値画像はUINTに32画素がパッキングされた特殊形式のため、 本関数を使用してアドレスを取得します。本関数では <em>adrs</em> パラメータにて 画像左上の画素がパッキングされているブロックのアドレスを <em>adrs</em> に、 同画素のパッキングされているブロック内のビット位置を <em>bitpos</em> にて返します。 <em>bitpos</em> はブロック内一番 <b>左側</b> (X座標が小さい方)を0とする0～31の値になります。<p>
+２値画像以外の画像に対しては <a class="el" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479" title="画像アドレス取得(チャネル０固定)">fnFIE_img_get_adrs()</a> を使用して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>アドレスを取得する画像のハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>adrs</em>&nbsp;</td><td>左上画素が含まれるブロックのアドレス </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>bitpos</em>&nbsp;</td><td>ブロック内の左上画素のビット位置。 ブロック内一番左側(X座標が小さい方)を0とする0～31の値。</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#g86ce5d2cc721fcf4173ae18739d0f6c9" title="２値画像の画像アドレス取得">fnFIE_img_get_ch_binadrs()</a>, <a class="el" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479" title="画像アドレス取得(チャネル０固定)">fnFIE_img_get_adrs()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8d4ac6d20fe0ee761e461dc71af37ad7"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_ch_adrs" ref="g8d4ac6d20fe0ee761e461dc71af37ad7" args="(FHANDLE himg, INT channel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_img_get_ch_adrs           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像アドレス取得 
+<p>
+imgパラメータで指定された画像の左上アドレスを返します。 但し、画像が２値画像(F_IMG_BIN)の場合は、本関数では取得できません。 この場合は、本関数ではNULLを返しますので、 <a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs()</a> を代わりに使用して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>アドレスを取得する画像のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channel</em>&nbsp;</td><td>アドレスを取得するチャネル番号</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、左上画素のアドレスを返します。 異常終了した場合は、NULLを返します。(パラメータエラー、画像形式エラー、ライセンスエラー、または未初期化エラー)</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs()</a>, <a class="el" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479" title="画像アドレス取得(チャネル０固定)">fnFIE_img_get_adrs()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd4800237fd3e04b0c751193ba5f75479"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_adrs" ref="gd4800237fd3e04b0c751193ba5f75479" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_img_get_adrs           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像アドレス取得(チャネル０固定) 
+<p>
+<em>himg</em> パラメータで指定された画像の「チャネル０番の」左上アドレスを返します。 0番以外のチャネルのアドレスが取得したい場合は <a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs()</a> を使用して下さい。 但し、画像が２値画像(F_IMG_BIN)の場合は、本関数では取得できません。 この場合は、本関数ではNULLを返しますので、 <a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs()</a> を代わりに使用して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>アドレスを取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、左上画素のアドレスを返します。 異常終了した場合は、NULLを返します。(パラメータエラー、画像形式エラー、ライセンスエラー、または未初期化エラー)</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#g8d4ac6d20fe0ee761e461dc71af37ad7" title="画像アドレス取得">fnFIE_img_get_ch_adrs()</a>, <a class="el" href="group__fie__image.html#ge870685c295727c24af459a0cc28734f" title="２値画像の画像アドレス取得(チャネル０固定)">fnFIE_img_get_binadrs()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbd877b77fb0ae99b4eabd32fa33044ae"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_params" ref="gbd877b77fb0ae99b4eabd32fa33044ae" args="(FHANDLE himg, INT *channels, INT *type, INT_PTR *step, INT *width, INT *height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_params           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT_PTR *&nbsp;</td>
+          <td class="paramname"> <em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得 
+<p>
+<em>himg</em> パラメータで指定された画像の情報を取得します。 取得できる情報は、チャネル数、種別、幅、高さ、ステップ です。 指定された画像がNULLチャイルド画像だった場合は、各パラメータには0を返し、正常終了します。<p>
+出力先の引数( <em>channels</em>, <em>type</em>, <em>step</em>, <em>width</em>, <em>height</em> )はすべてNULLポインタチェックがされるため、 必要の無いものにはNULLが指定可能です。このとき <em>himg</em> 以外のパラメータはNULLであっても、 エラーにはならず正常終了となります。例えば、チャネル数とステップだけを取得したければ、 <em>channels</em> と <em>step</em> に有効なポインタを渡し、他の <em>type</em>, <em>width</em>, <em>hegiht</em> にはNULLを指定すれば良いです。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>channels</em>&nbsp;</td><td>画像メモリのチャネル数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>画像メモリの種別 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>step</em>&nbsp;</td><td>画像メモリの行ステップ(画素単位) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>領域幅 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>領域高さ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1c950a7efa2a0f4ab46d2352b8b4f070"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_channels" ref="g1c950a7efa2a0f4ab46d2352b8b4f070" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_channels           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(チャネル数) 
+<p>
+<em>himg</em> パラメータで指定された画像のチャネル数を取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像のチャネル数を返します。 異常終了した場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge802a3cc20d27553d51aa3baf2a2f804"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_type" ref="ge802a3cc20d27553d51aa3baf2a2f804" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_type           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(画像タイプ) 
+<p>
+<em>himg</em> パラメータで指定された画像のタイプを取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像のタイプを返します。 異常終了した場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g95f68f32c9adbfdfcdba3336b8c0e6e5"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_step" ref="g95f68f32c9adbfdfcdba3336b8c0e6e5" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT_PTR FVALGAPI fnFIE_img_get_step           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(ステップ) 
+<p>
+<em>himg</em> パラメータで指定された画像のステップ(メモリ横幅)を取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+ステップは「(x,y)から(x,y+1)に移動するために必要な移動量」であり、単位は画素です。 但し、F_IMG_BIN型とF_IMG_RGBTRIPLE型の場合は単位が異なり、それぞれ下記のようになります。<ul>
+<li>F_IMG_BIN型の場合：32bitブロック単位。「２値画像について」を参照</li><li>F_IMG_RGBTRIPLE型の場合：バイト単位</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像のステップを返します。 異常終了した場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd6e49e68f84cb23cdee98996367d8c84"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_pixel_size" ref="gd6e49e68f84cb23cdee98996367d8c84" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT_PTR FVALGAPI fnFIE_img_get_pixel_size           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(画素サイズ) 
+<p>
+<em>himg</em> パラメータで指定された画像の画素サイズを取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+画素サイズは「(x,y)から(x+1,y)に移動するために必要な移動量」であり、単位はバイトです。 但し、 F_IMG_BIN 型の場合は「(x,y)画素の所属しているブロックの先頭から次のブロックの先頭に移動するために必要なバイト数」になります。 詳しくは画像オブジェクトの説明文書内「２値画像について」を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像の画素サイズを返します。 異常終了した場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4b5773d6f5fbe786897fe35adcb164be"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_step_as_bytes" ref="g4b5773d6f5fbe786897fe35adcb164be" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT_PTR FVALGAPI fnFIE_img_get_step_as_bytes           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(メモリステップ) 
+<p>
+<em>himg</em> パラメータで指定された画像のメモリステップ(バイト単位メモリ横幅)を取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+メモリステップは「(x,y)から(x,y+1)に移動するために必要な移動量」であり、単位はバイトです。 但し、 F_IMG_BIN 型の場合は「(x,y)画素の所属している32bitブロックの先頭から(x,y+1)画素の所属している32bitブロックの先頭に移動するために必要なバイト数」になります。 詳しくは画像オブジェクトの説明文書内「２値画像について」を参照してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像のステップを返します。 異常終了した場合は、-1を返します。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gab7727792c2d3922f71e4b6af3356549"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_width" ref="gab7727792c2d3922f71e4b6af3356549" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_width           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(画像幅) 
+<p>
+<em>himg</em> パラメータで指定された画像の幅を取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像の幅を返します。 異常終了した場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g277017697cdc16b19d971a9818c68575"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_height" ref="g277017697cdc16b19d971a9818c68575" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_height           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像情報取得(画像高さ) 
+<p>
+<em>himg</em> パラメータで指定された画像の高さを取得します。 指定された画像がNULLチャイルド画像だった場合は、0が返ります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像のハンドル</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、画像の高さを返します。 異常終了した場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4babf3959affecdfab0330592d719b47"></a><!-- doxytag: member="fie_img.c::fnFIE_img_get_root_params" ref="g4babf3959affecdfab0330592d719b47" args="(FHANDLE himg, FHANDLE *hroot, INT *channel, INT *offset_x, INT *offset_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_root_params           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>hroot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>offset_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>offset_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像のルート情報取得 
+<p>
+画像 <em>himg</em> の割り当てられているルート画像の情報を取得します。 <em>himg</em> はルート画像でもチャイルド画像でも構いません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>情報を取得する画像 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hroot</em>&nbsp;</td><td><em>himg</em> の割り当てられているルート画像のハンドル <br>
+ <em>himg</em> がルート画像のときは <em>himg</em> を返す(つまり <em>*hroot</em> = <em>himg</em> ) <br>
+ 関数エントリー時 <em>*hroot</em> == NULL でなければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>channel</em>&nbsp;</td><td><em>*hroot</em> のうち <em>himg</em> の割り当てられているチャネル番号 <br>
+ <em>himg</em> がルート画像の場合、または <em>himg</em> が <em>hroot</em> の全チャネルに 割り当てられている場合は -1 を返す </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>offset_x</em>&nbsp;</td><td><em>himg</em> の左上Ｘ座標（ルート画像の左上画素を(0,0)としたときの座標） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>offset_y</em>&nbsp;</td><td><em>himg</em> の左上Ｙ座標（ルート画像の左上画素を(0,0)としたときの座標）</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><em>hroot</em> にて返されるルート画像のハンドルはコピーではありません。 そのため取得された <em>hroot</em> を解放すると <em>himg</em> に割り当てられている ルート画像が解放されてしまうことに注意してください。</dd></dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td><em>himg</em> に無効な画像ハンドルが指定された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>無効なパラメータが入力された。<ul>
+<li>出力パラメータの何れかがNULL</li><li><em>*hroot</em> がNULLでない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7e7e688609d9a7b68528444d275fdce9"></a><!-- doxytag: member="fie_img.c::fnFIE_img_is_overlaped" ref="g7e7e688609d9a7b68528444d275fdce9" args="(FHANDLE himg1, FHANDLE himg2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_is_overlaped           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像オーバーラップ判定 
+<p>
+２枚の画像 <em>himg1</em>, <em>himg2</em> が指し示している画像メモリ空間が、 オーバーラップして（重なって）いるかいないかを判定します。<p>
+「オーバーラップしている」とは <em>himg1</em>, <em>himg2</em> のどちらか、 又は両方がチャイルド画像である場合に、両方の関連づけられている ルート画像が同じ物であり、尚かつその領域が重なっている状態を言います。(下図）<p>
+<div align="center">
+<img src="fie_img_is_overlaped.png" alt="fie_img_is_overlaped.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg1</em>&nbsp;</td><td>判定する画像１ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg2</em>&nbsp;</td><td>判定する画像２</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>0</em>&nbsp;</td><td>２枚の画像はオーバーラップしていない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>1</em>&nbsp;</td><td>２枚の画像の一部分がオーバーラップしている </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>2</em>&nbsp;</td><td>２枚の画像は完全に同じ部分を指している </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>無効な画像が指定された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

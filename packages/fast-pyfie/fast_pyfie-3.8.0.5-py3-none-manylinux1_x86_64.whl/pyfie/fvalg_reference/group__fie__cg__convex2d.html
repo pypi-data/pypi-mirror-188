@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 凸包</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>凸包<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+２次元凸包を作成するライブラリです。<p>
+堅苦しい定義を記すと「点集合の凸包とは、その点集合を含む最小の凸多角形」です。 直感的には、木の板に釘を(同じ面に)いくつか打ち付けた後、その釘がすべて入るように外側から輪 ゴムで留めたときにできる輪ゴムの形が(釘の集合の)凸包となります。 データ解析的には凸多角形という非常に扱い易い形で点集合全体を近似している、と考えられます。<p>
+<div align="center">
+<img src="fie_cg_convex.png" alt="fie_cg_convex.png">
+</div>
+<p>
+処理速度のオーダーは Ｏ( n log n ) です。 （凸包生成ルーチンのオーダーは Ｏ(n) ですが、前処理のソートのオーダーが支配的であるため。）<p>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+アルゴリズムの詳細については以下を参照してください。<ul>
+<li>D.Avis 他 入門 有限・離散の数学４「計算幾何学・離散幾何学」第２章、(朝倉書店) 1994 </li></ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283">fnFIE_convex2d_monochain</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT iPntsNum, <a class="el" href="structDPNT__T.html">DPNT_T</a> **ppHull, INT *ipVerNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Monotone Chain法による二次凸包作成  <a href="#gaed228d41a5c85817532fc4375c3f283"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gaed228d41a5c85817532fc4375c3f283"></a><!-- doxytag: member="fie_convex2d.c::fnFIE_convex2d_monochain" ref="gaed228d41a5c85817532fc4375c3f283" args="(const DPNT_T *pnts, INT iPntsNum, DPNT_T **ppHull, INT *ipVerNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_convex2d_monochain           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iPntsNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppHull</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipVerNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Monotone Chain法による二次凸包作成 
+<p>
+Monotone Chain法によって、入力された２次元点データの凸包を作成します。 出力される凸包の頂点列はデカルト座標系の上で時計回りとなります。（図参照）<p>
+<div align="center">
+<img src="fie_cg_convex.png" alt="fie_cg_convex.png">
+</div>
+<p>
+最初と最後の頂点は同じ点であるため、出力される凸包の頂点数は実の頂点数プラス１になります。 凸包保存用メモリは関数内部に確保するため、パラメタを渡すときに <em>*ppHull</em> は必ずNULLにしなければなりません。 入力点数は3点以上なければいけません。<p>
+凸包を構成する前に内部点の除去を行なうことにより、平均的に処理時間を短縮しています。<p>
+与えられる入力点はソートしなくても、重複点があっても構いません。 入力点列が一直線上にある場合や、すべて同一点だった場合などの時には F_ERR_CALC_IMPOSSIBLE を返します。<p>
+機械計算誤差があるため、入力点の距離が小さ過ぎる場合に、あるいは点の座標が大き過ぎる場合に 正しい凸包にならない可能性があります。<p>
+作成された凸包の頂点列 <em>*ppHull</em> は不要になったら <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて解放してください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>以下の関数で利用する場合は、頂点の個数（ <em>ipVerNum</em> ）から１引いた個数（ <em>ipVerNum</em> - 1 ）を指定してください。 本関数では、最初と最後の頂点が同じ点となるため、出力された出力される凸包の頂点列をそのまま利用すると凸包と判定されません。 <ul>
+<li><a class="el" href="group__fie__cg__polygon.html#g9e659e8b8bc43fcf5fd8b4e2db77bd2a" title="多角形の凸性のチェック(整数型)">fnFIE_cg_convex_polygon_check()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#ge6cd93ba2c383d09b6ad559398b7ce26" title="多角形の凸性のチェック(浮動小数点型)">fnFIE_cg_convex_polygon_check_d()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#gdf4a4d75e6eb89d59fba76a6b8cfbd8a" title="多角形の単純性のチェック(整数型)">fnFIE_cg_simple_polygon_check()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#ga8d2865bc487939570e48858df08f132" title="多角形の単純性のチェック(浮動小数点型)">fnFIE_cg_simple_polygon_check_d()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g6be2f00f6464ed6e51543e48ac737be1" title="単純多角形の符号付面積(整数型)">fnFIE_cg_polygon_area_calc()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g09f8f2a909bd8a612777791a6f2c21ec" title="単純多角形の符号付面積(浮動小数点型)">fnFIE_cg_polygon_area_calc_d()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g040dd3cd8e4a22d8827e5720e59a1eac" title="凸多角形に関する最遠点対問題(整数型)">fnFIE_cg_convex_polygon_diameter()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g6f656dffc76469ed285ca7d8dfe6df17" title="凸多角形に関する最遠点対問題(浮動小数点型)">fnFIE_cg_convex_polygon_diameter_d()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g8869894c43652a962d3886e9e4c86348" title="点の凸多角形に対する位置判定">fnFIE_cg_pos_point_to_convex_polygon()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g35e175ec720cb4666ad23a8cff79aee4" title="点の単純多角形に対する位置判定">fnFIE_cg_pos_point_to_simple_polygon()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#gc29606372a2f6bdb702adf19a6ff984f" title="凸多角形内部点列挙の実行">fnFIE_cg_points_in_convex_polygon()</a> </li>
+<li><a class="el" href="group__fie__cg__polygon.html#g046e37c8a29286a0f5de87cd78ce38d6" title="単純多角形内部点列挙の実行">fnFIE_cg_points_in_simple_polygon()</a></li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>入力点集合配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iPntsNum</em>&nbsp;</td><td>入力点の数（３点以上） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppHull</em>&nbsp;</td><td>出力される凸包の頂点列（ <em>*ppHull</em> は必ずNULLでなければならない） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipVerNum</em>&nbsp;</td><td>出力される凸包の頂点の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>入力点列が一直線上にある、或いはすべて同一点だった </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+
+<span class="comment">//出力画像の幅と高さ及び，入力点数</span>
+<span class="preprocessor">#define WIDTH 206</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 204</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM 20</span>
+<span class="preprocessor"></span>
+VOID convex2d_monochain()
+{
+    <span class="comment">//変数宣言部</span>
+
+    INT i;  <span class="comment">//ループ変数</span>
+
+    <span class="comment">//二次凸包計算用変数</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> dpnts[PNTS_NUM];     <span class="comment">//入力点集合配列</span>
+    INT pnts_num = PNTS_NUM;    <span class="comment">//入力点の数（３点以上）</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> * phull = NULL;      <span class="comment">//出力される凸包の頂点列（ *phull は必ずNULLでなければならない）</span>
+    INT ver_num;                <span class="comment">//出力される凸包の頂点の個数</span>
+
+    <span class="comment">//描画用変数</span>
+    DOUBLE val=0;           <span class="comment">//描画用矩形，線分，凸包の濃度値</span>
+
+    FHANDLE hdst = NULL;    <span class="comment">//結果画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;
+    FHANDLE hrgb_g = NULL;
+    FHANDLE hrgb_b = NULL;
+
+    <span class="comment">//処理部</span>
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+    <span class="comment">//チャイルド画像の領域を確保</span>
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//入力点群</span>
+    dpnts[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=50,dpnts[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=60;
+    dpnts[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=15,dpnts[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=96;
+    dpnts[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=35,dpnts[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=52;
+    dpnts[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=22,dpnts[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=106;
+    dpnts[4].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=55,dpnts[4].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=116;
+    dpnts[5].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=65,dpnts[5].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=126;
+    dpnts[6].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=101,dpnts[6].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=168;
+    dpnts[7].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=19,dpnts[7].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=65;
+    dpnts[8].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=66,dpnts[8].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=55;
+    dpnts[9].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=182,dpnts[9].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=98;
+    dpnts[10].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=152,dpnts[10].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=78;
+    dpnts[11].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=36,dpnts[11].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=124;
+    dpnts[12].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=45,dpnts[12].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=156;
+    dpnts[13].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=150,dpnts[13].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=180;
+    dpnts[14].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=147,dpnts[14].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=100;
+    dpnts[15].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=170,dpnts[15].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=170;
+    dpnts[16].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=132,dpnts[16].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=78;
+    dpnts[17].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=111,dpnts[17].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=50;
+    dpnts[18].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=122,dpnts[18].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=13;
+    dpnts[19].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=44,dpnts[19].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=84;
+
+    <span class="comment">//入力点の描画</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;pnts_num; i++)
+    {
+        <span class="comment">//入力点を半径2の円で描画する</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_r, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+    }
+
+    <span class="comment">//二次凸包の計算</span>
+    <a class="code" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain</a>(dpnts, pnts_num, &amp;phull, &amp;ver_num);
+
+    <span class="comment">//二次凸包の描画</span>
+    <a class="code" href="group__fie__img__draw.html#g0045909ea39b11183dc8776dd8e832b7" title="多角形の描画">fnFIE_draw_polygon</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, phull, (ver_num-1));
+    <a class="code" href="group__fie__img__draw.html#g0045909ea39b11183dc8776dd8e832b7" title="多角形の描画">fnFIE_draw_polygon</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, phull, (ver_num-1));
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(phull);              <span class="comment">//取得した凸包の頂点列の開放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );      <span class="comment">//結果画像領域の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_r );    <span class="comment">//チャイルド画像領域の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_g );    <span class="comment">//チャイルド画像領域の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_b );    <span class="comment">//チャイルド画像領域の解放</span>
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    convex2d_monochain();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="monochain.png" alt="monochain.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

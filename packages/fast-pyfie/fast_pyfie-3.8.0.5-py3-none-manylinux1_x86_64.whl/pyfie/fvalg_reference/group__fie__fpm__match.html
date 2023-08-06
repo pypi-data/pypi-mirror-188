@@ -1,0 +1,670 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: マッチング実行</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>マッチング実行<br>
+<small>
+[<a class="el" href="group__fie__fpm.html">FPM(特徴点応用マッチング)</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba">fnFIE_fpm_matching_image</a> (FHANDLE hfpm, FHANDLE himage, FHANDLE hmask_match, <a class="el" href="structBOX__T.html">BOX_T</a> window, enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a> method, const <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *pfeature_param, const <a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> *pmatching_param, <a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *pmatching_result, INT *presult_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FPM画像オブジェクトからのマッチング実行  <a href="#g990e5409ee9d363460a1aed38097c0ba"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48">fnFIE_fpm_matching_feature</a> (FHANDLE hfpm, FHANDLE hfeature, FHANDLE hmask_match, <a class="el" href="structBOX__T.html">BOX_T</a> window, const <a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> *pmatching_param, <a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *pmatching_result, INT *presult_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FPM特徴量オブジェクトからのマッチング実行  <a href="#gc83e6c4b140ac81e8d95c0526bb41e48"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__match.html#g7036d46089e09426c677605c0c25eae0">fnFIE_fpm_matching_areascore</a> (FHANDLE hfpm, FHANDLE htarget, const <a class="el" href="structF__FPM__AREASCORE.html">F_FPM_AREASCORE</a> *pareascore_param, INT require_result_num, <a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *pmatching_result, INT *presult_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">領域スコア再計算  <a href="#g7036d46089e09426c677605c0c25eae0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0">fnFIE_fpm_matching</a> (FHANDLE hfpm, FHANDLE htarget, FHANDLE hmask_match, <a class="el" href="structBOX__T.html">BOX_T</a> window, enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a> method, const <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *pfeature_param, const <a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> *pmatching_param, const <a class="el" href="structF__FPM__AREASCORE.html">F_FPM_AREASCORE</a> *pareascore_param, <a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *pmatching_result, INT *presult_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">一連のマッチング実行  <a href="#gca132263af7dba9bea300f3d247378d0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__match.html#g7b9429144335ed6d0eac3c83fbb79a0a">fnFIE_fpm_matching_essential</a> (FHANDLE hfpm, FHANDLE htarget, INT err_wide, INT threshold, INT require_result_num, <a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *pmatching_result, INT *presult_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">不可欠領域スコア計算  <a href="#g7b9429144335ed6d0eac3c83fbb79a0a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__match.html#g1fb9d1438306bd84df0a15dcf6cafd5e">fnFIE_fpm_matching_recalc_with_edgeless_mask</a> (FHANDLE hfpm, FHANDLE htarget, INT err_wide, DOUBLE noise_weight, INT threshold, INT require_result_num, <a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *pmatching_result, INT *presult_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">特定領域エッジ減点スコア計算  <a href="#g1fb9d1438306bd84df0a15dcf6cafd5e"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g990e5409ee9d363460a1aed38097c0ba"></a><!-- doxytag: member="fie_fpm_match.c::fnFIE_fpm_matching_image" ref="g990e5409ee9d363460a1aed38097c0ba" args="(FHANDLE hfpm, FHANDLE himage, FHANDLE hmask_match, BOX_T window, enum f_fpm_featedge method, const F_FPM_FEATURE *pfeature_param, const F_FPM_MATCH *pmatching_param, F_SEARCH_RESULT *pmatching_result, INT *presult_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_matching_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask_match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBOX__T.html">BOX_T</a>&nbsp;</td>
+          <td class="paramname"> <em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a>&nbsp;</td>
+          <td class="paramname"> <em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pfeature_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>presult_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FPM画像オブジェクトからのマッチング実行 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>マッチング対象となる画像オブジェクト(画像タイプ：uc8 のみ対応)<br>
+ チャネル数は 1 でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask_match</em>&nbsp;</td><td>マッチングエリアへのマスク情報<br>
+ 画像タイプ uc8 のみ対応し、チャネル数は 1 でなければいけません。<br>
+ NULLが指定された場合はマスクを使用しません </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>window</em>&nbsp;</td><td>マッチングエリア </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>method</em>&nbsp;</td><td>特徴量抽出手法<ul>
+<li>F_FPM_SOBEL_EDGE ソーベルによる特徴量抽出</li><li>F_FPM_CORR_EDGE 相関エッジによる特徴量抽出</li><li>F_FPM_SOBEL_MAX_EDGE 強度上限付ソーベルによる特徴量抽出</li><li>F_FPM_CORR_MAX_EDGE 強度上限付相関エッジによる特徴量抽出</li><li>F_FPM_GROOVE_EDGE 細線エッジによる特徴量抽出 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pfeature_param</em>&nbsp;</td><td>特徴量計測パラメータ(NULLが指定された場合はマスターパタン登録時のパラメータを使用します) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pmatching_param</em>&nbsp;</td><td>マッチングパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_result</em>&nbsp;</td><td>マッチング結果 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>presult_num</em>&nbsp;</td><td>マッチング結果個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>引数画像オブジェクトが異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量が見つかりません。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>回答を格納するバッファは <em>matching_param</em> 内のメンバにて指定した検出数( require_result_num )の分だけ用意しておいてください。</li><li><em>himage</em> から抽出し、マッチングに使用した特徴量はFPMオブジェクト内部で保持します。その際、前に保持していた特徴量データは削除されます。</li><li>入力する画像オブジェクトの ステップサイズが 8で割り切れない場合には画像のコピーを行うため処理時間が余計にかかります。 特に、F_FPM_NORMAL_MODEで実行する場合, 画像オブジェクトを <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe" title="ルート画像の確保(import版)">fnFIE_img_root_import_alloc()</a> で確保した場合にはお気をつけください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc83e6c4b140ac81e8d95c0526bb41e48"></a><!-- doxytag: member="fie_fpm_match.c::fnFIE_fpm_matching_feature" ref="gc83e6c4b140ac81e8d95c0526bb41e48" args="(FHANDLE hfpm, FHANDLE hfeature, FHANDLE hmask_match, BOX_T window, const F_FPM_MATCH *pmatching_param, F_SEARCH_RESULT *pmatching_result, INT *presult_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_matching_feature           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfeature</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask_match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBOX__T.html">BOX_T</a>&nbsp;</td>
+          <td class="paramname"> <em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>presult_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+FPM特徴量オブジェクトからのマッチング実行 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfeature</em>&nbsp;</td><td>FPM特徴量オブジェクト（マッチング対象画像から得られた） 特徴量オブジェクト取得関数( <a class="el" href="group__fie__fpm__feature.html#gf250806b575ee18e06aacc4c55fbd8fa" title="特徴量を取得">fnFIE_fpm_feature_alloc()</a>, <a class="el" href="group__fie__fpm__feature.html#gc0ddd8ec72900d3124a18a60250e2753" title="ウィンドウを指定して特徴量を取得">fnFIE_fpm_feature_window_alloc()</a> )によって生成したオブジェクトを指定します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask_match</em>&nbsp;</td><td>マッチングエリアへのマスク情報<br>
+ 画像タイプ uc8 のみ対応し、チャネル数は 1 でなければいけません。<br>
+ NULLが指定された場合はマスクを使用しません </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>window</em>&nbsp;</td><td>マッチングエリア </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pmatching_param</em>&nbsp;</td><td>マッチングパラメータ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_result</em>&nbsp;</td><td>マッチング結果 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>presult_num</em>&nbsp;</td><td>マッチング結果個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量が見つかりません。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>指定するFPMオブジェクトと特徴量オブジェクトは、同じマッチングモードで生成したものでなければなりません。</li><li>回答を格納するバッファは <em>matching_param</em> 内のメンバにて指定した検出数(require_result_num)の分だけ用意しておいてください。</li><li>本マッチング関数ではFPMオブジェクトに特徴量を保持するためにコピーを行います。その際、前に保持していた特徴量データは削除されます。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc()</a>, <a class="el" href="group__fie__fpm__feature.html#gf250806b575ee18e06aacc4c55fbd8fa" title="特徴量を取得">fnFIE_fpm_feature_alloc()</a>, <a class="el" href="group__fie__fpm__feature.html#gc0ddd8ec72900d3124a18a60250e2753" title="ウィンドウを指定して特徴量を取得">fnFIE_fpm_feature_window_alloc()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7036d46089e09426c677605c0c25eae0"></a><!-- doxytag: member="fie_fpm_match.c::fnFIE_fpm_matching_areascore" ref="g7036d46089e09426c677605c0c25eae0" args="(FHANDLE hfpm, FHANDLE htarget, const F_FPM_AREASCORE *pareascore_param, INT require_result_num, F_SEARCH_RESULT *pmatching_result, INT *presult_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_matching_areascore           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FPM__AREASCORE.html">F_FPM_AREASCORE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pareascore_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>require_result_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>presult_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+領域スコア再計算 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>htarget</em>&nbsp;</td><td>領域スコア計算に使用する特徴量情報が格納されたオブジェクト 特徴量オブジェクトが有効です。 NULLが指定された場合にはFPMオブジェクトに格納された(最後にマッチングに使用した)特徴量情報を使用します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pareascore_param</em>&nbsp;</td><td>領域スコア再計算パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>require_result_num</em>&nbsp;</td><td>結果取得数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_result</em>&nbsp;</td><td>マッチング結果 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>presult_num</em>&nbsp;</td><td>マッチング結果個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>FPMオブジェクトは、マッチング処理( <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a> or <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> or <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a> )を実行済みのものを指定する必要があります。</li><li>指定するFPMオブジェクトとターゲットオブジェクトに格納された特徴量は、同じマッチングモードで生成したものでなければなりません。</li><li>回答を格納するバッファは、<em>require_result_num</em> にて指定した分だけ用意しておいてください。</li><li>本関数の実行後、エリアスコアしきい値を下回るマッチング回答はFPMオブジェクトから削除されます。 スコア再計算前のマッチング回答を保持したい場合は、 <a class="el" href="group__fie__object.html#g257c9e1516b24ef66ef86e084f6c19d7" title="オブジェクトをコピー">fnFIE_copy_object()</a> により予めFPMオブジェクトを複製するか、マッチング処理を再実行してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc()</a>, <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a>, <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gca132263af7dba9bea300f3d247378d0"></a><!-- doxytag: member="fie_fpm_match.c::fnFIE_fpm_matching" ref="gca132263af7dba9bea300f3d247378d0" args="(FHANDLE hfpm, FHANDLE htarget, FHANDLE hmask_match, BOX_T window, enum f_fpm_featedge method, const F_FPM_FEATURE *pfeature_param, const F_FPM_MATCH *pmatching_param, const F_FPM_AREASCORE *pareascore_param, F_SEARCH_RESULT *pmatching_result, INT *presult_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_matching           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask_match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBOX__T.html">BOX_T</a>&nbsp;</td>
+          <td class="paramname"> <em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">f_fpm_featedge</a>&nbsp;</td>
+          <td class="paramname"> <em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="unionF__FPM__FEATURE.html">F_FPM_FEATURE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pfeature_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FPM__MATCH.html">F_FPM_MATCH</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__FPM__AREASCORE.html">F_FPM_AREASCORE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pareascore_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>presult_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+一連のマッチング実行 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>htarget</em>&nbsp;</td><td>FPMでマッチング対象となる画像オブジェクト、もしくは対象画像から得られた特徴量が格納されたオブジェクトを指定します。<br>
+ 画像オブジェクト、特徴量オブジェクト、FPMオブジェクトが有効です。<br>
+ 画像オブジェクトが指定された場合には、画像タイプ uc8 のみ対応し、チャネル数は 1 でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask_match</em>&nbsp;</td><td>マッチングエリアへのマスク情報<br>
+ 画像タイプ uc8 のみ対応し、チャネル数は 1 でなければいけません。 NULLが指定された場合はマスクを使用しません </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>window</em>&nbsp;</td><td>マッチングエリア </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>method</em>&nbsp;</td><td>特徴量抽出手法<ul>
+<li>F_FPM_SOBEL_EDGE ソーベルによる特徴量抽出</li><li>F_FPM_CORR_EDGE 相関エッジによる特徴量抽出</li><li>F_FPM_SOBEL_MAX_EDGE 強度上限付ソーベルによる特徴量抽出</li><li>F_FPM_CORR_MAX_EDGE 強度上限付相関エッジによる特徴量抽出</li><li>F_FPM_GROOVE_EDGE 細線エッジによる特徴量抽出 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pfeature_param</em>&nbsp;</td><td>特徴量計測パラメータ構造体へのポインタ<br>
+ htargetに特徴量オブジェクトを指定した場合は使用しません。<br>
+ htargetに画像オブジェクトが指定され、NULLが指定された場合はマスターパタン登録時のパラメータを使用します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pmatching_param</em>&nbsp;</td><td>マッチングパラメータ構造体へのポインタ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pareascore_param</em>&nbsp;</td><td>領域スコア再計算パラメータへのポインタ（領域スコア再計算を行わない場合にはNULLを指定） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_result</em>&nbsp;</td><td>マッチング結果 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>presult_num</em>&nbsp;</td><td>マッチング結果個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>引数画像オブジェクトが異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量が見つかりません。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>回答を格納するバッファは <em>matching_param</em> 内のメンバにて指定した検出数(require_result_num)の分だけ用意しておいてください。</li><li><em>htarget</em> から抽出し、マッチングに使用した特徴量はFPMオブジェクト内部で保持します。その際、前に保持していた特徴量データは削除されます。</li><li>入力する画像オブジェクトの ステップサイズが 8で割り切れない場合には画像のコピーを行うため処理時間が余計にかかります。 特に F_FPM_NORMAL_MODE で実行する場合, 画像オブジェクトを <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe" title="ルート画像の確保(import版)">fnFIE_img_root_import_alloc()</a> で確保した場合にはお気をつけください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7b9429144335ed6d0eac3c83fbb79a0a"></a><!-- doxytag: member="fie_fpm_match.c::fnFIE_fpm_matching_essential" ref="g7b9429144335ed6d0eac3c83fbb79a0a" args="(FHANDLE hfpm, FHANDLE htarget, INT err_wide, INT threshold, INT require_result_num, F_SEARCH_RESULT *pmatching_result, INT *presult_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_matching_essential           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_wide</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>require_result_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>presult_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+不可欠領域スコア計算 
+<p>
+指定された不可欠領域情報を使用して不可欠領域スコアを計算します。<br>
+<p>
+不可欠領域の設定を行うと、通常のサーチ処理を行った後、不可欠領域エリアにある情報だけを使用してスコアを再計算します。 特に、下図のように大きなパタンの中に含まれる小さな領域に対してのスコアに差をつけたい場合に有効な処理です。<p>
+<div align="center">
+<img src="fpm_esse.png" alt="fpm_esse.png">
+<p><strong>fig．不可欠領域設定によるスコア</strong></p></div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>htarget</em>&nbsp;</td><td>不可欠領域領域スコア計算に使用する特徴量情報が格納されたオブジェクト 特徴量オブジェクトが有効です。 NULLが指定された場合にはFPMオブジェクトに格納された(最後にマッチングに使用した)特徴量情報を使用します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_wide</em>&nbsp;</td><td>対応点誤差範囲(0≦err_wide) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>スコアしきい値(0≦threshold≦100) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>require_result_num</em>&nbsp;</td><td>結果取得数(1≦require_result_num) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_result</em>&nbsp;</td><td>マッチング結果 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>presult_num</em>&nbsp;</td><td>マッチング結果個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量がありません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>指定するFPMオブジェクトは、マッチング処理( <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a> or <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> or <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a> )を実行済みのものを指定する必要があります。</li><li>指定するFPMオブジェクトとターゲットオブジェクトに格納された特徴量は、同じマッチングモードで生成したものでなければなりません。</li><li>回答を格納するバッファは、<em>require_result_num</em> にて指定した分だけ用意しておいてください。</li><li>本関数の実行後、スコアしきい値を下回るマッチング回答はFPMオブジェクトから削除されます。 スコア再計算前のマッチング回答を保持したい場合は、 <a class="el" href="group__fie__object.html#g257c9e1516b24ef66ef86e084f6c19d7" title="オブジェクトをコピー">fnFIE_copy_object()</a> により予めFPMオブジェクトを複製するか、マッチング処理を再実行してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g736c80f84bfccffc6dcb29ecf7a6b542" title="不可欠領域の設定">fnFIE_fpm_set_pattern_essential()</a>, <a class="el" href="group__fie__fpm__pattern.html#g5b781d6b178f34f25aa950d2a669df92" title="不可欠領域情報の取得">fnFIE_fpm_get_pattern_essential()</a>, <a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc()</a>, <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a>, <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1fb9d1438306bd84df0a15dcf6cafd5e"></a><!-- doxytag: member="fie_fpm_match.c::fnFIE_fpm_matching_recalc_with_edgeless_mask" ref="g1fb9d1438306bd84df0a15dcf6cafd5e" args="(FHANDLE hfpm, FHANDLE htarget, INT err_wide, DOUBLE noise_weight, INT threshold, INT require_result_num, F_SEARCH_RESULT *pmatching_result, INT *presult_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_matching_recalc_with_edgeless_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_wide</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>noise_weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>require_result_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__SEARCH__RESULT.html">F_SEARCH_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>pmatching_result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>presult_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特定領域エッジ減点スコア計算 
+<p>
+指定されたエッジ減点領域情報を使用して特定領域エッジ減点スコアを計算します。<br>
+<p>
+特定領域エッジ減点スコアは、通常のサーチ処理を行った後、エッジ減点領域情報にあるエッジの分だけ減点処理を行いスコアを再計算します。 下図のように、大きなパタンの内側に含まれる余計なエッジを減点しつつ、パタンの外側にあるエッジは減点しない場合に有効な処理です。<p>
+<div align="center">
+<img src="fpm_edgeless_mask.png" alt="fpm_edgeless_mask.png">
+<p><strong>fig．エッジ減点領域設定によるスコア</strong></p></div>
+<p>
+エッジ減点領域情報は <a class="el" href="group__fie__fpm__pattern.html#g39d4fdc49f09357e7d03c7739cab4cb8" title="エッジ減点領域の設定">fnFIE_fpm_set_pattern_edgeless_mask()</a> により設定してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>htarget</em>&nbsp;</td><td>不可欠領域領域スコア計算に使用する特徴量情報が格納されたオブジェクト <br>
+ 特徴量オブジェクトが有効です。 NULLが指定された場合にはFPMオブジェクトに格納された(最後にマッチングに使用した)特徴量情報を使用します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_wide</em>&nbsp;</td><td>対応点誤差範囲(0≦err_wide) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>noise_weight</em>&nbsp;</td><td>エッジ減点重み係数(0≦noise_weight) <br>
+ エッジ減点領域内の1つのエッジに対する減点値の重みを表します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>スコアしきい値(0≦threshold≦100) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>require_result_num</em>&nbsp;</td><td>結果取得数(1≦require_result_num) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pmatching_result</em>&nbsp;</td><td>マッチング結果 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>presult_num</em>&nbsp;</td><td>マッチング結果個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量がありません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>指定するFPMオブジェクトは、マッチング処理( <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a> or <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> or <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a> )を実行済みのものを指定する必要があります。</li><li>指定するFPMオブジェクトとターゲットオブジェクトに格納された特徴量は、同じマッチングモードで生成したものでなければなりません。</li><li>回答を格納するバッファは、<em>require_result_num</em> にて指定した分だけ用意しておいてください。</li><li>本関数の実行後、スコアしきい値を下回るマッチング回答はFPMオブジェクトから削除されます。 スコア再計算前のマッチング回答を保持したい場合は、 <a class="el" href="group__fie__object.html#g257c9e1516b24ef66ef86e084f6c19d7" title="オブジェクトをコピー">fnFIE_copy_object()</a> により予めFPMオブジェクトを複製するか、マッチング処理を再実行してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fpm__pattern.html#g39d4fdc49f09357e7d03c7739cab4cb8" title="エッジ減点領域の設定">fnFIE_fpm_set_pattern_edgeless_mask()</a>, <a class="el" href="group__fie__fpm__pattern.html#g6850d50fb21378e9409704b907b1c0e9" title="エッジ減点領域情報の取得">fnFIE_fpm_get_pattern_edgeless_mask()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

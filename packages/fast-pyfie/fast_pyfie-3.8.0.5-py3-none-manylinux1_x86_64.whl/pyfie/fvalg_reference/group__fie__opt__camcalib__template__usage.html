@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: キャリブレーションテンプレートの利用</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>キャリブレーションテンプレートの利用<br>
+<small>
+[<a class="el" href="group__fie__opt__camcalib.html">カメラキャリブレーション</a>]</small>
+</h1><dl class="user" compact><dt><b>キャリブレーションテンプレートを用いた座標列の取得とその利用</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b>キャリブレーションテンプレート</b></dt><dd>当ライブラリでは以下のような形状のキャリブレーションテンプレートを用います。 <div align="center">
+<img src="calib_templates_sample.png" alt="calib_templates_sample.png">
+<p><strong>キャリブレーションテンプレートの例</strong></p></div>
+黒枠によって周囲の環境から切り離した白い正方形の中に等間隔で円を配置し、座標系の方向を特定するため円を一つ抜いた形状です。 各々の円の中心を特徴点として基準モデル座標列に対応します。 <br>
+ 円モデルのキャリブレーションテンプレートのサイズは以下のようにします。 <div align="center">
+<img src="circle_model.png" alt="circle_model.png">
+<p><strong>円モデルのキャリブレーションテンプレート</strong></p></div>
+図の数値は長さの比を表現しており、キャリブレーションテンプレートの実物を製作する際には適切な長さにして作成します。 キャリブレーションテンプレートの原点は白い正方形領域の中心です。正方形領域の中心で差し支えがある場合はオフセットを指定して別の場所に設定することができます。 <div align="center">
+<img src="circle_model_offset.png" alt="circle_model_offset.png">
+<p><strong>原点の移動</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b>キャリブレーションテンプレートの作成</b></dt><dd>平滑な板にパターンを描画して用います。精密に平滑であることと、パターンの描画精度が高いことがよりよいカメラキャリブレーションの為に重要です。 入手しやすく平滑な面の例としてはガラス板があります。</dd></dl>
+<dl class="user" compact><dt><b>キャリブレーションテンプレートを用いたカメラキャリブレーションの流れ</b></dt><dd><ul>
+<li>カメラ内部パラメータの算出<ul>
+<li>キャリブレーションテンプレートを撮像します。</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> でキャリブレーションテンプレートの形状とサイズ、原点位置を与え、キャリブレーションデータオブジェクトを作成します。</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g9dc19e6717b62eac0d5e39401c84e0d8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  特徴点の検出...">fnFIE_calib_add_data2()</a> に撮像した画像を与え、キャリブレーションデータオブジェクトに座標点列を追加します。撮像した枚数だけ繰り返します。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#g8028fe1ae3343e24a1c17b8e9c5e98c8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ内部パ...">fnFIE_calib_calc_intrinsic_parameters()</a> でカメラ内部パラメータを算出します。</li></ul>
+</li><li>カメラ外部パラメータの算出<ul>
+<li>ワールド座標系原点を設定します。（キャリブレーションテンプレートを原点位置に設置）</li><li>キャリブレーションテンプレートを撮像します。</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g274576a8c3f1369f24764bcb14a8ebc0" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  特徴点の検出...">fnFIE_calib_detect()</a> で撮像したキャリブレーションテンプレートの画像から特徴点の座標を検出します。</li><li><a class="el" href="group__fie__opt__camcalib__use.html#gb3618da3839ddf73c84a10f9721b3264" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列を歪み補...">fnFIE_calib_undistort_points()</a> で特徴点の座標を理想画像座標系に変換します。</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g7225ccf2d7c044b3297e5b8a811495a3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  基準モデル座...">fnFIE_calib_get_model_points()</a> でキャリブレーションデータオブジェクトから基準モデル座標列を取得します。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#g1a4f0ab9bfce79d32a5e01a83f9fa59a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ外部パ...">fnFIE_calib_calc_extrinsic_parameters()</a> でカメラ外部パラメータを算出します。</li></ul>
+</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>カメラ内部パラメータ算出のためのキャリブレーションテンプレートの撮像について</b></dt><dd>簡易的には、5枚を視野の中央付近で正面、上下、左右にキャリブレーションテンプレートを傾けて撮像して下さい。 <div align="center">
+<img src="grab_template1.png" alt="grab_template1.png">
+<p><strong>推奨するキャリブレーションテンプレートの動かし方</strong></p></div>
+キャリブレーションテンプレートが固定されていたり巨大だったりして姿勢を動かしにくい場合、カメラ側を動かして撮像します。 カメラ内部パラメータの算出のためにはレンズとカメラの組み合わせだけが固定されていれば良いため、撮像するカメラの位置は自由にできます。 <div align="center">
+<img src="grab_template2.png" alt="grab_template2.png">
+<p><strong>カメラ側を動かす例</strong></p></div>
+最初の5枚の後は、視野の周辺部分で中央同様に姿勢を動かしたり撮像済みの姿勢でも特徴点の間隔の半分だけ動かしたり角度を変えたりと、特徴点が占めなかった場所を埋めるように動かして行きます。 <div align="center">
+<img src="grab_template3.png" alt="grab_template3.png">
+<p><strong>視野周辺データを追加していく</strong></p></div>
+より良いカメラ内部パラメータの算出のためには<br>
+<ul>
+<li>撮像枚数を増やします。増えれば増えるほどカメラ内部パラメータの算出時間は多くなりますが、より良いカメラ内部パラメータを得られる可能性があります。場合により10から30枚程度を利用するのがよいでしょう。</li><li>各画像に写すキャリブレーションテンプレートが相互に異なった位置・姿勢になるよう調整します。ほぼ同一な画像を複数追加しても計算時間が増大するのみで算出結果は改善されません。</li><li>視野を埋めるようにキャリブレーションテンプレートを動かします。画像の視野全域にわたって特徴点が検出された方が良いパラメータになります。視野の一部分のみでキャリブレーションテンプレートを撮像していると、キャリブレーションテンプレートを写さなかった部分の視野では実態に合わないカメラ内部パラメータを算出してしまうことがあります。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>カメラ外部パラメータ算出のためのキャリブレーションテンプレートの撮像について</b></dt><dd>カメラ外部パラメータ算出のためにキャリブレーションテンプレートを撮像することは、視野の中でワールド座標系原点を設定する意味があります。 そのため、カメラの設置位置をしっかりと決めて動かさないようにし、撮像対象に対して視野を固定します。 視野の中でワールド座標系の原点にしたい位置へ <a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> の実行時に設定したキャリブレーションテンプレート上の原点位置を合わせるようにキャリブレーションテンプレートを設置し、 ワールド座標系のx軸y軸にしたい方向へキャリブレーションテンプレートの辺が向くように、また円の一つ抜けている角がx軸とy軸の正となる象限になるようにします。 <div align="center">
+<img src="set_world_coodinate.png" alt="set_world_coodinate.png">
+<p><strong>外部パラメータ算出のためのテンプレート撮像</strong></p></div>
+</dd></dl>
+<dl class="user" compact><dt><b>その他の注意点</b></dt><dd><ul>
+<li>同じキャリブレーションテンプレート画像を何枚追加してもカメラ内部パラメータは良くなりません。</li><li>キャリブレーションテンプレートの撮像結果がボケていると特徴点の検出に差し支えます。キャリブレーションテンプレートは3次元的に動かすため、テンプレートの近い側と遠い側ではカメラからの距離が大きく違う場合がありますが、そのような場合にボケが発生しないよう、レンズを適切に調整してください。</li><li>キャリブレーションテンプレートの白い部分の輝度がなるべく飽和しないようにしてください。特徴点の検出に悪影響が出る場合があります。</li><li>画像が放射歪みを起こしている前提で歪みモデルの当てはめを行うため、テレセントリックレンズや焦点距離が長くて歪みの少ないレンズなどでは光軸中心の推定がうまくいかず、良いカメラ内部パラメータを得ることができません。</li><li>画像が放射歪みを起こしている前提で歪みモデルの当てはめを行うため、ラインセンサでは画像の送り方向でモデルが適合しません。良いカメラ内部パラメータを得られません。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>キャリブレーションテンプレートの利用例</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b>例：キャリブレーションテンプレートを用いたカメラの歪み補正</b></dt><dd><ul>
+<li>キャリブレーションテンプレートを用意します。</li><li>様々な方向からキャリブレーションテンプレートを撮像します。 <div align="center">
+<img src="grab_template1.png" alt="grab_template1.png">
+</div>
+</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g0dca9ae9c6d894aa5780ed10c293d6f3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラキャリ...">fnFIE_calib_open2()</a> でキャリブレーションテンプレートの形状とサイズ、原点位置を与え、キャリブレーションデータオブジェクトを作成します。 上図の場合の条件は type = F_CALIB_MODEL_CIRCLE, n = 7, unit = 7.5mmでした。また今回 offsetはゼロとします。</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g9dc19e6717b62eac0d5e39401c84e0d8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  特徴点の検出...">fnFIE_calib_add_data2()</a> に撮像した画像を与え、キャリブレーションデータオブジェクトに座標点列を追加します。上図は5枚なので5回実行します。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#g8028fe1ae3343e24a1c17b8e9c5e98c8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ内部パ...">fnFIE_calib_calc_intrinsic_parameters()</a> でカメラ内部パラメータを算出します。</li><li>歪み補正の仕方を選び、座標変換マップを作成します。<ul>
+<li>今回は変換元画像の全てのピクセルが変換先に現れることを目的に <a class="el" href="group__fie__opt__camcalib__use.html#ga71615c4d685f73ebabf2b3ba6ca72a0" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  歪み補正画像...">fnFIE_calib_undistort_fit_rect()</a> を使用し mode = 1 を選択します。</li><li>得られた画像縦横サイズを元に、座標変換マップと出力先画像の画像オブジェクトを用意します。</li><li><a class="el" href="group__fie__opt__camcalib__use.html#ge8d82c04fd81c148d2fe4dfd031bd721" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の歪み補...">fnFIE_calib_undistort_image_map_scale()</a> で座標変換マップを作成します。</li></ul>
+</li><li>撮像し、 <a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping()</a> を実行して歪み補正を行います。 <div align="center">
+<img src="sample_undistort1.png" alt="sample_undistort1.png">
+<p><strong>歪み補正画像1</strong></p></div>
+この段階では視野中にキャリブレーションテンプレートは必要ありません。処理例のわかりやすさのためにキャリブレーションテンプレートを撮像対象にしています。 中央付近のみにキャリブレーションテンプレートを置いてカメラ内部パラメータを算出したため、画像の周辺ではまだ歪みが大きく残っています。 このような場合、歪みの残っているところでキャリブレーションテンプレートを撮像します。 <div align="center">
+<img src="grab_template3.png" alt="grab_template3.png">
+<p><strong>視野周辺データを追加していく</strong></p></div>
+新しい4枚の画像を新たに追加、カメラ内部パラメータを再計算し、歪み補正を行うと次のようになります。画像の周辺まで放射歪みが改善されています。 <div align="center">
+<img src="sample_undistort2.png" alt="sample_undistort2.png">
+<p><strong>歪み補正画像2</strong></p></div>
+ </li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>例：キャリブレーションテンプレートを用いた1shot キャリブレーションによるカメラの歪み補正</b></dt><dd><ul>
+<li>キャリブレーションテンプレートを撮像します。キャリブレーションテンプレートは極力大きく写し、なるべく正面から撮像します。 <div align="center">
+<img src="sample_grab_1shot.png" alt="sample_grab_1shot.png">
+</div>
+</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g9dc19e6717b62eac0d5e39401c84e0d8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  特徴点の検出...">fnFIE_calib_add_data2()</a> に撮像した画像を与えます。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#gf3e633c716b0a13d84572707e4ad3f53" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  １視野による...">fnFIE_calib_calc_1shot()</a> でカメラ内部パラメータを求めます。</li><li>通常のカメラ内部パラメータ算出で求めた場合と同様の歪み補正を行います。 <div align="center">
+<img src="sample_undistort_1shot.png" alt="sample_undistort_1shot.png">
+<p><strong>1shot 歪み補正画像</strong></p></div>
+ </li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>例：キャリブレーションテンプレートを用いた正対変換</b></dt><dd><ul>
+<li>あらかじめカメラ内部パラメータを算出しておきます。</li><li>データを準備します。<ul>
+<li>正対変換を行いたい領域を決めます。 <div align="center">
+<img src="sample_rectify1.png" alt="sample_rectify1.png">
+<p><strong>対象にする領域</strong></p></div>
+</li><li>対象にする領域と同一平面上にキャリブレーションテンプレートを設置することで、ワールド座標系の原点とx軸y軸の方向を決めます。</li><li>キャリブレーションテンプレートの原点から対象の領域へのオフセットを実際に計測しておきます。</li><li>キャリブレーションテンプレートを撮像します。 <div align="center">
+<img src="sample_rectify2.png" alt="sample_rectify2.png">
+<p><strong>設置したキャリブレーションテンプレート</strong></p></div>
+</li></ul>
+</li><li>カメラ混合パラメータを算出します。<ul>
+<li><a class="el" href="group__fie__opt__camcalib__init.html#g274576a8c3f1369f24764bcb14a8ebc0" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  特徴点の検出...">fnFIE_calib_detect()</a> で特徴点を検出します。</li><li><a class="el" href="group__fie__opt__camcalib__use.html#gb3618da3839ddf73c84a10f9721b3264" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列を歪み補...">fnFIE_calib_undistort_points()</a> で特徴点の座標を理想画像座標系に変換します。</li><li><a class="el" href="group__fie__opt__camcalib__init.html#g7225ccf2d7c044b3297e5b8a811495a3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  基準モデル座...">fnFIE_calib_get_model_points()</a> でキャリブレーションデータオブジェクトから基準モデル座標列を取得します。</li><li><a class="el" href="group__fie__opt__camcalib__exec.html#g1a4f0ab9bfce79d32a5e01a83f9fa59a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  カメラ外部パ...">fnFIE_calib_calc_extrinsic_parameters()</a> でカメラ混合パラメータを算出します。</li></ul>
+</li><li>画像の正対変換を行います。<ul>
+<li>正対変換したい領域の実寸と、実寸の単位長さに何ピクセル割り当てるかを表す解像度を決め、出力先の画像サイズを求めます。</li><li>座標変換マップと出力先画像の画像オブジェクトを用意します。</li><li><a class="el" href="group__fie__opt__camcalib__use.html#gf3512622ed7c0741f828feaa32821801" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の正対変...">fnFIE_calib_rectify_ud_image_map()</a> にカメラ内部パラメータ、カメラ混合パラメータ、計測したオフセット、解像度を与え、座標変換マップを作成します。</li><li>撮像します。キャリブレーションテンプレートは取り除いてかまいません。</li><li><a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping()</a> を実行して正対変換を行います。 <div align="center">
+<img src="sample_rectify3.png" alt="sample_rectify3.png">
+<p><strong>正対変換結果</strong></p></div>
+ </li></ul>
+</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>例：キャリブレーションテンプレートを用いた距離の測定</b></dt><dd><ul>
+<li>カメラ内部パラメータとカメラ混合パラメータを算出しておきます。</li><li>撮像した画像で測定したい2点の座標を決めます。</li><li><a class="el" href="group__fie__opt__camcalib__use.html#gb3618da3839ddf73c84a10f9721b3264" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点列を歪み補...">fnFIE_calib_undistort_points()</a> で2点の座標を理想画像座標系に変換します。</li><li><a class="el" href="group__fie__math__matrix__lalgebra.html#gceaa47357e18c0db897451fd433b17a7" title="逆行列の算出">fnFIE_mat_inverse()</a> 等を用いてカメラ混合パラメータの逆行列を計算します。</li><li><a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779" title="点群の射影変換">fnFIE_geotrans_perspective_npoints()</a> で2点の座標をワールド座標系へ変換します。</li><li>ワールド座標系での距離を計算します。 </li></ul>
+</dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

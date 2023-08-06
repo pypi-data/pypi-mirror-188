@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 用語定義</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>用語定義<br>
+<small>
+[<a class="el" href="group__fie__opt__camcalib.html">カメラキャリブレーション</a>]</small>
+</h1>キャリブレーション用語定義<p>
+<div align="center">
+<img src="calib_coord.png" alt="calib_coord.png">
+<p><strong>座標系とパラメータ</strong></p></div>
+ <h2><a class="anchor" name="camcalib_coord">
+座標系</a></h2>
+<dl class="user" compact><dt><b>３Ｄワールド座標系</b></dt><dd>全ての座標系の基準となる、３次元の座標系です。</dd></dl>
+<dl class="user" compact><dt><b>ワールド平面座標系</b></dt><dd>ワールド座標系においてＺ軸座標＝０の平面座標系です。 本ライブラリではワールド座標と表記した場合、この平面座標を指します。</dd></dl>
+<dl class="user" compact><dt><b>カメラ画像座標系</b></dt><dd>撮像したそのままの、レンズ歪みのある画像の２次元座標系です。</dd></dl>
+<dl class="user" compact><dt><b>正規化座標系</b></dt><dd>カメラ個々の特性を排除した画像の２次元座標系です。 ピンホールカメラモデルでカメラを近似したとき、ピンホールから単位距離にある平面を想定し、 撮像対象の物体がその平面上に透視投影された場合に光軸とどれだけ離れているかを表現したものです。</dd></dl>
+<dl class="user" compact><dt><b>理想画像座標系（歪み補正画像座標系）</b></dt><dd>当ライブラリ独自の用語。レンズ歪みを補正した画像の２次元座標系です。 正規化画像座標系に対して、メートル単位やミリメートル単位の物理的な長さの座標からピクセル単位への変換、 縦横のアスペクト比、スキュー、レンズの中心軸と画像座標原点のオフセットの影響を加味したものです。 実際に観測することはできませんが、もしレンズ歪みが全く無いならば撮像できるはずの画像座標系です。</dd></dl>
+<hr>
+ <h2><a class="anchor" name="camcalib_params">
+カメラパラメータ</a></h2>
+<dl class="user" compact><dt><b>カメラ内部パラメータ (intrinsic parameters) </b></dt><dd>カメラや撮像対象の姿勢によって変化することなく、 カメラ+レンズ自身が持っている固有の特性を表すパラメータです。 焦点距離、スキュー、画素の縦横比、撮像デバイスにおける光軸の中心、レンズ歪みを表現します。 つまり、カメラ画像座標系とワールド座標系との対応を表します。 本ライブラリでは構造体 <a class="el" href="structF__CAMERA__PARAM.html" title="カメラ内部パラメータ構造体 (intrinsic parameters)">F_CAMERA_PARAM</a> によりこれを保持します。 また、このカメラ内部パラメータの線形成分は 本マニュアルの数式上で <img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> と表現しています。</dd></dl>
+<dl class="user" compact><dt><b>カメラ外部パラメータ (extrinsic parameters)</b></dt><dd>カメラの姿勢によって決定されるパラメータです。 ワールド座標に対するカメラの回転、並進を表現します。 本ライブラリでは変換先のワールド座標を２次元に限定しており、 カメラ外部パラメータは FMATRIX構造体による 3x3行列にてこれを保持します。 また、本マニュアルの数式上では <img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> と表現しています。</dd></dl>
+<dl class="user" compact><dt><b>カメラ混合パラメータ (mixed parameters)</b></dt><dd>カメラ内部パラメータの線形成分 <img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> と カメラ外部パラメータ <img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> に よって算出されるパラメータで、理想画像座標系とワールド座標系との変換を表現します。 本パラメータは3x3の行列で <img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> と <img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> の積 <img class="formulaInl" alt="$\bf{A}\ \bf{Rt}$" src="form_1039.png"> により算出されます。 また、本マニュアルの数式上では <img class="formulaInl" alt="$\bf{H}$" src="form_1031.png"> と表現しています。</dd></dl>
+<hr>
+ <h2><a class="anchor" name="camcalib_terms">
+その他の用語</a></h2>
+<dl class="user" compact><dt><b>カメラ画像座標系</b></dt><dd>撮像したそのままの画像の座標系のこと。</dd></dl>
+<dl class="user" compact><dt><b>カメラキャリブレーション</b></dt><dd>カメラパラメータを推定すること。特に、カメラ内部パラメータを推定すること。</dd></dl>
+<dl class="user" compact><dt><b>基準モデル</b></dt><dd>キャリブレーションに使用する、任意の点座標群のこと。 通常はキャリブレーションテンプレートの特徴点などを使用します。</dd></dl>
+<dl class="user" compact><dt><b>特徴点</b></dt><dd>当ライブラリにおいてはキャリブレーションテンプレート上に描かれた模様の 検出・特定しやすい位置などのこと。エッジ点を全て使うようなことは現実的ではありません。</dd></dl>
+<dl class="user" compact><dt><b>光軸中心</b></dt><dd>レンズの中心軸に当たる点のこと。 当ライブラリにおいては放射歪みの中心となる点。カメラ内部パラメータの u0, v0 と同一になります。 主点。(principal point)</dd></dl>
+<dl class="user" compact><dt><b>正対変換(rectify)</b></dt><dd>仮想座標平面に直交する正面の方向から見た画像に変換すること。 当ライブラリ独自の用語。</dd></dl>
+<dl class="user" compact><dt><b>歪み補正</b></dt><dd>当ライブラリにおいてはカメラ内部パラメータ算出時に推定した 放射歪み係数 k1, k2 を用いて放射歪みを解消すること。</dd></dl>
+<dl class="user" compact><dt><b>ホモグラフィ行列</b></dt><dd>射影変換に使用する行列のこと。射影行列。</dd></dl>
+<dl class="user" compact><dt><b>放射歪み( radial distortion )</b></dt><dd>光軸中心から放射状に広がる、レンズに起因した画像の歪みのこと。 当ライブラリでは光軸中心からの距離 r を変数にした次の多項式で歪みの量を定義します。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ k_1 \cdot r^2+k_2 \cdot r^4 \]" src="form_1040.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b>逆投影誤差</b></dt><dd>当ライブラリでは、カメラパラメータを用いてワールド平面座標系で表された基準モデルをカメラ画像座標系に投影した際に、対応する特徴点座標との差をいいます。 </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

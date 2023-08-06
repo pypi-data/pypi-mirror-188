@@ -1,0 +1,1009 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 多角形</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>多角形<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<dl class="user" compact><dt><b>単純多角形、凸多角形とは</b></dt><dd></dd></dl>
+連続しないどの２辺も交差・接触しない多角形を単純多角形と言います(下図を参照)。 すなわち、その内部が１つの領域になっている多角形のことです。 一方、どの頂点も「へこんでいない」多角形を凸多角形と言います(下図を参照)。 厳密な定義は次の通り；「多角形の周囲および内部のどの２点を選んで線分で結んでも決してそ の線分が多角形の外部を通ることがないとき、この多角形は凸多角形である」となります。<p>
+<div align="center">
+<img src="fie_cg_std_polygon.png" alt="fie_cg_std_polygon.png">
+</div>
+ 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">f_cg_pnt_pos</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__polygon.html#gg062255fb29117505730a5238fa900c1d522abe54474bb26c6331d5cba19efec8">F_CG_INNER_PNT</a> =  1, 
+<a class="el" href="group__fie__cg__polygon.html#gg062255fb29117505730a5238fa900c1d806b96e91ea2e927aebc9568c9419304">F_CG_NOT_INNER_PNT</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__cg__polygon.html#gg062255fb29117505730a5238fa900c1dc1677290eb5f84192e8c1d4abbaf4c47">F_CG_OUTER_PNT</a> =  3, 
+<a class="el" href="group__fie__cg__polygon.html#gg062255fb29117505730a5238fa900c1d709fad81c4e83120b5f7b7c9332b1179">F_CG_BOUNDARY_PNT</a> =  4
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点の位置  <a href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g9e659e8b8bc43fcf5fd8b4e2db77bd2a">fnFIE_cg_convex_polygon_check</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT num, INT *convex_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">多角形の凸性のチェック(整数型)  <a href="#g9e659e8b8bc43fcf5fd8b4e2db77bd2a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#ge6cd93ba2c383d09b6ad559398b7ce26">fnFIE_cg_convex_polygon_check_d</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *vrtx, INT num, INT *convex_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">多角形の凸性のチェック(浮動小数点型)  <a href="#ge6cd93ba2c383d09b6ad559398b7ce26"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#gdf4a4d75e6eb89d59fba76a6b8cfbd8a">fnFIE_cg_simple_polygon_check</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT num, INT *simple_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">多角形の単純性のチェック(整数型)  <a href="#gdf4a4d75e6eb89d59fba76a6b8cfbd8a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#ga8d2865bc487939570e48858df08f132">fnFIE_cg_simple_polygon_check_d</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *vrtx, INT num, INT *simple_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">多角形の単純性のチェック(浮動小数点型)  <a href="#ga8d2865bc487939570e48858df08f132"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g6be2f00f6464ed6e51543e48ac737be1">fnFIE_cg_polygon_area_calc</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT num, INT *area2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">単純多角形の符号付面積(整数型)  <a href="#g6be2f00f6464ed6e51543e48ac737be1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g09f8f2a909bd8a612777791a6f2c21ec">fnFIE_cg_polygon_area_calc_d</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *vrtx, INT num, DOUBLE *area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">単純多角形の符号付面積(浮動小数点型)  <a href="#g09f8f2a909bd8a612777791a6f2c21ec"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g040dd3cd8e4a22d8827e5720e59a1eac">fnFIE_cg_convex_polygon_diameter</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT num, INT *ans_pnt1, INT *ans_pnt2, INT *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">凸多角形に関する最遠点対問題(整数型)  <a href="#g040dd3cd8e4a22d8827e5720e59a1eac"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g6f656dffc76469ed285ca7d8dfe6df17">fnFIE_cg_convex_polygon_diameter_d</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *vrtx, INT num, INT *ans_pnt1, INT *ans_pnt2, DOUBLE *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">凸多角形に関する最遠点対問題(浮動小数点型)  <a href="#g6f656dffc76469ed285ca7d8dfe6df17"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g8869894c43652a962d3886e9e4c86348">fnFIE_cg_pos_point_to_convex_polygon</a> (<a class="el" href="structPNT__T.html">PNT_T</a> pnt, const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT num, enum <a class="el" href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">f_cg_pnt_pos</a> *pos)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点の凸多角形に対する位置判定  <a href="#g8869894c43652a962d3886e9e4c86348"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g35e175ec720cb4666ad23a8cff79aee4">fnFIE_cg_pos_point_to_simple_polygon</a> (<a class="el" href="structPNT__T.html">PNT_T</a> pnt, const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT num, enum <a class="el" href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">f_cg_pnt_pos</a> *pos)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点の単純多角形に対する位置判定  <a href="#g35e175ec720cb4666ad23a8cff79aee4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#gc29606372a2f6bdb702adf19a6ff984f">fnFIE_cg_points_in_convex_polygon</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT vrtx_num, const <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT pnt_num, INT bndry_flag, INT **ans_pnt_no, INT *ans_pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">凸多角形内部点列挙の実行  <a href="#gc29606372a2f6bdb702adf19a6ff984f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__polygon.html#g046e37c8a29286a0f5de87cd78ce38d6">fnFIE_cg_points_in_simple_polygon</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *vrtx, INT vrtx_num, const <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT pnt_num, INT bndry_flag, INT **ans_pnt_no, INT *ans_pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">単純多角形内部点列挙の実行  <a href="#g046e37c8a29286a0f5de87cd78ce38d6"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g062255fb29117505730a5238fa900c1d"></a><!-- doxytag: member="fie.h::f_cg_pnt_pos" ref="g062255fb29117505730a5238fa900c1d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">f_cg_pnt_pos</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点の位置 
+<p>
+点の位置を表します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg062255fb29117505730a5238fa900c1d522abe54474bb26c6331d5cba19efec8"></a><!-- doxytag: member="F_CG_INNER_PNT" ref="gg062255fb29117505730a5238fa900c1d522abe54474bb26c6331d5cba19efec8" args="" -->F_CG_INNER_PNT</em>&nbsp;</td><td>
+点が多角形の内部にある(境界上は含まない) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg062255fb29117505730a5238fa900c1d806b96e91ea2e927aebc9568c9419304"></a><!-- doxytag: member="F_CG_NOT_INNER_PNT" ref="gg062255fb29117505730a5238fa900c1d806b96e91ea2e927aebc9568c9419304" args="" -->F_CG_NOT_INNER_PNT</em>&nbsp;</td><td>
+点が多角形の内部にない </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg062255fb29117505730a5238fa900c1dc1677290eb5f84192e8c1d4abbaf4c47"></a><!-- doxytag: member="F_CG_OUTER_PNT" ref="gg062255fb29117505730a5238fa900c1dc1677290eb5f84192e8c1d4abbaf4c47" args="" -->F_CG_OUTER_PNT</em>&nbsp;</td><td>
+点が多角形の外部にある(境界上は含まない) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg062255fb29117505730a5238fa900c1d709fad81c4e83120b5f7b7c9332b1179"></a><!-- doxytag: member="F_CG_BOUNDARY_PNT" ref="gg062255fb29117505730a5238fa900c1d709fad81c4e83120b5f7b7c9332b1179" args="" -->F_CG_BOUNDARY_PNT</em>&nbsp;</td><td>
+点が多角形の辺(境界)上にある </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g9e659e8b8bc43fcf5fd8b4e2db77bd2a"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_convex_polygon_check" ref="g9e659e8b8bc43fcf5fd8b4e2db77bd2a" args="(const PNT_T *vrtx, INT num, INT *convex_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_convex_polygon_check           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>convex_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+多角形の凸性のチェック(整数型) 
+<p>
+与えられた多角形が凸多角形であるかどうかを三角形の符号付面積を用いて判定します。 頂点はどちら周りで与えられていても構いません。 頂点数 <em>num</em> には３以上の値としてください。<p>
+入力する多角形の頂点は整数型となります。 入力する多角形の頂点が浮動小数点型の場合は、 <a class="el" href="group__fie__cg__polygon.html#ge6cd93ba2c383d09b6ad559398b7ce26" title="多角形の凸性のチェック(浮動小数点型)">fnFIE_cg_convex_polygon_check_d()</a> を使用してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>多角形の頂点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_type</em>&nbsp;</td><td>多角形の凸形状 <ul>
+<li>0 多角形は凸ではない </li>
+<li>1 多角形は凸である</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>頂点数が３未満 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#ge6cd93ba2c383d09b6ad559398b7ce26" title="多角形の凸性のチェック(浮動小数点型)">fnFIE_cg_convex_polygon_check_d()</a> , <a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge6cd93ba2c383d09b6ad559398b7ce26"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_convex_polygon_check_d" ref="ge6cd93ba2c383d09b6ad559398b7ce26" args="(const DPNT_T *vrtx, INT num, INT *convex_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_convex_polygon_check_d           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>convex_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+多角形の凸性のチェック(浮動小数点型) 
+<p>
+与えられた多角形が凸多角形であるかどうかを三角形の符号付面積を用いて判定します。 頂点はどちら周りで与えられていても構いません。 頂点数 <em>num</em> は３以上の値としてください。<p>
+入力する多角形の頂点は浮動小数点型となります。 入力する多角形の頂点が整数型の場合は、 <a class="el" href="group__fie__cg__polygon.html#g9e659e8b8bc43fcf5fd8b4e2db77bd2a" title="多角形の凸性のチェック(整数型)">fnFIE_cg_convex_polygon_check()</a> を使用してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>多角形の頂点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_type</em>&nbsp;</td><td>多角形の凸形状 <ul>
+<li>0 多角形は凸ではない </li>
+<li>1 多角形は凸である</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>頂点数が３未満 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#g9e659e8b8bc43fcf5fd8b4e2db77bd2a" title="多角形の凸性のチェック(整数型)">fnFIE_cg_convex_polygon_check()</a> , <a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gdf4a4d75e6eb89d59fba76a6b8cfbd8a"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_simple_polygon_check" ref="gdf4a4d75e6eb89d59fba76a6b8cfbd8a" args="(const PNT_T *vrtx, INT num, INT *simple_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_simple_polygon_check           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>simple_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+多角形の単純性のチェック(整数型) 
+<p>
+与えられた多角形が単純多角形であるかどうかを線分の交差判定を用いて判定します。 頂点はどちら周りで与えられていても構いません。<p>
+入力する多角形の頂点は整数型となります。 入力する多角形の頂点が浮動小数点型の場合は、 <a class="el" href="group__fie__cg__polygon.html#ga8d2865bc487939570e48858df08f132" title="多角形の単純性のチェック(浮動小数点型)">fnFIE_cg_simple_polygon_check_d()</a> を使用してください。<p>
+頂点数 <em>num</em> は３以上の値としてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>多角形の頂点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>simple_type</em>&nbsp;</td><td>多角形の凸形状 <ul>
+<li>0 多角形は単純ではない </li>
+<li>1 多角形は単純である</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>頂点数が３未満 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#ga8d2865bc487939570e48858df08f132" title="多角形の単純性のチェック(浮動小数点型)">fnFIE_cg_simple_polygon_check_d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga8d2865bc487939570e48858df08f132"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_simple_polygon_check_d" ref="ga8d2865bc487939570e48858df08f132" args="(const DPNT_T *vrtx, INT num, INT *simple_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_simple_polygon_check_d           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>simple_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+多角形の単純性のチェック(浮動小数点型) 
+<p>
+与えられた多角形が単純多角形であるかどうかを線分の交差判定を用いて判定します。 頂点はどちら周りで与えられていても構いません。<p>
+入力する多角形の頂点は浮動小数点型となります。 入力する多角形の頂点が整数型の場合は、 <a class="el" href="group__fie__cg__polygon.html#gdf4a4d75e6eb89d59fba76a6b8cfbd8a" title="多角形の単純性のチェック(整数型)">fnFIE_cg_simple_polygon_check()</a> を使用してください。<p>
+頂点数 <em>num</em> は３以上の値としてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>多角形の頂点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>simple_type</em>&nbsp;</td><td>多角形の凸形状 <ul>
+<li>0 多角形は単純ではない </li>
+<li>1 多角形は単純である</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>頂点数が３未満 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#gdf4a4d75e6eb89d59fba76a6b8cfbd8a" title="多角形の単純性のチェック(整数型)">fnFIE_cg_simple_polygon_check()</a> , <a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6be2f00f6464ed6e51543e48ac737be1"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_polygon_area_calc" ref="g6be2f00f6464ed6e51543e48ac737be1" args="(const PNT_T *vrtx, INT num, INT *area2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_polygon_area_calc           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>area2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+単純多角形の符号付面積(整数型) 
+<p>
+与えられた単純多角形(座標は整数)の符号付面積を求めます。 面積の符号は多角形の頂点列が<p>
+<ul>
+<li>反時計周りの場合 → 正 </li>
+<li>時計周りの場合 → 負</li>
+</ul>
+となるように決められています。 ただし、時計回りが正となる座標系で考えています。<p>
+入力する多角形の頂点は整数型となります。 入力する多角形の頂点が浮動小数点型の場合は、 <a class="el" href="group__fie__cg__polygon.html#g09f8f2a909bd8a612777791a6f2c21ec" title="単純多角形の符号付面積(浮動小数点型)">fnFIE_cg_polygon_area_calc_d()</a> を使用してください。<p>
+面積は２倍値であるので注意してください(公式から精度が 0.5 単位であることが保証されている)。<p>
+頂点数 <em>num</em> は３以上の値としてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>多角形の頂点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>area2</em>&nbsp;</td><td>単純多角形の符号付き面積の２倍値を返す</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>頂点列が単純多角形ではないため、計算不能（頂点数が３以上の場合） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#g09f8f2a909bd8a612777791a6f2c21ec" title="単純多角形の符号付面積(浮動小数点型)">fnFIE_cg_polygon_area_calc_d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g09f8f2a909bd8a612777791a6f2c21ec"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_polygon_area_calc_d" ref="g09f8f2a909bd8a612777791a6f2c21ec" args="(const DPNT_T *vrtx, INT num, DOUBLE *area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_polygon_area_calc_d           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+単純多角形の符号付面積(浮動小数点型) 
+<p>
+与えられた単純多角形の符号付面積を求めます。 面積の符号は多角形の頂点列が<p>
+<ul>
+<li>反時計周りの場合 → 正 </li>
+<li>時計周りの場合 → 負</li>
+</ul>
+となるように決められています。 ただし、時計回りが正となる座標系で考えています。<p>
+入力する多角形の頂点は浮動小数点型となります。 入力する多角形の頂点が整数型の場合は、 <a class="el" href="group__fie__cg__polygon.html#g6be2f00f6464ed6e51543e48ac737be1" title="単純多角形の符号付面積(整数型)">fnFIE_cg_polygon_area_calc()</a> を使用してください。<p>
+頂点数 <em>num</em> は３以上の値としてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>多角形の頂点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>area</em>&nbsp;</td><td>単純多角形の符号付き面積を返す</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>頂点列が単純多角形ではないため、計算不能（頂点数が３以上の場合） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#g6be2f00f6464ed6e51543e48ac737be1" title="単純多角形の符号付面積(整数型)">fnFIE_cg_polygon_area_calc()</a> , <a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g040dd3cd8e4a22d8827e5720e59a1eac"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_convex_polygon_diameter" ref="g040dd3cd8e4a22d8827e5720e59a1eac" args="(const PNT_T *vrtx, INT num, INT *ans_pnt1, INT *ans_pnt2, INT *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_convex_polygon_diameter           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+凸多角形に関する最遠点対問題(整数型) 
+<p>
+与えられた凸多角形の頂点列で、最も離れている２点の番号とその距離の２乗を計算します。 アルゴリズムは「キャリパー法」と呼ばれるものです。<p>
+入力される凸多角形の頂点列の並びは時計回りあるいは反時計回りのいずれでも構いません。 任意の点集合の最遠点対問題は凸包を求めた後、このライブラリを使用することで、効率よく求めることができます。 ただし、すべての点が円周上にある場合などの特殊な場合や、 点の数がさほど多くない場合には単純な方法で処理する方が高速となります。<p>
+最遠点の２点は、 <em>vrtx</em>[ <em>*ans_pnt1</em> ] と <em>vrtx</em>[ <em>*ans_pnt2</em> ] となります。<p>
+なお、頂点数 <em>num</em> は１以上の値としてください。<br>
+ もし、<em>num</em> = 1 であれば、<em>*ans_pnt1</em> = <em>*ans_pnt2</em> = 0 すなわち入力点が回答点となり、<em>*diameter</em> = 0 となります。<br>
+ また、<em>num</em> = 2 でこれらが同一点の場合は、<em>*ans_pnt1</em> = <em>*ans_pnt2</em> = 0 および <em>*diameter</em> = 0 となります。<br>
+ さらに、<em>num</em> &gt;= 3 のときに頂点列のなかに同一点が含まれている場合、この頂点列は凸多角形ではないとして F_ERR_CALC_IMPOSSIBLE を返します。<p>
+入力する多角形の頂点は整数型となります。 入力する多角形の頂点が浮動小数点型の場合は、 <a class="el" href="group__fie__cg__polygon.html#g6f656dffc76469ed285ca7d8dfe6df17" title="凸多角形に関する最遠点対問題(浮動小数点型)">fnFIE_cg_convex_polygon_diameter_d()</a> を使用してください。<p>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+キャリパー法については、例えば以下を参照してください。<ul>
+<li>浅野哲夫 著「計算幾何学」§3.2 (朝倉書店) 1990</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>凸多角形の頂点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt1</em>&nbsp;</td><td>回答点の番号１( <em>vrtx</em> の配列番号) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt2</em>&nbsp;</td><td>回答点の番号２( <em>vrtx</em> の配列番号) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>最も離れている２点の距離(集合の直径)の２乗</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータを渡した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>頂点列が凸多角形ではないため、計算不能（頂点数が３以上の場合） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6f656dffc76469ed285ca7d8dfe6df17"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_convex_polygon_diameter_d" ref="g6f656dffc76469ed285ca7d8dfe6df17" args="(const DPNT_T *vrtx, INT num, INT *ans_pnt1, INT *ans_pnt2, DOUBLE *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_convex_polygon_diameter_d           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+凸多角形に関する最遠点対問題(浮動小数点型) 
+<p>
+与えられた凸多角形の頂点列で、最も離れている２点の番号とその距離の２乗を計算します。 アルゴリズムは「キャリパー法」と呼ばれるものです。<p>
+入力される凸多角形の頂点列の並びは時計回りあるいは反時計回りのいずれでも構いません。 任意の点集合の最遠点対問題は凸包を求めた後、このライブラリを使用することで、効率よく求めることができます。 ただし、すべての点が円周上にある場合などの特殊な場合や、 点の数がさほど多くない場合には単純な方法で処理する方が高速となります。<p>
+最遠点の２点は、 <em>vrtx</em>[ <em>*ans_pnt1</em> ] と <em>vrtx</em>[ <em>*ans_pnt2</em> ] となります。<p>
+なお、頂点数 <em>num</em> は１以上の値としてください。<br>
+ もし、<em>num</em> = 1 であれば、<em>*ans_pnt1</em> = <em>*ans_pnt2</em> = 0 すなわち入力点が回答点となり、<em>*diameter</em> = 0 となります。<br>
+ また、<em>num</em> = 2 でこれらが同一点の場合は、<em>*ans_pnt1</em> = <em>*ans_pnt2</em> = 0 および <em>*diameter</em> = 0 となります。<br>
+ さらに、<em>num</em> &gt;= 3 のときに頂点列のなかに同一点が含まれている場合、この頂点列は凸多角形ではないとして F_ERR_CALC_IMPOSSIBLE を返します。<p>
+入力する多角形の頂点は浮動小数点型となります。 入力する多角形の頂点が整数型の場合は、 <a class="el" href="group__fie__cg__polygon.html#g040dd3cd8e4a22d8827e5720e59a1eac" title="凸多角形に関する最遠点対問題(整数型)">fnFIE_cg_convex_polygon_diameter()</a> を使用してください。<p>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+キャリパー法については、例えば以下を参照してください。<ul>
+<li>浅野哲夫 著「計算幾何学」§3.2 (朝倉書店) 1990</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>凸多角形の頂点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>頂点数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt1</em>&nbsp;</td><td>回答点の番号１( <em>vrtx</em> の配列番号) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt2</em>&nbsp;</td><td>回答点の番号２( <em>vrtx</em> の配列番号) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>最も離れている２点の距離(集合の直径)の２乗</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータを渡した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>頂点列が凸多角形ではないため、計算不能（頂点数が３以上の場合） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8869894c43652a962d3886e9e4c86348"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_pos_point_to_convex_polygon" ref="g8869894c43652a962d3886e9e4c86348" args="(PNT_T pnt, const PNT_T *vrtx, INT num, enum f_cg_pnt_pos *pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_pos_point_to_convex_polygon           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">f_cg_pnt_pos</a> *&nbsp;</td>
+          <td class="paramname"> <em>pos</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点の凸多角形に対する位置判定 
+<p>
+点が凸多角形に対してどの位置にあるかを、三角形の符号付面積を用いることにより求めます。 頂点はどちら周りで与えられていても構いません。 なお、頂点数 <em>num</em> は３以上の値としてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>位置判定したい点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>凸多角形の頂点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>多角形の頂点数( <em>vetx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pos</em>&nbsp;</td><td>凸多角形に対する点の位置 <ul>
+<li>F_CG_INNER_PNT 点が多角形の内部にある(境界上は含まない) </li>
+<li>F_CG_OUTER_PNT 点が多角形の外部にある(境界上は含まない) </li>
+<li>F_CG_BOUNDARY_PNT 点が多角形の辺(境界)上にある</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された(頂点数が３未満) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>頂点列が凸多角形ではないため、計算不能（頂点数が３以上の場合） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g35e175ec720cb4666ad23a8cff79aee4"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_pos_point_to_simple_polygon" ref="g35e175ec720cb4666ad23a8cff79aee4" args="(PNT_T pnt, const PNT_T *vrtx, INT num, enum f_cg_pnt_pos *pos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_pos_point_to_simple_polygon           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__cg__polygon.html#g062255fb29117505730a5238fa900c1d">f_cg_pnt_pos</a> *&nbsp;</td>
+          <td class="paramname"> <em>pos</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点の単純多角形に対する位置判定 
+<p>
+点が単純多角形に対してどの位置にあるかを、その点を終点とする水平線分と辺の交差判定 を用いることにより求めます。 頂点はどちら周りで与えられていても構いません。 なお、頂点数 <em>num</em> は３以上の値としてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt</em>&nbsp;</td><td>位置判定したい点 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>単純多角形の頂点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>多角形の頂点数( <em>vetx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pos</em>&nbsp;</td><td>凸多角形に対する点の位置 <ul>
+<li>F_CG_INNER_PNT 点が多角形の内部にある(境界上は含まない) </li>
+<li>F_CG_OUTER_PNT 点が多角形の外部にある(境界上は含まない) </li>
+<li>F_CG_BOUNDARY_PNT 点が多角形の辺(境界)上にある</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された(頂点数が３未満) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 <ul>
+<li>頂点列が単純多角形ではないため、計算不能（頂点数が３以上の場合） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc29606372a2f6bdb702adf19a6ff984f"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_points_in_convex_polygon" ref="gc29606372a2f6bdb702adf19a6ff984f" args="(const PNT_T *vrtx, INT vrtx_num, const PNT_T *pnts, INT pnt_num, INT bndry_flag, INT **ans_pnt_no, INT *ans_pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_points_in_convex_polygon           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>vrtx_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bndry_flag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+凸多角形内部点列挙の実行 
+<p>
+点集合に対し、凸多角形の内部に含まれるものを列挙します。 多角形に対して前処理を行なうことによって、 <a class="el" href="group__fie__cg__polygon.html#g8869894c43652a962d3886e9e4c86348" title="点の凸多角形に対する位置判定">fnFIE_cg_pos_point_to_convex_polygon()</a> を繰返しを用いるよりも高速に処理出来ることを想定しています。 具体的には、点の含まれる可能性のある各領域を二分探索法によって求める、というものです。<p>
+回答としては内部にある点の番号表を与えます。 境界(多角形の辺)上にある点を回答に含めるかどうかの選択が可能です。<p>
+なお各パラメータは、以下の条件を満たす必要があります。 <ul>
+<li>多角形の頂点数( <em>vrtx_num</em> )は３以上、内部判定する点数( <em>pnt_num</em> )は１以上の値を入力してください。 </li>
+<li><em>ans_pnt_no</em> は、関数内部で必要なメモリを確保します。 メモリを確保した配列を指定しないでください。 また、 <em>*ans_pnt_no</em> がNULLで初期化されていない場合は、エラーとなります。 確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。 </li>
+<li><em>bndry_flag</em> は ON または OFF 以外を指定した場合、 F_ERR_INVALID_PARAM が返されます。</li>
+</ul>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>「プレパラータ・シェーモス「計算幾何学」§２．２」</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>凸多角形の頂点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx_num</em>&nbsp;</td><td>多角形の頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>内部点を判定する点集合 このデータは順序データで有る必要はなく、また重複点が合ってもかまわない </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>点集合の点の数( <em>pnts</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bndry_flag</em>&nbsp;</td><td>境界フラグ <ul>
+<li>ON 境界上の点を内部の点として回答に含める </li>
+<li>OFF 境界上の点は外部の点として、回答に含めない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt_no</em>&nbsp;</td><td>内部にある点の番号列の先頭ポインタ。 ここでの番号とは、配列 pnts での要素番号を指す </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt_num</em>&nbsp;</td><td>内部点の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 <ul>
+<li>頂点列が凸多角形ではないため、計算不能（頂点数が３以上の場合） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#g8869894c43652a962d3886e9e4c86348" title="点の凸多角形に対する位置判定">fnFIE_cg_pos_point_to_convex_polygon()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g046e37c8a29286a0f5de87cd78ce38d6"></a><!-- doxytag: member="fie_cg_polygon.c::fnFIE_cg_points_in_simple_polygon" ref="g046e37c8a29286a0f5de87cd78ce38d6" args="(const PNT_T *vrtx, INT vrtx_num, const PNT_T *pnts, INT pnt_num, INT bndry_flag, INT **ans_pnt_no, INT *ans_pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_points_in_simple_polygon           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vrtx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>vrtx_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bndry_flag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt_no</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ans_pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+単純多角形内部点列挙の実行 
+<p>
+点集合に対し、単純多角形の内部に含まれるものを列挙します。 多角形に対して前処理を行なうことによって、 <a class="el" href="group__fie__cg__polygon.html#g35e175ec720cb4666ad23a8cff79aee4" title="点の単純多角形に対する位置判定">fnFIE_cg_pos_point_to_simple_polygon()</a> を繰返し用いるよりも高速に処理出来ることを想定しています。 具体的には、多角形の存在領域を分割して交差を調べる辺の数を減らす、というものです。<p>
+回答としては内部にある点の番号表を与えます。 境界(多角形の辺)上にある点を回答に含めるかどうかの選択が可能です。<p>
+なお各パラメータは、以下の条件を満たす必要があります。 <ul>
+<li>多角形の頂点数( <em>vrtx_num</em> )は３以上、内部判定する点数( <em>pnt_num</em> )は１以上の値を入力してください。 </li>
+<li><em>ans_pnt_no</em> は、関数内部で必要なメモリを確保します。 メモリを確保した配列を指定しないでください。 また、 <em>*ans_pnt_no</em> がNULLで初期化されていない場合は、エラーとなります。 確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放てください。 </li>
+<li><em>bndry_flag</em> は ON または OFF 以外を指定した場合、 F_ERR_INVALID_PARAM が返されます。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx</em>&nbsp;</td><td>凸多角形の頂点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vrtx_num</em>&nbsp;</td><td>多角形の頂点数( <em>vrtx</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>内部点を判定する点集合 このデータは順序データで有る必要はなく、また重複点が合ってもかまわない </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>点集合の点の数( <em>pnts</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bndry_flag</em>&nbsp;</td><td>境界フラグ <ul>
+<li>ON 境界上の点も内部点と見なす </li>
+<li>OFF 境界上の点は内部点とは見なさない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt_no</em>&nbsp;</td><td>内部にある点の番号列の先頭ポインタ。 ここでの番号とは、配列 pnts での要素番号を指す </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_pnt_num</em>&nbsp;</td><td>内部点の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>頂点列が単純多角形ではないため、計算不能（頂点数が３以上の場合） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__polygon.html#g35e175ec720cb4666ad23a8cff79aee4" title="点の単純多角形に対する位置判定">fnFIE_cg_pos_point_to_simple_polygon()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

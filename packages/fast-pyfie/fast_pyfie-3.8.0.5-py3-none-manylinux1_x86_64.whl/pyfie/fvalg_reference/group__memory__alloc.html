@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ヒープメモリ管理</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ヒープメモリ管理<br>
+<small>
+[<a class="el" href="group__FIE.html">FIE module</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6">fnOAL_malloc</a> (size_t tMemSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">メモリブロックの割当  <a href="#g80e0d9105acd3ea67cd8c5194a19f3d6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059">fnOAL_calloc</a> (size_t num, size_t size)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">０クリア済みメモリブロックの割り当て  <a href="#g5fadeb9bbf82477d7ab6bc77dc43e059"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__memory__alloc.html#gae611a25640e1c4e59a7d7bc55b85c2c">fnOAL_realloc</a> (VOID *vpOldPtr, size_t tNewMemSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">確保済みメモリブロックのサイズ変更  <a href="#gae611a25640e1c4e59a7d7bc55b85c2c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95">fnOAL_free</a> (VOID *vpPtr)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">メモリブロックの解放  <a href="#g78ba9c03b7577b9c091ba42ca9cb7c95"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__memory__alloc.html#ge985781a822f58a025eba3e8ce0d12bf">fnOAL_aligned_malloc</a> (size_t sz, INT align)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">アライメントされたメモリブロックの割当  <a href="#ge985781a822f58a025eba3e8ce0d12bf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__memory__alloc.html#gc6bf1ae34f45ec44073be909ed42fe4d">fnOAL_aligned_free</a> (VOID *pt)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">アライメントされたメモリブロックの解放  <a href="#gc6bf1ae34f45ec44073be909ed42fe4d"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g80e0d9105acd3ea67cd8c5194a19f3d6"></a><!-- doxytag: member="oal_aloc.h::fnOAL_malloc" ref="g80e0d9105acd3ea67cd8c5194a19f3d6" args="(size_t tMemSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnOAL_malloc           </td>
+          <td>(</td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>tMemSize</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+メモリブロックの割当 
+<p>
+少なくとも <em>tMemSize</em> 分のメモリブロックを割り当てます。 <em>tMemSize</em> に0を指定した際には、NULLを返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>tMemSize</em>&nbsp;</td><td>割り当てるバイト数 </td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、割り当てられたメモリブロックへのポインタを返します。 メモリ不足などで、異常終了した場合には、NULLを返します。</dd></dl>
+<dl class="user" compact><dt><b>Required header: </b></dt><dd>oal_aloc.h </dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5fadeb9bbf82477d7ab6bc77dc43e059"></a><!-- doxytag: member="oal_aloc.h::fnOAL_calloc" ref="g5fadeb9bbf82477d7ab6bc77dc43e059" args="(size_t num, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnOAL_calloc           </td>
+          <td>(</td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+０クリア済みメモリブロックの割り当て 
+<p>
+配列に、要素を0に初期化してメモリに割り当てます。 <em>num</em> 又は <em>size</em> に0を指定した場合にはNULLを返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>要素の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size</em>&nbsp;</td><td>各要素のバイト単位の長さ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、割り当てられたメモリブロックへのポインタを返します。 メモリ不足などで、異常終了した場合にはNULLを返します。</dd></dl>
+<dl class="user" compact><dt><b>Required header: </b></dt><dd>oal_aloc.h </dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc()</a>, <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gae611a25640e1c4e59a7d7bc55b85c2c"></a><!-- doxytag: member="oal_aloc.h::fnOAL_realloc" ref="gae611a25640e1c4e59a7d7bc55b85c2c" args="(VOID *vpOldPtr, size_t tNewMemSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnOAL_realloc           </td>
+          <td>(</td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpOldPtr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>tNewMemSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+確保済みメモリブロックのサイズ変更 
+<p>
+確保済みメモリブロックのサイズを変更します。 古いメモリブロックにあったデータは <em>tNewMemSize</em> 以下のサイズ分 コピーされます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vpOldPtr</em>&nbsp;</td><td>サイズを変更するメモリブロックへのポインタ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>tNewMemSize</em>&nbsp;</td><td>新しいメモリブロックサイズ</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合には、新しいメモリブロックへのポインタを返します。 異常終了した場合には、NULLを返します。</dd></dl>
+<dl class="user" compact><dt><b>Required header: </b></dt><dd>oal_aloc.h </dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc()</a>, <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g78ba9c03b7577b9c091ba42ca9cb7c95"></a><!-- doxytag: member="oal_aloc.h::fnOAL_free" ref="g78ba9c03b7577b9c091ba42ca9cb7c95" args="(VOID *vpPtr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnOAL_free           </td>
+          <td>(</td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpPtr</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+メモリブロックの解放 
+<p>
+確保済みのメモリブロックを解放します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vpPtr</em>&nbsp;</td><td>確保済みメモリブロックへのポインタ</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>Required header: </b></dt><dd>oal_aloc.h </dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge985781a822f58a025eba3e8ce0d12bf"></a><!-- doxytag: member="oal_aloc.h::fnOAL_aligned_malloc" ref="ge985781a822f58a025eba3e8ce0d12bf" args="(size_t sz, INT align)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnOAL_aligned_malloc           </td>
+          <td>(</td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>sz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>align</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+アライメントされたメモリブロックの割当 
+<p>
+指定されたアライメント境界に 少なくとも <em>sz</em> byte のメモリブロックを割り当てます。 <em>sz</em> に0が指定された場合の動作は不明です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sz</em>&nbsp;</td><td>割り当てるバイト数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>align</em>&nbsp;</td><td>アライメント位置。２の累乗値を指定して下さい。(2,4,8,16...)</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数で確保したメモリブロックを解放するときは、 必ず <a class="el" href="group__memory__alloc.html#gc6bf1ae34f45ec44073be909ed42fe4d" title="アライメントされたメモリブロックの解放">fnOAL_aligned_free()</a> 関数を使用して下さい。 他の関数で解放した場合は未知の問題が起こる可能性があります。</dd></dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、割り当てられたメモリブロックへのポインタを返します。 <em>align</em> の値が２の累乗値で無い場合は NULL を返します。 メモリ不足などで、異常終了した場合には NULL を返します。</dd></dl>
+<dl class="user" compact><dt><b>Required header: </b></dt><dd>oal_aloc.h </dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__memory__alloc.html#gc6bf1ae34f45ec44073be909ed42fe4d" title="アライメントされたメモリブロックの解放">fnOAL_aligned_free()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc6bf1ae34f45ec44073be909ed42fe4d"></a><!-- doxytag: member="oal_aloc.h::fnOAL_aligned_free" ref="gc6bf1ae34f45ec44073be909ed42fe4d" args="(VOID *pt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnOAL_aligned_free           </td>
+          <td>(</td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>pt</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+アライメントされたメモリブロックの解放 
+<p>
+<a class="el" href="group__memory__alloc.html#ge985781a822f58a025eba3e8ce0d12bf" title="アライメントされたメモリブロックの割当">fnOAL_aligned_malloc()</a> で確保された メモリブロックを解放します。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>必ず <a class="el" href="group__memory__alloc.html#ge985781a822f58a025eba3e8ce0d12bf" title="アライメントされたメモリブロックの割当">fnOAL_aligned_malloc()</a> で確保された メモリブロックを渡して下さい。その他の関数で確保された メモリブロックが渡された場合は未知の問題が起こる可能性があります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pt</em>&nbsp;</td><td>確保済みメモリブロックへのポインタ</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>Required header: </b></dt><dd>oal_aloc.h </dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__memory__alloc.html#ge985781a822f58a025eba3e8ce0d12bf" title="アライメントされたメモリブロックの割当">fnOAL_aligned_malloc()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

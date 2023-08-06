@@ -1,0 +1,518 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 遺伝的アルゴリズム</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>遺伝的アルゴリズム<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">union &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionF__GA__VALUE.html">F_GA_VALUE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">遺伝子の値  <a href="unionF__GA__VALUE.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__GA__RANGE.html">F_GA_RANGE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">遺伝子の値の範囲  <a href="structF__GA__RANGE.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>型定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g49ad8b21c7a39267f7c20dd370594bf8"></a><!-- doxytag: member="fie_genetic_algorithm::F_GA_FUNC" ref="g49ad8b21c7a39267f7c20dd370594bf8" args=")(enum f_ga_type, INT, VOID *)" -->
+typedef DOUBLE(FVALGAPI *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#g49ad8b21c7a39267f7c20dd370594bf8">F_GA_FUNC</a> )(enum <a class="el" href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463">f_ga_type</a>, INT, VOID *)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">適用度を算出するコスト関数(評価関数) <br></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463">f_ga_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#ggbf7f7bc09074c9a930443c5227133463a79f62cf62dc0e001ee35e53aadbb95d">F_GA_INT_TYPE</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#ggbf7f7bc09074c9a930443c5227133463888ea4176991e0b7d3b47782f1ef7f1b">F_GA_FLOAT_TYPE</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#ggbf7f7bc09074c9a930443c5227133463b2587f28b58db2ef78df5a915bfa1195">F_GA_ORDER_TYPE</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">遺伝子の型  <a href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#gc00489f8f6ddd55b4c39a7dbd4c6922a">f_ga_select</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#ggc00489f8f6ddd55b4c39a7dbd4c6922a920cdaa96cc35275ccd363e7b494a100">F_GA_PROPORT_SELECT</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#ggc00489f8f6ddd55b4c39a7dbd4c6922a3d2dc52ef0fa560e255875624ceae2fb">F_GA_EXPECT_SELECT</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#ggc00489f8f6ddd55b4c39a7dbd4c6922ab1db589b8aee83ae926927551312cda5">F_GA_RANK_SELECT</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#ggc00489f8f6ddd55b4c39a7dbd4c6922a43bd9751585eadf5b9ed0da696fd5059">F_GA_RANDOM_SELECT</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">選択の方式  <a href="group__fie__genetic__algorithm.html#gc00489f8f6ddd55b4c39a7dbd4c6922a">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#g4a46ae0c913afd75c7c08f7a14380f35">f_ga_cross</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#gg4a46ae0c913afd75c7c08f7a14380f3595cae9b882da3560d0612fc303f4d837">F_GA_ONE_POINT_CROSS</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#gg4a46ae0c913afd75c7c08f7a14380f359086faa751920bdd9b13ab7edf319cf3">F_GA_TWO_POINT_CROSS</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#gg4a46ae0c913afd75c7c08f7a14380f354eeccf6f10cd41d5ce7b79845fe7551f">F_GA_UNIFORM_CROSS</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#gg4a46ae0c913afd75c7c08f7a14380f358708477d818cfb82de7d1b9be0595ed5">F_GA_PARTIAL_CROSS</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">交叉の方式  <a href="group__fie__genetic__algorithm.html#g4a46ae0c913afd75c7c08f7a14380f35">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#gb98d3e347d82c5af7520222bf5a7914e">f_ga_alter</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#ggb98d3e347d82c5af7520222bf5a7914ede2fac815cd3a7ebd255d5b9059089de">F_GA_NORMAL_ALTERNATE</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#ggb98d3e347d82c5af7520222bf5a7914e1ba76b7bb643f1f0635d3ed7081e45e7">F_GA_ELITE_ALTERNATE</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#ggb98d3e347d82c5af7520222bf5a7914ee90be94ca4f28935be58e170b0fdd040">F_GA_MERGE_ALTERNATE</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">世代交代の方式  <a href="group__fie__genetic__algorithm.html#gb98d3e347d82c5af7520222bf5a7914e">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#g462b51b804c30faa3874f910a9cfa090">f_ga_end</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#gg462b51b804c30faa3874f910a9cfa0900fe6256cb0132f583be61d28f0e9c7f6">F_GA_MAX_FITNESS_END</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#gg462b51b804c30faa3874f910a9cfa090a4cd0eb1005011515f3a60a1975bcb0d">F_GA_MEAN_FITNESS_END</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__genetic__algorithm.html#gg462b51b804c30faa3874f910a9cfa0905f6c1def21fdb5a6461f641355a5e48a">F_GA_STAGNATION_END</a>, 
+<a class="el" href="group__fie__genetic__algorithm.html#gg462b51b804c30faa3874f910a9cfa09039619ea6c0fe3a41a2bd00b61cfbed7b">F_GA_NO_CONDITION_END</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">終了条件の方式  <a href="group__fie__genetic__algorithm.html#g462b51b804c30faa3874f910a9cfa090">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#gbedd90a6a1427aaed0f8df5568cbd105">fnFIE_ga_open</a> (enum <a class="el" href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463">f_ga_type</a> gene_type, INT gene_num, INT chrom_num, const <a class="el" href="structF__GA__RANGE.html">F_GA_RANGE</a> *range, enum <a class="el" href="group__fie__genetic__algorithm.html#gc00489f8f6ddd55b4c39a7dbd4c6922a">f_ga_select</a> select, enum <a class="el" href="group__fie__genetic__algorithm.html#g4a46ae0c913afd75c7c08f7a14380f35">f_ga_cross</a> crossover, DOUBLE cross_rate, DOUBLE mutat_rate, enum <a class="el" href="group__fie__genetic__algorithm.html#gb98d3e347d82c5af7520222bf5a7914e">f_ga_alter</a> alternate, <a class="el" href="group__fie__genetic__algorithm.html#g49ad8b21c7a39267f7c20dd370594bf8">F_GA_FUNC</a> cost_func, enum <a class="el" href="group__fie__genetic__algorithm.html#g462b51b804c30faa3874f910a9cfa090">f_ga_end</a> rnd_cond, DOUBLE thresh, INT max_alter_cnt)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ＧＡの生成  <a href="#gbedd90a6a1427aaed0f8df5568cbd105"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__genetic__algorithm.html#gfc2e6f5195718c2f334488c8f45e391d">fnFIE_ga_execute</a> (FHANDLE hga, INT pick_num, VOID *chrom, DOUBLE *fitness, INT *generate)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ＧＡの実行  <a href="#gfc2e6f5195718c2f334488c8f45e391d"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gbf7f7bc09074c9a930443c5227133463"></a><!-- doxytag: member="fie.h::f_ga_type" ref="gbf7f7bc09074c9a930443c5227133463" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463">f_ga_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+遺伝子の型 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggbf7f7bc09074c9a930443c5227133463a79f62cf62dc0e001ee35e53aadbb95d"></a><!-- doxytag: member="F_GA_INT_TYPE" ref="ggbf7f7bc09074c9a930443c5227133463a79f62cf62dc0e001ee35e53aadbb95d" args="" -->F_GA_INT_TYPE</em>&nbsp;</td><td>
+整数型 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbf7f7bc09074c9a930443c5227133463888ea4176991e0b7d3b47782f1ef7f1b"></a><!-- doxytag: member="F_GA_FLOAT_TYPE" ref="ggbf7f7bc09074c9a930443c5227133463888ea4176991e0b7d3b47782f1ef7f1b" args="" -->F_GA_FLOAT_TYPE</em>&nbsp;</td><td>
+浮動小数点型 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggbf7f7bc09074c9a930443c5227133463b2587f28b58db2ef78df5a915bfa1195"></a><!-- doxytag: member="F_GA_ORDER_TYPE" ref="ggbf7f7bc09074c9a930443c5227133463b2587f28b58db2ef78df5a915bfa1195" args="" -->F_GA_ORDER_TYPE</em>&nbsp;</td><td>
+順序型 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc00489f8f6ddd55b4c39a7dbd4c6922a"></a><!-- doxytag: member="fie.h::f_ga_select" ref="gc00489f8f6ddd55b4c39a7dbd4c6922a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__genetic__algorithm.html#gc00489f8f6ddd55b4c39a7dbd4c6922a">f_ga_select</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+選択の方式 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggc00489f8f6ddd55b4c39a7dbd4c6922a920cdaa96cc35275ccd363e7b494a100"></a><!-- doxytag: member="F_GA_PROPORT_SELECT" ref="ggc00489f8f6ddd55b4c39a7dbd4c6922a920cdaa96cc35275ccd363e7b494a100" args="" -->F_GA_PROPORT_SELECT</em>&nbsp;</td><td>
+適応度比例戦略 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc00489f8f6ddd55b4c39a7dbd4c6922a3d2dc52ef0fa560e255875624ceae2fb"></a><!-- doxytag: member="F_GA_EXPECT_SELECT" ref="ggc00489f8f6ddd55b4c39a7dbd4c6922a3d2dc52ef0fa560e255875624ceae2fb" args="" -->F_GA_EXPECT_SELECT</em>&nbsp;</td><td>
+期待値戦略 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc00489f8f6ddd55b4c39a7dbd4c6922ab1db589b8aee83ae926927551312cda5"></a><!-- doxytag: member="F_GA_RANK_SELECT" ref="ggc00489f8f6ddd55b4c39a7dbd4c6922ab1db589b8aee83ae926927551312cda5" args="" -->F_GA_RANK_SELECT</em>&nbsp;</td><td>
+ランク戦略 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggc00489f8f6ddd55b4c39a7dbd4c6922a43bd9751585eadf5b9ed0da696fd5059"></a><!-- doxytag: member="F_GA_RANDOM_SELECT" ref="ggc00489f8f6ddd55b4c39a7dbd4c6922a43bd9751585eadf5b9ed0da696fd5059" args="" -->F_GA_RANDOM_SELECT</em>&nbsp;</td><td>
+ランダム戦略 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4a46ae0c913afd75c7c08f7a14380f35"></a><!-- doxytag: member="fie.h::f_ga_cross" ref="g4a46ae0c913afd75c7c08f7a14380f35" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__genetic__algorithm.html#g4a46ae0c913afd75c7c08f7a14380f35">f_ga_cross</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+交叉の方式 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg4a46ae0c913afd75c7c08f7a14380f3595cae9b882da3560d0612fc303f4d837"></a><!-- doxytag: member="F_GA_ONE_POINT_CROSS" ref="gg4a46ae0c913afd75c7c08f7a14380f3595cae9b882da3560d0612fc303f4d837" args="" -->F_GA_ONE_POINT_CROSS</em>&nbsp;</td><td>
+１点交叉（順序型以外） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg4a46ae0c913afd75c7c08f7a14380f359086faa751920bdd9b13ab7edf319cf3"></a><!-- doxytag: member="F_GA_TWO_POINT_CROSS" ref="gg4a46ae0c913afd75c7c08f7a14380f359086faa751920bdd9b13ab7edf319cf3" args="" -->F_GA_TWO_POINT_CROSS</em>&nbsp;</td><td>
+２点交叉（順序型以外） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg4a46ae0c913afd75c7c08f7a14380f354eeccf6f10cd41d5ce7b79845fe7551f"></a><!-- doxytag: member="F_GA_UNIFORM_CROSS" ref="gg4a46ae0c913afd75c7c08f7a14380f354eeccf6f10cd41d5ce7b79845fe7551f" args="" -->F_GA_UNIFORM_CROSS</em>&nbsp;</td><td>
+一様交叉（順序型以外） </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg4a46ae0c913afd75c7c08f7a14380f358708477d818cfb82de7d1b9be0595ed5"></a><!-- doxytag: member="F_GA_PARTIAL_CROSS" ref="gg4a46ae0c913afd75c7c08f7a14380f358708477d818cfb82de7d1b9be0595ed5" args="" -->F_GA_PARTIAL_CROSS</em>&nbsp;</td><td>
+部分一致交叉（順序型のみ） </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb98d3e347d82c5af7520222bf5a7914e"></a><!-- doxytag: member="fie.h::f_ga_alter" ref="gb98d3e347d82c5af7520222bf5a7914e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__genetic__algorithm.html#gb98d3e347d82c5af7520222bf5a7914e">f_ga_alter</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+世代交代の方式 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggb98d3e347d82c5af7520222bf5a7914ede2fac815cd3a7ebd255d5b9059089de"></a><!-- doxytag: member="F_GA_NORMAL_ALTERNATE" ref="ggb98d3e347d82c5af7520222bf5a7914ede2fac815cd3a7ebd255d5b9059089de" args="" -->F_GA_NORMAL_ALTERNATE</em>&nbsp;</td><td>
+通常戦略(何もしない) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb98d3e347d82c5af7520222bf5a7914e1ba76b7bb643f1f0635d3ed7081e45e7"></a><!-- doxytag: member="F_GA_ELITE_ALTERNATE" ref="ggb98d3e347d82c5af7520222bf5a7914e1ba76b7bb643f1f0635d3ed7081e45e7" args="" -->F_GA_ELITE_ALTERNATE</em>&nbsp;</td><td>
+エリート戦略 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb98d3e347d82c5af7520222bf5a7914ee90be94ca4f28935be58e170b0fdd040"></a><!-- doxytag: member="F_GA_MERGE_ALTERNATE" ref="ggb98d3e347d82c5af7520222bf5a7914ee90be94ca4f28935be58e170b0fdd040" args="" -->F_GA_MERGE_ALTERNATE</em>&nbsp;</td><td>
+マージ戦略 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g462b51b804c30faa3874f910a9cfa090"></a><!-- doxytag: member="fie.h::f_ga_end" ref="g462b51b804c30faa3874f910a9cfa090" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__genetic__algorithm.html#g462b51b804c30faa3874f910a9cfa090">f_ga_end</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+終了条件の方式 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg462b51b804c30faa3874f910a9cfa0900fe6256cb0132f583be61d28f0e9c7f6"></a><!-- doxytag: member="F_GA_MAX_FITNESS_END" ref="gg462b51b804c30faa3874f910a9cfa0900fe6256cb0132f583be61d28f0e9c7f6" args="" -->F_GA_MAX_FITNESS_END</em>&nbsp;</td><td>
+最大適応度による </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg462b51b804c30faa3874f910a9cfa090a4cd0eb1005011515f3a60a1975bcb0d"></a><!-- doxytag: member="F_GA_MEAN_FITNESS_END" ref="gg462b51b804c30faa3874f910a9cfa090a4cd0eb1005011515f3a60a1975bcb0d" args="" -->F_GA_MEAN_FITNESS_END</em>&nbsp;</td><td>
+平均適応度による </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg462b51b804c30faa3874f910a9cfa0905f6c1def21fdb5a6461f641355a5e48a"></a><!-- doxytag: member="F_GA_STAGNATION_END" ref="gg462b51b804c30faa3874f910a9cfa0905f6c1def21fdb5a6461f641355a5e48a" args="" -->F_GA_STAGNATION_END</em>&nbsp;</td><td>
+世代交代の停滞による </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg462b51b804c30faa3874f910a9cfa09039619ea6c0fe3a41a2bd00b61cfbed7b"></a><!-- doxytag: member="F_GA_NO_CONDITION_END" ref="gg462b51b804c30faa3874f910a9cfa09039619ea6c0fe3a41a2bd00b61cfbed7b" args="" -->F_GA_NO_CONDITION_END</em>&nbsp;</td><td>
+なし(世代交代の回数によるのみ) </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gbedd90a6a1427aaed0f8df5568cbd105"></a><!-- doxytag: member="fie_ga.c::fnFIE_ga_open" ref="gbedd90a6a1427aaed0f8df5568cbd105" args="(enum f_ga_type gene_type, INT gene_num, INT chrom_num, const F_GA_RANGE *range, enum f_ga_select select, enum f_ga_cross crossover, DOUBLE cross_rate, DOUBLE mutat_rate, enum f_ga_alter alternate, F_GA_FUNC cost_func, enum f_ga_end rnd_cond, DOUBLE thresh, INT max_alter_cnt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_ga_open           </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463">f_ga_type</a>&nbsp;</td>
+          <td class="paramname"> <em>gene_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>gene_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>chrom_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__GA__RANGE.html">F_GA_RANGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__genetic__algorithm.html#gc00489f8f6ddd55b4c39a7dbd4c6922a">f_ga_select</a>&nbsp;</td>
+          <td class="paramname"> <em>select</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__genetic__algorithm.html#g4a46ae0c913afd75c7c08f7a14380f35">f_ga_cross</a>&nbsp;</td>
+          <td class="paramname"> <em>crossover</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>cross_rate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>mutat_rate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__genetic__algorithm.html#gb98d3e347d82c5af7520222bf5a7914e">f_ga_alter</a>&nbsp;</td>
+          <td class="paramname"> <em>alternate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__genetic__algorithm.html#g49ad8b21c7a39267f7c20dd370594bf8">F_GA_FUNC</a>&nbsp;</td>
+          <td class="paramname"> <em>cost_func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__genetic__algorithm.html#g462b51b804c30faa3874f910a9cfa090">f_ga_end</a>&nbsp;</td>
+          <td class="paramname"> <em>rnd_cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>thresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_alter_cnt</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ＧＡの生成 
+<p>
+与えられた条件のもとで、遺伝的アルゴリズムに必要なテーブルをオープンします。<p>
+<em>cost_func</em> には、次の型に従った適応度を算出するコスト関数(評価関数)を指定します。 <div class="fragment"><pre class="fragment">    DOUBLE cost_func( <span class="keyword">enum</span> <a class="code" href="group__fie__genetic__algorithm.html#gbf7f7bc09074c9a930443c5227133463" title="遺伝子の型">f_ga_type</a> gene_type, <span class="keywordtype">int</span> gene_num, <span class="keywordtype">void</span> *chrom_top );
+</pre></div> このコスト関数のパラメータはそれぞれ次のようになります。 <ul>
+<li><em>gene_type</em> 入力：遺伝子の型 </li>
+<li><em>gene_num</em> 入力：一染色体当たりの遺伝子数 </li>
+<li><em>chrom_top</em> 入力：適応度を計算する染色体の先頭アドレス</li>
+</ul>
+コスト関数の出力値は 0.0～1.0 の範囲に入っていなければなりません。<p>
+本関数で生成したオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gene_type</em>&nbsp;</td><td>遺伝子の型を指定します。以下の内から指定してください。 <ul>
+<li>F_GA_INT_TYPE 整数型 </li>
+<li>F_GA_FLOAT_TYPE 浮動小数点型 </li>
+<li>F_GA_ORDER_TYPE 順序型 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gene_num</em>&nbsp;</td><td>１染色体当たりの遺伝子の個数(１以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>chrom_num</em>&nbsp;</td><td>集団内の染色体数(偶数のみ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range</em>&nbsp;</td><td>遺伝子の値のレンジの配列 <br>
+ <em>gene_num</em> で指定した個数分の遺伝子毎に、全て範囲を指定します。 <em>gene_num</em> の要素を確保した配列を渡してください。 ただし、 <em>gene_type</em> が F_GA_ORDER_TYPE の場合にはこの値は使用されません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>select</em>&nbsp;</td><td>選択淘汰の方式 <br>
+ 選択淘汰とは、適応度の高い染色体がより多くの子孫を残すための方法です。 以下の内から選択してください。 <ul>
+<li>F_GA_PROPORT_SELECT 適応度比例戦略：各染色体の適応度に比例した確率で子孫を残すことができます </li>
+<li>F_GA_EXPECT_SELECT 期待値戦略：各染色体の適応度に比例した確率で 子孫を残すことができるという点では「適応度比例」と同じですが、 １回選択されると次からはその確率を1/2にしてしまいます </li>
+<li>F_GA_RANK_SELECT ランク戦略：各染色体の適応度によって、 染色体を１番から番号付けしてその順位に対して決められた確率で子孫を残します </li>
+<li>F_GA_RANDOM_SELECT ランダム戦略： 乱数により選択します </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>crossover</em>&nbsp;</td><td>交叉の方式 <br>
+ 交叉とは、選択された染色体の中から２つの染色体を使ってランダムな位置で部分的な入れ替えを行う方法です。 以下の内から選択して指定してください。 <ul>
+<li>F_GA_ONE_POINT_CROSS １点交叉：２つの染色体の遺伝子を、 ランダムに選択された点の後部で交換させて２つの子を作ります </li>
+<li>F_GA_TWO_POINT_CROSS ２点交叉：２つの染色体の遺伝子を、 ランダムに選択された点の２点の間で交換させて２つの子を作ります。 </li>
+<li>F_GA_UNIFORM_CROSS 一様交叉：一様交叉 ２つの染色体の遺伝子を、 各遺伝子ごとにランダムに交換させて２つの子を作ります。 </li>
+<li>F_GA_PARTIAL_CROSS 部分一致交叉：交叉位置と長さをランダムに選択し、 一方の親の選択された位置における遺伝子情報の順序をもう一方の親の対応する遺伝子情報と交換します。</li>
+</ul>
+gene_type の指定によって、選択できるパラメータが異なります。 遺伝子の型が整数型( F_GA_INT_TYPE )、浮動小数点型( F_GA_FLOAT_TYPE )の場合には F_GA_ONE_POINT_CROSS , F_GA_TWO_POINT_CROSS , F_GA_UNIFORM_CROSS が指定できます。 遺伝子の型が順序型( F_GA_ORDER_TYPE ) の場合には、 F_GA_PARTICAL_CROSS が指定できます。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cross_rate</em>&nbsp;</td><td>交叉率(0.0～1.0) <br>
+ 交叉率とは、交叉を生じさせる確率です。 0では交叉を行いませんし、1では必ず交叉を行います。0.9程度が一般的です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mutat_rate</em>&nbsp;</td><td>突然変異率(0.0～1.0) <br>
+ 突然変異率とは、ランダムに選び出された染色体の遺伝子を強制的に他の値に変えてしまう比率のことです。 0では突然変異を行いませんし、1では必ず突然変異を行います。 0.03～0.05程度が一般的です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>alternate</em>&nbsp;</td><td>世代交代の方式 <br>
+ 世代交代とは、「選択淘汰→交叉→突然変異」と遷移して生成された子の染色体集団を、 次の世代の親の染色体集団へ移行させる際の方式のことです。 次の内から選んで指定してください。 <ul>
+<li>F_GA_NORMAL_ALTERNATE 通常戦略：子の染色体集団を そのまま新しい世代の親の染色体集団とします。 </li>
+<li>F_GA_ELITE_ALTERNATE エリート戦略：子の染色体集団の中の最小適応度を持つ染色体を、 親の染色体集団の中の最大適応度を持つ染色体と入れ替えます。 </li>
+<li>F_GA_MERGE_ALTERNATE マージ戦略：親の染色体集団と子の染色体集団とを合わせた集団の中から適応度の高い順に次の世代とします。 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cost_func</em>&nbsp;</td><td>適用度を算出するコスト関数(評価関数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rnd_cond</em>&nbsp;</td><td>世代交代（進化）の終了条件 <br>
+ 次の内から選んで指定してください。 <ul>
+<li>F_GA_MAX_FITNESS_END 最大適応度による </li>
+<li>F_GA_MEAN_FITNESS_END 平均適応度による </li>
+<li>F_GA_STAGNATION_END 世代交代の停滞による </li>
+<li>F_GA_NO_CONDITION_END なし(世代交代の回数によるのみ) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>thresh</em>&nbsp;</td><td>終了判定のためのしきい値 <br>
+ <em>rnd_cond</em> にて指定した条件により、意味が変わります。 <ul>
+<li>F_GA_MAX_FITNESS_END 集団内の染色体の最大適応度がこの値より大きくなったときに終了します。 </li>
+<li>F_GA_MEAN_FITNESS_END 集団内の染色体の平均適応度がこの値より大きくなったときに終了します。 </li>
+<li>F_GA_STAGNATION_END 集団内の染色体の最近10回以内の集団平均適応度の標準偏差がこの値より小さくなったときに終了します。 </li>
+<li>F_GA_NO_CONDITION_END 終了しません。（ <em>max_alter_cnt</em> パラメータの値で強制的に終了させるときにこれを使います。） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_alter_cnt</em>&nbsp;</td><td>最大世代交代数 <br>
+ 終了条件を満たさないときでも、この値分の世代交代（進化）を行ってから処理を終了します。</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、GAのハンドルを返します。 ライセンスエラー、メモリ不足、またはパラメータ不正により異常終了した場合には、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfc2e6f5195718c2f334488c8f45e391d"></a><!-- doxytag: member="fie_ga.c::fnFIE_ga_execute" ref="gfc2e6f5195718c2f334488c8f45e391d" args="(FHANDLE hga, INT pick_num, VOID *chrom, DOUBLE *fitness, INT *generate)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ga_execute           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hga</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pick_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>chrom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>fitness</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>generate</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ＧＡの実行 
+<p>
+遺伝的アルゴリズムを実行します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hga</em>&nbsp;</td><td>ＧＡのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pick_num</em>&nbsp;</td><td>出力する染色体の個数(1以上) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>chrom</em>&nbsp;</td><td>適応度の大きい順に並んだ染色体の配列です。 「一遺伝子あたりのバイト数×一染色体あたりの遺伝子数× <em>pick_num</em> 」分の領域が必要です。 遺伝子の型により、以下の様に必要なサイズが変わります。 <ul>
+<li>整数型( F_GA_INT_TYPE_GENE ) sizeof(INT) × 一染色体あたりの遺伝子数× <em>pick_num</em> </li>
+<li>浮動小数点型( F_GA_FLOAT_TYPE_GENE ) sizeof(DOUBLE) × 一染色体あたりの遺伝子数× <em>pick_num</em> </li>
+<li>順序型( F_GA_ORDER_TYPE_GENE ) sizeof(INT) × 一染色体あたりの遺伝子数× <em>pick_num</em> </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fitness</em>&nbsp;</td><td>抽出した各染色体の適用度の配列。 <em>pick_num</em> で指定した個数分の領域が必要です。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>generate</em>&nbsp;</td><td>世代交代を行った回数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

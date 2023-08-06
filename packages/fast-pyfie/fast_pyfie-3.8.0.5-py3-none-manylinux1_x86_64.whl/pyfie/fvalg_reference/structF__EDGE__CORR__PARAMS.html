@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 構造体 F_EDGE_CORR_PARAMS</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>構造体 F_EDGE_CORR_PARAMS<br>
+<small>
+[<a class="el" href="group__fie__edge__detector.html">２次元エッジ検出</a>]</small>
+</h1><!-- doxytag: class="F_EDGE_CORR_PARAMS" --><hr><a name="_details"></a><h2>説明</h2>
+相関エッジ用パラメータ構造体 
+<p>
+相関エッジ用パラメータを指定するための構造体です。 本ページで相関エッジフィルタの概要と各種パラメータの設定方法を説明します。<p>
+<dl class="user" compact><dt><b>相関エッジフィルタ概要</b></dt><dd>相関エッジフィルタは局所領域内の関数曲線（後述のシグモイド画像）を使用してエッジ強度を計測するフィルタです。 局所領域内の分散値も計測し、分散値がしきい値以上となる画素のみエッジ強度を求めます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>シグモイド画像の例を図1に示します。 シグモイド画像はサイズ <em>width</em> × <em>height</em> の局所領域であり、 長さ方向の濃度プロファイルが図2のようなシグモイド関数 <img class="formulaInl" alt="$ f(x) = \frac{1}{1 + \exp(-kx)} $" src="form_555.png"> になるように構成されています。 <table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="edge_corr_sigmoid_img.png" alt="edge_corr_sigmoid_img.png">
+<p><strong>図1. シグモイド画像（X方向）</strong></p></div>
+  </td><td><div align="center">
+<img src="edge_corr_sigmoid.png" alt="edge_corr_sigmoid.png">
+<p><strong>図2. シグモイド関数</strong></p></div>
+  </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>このシグモイド画像を図3のように対象画像の注目画素にあてはめ、濃度分布の一致度を求めることでX方向のエッジ強度を取得します。</dd></dl>
+<div align="center">
+<img src="edge_corr_scan.png" alt="edge_corr_scan.png">
+<p><strong>図3. 注目画素へのシグモイド画像のあてはめ</strong></p></div>
+ <dl class="user" compact><dt><b></b></dt><dd>シグモイド画像を図4のように90度回転させて同様の操作を行うことで、Y方向のエッジ強度も取得します。 X方向とY方向の結果を統合することで最終的なエッジ強度とエッジ方向を得ます。</dd></dl>
+<div align="center">
+<img src="edge_corr_sigmoid_img_y.png" alt="edge_corr_sigmoid_img_y.png">
+<p><strong>図4. Y方向のシグモイド画像</strong></p></div>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>変数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6">width</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">相関エッジフィルタの長さ  <a href="#6b0ff7267138fa33fa9c760cb5105fe6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2">height</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">相関エッジフィルタの高さ  <a href="#60cec99d9119f0be474678ab6fc8fce2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e">var_threshold</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">分散しきい値  <a href="#19d0412af5ec4c953203db7a0c43751e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b">sigmoid_k</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">シグモイド係数  <a href="#7e06ab8cf3a261447c893498b0cc559b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512">mag_threshold</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">強度しきい値  <a href="#0019c6f00db4ca555e1284d4a8853512"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236">nms_length</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">非極大抑制のフィルタ片幅  <a href="#1296509ac3054c3e1a519bd478ec1236"></a><br></td></tr>
+</table>
+<hr><h2>構造体</h2>
+<a class="anchor" name="6b0ff7267138fa33fa9c760cb5105fe6"></a><!-- doxytag: member="F_EDGE_CORR_PARAMS::width" ref="6b0ff7267138fa33fa9c760cb5105fe6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6">F_EDGE_CORR_PARAMS::width</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+相関エッジフィルタの長さ 
+<p>
+相関エッジで使用する局所領域の長さ（幅）方向のサイズです。画素単位で設定します。 下図の W に相当します。<p>
+<div align="center">
+<img src="edge_corr_operator.png" alt="edge_corr_operator.png">
+</div>
+<p>
+3以上255以下の奇数かつ <em>height</em> ≦ <em>width</em> となるように設定してください。 推奨値は 13 です。<p>
+<dl class="user" compact><dt><b>パラメータ決定方法</b></dt><dd>対象物の輪郭線が（ <em>width</em> - 1 ) / 2 より小さい場合は、下図左のように線幅と（ <em>width</em> - 1 ) / 2 が一致するように設定してください。 例えば文字のような細い線のエッジを抽出したい場合は太さに合わせて値を調節する必要があります。</dd></dl>
+<div align="center">
+<img src="edge_corr_width_good.png" alt="edge_corr_width_good.png">
+<p><strong>正しい設定例</strong></p></div>
+ <dl class="user" compact><dt><b></b></dt><dd>ある程度幅のある対象物の場合は推奨値程度の値を設定してください（上図右）。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>下図のように <em>width</em> が線幅を超えてしまうとエッジ強度が低下してしまいます。</dd></dl>
+<div align="center">
+<img src="edge_corr_width_bad.png" alt="edge_corr_width_bad.png">
+<p><strong>誤った設定例</strong></p></div>
+ <dl class="user" compact><dt><b></b></dt><dd>相関エッジフィルタでは下図のようにキズや汚れのような細い線のエッジ強度とある程度幅のある対象物のエッジ強度に差が生じます。 これによりエッジ強度のしきい値で対象物のエッジのみ取得することが可能となります。</dd></dl>
+<div align="center">
+<img src="edge_corr_width_effective.png" alt="edge_corr_width_effective.png">
+<p><strong>効果的な使い方の例：キズや汚れ</strong></p></div>
+
+</div>
+</div><p>
+<a class="anchor" name="60cec99d9119f0be474678ab6fc8fce2"></a><!-- doxytag: member="F_EDGE_CORR_PARAMS::height" ref="60cec99d9119f0be474678ab6fc8fce2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2">F_EDGE_CORR_PARAMS::height</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+相関エッジフィルタの高さ 
+<p>
+相関エッジで使用する局所領域の高さ方向のサイズです。画素単位で設定します。 下図の H に相当します。<p>
+<div align="center">
+<img src="edge_corr_operator.png" alt="edge_corr_operator.png">
+</div>
+<p>
+1以上255以下の奇数かつ <em>height</em> ≦ <em>width</em> となるように設定してください。 推奨値は 5 です。<p>
+<dl class="user" compact><dt><b>パラメータ決定方法</b></dt><dd>通常は推奨値を使用してください。 デジタル処理による誤差、およびビデオノイズによる誤差を軽減させたい場合には値を大きくしてください。 しかし値を大きくすると傾いているものに対してエッジ強度が低くなる傾向があります。 なお、フィルタ長さ <em>width</em> の値が推奨値から大きく変化している場合は、 <em>width</em> の3分の1程度に設定することも検討してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="19d0412af5ec4c953203db7a0c43751e"></a><!-- doxytag: member="F_EDGE_CORR_PARAMS::var_threshold" ref="19d0412af5ec4c953203db7a0c43751e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e">F_EDGE_CORR_PARAMS::var_threshold</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+分散しきい値 
+<p>
+相関エッジで使用する領域内の濃度分散値の下限値です。 領域内の濃度分散値が設定値を超えた場合にエッジであるとみなします。 ソーベルエッジでいう強度しきい値と同じ性質を持ち、対象となるマスターパタンと背景のコントラストによって値を調整します。<p>
+0より大きな値で設定してください。 推奨値と設定可能な上限値は次の表の通りです。<p>
+<table class="pretable">
+<tr>
+<th>画像型</th><th>推奨値</th><th>上限値  </th></tr>
+<tr>
+<td>F_IMG_UC8</td><td>25</td><td>16384 (= 2^14)  </td></tr>
+<tr>
+<td>F_IMG_S16</td><td>1638400</td><td>1073741824 (= 2^30)  </td></tr>
+<tr>
+<td>F_IMG_US16</td><td>1638400</td><td>1073741824 (= 2^30)  </td></tr>
+<tr>
+<td>F_IMG_DOUBLE</td><td>画像の値域によって変化</td><td>上限なし  </td></tr>
+</table>
+<p>
+※FPMの相関エッジでは F_IMG_UC8 のみに対応しています。<p>
+<dl class="user" compact><dt><b>パラメータ決定方法</b></dt><dd>画像内の対象物と背景の濃度差を計測し、何箇所か計測した中で最も濃度差の小さい値を以下の式に代入して採用してください。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>分散しきい値　＝　（濃度差）<sup>2</sup> / 4</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>＊注意＊ 濃度差計測では若干広めにとってしまう可能性が高いので、計測値より少し低めの値を式に代入することをお勧めします。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>算出した分散しきい値を用いて、一旦エッジ抽出を行い、エッジが取れているかどうか確認してください。 以下の２つの状況に当てはまる場合は値を調節してください。<ul>
+<li>対象物のエッジは取れているが、ノイズからもエッジが出ている場合　→　大きくする</li><li>ノイズからのエッジはないが、対象物のエッジも取れていない場合　　→　小さくする</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>随時エッジ抽出を行い、エッジを確認しながら値を調節することをお勧めします。 対象物のエッジが消えない程度に分散しきい値の値を決定してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="7e06ab8cf3a261447c893498b0cc559b"></a><!-- doxytag: member="F_EDGE_CORR_PARAMS::sigmoid_k" ref="7e06ab8cf3a261447c893498b0cc559b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b">F_EDGE_CORR_PARAMS::sigmoid_k</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+シグモイド係数 
+<p>
+相関エッジに使用するためのマスター（シグモイド画像）となるシグモイド関数の形状を決める係数です。 値が小さい場合にはなだらかなモデル(ボケた画像)、値が大きい場合には急峻なモデル(２値的な画像)をマスターとします。<p>
+0より大きな値を設定してください。 推奨値は 1.0 です。<p>
+<dl class="user" compact><dt><b>パラメータ決定方法</b></dt><dd>通常は推奨値を使用してください。 ただし、対象物のエッジが鮮明な場合は10.0程度まで増加させることを、エッジがぼけている場合は0.1程度まで減少させることを検討してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="0019c6f00db4ca555e1284d4a8853512"></a><!-- doxytag: member="F_EDGE_CORR_PARAMS::mag_threshold" ref="0019c6f00db4ca555e1284d4a8853512" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512">F_EDGE_CORR_PARAMS::mag_threshold</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+強度しきい値 
+<p>
+相関エッジで使用するエッジ強度の下限値（256倍値）です。 エッジ強度が設定値を超えた場合にエッジであるとみなします。 相関エッジの強度は一般的なエッジの強度とは考え方が違い、マスターとなるエッジモデル（シグモイド画像）との類似度を強度としています。<p>
+0以上255以下の値を設定してください。 推奨値は 160 です。<p>
+<dl class="user" compact><dt><b>パラメータ決定方法</b></dt><dd>通常は推奨値を使用してください。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>以下のような場合に限り調節を行ってください。 随時エッジ抽出を行い、エッジを確認しながら値を調節することをお勧めします。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>【局所領域内に対象のエッジ以外のものが含まれる場合】<br>
+ 局所領域内にキズや汚れなどのエッジ以外の濃度変化がある場合、エッジ強度が低下します。 このような状況の場合は、局所領域がキズや汚れに掛からないようにフィルタ長さ <em>width</em> を小さくするか、もしくは強度しきい値を小さくしてください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="1296509ac3054c3e1a519bd478ec1236"></a><!-- doxytag: member="F_EDGE_CORR_PARAMS::nms_length" ref="1296509ac3054c3e1a519bd478ec1236" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236">F_EDGE_CORR_PARAMS::nms_length</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+非極大抑制のフィルタ片幅 
+<p>
+非極大抑制処理（細線化処理）時のフィルタサイズ片幅です。画素単位で設定します。<p>
+1以上の値を設定してください。 推奨値は ( <em>width</em> - 1) / 2 です（ <em>width</em> はフィルタ長さ）。<p>
+<dl class="user" compact><dt><b>パラメータ決定方法</b></dt><dd>通常は推奨値を使用してください。 正しいエッジ位置の近隣に余計なエッジが生じる場合には値を大きくしてください。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

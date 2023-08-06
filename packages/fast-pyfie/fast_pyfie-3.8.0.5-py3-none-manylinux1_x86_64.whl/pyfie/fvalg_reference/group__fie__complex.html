@@ -1,0 +1,711 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 複素数計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>複素数計算<br>
+<small>
+[<a class="el" href="group__fie__low__level__func.html">低レベル処理関数</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数  <a href="structFCOMPLEX.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g78c40a23535a0b226dc7bf022a3eafdf">fnFIE_fcomplex</a> (DOUBLE r, DOUBLE i)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数生成  <a href="#g78c40a23535a0b226dc7bf022a3eafdf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#gc7be14245b09ada97739cb414df23748">fnFIE_cadd</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数同士の加算  <a href="#gc7be14245b09ada97739cb414df23748"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#gab46effe9aeca1d3fc3c1794cb6fe2c2">fnFIE_csub</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数同士の減算  <a href="#gab46effe9aeca1d3fc3c1794cb6fe2c2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g4a2c439ca1dae3de3c5b7051dc7a07eb">fnFIE_cmul</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数同士の積  <a href="#g4a2c439ca1dae3de3c5b7051dc7a07eb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g52693bb3332ec56f1062c8f3f34c9751">fnFIE_cdiv</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数同士の割り算  <a href="#g52693bb3332ec56f1062c8f3f34c9751"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#gaa918bf55dbb8f71af273dacdde06432">fnFIE_ceq</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数同士で==演算を行う  <a href="#gaa918bf55dbb8f71af273dacdde06432"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOL FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g79559467815adb86b32bd569f5338e6a">fnFIE_cne</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数同士で!=演算を行う  <a href="#g79559467815adb86b32bd569f5338e6a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g2ad6ead9b567b40d3a76e8db49b93388">fnFIE_carg</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の偏角を計算する  <a href="#g2ad6ead9b567b40d3a76e8db49b93388"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g93fb29a9d2e54ae05b6d74b3eb91645c">fnFIE_cabs</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数絶対値を計算する  <a href="#g93fb29a9d2e54ae05b6d74b3eb91645c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g72758b6fb5222845a0c1852201d4bca1">fnFIE_conj</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素共役を計算する  <a href="#g72758b6fb5222845a0c1852201d4bca1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g332a9c6115a6a5edc30d8a3c4263a4de">fnFIE_clog</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の自然対数  <a href="#g332a9c6115a6a5edc30d8a3c4263a4de"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g2fb3aec3aa41d1e164c41553d18fe715">fnFIE_clog10</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">底が 10 の複素数の対数  <a href="#g2fb3aec3aa41d1e164c41553d18fe715"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g31b1359482cc68c57d9b03808d497768">fnFIE_cexp</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の指数関数  <a href="#g31b1359482cc68c57d9b03808d497768"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g48963e97d1cb392709535dfb064f61d0">fnFIE_cpow</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c1, <a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の累乗関数  <a href="#g48963e97d1cb392709535dfb064f61d0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#gbcdce2aea07ef8a4dfd1a88af778bee6">fnFIE_cpowd</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c, DOUBLE d)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の（実数）累乗関数  <a href="#gbcdce2aea07ef8a4dfd1a88af778bee6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g98898e54fb92ceac37d4024dde19f66c">fnFIE_csin</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の正弦 (sin)関数  <a href="#g98898e54fb92ceac37d4024dde19f66c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__complex.html#g0808278102a93ede22e5087911a9a4d2">fnFIE_ccos</a> (<a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> c)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複素数の余弦 (cos)関数  <a href="#g0808278102a93ede22e5087911a9a4d2"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g78c40a23535a0b226dc7bf022a3eafdf"></a><!-- doxytag: member="fie_cmath.c::fnFIE_fcomplex" ref="g78c40a23535a0b226dc7bf022a3eafdf" args="(DOUBLE r, DOUBLE i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_fcomplex           </td>
+          <td>(</td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>i</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数生成 
+<p>
+複素数を生成します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>r</em>&nbsp;</td><td>実部 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>i</em>&nbsp;</td><td>虚部</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数を生成して返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc7be14245b09ada97739cb414df23748"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cadd" ref="gc7be14245b09ada97739cb414df23748" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_cadd           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数同士の加算 
+<p>
+<em>c1</em> + <em>c2</em> の計算を行います。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>加算結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gab46effe9aeca1d3fc3c1794cb6fe2c2"></a><!-- doxytag: member="fie_cmath.c::fnFIE_csub" ref="gab46effe9aeca1d3fc3c1794cb6fe2c2" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_csub           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数同士の減算 
+<p>
+<em>c1</em> - <em>c2の計算を行います。</em> <p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>減算結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4a2c439ca1dae3de3c5b7051dc7a07eb"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cmul" ref="g4a2c439ca1dae3de3c5b7051dc7a07eb" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_cmul           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数同士の積 
+<p>
+<em>c1</em> * <em>c2</em> の計算を行います。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>積結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g52693bb3332ec56f1062c8f3f34c9751"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cdiv" ref="g52693bb3332ec56f1062c8f3f34c9751" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_cdiv           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数同士の割り算 
+<p>
+<em>c1</em> / <em>c2</em> の計算を行います。 <em>c2</em> の実部と虚部が共に0の場合、0の割り算が発生する場合が有ります。 このような値のチェックは行わないため注意してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>割り算結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gaa918bf55dbb8f71af273dacdde06432"></a><!-- doxytag: member="fie_cmath.c::fnFIE_ceq" ref="gaa918bf55dbb8f71af273dacdde06432" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL FVALGAPI fnFIE_ceq           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数同士で==演算を行う 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>TRUE</em>&nbsp;</td><td>c1 == c2 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>FALSE</em>&nbsp;</td><td>c1 != c2 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g79559467815adb86b32bd569f5338e6a"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cne" ref="g79559467815adb86b32bd569f5338e6a" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL FVALGAPI fnFIE_cne           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数同士で!=演算を行う 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>TRUE</em>&nbsp;</td><td>c1 != c2 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>FALSE</em>&nbsp;</td><td>c1 == c2 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2ad6ead9b567b40d3a76e8db49b93388"></a><!-- doxytag: member="fie_cmath.c::fnFIE_carg" ref="g2ad6ead9b567b40d3a76e8db49b93388" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_carg           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の偏角を計算する 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数の偏角を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g93fb29a9d2e54ae05b6d74b3eb91645c"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cabs" ref="g93fb29a9d2e54ae05b6d74b3eb91645c" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE FVALGAPI fnFIE_cabs           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数絶対値を計算する 
+<p>
+cの複素数絶対値［規数（norm）、モジュラス（modulus）、または大きさ（magnitude）ともいう］を計算します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>cの複素数絶対値を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g72758b6fb5222845a0c1852201d4bca1"></a><!-- doxytag: member="fie_cmath.c::fnFIE_conj" ref="g72758b6fb5222845a0c1852201d4bca1" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_conj           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素共役を計算する 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd><em>c</em> の複素共役を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g332a9c6115a6a5edc30d8a3c4263a4de"></a><!-- doxytag: member="fie_cmath.c::fnFIE_clog" ref="g332a9c6115a6a5edc30d8a3c4263a4de" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_clog           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の自然対数 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数関数log( <em>c</em> )の結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2fb3aec3aa41d1e164c41553d18fe715"></a><!-- doxytag: member="fie_cmath.c::fnFIE_clog10" ref="g2fb3aec3aa41d1e164c41553d18fe715" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_clog10           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+底が 10 の複素数の対数 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数関数log10( <em>c</em> )の結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g31b1359482cc68c57d9b03808d497768"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cexp" ref="g31b1359482cc68c57d9b03808d497768" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_cexp           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の指数関数 
+<p>
+この関数は e (自然対数の底) の c 乗を計算します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数関数exp( <em>c</em> )の結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g48963e97d1cb392709535dfb064f61d0"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cpow" ref="g48963e97d1cb392709535dfb064f61d0" args="(FCOMPLEX c1, FCOMPLEX c2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_cpow           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の累乗関数 
+<p>
+この関数は c1 の c2 乗を計算します。 (branch cutの有無は不明)<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c1</em>&nbsp;</td><td>累乗される複素数1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c2</em>&nbsp;</td><td>複素数2</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数の累乗結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbcdce2aea07ef8a4dfd1a88af778bee6"></a><!-- doxytag: member="fie_cmath.c::fnFIE_cpowd" ref="gbcdce2aea07ef8a4dfd1a88af778bee6" args="(FCOMPLEX c, DOUBLE d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_cpowd           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>d</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の（実数）累乗関数 
+<p>
+この関数は c1 の d 乗を計算します。 (branch cutの有無は不明)<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>累乗される複素数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>d</em>&nbsp;</td><td>実数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数の（実数）累乗結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g98898e54fb92ceac37d4024dde19f66c"></a><!-- doxytag: member="fie_cmath.c::fnFIE_csin" ref="g98898e54fb92ceac37d4024dde19f66c" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_csin           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の正弦 (sin)関数 
+<p>
+この関数は sin(c)を計算する。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数のsin結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0808278102a93ede22e5087911a9a4d2"></a><!-- doxytag: member="fie_cmath.c::fnFIE_ccos" ref="g0808278102a93ede22e5087911a9a4d2" args="(FCOMPLEX c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a> FVALGAPI fnFIE_ccos           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFCOMPLEX.html">FCOMPLEX</a>&nbsp;</td>
+          <td class="paramname"> <em>c</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複素数の余弦 (cos)関数 
+<p>
+この関数は cos(c)を計算する。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>c</em>&nbsp;</td><td>複素数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>複素数のcos結果を返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

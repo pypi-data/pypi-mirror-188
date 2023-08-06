@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ITF (Interleaved 2 of 5)</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ITF (Interleaved 2 of 5)<br>
+<small>
+[<a class="el" href="group__fie__barcode__doc.html">仕様</a>]</small>
+</h1><div align="center">
+<img src="barcode_ITF.png" alt="barcode_ITF.png">
+</div>
+<p>
+<hr>
+ <dl class="user" compact><dt><b>目次:</b></dt><dd><ul>
+<li><a class="el" href="group__fie__barcode__ITF.html#barcode_ITF_Outline">概要</a> </li>
+<li><a class="el" href="group__fie__barcode__ITF.html#barcode_ITF_Structure">構成</a> </li>
+<li><a class="el" href="group__fie__barcode__ITF.html#barcode_ITF_CharCode">文字コード表</a> </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd></dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_ITF_Outline">
+概要</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd>ITF（インターリーブド ２ of ５）は、２値（ナロー幅、ワイド幅）のスペースとバーで構成されます。 ５本のバーとスペースで２桁の数値を表します。 前半の桁をバーで表し、後半の桁をスペースで表します。 バーとスペースは交互に配置されています。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>特徴:</b><br>
+ <table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey">使用可能な文字 </td><td>０～９の数字  </td></tr>
+<tr>
+<td class="indexkey">桁数 </td><td>任意（但し、偶数のみ）  </td></tr>
+<tr>
+<td class="indexkey">１文字の構成 </td><td>５本のバー（またはスペース）  </td></tr>
+<tr>
+<td class="indexkey">バーの太さ </td><td>２値（ナロー幅／ワイド幅）  </td></tr>
+<tr>
+<td class="indexkey">チェックデジット </td><td>任意（モジュラス 10）  </td></tr>
+</table>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_ITF_Structure">
+構成</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd>下図は、『12 34 56 78』を表しています。 チェックデジットを付加する場合は、データフィールドの最後の1桁がチェックデジットとして使用されます。 </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ol type=1>
+<li>マージンは、ナロー幅の１０倍以上が必要です。</li><li>データフィールドは可変長です。 </li></ol>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><div align="center">
+<img src="barcode_ITF_structure.png" alt="barcode_ITF_structure.png">
+</div>
+ </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b>１文字の構成:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>ITF は、常に２桁の数値を表します。 前半の１桁をバー(黒)で表し、後半の１桁をスペース(白)で表します。 </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">&nbsp; </td><td class="indexkey" align="center">パターン  </td></tr>
+<tr>
+<td align="center" valign="center">35 </td><td align="center"><table border="0" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center">前半:</td><td align="center">3 </td></tr>
+<tr>
+<td align="center">&nbsp;</td><td align="center">&nbsp; </td></tr>
+<tr>
+<td align="center">後半:</td><td align="center">5 </td></tr>
+</table>
+</td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF" colspan="2">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF" colspan="2">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp;  </td></tr>
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF" colspan="2">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF" colspan="2">1 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0 </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#FFFFFF">0  </td></tr>
+</table>
+</td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>スペースとバー:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center" colspan="2">スペース </td><td class="indexkey" align="center" colspan="2">バー  </td></tr>
+<tr>
+<td class="indexkey" align="center">ナロー幅 </td><td class="indexkey" align="center">ワイド幅 </td><td class="indexkey" align="center">ナロー幅 </td><td class="indexkey" align="center">ワイド幅  </td></tr>
+<tr>
+<td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+0  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+1  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+0  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+1   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>スタート・ストップコード:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>下図の赤色で示すバーがスタートコード(左端)とストップコード(右端)です。<br>
+ <div align="center">
+<img src="barcode_ITF_start_stop.png" alt="barcode_ITF_start_stop.png">
+</div>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_ITF_CharCode">
+文字コード表</a></h2>
+下表に、ITF で表現可能な文字を示します。<p>
+<ol type=1>
+<li>START,STOP コードに対応する文字は有りません。</li><li>RawData の覧は、ライブラリが返す『生データ』を意味します。</li></ol>
+<p>
+<table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">RawData </td><td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">ウェイト  </td></tr>
+<tr>
+<td align="center">0</td><td align="center">0 </td><td align="center">00110 </td></tr>
+<tr>
+<td align="center">1</td><td align="center">1 </td><td align="center">10001 </td></tr>
+<tr>
+<td align="center">2</td><td align="center">2 </td><td align="center">01001 </td></tr>
+<tr>
+<td align="center">3</td><td align="center">3 </td><td align="center">11000 </td></tr>
+<tr>
+<td align="center">4</td><td align="center">4 </td><td align="center">00101 </td></tr>
+<tr>
+<td align="center">5</td><td align="center">5 </td><td align="center">10100 </td></tr>
+<tr>
+<td align="center">6</td><td align="center">6 </td><td align="center">01100 </td></tr>
+<tr>
+<td align="center">7</td><td align="center">7 </td><td align="center">00011 </td></tr>
+<tr>
+<td align="center">8</td><td align="center">8 </td><td align="center">10010 </td></tr>
+<tr>
+<td align="center">9</td><td align="center">9 </td><td align="center">01010 </td></tr>
+</table>
+<p>
+<table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">RawData </td><td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">ウェイト </td><td class="indexkey" align="center">意味  </td></tr>
+<tr>
+<td align="center">10</td><td align="center">&nbsp; </td><td align="center">___00</td><td align="center">START </td></tr>
+<tr>
+<td align="center">11</td><td align="center">&nbsp; </td><td align="center">10___</td><td align="center">STOP </td></tr>
+</table>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

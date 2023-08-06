@@ -1,0 +1,1083 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ハフ直線検出</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ハフ直線検出<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__LH__LINE.html">F_LH_LINE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線検出ハフ用直線構造体  <a href="structF__LH__LINE.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55">fnFIE_hough_lines_open</a> (INT stq, INT edq, INT sx, INT sy, INT ex, INT ey, INT *exerr)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線検出ハフライブラリのオープン  <a href="#gd17530a0b527897d4d415e5f0d2b6c55"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g510228d421af0a66da1b10c674246504">fnFIE_hough_lines_init_space</a> (FHANDLE hHough)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ハフ投票空間の初期化  <a href="#g510228d421af0a66da1b10c674246504"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g7c2ee05252eb2e49b4490afe9747606c">fnFIE_hough_lines_voting</a> (FHANDLE hHough, const <a class="el" href="structF__EDGE.html">F_EDGE</a> *edges, INT edge_num, INT vot_width, INT *voting_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ハフ空間への投票（整数型エッジ点群）  <a href="#g7c2ee05252eb2e49b4490afe9747606c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#ga582d236dcc0152bdda897bd5daba7e6">fnFIE_hough_lines_voting_d</a> (FHANDLE hHough, const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *edges, INT edge_num, INT vot_width, INT *voting_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ハフ空間への投票（実数型エッジ点群）  <a href="#ga582d236dcc0152bdda897bd5daba7e6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g8ffda33486a0efeccfafd61c3e6d7b1f">fnFIE_hough_lines_detection</a> (const FHANDLE hHough, INT request_line_num, INT rgn_r, INT rgn_q, <a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *ans_lines, INT *line_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ハフ直線検出  <a href="#g8ffda33486a0efeccfafd61c3e6d7b1f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g53189029d80bbe78a2a5e6413d059d17">fnFIE_hough_lines_refine_line</a> (<a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *line, const <a class="el" href="structF__EDGE.html">F_EDGE</a> *edges, INT edge_num, INT err_r, INT err_q, INT *pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線係数を最小自乗法で求め直す（整数型エッジ点群）  <a href="#g53189029d80bbe78a2a5e6413d059d17"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g60707ac3d1dd4bd8f43f44a6a884b6e0">fnFIE_hough_lines_refine_line_d</a> (<a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *line, const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *edges, INT edge_num, DOUBLE err_r, DOUBLE err_q, INT *pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線係数を最小自乗法で求め直す（実数型エッジ点群）  <a href="#g60707ac3d1dd4bd8f43f44a6a884b6e0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g1e1bc8df54608af5acc8c90ce1d47f79">fnFIE_hough_lines_get_support_edges</a> (const <a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *line, const <a class="el" href="structF__EDGE.html">F_EDGE</a> *edges, INT edge_num, INT err_r, INT err_q, <a class="el" href="structF__EDGE.html">F_EDGE</a> **support_edges, INT *neib_num, INT *sort_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線に近いエッジ点群の取得（整数型エッジ点群）  <a href="#g1e1bc8df54608af5acc8c90ce1d47f79"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#g86067fec7f52b4c2c2b1ea9be31fa425">fnFIE_hough_lines_get_support_edges_d</a> (const <a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *line, const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *edges, INT edge_num, DOUBLE err_r, DOUBLE err_q, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **support_edges, INT *neib_num, INT *sort_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">直線に近いエッジ点群の取得（実数型エッジ点群）  <a href="#g86067fec7f52b4c2c2b1ea9be31fa425"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__line.html#gcf782ac963fc54df17fe13eae5f99cc7">fnFIE_hough_lines_get_space</a> (FHANDLE hHough, INT *stq, INT *edq, INT *str, INT *edr)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ハフ投票空間の取得  <a href="#gcf782ac963fc54df17fe13eae5f99cc7"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gd17530a0b527897d4d415e5f0d2b6c55"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_open" ref="gd17530a0b527897d4d415e5f0d2b6c55" args="(INT stq, INT edq, INT sx, INT sy, INT ex, INT ey, INT *exerr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_hough_lines_open           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>stq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>sx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>sy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>exerr</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線検出ハフライブラリのオープン 
+<p>
+直線検出ハフライブラリをオープンします。 本関数を実行する前に、 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> を実行してください。 実行しない場合は、 未初期化としてエラーコードに F_ERR_UNINIT_LIB が代入され、NULLが返されます。<p>
+ハフ投票空間の初期化は本関数では行われません。 投票開始前に必ず <a class="el" href="group__fie__hough__line.html#g510228d421af0a66da1b10c674246504" title="ハフ投票空間の初期化">fnFIE_hough_lines_init_space()</a> にて投票空間の初期化を行ってください。<p>
+<em>stq</em> , <em>edq</em> パラメータは、検出したい直線の向きの範囲を角度で表したものです。 角度範囲 <em>stq</em> , <em>edq</em> は以下の条件を満たさなければなりません。 <ul>
+<li>-360≦ <em>stq</em> ≦360 </li>
+<li>0≦ <em>edq</em> ≦360 </li>
+<li><em>stq</em> ≦ <em>edq</em> </li>
+<li><em>edq-stq</em> &lt; 360</li>
+</ul>
+<em>sx</em> , <em>sy</em> , <em>ex</em> , <em>ey</em> パラメータは <a class="el" href="group__fie__hough__line.html#g7c2ee05252eb2e49b4490afe9747606c" title="ハフ空間への投票（整数型エッジ点群）">fnFIE_hough_lines_voting()</a> にて投票するエッジ点の存在する座標領域を指定するパラメータです。 本パラメータに従ってハフ平面が生成されるため、この領域をはみ出すエッジ点を投票することは出来ません。 本パラメータは、以下の条件を満たさなければなりません。 <ul>
+<li>ex - sx &gt;= 2 </li>
+<li>ey - sy &gt;= 2</li>
+</ul>
+本関数でオープンしたオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>stq</em>&nbsp;</td><td>検出する直線の法線方向の角度の範囲の始値(-360～360, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edq</em>&nbsp;</td><td>検出する直線の法線方向の角度の範囲の終値(0～360, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sx</em>&nbsp;</td><td>投票するエッジが存在する領域の左上Ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sy</em>&nbsp;</td><td>投票するエッジが存在する領域の左上Ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ex</em>&nbsp;</td><td>投票するエッジが存在する領域の右下Ｘ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ey</em>&nbsp;</td><td>投票するエッジが存在する領域の右下Ｙ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>exerr</em>&nbsp;</td><td>エラーコード。エラーコードを受け取る必要の無い場合は、NULLを指定します。</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常にオープンできた場合は、直線ハフ構造体のハンドルを返します。 パラメータエラーもしくはメモリ不足の場合は、NULLを返します。 </dd></dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_UNINIT_LIB</em>&nbsp;</td><td>未初期化( <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> を実行していない ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g510228d421af0a66da1b10c674246504"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_init_space" ref="g510228d421af0a66da1b10c674246504" args="(FHANDLE hHough)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_init_space           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hHough</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ハフ投票空間の初期化 
+<p>
+ハフ投票空間全体を０クリアします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hHough</em>&nbsp;</td><td>オープン済みハフ構造体のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハフオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7c2ee05252eb2e49b4490afe9747606c"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_voting" ref="g7c2ee05252eb2e49b4490afe9747606c" args="(FHANDLE hHough, const F_EDGE *edges, INT edge_num, INT vot_width, INT *voting_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_voting           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hHough</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE.html">F_EDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>vot_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>voting_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ハフ空間への投票（整数型エッジ点群） 
+<p>
+勾配付きエッジ点群( <a class="el" href="structF__EDGE.html" title="勾配方向、強度付エッジ点構造体(整数型)">F_EDGE</a> * )からハフ投票空間への投票を行ないます。 投票するエッジ点の方向は-180～180度の範囲でなければいけません。 この範囲でないエッジ点が指定された場合、エラーとなり F_ERR_INVALID_PARAM が返されます。 なお、エッジ勾配強度は投票には用いられません(本関数では使用されない)ので、値のチェックは行いません。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。<p>
+また、投票するエッジ点の座標は、 <a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open()</a> で指定した領域内にある必要があります。 領域外のエッジ点は投票に使われず無視されます。<p>
+投票されるエッジ点は、必ず勾配付きエッジ点群でなければなりません。 勾配が無いエッジ点群が投票された場合、正しく直線が検出されないので注意が必要です。<p>
+<a class="el" href="group__fie__hough__line.html#g510228d421af0a66da1b10c674246504" title="ハフ投票空間の初期化">fnFIE_hough_lines_init_space()</a> をコールしない限りはハフ投票空間は初期化されないため、 本ライブラリを複数回コールして投票値を累積させることも可能です。<p>
+<em>vot_width</em> パラメータはハフ空間における投票の角度範囲の片幅です。 例えば、 <em>vot_width=10</em> とした場合、あるエッジの向きが 45 度であれば、 このエッジの投票される範囲は 35 度から 55 度となります(下図を参照してください)。<p>
+<div align="center">
+<img src="fie_xlhough_voting.png" alt="fie_xlhough_voting.png">
+</div>
+<p>
+この範囲を小さくすれば投票にかかる処理時間も短縮され、また、投票結果のピークの先鋭化もはかれます。 逆にエッジの向きがさほど信用出来ないような状況では真の回答の直線に投票されずに、検出に失敗する恐れもあります。 通常の画像に対しては <em>vot_width=10</em> くらいから試してみることをお勧めします。<p>
+勾配角度 q を持つエッジ点に対して実際に投票されるθの範囲は次の通りとなります。<br>
+ <em>q-vot_width</em> ≦ θ ≦ <em>q+vot_width</em> <br>
+ かつ <em>stq</em> ≦ θ ≦ <em>edq</em> <br>
+ ただし、 mod 360 で考えます。 なお、 <em>stq</em> , <em>edq</em> は <a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open()</a> で指定したパラメータです。 q の値によっては投票に使用されないエッジ点も存在し得ます。 例えば、オープンで指定した直線の範囲が -10 度から 10 度で、 本ライブラリの <em>vot_width</em> が 20 度である場合、 向きが 180 度であるエッジ点は仮に投票されるとしても 160 度から 200 度の範囲であり、 直線の範囲 -10 度から 10 度にはないので、投票には寄与しません(無視されます)。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hHough</em>&nbsp;</td><td>直線検出ハフ構造体のハンドル。 <a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open()</a> で取得。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>投票する勾配付きエッジ点群（エッジ勾配強度は必要なし） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点( <em>edges</em> )の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vot_width</em>&nbsp;</td><td>投票θ片幅(0～179, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>voting_num</em>&nbsp;</td><td>投票されたエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハフオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__hough__line.html#ga582d236dcc0152bdda897bd5daba7e6" title="ハフ空間への投票（実数型エッジ点群）">fnFIE_hough_lines_voting_d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga582d236dcc0152bdda897bd5daba7e6"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_voting_d" ref="ga582d236dcc0152bdda897bd5daba7e6" args="(FHANDLE hHough, const F_DEDGE *edges, INT edge_num, INT vot_width, INT *voting_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_voting_d           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hHough</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>vot_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>voting_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ハフ空間への投票（実数型エッジ点群） 
+<p>
+勾配付きエッジ点群( <a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> * )からハフ投票空間への投票を行ないます。 投票するエッジ点の方向は <img class="formulaInl" alt="$-\pi$" src="form_73.png"> ～ <img class="formulaInl" alt="$\pi$" src="form_74.png"> の範囲でなければいけません。 この範囲でないエッジ点が指定された場合、エラーとなり F_ERR_INVALID_PARAM が返されます。 なお、エッジ勾配強度は投票には用いられません(本関数では使用されない)ので、値のチェックは行いません。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。<p>
+また、投票するエッジ点の座標は、 <a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open()</a> で指定した領域内にある必要があります。 領域外のエッジ点は投票に使われず無視されます。<p>
+<a class="el" href="group__fie__hough__line.html#g7c2ee05252eb2e49b4490afe9747606c" title="ハフ空間への投票（整数型エッジ点群）">fnFIE_hough_lines_voting()</a> との違いは、投票する勾配付きエッジ点群が <a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> であることです。 エッジ点群のｘ、ｙ座標はそれぞれ <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> により四捨五入された後、計算に用いられます。 エッジ勾配方向も、-180～180度の範囲に変換して四捨五入がなされた後、計算に用いられます。<p>
+投票されるエッジ点は、必ず勾配付きエッジ点群でなければなりません。 勾配が無いエッジ点群が投票された場合、正しく直線が検出されないので注意が必要です。<p>
+<a class="el" href="group__fie__hough__line.html#g510228d421af0a66da1b10c674246504" title="ハフ投票空間の初期化">fnFIE_hough_lines_init_space()</a> をコールしない限りはハフ投票空間は初期化されないため、 本ライブラリを複数回コールして投票値を累積させることも可能です。<p>
+<em>vot_width</em> パラメータはハフ空間における投票の角度範囲の片幅です。 例えば、 <em>vot_width=10</em> とした場合、あるエッジの向きが 45 度であれば、 このエッジの投票される範囲は 35 度から 55 度となります(下図を参照してください)。<p>
+<div align="center">
+<img src="fie_xlhough_voting.png" alt="fie_xlhough_voting.png">
+</div>
+<p>
+この範囲を小さくすれば投票にかかる処理時間も短縮され、また、投票結果のピークの先鋭化もはかれます。 逆にエッジの向きがさほど信用出来ないような状況では真の回答の直線に投票されずに、検出に失敗する恐れもあります。 通常の画像に対しては <em>vot_width=10</em> くらいから試してみることをお勧めします。<p>
+勾配角度 q を持つエッジ点に対して実際に投票されるθの範囲は次の通りとなります。<br>
+ <em>q-vot_width</em> ≦ θ ≦ <em>q+vot_width</em> <br>
+ かつ <em>stq</em> ≦ θ ≦ <em>edq</em> <br>
+ ただし、 mod 360 で考えます。 なお、 <em>stq</em> , <em>edq</em> は <a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open()</a> で指定したパラメータです。 q の値によっては投票に使用されないエッジ点も存在し得ます。 例えば、オープンで指定した直線の範囲が -10 度から 10 度で、 本ライブラリの <em>vot_width</em> が 20 度である場合、 向きが 180 度であるエッジ点は仮に投票されるとしても 160 度から 200 度の範囲であり、 直線の範囲 -10 度から 10 度にはないので、投票には寄与しません(無視されます)。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hHough</em>&nbsp;</td><td>直線検出ハフ構造体のハンドル。 <a class="el" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open()</a> で取得。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>投票する勾配付きエッジ点群（エッジ勾配強度は必要なし） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点( <em>edges</em> )の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vot_width</em>&nbsp;</td><td>投票θ片幅(0～179, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>voting_num</em>&nbsp;</td><td>投票されたエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハフオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__hough__line.html#g7c2ee05252eb2e49b4490afe9747606c" title="ハフ空間への投票（整数型エッジ点群）">fnFIE_hough_lines_voting()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8ffda33486a0efeccfafd61c3e6d7b1f"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_detection" ref="g8ffda33486a0efeccfafd61c3e6d7b1f" args="(const FHANDLE hHough, INT request_line_num, INT rgn_r, INT rgn_q, F_LH_LINE *ans_lines, INT *line_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_detection           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hHough</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>request_line_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rgn_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rgn_q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *&nbsp;</td>
+          <td class="paramname"> <em>ans_lines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>line_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ハフ直線検出 
+<p>
+投票結果を元に、直線を検出します。 ハフ投票空間上から、投票スコアの高い順に <em>request_line_num</em> 本の直線を検出します。 ただし、投票空間において規定の最小投票数(内部固定)を満たすピークが 要求数に満たない場合には、検出される直線の数はそれよりも少なくなります。<p>
+本関数では、ハフ投票空間を書き換えてしまうため、 再度直線検出を行う場合は、投票をし直さなければいけません。<p>
+本関数では、検出した直線を保持するためのメモリ確保は行いません。 そのため、 <em>ans_lines</em> は、あらかじめ <em>request_line_num</em> 個以上の メモリを確保した状態でなければいけません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hHough</em>&nbsp;</td><td>ハフ構造体のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>request_line_num</em>&nbsp;</td><td>検出要求数(1以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rgn_r</em>&nbsp;</td><td>ρ方向極大値決定サイズ(0以上, 単位：ピクセル) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rgn_q</em>&nbsp;</td><td>θ方向極大値決定サイズ(0～179, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ans_lines</em>&nbsp;</td><td>検出結果直線( <em>request_line_num</em> 個以上のメモリが必要) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>line_num</em>&nbsp;</td><td>検出された直線の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハフオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は、 <a class="el" href="group__fie__edge__detector.html#g9bf56aaaf7fe4912bdb2a0a340b60996" title="ソーベルフィルタを利用したエッジ検出">fnFIE_edge_sobel()</a> にて検出したエッジに対してハフ直線検出をした結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><a class="el" href="group__fie__edge__detector.html#g9bf56aaaf7fe4912bdb2a0a340b60996" title="ソーベルフィルタを利用したエッジ検出">fnFIE_edge_sobel()</a> で指定したパラメータは以下の通りです。 <ul>
+<li><em>params.mag_threshold</em> = 40 </li>
+<li><em>params.nms_length</em> = 1</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>本関数にて指定したパラメータは以下の通りです。 <ul>
+<li><em>rgn_r</em> = 10 </li>
+<li><em>rgn_q</em> = 10 </li>
+<li><em>ans_lines</em> = 10</li>
+</ul>
+<br>
+ なお、処理結果画像は、実際に検出・入力したエッジ点、検出した直線を入力画像に描画した画像です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_hough_line_input_img.png" alt="fie_hough_line_input_img.png">
+<p><strong>入力画像</strong></p></div>
+ </td><td><div align="center">
+<img src="fie_hough_line_input_edge.png" alt="fie_hough_line_input_edge.png">
+<p><strong>入力エッジ画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_hough_line_output_line.png" alt="fie_hough_line_output_line.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">//エラー処理は省略しているの注意してください</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+
+<span class="keywordtype">void</span> hough_lines()
+{
+    FHANDLE hsrc = NULL;    <span class="comment">//入力画像</span>
+    FHANDLE htmp = NULL;    <span class="comment">//途中結果画像</span>
+    
+    <span class="comment">// ソーベルフィルタを利用したエッジ検出のパラメータ定義</span>
+    <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a> params; <span class="comment">//ソーベルエッジ用パラメータ構造体</span>
+    UINT    feat_mode;          <span class="comment">//ボーダーモードの指定</span>
+    INT     border_mode;        <span class="comment">//勾配方向、強度データ保持の指定</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  offset;             <span class="comment">//オフセット量</span>
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> * pedges = NULL;        <span class="comment">//取得されるエッジ</span>
+    INT edge_num ;              <span class="comment">//取得されるエッジの数</span>
+    INT i;
+
+    <span class="comment">// ハフ直線検出のパラメータ定義</span>
+    FHANDLE hHough = NULL;  <span class="comment">//ハフ投票空間</span>
+    
+    INT stq,edq;            <span class="comment">//検出する直線の向きの範囲の始値、終値    </span>
+    INT sx,sy;              <span class="comment">//投票するエッジが存在する領域の左上x座標、y座標</span>
+    INT ex,ey;              <span class="comment">//投票するエッジが存在する領域の右下x座標、y座標</span>
+    INT vot_width;          <span class="comment">//投票θ片幅</span>
+    INT voting_num;         <span class="comment">//投票されたエッジ数</span>
+    
+    INT request_line_num;           <span class="comment">//検出する直線の要求数</span>
+    INT rgn_r;                      <span class="comment">//ρ方向極大値決定サイズ</span>
+    INT rgn_q;                      <span class="comment">//θ方向極大値決定サイズ</span>
+    <a class="code" href="structF__LH__LINE.html" title="直線検出ハフ用直線構造体">F_LH_LINE</a>* ans_lines = NULL;    <span class="comment">//検出結果直線</span>
+    INT line_num;                   <span class="comment">//検出された直線の数</span>
+
+    INT src_width;                  <span class="comment">//入力画像の幅</span>
+    INT src_height;                 <span class="comment">//入力画像の高さ</span>
+    INT j;
+
+    <span class="comment">//************************ソーベルフィルタによるエッジ検出処理************************</span>
+    <span class="comment">//入力画像をファイルから読み込む</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>(<span class="stringliteral">"src_img.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//パラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">mag_threshold</a> = 40;
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">nms_length</a> = 1;
+
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#gf1b0219a1aaa48472cfc9f272687d30f" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向を取得する...">F_EDGE_FEAT_DIRECT</a>; <span class="comment">//直線検出を行うために、必ず勾配方向を指定してエッジを検出する</span>
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0.0;
+
+    <span class="comment">// ソーベルフィルタを利用したエッジ検出(サブピクセル精度)の実行</span>
+    <a class="code" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix</a>(hsrc, NULL, &amp;params, 
+                            feat_mode, border_mode, offset, 
+                            &amp;pedges, &amp;edge_num);
+    
+
+    <span class="comment">//取得したエッジ点を画像上へプロットする</span>
+    <a class="code" href="group__fie__image.html#gff5d66c5c42523a8b3bab9c137765b58" title="ルート画像のコピー">fnFIE_img_root_copy</a>(hsrc, &amp;htmp);
+    <span class="keywordflow">for</span>(i = 0; i &lt; edge_num; i++){
+        <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnt;
+        DOUBLE prot_val=255;
+
+        pnt.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pedges[i].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;
+        pnt.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pedges[i].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;
+
+        <a class="code" href="group__fie__img__draw.html#g1b6fc1f2fec4bc09638f042ced117401" title="点の描画">fnFIE_draw_point</a>(htmp, &amp;prot_val, pnt);
+    }
+
+    <span class="comment">//途中画像の保存</span>
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"tmp_img.bmp"</span>, htmp);
+    
+
+
+    <span class="comment">//************************検出されたエッジ点から直線検出処理************************</span>
+    <span class="comment">//直線検出ハフライブラリのオープン用パラメータを設定</span>
+    stq = 0;                                    <span class="comment">//検出する直線の向きの範囲の始値</span>
+    edq = 359;                                  <span class="comment">//検出する直線の向きの範囲の終値</span>
+    
+    <span class="comment">//投票するエッジが存在する領域の設定 ここでは入力画像全体で設定する</span>
+    src_width = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(hsrc);      <span class="comment">//入力画像の幅</span>
+    src_height = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(hsrc);    <span class="comment">//入力画像の高さ</span>
+    sx = sy = 0;                                <span class="comment">//領域の左上座標は0で設定</span>
+    ex = src_width;                             <span class="comment">//領域の右下x座標は画像の幅で設定</span>
+    ey = src_height;                            <span class="comment">//領域の右下y座標は画像の高さで設定</span>
+
+    <span class="comment">//直線検出ハフライブラリのオープン</span>
+    hHough = <a class="code" href="group__fie__hough__line.html#gd17530a0b527897d4d415e5f0d2b6c55" title="直線検出ハフライブラリのオープン">fnFIE_hough_lines_open</a>(stq, edq, sx, sy, ex, ey, NULL);
+    
+    <span class="comment">//直線ハフ投票空間の初期化</span>
+    <a class="code" href="group__fie__hough__line.html#g510228d421af0a66da1b10c674246504" title="ハフ投票空間の初期化">fnFIE_hough_lines_init_space</a>(hHough);
+
+    <span class="comment">//エッジの投票用パラメータ設定</span>
+    vot_width = 10;     
+
+    <span class="comment">//エッジの投票</span>
+    <a class="code" href="group__fie__hough__line.html#ga582d236dcc0152bdda897bd5daba7e6" title="ハフ空間への投票（実数型エッジ点群）">fnFIE_hough_lines_voting_d</a>(hHough, pedges, edge_num, 
+                                vot_width, &amp;voting_num);
+
+    <span class="comment">//直線検出のパラメータを設定</span>
+    rgn_r = 10;
+    rgn_q = 10;
+    request_line_num  = 10;
+    
+    <span class="comment">//直線検出結果を保存するメモリを確保する</span>
+    ans_lines = (<a class="code" href="structF__LH__LINE.html" title="直線検出ハフ用直線構造体">F_LH_LINE</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>( <a class="code" href="structF__LH__LINE.html" title="直線検出ハフ用直線構造体">F_LH_LINE</a>)) * request_line_num);
+
+    <span class="comment">//直線の検出</span>
+    <a class="code" href="group__fie__hough__line.html#g8ffda33486a0efeccfafd61c3e6d7b1f" title="ハフ直線検出">fnFIE_hough_lines_detection</a>(hHough, request_line_num, rgn_r, rgn_q, 
+                                    ans_lines, &amp;line_num);
+
+    <span class="comment">//取得した直線を画像上へプロットする</span>
+    <span class="keywordflow">for</span>(j = 0; j &lt; line_num; j++){
+        <a class="code" href="structDLINE__T.html" title="直線指定用構造体(DOUBLE)">DLINE_T</a> line;
+        DOUBLE prot_val=255;
+
+        line.<a class="code" href="structDLINE__T.html#843627b1c9487f5c0c4d8e9d4b4967f9">a</a> = ans_lines[j].<a class="code" href="structF__LH__LINE.html#f99ef88c901cbb667cef839e3cf0feb3">a</a> ;
+        line.<a class="code" href="structDLINE__T.html#3ec969ff611b0a432765918c7600c292">b</a> = ans_lines[j].<a class="code" href="structF__LH__LINE.html#ca8a036495efaefdd23768b6cacd6058">b</a> ;
+        line.<a class="code" href="structDLINE__T.html#e078858d14cecbed9cc7b4023fa72f0c">c</a> = ans_lines[j].<a class="code" href="structF__LH__LINE.html#69e1d89a9e68aba5fb752393cb1592a0">c</a> ;
+        <a class="code" href="group__fie__img__draw.html#g3d34c19d524d872b24090782e3cf2fbc" title="直線の描画">fnFIE_draw_line</a>(hsrc, &amp;prot_val, line);
+    }
+
+    <span class="comment">//結果画像の保存</span>
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"dst_img.bmp"</span>, hsrc);
+
+    <span class="comment">//使用した画像オブジェクトの開放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(htmp);
+
+    <span class="comment">//ヒープメモリで確保したメモリはfnOAL_free関数により解放する</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);     <span class="comment">//取得したエッジの開放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(ans_lines);  <span class="comment">//取得した直線の開放</span>
+
+    <span class="comment">//ハフ空間の開放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hHough);
+
+}
+
+
+INT main()
+{
+    <span class="comment">//FIEライブラリの初期化</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">//ハフ直線の検出</span>
+    hough_lines();
+
+    <span class="comment">//FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g53189029d80bbe78a2a5e6413d059d17"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_refine_line" ref="g53189029d80bbe78a2a5e6413d059d17" args="(F_LH_LINE *line, const F_EDGE *edges, INT edge_num, INT err_r, INT err_q, INT *pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_refine_line           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE.html">F_EDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線係数を最小自乗法で求め直す（整数型エッジ点群） 
+<p>
+指定された１本の直線とエッジ点群から、その直線の近くにある、と判定される点群を選び出し、 これらに対して最小自乗法で直線の方程式を求め直します。 本関数はハフ平面とは関連しないため、引数として直線とエッジ点群のみを取り、 直線検出ハフ構造体は引数に取りません。（必要ない）<p>
+<em>line</em> パラメータには <a class="el" href="group__fie__hough__line.html#g8ffda33486a0efeccfafd61c3e6d7b1f" title="ハフ直線検出">fnFIE_hough_lines_detection()</a> で得られた回答直線のうちの１本を選んで入力してください。 正常終了すると、 <em>*line</em> は新たに求められた直線の係数値に書き換えられます。 但し、異常終了した場合には、元の係数が保持されます。<p>
+<em>edges</em> パラメータには、直線の近くにある可能性のあるエッジ点群です。 このエッジ点群の中から直線上にある点が選ばれます。<p>
+<em>err_r</em> パラメータはエッジ点が直線の近くにあるかどうかを判定するための値です。 具体的には、直線とエッジ点との距離が <em>err_r</em> 以内の場合、このエッジ点が直線の近くにある、 と判定され最小自乗法の計算に使用されます(下図を参照してください)。<p>
+<em>err_q</em> はエッジ点が直線の真のエッジ点であるかどうかを判定するための値です。 具体的には、直線の向きとエッジ点の向きとの差の絶対値が <em>err_q</em> 以内の場合、 このエッジ点が直線の真のエッジである、と判定され最小自乗法の計算に使用されます(下図を参照してください)。<p>
+<div align="center">
+<img src="fie_hough_lines_refine_line.png" alt="fie_hough_lines_refine_line.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>エッジ点群（エッジ勾配方向、強度共に必要なし） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点( <em>edges</em> )の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_r</em>&nbsp;</td><td>ρ方向許容誤差(0以上, 単位：ピクセル) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_q</em>&nbsp;</td><td>θ方向許容誤差(0以上, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>直線の上にあるエッジ点の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>直線の係数が不定となるようなデータが与えられたための異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_OVERFLOW</em>&nbsp;</td><td>計算の途中でオーバーフローが起こったための異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__hough__line.html#g60707ac3d1dd4bd8f43f44a6a884b6e0" title="直線係数を最小自乗法で求め直す（実数型エッジ点群）">fnFIE_hough_lines_refine_line_d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g60707ac3d1dd4bd8f43f44a6a884b6e0"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_refine_line_d" ref="g60707ac3d1dd4bd8f43f44a6a884b6e0" args="(F_LH_LINE *line, const F_DEDGE *edges, INT edge_num, DOUBLE err_r, DOUBLE err_q, INT *pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_refine_line_d           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>err_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>err_q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線係数を最小自乗法で求め直す（実数型エッジ点群） 
+<p>
+指定された１本の直線とエッジ点群から、その直線の近くにある、と判定される点群を選び出し、 これらに対して最小自乗法で直線の方程式を求め直します。 本関数はハフ平面とは関連しないため、引数として直線とエッジ点群のみを取り、 直線検出ハフ構造体は引数に取りません。（必要ない）<p>
+<a class="el" href="group__fie__hough__line.html#g53189029d80bbe78a2a5e6413d059d17" title="直線係数を最小自乗法で求め直す（整数型エッジ点群）">fnFIE_hough_lines_refine_line()</a> との違いは、勾配付きエッジ点群が <a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> であることです。 エッジ点群のｘ、ｙ座標はそれぞれ <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> により四捨五入された後、最小自乗法により計算されます。 ただし、直線とエッジ点との距離の計算は、実数のまま行われます。 エッジ勾配方向も、-180～180度の範囲に変換して四捨五入がなされた後、計算に用いられます。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 エッジ勾配強度は、本関数では使用されません。<p>
+<em>line</em> パラメータには <a class="el" href="group__fie__hough__line.html#g8ffda33486a0efeccfafd61c3e6d7b1f" title="ハフ直線検出">fnFIE_hough_lines_detection()</a> で得られた回答直線のうちの１本を選んで入力してください。 正常終了すると、 <em>*line</em> は新たに求められた直線の係数値に書き換えられます。 但し、異常終了した場合には、元の係数が保持されます。<p>
+<em>edges</em> パラメータには、直線の近くにある可能性のあるエッジ点群です。 このエッジ点群の中から直線上にある点が選ばれます。<p>
+<em>err_r</em> パラメータはエッジ点が直線の近くにあるかどうかを判定するための値です。 具体的には、直線とエッジ点との距離が <em>err_r</em> 以内の場合、このエッジ点が直線の近くにある、 と判定され最小自乗法の計算に使用されます(下図を参照してください)。<p>
+<em>err_q</em> はエッジ点が直線の真のエッジ点であるかどうかを判定するための値です。 具体的には、直線の向きとエッジ点の向きとの差の絶対値が <em>err_q</em> 以内の場合、 このエッジ点が直線の真のエッジである、と判定され最小自乗法の計算に使用されます(下図を参照してください)。<p>
+<div align="center">
+<img src="fie_hough_lines_refine_line.png" alt="fie_hough_lines_refine_line.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>エッジ点群（エッジ勾配方向、強度共に必要なし） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点( <em>edges</em> )の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_r</em>&nbsp;</td><td>ρ方向許容誤差(0以上, 単位：ピクセル) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_q</em>&nbsp;</td><td>θ方向許容誤差(0以上, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>直線の上にあるエッジ点の数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>直線の係数が不定となるようなデータが与えられたための異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_OVERFLOW</em>&nbsp;</td><td>計算の途中でオーバーフローが起こったための異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__hough__line.html#g53189029d80bbe78a2a5e6413d059d17" title="直線係数を最小自乗法で求め直す（整数型エッジ点群）">fnFIE_hough_lines_refine_line()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1e1bc8df54608af5acc8c90ce1d47f79"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_get_support_edges" ref="g1e1bc8df54608af5acc8c90ce1d47f79" args="(const F_LH_LINE *line, const F_EDGE *edges, INT edge_num, INT err_r, INT err_q, F_EDGE **support_edges, INT *neib_num, INT *sort_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_get_support_edges           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE.html">F_EDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>err_q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE.html">F_EDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>support_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>neib_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>sort_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線に近いエッジ点群の取得（整数型エッジ点群） 
+<p>
+与えられたエッジ点群と直線から、その直線の近くにある点群を取得します。 回答の点群はｘ座標またはｙ座標に関してソートされます。 ｘ座標順にソートされるか、ｙ座標順にソートされるかを 呼び出し側で指定することは出来ません。<p>
+<em>support_edges</em> には本関数内で確保したメモリ領域が返さまれす。 解放は呼び出し側に任されますので、不要になったら <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて解放してください。 また、 <em>*support_edges</em> がNULLで初期化されていない場合は、エラーとなります。 見つかったエッジ点数が０個の場合は、領域は確保されず NULLポインタが返されます。<p>
+<em>edges</em> の中から、許容誤差範囲内の直線の近くのエッジ点群が取得されます。<p>
+<em>err_r</em> パラメータはエッジ点が直線の近くにあるかどうかを判定するための値です。 <em>err_q</em> はエッジ点が直線の真のエッジ点であるかどうかを判定するための値です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線の方程式 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>エッジ点群（エッジ勾配方向、強度共に必要なし） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_r</em>&nbsp;</td><td>ρ方向許容誤差(0以上, 単位：ピクセル) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_q</em>&nbsp;</td><td>θ方向許容誤差(0以上, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>support_edges</em>&nbsp;</td><td>直線の近くのエッジ点群 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>neib_num</em>&nbsp;</td><td>回答した「直線近くのエッジ点」の数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sort_type</em>&nbsp;</td><td><em>support_edges</em> のソートタイプ <ul>
+<li>0：ｘ座標でソート </li>
+<li>1：ｙ座標でソート</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー(エッジ点が見つからなかった) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__hough__line.html#g53189029d80bbe78a2a5e6413d059d17" title="直線係数を最小自乗法で求め直す（整数型エッジ点群）">fnFIE_hough_lines_refine_line()</a> , <a class="el" href="group__fie__hough__line.html#g86067fec7f52b4c2c2b1ea9be31fa425" title="直線に近いエッジ点群の取得（実数型エッジ点群）">fnFIE_hough_lines_get_support_edges_d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g86067fec7f52b4c2c2b1ea9be31fa425"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_get_support_edges_d" ref="g86067fec7f52b4c2c2b1ea9be31fa425" args="(const F_LH_LINE *line, const F_DEDGE *edges, INT edge_num, DOUBLE err_r, DOUBLE err_q, F_DEDGE **support_edges, INT *neib_num, INT *sort_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_lines_get_support_edges_d           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__LH__LINE.html">F_LH_LINE</a> *&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>err_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>err_q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>support_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>neib_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>sort_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+直線に近いエッジ点群の取得（実数型エッジ点群） 
+<p>
+与えられたエッジ点群と直線から、その直線の近くにある点群を取得します。 回答の点群はｘ座標またはｙ座標に関してソートされます。 ｘ座標順にソートされるか、ｙ座標順にソートされるかを呼び出し側で指定することは出来ません。<p>
+<a class="el" href="group__fie__hough__line.html#g1e1bc8df54608af5acc8c90ce1d47f79" title="直線に近いエッジ点群の取得（整数型エッジ点群）">fnFIE_hough_lines_get_support_edges()</a> との違いは、入力、出力共に勾配付きエッジ点群が <a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> であることです。 エッジ点群のｘ、ｙ座標は、実数のまま計算に用いられます。 エッジ勾配方向は、-180～180度の範囲に変換して四捨五入がなされた後、計算に用いられます。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 エッジ勾配強度は、本関数では使用されません。<p>
+<em>support_edges</em> には本関数内で確保したメモリ領域が返さまれす。 解放は呼び出し側に任されますので、不要になったら <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて解放してください。 また、 <em>*support_edges</em> がNULLで初期化されていない場合は、エラーとなります。 見つかったエッジ点数が０個の場合は、領域は確保されず NULLポインタが返されます。<p>
+<em>edges</em> の中から、許容誤差範囲内の直線の近くのエッジ点群が取得されます。<p>
+<em>err_r</em> パラメータはエッジ点が直線の近くにあるかどうかを判定するための値です。 <em>err_q</em> はエッジ点が直線の真のエッジ点であるかどうかを判定するための値です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>直線の方程式 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>エッジ点群（エッジ勾配方向、強度共に必要なし） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点の数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_r</em>&nbsp;</td><td>ρ方向許容誤差(0以上, 単位：ピクセル) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>err_q</em>&nbsp;</td><td>θ方向許容誤差(0以上, 単位：度) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>support_edges</em>&nbsp;</td><td>直線の近くのエッジ点群 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>neib_num</em>&nbsp;</td><td>回答した「直線近くのエッジ点」の数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sort_type</em>&nbsp;</td><td><em>support_edges</em> のソートタイプ <ul>
+<li>0：ｘ座標でソート </li>
+<li>1：ｙ座標でソート</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能エラー(エッジ点が見つからなかった) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__hough__line.html#g60707ac3d1dd4bd8f43f44a6a884b6e0" title="直線係数を最小自乗法で求め直す（実数型エッジ点群）">fnFIE_hough_lines_refine_line_d()</a> , <a class="el" href="group__fie__hough__line.html#g1e1bc8df54608af5acc8c90ce1d47f79" title="直線に近いエッジ点群の取得（整数型エッジ点群）">fnFIE_hough_lines_get_support_edges()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcf782ac963fc54df17fe13eae5f99cc7"></a><!-- doxytag: member="fie_hough_line_detect.c::fnFIE_hough_lines_get_space" ref="gcf782ac963fc54df17fe13eae5f99cc7" args="(FHANDLE hHough, INT *stq, INT *edq, INT *str, INT *edr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_hough_lines_get_space           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hHough</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>stq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edr</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ハフ投票空間の取得 
+<p>
+ハフ投票空間を画像オブジェクトとして取得します。 取得される画像オブジェクトの画素タイプは F_IMG_US16 、チャネル数は１となります。 取得した画像オブジェクトハンドルは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> によって ユーザー側で解放を行ってください。<p>
+<a class="el" href="group__fie__hough__line.html#g7c2ee05252eb2e49b4490afe9747606c" title="ハフ空間への投票（整数型エッジ点群）">fnFIE_hough_lines_voting()</a> , <a class="el" href="group__fie__hough__line.html#ga582d236dcc0152bdda897bd5daba7e6" title="ハフ空間への投票（実数型エッジ点群）">fnFIE_hough_lines_voting_d()</a> で投票されたハフ投票空間は、 <a class="el" href="group__fie__hough__line.html#g8ffda33486a0efeccfafd61c3e6d7b1f" title="ハフ直線検出">fnFIE_hough_lines_detection()</a> を実行することで書き換えられてしまいます。 投票直後のハフ投票空間が必要な場合は、 <a class="el" href="group__fie__hough__line.html#g8ffda33486a0efeccfafd61c3e6d7b1f" title="ハフ直線検出">fnFIE_hough_lines_detection()</a> 実行前に、 本関数で取得した画像オブジェクトのコピーを作成してください。<p>
+なお、この画像オブジェクトは <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe" title="ルート画像の確保(import版)">fnFIE_img_root_import_alloc()</a> により、 実際に使用しているハフ投票空間をアタッチして作成されます。 そのため、投票空間の実メモリは <em>hHough</em> が保持しており、解放は <em>hHough</em> の解放と連動して行われます。 また、この関数で帰される画像オブジェクトを直接処理すると、 <em>hHough</em> に保持されているハフ投票空間が書き換わります。 fnFIE_hough_lines_ 関数群において <em>hHough</em> 内のハフ投票空間を処理した場合も同様です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hHough</em>&nbsp;</td><td>ハフ構造体のハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>stq</em>&nbsp;</td><td>ハフ投票空間のθ方向の始点 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edq</em>&nbsp;</td><td>ハフ投票空間のθ方向の終点 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>str</em>&nbsp;</td><td>ハフ投票空間のｒ方向の始点 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edr</em>&nbsp;</td><td>ハフ投票空間のｒ方向の終点</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常にオープンできた場合は、画像オブジェクト(type:us16, channel:1)のハンドルを返します。 ライセンスエラー、未初期化エラー、パラメータエラーもしくはメモリ不足の場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

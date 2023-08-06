@@ -1,0 +1,2223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 基本操作</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>基本操作<br>
+<small>
+[<a class="el" href="group__fie__math__matrix.html">行列演算</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFMATRIX.html">FMATRIX</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列  <a href="structFMATRIX.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFVECTOR.html">FVECTOR</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトル  <a href="structFVECTOR.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFMATRIX.html">FMATRIX</a> *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283">fnFIE_mat_aalloc</a> (INT row, INT col)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の生成  <a href="#g35d17c7e740900c4f718ad4f61226283"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#ga99d8c9ecc0191da903ce8a97592d5f8">fnFIE_mat_arealloc</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a, INT row, INT col)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列次元の変更  <a href="#ga99d8c9ecc0191da903ce8a97592d5f8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c">fnFIE_mat_afree</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の解放  <a href="#g8329aaae1791dcd9737ffff194dde79c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structFVECTOR.html">FVECTOR</a> *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2">fnFIE_mat_valloc</a> (INT dim)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの生成  <a href="#g7180fe7a013b081282ed95bbd2e673b2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838">fnFIE_mat_vrealloc</a> (<a class="el" href="structFVECTOR.html">FVECTOR</a> *vect, INT dim)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの次元変更  <a href="#ga3ccfd4fe011919f4b31c48d347a2838"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd">fnFIE_mat_vfree</a> (<a class="el" href="structFVECTOR.html">FVECTOR</a> *vect)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトル領域の解放  <a href="#g4239c8a77dc435166360aee41a0903dd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gc4e5c7b81c61f678508e4c9b354f9b03">fnFIE_mat_vinit</a> (<a class="el" href="structFVECTOR.html">FVECTOR</a> *vect)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">vectorの初期化  <a href="#gc4e5c7b81c61f678508e4c9b354f9b03"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gf0209830bda2374a6d5c2c4c8970d7cf">fnFIE_mat_vinit_val</a> (<a class="el" href="structFVECTOR.html">FVECTOR</a> *vect, DOUBLE val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">vectorの初期化(初期化値付き)  <a href="#gf0209830bda2374a6d5c2c4c8970d7cf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g959ca191d456ff94f074ed1331c2fd88">fnFIE_mat_ainit</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の初期化  <a href="#g959ca191d456ff94f074ed1331c2fd88"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gf4a58ec5bf934fc8f5acee8dc4a67883">fnFIE_mat_ainit_val</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a, DOUBLE val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の初期化(初期化値付き)  <a href="#gf4a58ec5bf934fc8f5acee8dc4a67883"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g4c955675318db3038d123f588c29d9da">fnFIE_mat_copy</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a1, <a class="el" href="structFMATRIX.html">FMATRIX</a> *a2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の複写  <a href="#g4c955675318db3038d123f588c29d9da"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gd5a0341ba606f11d11ad6fab959f569b">fnFIE_mat_copy_to_img</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列から画像への複写  <a href="#gd5a0341ba606f11d11ad6fab959f569b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g7596e8f4ae4184aff9c8e8377d5364c0">fnFIE_mat_copy_from_img</a> (const FHANDLE hsrc, <a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像から行列への複写  <a href="#g7596e8f4ae4184aff9c8e8377d5364c0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gcf1c3062e08e86f828b3015379d4cd11">fnFIE_mat_vcopy</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *v1, <a class="el" href="structFVECTOR.html">FVECTOR</a> *v2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルの複写  <a href="#gcf1c3062e08e86f828b3015379d4cd11"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gabb2436dc169ae9b68d0cb59509c05b3">fnFIE_mat_eye</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">単位行列の作成  <a href="#gabb2436dc169ae9b68d0cb59509c05b3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#ga8d7bb62ec8aef7beeb9d2bb0d105e30">fnFIE_mat_ones</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素が全て１の行列の作成  <a href="#ga8d7bb62ec8aef7beeb9d2bb0d105e30"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gff0dcc8127f65abca653ba29a21958eb">fnFIE_mat_zeros</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素が全て０の行列の作成  <a href="#gff0dcc8127f65abca653ba29a21958eb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gecfc7b0e2df33588152a7557def75d21">fnFIE_mat_aduplicate</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *src, <a class="el" href="structFMATRIX.html">FMATRIX</a> **dst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列の複製  <a href="#gecfc7b0e2df33588152a7557def75d21"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g4ef8ae864cea7a5e2cec3473eebb1700">fnFIE_mat_aread</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> **mat, <a class="el" href="structfvstream.html">fvstream</a> *stream, INT *size)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ストリームからの行列読込  <a href="#g4ef8ae864cea7a5e2cec3473eebb1700"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g64c5439a0a064ccd00af6db6e11b2a18">fnFIE_mat_awrite</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *mat, <a class="el" href="structfvstream.html">fvstream</a> *stream, INT *size)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列のストリームへの書込  <a href="#g64c5439a0a064ccd00af6db6e11b2a18"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g5bb5b9f6af753c0dfabdd5aec109c60d">fnFIE_mat_vread</a> (<a class="el" href="structFVECTOR.html">FVECTOR</a> **vec, <a class="el" href="structfvstream.html">fvstream</a> *stream, INT *size)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ストリームからのベクトル読込  <a href="#g5bb5b9f6af753c0dfabdd5aec109c60d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g44b1dd8d50642342b880446fb1d5c029">fnFIE_mat_vwrite</a> (const <a class="el" href="structFVECTOR.html">FVECTOR</a> *vec, <a class="el" href="structfvstream.html">fvstream</a> *stream, INT *size)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ベクトルのストリームへの書込  <a href="#g44b1dd8d50642342b880446fb1d5c029"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g537da84831aefdf6376de1118d857028">fnFIE_mat_triu</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad, INT k)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">上三角成分の抽出  <a href="#g537da84831aefdf6376de1118d857028"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g8e86d404e57d6f4999118af826944d68">fnFIE_mat_tril</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad, INT k)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">下三角成分の抽出  <a href="#g8e86d404e57d6f4999118af826944d68"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g01f1d8ae7b2dbb362970c0ced1b51c71">fnFIE_mat_circshift</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad, INT sx, INT sy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列要素の循環シフト  <a href="#g01f1d8ae7b2dbb362970c0ced1b51c71"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gbfc36bef9a4fd2f06e1ccf06d4580307">fnFIE_mat_horzcat</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a1, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a2, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列要素の水平方向結合  <a href="#gbfc36bef9a4fd2f06e1ccf06d4580307"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gaa7c8bbb7c9ab5720b3aeef1d639b691">fnFIE_mat_vertcat</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a1, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a2, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列要素の垂直方向結合  <a href="#gaa7c8bbb7c9ab5720b3aeef1d639b691"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#gd10966361ac78e575cb70fcefc581bf6">fnFIE_mat_flipdim</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *a, <a class="el" href="structFMATRIX.html">FMATRIX</a> *ad, INT mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">行列要素の反転  <a href="#gd10966361ac78e575cb70fcefc581bf6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__math__matrix__basic.html#g926871cc2ef87d2f90034999367ecac5">fnFIE_mat_rand</a> (<a class="el" href="structFMATRIX.html">FMATRIX</a> *a)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  ランダム行列の作成  <a href="#g926871cc2ef87d2f90034999367ecac5"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g35d17c7e740900c4f718ad4f61226283"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_aalloc" ref="g35d17c7e740900c4f718ad4f61226283" args="(INT row, INT col)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFMATRIX.html">FMATRIX</a>* FVALGAPI fnFIE_mat_aalloc           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>col</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の生成 
+<p>
+指定次元の行列に必要なメモリ確保を行い、生成した行列を返します。 確保する行列のサイズは <em>row</em> * <em>col</em> &lt; <img class="formulaInl" alt="$2^{28} $" src="form_593.png"> を満たすように指定 しなければいけません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>row</em>&nbsp;</td><td>確保する行列の行数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>col</em>&nbsp;</td><td>確保する行列の列数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保した行列。 メモリ不足で確保に失敗した場合は、NULLを返します。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree()</a>, <a class="el" href="group__fie__math__matrix__basic.html#ga99d8c9ecc0191da903ce8a97592d5f8" title="行列次元の変更">fnFIE_mat_arealloc()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 3x3行列a を確保</span>
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// a を10x10行列にリサイズ</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#ga99d8c9ecc0191da903ce8a97592d5f8" title="行列次元の変更">fnFIE_mat_arealloc</a>( a, 10, 10 );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga99d8c9ecc0191da903ce8a97592d5f8"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_arealloc" ref="ga99d8c9ecc0191da903ce8a97592d5f8" args="(FMATRIX *a, INT row, INT col)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_arealloc           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>col</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列次元の変更 
+<p>
+すでに確保済みの行列の次元を変更します。 変更に成功した場合、元の値は保存されません。 変更後の行列のサイズは <em>row</em> * <em>col</em> &lt; <img class="formulaInl" alt="$2^{28} $" src="form_593.png"> を 満たすように指定しなければいけません。 本関数に渡される行列 <em>a</em> は <a class="el" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc()</a> によって 確保されたものでなければなりません。<p>
+メモリ確保に失敗した場合は F_ERR_NOMEMORY を返しますが、 変更前の元の行列は保持されたままになります。 この場合は <a class="el" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree()</a> にて解放する必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>次元を変更する行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>row</em>&nbsp;</td><td>変更後の行列の行数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>col</em>&nbsp;</td><td>変更後の行列の列数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正(a==NULL,row,colが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc()</a>, <a class="el" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 3x3行列a を確保</span>
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// a を10x10行列にリサイズ</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#ga99d8c9ecc0191da903ce8a97592d5f8" title="行列次元の変更">fnFIE_mat_arealloc</a>( a, 10, 10 );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8329aaae1791dcd9737ffff194dde79c"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_afree" ref="g8329aaae1791dcd9737ffff194dde79c" args="(FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_mat_afree           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の解放 
+<p>
+行列を解放します。 本関数に渡される行列 <em>a</em> は <a class="el" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc()</a> によって 確保されたものでなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>解放する配列</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc()</a>, <a class="el" href="group__fie__math__matrix__basic.html#ga99d8c9ecc0191da903ce8a97592d5f8" title="行列次元の変更">fnFIE_mat_arealloc()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 3x3行列a を確保</span>
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// a を10x10行列にリサイズ</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#ga99d8c9ecc0191da903ce8a97592d5f8" title="行列次元の変更">fnFIE_mat_arealloc</a>( a, 10, 10 );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7180fe7a013b081282ed95bbd2e673b2"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_valloc" ref="g7180fe7a013b081282ed95bbd2e673b2" args="(INT dim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFVECTOR.html">FVECTOR</a>* FVALGAPI fnFIE_mat_valloc           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dim</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの生成 
+<p>
+ベクトルに必要なメモリを確保し、生成したベクトルを返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dim</em>&nbsp;</td><td>ベクトルの次元(要素数) (0 &lt; dim &lt; 2^29)</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保したベクトル メモリ不足により異常終了した場合は、NULLを返します。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree()</a>, <a class="el" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838" title="ベクトルの次元変更">fnFIE_mat_vrealloc()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    <a class="code" href="structFVECTOR.html" title="ベクトル">FVECTOR</a> *v=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 次元3のベクトル v を確保</span>
+    v = <a class="code" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2" title="ベクトルの生成">fnFIE_mat_valloc</a>( 3 );
+
+    <span class="comment">// v を次元10にリサイズ</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838" title="ベクトルの次元変更">fnFIE_mat_vrealloc</a>( v, 10 );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree</a>( v );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga3ccfd4fe011919f4b31c48d347a2838"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_vrealloc" ref="ga3ccfd4fe011919f4b31c48d347a2838" args="(FVECTOR *vect, INT dim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vrealloc           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dim</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの次元変更 
+<p>
+既に確保済みのベクトルの次元を変更します。 変更に成功した場合、元の値は保存されません。 メモリ確保に失敗した場合は F_ERR_NOMEMORY を返しますが、 元の行列は保持されています。 この場合は <a class="el" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree()</a> にて解放する必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>vect</em>&nbsp;</td><td>次元変更をするベクトル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dim</em>&nbsp;</td><td>変更後のベクトルの次元(要素数) (0 &lt; dim &lt; 2^29)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正(vect==NULL, dimが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree()</a>, <a class="el" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838" title="ベクトルの次元変更">fnFIE_mat_vrealloc()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    <a class="code" href="structFVECTOR.html" title="ベクトル">FVECTOR</a> *v=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 次元3のベクトル v を確保</span>
+    v = <a class="code" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2" title="ベクトルの生成">fnFIE_mat_valloc</a>( 3 );
+
+    <span class="comment">// v を次元10にリサイズ</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838" title="ベクトルの次元変更">fnFIE_mat_vrealloc</a>( v, 10 );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree</a>( v );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4239c8a77dc435166360aee41a0903dd"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_vfree" ref="g4239c8a77dc435166360aee41a0903dd" args="(FVECTOR *vect)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_mat_vfree           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vect</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトル領域の解放 
+<p>
+確保済みのベクトルを解放します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vect</em>&nbsp;</td><td>解放するベクトル</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2" title="ベクトルの生成">fnFIE_mat_valloc()</a>, <a class="el" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838" title="ベクトルの次元変更">fnFIE_mat_vrealloc()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    <a class="code" href="structFVECTOR.html" title="ベクトル">FVECTOR</a> *v=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 次元3のベクトル v を確保</span>
+    v = <a class="code" href="group__fie__math__matrix__basic.html#g7180fe7a013b081282ed95bbd2e673b2" title="ベクトルの生成">fnFIE_mat_valloc</a>( 3 );
+
+    <span class="comment">// v を次元10にリサイズ</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#ga3ccfd4fe011919f4b31c48d347a2838" title="ベクトルの次元変更">fnFIE_mat_vrealloc</a>( v, 10 );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g4239c8a77dc435166360aee41a0903dd" title="ベクトル領域の解放">fnFIE_mat_vfree</a>( v );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc4e5c7b81c61f678508e4c9b354f9b03"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_vinit" ref="gc4e5c7b81c61f678508e4c9b354f9b03" args="(FVECTOR *vect)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vinit           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vect</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+vectorの初期化 
+<p>
+ベクトルの要素を全て0.0に初期化します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>vect</em>&nbsp;</td><td>初期化するベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf0209830bda2374a6d5c2c4c8970d7cf"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_vinit_val" ref="gf0209830bda2374a6d5c2c4c8970d7cf" args="(FVECTOR *vect, DOUBLE val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vinit_val           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+vectorの初期化(初期化値付き) 
+<p>
+ベクトルの要素を全て <em>val</em> に初期化します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>vect</em>&nbsp;</td><td>初期化するベクトル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>初期化値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g959ca191d456ff94f074ed1331c2fd88"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_ainit" ref="g959ca191d456ff94f074ed1331c2fd88" args="(FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_ainit           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の初期化 
+<p>
+行列の要素を全て0.0に初期化します。 本関数と fnFIE_mat_zeros は同じ動作をします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>初期化したい行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#gff0dcc8127f65abca653ba29a21958eb" title="要素が全て０の行列の作成">fnFIE_mat_zeros()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf4a58ec5bf934fc8f5acee8dc4a67883"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_ainit_val" ref="gf4a58ec5bf934fc8f5acee8dc4a67883" args="(FMATRIX *a, DOUBLE val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_ainit_val           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の初期化(初期化値付き) 
+<p>
+行列の要素を全て指定値 <em>val</em> に初期化します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>初期化したい行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>初期化値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd>fnFIE_mat_init() </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4c955675318db3038d123f588c29d9da"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_copy" ref="g4c955675318db3038d123f588c29d9da" args="(const FMATRIX *a1, FMATRIX *a2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_copy           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の複写 
+<p>
+行列１(a1)から、行列２(a2)に内容を複写します。 <em>a2</em> の次元が <em>a1</em> と違っていた場合は、エラーになります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a1</em>&nbsp;</td><td>行列１(コピー元行列) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>a2</em>&nbsp;</td><td>行列２(コピー先行列)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd5a0341ba606f11d11ad6fab959f569b"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_copy_to_img" ref="gd5a0341ba606f11d11ad6fab959f569b" args="(const FMATRIX *a, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_copy_to_img           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列から画像への複写 
+<p>
+行列 <em>a</em> から、画像 <em>hdst</em> に内容を複写します。 コピー元行列とコピー先画像は以下の条件を満たしている必要があります。<p>
+<ul>
+<li><em>a</em> の行数が <em>hdst</em> の高さと等しい。</li><li><em>a</em> の列数が <em>hdst</em> の幅と等しい。</li><li><em>hdst</em> のチャネル数は1。</li></ul>
+<p>
+対応する <em>hdst</em> の画像型は F_IMG_UC8、F_IMG_US16、F_IMG_S16、F_IMG_FLOAT、F_IMG_DOUBLE です。 <br>
+ コピー先画像の型が F_IMG_DOUBLE の場合、元の行列の値がそのままコピーされます。 <br>
+ そうでない場合は、行列 <em>a</em> が画像型 F_IMG_DOUBLE の画像であるとみなした際の <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> の動作に準じます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>コピー元行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>コピー先画像 (type: uc8, s16, us16, float, double / ch: 1)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7596e8f4ae4184aff9c8e8377d5364c0"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_copy_from_img" ref="g7596e8f4ae4184aff9c8e8377d5364c0" args="(const FHANDLE hsrc, FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_copy_from_img           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像から行列への複写 
+<p>
+画像 <em>hsrc</em> から、行列 <em>a</em> に内容を複写します。 コピー元画像とコピー先行列は以下の条件を満たしている必要があります。<p>
+<ul>
+<li><em>a</em> の行数が <em>hsrc</em> の高さと等しい。</li><li><em>a</em> の列数が <em>hsrc</em> の幅と等しい。</li><li><em>hsrc</em> のチャネル数は1。</li></ul>
+<p>
+対応する <em>hsrc</em> の画像型は F_IMG_UC8、F_IMG_US16、F_IMG_S16、F_IMG_FLOAT、F_IMG_DOUBLE です。 <br>
+ コピー元画像の型が F_IMG_DOUBLE の場合、元の画像の濃淡値がそのままコピーされます。 <br>
+ そうでない場合は、行列 <em>a</em> が画像型 F_IMG_DOUBLE の画像であるとみなした際の <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> の動作に準じます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>コピー元画像 (type: uc8, s16, us16, float, double / ch: 1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>コピー先行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcf1c3062e08e86f828b3015379d4cd11"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_vcopy" ref="gcf1c3062e08e86f828b3015379d4cd11" args="(const FVECTOR *v1, FVECTOR *v2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vcopy           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>v2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルの複写 
+<p>
+ベクトル１(v1)から、ベクトル２(v2)に内容を複写します。 <em>v2</em> の次元が <em>v1</em> と違っていた場合は、エラーになります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>v1</em>&nbsp;</td><td>ベクトル１(コピー元ベクトル) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>v2</em>&nbsp;</td><td>ベクトル２(コピー先ベクトル)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gabb2436dc169ae9b68d0cb59509c05b3"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_eye" ref="gabb2436dc169ae9b68d0cb59509c05b3" args="(FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_eye           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+単位行列の作成 
+<p>
+入力された正方行列の値を単位行列に設定します。 対角成分が 1.0 になり、他の成分は 0.0 になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>値を設定する行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga8d7bb62ec8aef7beeb9d2bb0d105e30"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_ones" ref="ga8d7bb62ec8aef7beeb9d2bb0d105e30" args="(FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_ones           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素が全て１の行列の作成 
+<p>
+入力された行列の成分を全て 1.0 に設定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>値を設定する行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gff0dcc8127f65abca653ba29a21958eb"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_zeros" ref="gff0dcc8127f65abca653ba29a21958eb" args="(FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_zeros           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素が全て０の行列の作成 
+<p>
+入力された行列の成分を全て 0.0 に設定します。 本関数は <a class="el" href="group__fie__math__matrix__basic.html#g959ca191d456ff94f074ed1331c2fd88" title="行列の初期化">fnFIE_mat_ainit()</a> のエイリアスであり、 同じ動作をします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>値を設定する行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__math__matrix__basic.html#g959ca191d456ff94f074ed1331c2fd88" title="行列の初期化">fnFIE_mat_ainit()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gecfc7b0e2df33588152a7557def75d21"></a><!-- doxytag: member="fie_fmatrix_base.c::fnFIE_mat_aduplicate" ref="gecfc7b0e2df33588152a7557def75d21" args="(const FMATRIX *src, FMATRIX **dst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_aduplicate           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>dst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列の複製 
+<p>
+行列 <em>src</em> と同じ内容の行列 <em>*dst</em> を生成します。<p>
+本関数は、内部で <a class="el" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc()</a> にて <em>src</em> と同じサイズの行列を生成し、 <a class="el" href="group__fie__math__matrix__basic.html#g4c955675318db3038d123f588c29d9da" title="行列の複写">fnFIE_mat_copy()</a> にて内容をコピーします。 正常終了すると <em>*dst</em> には複製された行列が格納されます。 <em>*dst</em> が不要になったら <a class="el" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>コピー元行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>コピーされた行列 関数エントリー時 <em>*dst</em> == NULL でなければなりません。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4ef8ae864cea7a5e2cec3473eebb1700"></a><!-- doxytag: member="fie_fmatrix_file.c::fnFIE_mat_aread" ref="g4ef8ae864cea7a5e2cec3473eebb1700" args="(FMATRIX **mat, fvstream *stream, INT *size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_aread           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ストリームからの行列読込 
+<p>
+指定されたストリーム <a class="el" href="structfvstream.html" title="データストリーム">fvstream</a> <em>stream</em> から行列を読み込みます。 入力されるストリームは <a class="el" href="group__fie__math__matrix__basic.html#g64c5439a0a064ccd00af6db6e11b2a18" title="行列のストリームへの書込">fnFIE_mat_awrite()</a> にて出力されたものでなければなりません。 ストリームの仕様は <a class="el" href="group__fie__math__matrix__basic.html#g64c5439a0a064ccd00af6db6e11b2a18" title="行列のストリームへの書込">fnFIE_mat_awrite()</a> のドキュメントを参照してください。<p>
+正常に読込が行われた場合 <em>*mat</em> には読み込んだ行列のポインタが格納されます。 ただし、ストリームに NULL <a class="el" href="structFMATRIX.html" title="行列">FMATRIX</a> が格納されていた場合は <em>*mat</em> には NULL が 格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>読み込んだ行列のポインタのポインタ。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>stream</em>&nbsp;</td><td>読み込むストリーム </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size</em>&nbsp;</td><td>ストリームから読み込まれたサイズ（バイト単位）。<br>
+ 不要な場合はNULLを指定可能です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>ストリームエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g64c5439a0a064ccd00af6db6e11b2a18"></a><!-- doxytag: member="fie_fmatrix_file.c::fnFIE_mat_awrite" ref="g64c5439a0a064ccd00af6db6e11b2a18" args="(const FMATRIX *mat, fvstream *stream, INT *size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_awrite           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列のストリームへの書込 
+<p>
+指定されたストリーム <a class="el" href="structfvstream.html" title="データストリーム">fvstream</a> <em>stream</em> へ行列を書き込みます。 出力したストリームは <a class="el" href="group__fie__math__matrix__basic.html#g4ef8ae864cea7a5e2cec3473eebb1700" title="ストリームからの行列読込">fnFIE_mat_aread()</a> にて読み込むことができます。<p>
+<em>stream</em> にNULLをした場合、本関数は指定された <em>mat</em> の書込に必用な サイズを計算し(バイト単位) <em>*size</em> に代入して終了します。<p>
+<dl class="user" compact><dt><b>ストリーム仕様</b></dt><dd>mat == NULL の場合 <pre>
+	offset     type       mean
+	---------------------------------------------------------------
+	+0         UCHAR*4    chunk header. (=='FDAT')
+	+4         UCHAR*4    type id (=='0002')
+	+8         INT        size
+	+12        INT        format version (1)
+	+16        INT        1 (is null object?)
+</pre> mat != NULL の場合 <pre>
+	offset     type       mean
+	---------------------------------------------------------------
+	+0         UCHAR*4    chunk header. (=='FDAT')
+	+4         UCHAR*4    type id (=='0002')
+	+8         INT        size
+	+12        INT        format version (1)
+	+16        INT        0 (is null object?)
+	+20        INT        row
+	+24        INT        col
+	+28+8*X    DOUBLE*X   elements
+</pre></dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mat</em>&nbsp;</td><td>書き込む行列のポインタ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>stream</em>&nbsp;</td><td>書き込むストリーム </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size</em>&nbsp;</td><td>ストリームへ書き込まれたサイズ（バイト単位）。<br>
+ 不要な場合はNULLを指定可能です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>ストリームエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5bb5b9f6af753c0dfabdd5aec109c60d"></a><!-- doxytag: member="fie_fmatrix_file.c::fnFIE_mat_vread" ref="g5bb5b9f6af753c0dfabdd5aec109c60d" args="(FVECTOR **vec, fvstream *stream, INT *size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vread           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFVECTOR.html">FVECTOR</a> **&nbsp;</td>
+          <td class="paramname"> <em>vec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ストリームからのベクトル読込 
+<p>
+指定されたストリーム <a class="el" href="structfvstream.html" title="データストリーム">fvstream</a> <em>stream</em> からベクトルを読み込みます。 入力されるストリームは <a class="el" href="group__fie__math__matrix__basic.html#g44b1dd8d50642342b880446fb1d5c029" title="ベクトルのストリームへの書込">fnFIE_mat_vwrite()</a> にて出力されたものでなければなりません。<p>
+正常に読込が行われた場合 <em>*vec</em> には読み込んだベクトルのポインタが格納されます。 ただし、ストリームに NULL <a class="el" href="structFVECTOR.html" title="ベクトル">FVECTOR</a> が格納されていた場合は <em>*vec</em> には NULL が 格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vec</em>&nbsp;</td><td>読み込んだベクトルのポインタのポインタ。<br>
+ 関数エントリー時 <em>*vec</em> はNULLで無ければなりません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>stream</em>&nbsp;</td><td>読み込むストリーム </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size</em>&nbsp;</td><td>ストリームから読み込まれたサイズ（バイト単位）。<br>
+ 不要な場合はNULLを指定可能です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>ストリームエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g44b1dd8d50642342b880446fb1d5c029"></a><!-- doxytag: member="fie_fmatrix_file.c::fnFIE_mat_vwrite" ref="g44b1dd8d50642342b880446fb1d5c029" args="(const FVECTOR *vec, fvstream *stream, INT *size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vwrite           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFVECTOR.html">FVECTOR</a> *&nbsp;</td>
+          <td class="paramname"> <em>vec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ベクトルのストリームへの書込 
+<p>
+指定されたストリーム <a class="el" href="structfvstream.html" title="データストリーム">fvstream</a> <em>stream</em> へベクトルを書き込みます。 出力したストリームは <a class="el" href="group__fie__math__matrix__basic.html#g5bb5b9f6af753c0dfabdd5aec109c60d" title="ストリームからのベクトル読込">fnFIE_mat_vread()</a> にて読み込むことができます。<p>
+<em>stream</em> にNULLをした場合、本関数は指定された <em>vec</em> の書込に 必用なサイズを計算し <em>*size</em> に代入して終了します。<p>
+<dl class="user" compact><dt><b>ストリーム仕様</b></dt><dd>vec == NULL の場合 <pre>
+	offset     type       mean
+	---------------------------------------------------------------
+	+0         UCHAR*4    chunk header. (=='FDAT')
+	+4         UCHAR*4    type id (=='0001', ascii radix=16)
+	+8         INT        size
+	+12        INT        format version (1)
+	+16        INT        1 (is null object?)
+</pre> vec != NULL の場合 <pre>
+	offset     type       mean
+	---------------------------------------------------------------
+	+0         UCHAR*4    chunk header. (=='FDAT')
+	+4         UCHAR*4    type id (=='0001', ascii radix=16)
+	+8         INT        size
+	+12        INT        format version (1)
+	+16        INT        0 (is null object?)
+	+20        INT        dimension
+	+24+8*X    DOUBLE*X   elements
+</pre></dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vec</em>&nbsp;</td><td>書き込むベクトルのポインタ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>stream</em>&nbsp;</td><td>書き込むストリーム </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size</em>&nbsp;</td><td>ストリームへ書き込まれたサイズ（バイト単位）。<br>
+ 不要な場合はNULLを指定可能です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>ストリームエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g537da84831aefdf6376de1118d857028"></a><!-- doxytag: member="fie_fmatrix_lalgebra.c::fnFIE_mat_triu" ref="g537da84831aefdf6376de1118d857028" args="(const FMATRIX *a, FMATRIX *ad, INT k)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_triu           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>k</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+上三角成分の抽出 
+<p>
+MxN行列 <em>A</em> の上三角部を取り出し <em>ad</em> に出力します。<br>
+ <em>ad</em> の対角成分を除く下三角部は 0 が格納されます。<p>
+<em>k</em> は対角位置を指定するパラメータで、k=0は主対角を示します。 k&gt;0のとき主対角よりも上側の対角を、k&lt;0のとき主対角成分より下側の対角を示します。 <img class="formulaInl" alt="$ min(M,N) \le |k| $" src="form_604.png"> と指定した場合、エラーとなります。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<div align="center">
+<img src="fmatrix_diag.png" alt="fmatrix_diag.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>MxN入力行列A </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>MxN行列。aの上三角要素が格納される。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>k</em>&nbsp;</td><td>対角位置</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> VOID mat_print( <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a )
+{
+    INT i,j;
+    <span class="keywordflow">for</span>( j=0; j&lt;a-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a>; j++ ){
+        printf( <span class="stringliteral">"  [  "</span> );
+        <span class="keywordflow">for</span>( i=0; i&lt;a-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; i++ ){
+            printf( <span class="stringliteral">"%+0.6e  "</span>, a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[j][i] );
+        }
+        printf( <span class="stringliteral">"]\n"</span> );
+    }
+    printf( <span class="stringliteral">"\n"</span> );
+}
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL, *b=NULL, *c=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 a を確保</span>
+    b = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 b を確保</span>
+
+    <span class="comment">// 入力値をセット</span>
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][2] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][3] = 9.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = 4.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] =-2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][2] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][3] = 3.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][0] = 6.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][1] =-4.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][2] = 8.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][3] = 5.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][0] =-2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][1] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][2] =-7.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][3] = 3.0;
+
+    printf( <span class="stringliteral">"a =\n"</span> );  mat_print( a );
+    
+    <span class="comment">// 上三角行列を取得</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g537da84831aefdf6376de1118d857028" title="上三角成分の抽出">fnFIE_mat_triu</a>( a, b, 0 );
+    printf( <span class="stringliteral">"triu(a,0) =\n"</span> );
+    mat_print( b );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g537da84831aefdf6376de1118d857028" title="上三角成分の抽出">fnFIE_mat_triu</a>( a, b, 1 );
+    printf( <span class="stringliteral">"triu(a,1) =\n"</span> );
+    mat_print( b );
+
+    <span class="comment">// 下三角行列を取得</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g8e86d404e57d6f4999118af826944d68" title="下三角成分の抽出">fnFIE_mat_tril</a>( a, b, 0 );
+    printf( <span class="stringliteral">"tril(a,0) =\n"</span> );
+    mat_print( b );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g8e86d404e57d6f4999118af826944d68" title="下三角成分の抽出">fnFIE_mat_tril</a>( a, b, 1 );
+    printf( <span class="stringliteral">"tril(a,1) =\n"</span> );
+    mat_print( b );
+    
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( b );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">結果</span>
+<span class="comment"></span>
+<span class="comment">a =</span>
+<span class="comment">  [  +1.000000e+000  +3.000000e+000  +3.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  -2.000000e+000  +1.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  -4.000000e+000  +8.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  -2.000000e+000  +3.000000e+000  -7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">triu(a,0) =</span>
+<span class="comment">  [  +1.000000e+000  +3.000000e+000  +3.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  -2.000000e+000  +1.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +8.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +0.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">triu(a,1) =</span>
+<span class="comment">  [  +0.000000e+000  +3.000000e+000  +3.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +1.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +0.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">tril(a,0) =</span>
+<span class="comment">  [  +1.000000e+000  +0.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  -2.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  -4.000000e+000  +8.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  -2.000000e+000  +3.000000e+000  -7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">tril(a,1) =</span>
+<span class="comment">  [  +1.000000e+000  +3.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  -2.000000e+000  +1.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  -4.000000e+000  +8.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  -2.000000e+000  +3.000000e+000  -7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8e86d404e57d6f4999118af826944d68"></a><!-- doxytag: member="fie_fmatrix_lalgebra.c::fnFIE_mat_tril" ref="g8e86d404e57d6f4999118af826944d68" args="(const FMATRIX *a, FMATRIX *ad, INT k)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_tril           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>k</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+下三角成分の抽出 
+<p>
+MxN行列 <em>A</em> の下三角部を取り出し <em>ad</em> に出力します。 <br>
+ <em>ad</em> の対角成分を除く上三角部は 0 が格納されます。<p>
+<em>k</em> は対角位置を指定するパラメータで、k=0は主対角を示します。 k&gt;0のとき主対角よりも上側の対角を、k&lt;0のとき主対角成分より下側の対角を示します。 <img class="formulaInl" alt="$ min(M,N) \le |k| $" src="form_604.png"> と指定した場合、エラーとなります。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことが出来ます。<p>
+<div align="center">
+<img src="fmatrix_diag.png" alt="fmatrix_diag.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>MxN入力行列A </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>MxN行列。aの下三角要素が格納される。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>k</em>&nbsp;</td><td>対角位置</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> VOID mat_print( <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a )
+{
+    INT i,j;
+    <span class="keywordflow">for</span>( j=0; j&lt;a-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a>; j++ ){
+        printf( <span class="stringliteral">"  [  "</span> );
+        <span class="keywordflow">for</span>( i=0; i&lt;a-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; i++ ){
+            printf( <span class="stringliteral">"%+0.6e  "</span>, a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[j][i] );
+        }
+        printf( <span class="stringliteral">"]\n"</span> );
+    }
+    printf( <span class="stringliteral">"\n"</span> );
+}
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL, *b=NULL, *c=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 a を確保</span>
+    b = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 b を確保</span>
+
+    <span class="comment">// 入力値をセット</span>
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][2] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][3] = 9.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = 4.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] =-2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][2] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][3] = 3.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][0] = 6.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][1] =-4.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][2] = 8.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][3] = 5.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][0] =-2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][1] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][2] =-7.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][3] = 3.0;
+
+    printf( <span class="stringliteral">"a =\n"</span> );  mat_print( a );
+    
+    <span class="comment">// 上三角行列を取得</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g537da84831aefdf6376de1118d857028" title="上三角成分の抽出">fnFIE_mat_triu</a>( a, b, 0 );
+    printf( <span class="stringliteral">"triu(a,0) =\n"</span> );
+    mat_print( b );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g537da84831aefdf6376de1118d857028" title="上三角成分の抽出">fnFIE_mat_triu</a>( a, b, 1 );
+    printf( <span class="stringliteral">"triu(a,1) =\n"</span> );
+    mat_print( b );
+
+    <span class="comment">// 下三角行列を取得</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g8e86d404e57d6f4999118af826944d68" title="下三角成分の抽出">fnFIE_mat_tril</a>( a, b, 0 );
+    printf( <span class="stringliteral">"tril(a,0) =\n"</span> );
+    mat_print( b );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g8e86d404e57d6f4999118af826944d68" title="下三角成分の抽出">fnFIE_mat_tril</a>( a, b, 1 );
+    printf( <span class="stringliteral">"tril(a,1) =\n"</span> );
+    mat_print( b );
+    
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( b );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">結果</span>
+<span class="comment"></span>
+<span class="comment">a =</span>
+<span class="comment">  [  +1.000000e+000  +3.000000e+000  +3.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  -2.000000e+000  +1.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  -4.000000e+000  +8.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  -2.000000e+000  +3.000000e+000  -7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">triu(a,0) =</span>
+<span class="comment">  [  +1.000000e+000  +3.000000e+000  +3.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  -2.000000e+000  +1.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +8.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +0.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">triu(a,1) =</span>
+<span class="comment">  [  +0.000000e+000  +3.000000e+000  +3.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +1.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +0.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +0.000000e+000  +0.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">tril(a,0) =</span>
+<span class="comment">  [  +1.000000e+000  +0.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  -2.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  -4.000000e+000  +8.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  -2.000000e+000  +3.000000e+000  -7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">tril(a,1) =</span>
+<span class="comment">  [  +1.000000e+000  +3.000000e+000  +0.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  -2.000000e+000  +1.000000e+000  +0.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  -4.000000e+000  +8.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  -2.000000e+000  +3.000000e+000  -7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g01f1d8ae7b2dbb362970c0ced1b51c71"></a><!-- doxytag: member="fie_fmatrix_lalgebra.c::fnFIE_mat_circshift" ref="g01f1d8ae7b2dbb362970c0ced1b51c71" args="(const FMATRIX *a, FMATRIX *ad, INT sx, INT sy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_circshift           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>sx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>sy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列要素の循環シフト 
+<p>
+行列Ａの要素を sx, sy で指定された分だけ循環的にシフトします。 <br>
+ <em>sx</em> が正の場合、右方向へシフトし、負の場合、左方向へシフトします。 <em>sy</em> が正の場合、下方向へシフトし、負の場合、上方向へシフトします。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことは出来ません。 正しい結果が得られないことがあります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>MxN入力行列A </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>シフトされたMxN行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sx</em>&nbsp;</td><td>列方向循環シフト量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sy</em>&nbsp;</td><td>行方向循環シフト量</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> VOID mat_print( <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a )
+{
+    INT i,j;
+    <span class="keywordflow">for</span>( j=0; j&lt;a-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a>; j++ ){
+        printf( <span class="stringliteral">"  [  "</span> );
+        <span class="keywordflow">for</span>( i=0; i&lt;a-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; i++ ){
+            printf( <span class="stringliteral">"%+0.6e  "</span>, a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[j][i] );
+        }
+        printf( <span class="stringliteral">"]\n"</span> );
+    }
+    printf( <span class="stringliteral">"\n"</span> );
+}
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL, *b=NULL, *c=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 a を確保</span>
+    b = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 b を確保</span>
+
+    <span class="comment">// 入力値をセット</span>
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = 5.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][2] = 9.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][3] =13.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = 2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] = 6.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][2] =10.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][3] =14.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][0] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][1] = 7.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][2] =11.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][3] =15.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][0] = 4.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][1] = 8.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][2] =12.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][3] =16.0;
+
+    printf( <span class="stringliteral">"a =\n"</span> );  mat_print( a );
+
+    <span class="comment">// x シフト</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g01f1d8ae7b2dbb362970c0ced1b51c71" title="行列要素の循環シフト">fnFIE_mat_circshift</a>( a, b, 1, 0 );
+    printf( <span class="stringliteral">"circshift(a,sx=&gt;1,sy=&gt;0) =\n"</span> );
+    mat_print( b );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g01f1d8ae7b2dbb362970c0ced1b51c71" title="行列要素の循環シフト">fnFIE_mat_circshift</a>( a, b, -1, 0 );
+    printf( <span class="stringliteral">"circshift(a,sx=&gt;-1,sy=&gt;0) =\n"</span> );
+    mat_print( b );
+
+    <span class="comment">// y シフト</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g01f1d8ae7b2dbb362970c0ced1b51c71" title="行列要素の循環シフト">fnFIE_mat_circshift</a>( a, b, 0, 1 );
+    printf( <span class="stringliteral">"circshift(a,sx=&gt;0,sy=&gt;1) =\n"</span> );
+    mat_print( b );
+
+    <a class="code" href="group__fie__math__matrix__basic.html#g01f1d8ae7b2dbb362970c0ced1b51c71" title="行列要素の循環シフト">fnFIE_mat_circshift</a>( a, b, 0, -1 );
+    printf( <span class="stringliteral">"circshift(a,sx=&gt;0,sy=&gt;-1) =\n"</span> );
+    mat_print( b );
+    
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( b );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">結果</span>
+<span class="comment"></span>
+<span class="comment">a =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +9.000000e+000  +1.300000e+001  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +1.000000e+001  +1.400000e+001  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  +1.100000e+001  +1.500000e+001  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  +1.200000e+001  +1.600000e+001  ]</span>
+<span class="comment"></span>
+<span class="comment">circshift(a,sx=&gt;1,sy=&gt;0) =</span>
+<span class="comment">  [  +1.300000e+001  +1.000000e+000  +5.000000e+000  +9.000000e+000  ]</span>
+<span class="comment">  [  +1.400000e+001  +2.000000e+000  +6.000000e+000  +1.000000e+001  ]</span>
+<span class="comment">  [  +1.500000e+001  +3.000000e+000  +7.000000e+000  +1.100000e+001  ]</span>
+<span class="comment">  [  +1.600000e+001  +4.000000e+000  +8.000000e+000  +1.200000e+001  ]</span>
+<span class="comment"></span>
+<span class="comment">circshift(a,sx=&gt;-1,sy=&gt;0) =</span>
+<span class="comment">  [  +5.000000e+000  +9.000000e+000  +1.300000e+001  +1.000000e+000  ]</span>
+<span class="comment">  [  +6.000000e+000  +1.000000e+001  +1.400000e+001  +2.000000e+000  ]</span>
+<span class="comment">  [  +7.000000e+000  +1.100000e+001  +1.500000e+001  +3.000000e+000  ]</span>
+<span class="comment">  [  +8.000000e+000  +1.200000e+001  +1.600000e+001  +4.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">circshift(a,sx=&gt;0,sy=&gt;1) =</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  +1.200000e+001  +1.600000e+001  ]</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +9.000000e+000  +1.300000e+001  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +1.000000e+001  +1.400000e+001  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  +1.100000e+001  +1.500000e+001  ]</span>
+<span class="comment"></span>
+<span class="comment">circshift(a,sx=&gt;0,sy=&gt;-1) =</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +1.000000e+001  +1.400000e+001  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  +1.100000e+001  +1.500000e+001  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  +1.200000e+001  +1.600000e+001  ]</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +9.000000e+000  +1.300000e+001  ]</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbfc36bef9a4fd2f06e1ccf06d4580307"></a><!-- doxytag: member="fie_fmatrix_lalgebra.c::fnFIE_mat_horzcat" ref="gbfc36bef9a4fd2f06e1ccf06d4580307" args="(const FMATRIX *a1, const FMATRIX *a2, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_horzcat           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列要素の水平方向結合 
+<p>
+行列 <em>a1</em> と 行列 <em>a2</em> を水平方向に結合し、結合した行列 <em>ad</em> を出力します。 <br>
+ 行列 <em>a1</em> と 行列 <em>a2</em> 、及び 行列 <em>ad</em> の次元は次の条件をすべて満たしていなければいけません。<ul>
+<li><em>a1-&gt;row</em> == <em>a2-&gt;row</em> == <em>ad-&gt;row</em> </li><li><em>a1-&gt;col</em> + <em>a2-&gt;col</em> == <em>ad-&gt;col</em> </li></ul>
+<p>
+<em>a1</em> と <em>a2</em> は同じポインタを渡すことが出来ます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a1</em>&nbsp;</td><td>入力行列A1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a2</em>&nbsp;</td><td>入力行列A2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>A1とA2を結合した行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> VOID mat_print( <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a )
+{
+    INT i,j;
+    <span class="keywordflow">for</span>( j=0; j&lt;a-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a>; j++ ){
+        printf( <span class="stringliteral">"  [  "</span> );
+        <span class="keywordflow">for</span>( i=0; i&lt;a-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; i++ ){
+            printf( <span class="stringliteral">"%+0.6e  "</span>, a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[j][i] );
+        }
+        printf( <span class="stringliteral">"]\n"</span> );
+    }
+    printf( <span class="stringliteral">"\n"</span> );
+}
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL, *b=NULL, *c=NULL, *d=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 2, 2 ); <span class="comment">// 2x2行列 a を確保</span>
+    b = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 2, 2 ); <span class="comment">// 2x2行列 b を確保</span>
+    c = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 2, 4 ); <span class="comment">// 2x4行列 c を確保</span>
+    d = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 2 ); <span class="comment">// 4x2行列 d を確保</span>
+
+    <span class="comment">// 入力値をセット</span>
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = 5.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = 2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] = 6.0;
+    b-&gt;m[0][0] = 3.0;  b-&gt;m[0][1] = 7.0;
+    b-&gt;m[1][0] = 4.0;  b-&gt;m[1][1] = 8.0;
+
+    printf( <span class="stringliteral">"a =\n"</span> );  mat_print( a );
+    printf( <span class="stringliteral">"b =\n"</span> );  mat_print( b );
+
+    <span class="comment">// 水平方向結合</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#gbfc36bef9a4fd2f06e1ccf06d4580307" title="行列要素の水平方向結合">fnFIE_mat_horzcat</a>( a, b, c );
+    printf( <span class="stringliteral">"horzcat(a,b) =\n"</span> );
+    mat_print( c );
+
+    <span class="comment">// 垂直方向結合</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#gaa7c8bbb7c9ab5720b3aeef1d639b691" title="行列要素の垂直方向結合">fnFIE_mat_vertcat</a>( a, b, d );
+    printf( <span class="stringliteral">"vertcat(a,b) =\n"</span> );
+    mat_print( d );
+    
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( b );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( c );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( d );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">結果</span>
+<span class="comment"></span>
+<span class="comment">a =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">b =</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">horzcat(a,b) =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +3.000000e+000  +7.000000e+000  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +4.000000e+000  +8.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">vertcat(a,b) =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gaa7c8bbb7c9ab5720b3aeef1d639b691"></a><!-- doxytag: member="fie_fmatrix_lalgebra.c::fnFIE_mat_vertcat" ref="gaa7c8bbb7c9ab5720b3aeef1d639b691" args="(const FMATRIX *a1, const FMATRIX *a2, FMATRIX *ad)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_vertcat           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列要素の垂直方向結合 
+<p>
+行列 <em>a1</em> と 行列 <em>a2</em> を垂直方向に結合し、結合した行列 <em>ad</em> を出力します。 <br>
+ 行列 <em>a1</em> と 行列 <em>a2</em> 、及び 行列 <em>ad</em> の次元は次の条件をすべて満たしていなければいけません。<ul>
+<li><em>a1-&gt;col</em> == <em>a2-&gt;col</em> == <em>ad-&gt;col</em> </li><li><em>a1-&gt;row</em> + <em>a2-&gt;row</em> == <em>ad-&gt;row</em> </li></ul>
+<p>
+<em>a1</em> と <em>a2</em> は同じポインタを渡すことが出来ます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a1</em>&nbsp;</td><td>入力行列A1 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a2</em>&nbsp;</td><td>入力行列A2 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>A1とA2を結合した行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> VOID mat_print( <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a )
+{
+    INT i,j;
+    <span class="keywordflow">for</span>( j=0; j&lt;a-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a>; j++ ){
+        printf( <span class="stringliteral">"  [  "</span> );
+        <span class="keywordflow">for</span>( i=0; i&lt;a-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; i++ ){
+            printf( <span class="stringliteral">"%+0.6e  "</span>, a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[j][i] );
+        }
+        printf( <span class="stringliteral">"]\n"</span> );
+    }
+    printf( <span class="stringliteral">"\n"</span> );
+}
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL, *b=NULL, *c=NULL, *d=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 2, 2 ); <span class="comment">// 2x2行列 a を確保</span>
+    b = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 2, 2 ); <span class="comment">// 2x2行列 b を確保</span>
+    c = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 2, 4 ); <span class="comment">// 2x4行列 c を確保</span>
+    d = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 2 ); <span class="comment">// 4x2行列 d を確保</span>
+
+    <span class="comment">// 入力値をセット</span>
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = 5.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = 2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] = 6.0;
+    b-&gt;m[0][0] = 3.0;  b-&gt;m[0][1] = 7.0;
+    b-&gt;m[1][0] = 4.0;  b-&gt;m[1][1] = 8.0;
+
+    printf( <span class="stringliteral">"a =\n"</span> );  mat_print( a );
+    printf( <span class="stringliteral">"b =\n"</span> );  mat_print( b );
+
+    <span class="comment">// 水平方向結合</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#gbfc36bef9a4fd2f06e1ccf06d4580307" title="行列要素の水平方向結合">fnFIE_mat_horzcat</a>( a, b, c );
+    printf( <span class="stringliteral">"horzcat(a,b) =\n"</span> );
+    mat_print( c );
+
+    <span class="comment">// 垂直方向結合</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#gaa7c8bbb7c9ab5720b3aeef1d639b691" title="行列要素の垂直方向結合">fnFIE_mat_vertcat</a>( a, b, d );
+    printf( <span class="stringliteral">"vertcat(a,b) =\n"</span> );
+    mat_print( d );
+    
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( b );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( c );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( d );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">結果</span>
+<span class="comment"></span>
+<span class="comment">a =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">b =</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">horzcat(a,b) =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +3.000000e+000  +7.000000e+000  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +4.000000e+000  +8.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">vertcat(a,b) =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd10966361ac78e575cb70fcefc581bf6"></a><!-- doxytag: member="fie_fmatrix_lalgebra.c::fnFIE_mat_flipdim" ref="gd10966361ac78e575cb70fcefc581bf6" args="(const FMATRIX *a, FMATRIX *ad, INT mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_flipdim           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>ad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+行列要素の反転 
+<p>
+<em>a</em> を指定した次元に関して反転させた行列を返します。 mode=1のとき、行方向に上下反転させます。 mode=2のとき、列方向に左右反転させます。 <em>a</em> と <em>ad</em> の次元は等しくなければいけません。<p>
+<em>a</em> と <em>ad</em> は同じポインタを渡すことは出来ません。 正しい結果が得られません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>入力行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ad</em>&nbsp;</td><td>反転された行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>反転させる次元</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> VOID mat_print( <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a )
+{
+    INT i,j;
+    <span class="keywordflow">for</span>( j=0; j&lt;a-&gt;<a class="code" href="structFMATRIX.html#ed3e06d5f2a7d8c955482d9251447edb">row</a>; j++ ){
+        printf( <span class="stringliteral">"  [  "</span> );
+        <span class="keywordflow">for</span>( i=0; i&lt;a-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; i++ ){
+            printf( <span class="stringliteral">"%+0.6e  "</span>, a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[j][i] );
+        }
+        printf( <span class="stringliteral">"]\n"</span> );
+    }
+    printf( <span class="stringliteral">"\n"</span> );
+}
+
+INT main()
+{
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *a=NULL, *b=NULL;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    a = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 a を確保</span>
+    b = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 4, 4 ); <span class="comment">// 4x4行列 b を確保</span>
+
+    <span class="comment">// 入力値をセット</span>
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][0] = 1.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][1] = 5.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][2] = 9.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][3] =13.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][0] = 2.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][1] = 6.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][2] =10.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][3] =14.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][0] = 3.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][1] = 7.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][2] =11.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[2][3] =15.0;
+    a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][0] = 4.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][1] = 8.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][2] =12.0;  a-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[3][3] =16.0;
+
+    printf( <span class="stringliteral">"a =\n"</span> );  mat_print( a );
+
+    <span class="comment">// mode=1</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#gd10966361ac78e575cb70fcefc581bf6" title="行列要素の反転">fnFIE_mat_flipdim</a>( a, b, 1 );
+    printf( <span class="stringliteral">"flipdim(a,mode=&gt;1) =\n"</span> );
+    mat_print( b );
+
+    <span class="comment">// mode=2</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#gd10966361ac78e575cb70fcefc581bf6" title="行列要素の反転">fnFIE_mat_flipdim</a>( a, b, 2 );
+    printf( <span class="stringliteral">"flipdim(a,mode=&gt;2) =\n"</span> );
+    mat_print( b );
+    
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( a );
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( b );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+<span class="comment">/*</span>
+<span class="comment">結果</span>
+<span class="comment"></span>
+<span class="comment">a =</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +9.000000e+000  +1.300000e+001  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +1.000000e+001  +1.400000e+001  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  +1.100000e+001  +1.500000e+001  ]</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  +1.200000e+001  +1.600000e+001  ]</span>
+<span class="comment"></span>
+<span class="comment">flipdim(a,mode=&gt;1) =</span>
+<span class="comment">  [  +4.000000e+000  +8.000000e+000  +1.200000e+001  +1.600000e+001  ]</span>
+<span class="comment">  [  +3.000000e+000  +7.000000e+000  +1.100000e+001  +1.500000e+001  ]</span>
+<span class="comment">  [  +2.000000e+000  +6.000000e+000  +1.000000e+001  +1.400000e+001  ]</span>
+<span class="comment">  [  +1.000000e+000  +5.000000e+000  +9.000000e+000  +1.300000e+001  ]</span>
+<span class="comment"></span>
+<span class="comment">flipdim(a,mode=&gt;2) =</span>
+<span class="comment">  [  +1.300000e+001  +9.000000e+000  +5.000000e+000  +1.000000e+000  ]</span>
+<span class="comment">  [  +1.400000e+001  +1.000000e+001  +6.000000e+000  +2.000000e+000  ]</span>
+<span class="comment">  [  +1.500000e+001  +1.100000e+001  +7.000000e+000  +3.000000e+000  ]</span>
+<span class="comment">  [  +1.600000e+001  +1.200000e+001  +8.000000e+000  +4.000000e+000  ]</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g926871cc2ef87d2f90034999367ecac5"></a><!-- doxytag: member="oss_fie_fmatrix_base.c::fnFIE_mat_rand" ref="g926871cc2ef87d2f90034999367ecac5" args="(FMATRIX *a)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_mat_rand           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>a</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  ランダム行列の作成 
+<p>
+入力された行列の成分に全てランダムな値を設定します。<br>
+ 設定される値の範囲は [2^(-53), 1-2^(-53)] です。 （これはMATLABのrand('twister')と同じ値範囲です）。<p>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd>このライブラリはFVALG_OSS内の fnFIE_mtrand_* を使用しています</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>a</em>&nbsp;</td><td>値を設定する行列</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

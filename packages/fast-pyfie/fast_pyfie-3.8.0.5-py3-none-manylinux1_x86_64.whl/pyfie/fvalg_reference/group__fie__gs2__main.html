@@ -1,0 +1,1106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 実行</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>実行<br>
+<small>
+[<a class="el" href="group__fie__gs2.html">グレイサーチ(正規化相関サーチ)</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">グレイサーチ結果格納用構造体  <a href="structF__GS__RESULT.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__main.html#gfe2893b390a71acb8c5121f5ec944716">f_gs2_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__gs2__main.html#ggfe2893b390a71acb8c5121f5ec944716ddd61bc1f80da28e8cf69877610c29b1">F_GS2_NORMAL_MODE</a> =  1, 
+<a class="el" href="group__fie__gs2__main.html#ggfe2893b390a71acb8c5121f5ec9447160fe18b03a92255d300c7bd589eafe2ea">F_GS2_HIGH_MODE</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__gs2__main.html#ggfe2893b390a71acb8c5121f5ec9447169907996d8dbb882a32e8bf8f6f0ae115">F_GS2_SUPER_MODE</a> =  3, 
+<a class="el" href="group__fie__gs2__main.html#ggfe2893b390a71acb8c5121f5ec9447165b0b3ffdd6466c4f44f9dd9e5a58b90d">F_GS2_ULTRA_SUPER_MODE</a> =  4
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">精度モード指定  <a href="group__fie__gs2__main.html#gfe2893b390a71acb8c5121f5ec944716">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d">f_gs2_subpxl_neib</a> { <a class="el" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4ddf91a21a0bed6e65ff541ab83bc15d96">F_GS2_SUBPXL_NEIB_4</a> =  0, 
+<a class="el" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4d6e7d68d2af9bb0af50ed8195153e63af">F_GS2_SUBPXL_NEIB_8</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">精サーチ・サブピクセル推定の近傍指定  <a href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c">fnFIE_gs2_alloc</a> (UINT first_buff_size, UINT last_buff_size, UINT cache_pow_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">グレイサーチオブジェクトの生成  <a href="#gbb041ddcdd8da6d8a0f684444743fa2c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59">fnFIE_gs2_search</a> (FHANDLE hgs, FHANDLE hpattern, FHANDLE himage, <a class="el" href="structBOX__T.html">BOX_T</a> search_window, INT threshold_mid, INT threshold_final, INT edge_detect, INT reverse_mode, INT pitch_x, INT pitch_y, enum <a class="el" href="group__fie__gs2__main.html#gfe2893b390a71acb8c5121f5ec944716">f_gs2_mode</a> search_mode, INT search_type, <a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a> *result, INT max_result_num, INT *result_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">グレイサーチの実行  <a href="#gf9841a022b06e4863006dac3edcd1f59"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d">fnFIE_gs2_search_enforce</a> (FHANDLE hgs, FHANDLE hpattern, FHANDLE himage, <a class="el" href="structBOX__T.html">BOX_T</a> search_window, INT threshold_mid, INT threshold_final, INT edge_detect, INT reverse_mode, INT pitch_x, INT pitch_y, INT first_unit, INT last_unit, <a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a> *result, INT max_result_num, INT *result_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">[非推奨]グレイサーチの実行（圧縮度を強制する版）  <a href="#gf2b05b7b2e49b5e2326fe60cb7c4bd5d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d">fnFIE_gs2_search_enforce2</a> (FHANDLE hgs, FHANDLE hpattern, FHANDLE himage, <a class="el" href="structBOX__T.html">BOX_T</a> search_window, INT threshold_mid, INT threshold_final, INT edge_detect, INT reverse_mode, INT pitch_x, INT pitch_y, INT first_unit, INT last_unit, enum <a class="el" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d">f_gs2_subpxl_neib</a> subpxl_neib, <a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a> *result, INT max_result_num, INT *result_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定追加版）  <a href="#g772a7f230cfa987c5f20e22cceffe39d"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gfe2893b390a71acb8c5121f5ec944716"></a><!-- doxytag: member="fie.h::f_gs2_mode" ref="gfe2893b390a71acb8c5121f5ec944716" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__gs2__main.html#gfe2893b390a71acb8c5121f5ec944716">f_gs2_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+精度モード指定 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggfe2893b390a71acb8c5121f5ec944716ddd61bc1f80da28e8cf69877610c29b1"></a><!-- doxytag: member="F_GS2_NORMAL_MODE" ref="ggfe2893b390a71acb8c5121f5ec944716ddd61bc1f80da28e8cf69877610c29b1" args="" -->F_GS2_NORMAL_MODE</em>&nbsp;</td><td>
+通常精度 <br>
+ 通常精度の場合、縦横1/4に圧縮した状態の画像で回答位置の推定を行います。<br>
+ 中心とその４近傍の相関値から、サブピクセル推定を行います。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggfe2893b390a71acb8c5121f5ec9447160fe18b03a92255d300c7bd589eafe2ea"></a><!-- doxytag: member="F_GS2_HIGH_MODE" ref="ggfe2893b390a71acb8c5121f5ec9447160fe18b03a92255d300c7bd589eafe2ea" args="" -->F_GS2_HIGH_MODE</em>&nbsp;</td><td>
+高精度 <br>
+ 高精度の場合、縦横1/2に圧縮した状態の画像で回答位置の推定を行います。<br>
+ 中心とその４近傍の相関値から、サブピクセル推定を行います。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggfe2893b390a71acb8c5121f5ec9447169907996d8dbb882a32e8bf8f6f0ae115"></a><!-- doxytag: member="F_GS2_SUPER_MODE" ref="ggfe2893b390a71acb8c5121f5ec9447169907996d8dbb882a32e8bf8f6f0ae115" args="" -->F_GS2_SUPER_MODE</em>&nbsp;</td><td>
+超高精度 <br>
+ 超高精度の場合、圧縮を行っていない状態の画像で回答位置を計算します。<br>
+ 中心とその４近傍の相関値から、サブピクセル推定を行います。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggfe2893b390a71acb8c5121f5ec9447165b0b3ffdd6466c4f44f9dd9e5a58b90d"></a><!-- doxytag: member="F_GS2_ULTRA_SUPER_MODE" ref="ggfe2893b390a71acb8c5121f5ec9447165b0b3ffdd6466c4f44f9dd9e5a58b90d" args="" -->F_GS2_ULTRA_SUPER_MODE</em>&nbsp;</td><td>
+ウルトラ超高精度 <br>
+ ウルトラ超高精度の場合、圧縮を行っていない状態の画像で回答位置を計算します。<br>
+ 中心とその８近傍の相関値から、サブピクセル推定を行います。 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g69e3c8ddbc96a24993d4121f80deef4d"></a><!-- doxytag: member="fie.h::f_gs2_subpxl_neib" ref="g69e3c8ddbc96a24993d4121f80deef4d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d">f_gs2_subpxl_neib</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+精サーチ・サブピクセル推定の近傍指定 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg69e3c8ddbc96a24993d4121f80deef4ddf91a21a0bed6e65ff541ab83bc15d96"></a><!-- doxytag: member="F_GS2_SUBPXL_NEIB_4" ref="gg69e3c8ddbc96a24993d4121f80deef4ddf91a21a0bed6e65ff541ab83bc15d96" args="" -->F_GS2_SUBPXL_NEIB_4</em>&nbsp;</td><td>
+４近傍 <br>
+ 中心とその４近傍の相関値から、サブピクセル推定を行います。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg69e3c8ddbc96a24993d4121f80deef4d6e7d68d2af9bb0af50ed8195153e63af"></a><!-- doxytag: member="F_GS2_SUBPXL_NEIB_8" ref="gg69e3c8ddbc96a24993d4121f80deef4d6e7d68d2af9bb0af50ed8195153e63af" args="" -->F_GS2_SUBPXL_NEIB_8</em>&nbsp;</td><td>
+８近傍 <br>
+ 中心とその８近傍の相関値から、サブピクセル推定を行います。 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gbb041ddcdd8da6d8a0f684444743fa2c"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_alloc" ref="gbb041ddcdd8da6d8a0f684444743fa2c" args="(UINT first_buff_size, UINT last_buff_size, UINT cache_pow_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_gs2_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>first_buff_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>last_buff_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>cache_pow_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+グレイサーチオブジェクトの生成 
+<p>
+グレイサーチの作業領域となるグレイサーチオブジェクトを生成します。 不要になったグレイサーチオブジェクトは必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>first_buff_size</em>&nbsp;</td><td>初期サーチ結果候補初期バッファサイズ <br>
+ 通常は0を指定してください。0を指定すると、デフォルト値を使用します。<br>
+ 初期サイズが小さく、メモリが足りなくなった場合には内部で自動で再アロケートを行いますが、 メモリの再アロケートを少なくしたい等の理由で、初期サイズを変更する場合に指定します。 なお、この設定値によってサーチ結果が変化することはありません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>last_buff_size</em>&nbsp;</td><td>最終サーチ結果候補初期バッファサイズ <br>
+ 通常は0を指定してください。0を指定すると、デフォルト値を使用します。<br>
+ 初期サイズが小さく、メモリが足りなくなった場合には内部で自動で再アロケートを行いますが、 メモリの再アロケートを少なくしたい等の理由で、初期サイズを変更する場合に指定します。 なお、この設定値によってサーチ結果が変化することはありません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cache_pow_num</em>&nbsp;</td><td>中間スコアキャッシュサイズ( 0 または 3～15 ) <br>
+ 通常は0を指定してください。0を指定すると、デフォルト値を使用します。<br>
+ 本ライブラリでは重複した相関スコアの計算を避けるために、既に計算した 相関スコアを一時的に保存するキャッシュ領域を持ちます。 本パラメータはこの相関スコアのキャッシュサイズを指定します。 大きな値を設定するとキャッシュヒット率が上がる場合がありますが、 その効果はわずかな場合が多く、必要なメモリ量が大幅に増えるため、 デフォルト値以外での利用は推奨しません。 なお、この設定値によってサーチ結果が変化することはありません。</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したグレイサーチオブジェクトのハンドルを返します。<br>
+ ライセンスエラー、未初期化エラー、パラメータエラー、またはメモリ不足エラーにより生成できなかったときはNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf9841a022b06e4863006dac3edcd1f59"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_search" ref="gf9841a022b06e4863006dac3edcd1f59" args="(FHANDLE hgs, FHANDLE hpattern, FHANDLE himage, BOX_T search_window, INT threshold_mid, INT threshold_final, INT edge_detect, INT reverse_mode, INT pitch_x, INT pitch_y, enum f_gs2_mode search_mode, INT search_type, F_GS_RESULT *result, INT max_result_num, INT *result_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_search           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBOX__T.html">BOX_T</a>&nbsp;</td>
+          <td class="paramname"> <em>search_window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold_mid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold_final</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_detect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__gs2__main.html#gfe2893b390a71acb8c5121f5ec944716">f_gs2_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>search_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>search_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_result_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>result_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+グレイサーチの実行 
+<p>
+グレイサーチを実行します。<br>
+ <em>himage</em> に NULL を入れると前回使用したサーチ対象画像を使った継続サーチになります。<ul>
+<li>継続サーチを実施する可能性があるうちは画像オブジェクトを解放しないでください。 <br>
+</li><li>継続サーチを行う際に与えるグレイサーチパターンオブジェクトは、 初回のサーチで使用したオブジェクトと同種の圧縮フィルタ種別を持っている必要があります。</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hgs</em>&nbsp;</td><td>グレイサーチオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>サーチ対象となる画像オブジェクト ( type : uc8 )<br>
+ チャネル数は1でなければいけません。 また、パタンのサイズよりも縦横共に大きい必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>search_window</em>&nbsp;</td><td>サーチウインドウ<br>
+ 画像オブジェクトの中でサーチを行う処理範囲を <em>himage</em> 上の座標で指定します。 <em>himage</em> の内部に納まるように座標を指定する必要があります。 また、パタンのサイズよりも大きい必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold_mid</em>&nbsp;</td><td>途中相関値 ( 1000 ～ 9999 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold_final</em>&nbsp;</td><td>最終相関値 ( 1000 ～ 9999 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_detect</em>&nbsp;</td><td>サーチウインドウ周囲接触フラグ<ul>
+<li>TRUE サーチウインドウに接したパターンも検出</li><li>FALSE サーチウインドウに接したパターンを検出しない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_mode</em>&nbsp;</td><td>反転パターン検出モードフラグ 濃度反転しているパターンも検出するかどうかを指定します。<ul>
+<li>TRUE 反転パターンも検出</li><li>FALSE 反転パターンを検出しない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_x</em>&nbsp;</td><td>最終的な回答の出力時に、同一の解であるとみなす範囲を指定します。<br>
+ 0を入力した場合、パターンサイズの半分になります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_y</em>&nbsp;</td><td>最終的な回答の出力時に、同一の解であるとみなす範囲を指定します。<br>
+ 0を入力した場合、パターンサイズの半分になります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>search_mode</em>&nbsp;</td><td>サーチ精度を指定します。<ul>
+<li>F_GS2_NORMAL_MODE 通常精度</li><li>F_GS2_HIGH_MODE 高精度</li><li>F_GS2_SUPER_MODE 超高精度</li><li>F_GS2_ULTRA_SUPER_MODE ウルトラ超高精度 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>search_type</em>&nbsp;</td><td>サーチ複雑度を指定します。( 1 ～ 9 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result</em>&nbsp;</td><td>サーチ結果<br>
+ サーチスコア( 0 ～ 10000 )と結果座標の100倍値を返します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_result_num</em>&nbsp;</td><td>サーチ結果取得個数。<br>
+ 相関値の上位からこの個数だけ回答します。 <em>result</em> はこの個数よりも大きい配列でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result_num</em>&nbsp;</td><td>見つかったサーチ結果の個数 ( 0 ～ <em>max_result_num</em> )</td></tr>
+  </table>
+</dl>
+引数の詳細については、<a class="el" href="group__fie__gs2__doc.html#GS2PARAMEXPLANATION">GS2のパラメータ解説</a>を参照してください。<p>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 範囲外の引数を与えた、継続サーチ時に圧縮フィルタ種別が同一でないなど </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常,引数オブジェクトがNULL </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE image_target = NULL, image_pattern0 = NULL, image_pattern1 = NULL, image_mask1 = NULL;
+    FHANDLE pattern0 = NULL, pattern1 = NULL, hgs = NULL;
+    <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result0, *result1;
+    INT num0, num1;
+    INT i;
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a> search_window;
+    INT threshold_mid = 5000;
+    INT threshold_final = 6000;
+    <span class="keyword">const</span> CHAR org_file[] =<span class="stringliteral">"gray_07.bmp"</span>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">/* ここで保存済みの画像からパターンとマスク用の画像オブジェクトを作成 */</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( org_file, &amp;image_target, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    image_pattern0 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( image_target, 355, 230, 130, 127 ) ;
+    image_pattern1 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( image_target, 355, 230, 130, 127 ) ;
+    image_mask1 = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(
+        <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>,
+        <a class="code" href="group__fie__image.html#g1c950a7efa2a0f4ab46d2352b8b4f070" title="画像情報取得(チャネル数)">fnFIE_img_get_channels</a>( image_pattern1 ),
+        <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( image_pattern1 ),
+        <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( image_pattern1 )
+        );
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>( image_mask1, 0 );
+
+
+    <span class="comment">//結果の保存先を作成</span>
+    result0 = ( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( 10, <span class="keyword">sizeof</span>( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> ) );
+    result1 = ( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( 10, <span class="keyword">sizeof</span>( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> ) );
+
+    <span class="comment">//パタンの作成 画像全面を使ってパタンを作成するため、画像の一部をパタンにしたい場合は事前に子画像を作成すること</span>
+    <span class="comment">//マスクを使用しないパタンの場合</span>
+    pattern0 = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( image_pattern0, NULL, 0, 0, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, NULL );
+    <span class="comment">//マスクを使用するパタンの場合</span>
+    pattern1 = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( image_pattern1, image_mask1, 0, 0, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, NULL );
+
+    <span class="comment">//パタンの作成後は画像を解放してもかまわない</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern0 ); image_pattern0 = NULL;
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern1 ); image_pattern1 = NULL;
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_mask1 ); image_mask1 = NULL;
+
+    <span class="comment">//サーチオブジェクトの作成</span>
+    hgs = <a class="code" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc</a>( 100, 100, 0 );
+
+    <span class="comment">/* ここで撮像を行い、サーチ対象画像 image_target を得る。*/</span>
+    <span class="comment">/*(サンプルであるためファイルから読み込んだ image_target で代用) */</span>
+
+    <span class="comment">/* サーチウインドウの設定 サーチ対象画像の中に納まるよう設定する */</span>
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( image_target ) - 1;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( image_target ) - 1;
+
+    <span class="comment">//サーチを行う</span>
+    <a class="code" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search</a>(
+        hgs,
+        pattern0,
+        image_target,
+        search_window,
+        threshold_mid,
+        threshold_final,
+        FALSE,
+        FALSE,
+        0,
+        0,
+        <a class="code" href="group__fie__gs2__main.html#ggfe2893b390a71acb8c5121f5ec944716ddd61bc1f80da28e8cf69877610c29b1">F_GS2_NORMAL_MODE</a>,  <span class="comment">//通常精度</span>
+        9,                  <span class="comment">//複雑度9</span>
+        result0,
+        10,
+        &amp;num0
+        );
+
+    <span class="comment">/* ここでサーチ結果を利用する */</span>
+    printf( <span class="stringliteral">"search 1st \n"</span> );
+    <span class="keywordflow">for</span>( i = 0; i &lt; 10; i++ ){
+        <span class="keywordflow">if</span>( result0[i].score &gt; 0 )
+            printf( <span class="stringliteral">"score %d,(%d,%d)\n"</span>,result0[i].score,result0[i].x,result0[i].y);
+    }
+
+    <span class="comment">//同一のサーチ対象画像に対して継続サーチを行う</span>
+    <a class="code" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search</a>(
+        hgs,
+        pattern1,
+        NULL, <span class="comment">// 継続サーチの場合サーチ対象画像を指定しない</span>
+        search_window,
+            threshold_mid,
+        threshold_final,
+        FALSE,
+        FALSE,
+        0,
+        0,
+        <a class="code" href="group__fie__gs2__main.html#ggfe2893b390a71acb8c5121f5ec9447169907996d8dbb882a32e8bf8f6f0ae115">F_GS2_SUPER_MODE</a>,   <span class="comment">//超高精度</span>
+        5,                  <span class="comment">//複雑度5</span>
+        result1,
+        5,
+        &amp;num1
+        );
+
+    <span class="comment">/* ここでサーチ結果を利用する */</span>
+    printf( <span class="stringliteral">"search 2nd \n"</span> );
+    <span class="keywordflow">for</span>( i = 0; i &lt; 10; i++ ){
+        <span class="keywordflow">if</span>( result1[i].score &gt; 0 )
+            printf( <span class="stringliteral">"score %d,(%d,%d)\n"</span>, result1[i].score, result1[i].x, result1[i].y );
+    }
+
+    <span class="comment">//サーチオブジェクトの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hgs );
+    <span class="comment">//サーチ対象画像の解放 (サーチオブジェクトより後に解放する)</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_target );
+
+    <span class="comment">//パタンの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_mask1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pattern0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pattern1 );
+
+    <span class="comment">//結果保存先の解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result0 );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result1 );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf2b05b7b2e49b5e2326fe60cb7c4bd5d"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_search_enforce" ref="gf2b05b7b2e49b5e2326fe60cb7c4bd5d" args="(FHANDLE hgs, FHANDLE hpattern, FHANDLE himage, BOX_T search_window, INT threshold_mid, INT threshold_final, INT edge_detect, INT reverse_mode, INT pitch_x, INT pitch_y, INT first_unit, INT last_unit, F_GS_RESULT *result, INT max_result_num, INT *result_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_search_enforce           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBOX__T.html">BOX_T</a>&nbsp;</td>
+          <td class="paramname"> <em>search_window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold_mid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold_final</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_detect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>first_unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>last_unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_result_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>result_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+[非推奨]グレイサーチの実行（圧縮度を強制する版） 
+<p>
+グレイサーチを実行します。<br>
+ <em>himage</em> に NULL を入れると前回使用したサーチ対象画像を使った継続サーチになります。<ul>
+<li>継続サーチを実施する可能性があるうちは画像オブジェクトを解放しないでください。 <br>
+</li><li>継続サーチを行う際に与えるグレイサーチパターンオブジェクトは、 初回のサーチで使用したオブジェクトと同種の圧縮フィルタ種別を持っている必要があります。</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hgs</em>&nbsp;</td><td>グレイサーチオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>サーチ対象となる画像オブジェクト ( type : uc8 )<br>
+ チャネル数は1でなければいけません。 また、パタンのサイズよりも縦横共に大きい必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>search_window</em>&nbsp;</td><td>サーチウインドウ<br>
+ 画像オブジェクトの中でサーチを行う処理範囲を <em>himage</em> 上の座標で指定します。 <em>himage</em> の内部に納まるように座標を指定する必要があります。 また、パタンのサイズよりも大きい必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold_mid</em>&nbsp;</td><td>途中相関値 ( 1000 ～ 9999 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold_final</em>&nbsp;</td><td>最終相関値 ( 1000 ～ 9999 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_detect</em>&nbsp;</td><td>サーチウインドウ周囲接触フラグ<ul>
+<li>TRUE サーチウインドウに接したパターンも検出</li><li>FALSE サーチウインドウに接したパターンを検出しない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_mode</em>&nbsp;</td><td>反転パターン検出モードフラグ<br>
+ 濃度反転しているパターンも検出するかどうかを指定します。<ul>
+<li>TRUE 反転パターンも検出</li><li>FALSE 反転パターンを検出しない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_x</em>&nbsp;</td><td>最終的な回答の出力時に、同一の解であるとみなす範囲を指定します。<br>
+ 0を入力した場合、パターン幅の半分になります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_y</em>&nbsp;</td><td>最終的な回答の出力時に、同一の解であるとみなす範囲を指定します。<br>
+ 0を入力した場合、パターン高さの半分になります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>first_unit</em>&nbsp;</td><td>サーチ開始圧縮度を指定します。( 0 ～ 9 ) <br>
+ 圧縮度がnのとき、2の-n乗倍の画像でサーチを開始します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>last_unit</em>&nbsp;</td><td>サーチ終了圧縮度を指定します。( 0 ～ 9 ) <br>
+ 圧縮度がnのとき、2の-n乗倍の画像でサーチを完了します。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result</em>&nbsp;</td><td>サーチ結果<br>
+ サーチスコア( 0 ～ 10000 )と結果座標の100倍値を返します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_result_num</em>&nbsp;</td><td>サーチ結果取得個数。<br>
+ 相関値の上位からこの個数だけ回答します。 <em>result</em> はこの個数よりも大きい配列でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result_num</em>&nbsp;</td><td>見つかったサーチ結果の個数 ( 0 ～ <em>max_result_num</em> )</td></tr>
+  </table>
+</dl>
+引数の詳細については、<a class="el" href="group__fie__gs2__doc.html#GS2PARAMEXPLANATION">FIEグレイサーチのパラメータ解説</a>を参照してください。<p>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 引数オブジェクトがない、範囲外の引数を与えた、継続サーチ時に圧縮フィルタ種別が同一でないなど </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000003">非推奨:</a></b></dt><dd>本関数は後方互換性のために残されています。<br>
+ 新規の開発では <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> を使用し、本関数は使用しないでください。<br>
+ <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a> の引数 subpxl_neib にF_GS2_SUBPXL_NEIB_4 を設定すると本関数と同一の動作になります。</dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE image_target = NULL, image_pattern0 = NULL, image_pattern1 = NULL, image_mask1 = NULL;
+    FHANDLE pattern0 = NULL, pattern1 = NULL, hgs = NULL;
+    <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result0, *result1;
+    INT num0, num1;
+    INT i;
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a> search_window;
+    INT threshold_mid = 5000;
+    INT threshold_final = 6000;
+    <span class="keyword">const</span> CHAR org_file[] =<span class="stringliteral">"gray_07.bmp"</span>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">/* ここで保存済みの画像からパターンとマスク用の画像オブジェクトを作成 */</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( org_file, &amp;image_target, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    image_pattern0 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( image_target, 355, 230, 130, 127 ) ;
+    image_pattern1 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( image_target, 355, 230, 130, 127 ) ;
+    image_mask1 = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(
+        <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>,
+        <a class="code" href="group__fie__image.html#g1c950a7efa2a0f4ab46d2352b8b4f070" title="画像情報取得(チャネル数)">fnFIE_img_get_channels</a>( image_pattern1 ),
+        <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( image_pattern1 ),
+        <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( image_pattern1 )
+        );
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>( image_mask1, 0 );
+
+
+    <span class="comment">//結果の保存先を作成</span>
+    result0 = ( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( 10, <span class="keyword">sizeof</span>( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> ) );
+    result1 = ( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( 10, <span class="keyword">sizeof</span>( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> ) );
+
+    <span class="comment">//パタンの作成 画像全面を使ってパタンを作成するため、画像の一部をパタンにしたい場合は事前に子画像を作成すること</span>
+    <span class="comment">//マスクを使用しないパタンの場合</span>
+    pattern0 = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( image_pattern0, NULL, 0, 0, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, NULL );
+    <span class="comment">//マスクを使用するパタンの場合</span>
+    pattern1 = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( image_pattern1, image_mask1, 0, 0, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, NULL );
+
+    <span class="comment">//パタンの作成後は画像を解放してもかまわない</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern0 ); image_pattern0 = NULL;
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern1 ); image_pattern1 = NULL;
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_mask1 ); image_mask1 = NULL;
+
+    <span class="comment">//サーチオブジェクトの作成</span>
+    hgs = <a class="code" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc</a>( 100, 100, 0 );
+
+    <span class="comment">/* ここで撮像を行い、サーチ対象画像 image_target を得る。*/</span>
+    <span class="comment">/*(サンプルであるためファイルから読み込んだ image_target で代用) */</span>
+
+    <span class="comment">/* サーチウインドウの設定 サーチ対象画像の中に納まるよう設定する */</span>
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( image_target ) - 1;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( image_target ) - 1;
+
+    <span class="comment">//サーチを行う</span>
+    <a class="code" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce</a>(
+        hgs,
+        pattern0,
+        image_target,
+        search_window,
+        threshold_mid,
+        threshold_final,
+        FALSE,
+        FALSE,
+        0,
+        0,
+        2,  <span class="comment">//サーチ開始圧縮度</span>
+        0,  <span class="comment">//サーチ終了圧縮度</span>
+        result0,
+        10,
+        &amp;num0
+        );
+
+    <span class="comment">/* ここでサーチ結果を利用する */</span>
+    printf( <span class="stringliteral">"search 1st \n"</span> );
+    <span class="keywordflow">for</span>( i = 0; i &lt; 10; i++ ){
+        <span class="keywordflow">if</span>( result0[i].score &gt; 0 )
+            printf( <span class="stringliteral">"score %d,(%d,%d)\n"</span>,result0[i].score,result0[i].x,result0[i].y);
+    }
+
+    <span class="comment">//同一のサーチ対象画像に対して継続サーチを行う</span>
+    <a class="code" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce</a>(
+        hgs,
+        pattern1,
+        NULL, <span class="comment">// 継続サーチの場合サーチ対象画像を指定しない</span>
+        search_window,
+        threshold_mid,
+        threshold_final,
+        FALSE,
+        FALSE,
+        0,
+        0,
+        3,  <span class="comment">//サーチ開始圧縮度</span>
+        0,  <span class="comment">//サーチ終了圧縮度</span>
+        result1,
+        5,
+        &amp;num1
+        );
+
+    <span class="comment">/* ここでサーチ結果を利用する */</span>
+    printf( <span class="stringliteral">"search 2nd \n"</span> );
+    <span class="keywordflow">for</span>( i = 0; i &lt; 10; i++ ){
+        <span class="keywordflow">if</span>( result1[i].score &gt; 0 )
+            printf( <span class="stringliteral">"score %d,(%d,%d)\n"</span>, result1[i].score, result1[i].x, result1[i].y );
+    }
+
+    <span class="comment">//サーチオブジェクトの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hgs );
+    <span class="comment">//サーチ対象画像の解放 (サーチオブジェクトより後に解放する)</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_target );
+
+    <span class="comment">//パタンの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_mask1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pattern0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pattern1 );
+
+    <span class="comment">//結果保存先の解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result0 );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result1 );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g772a7f230cfa987c5f20e22cceffe39d"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_search_enforce2" ref="g772a7f230cfa987c5f20e22cceffe39d" args="(FHANDLE hgs, FHANDLE hpattern, FHANDLE himage, BOX_T search_window, INT threshold_mid, INT threshold_final, INT edge_detect, INT reverse_mode, INT pitch_x, INT pitch_y, INT first_unit, INT last_unit, enum f_gs2_subpxl_neib subpxl_neib, F_GS_RESULT *result, INT max_result_num, INT *result_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_search_enforce2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBOX__T.html">BOX_T</a>&nbsp;</td>
+          <td class="paramname"> <em>search_window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold_mid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold_final</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_detect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>reverse_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>pitch_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>first_unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>last_unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__gs2__main.html#g69e3c8ddbc96a24993d4121f80deef4d">f_gs2_subpxl_neib</a>&nbsp;</td>
+          <td class="paramname"> <em>subpxl_neib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__GS__RESULT.html">F_GS_RESULT</a> *&nbsp;</td>
+          <td class="paramname"> <em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_result_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>result_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定追加版） 
+<p>
+グレイサーチを実行します。<br>
+ 精サーチにおけるサブピクセル推定に用いる近傍の指定ができます。<br>
+ <em>himage</em> に NULL を入れると前回使用したサーチ対象画像を使った継続サーチになります。<ul>
+<li>継続サーチを実施する可能性があるうちは画像オブジェクトを解放しないでください。</li><li>継続サーチを行う際に与えるグレイサーチパターンオブジェクトは、 初回のサーチで使用したオブジェクトと同種の圧縮フィルタ種別を持っている必要があります。</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hgs</em>&nbsp;</td><td>グレイサーチオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>サーチ対象となる画像オブジェクト ( type : uc8 )<br>
+ チャネル数は1でなければいけません。 また、パタンのサイズよりも縦横共に大きい必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>search_window</em>&nbsp;</td><td>サーチウインドウ<br>
+ 画像オブジェクトの中でサーチを行う処理範囲を <em>himage</em> 上の座標で指定します。 <em>himage</em> の内部に納まるように座標を指定する必要があります。 また、パタンのサイズよりも大きい必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold_mid</em>&nbsp;</td><td>途中相関値 ( 1000 ～ 9999 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold_final</em>&nbsp;</td><td>最終相関値 ( 1000 ～ 9999 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_detect</em>&nbsp;</td><td>サーチウインドウ周囲接触フラグ<ul>
+<li>TRUE サーチウインドウに接したパターンも検出</li><li>FALSE サーチウインドウに接したパターンを検出しない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>reverse_mode</em>&nbsp;</td><td>反転パターン検出モードフラグ<br>
+ 濃度反転しているパターンも検出するかどうかを指定します。<ul>
+<li>TRUE 反転パターンも検出</li><li>FALSE 反転パターンを検出しない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_x</em>&nbsp;</td><td>最終的な回答の出力時に、同一の解であるとみなす範囲を指定します。<br>
+ 0を入力した場合、パターン幅の半分になります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_y</em>&nbsp;</td><td>最終的な回答の出力時に、同一の解であるとみなす範囲を指定します。<br>
+ 0を入力した場合、パターン高さの半分になります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>first_unit</em>&nbsp;</td><td>サーチ開始圧縮度を指定します。( 0 ～ 9 ) <br>
+ 圧縮度がnのとき、2の-n乗倍の画像でサーチを開始します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>last_unit</em>&nbsp;</td><td>サーチ終了圧縮度を指定します。( 0 ～ 9 ) <br>
+ 圧縮度がnのとき、2の-n乗倍の画像でサーチを完了します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>subpxl_neib</em>&nbsp;</td><td>精サーチ・サブピクセル推定に用いる近傍を指定します。<br>
+ ８近傍を指定する場合、サーチ終了圧縮度(last_unit)は 0 を推奨します。<ul>
+<li>F_GS2_SUBPXL_NEIB_4 ４近傍</li><li>F_GS2_SUBPXL_NEIB_8 ８近傍 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result</em>&nbsp;</td><td>サーチ結果<br>
+ サーチスコア( 0 ～ 10000 )と結果座標の100倍値を返します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_result_num</em>&nbsp;</td><td>サーチ結果取得個数。<br>
+ 相関値の上位からこの個数だけ回答します。 <em>result</em> はこの個数よりも大きい配列でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result_num</em>&nbsp;</td><td>見つかったサーチ結果の個数 ( 0 ～ <em>max_result_num</em> )</td></tr>
+  </table>
+</dl>
+引数の詳細については、<a class="el" href="group__fie__gs2__doc.html#GS2PARAMEXPLANATION">FIEグレイサーチのパラメータ解説</a>を参照してください。<p>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 引数オブジェクトがない、範囲外の引数を与えた、継続サーチ時に圧縮フィルタ種別が同一でないなど </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE image_target = NULL, image_pattern0 = NULL, image_pattern1 = NULL, image_mask1 = NULL;
+    FHANDLE pattern0 = NULL, pattern1 = NULL, hgs = NULL;
+    <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> *result0, *result1;
+    INT num0, num1;
+    INT i;
+    <a class="code" href="structBOX__T.html" title="非回転矩形指定用構造体">BOX_T</a> search_window;
+    INT threshold_mid = 5000;
+    INT threshold_final = 6000;
+    <span class="keyword">const</span> CHAR org_file[] =<span class="stringliteral">"gray_07.bmp"</span>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">/* ここで保存済みの画像からパターンとマスク用の画像オブジェクトを作成 */</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a> ( org_file, &amp;image_target, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> ) ;
+    image_pattern0 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( image_target, 355, 230, 130, 127 ) ;
+    image_pattern1 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( image_target, 355, 230, 130, 127 ) ;
+    image_mask1 = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(
+        <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>,
+        <a class="code" href="group__fie__image.html#g1c950a7efa2a0f4ab46d2352b8b4f070" title="画像情報取得(チャネル数)">fnFIE_img_get_channels</a>( image_pattern1 ),
+        <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( image_pattern1 ),
+        <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( image_pattern1 )
+        );
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>( image_mask1, 0 );
+
+
+    <span class="comment">//結果の保存先を作成</span>
+    result0 = ( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( 10, <span class="keyword">sizeof</span>( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> ) );
+    result1 = ( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> * )<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( 10, <span class="keyword">sizeof</span>( <a class="code" href="structF__GS__RESULT.html" title="グレイサーチ結果格納用構造体">F_GS_RESULT</a> ) );
+
+    <span class="comment">//パタンの作成 画像全面を使ってパタンを作成するため、画像の一部をパタンにしたい場合は事前に子画像を作成すること</span>
+    <span class="comment">//マスクを使用しないパタンの場合</span>
+    pattern0 = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( image_pattern0, NULL, 0, 0, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, NULL );
+    <span class="comment">//マスクを使用するパタンの場合</span>
+    pattern1 = <a class="code" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc</a>( image_pattern1, image_mask1, 0, 0, <a class="code" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a>, NULL );
+
+    <span class="comment">//パタンの作成後は画像を解放してもかまわない</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern0 ); image_pattern0 = NULL;
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern1 ); image_pattern1 = NULL;
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_mask1 ); image_mask1 = NULL;
+
+    <span class="comment">//サーチオブジェクトの作成</span>
+    hgs = <a class="code" href="group__fie__gs2__main.html#gbb041ddcdd8da6d8a0f684444743fa2c" title="グレイサーチオブジェクトの生成">fnFIE_gs2_alloc</a>( 100, 100, 0 );
+
+    <span class="comment">/* ここで撮像を行い、サーチ対象画像 image_target を得る。*/</span>
+    <span class="comment">/*(サンプルであるためファイルから読み込んだ image_target で代用) */</span>
+
+    <span class="comment">/* サーチウインドウの設定 サーチ対象画像の中に納まるよう設定する */</span>
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#48f4c7dda79ed1525f60fccd8c26da1b">st</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( image_target ) - 1;
+    search_window.<a class="code" href="structBOX__T.html#d57986a2ccb634f43df932b15bfba13a">ed</a>.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( image_target ) - 1;
+
+    <span class="comment">//サーチを行う</span>
+    <a class="code" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2</a>(
+        hgs,
+        pattern0,
+        image_target,
+        search_window,
+        threshold_mid,
+        threshold_final,
+        FALSE,
+        FALSE,
+        0,
+        0,
+        2,  <span class="comment">//サーチ開始圧縮度</span>
+        0,  <span class="comment">//サーチ終了圧縮度</span>
+        <a class="code" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4d6e7d68d2af9bb0af50ed8195153e63af">F_GS2_SUBPXL_NEIB_8</a>, <span class="comment">// 精サーチのサブピクセル推定に8近傍を指定</span>
+        result0,
+        10,
+        &amp;num0
+        );
+
+    <span class="comment">/* ここでサーチ結果を利用する */</span>
+    printf( <span class="stringliteral">"search 1st \n"</span> );
+    <span class="keywordflow">for</span>( i = 0; i &lt; 10; i++ ){
+        <span class="keywordflow">if</span>( result0[i].score &gt; 0 )
+            printf( <span class="stringliteral">"score %d,(%d,%d)\n"</span>,result0[i].score,result0[i].x,result0[i].y);
+    }
+
+    <span class="comment">//同一のサーチ対象画像に対して継続サーチを行う</span>
+    <a class="code" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2</a>(
+        hgs,
+        pattern1,
+        NULL, <span class="comment">// 継続サーチの場合サーチ対象画像を指定しない</span>
+        search_window,
+        threshold_mid,
+        threshold_final,
+        FALSE,
+        FALSE,
+        0,
+        0,
+        3,  <span class="comment">//サーチ開始圧縮度</span>
+        0,  <span class="comment">//サーチ終了圧縮度</span>
+        <a class="code" href="group__fie__gs2__main.html#gg69e3c8ddbc96a24993d4121f80deef4d6e7d68d2af9bb0af50ed8195153e63af">F_GS2_SUBPXL_NEIB_8</a>, <span class="comment">// 精サーチのサブピクセル推定に8近傍を指定</span>
+        result1,
+        5,
+        &amp;num1
+        );
+
+    <span class="comment">/* ここでサーチ結果を利用する */</span>
+    printf( <span class="stringliteral">"search 2nd \n"</span> );
+    <span class="keywordflow">for</span>( i = 0; i &lt; 10; i++ ){
+        <span class="keywordflow">if</span>( result1[i].score &gt; 0 )
+            printf( <span class="stringliteral">"score %d,(%d,%d)\n"</span>, result1[i].score, result1[i].x, result1[i].y );
+    }
+
+    <span class="comment">//サーチオブジェクトの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hgs );
+    <span class="comment">//サーチ対象画像の解放 (サーチオブジェクトより後に解放する)</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_target );
+
+    <span class="comment">//パタンの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_pattern1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( image_mask1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pattern0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( pattern1 );
+
+    <span class="comment">//結果保存先の解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result0 );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( result1 );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

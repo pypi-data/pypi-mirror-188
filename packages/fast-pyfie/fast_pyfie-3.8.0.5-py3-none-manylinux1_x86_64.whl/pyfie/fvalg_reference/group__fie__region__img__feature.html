@@ -1,0 +1,910 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 画像特徴量計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>画像特徴量計算<br>
+<small>
+[<a class="el" href="group__fie__region__base.html">リージョン処理</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#g27e1d4b30e4cab906cf8feb7c7977f85">fnFIE_img_histogram</a> (FHANDLE hImg, FHANDLE hreg, INT iChaNo, UINT **unppHist, INT *ipHistLen)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リージョン内の画像ヒストグラム作成  <a href="#g27e1d4b30e4cab906cf8feb7c7977f85"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#gf7e26bf86b4d7f04a6af08baae697a6d">fnFIE_img_sumpixel</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *sumpixel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：輝度値の総和  <a href="#gf7e26bf86b4d7f04a6af08baae697a6d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#g18410ccb138b5767492dda81fe95f3d8">fnFIE_img_minpixel</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *minpixel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：輝度値の最小値  <a href="#g18410ccb138b5767492dda81fe95f3d8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#gf0c2b9b595a08c7e0255378baabffb41">fnFIE_img_maxpixel</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *maxpixel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：輝度値の最大値  <a href="#gf0c2b9b595a08c7e0255378baabffb41"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#g5314b819d4c7863362d4c3a91add6ca8">fnFIE_img_meanpixel</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *meanpixel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：輝度値の平均値  <a href="#g5314b819d4c7863362d4c3a91add6ca8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#gf9409f6b4098f4fcb5bf661e64ac09d6">fnFIE_img_sumpixel_square</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *sumpixel2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：輝度値の２乗和  <a href="#gf9409f6b4098f4fcb5bf661e64ac09d6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#g7efe8b28cc26f9021daf8b807cdcba69">fnFIE_img_sigmapixel</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *sigma)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：輝度値の標準偏差  <a href="#g7efe8b28cc26f9021daf8b807cdcba69"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#g04a154c93c113a9844db750ec4e2f2a8">fnFIE_img_pixelmoment1</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *pixelsumx, DOUBLE *pixelsumy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：１次濃淡モーメント  <a href="#g04a154c93c113a9844db750ec4e2f2a8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#gbddca8d201b8ffc5f7a2924689739749">fnFIE_img_pixelmoment2</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *pixelsumx2, DOUBLE *pixelsumy2, DOUBLE *pixelsumxy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：２次濃淡モーメント  <a href="#gbddca8d201b8ffc5f7a2924689739749"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#gd27abc93af5209640de6ec5d5a38eb5b">fnFIE_img_pixelcenter</a> (FHANDLE himg, FHANDLE hreg, DOUBLE *centerx, DOUBLE *centery)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：濃淡重心を求めます  <a href="#gd27abc93af5209640de6ec5d5a38eb5b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__img__feature.html#g5606faaaa05009ed94b21bfe085f146d">fnFIE_img_pixelmoment</a> (FHANDLE himg, FHANDLE hreg, DOUBLE orgnx, DOUBLE orgny, DOUBLE *M10, DOUBLE *M01, DOUBLE *M20, DOUBLE *M02, DOUBLE *M11)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像特徴量：指定座標を原点とする濃淡モーメント  <a href="#g5606faaaa05009ed94b21bfe085f146d"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g27e1d4b30e4cab906cf8feb7c7977f85"></a><!-- doxytag: member="fie_hist.c::fnFIE_img_histogram" ref="g27e1d4b30e4cab906cf8feb7c7977f85" args="(FHANDLE hImg, FHANDLE hreg, INT iChaNo, UINT **unppHist, INT *ipHistLen)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_histogram           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iChaNo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT **&nbsp;</td>
+          <td class="paramname"> <em>unppHist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipHistLen</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リージョン内の画像ヒストグラム作成 
+<p>
+リージョン領域内の画像のヒストグラムを作ります。<p>
+作成されたヒストグラムは <em>unppHist</em> に出力されますが、 外部でヒストグラム用に確保したメモリのアドレスを <em>*unppHist</em> に指定した場合は、そのメモリに出力します。 逆に、メモリを確保せず <em>*unppHist</em> にNULLを渡した場合は、 関数内部で必要なメモリを確保して、そのアドレスを <em>*unppHist</em> に返します。 この場合は <em>*unppHist</em> に返されたメモリはユーザーが <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放しなければいけません。<p>
+ヒストグラム <em>*unppHist</em> に必要なメモリ量は、入力画像型によって異なり、それぞれ下記のようになります。<ul>
+<li>入力画像のタイプが F_IMG_UC8 の場合 256 x sizeof(UINT) byte以上</li><li>入力画像のタイプが F_IMG_US16及びF_IMG_S16 の場合 65536 x sizeof(UINT) byte以上</li><li>それ以外の画像タイプには対応しません。</li></ul>
+<p>
+入力画像の型が F_IMG_S16 の場合、Histogramの最初の位置（(*unppHist)[0]）は 濃度値S16_MIN に対応し、 最後の位置（(*unppHist)[65535]）は 濃度値S16_MAX に対応しています。<p>
+入力画像のチャネル数が１以上の場合は、指定チャネルのヒストグラムのみを作成します。 また、ヒストグラムはUINT型にて作成されるため、入力画像サイズが2^32画素以上の場合には オーバーフローの可能性があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>入力画像のハンドル (type: uc8, s16, us16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>リージョンのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iChaNo</em>&nbsp;</td><td>処理したいチャネルの番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>unppHist</em>&nbsp;</td><td>ヒストグラムのメモリ </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>ipHistLen</em>&nbsp;</td><td>メモリ確保した場合はそのメモリの量を入力（UINT数単位） <br>
+ メモリ確保しなかった場合は関数内部確保のメモリの量を出力（UINT数単位）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された( <em>hreg</em> が不正 ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__histogram.html#g29e38794ce3eb94c4616092a035cddf0" title="画像ヒストグラム作成">fnFIE_make_histogram()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf7e26bf86b4d7f04a6af08baae697a6d"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_sumpixel" ref="gf7e26bf86b4d7f04a6af08baae697a6d" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *sumpixel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_sumpixel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>sumpixel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：輝度値の総和 
+<p>
+画像と領域の共通部分で、画像の輝度総和を求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[sumpixel = \sum_{y}\sum_{x}{f(x,y)} \]" src="form_657.png">
+<p>
+<p>
+<ul>
+<li>f(x,y)：座標(x,y)における輝度値</li></ul>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和が±DBL64_MAXを超えるような場合はオーバーフローし <em>sumpixel</em> が無限大(±INF)になることがあります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumpixel</em>&nbsp;</td><td>輝度総和</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g18410ccb138b5767492dda81fe95f3d8"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_minpixel" ref="g18410ccb138b5767492dda81fe95f3d8" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *minpixel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_minpixel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>minpixel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：輝度値の最小値 
+<p>
+画像と領域の共通部分で、画像の輝度最小値を求めます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>minpixel</em>&nbsp;</td><td>輝度最小値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf0c2b9b595a08c7e0255378baabffb41"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_maxpixel" ref="gf0c2b9b595a08c7e0255378baabffb41" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *maxpixel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_maxpixel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>maxpixel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：輝度値の最大値 
+<p>
+画像と領域の共通部分で、画像の輝度最大値を求めます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>maxpixel</em>&nbsp;</td><td>輝度最大値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5314b819d4c7863362d4c3a91add6ca8"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_meanpixel" ref="g5314b819d4c7863362d4c3a91add6ca8" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *meanpixel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_meanpixel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>meanpixel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：輝度値の平均値 
+<p>
+画像と領域の共通部分で、画像の輝度平均値を求めます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和が±DBL64_MAXを超えるような場合はオーバーフローし <em>meanpixel</em> が無限大(±INF)になることがあります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>meanpixel</em>&nbsp;</td><td>輝度平均値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf9409f6b4098f4fcb5bf661e64ac09d6"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_sumpixel_square" ref="gf9409f6b4098f4fcb5bf661e64ac09d6" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *sumpixel2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_sumpixel_square           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>sumpixel2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：輝度値の２乗和 
+<p>
+画像と領域の共通部分で、画像の輝度値の２乗和を求めます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度２乗和がDBL64_MAXを超えるような場合はオーバーフローし <em>sumpixel2</em> が無限大(INF)になることがあります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumpixel2</em>&nbsp;</td><td>輝度２乗和</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7efe8b28cc26f9021daf8b807cdcba69"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_sigmapixel" ref="g7efe8b28cc26f9021daf8b807cdcba69" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *sigma)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_sigmapixel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>sigma</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：輝度値の標準偏差 
+<p>
+画像と領域の共通部分で、画像の輝度値の標準偏差を求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[sigma = \sqrt{ \frac{ \sum_{i \in hreg}\left(f_i - \bar{f}\right)^2 }{N} } \]" src="form_658.png">
+<p>
+<p>
+<ul>
+<li><img class="formulaInl" alt="$ f $" src="form_659.png"> : <em>himg</em> の輝度値</li><li><img class="formulaInl" alt="$ \bar{f} $" src="form_660.png"> : 領域内の輝度平均値</li><li>N : 領域内の画素数</li></ul>
+<p>
+<ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和がDBL64_MAXを超えるような場合はオーバーフローし <em>sigma</em> が無限大(INF)になることがあります。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sigma</em>&nbsp;</td><td>標準偏差</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g04a154c93c113a9844db750ec4e2f2a8"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_pixelmoment1" ref="g04a154c93c113a9844db750ec4e2f2a8" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *pixelsumx, DOUBLE *pixelsumy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_pixelmoment1           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pixelsumx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pixelsumy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：１次濃淡モーメント 
+<p>
+画像と領域の共通部分で、１次の濃淡モーメントを求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[pixelsumx = \sum_{y}\sum_{x}{\left(x f(x,y)\right)} \]" src="form_661.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[pixelsumy = \sum_{y}\sum_{x}{\left(y f(x,y)\right)} \]" src="form_662.png">
+<p>
+<p>
+<ul>
+<li>f(x,y)：座標(x,y)における輝度値</li><li>ΣΣ：画像と領域の共通部分での和</li></ul>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下かつ -65534≦(x,y)≦65534 の条件で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和が±DBL64_MAXを超えるような場合はオーバーフローし、計算結果が無限大(±INF)または非数（NAN）になることがあります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pixelsumx</em>&nbsp;</td><td>Ｘ方向１次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pixelsumy</em>&nbsp;</td><td>Ｙ方向１次濃淡モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbddca8d201b8ffc5f7a2924689739749"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_pixelmoment2" ref="gbddca8d201b8ffc5f7a2924689739749" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *pixelsumx2, DOUBLE *pixelsumy2, DOUBLE *pixelsumxy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_pixelmoment2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pixelsumx2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pixelsumy2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pixelsumxy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：２次濃淡モーメント 
+<p>
+画像と領域の共通部分で、２次の濃淡モーメントを求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[pixelsumx2 = \sum_{y}\sum_{x}{\left(x^2 f(x,y)\right)} \]" src="form_663.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[pixelsumy2 = \sum_{y}\sum_{x}{\left(y^2 f(x,y)\right)} \]" src="form_664.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[pixelsumxy = \sum_{y}\sum_{x}{\left(x y f(x,y)\right)} \]" src="form_665.png">
+<p>
+<p>
+<ul>
+<li>f(x,y)：座標(x,y)における輝度値</li><li>ΣΣ：画像と領域の共通部分での和</li></ul>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下かつ -65534≦(x,y)≦65534 の条件で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和が±DBL64_MAXを超えるような場合はオーバーフローし、計算結果が無限大(±INF)または非数（NAN）になることがあります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pixelsumx2</em>&nbsp;</td><td>Ｘ方向２次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pixelsumy2</em>&nbsp;</td><td>Ｙ方向２次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pixelsumxy</em>&nbsp;</td><td>ＸＹ方向濃淡モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd27abc93af5209640de6ec5d5a38eb5b"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_pixelcenter" ref="gd27abc93af5209640de6ec5d5a38eb5b" args="(FHANDLE himg, FHANDLE hreg, DOUBLE *centerx, DOUBLE *centery)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_pixelcenter           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>centerx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>centery</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：濃淡重心を求めます 
+<p>
+画像と領域の共通部分の濃淡重心を求めます。 Ｘ方向１次濃淡モーメントをpsumx、Ｙ方向１次濃淡モーメントをpsumy、輝度総和をMとすると、 <em>centerx</em> = psumx/M, <em>centery</em> = psumy/M で輝度重心を求めます。 なお、輝度総和が０の時はエラー終了となります。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下かつ -65534≦(x,y)≦65534 の条件で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和が±DBL64_MAXを超えるような場合、計算結果は非数（NAN）になります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>centerx</em>&nbsp;</td><td>濃淡重心のＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>centery</em>&nbsp;</td><td>濃淡重心のＹ座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5606faaaa05009ed94b21bfe085f146d"></a><!-- doxytag: member="fie_img_feature.c::fnFIE_img_pixelmoment" ref="g5606faaaa05009ed94b21bfe085f146d" args="(FHANDLE himg, FHANDLE hreg, DOUBLE orgnx, DOUBLE orgny, DOUBLE *M10, DOUBLE *M01, DOUBLE *M20, DOUBLE *M02, DOUBLE *M11)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_pixelmoment           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>orgnx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>orgny</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>M10</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>M01</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>M20</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>M02</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>M11</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像特徴量：指定座標を原点とする濃淡モーメント 
+<p>
+画像と領域の共通部分で、指定座標を原点とする１次・２次濃淡モーメントを求めます。 原点として指定する座標の値を変えても画像と領域の共通部分は変わりません。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[M10 = \sum_{y}\sum_{x}{\left((x-orgnx) f(x,y)\right)} \]" src="form_666.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M01 = \sum_{y}\sum_{x}{\left((y-orgny) f(x,y)\right)} \]" src="form_667.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M20 = \sum_{y}\sum_{x}{\left((x-orgnx)^2 f(x,y)\right)} \]" src="form_668.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M02 = \sum_{y}\sum_{x}{\left((y-orgny)^2 f(x,y)\right)} \]" src="form_669.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M11 = \sum_{y}\sum_{x}{\left((x-orgnx)(y-orgny) f(x,y)\right)} \]" src="form_670.png">
+<p>
+<p>
+<ul>
+<li>f(x,y)：座標(x,y)における輝度値</li><li>ΣΣ：画像と領域の共通部分での和。</li></ul>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>処理対象画像のチャネル数は1でなければなりません。 </li>
+<li>領域がない場合や、画像と領域の共通部分がない場合はエラー終了となります。 </li>
+<li>領域の xdiff, ydiff が65535以下かつ -65534≦(x,y)≦65534 の条件で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。 </li>
+<li>画像がDOUBLE型の時、輝度総和が±DBL64_MAXを超えるような場合、計算結果は非数（NAN）になります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>領域 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>orgnx</em>&nbsp;</td><td>濃淡モーメントを求めるときに原点とするＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>orgny</em>&nbsp;</td><td>濃淡モーメントを求めるときに原点とするＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>M10</em>&nbsp;</td><td>Ｘ方向１次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>M01</em>&nbsp;</td><td>Ｙ方向１次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>M20</em>&nbsp;</td><td>Ｘ方向２次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>M02</em>&nbsp;</td><td>Ｙ方向２次濃淡モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>M11</em>&nbsp;</td><td>ＸＹ方向２次濃淡モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>領域が不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

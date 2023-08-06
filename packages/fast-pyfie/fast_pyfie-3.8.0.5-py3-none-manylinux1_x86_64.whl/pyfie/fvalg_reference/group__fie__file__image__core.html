@@ -1,0 +1,842 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 低レベル関数</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>低レベル関数<br>
+<small>
+[<a class="el" href="group__fie__file__image.html">画像ファイルアクセス</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#gffa8c7efdbd8cc22aa1fb10dec96cf4b">fnFIE_save_core_jpeg</a> (const CHAR *filename, const FHANDLE hImg, INT quality, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  JPEGファイルの保存  <a href="#gffa8c7efdbd8cc22aa1fb10dec96cf4b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#g2a6e203e6502b73e5ad99d0df321deb1">fnFIE_check_jpeg_info</a> (const CHAR *filename, enum <a class="el" href="group__fie__file__image.html#ge1ca4e0484c0d907a215a44931bbcc9a">f_color_img_type</a> type, <a class="el" href="structF__IMG__INFO.html">F_IMG_INFO</a> *info)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  JPEGファイルの内容確認  <a href="#g2a6e203e6502b73e5ad99d0df321deb1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#gcae8e70ee3caaccdddb8b71f544a533b">fnFIE_load_core_jpeg</a> (const CHAR *filename, FHANDLE hImg, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  JPEGファイル読み込み  <a href="#gcae8e70ee3caaccdddb8b71f544a533b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#gcb77fcb74fd25aa5c10c66fff966c6df">fnFIE_save_core_png</a> (const CHAR *filename, FHANDLE hImg, INT compression_level, INT true_bit_depth, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイルの保存  <a href="#gcb77fcb74fd25aa5c10c66fff966c6df"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#g447d8f7d45f99d4683dce6d7dfb73f06">fnFIE_save_core_png_ex</a> (const CHAR *filename, FHANDLE hImg, INT compression_level, enum <a class="el" href="group__fie__file__image.html#g98a63859040944c066304c985dae4be6">f_png_strategy</a> compression_strategy, enum <a class="el" href="group__fie__file__image.html#g08757b1bde2d3153230704d33384db94">f_png_filter</a> filter_type, INT true_bit_depth, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイルの保存（詳細設定付き）  <a href="#g447d8f7d45f99d4683dce6d7dfb73f06"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#g4502fc2689136ac4ea68c575bd036d90">fnFIE_check_png_info</a> (const CHAR *filename, enum <a class="el" href="group__fie__file__image.html#ge1ca4e0484c0d907a215a44931bbcc9a">f_color_img_type</a> type, <a class="el" href="structF__IMG__INFO.html">F_IMG_INFO</a> *info)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイルの内容確認  <a href="#g4502fc2689136ac4ea68c575bd036d90"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#g8d5eeb394e32144e645e575a48173cb7">fnFIE_load_core_png</a> (const CHAR *filename, FHANDLE hImg, INT *depth, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイル読み込み  <a href="#g8d5eeb394e32144e645e575a48173cb7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#g1423806dec62bbaf2ac7054088575231">fnFIE_save_core_tiff</a> (const CHAR *filename, const FHANDLE hImg, enum <a class="el" href="group__fie__file__image.html#g8d2609ff61f5bd24666e6c78d70c75ae">f_tiff_compression</a> compression, INT quality, INT depth, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  TIFFファイルの保存  <a href="#g1423806dec62bbaf2ac7054088575231"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#ge15f3ab9599a50c73081bc12f56f4216">fnFIE_check_tiff_info</a> (const CHAR *filename, enum <a class="el" href="group__fie__file__image.html#ge1ca4e0484c0d907a215a44931bbcc9a">f_color_img_type</a> type, <a class="el" href="structF__IMG__INFO.html">F_IMG_INFO</a> *info)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  TIFFファイルの内容確認  <a href="#ge15f3ab9599a50c73081bc12f56f4216"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__file__image__core.html#g7a625e4849f0d2f1866f2f8200018864">fnFIE_load_core_tiff</a> (const CHAR *filename, FHANDLE hImg, INT *depth, <a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a> handler, VOID *vpData)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  TIFFファイル読み込み  <a href="#g7a625e4849f0d2f1866f2f8200018864"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gffa8c7efdbd8cc22aa1fb10dec96cf4b"></a><!-- doxytag: member="fie_jpegio.c::fnFIE_save_core_jpeg" ref="gffa8c7efdbd8cc22aa1fb10dec96cf4b" args="(const CHAR *filename, const FHANDLE hImg, INT quality, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_save_core_jpeg           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>quality</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  JPEGファイルの保存 
+<p>
+指定したFIE画像オブジェクトをJPEGファイルとして保存します。 本関数は、 <a class="el" href="group__fie__file__image.html#gd5c1cc62093a579719e1c775c04253bc" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイルの...">fnFIE_save_jpeg()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#gd5c1cc62093a579719e1c775c04253bc" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイルの...">fnFIE_save_jpeg()</a> を利用する場合、ユーザーが本関数を直接利用する必要はありません。<p>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>JPEGファイルの書き込みの進行状況を取得するためのコールバック関数が設定できます。 このコールバック関数は、ファイルを１ライン処理する毎に呼び出されます。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>保存するJPEGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>保存するFIE画像オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>quality</em>&nbsp;</td><td>保存するJPEGファイルの品質[0-100] </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>JPEGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なJPEGファイルへ書き込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2a6e203e6502b73e5ad99d0df321deb1"></a><!-- doxytag: member="fie_jpegio.c::fnFIE_check_jpeg_info" ref="g2a6e203e6502b73e5ad99d0df321deb1" args="(const CHAR *filename, enum f_color_img_type type, F_IMG_INFO *info)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_check_jpeg_info           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__file__image.html#ge1ca4e0484c0d907a215a44931bbcc9a">f_color_img_type</a>&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__IMG__INFO.html">F_IMG_INFO</a> *&nbsp;</td>
+          <td class="paramname"> <em>info</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  JPEGファイルの内容確認 
+<p>
+JPEGファイルの内容を確認して、読み込みに必要なFIE画像オブジェクトのメモリを確保するための情報を取得します。 FIE画像オブジェクトの情報は、FIE画像用ヘッダー構造体( <a class="el" href="structF__IMG__INFO.html" title="FIEイメージ用ヘッダー構造体">F_IMG_INFO</a> )に保存されます。 本関数は、 <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。<p>
+本関数は、ユーザーが <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> を利用せず、メモリ確保部分を自身で実装したい場合などに利用します。 <a class="el" href="group__fie__file__image__core.html#gcae8e70ee3caaccdddb8b71f544a533b" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_core_jpeg()</a> を直接利用する場合、まず適切なFIE画像オブジェクトを用意する必要があります。 その場合、必ず本関数を利用する必要はありませんが、本関数を利用することで適切な情報を取得することができます。 また本関数は、JPEGファイルが読み込み可能かを事前に確認をしています。<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>読み込むJPEGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>FIE画像オブジェクトの、F_IMG_UC8、またはF_IMG_RGBQUADで保存可能な場合の画素タイプを指定する。 それ以外のタイプでは無視される。 <ul>
+<li>F_IMG_UC8で保存する場合は、F_COLOR_IMG_TYPE_UC8を指定 </li>
+<li>F_IMG_RGBQUADで保存する場合は、F_COLOR_IMG_TYPE_RGBQを指定 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>info</em>&nbsp;</td><td>読み込み先となるFIE画像の情報</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>JPEGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なJPEGファイルを読み込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcae8e70ee3caaccdddb8b71f544a533b"></a><!-- doxytag: member="fie_jpegio.c::fnFIE_load_core_jpeg" ref="gcae8e70ee3caaccdddb8b71f544a533b" args="(const CHAR *filename, FHANDLE hImg, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_load_core_jpeg           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  JPEGファイル読み込み 
+<p>
+JPEGファイルをFIE画像オブジェクトに読み込みます。 本関数は、 <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。 また本関数では、必要なFIE画像オブジェクトのメモリを内部で確保しません。 読み込むJPEGファイルに応じたFIE画像オブジェクトを用意する必要があります。 詳細は、 <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> の説明を参照してください。<p>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>本関数では、JPEGファイルの読み込みの進行状況を取得するためのコールバック関数を設定することが可能です。 コールバック関数は、ファイルを１ライン処理する毎に呼び出されます。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>読み込むJPEGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>読み込み先ルート画像オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>JPEGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なJPEGファイルを読み込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcb77fcb74fd25aa5c10c66fff966c6df"></a><!-- doxytag: member="fie_pngio.c::fnFIE_save_core_png" ref="gcb77fcb74fd25aa5c10c66fff966c6df" args="(const CHAR *filename, FHANDLE hImg, INT compression_level, INT true_bit_depth, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_save_core_png           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>compression_level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>true_bit_depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイルの保存 
+<p>
+指定したFIE画像オブジェクトをPNGファイルとして保存します なお本関数は、 <a class="el" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_png()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_png()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。<p>
+<dl class="user" compact><dt><b>真のビット深度</b></dt><dd>PNGファイルでサポートされているビット深度は 1、2、4、8、16です。 通常、PNGファイルで設定されている、または取得できるビット深度は、上記のもののみとなります。 しかし、ユーザーがそれ以外の任意のビット深度の画像を処理する場合、その値を指定することができます。 真のビット深度を指定することで、一般的な画像ビューワーで画像を表示することができます。 ビット深度が8や16ビット以外のものは、画像ビューワー正しく表示されないことがあります。 ただし、すべての画像ビューワーで適切に表示される保証はありません。</dd></dl>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>PNGファイルの書き込みの進行状況を取得するためのコールバック関数を設定できます。 このコールバック関数は、ファイルを１ライン処理する毎に呼び出されます。</dd></dl>
+<dl class="user" compact><dt><b>αチャネル</b></dt><dd>FIE画像オブジェクトの画素タイプが F_IMG_RGBQUAD の場合、αチャネルは保存するPNGファイルに反映されません。 何らかの値をαチャネルに設定していても無視されますので、注意してください。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>保存するPNGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>保存するFIE画像オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>compression_level</em>&nbsp;</td><td>圧縮レベル[-1～9] </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>true_bit_depth</em>&nbsp;</td><td>真のビット深度（省略時は-1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>PNGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なPNGファイルへ書き込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g447d8f7d45f99d4683dce6d7dfb73f06"></a><!-- doxytag: member="fie_pngio.c::fnFIE_save_core_png_ex" ref="g447d8f7d45f99d4683dce6d7dfb73f06" args="(const CHAR *filename, FHANDLE hImg, INT compression_level, enum f_png_strategy compression_strategy, enum f_png_filter filter_type, INT true_bit_depth, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_save_core_png_ex           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>compression_level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__file__image.html#g98a63859040944c066304c985dae4be6">f_png_strategy</a>&nbsp;</td>
+          <td class="paramname"> <em>compression_strategy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__file__image.html#g08757b1bde2d3153230704d33384db94">f_png_filter</a>&nbsp;</td>
+          <td class="paramname"> <em>filter_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>true_bit_depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイルの保存（詳細設定付き） 
+<p>
+指定したFIE画像オブジェクトをPNGファイルとして保存します。 なお本関数は、 <a class="el" href="group__fie__file__image.html#g4f78820e0502e03eae4157eadddf11fc" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_png_ex()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g4f78820e0502e03eae4157eadddf11fc" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_png_ex()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。<p>
+<dl class="user" compact><dt><b>真のビット深度</b></dt><dd>PNGファイルでサポートされているビット深度は 1、2、4、8、16です。 通常、PNGファイルで設定されている、または取得できるビット深度は、上記のもののみとなります。 しかし、ユーザーがそれ以外の任意のビット深度の画像を処理する場合、その値を指定することができます。 真のビット深度を指定することで、一般的な画像ビューワーで画像を表示することができます。 ビット深度が8や16ビット以外のものは、画像ビューワー正しく表示されないことがあります。 ただし、すべての画像ビューワーで適切に表示される保証はありません。</dd></dl>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>PNGファイルの書き込みの進行状況を取得するためのコールバック関数を設定できます。 このコールバック関数は、ファイルを１ライン処理する毎に呼び出されます。</dd></dl>
+<dl class="user" compact><dt><b>αチャネル</b></dt><dd>FIE画像オブジェクトの画素タイプが F_IMG_RGBQUAD の場合、αチャネルは保存するPNGファイルに反映されません。 何らかの値をαチャネルに設定していても無視されますので、注意してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>保存するPNGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>保存するFIE画像オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>compression_level</em>&nbsp;</td><td>圧縮レベル[-1～9] </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>compression_strategy</em>&nbsp;</td><td>圧縮戦略 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_type</em>&nbsp;</td><td>フィルタ種別 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>true_bit_depth</em>&nbsp;</td><td>真のビット深度（省略時は-1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>PNGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なPNGファイルへ書き込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4502fc2689136ac4ea68c575bd036d90"></a><!-- doxytag: member="fie_pngio.c::fnFIE_check_png_info" ref="g4502fc2689136ac4ea68c575bd036d90" args="(const CHAR *filename, enum f_color_img_type type, F_IMG_INFO *info)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_check_png_info           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__file__image.html#ge1ca4e0484c0d907a215a44931bbcc9a">f_color_img_type</a>&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__IMG__INFO.html">F_IMG_INFO</a> *&nbsp;</td>
+          <td class="paramname"> <em>info</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイルの内容確認 
+<p>
+PNGファイルの内容を確認して、読み込みに必要なFIE画像オブジェクトのメモリを確保するための情報を取得します。 FIE画像の情報は、FIE画像用ヘッダー構造体( <a class="el" href="structF__IMG__INFO.html" title="FIEイメージ用ヘッダー構造体">F_IMG_INFO</a> )に保存されます。 本関数は、 <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。<p>
+本関数は、ユーザーが <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> を利用せず、メモリ確保部分を自身で実装したい場合などに利用します。 <a class="el" href="group__fie__file__image__core.html#g8d5eeb394e32144e645e575a48173cb7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_core_png()</a> を直接利用する場合、まず適切なFIE画像オブジェクトを用意する必要があります。 その場合、必ず本関数を利用する必要はありませんが、本関数を利用することで適切な情報を取得することができます。 また、本関数は、PNGファイルが読み込み可能かを事前に確認をしています。<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>読み込むPNGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>FIE画像形式の、F_IMG_UC8、またはF_IMG_RGBQUADで保存可能な場合の画素タイプを指定する。 それ以外のタイプでは無視される。 <ul>
+<li>F_IMG_UC8で保存する場合は、F_COLOR_IMG_TYPE_UC8を指定 </li>
+<li>F_IMG_RGBQUAで保存する場合は、F_COLOR_IMG_TYPE_RGBQを指定 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>info</em>&nbsp;</td><td>読み込み先となるFIE画像の情報</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>PNGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なPNGファイルを読み込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8d5eeb394e32144e645e575a48173cb7"></a><!-- doxytag: member="fie_pngio.c::fnFIE_load_core_png" ref="g8d5eeb394e32144e645e575a48173cb7" args="(const CHAR *filename, FHANDLE hImg, INT *depth, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_load_core_png           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  PNGファイル読み込み 
+<p>
+PNGファイルをFIE画像オブジェクトに読み込みます。 なお、本関数は、 <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。 また本関数では、必要なFIE画像オブジェクトのメモリを内部で確保しません。 読み込みPNGファイルに応じた、FIE画像オブジェクトを用意する必要があります。 詳細は、 <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> の説明を参照してください。<p>
+<dl class="user" compact><dt><b>真のビット深度</b></dt><dd>PNGファイルでは、サポートされているビット深度は 1, 2, 4, 8, 16です。 通常、PNGファイルで設定されている、または取得できるビット深度は、上記のもののみとなります。 しかし、ユーザーがそれ以外の任意のビット深度の画像を処理する場合、 上記のビット深度とは別に値真のビット深度を取得することができます。 ただし、読み込まれたPNGファイルに、真のビット深度が設定されていない場合は、 FIE画像オブジェクトの画素タイプにより本値は決定します。 つまり、F_IMG_BINでは2、F_IMG_UC8、F_IMG_RGBQUADでは8、F_IMG_US16では16となります。 読み込みがエラーの場合は、0が取得されます。</dd></dl>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>PNGファイルの読み込みの進行状況を取得するためのコールバック関数が設定できます。 このコールバック関数は、ファイルを １ライン処理する毎に呼び出されます。 ただし、このコールバック関数はインタレース形式でファイルを１ライン毎に処理できない場合には無効となります。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>読み込むPNGファイル名 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>読み込み先ルート画像オブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>depth</em>&nbsp;</td><td>真のビット深度を保存するためのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>PNGファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なPNGファイルを読み込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1423806dec62bbaf2ac7054088575231"></a><!-- doxytag: member="fie_tiffio.c::fnFIE_save_core_tiff" ref="g1423806dec62bbaf2ac7054088575231" args="(const CHAR *filename, const FHANDLE hImg, enum f_tiff_compression compression, INT quality, INT depth, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_save_core_tiff           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__file__image.html#g8d2609ff61f5bd24666e6c78d70c75ae">f_tiff_compression</a>&nbsp;</td>
+          <td class="paramname"> <em>compression</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>quality</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  TIFFファイルの保存 
+<p>
+指定したFIE画像オブジェクトをTIFFファイルとして保存します。 本関数は、 <a class="el" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_save_tiff()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_save_tiff()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。 本関数では、コールバック関数の利用と、TIFFファイルのビット深度を指定することができます。 その他、詳細については、 <a class="el" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_save_tiff()</a> を参照してください。<p>
+<dl class="user" compact><dt><b>ビット深度の指定</b></dt><dd>TIFFファイルのビット深度を指定することが可能です。 TIFFファイルとFIE画像オブジェクトのビット深度は、必ずしも同じではない場合があります。 例えばTIFFファイルでは、実際にはビット深度が2ビットでも、 FIE画像オブジェクトでは8ビットにパッキングされ保存されます。 本パラメータにより、TIFFファイルの実際のビット深度を設定することができます。</dd></dl>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>TIFFファイルの書き込みの進行状況を取得するためのコールバック関数を設定することができます。 このコールバック関数は、ファイルを1ライン処理する毎に呼び出されます。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>保存するTIFFファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>保存するFIE画像オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>compression</em>&nbsp;</td><td>圧縮形式 <ul>
+<li>F_TIFF_COMPRESSION_NONE </li>
+<li>F_TIFF_COMPRESSION_DEFLATE </li>
+<li>F_TIFF_COMPRESSION_JPEG </li>
+<li>F_TIFF_COMPRESSION_CCITTFAX3 </li>
+<li>F_TIFF_COMPRESSION_CCITTFAX4 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>quality</em>&nbsp;</td><td>圧縮レベル <ul>
+<li>F_TIFF_COMPRESSION_DEFLATE [-1～9] </li>
+<li>F_TIFF_COMPRESSION_JPEG [0～100] </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>depth</em>&nbsp;</td><td>ビット深度（省略時は -1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>TIFFファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なTIFFファイルへ書き込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge15f3ab9599a50c73081bc12f56f4216"></a><!-- doxytag: member="fie_tiffio.c::fnFIE_check_tiff_info" ref="ge15f3ab9599a50c73081bc12f56f4216" args="(const CHAR *filename, enum f_color_img_type type, F_IMG_INFO *info)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_check_tiff_info           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__file__image.html#ge1ca4e0484c0d907a215a44931bbcc9a">f_color_img_type</a>&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__IMG__INFO.html">F_IMG_INFO</a> *&nbsp;</td>
+          <td class="paramname"> <em>info</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  TIFFファイルの内容確認 
+<p>
+TIFFファイルの内容を確認して、読み込みに必要なFIE画像の領域を確保するための情報を取得します。 FIE画像オブジェクトの情報は、FIE画像用ヘッダー構造体( <a class="el" href="structF__IMG__INFO.html" title="FIEイメージ用ヘッダー構造体">F_IMG_INFO</a> )に保存されます。 本関数は、 <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> を利用する場合、 ユーザーが本関数を直接利用する必要はありません。<p>
+本関数は、ユーザーが <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> を利用せず、メモリ確保部分を自身で実装したい場合などに利用します。 <a class="el" href="group__fie__file__image__core.html#g7a625e4849f0d2f1866f2f8200018864" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_core_tiff()</a> を直接利用する場合、まず適切なFIE画像オブジェクトを用意する必要があります。 その場合、必ず本関数を利用する必要はありませんが、本関数を利用することで適切な情報を取得することができます。 また本関数は、TIFFファイルが読み込み可能かを事前に確認をしています。<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>読み込むTIFFファイル名 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>type</em>&nbsp;</td><td>FIE画像オブジェクトの、F_IMG_UC8、またはF_IMG_RGBQUADで保存可能な場合の画像タイプを指定する。 それ以外のタイプでは無視される。 <ul>
+<li>F_IMG_UC8で保存する場合は、F_COLOR_IMG_TYPE_UC8を指定 </li>
+<li>F_IMG_RGBQUADで保存する場合は、F_COLOR_IMG_TYPE_RGBQを指定 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>info</em>&nbsp;</td><td>読み込み先となるFIE画像の情報</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>TIFFファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なTIFFファイルを読み込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7a625e4849f0d2f1866f2f8200018864"></a><!-- doxytag: member="fie_tiffio.c::fnFIE_load_core_tiff" ref="g7a625e4849f0d2f1866f2f8200018864" args="(const CHAR *filename, FHANDLE hImg, INT *depth, F_IMG_CALLBACK handler, VOID *vpData)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_load_core_tiff           </td>
+          <td>(</td>
+          <td class="paramtype">const CHAR *&nbsp;</td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__fie__file__image.html#gfeb8a40b07ac72e0e0dadb7ecbc39942">F_IMG_CALLBACK</a>&nbsp;</td>
+          <td class="paramname"> <em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>vpData</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  TIFFファイル読み込み 
+<p>
+TIFFファイルをFIE画像オブジェクトに読み込みます。 本関数は、 <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> の内部に組み込まれているため、 <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> を利用する場合、ユーザーが本関数を直接利用する必要はありません。 また本関数では、必要なFIE画像オブジェクトのメモリを内部で確保しません。 読み込むTIFFファイルに応じたFIE画像オブジェクトを用意する必要があります。 詳細については、 <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> の説明を参照してください。<p>
+<dl class="user" compact><dt><b>ビット深度の指定</b></dt><dd>TIFFファイルのビット深度を指定することが可能です。 TIFFファイルとFIE画像オブジェクトのビット深度は、必ずしも同じではない場合があります。 例えばTIFFファイルでは、実際にはビット深度が2ビットでも、 FIE画像オブジェクトでは8ビットにパッキングされ保存されます。 そのため、本パラメータによりTIFFファイルの実際のビット深度を知ることができます。</dd></dl>
+<dl class="user" compact><dt><b>コールバック関数の設定</b></dt><dd>TIFFファイルの読み込みの進行状況を取得するためのコールバック関数が設定できます。 このコールバック関数は、ファイルを１ライン処理する毎に呼び出されます。 ただし、このコールバック関数はファイルを１ライン毎に処理できない場合には無効となります。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filename</em>&nbsp;</td><td>読み込むTIFFファイル名 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hImg</em>&nbsp;</td><td>読み込み先ルート画像オブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>depth</em>&nbsp;</td><td>ビット深度のポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>handler</em>&nbsp;</td><td>コールバック関数へのポインタ（省略時はNULL） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpData</em>&nbsp;</td><td>コールバック関数の呼び出し時に渡される任意のポインタ（省略時はNULL）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正なFIE画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FILE_IO</em>&nbsp;</td><td>TIFFファイルのオープン失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED_IMAGE_FILE</em>&nbsp;</td><td>不正なTIFFファイルを読み込んだ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INTERRUPTED_IMAGE_IO</em>&nbsp;</td><td>ユーザによって処理が中断された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

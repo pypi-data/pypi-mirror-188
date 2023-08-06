@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 3.1.1</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel3_1_1">release 3.1.1 </a></h1><div style="text-align:right">2016/05/30</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel3_1_1.html#fie3_1_1">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie3_1_1">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">機能追加および、変更</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__fitting.html#gde0d148ac3bb63f08dd63bc10dce61bc" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの円...">fnFIE_fit_circle()</a><ul>
+<li>近似モード F_FIT_MESTIMATOR と F_FIT_MESTIMATOR2 の処理を高速化.</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a><ul>
+<li>特定の環境において、32bitパッキングカラー画像(F_IMG_RGBQUAD)の画像コピーが顕著に遅くなる問題を修正.</li></ul>
+</li><li><a class="el" href="group__fie__math__matrix__elem.html#g48b5b3c827e3c0963d4411f473e0eb9a" title="ベクトルの成分ごとの除算">fnFIE_vect_div_elem_vv()</a><ul>
+<li>特定の環境において浮動小数点ゼロ同士の除算でx87コントロールレジスタが変更されてしまうため、同環境でのゼロ除算はDBL_MINの除算になるように変更.</li></ul>
+</li><li><a class="el" href="group__fie__filter__arithm.html#g25aa8fad18bd9ec340ddca15bfd2ac67" title="画像間乗算">fnFIE_img_mul()</a><ul>
+<li>16bit濃淡画像(F_IMG_US16)の画像乗算で最大値同士を処理すると乗算オーバーフローが発生し結果がおかしくなる問題を修正.</li></ul>
+</li><li><a class="el" href="group__fie__filter__arithm.html#gcb2f9c7f288687c3eac9456c147f4e92" title="マスク付き画像間乗算">fnFIE_img_mask_mul()</a><ul>
+<li>16bit濃淡画像(F_IMG_US16)の画像乗算で最大値同士を処理すると乗算オーバーフローが発生し結果がおかしくなる問題を修正.</li></ul>
+</li><li>#610:<a class="el" href="group__fie__region__img__feature.html#gf0c2b9b595a08c7e0255378baabffb41" title="画像特徴量：輝度値の最大値">fnFIE_img_maxpixel()</a><ul>
+<li>全ての画素値が負である 倍精度浮動小数点画像(F_IMG_DOUBLE)に対して間違った処理結果を返すバグを修正.</li></ul>
+</li><li>#606:<a class="el" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240" title="ブローブ番号配列の取得">fnFIE_measure_get_list()</a><ul>
+<li>下記の特徴量でフィルタを掛けると、結果がおかしくなるバグの修正.<br>
+ F_FEATURE_DCMIN, F_FEATURE_DCMAX, F_FEATURE_DSMIN, F_FEATURE_DSMAX, F_FEATURE_M30, F_FEATURE_M21 </li></ul>
+</li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

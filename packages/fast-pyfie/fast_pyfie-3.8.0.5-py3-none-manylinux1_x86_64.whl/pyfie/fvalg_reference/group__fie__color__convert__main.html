@@ -1,0 +1,676 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 実行</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>実行<br>
+<small>
+[<a class="el" href="group__fie__color__convert.html">色空間変換</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">f_color_space</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865">F_CS_RGB</a>, 
+<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903fd56663465978a8bc6035af31db491c6">F_CS_GRAY</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903788d025120a3dc76f5b975fb666b5f20">F_CS_XYZ</a>, 
+<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903a24b13dd203d7e2577f94fbc7ab194c6">F_CS_YUV</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903b2fc0d358ec69909ad895e16721f8f55">F_CS_YIQ</a>, 
+<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903d479e1b347ba486049be1952e86b5518">F_CS_I1I2I3</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac90356be3d942c1277723c4cb8f857fb4d75">F_CS_HSV_SMITH</a>, 
+<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac9033e5e33269c70f3376958168564a9f6c0">F_CS_HSV_JOBLOVE</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903a333aecc82f903ceee194f68376e186a">F_CS_LAB</a>, 
+<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903c42fa5a1a9ea503939b48f43c277e25d">F_CS_HSV_FAST</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac90359087007cce28dfc052129e25ab3278b">F_CS_LAB_FAST</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">色空間の種類の指定  <a href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f">fnFIE_color_convert</a> (const FHANDLE src, enum <a class="el" href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">f_color_space</a> src_color_space, FHANDLE dst, enum <a class="el" href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">f_color_space</a> dst_color_space, const FHANDLE cs_table)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">色空間変換処理  <a href="#gadccc97be60646158eac4b14ca95912f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__convert__main.html#g63a003ba0a8e7f52cc1a94fcb0460890">fnFIE_open_color_convert_mathtbl</a> (VOID)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">数値テーブルの生成  <a href="#g63a003ba0a8e7f52cc1a94fcb0460890"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__color__convert__main.html#g4a71052ea8082da8877cf08493ff81d2">fnFIE_img_hsv_to_gray</a> (FHANDLE hsrc, FHANDLE hdst, DOUBLE hue_base, DOUBLE hue_range, DOUBLE sat_low, DOUBLE sat_high)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">色彩特徴量画像の生成（HSV色空間基準）  <a href="#g4a71052ea8082da8877cf08493ff81d2"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g9843f0073e3197dda1c6d7fac3eac903"></a><!-- doxytag: member="fie.h::f_color_space" ref="g9843f0073e3197dda1c6d7fac3eac903" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">f_color_space</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色空間の種類の指定 
+<p>
+色空間の種類を指定します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865"></a><!-- doxytag: member="F_CS_RGB" ref="gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865" args="" -->F_CS_RGB</em>&nbsp;</td><td>
+RGB </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903fd56663465978a8bc6035af31db491c6"></a><!-- doxytag: member="F_CS_GRAY" ref="gg9843f0073e3197dda1c6d7fac3eac903fd56663465978a8bc6035af31db491c6" args="" -->F_CS_GRAY</em>&nbsp;</td><td>
+グレースケール </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903788d025120a3dc76f5b975fb666b5f20"></a><!-- doxytag: member="F_CS_XYZ" ref="gg9843f0073e3197dda1c6d7fac3eac903788d025120a3dc76f5b975fb666b5f20" args="" -->F_CS_XYZ</em>&nbsp;</td><td>
+XYZ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903a24b13dd203d7e2577f94fbc7ab194c6"></a><!-- doxytag: member="F_CS_YUV" ref="gg9843f0073e3197dda1c6d7fac3eac903a24b13dd203d7e2577f94fbc7ab194c6" args="" -->F_CS_YUV</em>&nbsp;</td><td>
+YUV </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903b2fc0d358ec69909ad895e16721f8f55"></a><!-- doxytag: member="F_CS_YIQ" ref="gg9843f0073e3197dda1c6d7fac3eac903b2fc0d358ec69909ad895e16721f8f55" args="" -->F_CS_YIQ</em>&nbsp;</td><td>
+YIQ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903d479e1b347ba486049be1952e86b5518"></a><!-- doxytag: member="F_CS_I1I2I3" ref="gg9843f0073e3197dda1c6d7fac3eac903d479e1b347ba486049be1952e86b5518" args="" -->F_CS_I1I2I3</em>&nbsp;</td><td>
+I1I2I3 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac90356be3d942c1277723c4cb8f857fb4d75"></a><!-- doxytag: member="F_CS_HSV_SMITH" ref="gg9843f0073e3197dda1c6d7fac3eac90356be3d942c1277723c4cb8f857fb4d75" args="" -->F_CS_HSV_SMITH</em>&nbsp;</td><td>
+HSV Smithの六角錐モデル </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac9033e5e33269c70f3376958168564a9f6c0"></a><!-- doxytag: member="F_CS_HSV_JOBLOVE" ref="gg9843f0073e3197dda1c6d7fac3eac9033e5e33269c70f3376958168564a9f6c0" args="" -->F_CS_HSV_JOBLOVE</em>&nbsp;</td><td>
+HSV Jobloveらの双六角錐モデル </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903a333aecc82f903ceee194f68376e186a"></a><!-- doxytag: member="F_CS_LAB" ref="gg9843f0073e3197dda1c6d7fac3eac903a333aecc82f903ceee194f68376e186a" args="" -->F_CS_LAB</em>&nbsp;</td><td>
+L*a*b* 均等色空間 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac903c42fa5a1a9ea503939b48f43c277e25d"></a><!-- doxytag: member="F_CS_HSV_FAST" ref="gg9843f0073e3197dda1c6d7fac3eac903c42fa5a1a9ea503939b48f43c277e25d" args="" -->F_CS_HSV_FAST</em>&nbsp;</td><td>
+HSV FAST独自仕様 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9843f0073e3197dda1c6d7fac3eac90359087007cce28dfc052129e25ab3278b"></a><!-- doxytag: member="F_CS_LAB_FAST" ref="gg9843f0073e3197dda1c6d7fac3eac90359087007cce28dfc052129e25ab3278b" args="" -->F_CS_LAB_FAST</em>&nbsp;</td><td>
+L*a*b* FAST独自仕様 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gadccc97be60646158eac4b14ca95912f"></a><!-- doxytag: member="fie_color_convert.c::fnFIE_color_convert" ref="gadccc97be60646158eac4b14ca95912f" args="(const FHANDLE src, enum f_color_space src_color_space, FHANDLE dst, enum f_color_space dst_color_space, const FHANDLE cs_table)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_color_convert           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">f_color_space</a>&nbsp;</td>
+          <td class="paramname"> <em>src_color_space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__color__convert__main.html#g9843f0073e3197dda1c6d7fac3eac903">f_color_space</a>&nbsp;</td>
+          <td class="paramname"> <em>dst_color_space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>cs_table</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色空間変換処理 
+<p>
+指定された色空間変換処理を行います。 対応する色空間変換をFig1に示します。 本ライブラリでは <img class="formulaInl" alt="$ RGB $" src="form_531.png"> 色空間を基準色空間と定義しています。 <img class="formulaInl" alt="$ RGB $" src="form_531.png"> からその他色空間、その他色空間から <img class="formulaInl" alt="$ RGB $" src="form_531.png"> への変換が可能です。 同一色空間同士の変換を除いて、その他色空間からその他色空間への変換はできません。<p>
+<div align="center">
+<img src="color_convert_01.png" alt="color_convert_01.png">
+<p><strong>Fig1. 各色空間変換の対応一覧</strong></p></div>
+ 対応する画素タイプ間の変換とスケーリング、オフセットの有無をFig2に示します。 スケーリング、オフセット処理は <img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> となるようにスケーリングとオフセットがなされます。 処理を行わない場合は、変換式にて求められた値が、そのまま出力画像に保持されます。 値の範囲については、色空間と色空間変換の説明を参照ください。 入力画像の色空間が <img class="formulaInl" alt="$ RGB $" src="form_531.png"> で、出力画像の画素タイプがUC8の場合、スケーリングとオフセットがなされる色空間があります。 また入力画像がその他色空間で、入力画像の画素タイプがUC8の場合も同様に、 スケーリングとオフセットがなされる色空間があります。 対応する色空間については、色空間と色空間変換の説明を参照してください。<p>
+入力画像の色空間が <img class="formulaInl" alt="$ RGB $" src="form_531.png"> かその他色空間かどうかにより、スケーリング、オフセットに対応する画素タイプが異なるため注意が必要です。 これは、基準色空間が <img class="formulaInl" alt="$ RGB $" src="form_531.png"> と定義したことに起因しています。 スケーリングとオフセット値は、入力、出力共に画素値の範囲が <img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> の範囲であると定義して決定されます。 入力画像が <img class="formulaInl" alt="$ RGB $" src="form_531.png"> の場合、 <img class="formulaInl" alt="$ 0 \le R,G,B \le 255 $" src="form_533.png"> で、出力画像も <img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> の範囲に収まります。 ただし、入力画像が <img class="formulaInl" alt="$ RGB $" src="form_531.png"> 以外の色空間である場合は注意が必要です。 この色空間は、<img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> の範囲の <img class="formulaInl" alt="$ RGB $" src="form_531.png"> から変換されたことを前提にしています。 そのため、スケーリングとオフセット値は、この前提があることを考慮して決定されています。 変換されたその他色空間では、必ずしも <img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> のすべての組合せが存在するとは限りません。 例えば、 <img class="formulaInl" alt="$ I1I2I3 $" src="form_534.png"> 色空間では、 <img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> の範囲である <img class="formulaInl" alt="$ RGB $" src="form_531.png"> 色空間から変換されている限りは、 <img class="formulaInl" alt="$\left(I1,I2,I3\right)=\left(255,255,255\right)$" src="form_535.png"> という値になることはありません。 そのため、この前提を無視した組合せの値の入力画像からの変換では、 出力画像では、<img class="formulaInl" alt="$ 0 \le R,G,B \le 255 $" src="form_533.png"> とならないことがあります。 その場合は、<img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> の範囲でサチュレーション処理がなされます。 もちろん、入力画像の色空間が <img class="formulaInl" alt="$ RGB $" src="form_531.png"> でも、<img class="formulaInl" alt="$ 0 \sim 255 $" src="form_532.png"> の範囲外を指定した場合は、 出力画像ではサチュレーション処理がなされます。 なお、サチュレーション処理が実行されるのは、出力画像オブジェクトの画素タイプがF_IMG_UC8の場合です。<p>
+<div align="center">
+<img src="color_convert_02.png" alt="color_convert_02.png">
+<p><strong>Fig2. 画素タイプの対応とスケーリング、オフセットの有無</strong></p></div>
+ <dl class="user" compact><dt><b>演算精度</b></dt><dd>本ライブラリでは、処理速度の向上のため、入力画像と出力画像の画素タイプが共にF_IMG_UC8の場合、 32ビットの整数演算で処理を行っています。 それ以外の場合は、64ビット浮動小数点演算で処理を行います。 画素タイプ別の演算精度をFig3に示します。 そのため、一部色空間では、浮動小数点演算と比較して、変換精度が落ちることがあります。</dd></dl>
+<div align="center">
+<img src="color_convert_03.png" alt="color_convert_03.png">
+<p><strong>Fig3. 画素タイプ別の演算精度</strong></p></div>
+ <dl class="user" compact><dt><b>数値テーブルの利用</b></dt><dd>本ライブラリでは、画像オブジェクトの画素タイプが F_IMG_UC8 から F_IMG_UC8 への色空間変換の一部で、 数値テーブルを利用し処理速度の向上を図っています。 数値テーブルを利用する色空間変換は以下の通りです。 これらの色空間変換では、数値テーブルを事前に生成し、パラメータ <em>cs_table</em> を指定してください。 正しく指定されていない場合は、エラーとなります。 それ以外の色空間変換では、パラメータ <em>cs_table</em> は NULL を指定することができます。 <ul>
+<li>RGB -&gt; L*a*b* </li>
+<li>RGB -&gt; HSV（FAST独自仕様） </li>
+<li>RGB -&gt; L*a*b*（FAST独自仕様） </li>
+<li>HSV（FAST独自仕様）-&gt;RGB </li>
+<li>L*a*b*（FAST独自仕様） -&gt; RGB</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>チャネル数</b></dt><dd><ul>
+<li>gray-&gt;gray : 入力、出力画像共に１ </li>
+<li>gray-&gt;color : 入力画像１、出力画像３ </li>
+<li>color-&gt;gray : 入力画像３、出力画像１ </li>
+<li>color-&gt;color : 入力、出力画像共に３</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>チャネル番号と色成分の対応</b></dt><dd>各色空間におけるチャネル番号と色成分の対応付けは下記の通りです。 <table class="pretable">
+<tr>
+<th>色空間 </th><th>チャネル０ </th><th>チャネル１ </th><th>チャネル２ </th></tr>
+<tr>
+<td>F_CS_RGB </td><td>R </td><td>G </td><td>B </td></tr>
+<tr>
+<td>F_CS_XYZ </td><td>X </td><td>Y </td><td>Z </td></tr>
+<tr>
+<td>F_CS_YUV </td><td>Y </td><td>U </td><td>V </td></tr>
+<tr>
+<td>F_CS_YIQ </td><td>Y </td><td>I </td><td>Q </td></tr>
+<tr>
+<td>F_CS_I1I2I3 </td><td>I1 </td><td>I2 </td><td>I3 </td></tr>
+<tr>
+<td>F_CS_HSV_SMITH </td><td>H </td><td>S </td><td>V </td></tr>
+<tr>
+<td>F_CS_HSV_JOBLOVE </td><td>H </td><td>S </td><td>V </td></tr>
+<tr>
+<td>F_CS_LAB </td><td>L* </td><td>a* </td><td>b* </td></tr>
+<tr>
+<td>F_CS_HSV_FAST </td><td>H </td><td>S </td><td>V </td></tr>
+<tr>
+<td>F_CS_LAB_FAST </td><td>L* </td><td>a* </td><td>b*  </td></tr>
+</table>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src</em>&nbsp;</td><td>入力画像オブジェクト(type:uc8,double) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_color_space</em>&nbsp;</td><td>入力画像オブジェクトの色空間 <ul>
+<li>F_CS_RGB </li>
+<li>F_CS_GRAY </li>
+<li>F_CS_XYZ </li>
+<li>F_CS_YUV </li>
+<li>F_CS_YIQ </li>
+<li>F_CS_I1I2I3 </li>
+<li>F_CS_HSV_SMITH </li>
+<li>F_CS_HSV_JOBLOVE </li>
+<li>F_CS_LAB </li>
+<li>F_CS_HSV_FAST </li>
+<li>F_CS_LAB_FAST </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst</em>&nbsp;</td><td>出力画像オブジェクト(type:uc8,double) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_color_space</em>&nbsp;</td><td>出力画像オブジェクトの色空間 <ul>
+<li>F_CS_RGB </li>
+<li>F_CS_GRAY </li>
+<li>F_CS_XYZ </li>
+<li>F_CS_YUV </li>
+<li>F_CS_YIQ </li>
+<li>F_CS_I1I2I3 </li>
+<li>F_CS_HSV_SMITH </li>
+<li>F_CS_HSV_JOBLOVE </li>
+<li>F_CS_LAB </li>
+<li>F_CS_HSV_FAST </li>
+<li>F_CS_LAB_FAST </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cs_table</em>&nbsp;</td><td>FIEオブジェクト（数値テーブル）のハンドル<br>
+ 必要がない場合は NULL を指定</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された。 不正な色空間を指定した。 不正な数値テーブルが渡された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd>以下に、色空間変換ライブラリの4つの使用例の使用例を示します。 数値テーブルを使用しない変換と、使用しない変換の例、 カラー画像からグレースケール画像への変換、 画素タイプの異なる同一色空間画像間での変換の例です。</dd></dl>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 画像オブジェクトの画素タイプがF_IMG_DOUBLE同士の変換</span>
+VOID rgb_dbl_to_lab_dbl()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+
+    <span class="comment">// カラー画像同士の変換の場合、画像オブジェクトのチャネル数、</span>
+    <span class="comment">// 幅、高さが同じである必要がある</span>
+    <span class="comment">// カラー画像は３チャネルである必要がある</span>
+    hsrc = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 3, 256, 256 );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 3, 256, 256 );
+
+    <span class="comment">// この変換では数値テーブルは使用されないため、NULLを指定しても問題ない</span>
+    <a class="code" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f" title="色空間変換処理">fnFIE_color_convert</a>( hsrc, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865" title="RGB">F_CS_RGB</a>, hdst, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903a333aecc82f903ceee194f68376e186a" title="L*a*b* 均等色空間">F_CS_LAB</a>, NULL );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+<span class="comment">// 画像オブジェクトの画素タイプがF_IMG_UC8同士の変換</span>
+VOID rgb_uc8_to_lab_uc8()
+{
+    FHANDLE hsrc = NULL, hdst = NULL, htbl = NULL;
+
+    <span class="comment">// カラー画像同士の変換の場合、画像オブジェクトのチャネル数、</span>
+    <span class="comment">// 幅、高さが同じである必要がある</span>
+    <span class="comment">// カラー画像は３チャネルである必要がある</span>
+    hsrc = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, 256, 256 );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, 256, 256 );
+
+    <span class="comment">// 数値テーブルを生成する</span>
+    htbl = <a class="code" href="group__fie__color__convert__main.html#g63a003ba0a8e7f52cc1a94fcb0460890" title="数値テーブルの生成">fnFIE_open_color_convert_mathtbl</a>();
+
+    <span class="comment">// この変換では数値テーブルが使用される</span>
+    <span class="comment">// もしNULLを指定した場合は、エラーとなる</span>
+    <a class="code" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f" title="色空間変換処理">fnFIE_color_convert</a>( hsrc, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865" title="RGB">F_CS_RGB</a>, hdst, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903a333aecc82f903ceee194f68376e186a" title="L*a*b* 均等色空間">F_CS_LAB</a>, htbl );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( htbl );
+
+    <span class="keywordflow">return</span>;
+}
+
+<span class="comment">// カラー画像からグレースケール画像への変換</span>
+VOID rgb_dbl_to_gray_uc8()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+
+    <span class="comment">// カラー画像からグレースケール画像への変換のため、</span>
+    <span class="comment">// 画像オブジェクトのチャネル数は異なる</span>
+    <span class="comment">// 幅、高さが同じである必要がある</span>
+    <span class="comment">// カラー画像は３チャネル、グレースケール画像は１チャネルである必要がある</span>
+    hsrc = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 3, 256, 256 );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 256, 256 );
+
+    <span class="comment">// この変換では数値テーブルは使用されないため、NULLを指定しても問題ない</span>
+    <a class="code" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f" title="色空間変換処理">fnFIE_color_convert</a>( hsrc, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903125534cf310b4a6267734ddab139d865" title="RGB">F_CS_RGB</a>, hdst, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903fd56663465978a8bc6035af31db491c6" title="グレースケール">F_CS_GRAY</a>, NULL );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+
+    <span class="keywordflow">return</span>;
+}
+
+<span class="comment">// 画素タイプの異なる同一色空間画像間の変換</span>
+VOID xyz_uc8_to_xyz_dbl()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+
+    <span class="comment">// カラー画像同士の変換の場合、画像オブジェクトのチャネル数、</span>
+    <span class="comment">// 幅、高さが同じである必要がある</span>
+    <span class="comment">// カラー画像は３チャネルである必要がある</span>
+    hsrc = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, 256, 256 );
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 3, 256, 256 );
+
+    <span class="comment">// この変換では数値テーブルは使用されないため、NULLを指定しても問題ない</span>
+    <a class="code" href="group__fie__color__convert__main.html#gadccc97be60646158eac4b14ca95912f" title="色空間変換処理">fnFIE_color_convert</a>( hsrc, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903788d025120a3dc76f5b975fb666b5f20" title="XYZ">F_CS_XYZ</a>, hdst, <a class="code" href="group__fie__color__convert__main.html#gg9843f0073e3197dda1c6d7fac3eac903788d025120a3dc76f5b975fb666b5f20" title="XYZ">F_CS_XYZ</a>, NULL );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+
+    <span class="keywordflow">return</span>;
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    rgb_dbl_to_lab_dbl();
+    rgb_uc8_to_lab_uc8();
+    rgb_dbl_to_gray_uc8();
+    xyz_uc8_to_xyz_dbl();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div><p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_RGB.png" alt="fie_color_convert_RGB.png">
+<p><strong>RGB</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_RGB-0.png" alt="fie_color_convert_RGB-0.png">
+<p><strong>R(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_RGB-1.png" alt="fie_color_convert_RGB-1.png">
+<p><strong>G(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_RGB-2.png" alt="fie_color_convert_RGB-2.png">
+<p><strong>B(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_XYZ.png" alt="fie_color_convert_XYZ.png">
+<p><strong>XYZ</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_XYZ-0.png" alt="fie_color_convert_XYZ-0.png">
+<p><strong>X(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_XYZ-1.png" alt="fie_color_convert_XYZ-1.png">
+<p><strong>Y(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_XYZ-2.png" alt="fie_color_convert_XYZ-2.png">
+<p><strong>Z(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_YIQ.png" alt="fie_color_convert_YIQ.png">
+<p><strong>YIQ</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_YIQ-0.png" alt="fie_color_convert_YIQ-0.png">
+<p><strong>Y(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_YIQ-1.png" alt="fie_color_convert_YIQ-1.png">
+<p><strong>I(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_YIQ-2.png" alt="fie_color_convert_YIQ-2.png">
+<p><strong>Q(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_YUV.png" alt="fie_color_convert_YUV.png">
+<p><strong>YUV</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_YUV-0.png" alt="fie_color_convert_YUV-0.png">
+<p><strong>Y(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_YUV-1.png" alt="fie_color_convert_YUV-1.png">
+<p><strong>U(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_YUV-2.png" alt="fie_color_convert_YUV-2.png">
+<p><strong>V(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_I1I2I3.png" alt="fie_color_convert_I1I2I3.png">
+<p><strong>I1I2I3</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_I1I2I3-0.png" alt="fie_color_convert_I1I2I3-0.png">
+<p><strong>I1(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_I1I2I3-1.png" alt="fie_color_convert_I1I2I3-1.png">
+<p><strong>I2(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_I1I2I3-2.png" alt="fie_color_convert_I1I2I3-2.png">
+<p><strong>I3(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_HSV.png" alt="fie_color_convert_HSV.png">
+<p><strong>HSV(Smith)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV-0.png" alt="fie_color_convert_HSV-0.png">
+<p><strong>H(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV-1.png" alt="fie_color_convert_HSV-1.png">
+<p><strong>S(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV-2.png" alt="fie_color_convert_HSV-2.png">
+<p><strong>V(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_HSV_JOBLOVE.png" alt="fie_color_convert_HSV_JOBLOVE.png">
+<p><strong>HSV(Joblove)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV_JOBLOVE-0.png" alt="fie_color_convert_HSV_JOBLOVE-0.png">
+<p><strong>H(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV_JOBLOVE-1.png" alt="fie_color_convert_HSV_JOBLOVE-1.png">
+<p><strong>S(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV_JOBLOVE-2.png" alt="fie_color_convert_HSV_JOBLOVE-2.png">
+<p><strong>V(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_HSV_FAST.png" alt="fie_color_convert_HSV_FAST.png">
+<p><strong>HSV(FAST仕様)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV_FAST-0.png" alt="fie_color_convert_HSV_FAST-0.png">
+<p><strong>H(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV_FAST-1.png" alt="fie_color_convert_HSV_FAST-1.png">
+<p><strong>S(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_HSV_FAST-2.png" alt="fie_color_convert_HSV_FAST-2.png">
+<p><strong>V(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_LAB.png" alt="fie_color_convert_LAB.png">
+<p><strong>L*a*b*</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_LAB-0.png" alt="fie_color_convert_LAB-0.png">
+<p><strong>L*(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_LAB-1.png" alt="fie_color_convert_LAB-1.png">
+<p><strong>a*(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_LAB-2.png" alt="fie_color_convert_LAB-2.png">
+<p><strong>b*(CH2)</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="fie_color_convert_LAB_FAST.png" alt="fie_color_convert_LAB_FAST.png">
+<p><strong>L*a*b*(FAST仕様)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_LAB_FAST-0.png" alt="fie_color_convert_LAB_FAST-0.png">
+<p><strong>L*(CH0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_LAB_FAST-1.png" alt="fie_color_convert_LAB_FAST-1.png">
+<p><strong>a*(CH1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_color_convert_LAB_FAST-2.png" alt="fie_color_convert_LAB_FAST-2.png">
+<p><strong>b*(CH2)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g63a003ba0a8e7f52cc1a94fcb0460890"></a><!-- doxytag: member="fie_color_convert.c::fnFIE_open_color_convert_mathtbl" ref="g63a003ba0a8e7f52cc1a94fcb0460890" args="(VOID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_open_color_convert_mathtbl           </td>
+          <td>(</td>
+          <td class="paramtype">VOID&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+数値テーブルの生成 
+<p>
+色空間変換処理で使用される数値テーブルを生成します。 このテーブルは一度生成されると、その後変更されないため、再利用することができます。 なお、本テーブルは、本ライブラリにおける、すべての色空間で使用されるわけではありません。 本テーブルが使用されるのは、入力画像と出力画像の画素タイプが共に F_IMG_UC8 である一部の処理で使用されます。 対象となる処理は以下の通りです。 それ以外の場合は、本テーブルを生成する必要はありません。 <ul>
+<li>RGB -&gt; L*a*b* </li>
+<li>RGB -&gt; HSV（FAST独自仕様） </li>
+<li>RGB -&gt; L*a*b*（FAST独自仕様） </li>
+<li>HSV（FAST独自仕様）-&gt;RGB </li>
+<li>L*a*b*（FAST独自仕様） -&gt; RGB</li>
+</ul>
+生成された数値テーブルは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>FIEオブジェクトのハンドルを返します。 ライセンスエラー、未初期化エラー、またはメモリ不足などで失敗した場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4a71052ea8082da8877cf08493ff81d2"></a><!-- doxytag: member="fie_color_convert2.c::fnFIE_img_hsv_to_gray" ref="g4a71052ea8082da8877cf08493ff81d2" args="(FHANDLE hsrc, FHANDLE hdst, DOUBLE hue_base, DOUBLE hue_range, DOUBLE sat_low, DOUBLE sat_high)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_hsv_to_gray           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>hue_base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>hue_range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>sat_low</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>sat_high</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+色彩特徴量画像の生成（HSV色空間基準） 
+<p>
+入力画像の色相と彩度から、色彩特徴量画像を生成します。 色彩特徴量とは、指定したパラメータにより、カラー画像から特定の色を強調させた濃淡画像です。<p>
+なお、入力画像は <a class="el" href="group__fie__color__convert__doc.html#fie_color_convert_space_rgb">RGB色空間</a>である必要があります。 関数内部で <a class="el" href="group__fie__color__convert__doc.html#fie_color_convert_space_hsvs">HSV（Smithの六角錐モデル）</a>に変換された後、色彩特徴量画像が生成されます。<p>
+色彩特徴量画像の特徴は、以下の通りです。 <ul>
+<li>特定色の特徴を強調させることで、一般的なグレイ画像では処理が難しかった処理が行えます。 </li>
+<li>カラー画像で処理する必要があった画像を、グレイ画像として処理が行えます。 </li>
+<li>カラー画像に対応していなかった、濃淡画像処理の豊富な関数群が利用可能です。 </li>
+<li>カラー画像を直接処理をするより、データ量や処理時間の低減が望めます。</li>
+</ul>
+入力画像と出力画像の幅と高さは同じである必要があります。<p>
+<dl class="user" compact><dt><b>色相範囲の設定</b></dt><dd></dd></dl>
+色相基準を中心として、±方向の色相範囲内が有効となります。 色相基準と角度が近いほど、特徴量が大きいことを意味します。 詳細については、下図（色相の設定）を参考にしてください。 なお横軸の色相範囲は0～360、縦軸の色相特徴量の範囲は0～255となります。 彩度特徴量と組み合わせることで、色彩特徴量を求めます。<p>
+<div align="center">
+<img src="fie_color_convert_HSV-hue.png" alt="fie_color_convert_HSV-hue.png">
+</div>
+<p>
+<div align="center">
+<img src="fie_color_convert_HSV-hue2.png" alt="fie_color_convert_HSV-hue2.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>彩度範囲の設定</b></dt><dd></dd></dl>
+彩度の下限値と上限値を設定します。 下限値と上限値の間の濃度が有効となります。 彩度は下限値と上限値の大きさを入れ替えることで反転モードとなります。 詳細については、下図（彩度の設定）を参考にしてください。 なお横軸の濃度の範囲は0～255、縦軸の彩度特徴量の範囲は0～255となります。 色相特徴量と組み合わせることで、色彩特徴量を求めます。<p>
+<div align="center">
+<img src="fie_color_convert_HSV-saturation.png" alt="fie_color_convert_HSV-saturation.png">
+</div>
+<p>
+<div align="center">
+<img src="fie_color_convert_HSV-saturation2.png" alt="fie_color_convert_HSV-saturation2.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>処理結果</b></dt><dd></dd></dl>
+<div align="center">
+<img src="fie_color_convert_HSV-result.png" alt="fie_color_convert_HSV-result.png">
+<p><strong>色相を変更した場合の処理結果</strong></p></div>
+ <dl class="note" compact><dt><b>覚え書き:</b></dt><dd>白、黒、灰のような彩度の低いものは、色相が安定しないため使用すべきではありません。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像のハンドル（ type : uc8, channel : 3 ） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像のハンドル（ type : uc8, channel : 1 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hue_base</em>&nbsp;</td><td>色相基準（ 0 &lt;= <em>hue_base</em> &lt; 360 ）単位：度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hue_range</em>&nbsp;</td><td>色相範囲（ 0 &lt;= <em>hue_range</em> &lt;= 180 ） 単位：度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sat_low</em>&nbsp;</td><td>彩度下限（ 0 &lt;= <em>sat_low</em> &lt;= 255 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sat_high</em>&nbsp;</td><td>彩度上限（ 0 &lt;= <em>sat_high</em> &lt;= 255 ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトを渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>
