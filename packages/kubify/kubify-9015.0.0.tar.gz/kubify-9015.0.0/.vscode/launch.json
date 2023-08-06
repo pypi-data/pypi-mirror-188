@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: cli.py",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "kubify/cli.py",
+            "args": [
+                "--test_logger", 
+                // "--set_context_kind_kind",
+                // "--create_work_dirs",
+                // "--get_entrypoint",
+                // "--get_service_pod",
+                // "--build_entrypoint",
+            ],
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "name": "Python: debug tests",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/kubify",
+            "module": "pytest",
+            "console": "integratedTerminal",
+            "args": [
+                "-v",
+                "../tests"
+            ],
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
