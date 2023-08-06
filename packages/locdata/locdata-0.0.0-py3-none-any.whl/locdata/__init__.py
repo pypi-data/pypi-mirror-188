@@ -1,0 +1,1 @@
+from locdata.app import *
