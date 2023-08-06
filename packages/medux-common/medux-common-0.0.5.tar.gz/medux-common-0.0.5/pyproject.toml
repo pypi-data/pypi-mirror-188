@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools >= 67.0", "cython >= 0.29.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medux-common"
+authors = [{name = "Christian González", email = "christian.gonzalez@nerdocs.at"}]
+readme = "README.md"
+license = {file = "LICENSE.md"}
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+]
+dynamic = ["version"]
+description = "Common functionality for MedUX / MedUX Online"
+dependencies = [
+    "django[argon2]~=4.1",
+    "gdaps>=0.6.4",
+    "django-crispy-forms",
+    "crispy-bootstrap5",
+    "phonenumbers",
+    "django-extra-views",
+    "django-htmx",
+    "django-environ",
+    "whitenoise",
+    "django-composite-field",
+    "channels>=4.0.0",
+    "daphne>=4.0.0",
+    "djangorestframework",
+    "toml",
+    "django-polymorphic",
+    "django-extensions",
+    "django-component-tags",
+    "django-money",
+    "django-colorfield",
+]
+#[project.urls]
+#Home = "https://medux-common.readthedocs.org"
+
+
+[project.entry-points."medux.plugins"]
+common = "medux.common:apps.CommonConfig"
+preferences = "medux.preferences:apps.PreferencesConfig"
+
+#[project.urls]
+#Home = "https://common.readthedocs.org"
+#Source = "https://gitlab.com/..."
+#Documentation = "https://common.readthedocs.org"
+#Tracker = "https://gitlab.com/.../issues"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "medux.common.__version__"}
+
+[tool.setuptools]
+packages = ["medux.common","medux.preferences"]
+
+
+[tool.pytest]
+DJANGO_SETTINGS_MODULE = "tests.settings"
