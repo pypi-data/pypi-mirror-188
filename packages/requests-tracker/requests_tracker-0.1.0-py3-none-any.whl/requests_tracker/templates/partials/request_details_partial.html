@@ -1,0 +1,137 @@
+{% load style_tags format_tags %}
+
+{% include "partials/loading_indicator_partial.html" %}
+<nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
+    <ul>
+        <li
+            hx-get="/__requests_tracker__/"
+            hx-target="#main-content"
+            hx-indicator="#main-loading-indicator"
+            hx-push-url="true"
+        >
+            <span>
+                <button class="button is-outlined back-button">
+                    <span class="icon is-small">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </span>
+                    <span>Back</span>
+                </button>
+            </span>
+            <a>Request list</a>
+        </li>
+        <li class="is-active"><a aria-current="page">{{ request.path }}</a></li>
+    </ul>
+</nav>
+
+<div class="columns">
+    <div class="column">
+        <div class="has-text-grey-dark subtitle is-5 mt-2">Django View</div>
+        <div class="title">
+            {{ django_view|split_and_last }}
+        </div>
+        <div class="subtitle is-7 is-family-monospace">
+            {{  django_view }}
+        </div>
+    </div>
+    <div class="column has-text-right">
+        <div class="has-text-grey-dark subtitle is-5 mt-2">Path</div>
+        <div class="title">
+            {{ request.path }}
+        </div>
+    </div>
+
+</div>
+<div class="is-flex is-justify-content-space-between is-align-items-center request-details-info-header">
+    <div class="title is-4">
+        <div class="tag is-medium {{ request.method|method_class}}">{{ request.method }}</div>
+        <div class="has-text-grey-dark subtitle is-5 mt-2">Method</div>
+    </div>
+    <div class="request-details-info-header__seperator"></div>
+    <div class="title is-4">
+        <div>{{ response.status_code }}</div>
+        <div class="has-text-grey-dark subtitle is-5 mt-2">Status code</div>
+    </div>
+    <div class="request-details-info-header__seperator"></div>
+    <div class="title is-4">
+        <span class="icon"><i class="fa-solid fa-clock"></i></span>
+        <span>{{ start_time|date:"H : i : s" }}.{{ start_time|date:"u"|slice:3 }}</span>
+        <div class="has-text-grey-dark subtitle is-5 mt-2">Started</div>
+    </div>
+    <div class="request-details-info-header__seperator"></div>
+    <div class="title is-4">
+        <span class="icon">
+            <i class="fa-solid fa-stopwatch"></i>
+        </span>
+        <span>{{ duration }} ms</span>
+        <div class="has-text-grey-dark subtitle is-5 mt-2">Took</div>
+    </div>
+    <div class="request-details-info-header__seperator"></div>
+    <div class="request-details-info-header__database-info">
+        {% for alias, info in sql_collector.databases.items %}
+            <div class="database-list-item is-flex is-align-items-center is-justify-content-space-between">
+                <div class="is-flex is-align-items-center">
+                    <div class="fa-stack fa-2x mr-3">
+                        <i
+                            class="fa-solid fa-circle fa-stack-2x"
+                            style="color: {% contrast_color_from_number forloop.counter0 %}"
+                        ></i>
+                        <i class="fa-solid fa-database fa-stack-1x database-list-item__database-icon"></i>
+                    </div>
+                    <div>
+                        <div class="title is-5">{{ alias }}</div>
+                        <div class="subtitle is-6">{{ info.time_spent|floatformat:"2" }} ms</div>
+                    </div>
+                </div>
+                <div class="has-text-right">
+                    <h6>
+                        <strong>{{ info.num_queries }} quer{{info.num_queries|pluralize:"y,ies" }}</strong>
+                    </h6>
+                    {% with similar_count=info.similar_count %}
+                        {% with duplicate_count=info.duplicate_count %}
+                            {% if similar_count %}
+                                <div class="tag is-warning is-extra-small">{{ similar_count }} similar</div>
+                            {% endif %}
+                            {% if duplicate_count %}
+                                <div class="tag is-danger mt-1 is-extra-small">{{ duplicate_count }} duplicate{{duplicate_count|pluralize }}</div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endwith %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="tabs mt-4 is-centered">
+    <ul>
+        <li
+            class="tab is-active"
+            _="
+                on click remove .is-active from .tab
+                on click add .is-active to me
+                on click add .is-hidden to .tab-section
+                on click remove .is-hidden from .tab-section__sql
+            "
+        >
+            <a>SQL</a>
+        </li>
+        <li
+            class="tab"
+            _="
+                on click remove .is-active from .tab
+                on click add .is-active to me
+                on click add .is-hidden to .tab-section
+                on click remove .is-hidden from .tab-section__headers
+            "
+        >
+            <a>Headers</a>
+        </li>
+    </ul>
+</div>
+
+<div class="tab-section tab-section__sql">
+    {% include "partials/request_details_sql_partial.html" %}
+</div>
+<div class="tab-section tab-section__headers is-hidden">
+    {% include "partials/request_details_headers_partial.html" %}
+</div>

@@ -1,0 +1,127 @@
+@import "variabels"
+
+.sort-by-select, select
+  &:invalid
+    color: rgba(219, 219, 219, 0.3)
+
+.sort-direction-icon
+  height: 40px
+
+  #requests-sort-direction-icon
+    display: block !important
+
+#requests-sort-direction-icon
+  display: none
+
+.request-list
+  &__item
+    border-width: 1px 1px 0 1px
+    border-color: #363636
+    border-style: solid
+    background-color: black
+    .request-list__item__overlay
+      display: none
+    &__disabled
+      cursor: wait !important
+      position: relative
+      &:hover
+        background-color: black !important
+      .request-list__item__overlay
+        display: block
+        position: absolute
+        left: 0
+        top: 0
+        width: 100%
+        height: 100%
+        background-color: rgba(70, 70, 70, 0.6)
+        backdrop-filter: blur(3px)
+        z-index: 1
+        border-radius: 20px
+        box-shadow: inset 0 0 10px 10px black
+        text-align: center
+        .title
+          display: flex
+          flex-direction: column
+          align-items: center
+          justify-content: center
+          height: 100%
+          .loading-indicator
+            animation-name: spin
+            animation-duration: .9s
+            animation-iteration-count: infinite
+            animation-timing-function: linear
+
+
+  > div:first-child
+    > .request-list__item
+      border-top-left-radius: 8px
+      border-top-right-radius: 8px
+
+  > div:last-child
+    > .request-list__item
+      border-bottom-left-radius: 8px
+      border-bottom-right-radius: 8px
+
+    &:hover
+      background-color: #1c1c1c
+
+.request-list
+  transition: opacity 100ms
+  &.hide
+    opacity: 0
+
+.refresh-interval-control
+  min-width: 140px
+
+#main-loading-indicator
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  color: $fg-color
+  background-color: rgba(0,0,0,0.5)
+  z-index: 2
+  font-size: 50px
+  pointer-events: none
+
+#main-loading-indicator i
+  position: absolute
+  top: 50%
+  left: 50%
+  animation-name: spin
+  animation-duration: .6s
+  animation-iteration-count: infinite
+  animation-timing-function: linear
+
+.loading-indicator
+  animation-name: spin
+  animation-duration: .6s
+  animation-iteration-count: infinite
+  animation-timing-function: linear
+
+#refresh-loading-indicator
+  display: none
+
+  &.htmx-request
+    display: inline
+
+#refresh-button-content
+  &.htmx-request
+    display: none
+
+#clear-loading-indicator
+  display: none
+
+  &.htmx-request
+    display: inline
+
+#clear-button-content
+  &.htmx-request
+    display: none
+
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
