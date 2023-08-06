@@ -1,0 +1,106 @@
+name: twobit2fasta Testing
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+      - refactoring
+    paths:
+      - bioconvert/twobit2fasta.py
+      - .github/workflows/twobit2fasta.yml
+  pull_request:
+    branches-ignore: []
+    paths:
+      - bioconvert/twobit2fasta.py
+  schedule:
+    - cron: '0 0 13 * *'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+      matrix:
+        python: [3.8, 3.9, '3.10']
+      fail-fast: false
+
+    steps:
+
+    - name: install graphviz and curl
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz-dev
+        sudo apt-get install libcurl4-gnutls-dev
+    - name: checkout git repo
+      uses: actions/checkout@v2
+
+    - name: conda/mamba
+      uses: mamba-org/provision-with-micromamba@main
+      with:
+        cache-downloads: true
+        environment-file: false
+        environment-name: installation
+        channels:
+          conda-forge,bioconda,defaults,r
+        extra-specs: |
+          python=${{ matrix.python }}
+          easydev
+          biosniff
+          colorlog
+          deeptools
+          gffread
+          pandas
+          biopython>=1.70
+          mappy
+          matplotlib-base
+          networkx
+          pyyaml
+          pysam
+          pyexcel
+          pyexcel-ods3
+          pyexcel-xls
+          pyexcel-xlsx
+          pyBigWig
+          py2bit
+          statsmodels
+          tqdm
+          bamtools
+          bcftools
+          bedtools
+          bedops
+          dsrc
+          go==1.10.3
+          goalign
+          gotree
+          mosdepth
+          pbzip2
+          pigz
+          plink
+          sambamba
+          samtools>=1.9
+          seqtk
+          seqkit
+          squizz
+          sra-tools
+          ucsc-wigtobigwig
+          ucsc-twobittofa
+          ucsc-fatotwobit
+          ucsc-bedgraphtobigwig
+          ucsc-bigwigtobedgraph
+          wiggletools
+          sed
+          mawk
+          xlrd
+
+    #    mamba install -c conda-forge -c bioconda --quiet -y samtools bedtools bamtools mosdepth pbzip2 pigz dsrc sambamba squizz
+
+    - name: Install with pip
+      shell: bash -l {0}
+      run: |
+        pip install .[testing]
+    - name: testing
+      shell: bash -l {0}
+      run: |
+        pytest -n 1  --cov-report term --cov=bioconvert.twobit2fasta test/test_twobit2fasta.py
