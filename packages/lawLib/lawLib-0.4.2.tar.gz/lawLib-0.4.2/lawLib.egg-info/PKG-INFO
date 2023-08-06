@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: lawLib
+Version: 0.4.2
+Summary: Library to extract legal information from official resources
+Home-page: https://github.com/JonanOribe/lawLib
+Author: Jon Ander Oribe
+Author-email: jonan.oribe@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# lawLib
+
+Library to extract legal information from official resources.
+
+### Installation
+```
+<h3>:construction: Working enviroment:</h3>
+<li>Python version <b>3.9</b></li> 
+<li>Virtual enviroment: <b>py -m venv env</b></li> 
+<li>Activate on WINDOWS: <b>env\Scripts\activate</b></li>
+<li>Activate on MAC: <b>source env/bin/activate</b></li>
+<h3>:books: Dependencies</h3>
+<li>Install with: <b>pip3 install -r requirements.txt</b></li>
+<h3>:mag_right: Testing</h3>
+<li>Launch tests with: <b>python -m unittest -v tests/data_scrapper_test.py</b></li>
+```
+
+### Get started
+Get data from Spanish Supreme Court:
+
+```Python
+from typing import List
+from scrapper import DataScrapper
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+case_ids:List = [str(i) for i in [*range(1,5)]]
+url:str = 'SpanishSupremeCourt'
+
+#Something like data/json_data.json
+output_path:str = config['EXTRA']['OutputPath']
+
+#Get some cases
+returned_data = DataScrapper(url,case_ids).get_data()
+print(returned_data)
+
+#Save cases as JSON
+DataScrapper(url,case_ids).save_data('json',output_path)
+```
+
