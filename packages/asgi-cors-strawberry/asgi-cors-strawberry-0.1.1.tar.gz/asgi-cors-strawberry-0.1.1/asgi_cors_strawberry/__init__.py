@@ -1,0 +1,1 @@
+from asgi_cors_strawberry.middleware import CorsMiddleware
