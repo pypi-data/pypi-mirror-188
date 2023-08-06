@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: django-stack-inspector
+Version: 1.0.0
+Summary: Inspect the current Python call stack to determine if the Django app is just starting up or already running.
+Home-page: https://github.com/Beep-Boop-Digital/django-stack-inspector
+Author: Adam McKay
+Author-email: adam@beepboop.digital
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: Django (>3.2)
+Project-URL: Repository, https://github.com/Beep-Boop-Digital/django-stack-inspector
+Description-Content-Type: text/markdown
+
+# Django Stack Inspector
+
+The Django Stack Inspector package is useful to inspect the current call stack of a Django application and determine if it is starting up or already running.
+
+It is likely that the 99% of applications do not have a need for this, but in specific niche scenarios it can be very useful. For example, when implementing a model manager that limits queries to items owned by a specific tenant by overriding the `get_queryset()` method filtered using data stored in a `ContextVar` or thread-local set by a request middleware. It may be desired that if queries are executed without the `ContextVar` being appropriately set (e.g. queries via asynchronous background workers or via admin commands) then the `get_queryset()` method fails-closed by throwing an exception warning the user that the required context is not set. However, this fail-closed behaviour breaks the management commands for migrations by throwing the exception. 
+
+## Installation
+
+`pip install django_stack_inspector`
+
+## Usage
+
+An example of how to use when creating a custom model manager to restrict queries to specific tenants.
+
+
+```python
+from django_stack_inspector import StackInspector
+
+def get_queryset(self):
+    """
+    Override the default queryset behaviour to enforce a filter dependent on the tenant context
+    The queryset will fail-closed if a query is ran without a context, either by returning no results in the
+    queryset or by raising an exception.
+    """
+    try:
+        ctx = get_request_context()
+    except RequestContextNotSet as exc:
+        # Context not set so fail-closed
+        if StackInspector().is_app_startup():
+            # Silence exception and return empty queryset as app starting (i.e. is a management command)
+            return super().get_queryset().none()
+        # Raise exception to alert developer
+        raise exc
+
+    # Perform filtering
+    return super().get_queryset().filter(tenant=ctx.tenant)
+```
+
+
