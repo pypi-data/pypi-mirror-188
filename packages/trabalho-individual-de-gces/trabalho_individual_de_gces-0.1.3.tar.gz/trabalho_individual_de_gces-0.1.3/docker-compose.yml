@@ -1,0 +1,56 @@
+version: '3.9'
+services:
+    dados-db:
+        container_name: dados-db
+        image: mongo:4.4.3-bionic
+        ports:
+            - 27017:27017
+        environment:
+            "MONGO_INITDB_ROOT_USERNAME": ${MONGO_INITDB_ROOT_USERNAME}
+            "MONGO_INITDB_ROOT_PASSWORD": ${MONGO_INITDB_ROOT_PASSWORD}
+        command: --auth
+        networks:
+            - dados-network
+        volumes:
+            - dados_data:/data/db
+
+    dados-import:
+        image: mongo:4.4.3-bionic
+        command: mongoimport --authenticationDatabase=admin -u lappis -p lappis
+                --host dados-db --db vaccination --collection testCollection
+                --type csv --file /data/vaccination.csv --headerline
+        depends_on:
+            - dados-db
+        networks:
+            - dados-network
+        volumes:
+            - .:/data
+
+    meta:
+        image: metabase/metabase:latest
+        container_name: meta
+        ports:
+            - 3000:3000
+        networks:
+            - dados-network
+        depends_on:
+            - dados-db
+
+    dados-app:
+        container_name: dados-app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        networks:
+          - dados-network
+        depends_on:
+            - dados-db
+            - meta
+
+volumes:
+    dados_data:
+        driver: local
+
+networks:
+  dados-network:
+    external: true
