@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"write your own commands"
+
+
+import inspect
+import os
+import sys
+
+
+from operbot.handler import Command, Handler
+from operbot.objects import Wd
+from operbot.runtime import Cfg, command, parse
+from operbot.scanner import scancmd
+
+
+from operbot.modules import cmd, irc, rss
+
+
+import operbot
+
+
+Cfg.name = "operbot"
+Wd.workdir = "/var/lib/operbot/"
+
+
+class CLI(Handler):
+
+    @staticmethod
+    def raw(txt):
+        print(txt)
+        sys.stdout.flush()
+
+
+def mod(event):
+    path = operbot.__path__[0]
+    event.reply(",".join([x[:-3] for x in os.listdir(path) if not (x.startswith("_") or x.endswith("~"))]))
+
+
+def main():
+    Command.add(mod)
+    parse(' '.join(sys.argv[1:]))
+    scancmd(cmd)
+    scancmd(irc)
+    scancmd(rss)
+    cli = CLI()
+    command(Cfg.prs.otxt, cli)
+    
+
+main()

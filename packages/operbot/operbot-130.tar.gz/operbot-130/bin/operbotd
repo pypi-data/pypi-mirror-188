@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"write your own commands"
+
+
+import inspect
+
+
+from operbot.handler import Command
+from operbot.objects import Wd
+from operbot.scanner import scan
+from operbot.utility import wait
+
+
+from operbot.modules import cmd, irc, rss
+
+
+Wd.workdir = "/var/lib/operbot/"
+
+
+def main():
+    scan(cmd)
+    scan(irc)
+    scan(rss)
+    irc.init()
+    rss.init()
+    wait()
+
+
+main()
