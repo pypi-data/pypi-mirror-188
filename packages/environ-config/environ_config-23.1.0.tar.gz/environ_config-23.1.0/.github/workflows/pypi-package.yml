@@ -1,0 +1,85 @@
+---
+name: Deploy to (Test-) PyPI
+
+on:
+  push:
+    tags: ["*"]
+    branches: [main]
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            files.pythonhosted.org
+            github.com:443
+            pypi.org:443
+            test.pypi.org:443
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: hynek/build-and-inspect-python-package@v1
+
+  release-test-pypi:
+    # Upload to Test PyPI on every commit & pushed tag.
+    environment: release-test-pypi
+    runs-on: ubuntu-latest
+    needs: build-package
+
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            test.pypi.org:443
+
+      - name: Download packages built by build-and-inspect-python-package
+        uses: actions/download-artifact@v3
+        with:
+          name: Packages
+          path: dist
+
+      - name: Publish package to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+
+  release-pypi:
+    # Upload to real PyPI on GitHub Releases.
+    environment: release-pypi
+    if: github.event.action == 'published'
+    runs-on: ubuntu-latest
+    needs: build-package
+
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+          allowed-endpoints: >
+            upload.pypi.org:443
+
+      - name: Download packages built by build-and-inspect-python-package
+        uses: actions/download-artifact@v3
+        with:
+          name: Packages
+          path: dist
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
