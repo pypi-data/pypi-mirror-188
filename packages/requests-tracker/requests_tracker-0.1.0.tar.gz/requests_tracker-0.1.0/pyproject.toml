@@ -1,0 +1,95 @@
+[tool.poetry]
+name = "requests-tracker"
+version = "0.1.0"
+description = "The Django Requests Tracker is designed for local Django development, particularly for Rest API development. It provides various debugging information, such as SQL queries, headers, and status codes."
+license = "MIT"
+authors = ["Benedikt Óskarsson <bensi94@hotmail.com>"]
+readme = "README.md"
+repository = "https://github.com/bensi94/Django-Requests-Tracker"
+documentation = "https://github.com/bensi94/Django-Requests-Tracker/blob/main/README.md"
+keywords = ["django", "python", "sql", "middlware", "api", "rest", "debug", "htmx", "django-rest-framework", "django-ninja", "requests-tracker", "django-requests-tracker", "development"]
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "License :: OSI Approved :: MIT License",
+]
+packages = [
+    { include = "requests_tracker" },
+]
+
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+django = ">=3.2"
+sqlparse = ">=0.4.3"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
+pytest = "^7.2.1"
+pytest-sugar = "^0.9.6"
+psycopg2 = "^2.9.5"
+mypy = "^0.991"
+pre-commit = "^3.0.1"
+django-stubs = {extras = ["compatible-mypy"], version = "^1.14.0"}
+types-psycopg2 = "^2.9.21.4"
+pytest-env = "^0.8.1"
+pytest-cov = "^4.0.0"
+ruff = "^0.0.237"
+pytest-django = "^4.5.2"
+djhtml = "^1.5.2"
+freezegun = "^1.2.2"
+types-freezegun = "^1.1.10"
+pytest-asyncio = "^0.20.3"
+
+
+[tool.pytest.ini_options]
+env = [
+    "DJANGO_SETTINGS_MODULE = tests.django_settings"
+]
+
+[tool.ruff]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+
+
+
+[tool.coverage.run]
+omit = ["tests/*", "example_project/*"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "except ImportError:"]
+
+[tool.mypy]
+plugins = "mypy_django_plugin.main"
+exclude = "example_project"
+
+
+[tool.django-stubs]
+django_settings_module = "requests_tracker.settings"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
