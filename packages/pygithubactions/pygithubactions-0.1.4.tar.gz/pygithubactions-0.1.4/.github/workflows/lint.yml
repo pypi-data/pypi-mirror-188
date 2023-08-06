@@ -1,0 +1,48 @@
+name: Lint
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "**.py"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+        - '3.8'
+        - '3.9'
+        - '3.10'
+        - '3.11'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip setuptools wheel
+        pip install --upgrade isort blue mypy ruff bandit safety
+
+    - name: Run lint
+      run: isort .
+
+    - name: Run blue formatter
+      run: make format
+
+    - name: Run ruff
+      run: ruff .
+
+    - name: Run mypy / static types
+      run: make static-check
+
+    - name: Run bandit
+      run: bandit pygithubactions
+
+    - name: Run safety
+      run: safety check
