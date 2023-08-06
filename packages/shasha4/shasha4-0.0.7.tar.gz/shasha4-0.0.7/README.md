@@ -1,0 +1,1 @@
+# For Scraping Naver Finance By ShaSha4
