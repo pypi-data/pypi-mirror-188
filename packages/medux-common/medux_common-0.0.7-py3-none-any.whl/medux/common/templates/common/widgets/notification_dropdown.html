@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="nav-item dropdown d-none d-md-flex me-3">
+  <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+    <i class="bi bi-bell fs-2"></i>
+    <span id="notification-icon" class="badge bg-red{% if not notifications %} d-none{% endif %}"></span>
+  </a>
+    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+      <div class="card">
+        <div id="notifications" class="list-group list-group-flush list-group-hoverable" hx-ext="ws" ws-connect="/ws/notifications">
+          {# notifications will get inserted here #}
+        </div>
+      </div>
+    </div>
+</div>

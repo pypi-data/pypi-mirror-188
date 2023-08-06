@@ -1,0 +1,55 @@
+{% load static django_htmx %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ globals.project_title }}</title>
+  <link rel="manifest" href="/manifest.json">
+
+  {#  {% compress css %}#}
+  <link rel="stylesheet" href="{% static 'common/css/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'common/css/tabler.css' %}">
+  <link rel="stylesheet" href="{% static 'common/css/medux_common.css' %}">
+  {#  {% endcompress %}#}
+  <script src="{% static 'common/js/htmx/htmx.min.js' %}"></script>
+  <script src="{% static 'common/js/htmx/ext/ws.js' %}"></script>
+  <script src="{% static 'common/js/htmx/ext/debug.js' %}"></script>
+  {% django_htmx_script %}
+
+  {% block styles %}{% endblock styles %}
+</head>
+
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+{% block body %}
+  Nothing to see here.
+{% endblock %}
+
+{#<script type="text/javascript" src="{% static 'common/js/Sortable.min.js' %}" defer></script>#}
+<script type="text/javascript" src="{% static 'common/js/tabler.js' %}"></script>
+<script type="text/javascript" src="{% static 'common/js/medux_common.js' %}" defer></script>
+
+{# NEVER, EVER use htmx directly in the script tag. #}
+{# Only load external js files using <script defer src="..."></script> #}
+{# because HTMX itelf is loaded with defer, and will get executed AFTER scripts in the page #}
+{% block scripts %}{% endblock scripts %} {# TODO get rid of scripts AND javascripts #}
+{% block javascripts %}{% endblock javascripts %}
+
+{% block modal %}{% endblock modal %}
+
+{% block toasts %}{% endblock toasts %}
+<script src="{% static 'common/js/toasts.js' %}"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('{% static "service-worker.js" %}')
+            .then(function (reg) {
+                console.log("Service worker registered.")
+            })
+            .catch(function (err) {
+                console.log("Error registering service worker:", err)
+            })
+    }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,69 @@
+{# This include displays a menu, with 1 level of children #}
+{# The "menu" should be passed as parameter #}
+
+<ul class="navbar-nav pt-lg-3">
+  {% for item in menu %}
+    {% if item.visible %}
+      {% if item.separator %}
+        <div class="dropdown-divider"></div>
+      {% endif %}
+      <li class="nav-item{% if item.selected %} active{% endif %}">
+
+        {% if item.has_children %}
+          {# collapse toggle #}
+          <a href="#"
+             class="nav-link btn-toggle{% if item.collapsed %} collapsed{% endif %}"
+             data-bs-toggle="collapse"
+             data-bs-target="#{{ item.slug }}-collapse"
+             aria-expanded="true">
+          <span class="nav-link-icon d-none d-lg-inline-block">
+            <i class="bi bi-{{ item.icon }}"></i>
+          </span>
+            <span class="nav-link-title">
+            {{ item.title }}
+          </span>
+          </a>
+          {# collapse: children 1. level #}
+          <div class="collapse{% if not item.collapsed %} show{% endif %}" id="{{ item.slug }}-collapse">
+            <ul class="nav flex-column mb-auto">
+              {% for child in item.children %}
+                <li class="nav-item ps-3{% if child.selected %} active{% endif %}">
+                  <a href="{{ child.url }}" class="nav-link">
+                  <span class="nav-link-icon d-none d-lg-inline-block">
+                    <i class="bi bi-{{ child.icon }}"></i>
+                  </span>
+                    <span class="nav-link-title">
+                    {{ child.title }}
+                  </span>
+                    {% if child.badge %}
+                      <span class="position-absolute top-3 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{ child.badge }}
+                      {# <span class="visually-hidden">unread messages</span> #}
+                    </span>
+                    {% endif %}
+
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% else %}
+          <a href="{{ item.url }}" class="nav-link">
+          <span class="nav-link-icon d-none d-lg-inline-block">
+            <i class="bi bi-{{ item.icon }}"></i>
+          </span>
+            <span class="nav-link-title">
+            {{ item.title }}
+          </span>
+            {% if item.badge %}
+              <span class="position-absolute top-3 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ item.badge }}
+              {# <span class="visually-hidden">unread messages</span> #}
+            </span>
+            {% endif %}
+          </a>
+        {% endif %}
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

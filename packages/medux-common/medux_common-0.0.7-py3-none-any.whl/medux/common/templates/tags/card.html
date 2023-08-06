@@ -1,0 +1,40 @@
+<div class="card mb-2">
+  {#    <img src="..." class="card-img-top" alt="...">#}
+
+  {% if slot_header %}
+    <div class="card-header card-header-light">
+      {{ slot_header }}
+      {#      {%  CardActionsMenu menu.tenant_detail pk=tenant.pk %}#}
+      <div class="card-actions btn-actions">
+        {#  <div class="dropdown"> #}
+        {#    <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" #}
+        {#        aria-haspopup="true" aria-expanded="false"> #}
+        {#        <i class="bi bi-three-dots-vertical"></i> #}
+        {#    </a> #}
+        {#    <div class="dropdown-menu dropdown-menu-end"> #}
+        {#      <a class="dropdown-item" href="#">Edit user</a> #}
+        {#      <a class="dropdown-item" href="#">Change permissions</a> #}
+        {#      <a class="dropdown-item text-danger" href="#">Delete user</a> #}
+        {#    </div> #}
+        {#  </div> #}
+        {% for item in menu %}
+          <a href='{{ item.url }}' type='button' class="btn-action">
+            <i class="bi bi-{{ item.icon }}"></i>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card-body">
+    {{ nodelist }}
+  </div>
+
+  {% if slot_footer %}
+    <div class="card-footer">
+      {{ slot_footer }}
+    </div>
+  {% endif %}
+</div>
+
+

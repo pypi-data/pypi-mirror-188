@@ -1,0 +1,30 @@
+{% load i18n static %}
+{% if user %}
+  <div class="nav-item dropdown">
+    <a href="#" class="nav-link d-flex lh-1 text-reset p-0"
+       data-bs-toggle="dropdown"
+       aria-label="{% translate 'Open user menu' %}">
+      <span id="user-avatar" class="avatar avatar-sm{% if user.color %} bg-{{ user.color }}{% endif %}"
+            {% if user.avatar %}style="background-image: url('{{ user.avatar.url }}')"{% endif %}>
+      </span>
+      <div class="d-none d-xl-block ps-2">
+        <div id="user-menu-user">{{ user }}</div>
+        <div class="mt-1 small text-muted">{{ user.job_title }}</div>
+      </div>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+      {% for item in menus.user %}
+        {% if item.separator %}
+          <div class="dropdown-divider"></div>
+        {% endif %}
+        <a
+            href="{{ item.url }}"
+            class="dropdown-item"
+            {% for attr,value in item.attrs.items %}
+              {{ attr }}="{{ value }}"
+            {% endfor %}
+        >{{ item.title }}</a>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

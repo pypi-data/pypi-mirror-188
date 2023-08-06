@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+{% load i18n crispy_forms_tags %}
+
+{% block body %}
+  <div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-0 text-center text-lg-start">
+        <h1 class="display-5 fw-bold lh-1 mb-3">{{ welcome_message }}</h1>
+        {#        <p class="lead">...</p>#}
+
+        {#        <div class="card">#}
+        {#          <div class="card-body">#}
+        {#            <h5 class="card-title">Need a homepage?</h5>#}
+        {#            {% translate 'Need an easy configurable medical website with included online prescriptions?' %}</div>#}
+        {#          <button class="btn btn-primary">{% translate 'Get it here.' %}</button>#}
+        {#        </div>#}
+      </div>
+      <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-0 ">
+        {% crispy form %}
+        {{ form.media }}
+      </div>
+      <div class="col-12">
+        <a class="small" href="{% url 'password_reset' %}">
+          {% trans "Forgot your password?" %}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <p class="small text-black-50 mt-5 mb-3 text-center">© <span class="">nerdocs</span> 2013–{% now "Y" %}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

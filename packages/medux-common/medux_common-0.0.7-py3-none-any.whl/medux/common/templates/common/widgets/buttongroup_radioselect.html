@@ -1,0 +1,31 @@
+{% load i18n %}
+<div class="btn-group">
+  <input type="radio"
+         class="btn-check"
+         name="{{ widget.name }}"
+         autocomplete="off"
+         {% if widget.value is True %}checked{% endif %}
+      {% for name, value in widget.attrs.items %}
+        {% if name == "id" %}
+         id="{{ value }}_on"
+        {% elif value is not False %}
+          {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+        {% endif %}
+      {% endfor %}>
+  <label class="btn btn-outline-primary" for="{{ widget.attrs.id }}_on">{% translate 'On' %}</label>
+  <input type="radio"
+         class="btn-check"
+         name="{{ widget.name }}"
+         id="{{ widget.attrs.id }}_off"
+         autocomplete="off"
+         {% if widget.value is not True %}checked{% endif %}
+      {% for name, value in widget.attrs.items %}
+        {% if name == "id" %}
+         id="{{ value }}_off"
+        {% elif value is not False %}
+          {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}
+        {% endif %}
+      {% endfor %}
+  >
+  <label class="btn btn-outline-primary" for="{{ widget.attrs.id }}_off">{% translate 'Off' %}</label>
+</div>
