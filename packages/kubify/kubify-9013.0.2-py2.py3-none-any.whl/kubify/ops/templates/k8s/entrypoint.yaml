@@ -1,0 +1,81 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: entrypoint-z-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: entrypoint
+  namespace: demo
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: entrypoint
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: entrypoint-config
+data:
+  .npmrc: |
+    //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entrypoint
+  labels:
+    role: entrypoint
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: entrypoint
+  template:
+    metadata:
+      labels:
+        role: entrypoint
+    spec:
+      serviceAccountName: entrypoint
+      volumes:
+        - name: src-mount
+          hostPath:
+            path: /var/folders/kubify
+        - name: docker-sock
+          hostPath:
+            path: "{{DOCKER_SOCKET_FILE_LOCATION}}"
+        - name: config
+          configMap:
+            name: entrypoint-config
+      containers:
+        - name: entrypoint
+          image: kubify/entrypoint:latest
+          imagePullPolicy: Never
+          command:
+            - /bin/bash
+            - -c
+            - "trap : TERM INT; sleep infinity & wait"
+          workingDir: /var/folders/kubify
+          volumeMounts:
+            - mountPath: /var/folders/kubify
+              name: src-mount
+            - mountPath: "{{DOCKER_SOCKET_FILE_LOCATION}}"
+              name: docker-sock
+          envFrom:
+          - secretRef:
+              name: kubify
+          - secretRef:
+              name: npm-credentials
+          resources:
+            requests:
+              memory: "8Mi"
+              cpu: "8m"
+            limits:
+              memory: "2048Mi"
+              cpu: "2048m"
