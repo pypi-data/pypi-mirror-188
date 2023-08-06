@@ -1,0 +1,2016 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: モルフォロジ</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>モルフォロジ<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+本ライブラリは、画像に対するモルフォロジ演算を行うライブラリです。<p>
+<dl class="user" compact><dt><b>Erosion（収縮）</b></dt><dd>まず２値画像の場合について説明します。 ２値画像の各座標において、値が1の点をFG,値が0の点をBGと呼ぶことにします。 以下、集合Xを（座標）点の集合とし、集合内の点xが２値画像上でFG(foreground, 濃度値１の画素)に対応するとします。 （２値画像上で集合に属さない点はBG(background, 濃度値０の画素)） このとき構造要素Bによるerosion： <img class="formulaInl" alt="$\varepsilon _{B}$" src="form_810.png"> は次のような定義になります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \varepsilon _{B}\left(X\right)=\left\{ x\mid B_{x}\subseteq X\right\} \]" src="form_811.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \varepsilon _{B}\left(X\right)= \bigcap \limits _{b\in B} X_{-b} \]" src="form_812.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>ただし、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ B_{x}=\left\{ b+x \mid b\in B\right\} \]" src="form_813.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>濃淡画像の場合、Xは画像内のすべての座標点の集合となり、 <img class="formulaInl" alt="$f\left(x\right)$" src="form_814.png"> を点xの濃淡値とすると、点xにおけるerosion演算は <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left[\varepsilon _{B}\left(f\right)\right]\left(x\right)=\min \limits _{b\in B}f\left(x+b\right) \]" src="form_815.png">
+<p>
+ となり、erosionは画像内のすべての点でerosion演算を行った結果となります。</dd></dl>
+<dl class="user" compact><dt><b>Dilation（膨張）</b></dt><dd>２値画像の場合、構造要素Bによるdilation： <img class="formulaInl" alt="$\delta _{B}$" src="form_816.png"> は <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \delta _{B}\left(X\right)=\left\{ x\mid B_{x}\cap X\ne \emptyset \right\} \]" src="form_817.png">
+<p>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>となります。 <br>
+ 濃淡画像の場合、点xにおけるdilation演算は <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left[\delta _{B}\left(f\right)\right]\left(x\right)=\max \limits _{b\in B}f\left(x+b\right) \]" src="form_818.png">
+<p>
+ となり、画像のdilationは画像内のすべての点でdilation演算を行った結果となります。</dd></dl>
+<dl class="user" compact><dt><b>boundary conditon</b></dt><dd>画像の端において、構造要素が画像からはみ出してしまう場合があります。このような時は、画像と構造要素の共通部分で上記で定義した演算を行います。 アンカ位置が構造要素に含まれない点の場合（構造要素を初期化する際にアンカ位置の値を0で指定した場合）、画像と構造要素の共通部分での構造要素の点の集合が 空集合となってしまうことがありますが、内部的に画像のボーダー拡張を行いそのような事態を回避しています。 画像のボーダー拡張が行われる可能性のある関数には詳細を記載していますので、そちらを参照して下さい。 </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>モジュール</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology__se.html">構造要素オブジェクト</a></td></tr>
+
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#ga4b6efd49ebac80dfd9d1d622086b17e">f_se_shape</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__morphology.html#gga4b6efd49ebac80dfd9d1d622086b17e1b8d97da1980dcac32f44e8fb7c697b2">F_SE_LINE_FSLASH</a> =  2, 
+<a class="el" href="group__fie__morphology.html#gga4b6efd49ebac80dfd9d1d622086b17e17de8c0a5e63f99a6ca26be809b0ead6">F_SE_LINE_BSLASH</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__morphology.html#gga4b6efd49ebac80dfd9d1d622086b17e2df6271c3b5390a86bccd9782202d356">F_SE_LINE_VLINE</a> =  4, 
+<a class="el" href="group__fie__morphology.html#gga4b6efd49ebac80dfd9d1d622086b17ee7bf014ab9078bd83b8a7f78884ea5b1">F_SE_LINE_HLINE</a> =  5, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__morphology.html#gga4b6efd49ebac80dfd9d1d622086b17e1714527f222f315bfe0098d8b49db93e">F_SE_LINE_CROSS</a> =  6
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="group__fie__morphology__se.html#gc15a71d5ecf8f634e4e842eaa774df65" title="LINE構造要素の作成">fnFIE_create_line_se()</a> 線状構造要素種類  <a href="group__fie__morphology.html#ga4b6efd49ebac80dfd9d1d622086b17e">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">f_paired_se</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__morphology.html#ggf330026ecc55a5a6d7c4e0b2e4b3d2726f5a2d1854e8ad52a05ac00ca1dc305a">F_SE_GOLAY_L4</a>, 
+<a class="el" href="group__fie__morphology.html#ggf330026ecc55a5a6d7c4e0b2e4b3d272adb197af1e9117ec5b88d9516e1be87f">F_SE_GOLAY_L8</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__morphology.html#ggf330026ecc55a5a6d7c4e0b2e4b3d272dba9007850c18b7416f4ebb16bb06298">F_SE_GOLAY_E4</a>, 
+<a class="el" href="group__fie__morphology.html#ggf330026ecc55a5a6d7c4e0b2e4b3d27288dfb3e126e1cf0adaa6a0eab96ad57c">F_SE_GOLAY_E8</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__morphology.html#ggf330026ecc55a5a6d7c4e0b2e4b3d27229fc8f0d2cbc31290f2ffcc70e36c630">F_SE_GOLAY_I4</a>, 
+<a class="el" href="group__fie__morphology.html#ggf330026ecc55a5a6d7c4e0b2e4b3d272de34794522c113794f04659b9ce754c5">F_SE_GOLAY_I8</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">定義済み構造要素ペア  <a href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629">fnFIE_erosion_se</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 erosion  <a href="#gd04081d10f534a915faa54de6bd15629"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278">fnFIE_dilation_se</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 dilation  <a href="#g6750e140ac5c647dbd683e81a7c1c278"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g2192a64802b06ec8985dbcf473136fff">fnFIE_opening_se</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 opening  <a href="#g2192a64802b06ec8985dbcf473136fff"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gd7b6cc59905dbd1e660179b4e8db5899">fnFIE_closing_se</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 closing  <a href="#gd7b6cc59905dbd1e660179b4e8db5899"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g0702820e882ceb47bd859f6d48fbe449">fnFIE_tophat_se</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 top-hat  <a href="#g0702820e882ceb47bd859f6d48fbe449"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#ga92c958206e38addcd549ba64977a235">fnFIE_bottomhat_se</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 bottom-hat  <a href="#ga92c958206e38addcd549ba64977a235"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60">fnFIE_hit_or_miss</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２値画像の構造要素指定 hit-or-miss  <a href="#g274acb15280e9d84e86990bde30c9c60"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g25e175e105a26dc3b19c00d2ff9f0cc5">fnFIE_morphology_CHMT</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 constrained hit-or-miss  <a href="#g25e175e105a26dc3b19c00d2ff9f0cc5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a">fnFIE_morphology_UHMT</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 unconstrained hit-or-miss  <a href="#g026faa6b17b4541e9058ae68fb01fc2a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g1b35e83f9e002e63ea4028a210ba291e">fnFIE_thinning</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 unconstrained thinning  <a href="#g1b35e83f9e002e63ea4028a210ba291e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294">fnFIE_thickening</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 unconstrained thickening  <a href="#gc9ff003acff6a25515f593f8265d7294"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146">fnFIE_cthinning</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 constrained thinning  <a href="#gcdf07b2d20420ed5dd5e85d0b75e9146"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb">fnFIE_cthickening</a> (FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">構造要素指定 constrained thickening  <a href="#g0102afbd4fd797b65ad0df325c37c0fb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7">fnFIE_erosion</a> (FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">3×3erosion filter  <a href="#gab249300f5016bfc1b7c0e46681349b7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0">fnFIE_dilation</a> (FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">3×3dilation filter  <a href="#g6694fcced6af55ab2b564c3d858cf8c0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#gb62c5c343d32133793c209376680a01a">fnFIE_opening</a> (FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">opening filter  <a href="#gb62c5c343d32133793c209376680a01a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g47365ddc7b35bf5d4d00f2a8b93f9fc6">fnFIE_closing</a> (FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">closing filter  <a href="#g47365ddc7b35bf5d4d00f2a8b93f9fc6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g704e41bf4cc0672a227e9d905f4bb7b7">fnFIE_tophat</a> (FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">top-hat filter  <a href="#g704e41bf4cc0672a227e9d905f4bb7b7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g0f2460a94bc7a5bddb4319a6422c928f">fnFIE_bottomhat</a> (FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">bottom-hat filter  <a href="#g0f2460a94bc7a5bddb4319a6422c928f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#ge38d28fa817cd1e591885c535af0d3f2">fnFIE_thinning_predefined</a> (FHANDLE hsrc_img, FHANDLE hdst_img, enum <a class="el" href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">f_paired_se</a> se_type, INT num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">定義済み構造要素によるthinning  <a href="#ge38d28fa817cd1e591885c535af0d3f2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__morphology.html#g1b1409434d402549ce20bf1b8933fe8b">fnFIE_thickening_predefined</a> (FHANDLE hsrc_img, FHANDLE hdst_img, enum <a class="el" href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">f_paired_se</a> se_type, INT num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">定義済み構造要素によるthickening  <a href="#g1b1409434d402549ce20bf1b8933fe8b"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="ga4b6efd49ebac80dfd9d1d622086b17e"></a><!-- doxytag: member="fie.h::f_se_shape" ref="ga4b6efd49ebac80dfd9d1d622086b17e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__morphology.html#ga4b6efd49ebac80dfd9d1d622086b17e">f_se_shape</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+<a class="el" href="group__fie__morphology__se.html#gc15a71d5ecf8f634e4e842eaa774df65" title="LINE構造要素の作成">fnFIE_create_line_se()</a> 線状構造要素種類 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gga4b6efd49ebac80dfd9d1d622086b17e1b8d97da1980dcac32f44e8fb7c697b2"></a><!-- doxytag: member="F_SE_LINE_FSLASH" ref="gga4b6efd49ebac80dfd9d1d622086b17e1b8d97da1980dcac32f44e8fb7c697b2" args="" -->F_SE_LINE_FSLASH</em>&nbsp;</td><td>
+右上から左下への斜線 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gga4b6efd49ebac80dfd9d1d622086b17e17de8c0a5e63f99a6ca26be809b0ead6"></a><!-- doxytag: member="F_SE_LINE_BSLASH" ref="gga4b6efd49ebac80dfd9d1d622086b17e17de8c0a5e63f99a6ca26be809b0ead6" args="" -->F_SE_LINE_BSLASH</em>&nbsp;</td><td>
+左上から右下への斜線 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gga4b6efd49ebac80dfd9d1d622086b17e2df6271c3b5390a86bccd9782202d356"></a><!-- doxytag: member="F_SE_LINE_VLINE" ref="gga4b6efd49ebac80dfd9d1d622086b17e2df6271c3b5390a86bccd9782202d356" args="" -->F_SE_LINE_VLINE</em>&nbsp;</td><td>
+縦線 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gga4b6efd49ebac80dfd9d1d622086b17ee7bf014ab9078bd83b8a7f78884ea5b1"></a><!-- doxytag: member="F_SE_LINE_HLINE" ref="gga4b6efd49ebac80dfd9d1d622086b17ee7bf014ab9078bd83b8a7f78884ea5b1" args="" -->F_SE_LINE_HLINE</em>&nbsp;</td><td>
+横線 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gga4b6efd49ebac80dfd9d1d622086b17e1714527f222f315bfe0098d8b49db93e"></a><!-- doxytag: member="F_SE_LINE_CROSS" ref="gga4b6efd49ebac80dfd9d1d622086b17e1714527f222f315bfe0098d8b49db93e" args="" -->F_SE_LINE_CROSS</em>&nbsp;</td><td>
+Ｘ印 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf330026ecc55a5a6d7c4e0b2e4b3d272"></a><!-- doxytag: member="fie.h::f_paired_se" ref="gf330026ecc55a5a6d7c4e0b2e4b3d272" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">f_paired_se</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+定義済み構造要素ペア 
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#ge38d28fa817cd1e591885c535af0d3f2" title="定義済み構造要素によるthinning">fnFIE_thinning_predefined()</a>, <a class="el" href="group__fie__morphology.html#g1b1409434d402549ce20bf1b8933fe8b" title="定義済み構造要素によるthickening">fnFIE_thickening_predefined()</a> </dd></dl>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggf330026ecc55a5a6d7c4e0b2e4b3d2726f5a2d1854e8ad52a05ac00ca1dc305a"></a><!-- doxytag: member="F_SE_GOLAY_L4" ref="ggf330026ecc55a5a6d7c4e0b2e4b3d2726f5a2d1854e8ad52a05ac00ca1dc305a" args="" -->F_SE_GOLAY_L4</em>&nbsp;</td><td>
+GOLAY-L 4連結 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf330026ecc55a5a6d7c4e0b2e4b3d272adb197af1e9117ec5b88d9516e1be87f"></a><!-- doxytag: member="F_SE_GOLAY_L8" ref="ggf330026ecc55a5a6d7c4e0b2e4b3d272adb197af1e9117ec5b88d9516e1be87f" args="" -->F_SE_GOLAY_L8</em>&nbsp;</td><td>
+GOLAY-L 8連結 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf330026ecc55a5a6d7c4e0b2e4b3d272dba9007850c18b7416f4ebb16bb06298"></a><!-- doxytag: member="F_SE_GOLAY_E4" ref="ggf330026ecc55a5a6d7c4e0b2e4b3d272dba9007850c18b7416f4ebb16bb06298" args="" -->F_SE_GOLAY_E4</em>&nbsp;</td><td>
+GOLAY-E 4連結 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf330026ecc55a5a6d7c4e0b2e4b3d27288dfb3e126e1cf0adaa6a0eab96ad57c"></a><!-- doxytag: member="F_SE_GOLAY_E8" ref="ggf330026ecc55a5a6d7c4e0b2e4b3d27288dfb3e126e1cf0adaa6a0eab96ad57c" args="" -->F_SE_GOLAY_E8</em>&nbsp;</td><td>
+GOLAY-E 8連結 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf330026ecc55a5a6d7c4e0b2e4b3d27229fc8f0d2cbc31290f2ffcc70e36c630"></a><!-- doxytag: member="F_SE_GOLAY_I4" ref="ggf330026ecc55a5a6d7c4e0b2e4b3d27229fc8f0d2cbc31290f2ffcc70e36c630" args="" -->F_SE_GOLAY_I4</em>&nbsp;</td><td>
+GOLAY-I 4連結 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf330026ecc55a5a6d7c4e0b2e4b3d272de34794522c113794f04659b9ce754c5"></a><!-- doxytag: member="F_SE_GOLAY_I8" ref="ggf330026ecc55a5a6d7c4e0b2e4b3d272de34794522c113794f04659b9ce754c5" args="" -->F_SE_GOLAY_I8</em>&nbsp;</td><td>
+GOLAY-I 8連結 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gd04081d10f534a915faa54de6bd15629"></a><!-- doxytag: member="fie_morphology.c::fnFIE_erosion_se" ref="gd04081d10f534a915faa54de6bd15629" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_erosion_se           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 erosion 
+<p>
+指定の構造要素によるerosion。 構造要素Bによるerosion <img class="formulaInl" alt="$ \varepsilon _{B} $" src="form_763.png"> を行います。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理について</b></dt><dd>アンカー位置が構造要素に含まれない点で、以下に挙げる条件を１つでも満たす場合、 関数内部で自動的に入力画像のボーダー拡張が行われます。 <ul>
+<li><em>-anchor_x</em> ≦ x ≦ 0 かつ <em>-anchor_y</em> ≦ y ≦ 0 の位置に構造要素に含まれる点が１つもない </li>
+<li><em>-anchor_x</em> ≦ x ≦ 0 かつ 0 ≦ y ≦ <em>size_y</em> - <em>anchor_y</em> - 1 の位置に構造要素に含まれる点が１つもない </li>
+<li>0 ≦ x ≦ <em>size_x</em> - <em>anchor_x</em> - 1 かつ <em>-anchor_y</em> ≦ y ≦ 0 の位置に構造要素に含まれる点が１つもない </li>
+<li>0 ≦ x ≦ <em>size_x</em> - <em>anchor_x</em> - 1 かつ 0 ≦ y ≦ <em>size_y</em> - <em>anchor_y</em> - 1 の位置に構造要素に含まれる点が１つもない</li>
+</ul>
+なお、ボーダー拡張モードはF_BORDER_CONTINUOUSになっています。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse</em>&nbsp;</td><td>構造要素のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は、半径が３のDISK型の構造要素により処理をした結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_erosion_disk.png" alt="fie_erosion_disk.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6750e140ac5c647dbd683e81a7c1c278"></a><!-- doxytag: member="fie_morphology.c::fnFIE_dilation_se" ref="g6750e140ac5c647dbd683e81a7c1c278" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dilation_se           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 dilation 
+<p>
+指定の構造要素によるdilation。<p>
+構造要素Bによるdilation <img class="formulaInl" alt="$ \delta _{B} $" src="form_764.png"> を行います。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理について</b></dt><dd>アンカー位置が構造要素に含まれない点で、以下に挙げる条件を１つでも満たす場合、 関数内部で自動的に入力画像のボーダー拡張が行われます。 <ul>
+<li><em>-anchor_x</em> ≦ x ≦ 0 かつ <em>-anchor_y</em> ≦ y ≦ 0 の位置に構造要素に含まれる点が１つもない </li>
+<li><em>-anchor_x</em> ≦ x ≦ 0 かつ 0 ≦ y ≦ <em>size_y</em> - <em>anchor_y</em> - 1 の位置に構造要素に含まれる点が１つもない </li>
+<li>0 ≦ x ≦ <em>size_x</em> - <em>anchor_x</em> - 1 かつ <em>-anchor_y</em> ≦ y ≦ 0 の位置に構造要素に含まれる点が１つもない </li>
+<li>0 ≦ x ≦ <em>size_x</em> - <em>anchor_x</em> - 1 かつ 0 ≦ y ≦ <em>size_y</em> - <em>anchor_y</em> - 1 の位置に構造要素に含まれる点が１つもない</li>
+</ul>
+なお、ボーダー拡張モードはF_BORDER_CONTINUOUSになっています。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse</em>&nbsp;</td><td>構造要素のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は、半径が３のDISK型の構造要素により処理をした結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_dilation_disk.png" alt="fie_dilation_disk.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2192a64802b06ec8985dbcf473136fff"></a><!-- doxytag: member="fie_morphology.c::fnFIE_opening_se" ref="g2192a64802b06ec8985dbcf473136fff" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_opening_se           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 opening 
+<p>
+指定の構造要素によるopening <img class="formulaInl" alt="$ \gamma _{B} $" src="form_765.png"> を行います。<p>
+openings処理とは構造要素Bによるerosion <img class="formulaInl" alt="$ \varepsilon _{B} $" src="form_763.png"> を行ってから、 構造要素 <img class="formulaInl" alt="$ \check B $" src="form_766.png"> によるdilation <img class="formulaInl" alt="$ \delta _{\check B} $" src="form_767.png"> を行います。 ただし <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \check B=\left\{ -b\mid b\in B\right\} \]" src="form_768.png">
+<p>
+ つまり画像 f のopeningは <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \gamma _{B}\left(f\right)=\delta _{\check B}\left[ \varepsilon _{B}\left(f\right)\right] \]" src="form_769.png">
+<p>
+ となります。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse</em>&nbsp;</td><td>構造要素のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は、半径が３のDISK型の構造要素により処理をした結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_opening_disk.png" alt="fie_opening_disk.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd7b6cc59905dbd1e660179b4e8db5899"></a><!-- doxytag: member="fie_morphology.c::fnFIE_closing_se" ref="gd7b6cc59905dbd1e660179b4e8db5899" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_closing_se           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 closing 
+<p>
+指定の構造要素によるclosing <img class="formulaInl" alt="$ \phi _{B} $" src="form_770.png"> を行います。<p>
+closingとは構造要素Bによるdilation <img class="formulaInl" alt="$ \delta _{B} $" src="form_764.png"> を行ってから、 構造要素 <img class="formulaInl" alt="$ \check B $" src="form_766.png"> によるerosion <img class="formulaInl" alt="$ \varepsilon _{\check B} $" src="form_771.png"> を行います。 ただし <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \check B=\left\{ -b\mid b\in B\right\} \]" src="form_768.png">
+<p>
+ つまり画像 f のclosingは <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \phi _{B}\left(f\right)=\varepsilon _{\check B}\left[ \delta _{B}\left(f\right)\right] \]" src="form_772.png">
+<p>
+ となります。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse</em>&nbsp;</td><td>構造要素のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は、半径が３のDISK型の構造要素により処理をした結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_closing_disk.png" alt="fie_closing_disk.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0702820e882ceb47bd859f6d48fbe449"></a><!-- doxytag: member="fie_morphology.c::fnFIE_tophat_se" ref="g0702820e882ceb47bd859f6d48fbe449" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_tophat_se           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 top-hat 
+<p>
+指定の構造要素による top-hat <img class="formulaInl" alt="$ \mathrm{WTH}_{B} $" src="form_773.png"> を行います。<p>
+top-hat 処理とは入力画像 f から、f の構造要素Bによるopening <img class="formulaInl" alt="$ \gamma _{B} $" src="form_765.png"> 結果画像を引きます。 つまり画像 f のtop-hatは <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{WTH}_{B}\left(f\right)=f-\gamma _{B}\left(f\right) \]" src="form_774.png">
+<p>
+ となります。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse</em>&nbsp;</td><td>構造要素のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga92c958206e38addcd549ba64977a235"></a><!-- doxytag: member="fie_morphology.c::fnFIE_bottomhat_se" ref="ga92c958206e38addcd549ba64977a235" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_bottomhat_se           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 bottom-hat 
+<p>
+指定の構造要素による bottom-hat <img class="formulaInl" alt="$ \mathrm{BTH}_{B} $" src="form_775.png"> を行います。<p>
+bottom-hat処理とは f の構造要素Bによるclosing <img class="formulaInl" alt="$ \phi _{B} $" src="form_770.png"> 結果画像から入力画像 f を引きます。 つまり画像 f のbottom-hatは <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{BTH}_{B}\left(f\right)=\phi _{B}\left(f\right)-f \]" src="form_776.png">
+<p>
+ となります。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse</em>&nbsp;</td><td>構造要素のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g274acb15280e9d84e86990bde30c9c60"></a><!-- doxytag: member="fie_morphology.c::fnFIE_hit_or_miss" ref="g274acb15280e9d84e86990bde30c9c60" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hit_or_miss           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２値画像の構造要素指定 hit-or-miss 
+<p>
+２値画像に対して指定の構造要素による hit-or-miss <img class="formulaInl" alt="$ \mathrm{HMT}_{\mathbf{B}} $" src="form_777.png"> を行います。 濃淡画像に対しての hit-or-miss 処理は <a class="el" href="group__fie__morphology.html#g25e175e105a26dc3b19c00d2ff9f0cc5" title="構造要素指定 constrained hit-or-miss">fnFIE_morphology_CHMT()</a> 又は <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a> を使用してください。<p>
+入力画像 Xの構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> による hit-or-miss <img class="formulaInl" alt="$ \mathrm{HMT}_{\mathbf{B}} $" src="form_777.png"> は Xの構造要素 <img class="formulaInl" alt="$B_{FG}$" src="form_779.png"> によるerosion結果画像と Xのnot画像の構造要素 <img class="formulaInl" alt="$B_{BG}$" src="form_780.png"> によるerosion結果画像 を and したものとなります。 すなわち、次のような定義となります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{HMT}_{\mathbf{B}}\left(X\right) = \varepsilon _{B_{FG}} \left(X\right) \cap \varepsilon _{B_{BG}}\left(X^c\right) \]" src="form_781.png">
+<p>
+<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG} = \emptyset $" src="form_785.png"> でなければすべての画素が0となる結果画像になります。 （内部でチェックは行いません。）<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#g25e175e105a26dc3b19c00d2ff9f0cc5" title="構造要素指定 constrained hit-or-miss">fnFIE_morphology_CHMT()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a>, <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__filter__logical.html#gbe897eff9a74717c949c4e0c2bf23050" title="画像NOT演算">fnFIE_img_not()</a>, <a class="el" href="group__fie__filter__logical.html#g977adeac365124defa199c9fd67b75ec" title="画像間AND演算">fnFIE_img_and()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_hit_or_miss1.png" alt="fie_hit_or_miss1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_hit_or_miss3.png" alt="fie_hit_or_miss3.png">
+<p><strong>構造要素(拡大画像)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_hit_or_miss2.png" alt="fie_hit_or_miss2.png">
+<p><strong>処理結果画像(構造要素と一致した点)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g25e175e105a26dc3b19c00d2ff9f0cc5"></a><!-- doxytag: member="fie_morphology.c::fnFIE_morphology_CHMT" ref="g25e175e105a26dc3b19c00d2ff9f0cc5" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_morphology_CHMT           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 constrained hit-or-miss 
+<p>
+濃淡画像に対して指定の構造要素による constrained hit-or-miss <img class="formulaInl" alt="$ \mathrm{CHMT}_{\mathbf{B}} $" src="form_786.png"> を行います。<p>
+入力画像 <img class="formulaInl" alt="$f$" src="form_787.png"> の座標 <img class="formulaInl" alt="$x$" src="form_270.png"> における 構造要素 <img class="formulaInl" alt="$ \mathrm{B} = \left(B_{FG},B_{BG}\right) $" src="form_788.png"> による constrained hit-or-miss <img class="formulaInl" alt="$ \mathrm{CHMT}_{\mathbf{B}} $" src="form_786.png"> は次式で定義されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ [\mathrm{CHMT}_{\mathbf{B}}(f)](x) = \begin{cases} f(x) - \left[\delta _{B_{BG}}(f)\right](x), &amp; \mathrm{if} \ f(x) = \left[\varepsilon_{B_{FG}}(f)\right](x) \ \mathrm{and} \ \left[\delta_{B_{BG}}(f)\right](x) < f(x). \\ \left[\varepsilon _{B_{FG}}(f)\right](x) - f(x), &amp; \mathrm{if} \ f(x) = \left[\delta_{B_{BG}}(f)\right](x) \ \mathrm{and} \ \left[\varepsilon_{B_{FG}}(f)\right](x) > f(x). \\ 0, &amp; \mathrm{otherwise}. \end{cases} \]" src="form_789.png">
+<p>
+<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 おなじく、構造要素のアンカー(原点)位置 <img class="formulaInl" alt="$o$" src="form_613.png"> は <img class="formulaInl" alt="$ o \in B_{FG} $" src="form_790.png"> または <img class="formulaInl" alt="$ o \in B_{BG} $" src="form_791.png"> となるように設定してください。 これらの条件が満たされない場合、すべての画素が0となる結果画像になります。 （内部でチェックは行いません。）<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278" title="構造要素指定 dilation">fnFIE_dilation_se()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a>, <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278" title="構造要素指定 dilation">fnFIE_dilation_se()</a>, <a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g026faa6b17b4541e9058ae68fb01fc2a"></a><!-- doxytag: member="fie_morphology.c::fnFIE_morphology_UHMT" ref="g026faa6b17b4541e9058ae68fb01fc2a" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_morphology_UHMT           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 unconstrained hit-or-miss 
+<p>
+濃淡画像に対して指定の構造要素による unconstrained hit-or-miss <img class="formulaInl" alt="$ \mathrm{UHMT}_{\mathbf{B}} $" src="form_792.png"> を行います。<p>
+<img class="formulaInl" alt="$ \mathrm{UHMT}_{\mathbf{B}} $" src="form_792.png"> 処理は 入力画像 f の構造要素 <img class="formulaInl" alt="$B_{FG}$" src="form_779.png"> によるerosion結果画像から 入力画像 f の構造要素 <img class="formulaInl" alt="$B_{BG}$" src="form_780.png"> によるdilation結果画像引きます（画像間減算）。 <img class="formulaInl" alt="$\varepsilon _{B_{FG}}\left(x\right) < \delta _{B_{FG}}\left(x\right)$" src="form_793.png"> となる点xでは画素の値が0となります。 つまり、入力画像 <img class="formulaInl" alt="$f$" src="form_787.png"> の座標 <img class="formulaInl" alt="$x$" src="form_270.png"> における構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> による unconstrained hit-or-miss <img class="formulaInl" alt="$ \mathrm{UHMT}_{\mathbf{B}} $" src="form_792.png"> は <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ [\mathrm{UHMT}_{\mathbf{B}}(f)](x) = \begin{cases} \left[\varepsilon _{B_{FG}}(f)\right](x)-\left[\delta _{B_{BG}}(f)\right](x), &amp; \mathrm{if} \ \left[\varepsilon _{B_{FG}}(f)\right](x) > \left[\delta _{B_{BG}}(f)\right](x) \\ 0, &amp; \mathrm{otherwise}. \end{cases} \]" src="form_794.png">
+<p>
+ となります。<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG} = \emptyset $" src="form_785.png"> でなければすべての画素が0となる結果画像になります。 （内部でチェックは行いません。）<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278" title="構造要素指定 dilation">fnFIE_dilation_se()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#g25e175e105a26dc3b19c00d2ff9f0cc5" title="構造要素指定 constrained hit-or-miss">fnFIE_morphology_CHMT()</a>, <a class="el" href="group__fie__morphology.html#gd04081d10f534a915faa54de6bd15629" title="構造要素指定 erosion">fnFIE_erosion_se()</a>, <a class="el" href="group__fie__morphology.html#g6750e140ac5c647dbd683e81a7c1c278" title="構造要素指定 dilation">fnFIE_dilation_se()</a>, <a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1b35e83f9e002e63ea4028a210ba291e"></a><!-- doxytag: member="fie_morphology.c::fnFIE_thinning" ref="g1b35e83f9e002e63ea4028a210ba291e" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_thinning           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 unconstrained thinning 
+<p>
+指定の構造要素ペアによる thinning <img class="formulaInl" alt="$ \mathrm{THIN}_{\mathbf{B}} $" src="form_795.png"> を行います。 本関数では濃淡画像における hit-or-miss 処理に unconstrained hit-or-miss を使用します。 constrained hit-or-miss 処理を適用したい場合には <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> を使用してください。 なお２値画像の場合、本関数と <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> は同一の処理を行います。<p>
+thinning 処理の一般定義は次式にて表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THIN}_{\mathbf{B}}(f) = f - \mathrm{HMT}_{\mathbf{B}}(f) \]" src="form_796.png">
+<p>
+<p>
+２値画像の場合、本関数は入力画像 X と「構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> によるhit-or-miss結果画像のnot画像」のand結果画像を出力します。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THIN}_{\mathbf{B}}(X) = X \cap {\mathrm{HMT}_{\mathbf{B}}}(X)^c \]" src="form_797.png">
+<p>
+<p>
+濃淡画像の場合、本関数は入力画像 f から構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> による unconstrained hit-or-miss 結果画像を引きます。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THIN}_{\mathbf{B}}(f) = f - \mathrm{UHMT}_{\mathbf{B}}(f) \]" src="form_798.png">
+<p>
+<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG} = \emptyset $" src="form_785.png"> でなければすべての画素が0となる結果画像になります。 （内部でチェックは行いません。）<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a>, <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a>, <a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例（２値画像）:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_thinning1.png" alt="fie_thinning1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_thinning2.png" alt="fie_thinning2.png">
+<p><strong>３×３構造要素(拡大画像)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_thinning3.png" alt="fie_thinning3.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc9ff003acff6a25515f593f8265d7294"></a><!-- doxytag: member="fie_morphology.c::fnFIE_thickening" ref="gc9ff003acff6a25515f593f8265d7294" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_thickening           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 unconstrained thickening 
+<p>
+指定の構造要素ペアによる thickening <img class="formulaInl" alt="$ \mathrm{THICK}_{\mathbf{B}} $" src="form_799.png"> を行います。 本関数では濃淡画像における hit-or-miss 処理に unconstrained hit-or-miss を使用します。 constrained hit-or-miss 処理を適用したい場合には <a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb" title="構造要素指定 constrained thickening">fnFIE_cthickening()</a> を使用してください。 なお２値画像の場合、本関数と <a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294" title="構造要素指定 unconstrained thickening">fnFIE_thickening()</a> は同一の処理を行います。<p>
+thickening 処理の一般定義は次式にて表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THICK}_{\mathbf{B}}(f) = f + \mathrm{HMT}_{\mathbf{B}}(f) \]" src="form_800.png">
+<p>
+<p>
+２値画像の場合、本関数は入力画像 X と「構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> によるhit-or-miss結果画像」のor結果画像を出力します。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THICK}_{\mathbf{B}}(X) = X \cup \mathrm{HMT}_{\mathbf{B}}(X) \]" src="form_801.png">
+<p>
+<p>
+濃淡画像の場合、本関数は入力画像 f に 構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left( B_{FG}, B_{BG} \right) $" src="form_802.png"> による unconstrained hit-or-miss 結果画像足します。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THICK}_{\mathbf{B}}(f) = f + \mathrm{UHMT}_{\mathbf{B}}(f) \]" src="form_803.png">
+<p>
+<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG} = \emptyset $" src="form_785.png"> でなければすべての画素が0となる結果画像になります。 （内部でチェックは行いません。）<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294" title="構造要素指定 unconstrained thickening">fnFIE_thickening()</a>, <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a>, <a class="el" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例（２値画像）:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_thinning3.png" alt="fie_thinning3.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_thickening1.png" alt="fie_thickening1.png">
+<p><strong>３×３構造要素(拡大画像)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_thickening2.png" alt="fie_thickening2.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcdf07b2d20420ed5dd5e85d0b75e9146"></a><!-- doxytag: member="fie_morphology.c::fnFIE_cthinning" ref="gcdf07b2d20420ed5dd5e85d0b75e9146" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cthinning           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 constrained thinning 
+<p>
+指定の構造要素ペアによる thinning <img class="formulaInl" alt="$ \mathrm{THIN}_{\mathbf{B}} $" src="form_795.png"> を行います。 本関数では濃淡画像における hit-or-miss 処理に constrained hit-or-miss を使用します。 unconstrained hit-or-miss 処理を適用したい場合には <a class="el" href="group__fie__morphology.html#g1b35e83f9e002e63ea4028a210ba291e" title="構造要素指定 unconstrained thinning">fnFIE_thinning()</a> を使用してください。 なお２値画像の場合、本関数と <a class="el" href="group__fie__morphology.html#g1b35e83f9e002e63ea4028a210ba291e" title="構造要素指定 unconstrained thinning">fnFIE_thinning()</a> は同一の処理を行います。<p>
+thinning 処理の一般定義は次式にて表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THIN}_{\mathbf{B}}(f) = f - \mathrm{HMT}_{\mathbf{B}}(f) \]" src="form_796.png">
+<p>
+<p>
+２値画像の場合、本関数は入力画像 Xと「構造要素 <img class="formulaInl" alt="$ \mathrm{B} = \left(B_{FG},B_{BG}\right) $" src="form_788.png"> によるhit-or-miss結果画像のnot画像」のand結果画像を出力します。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THIN}_{\mathbf{B}}(X) = X \cap {\mathrm{HMT}_{\mathbf{B}}}(X)^c \]" src="form_797.png">
+<p>
+<p>
+濃淡画像の場合、本関数は入力画像 f から構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> による constrained hit-or-miss 結果画像を引きます。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \begin{aligned} \left[\mathrm{THIN}_{\mathbf{B}}(f)\right](x) &amp; = f(x) - \left[\mathrm{CHMT}_{\mathbf{B}}(f)\right](x) \\ &amp; = \begin{cases} \left[\delta _{B_{BG}}(f)\right](x), &amp; \mathrm{if} \ f(x) = \left[\varepsilon_{B_{FG}}(f)\right](x) \ \mathrm{and} \ \left[\delta_{B_{BG}}(f)\right](x) < f(x). \\ f(x), &amp; \mathrm{otherwise}. \end{cases} \end{aligned} \]" src="form_804.png">
+<p>
+ なお、hit-or-miss に unconstrained hit-or-miss を用いたい場合は、 <a class="el" href="group__fie__morphology.html#g1b35e83f9e002e63ea4028a210ba291e" title="構造要素指定 unconstrained thinning">fnFIE_thinning()</a> を使用してください。<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 濃淡画像を処理する場合には、構造要素のアンカー(原点)位置 <img class="formulaInl" alt="$o$" src="form_613.png"> は <img class="formulaInl" alt="$ o \in B_{FG} $" src="form_790.png"> を満たすように設定してください。 これらの条件が満たされない場合、F_ERR_INVALID_OBJECT エラーを返します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g25e175e105a26dc3b19c00d2ff9f0cc5" title="構造要素指定 constrained hit-or-miss">fnFIE_morphology_CHMT()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#g1b35e83f9e002e63ea4028a210ba291e" title="構造要素指定 unconstrained thinning">fnFIE_thinning()</a>, <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g25e175e105a26dc3b19c00d2ff9f0cc5" title="構造要素指定 constrained hit-or-miss">fnFIE_morphology_CHMT()</a>, <a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0102afbd4fd797b65ad0df325c37c0fb"></a><!-- doxytag: member="fie_morphology.c::fnFIE_cthickening" ref="g0102afbd4fd797b65ad0df325c37c0fb" args="(FHANDLE hsrc_img, FHANDLE hdst_img, FHANDLE hse_FG, FHANDLE hse_BG)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cthickening           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_FG</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hse_BG</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+構造要素指定 constrained thickening 
+<p>
+指定の構造要素ペアによる thickening <img class="formulaInl" alt="$ \mathrm{THICK}_{\mathbf{B}} $" src="form_799.png"> を行います。 本関数では濃淡画像における hit-or-miss 処理に constrained hit-or-miss を使用します。 unconstrained hit-or-miss 処理を適用したい場合には <a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294" title="構造要素指定 unconstrained thickening">fnFIE_thickening()</a> を使用してください。 なお２値画像の場合、本関数と <a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294" title="構造要素指定 unconstrained thickening">fnFIE_thickening()</a> は同一の処理を行います。<p>
+thickening 処理の一般定義は次式にて表されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THICK}_{\mathbf{B}}(f) = f + \mathrm{HMT}_{\mathbf{B}}(f) \]" src="form_800.png">
+<p>
+<p>
+２値画像の場合、本関数は入力画像 X と「構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left(B_{FG},B_{BG}\right) $" src="form_778.png"> によるhit-or-miss結果画像」のor結果画像を出力します。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{THICK}_{\mathbf{B}}(X) = X \cup \mathrm{HMT}_{\mathbf{B}}(X) \]" src="form_801.png">
+<p>
+<p>
+濃淡画像の場合、本関数は入力画像 f に 構造要素 <img class="formulaInl" alt="$ \mathbf{B} = \left( B_{FG}, B_{BG}\right) $" src="form_805.png"> による constrained hit-or-miss 結果画像を足します。 数式で表すと下式のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \begin{aligned} \left[\mathrm{THICK}_{\mathbf{B}}(f)\right](x) &amp; = f(x) + \left[\mathrm{CHMT}_{\mathbf{B}}(f)\right](x) \\ &amp; = \begin{cases} \left[\varepsilon _{B_{FG}}(f)\right](x) &amp; \mathrm{if} \ f(x) = \left[\delta_{B_{BG}}(f)\right](x) \ \mathrm{and} \ \left[\varepsilon_{B_{FG}}(f)\right](x) > f(x). \\ f(x) &amp; \mathrm{otherwise}. \end{cases} \end{aligned} \]" src="form_806.png">
+<p>
+<p>
+構造要素はペアで指定します。 値が1の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> 、 値が0の画素に対応する構造要素を <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> で指定してください。 また、 <img class="formulaInl" alt="$ B_{FG} \cap B_{BG}= \emptyset $" src="form_784.png"> となるように指定してください。 濃淡画像を処理する場合には、構造要素のアンカー(原点)位置 <img class="formulaInl" alt="$o$" src="form_613.png"> は <img class="formulaInl" alt="$ o \in B_{BG} $" src="form_791.png"> を満たすように設定してください。 これらの条件が満たされない場合、F_ERR_INVALID_OBJECT エラーを返します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_FG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{FG} $" src="form_782.png"> のハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hse_BG</em>&nbsp;</td><td>構造要素 <img class="formulaInl" alt="$ B_{BG} $" src="form_783.png"> のハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>構造要素に不正なハンドルが指定されたため異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294" title="構造要素指定 unconstrained thickening">fnFIE_thickening()</a>, <a class="el" href="group__fie__morphology.html#g274acb15280e9d84e86990bde30c9c60" title="２値画像の構造要素指定 hit-or-miss">fnFIE_hit_or_miss()</a>, <a class="el" href="group__fie__morphology.html#g026faa6b17b4541e9058ae68fb01fc2a" title="構造要素指定 unconstrained hit-or-miss">fnFIE_morphology_UHMT()</a>, <a class="el" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gab249300f5016bfc1b7c0e46681349b7"></a><!-- doxytag: member="fie_morphology.c::fnFIE_erosion" ref="gab249300f5016bfc1b7c0e46681349b7" args="(FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_erosion           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+3×3erosion filter 
+<p>
+3x3の固定サイズ構造要素(SE)によるerosion処理を行います。<p>
+<dl class="user" compact><dt><b>８近傍( <em>iMode</em> = 0 )の場合</b></dt><dd>3×3の矩形構造要素によるerosionを指定回数実行します。</dd></dl>
+<dl class="user" compact><dt><b>４近傍( <em>iMode</em> = 1 )の場合</b></dt><dd>3×3の矩形構造要素から、アンカ位置の左上、右上、左下、右下を除いた構造要素によるerosionを指定回数実行します。</dd></dl>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td>erosion実行回数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMode</em>&nbsp;</td><td>近傍モード（0:８近傍 1:４近傍）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology__se.html#gf8cb7d0a48ff26ad8babd2378a06c3e5" title="BOX構造要素の作成">fnFIE_create_box_se()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_erosion.png" alt="fie_erosion.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6694fcced6af55ab2b564c3d858cf8c0"></a><!-- doxytag: member="fie_morphology.c::fnFIE_dilation" ref="g6694fcced6af55ab2b564c3d858cf8c0" args="(FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dilation           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+3×3dilation filter 
+<p>
+3x3の固定サイズ構造要素(SE)によるdilation処理を行います。<p>
+<dl class="user" compact><dt><b>８近傍( <em>iMode</em> = 0 )の場合</b></dt><dd>3×3の矩形構造要素によるdilationを指定回数実行します。</dd></dl>
+<dl class="user" compact><dt><b>４近傍( <em>iMode</em> = 1 )の場合</b></dt><dd>3×3の矩形構造要素から、アンカ位置の左上、右上、左下、右下を除いた構造要素によるdilationを指定回数実行します。</dd></dl>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td>dilation実行回数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMode</em>&nbsp;</td><td>近傍モード（0:８近傍 1:４近傍）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology__se.html#gf8cb7d0a48ff26ad8babd2378a06c3e5" title="BOX構造要素の作成">fnFIE_create_box_se()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_dilation.png" alt="fie_dilation.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb62c5c343d32133793c209376680a01a"></a><!-- doxytag: member="fie_morphology.c::fnFIE_opening" ref="gb62c5c343d32133793c209376680a01a" args="(FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_opening           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+opening filter 
+<p>
+指定の <em>iMode</em> で <a class="el" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7" title="3×3erosion filter">fnFIE_erosion()</a> を <em>filter_num</em> 回行った後、 <a class="el" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0" title="3×3dilation filter">fnFIE_dilation()</a> を <em>filter_num</em> 回行った結果を出力します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td>erosion/dilation実行回数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMode</em>&nbsp;</td><td>近傍モード（0:８近傍 1:４近傍）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7" title="3×3erosion filter">fnFIE_erosion()</a>, <a class="el" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0" title="3×3dilation filter">fnFIE_dilation()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_opening.png" alt="fie_opening.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g47365ddc7b35bf5d4d00f2a8b93f9fc6"></a><!-- doxytag: member="fie_morphology.c::fnFIE_closing" ref="g47365ddc7b35bf5d4d00f2a8b93f9fc6" args="(FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_closing           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+closing filter 
+<p>
+指定の <em>iMode</em> で <a class="el" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0" title="3×3dilation filter">fnFIE_dilation()</a> を <em>filter_num</em> 回行った後、 <a class="el" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7" title="3×3erosion filter">fnFIE_erosion()</a> を <em>filter_num</em> 回行った結果を出力します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td>dilation/erosion実行回数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMode</em>&nbsp;</td><td>近傍モード（0:８近傍 1:４近傍）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7" title="3×3erosion filter">fnFIE_erosion()</a>, <a class="el" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0" title="3×3dilation filter">fnFIE_dilation()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_solodel1.png" alt="fie_solodel1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_closing.png" alt="fie_closing.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g704e41bf4cc0672a227e9d905f4bb7b7"></a><!-- doxytag: member="fie_morphology.c::fnFIE_tophat" ref="g704e41bf4cc0672a227e9d905f4bb7b7" args="(FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_tophat           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+top-hat filter 
+<p>
+3x3の固定サイズ構造要素(SE)によるtop-hat処理を行います。 top-hat処理とは入力画像から <a class="el" href="group__fie__morphology.html#gb62c5c343d32133793c209376680a01a" title="opening filter">fnFIE_opening()</a> の結果を引いた画像を出力します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td>opening実行回数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMode</em>&nbsp;</td><td>近傍モード（0:８近傍 1:４近傍）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gb62c5c343d32133793c209376680a01a" title="opening filter">fnFIE_opening()</a>, <a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="circuit.png" alt="circuit.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_tophat.png" alt="fie_tophat.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0f2460a94bc7a5bddb4319a6422c928f"></a><!-- doxytag: member="fie_morphology.c::fnFIE_bottomhat" ref="g0f2460a94bc7a5bddb4319a6422c928f" args="(FHANDLE hsrc_img, FHANDLE hdst_img, INT filter_num, INT iMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_bottomhat           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+bottom-hat filter 
+<p>
+3x3の固定サイズ構造要素(SE)によるbottom-hat処理を行います。 bottom-hat処理とはfnFIE_closing() の結果から入力画像を引いた画像を出力します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td>closing実行回数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMode</em>&nbsp;</td><td>近傍モード（0:８近傍 1:４近傍）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#g47365ddc7b35bf5d4d00f2a8b93f9fc6" title="closing filter">fnFIE_closing()</a>, <a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_arithmetic_op_mask2.png" alt="fie_arithmetic_op_mask2.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_bottomhat.png" alt="fie_bottomhat.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge38d28fa817cd1e591885c535af0d3f2"></a><!-- doxytag: member="fie_morphology2.c::fnFIE_thinning_predefined" ref="ge38d28fa817cd1e591885c535af0d3f2" args="(FHANDLE hsrc_img, FHANDLE hdst_img, enum f_paired_se se_type, INT num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_thinning_predefined           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">f_paired_se</a>&nbsp;</td>
+          <td class="paramname"> <em>se_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+定義済み構造要素によるthinning 
+<p>
+指定の定義済み構造要素ペア <img class="formulaInl" alt="$\mathbf{B}$" src="form_807.png"> による thinning <img class="formulaInl" alt="$ \mathrm{THIN}_{\mathbf{B}} $" src="form_795.png"> を行います。 thinning の定義については <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> のドキュメントを参照してください。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>構造要素ペア</b></dt><dd><em>se_type</em> パラメータで指定できる定義済み構造要素ペア <img class="formulaInl" alt="$\mathbf{B}$" src="form_807.png"> は下記の6種類です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>F_SE_GOLAY_L4, F_SE_GOLAY_L8</b> <div align="center">
+<img src="morphology_se_golay-l.png" alt="morphology_se_golay-l.png">
+</div>
+ スケルトンを求めるために使われる構造要素ペアです。 F_SE_GOLAY_L4 は４連結での定義、F_SE_GOLAY_L8 は８連結での定義となります。 F_SE_GOLAY_L4 および F_SE_GOLAY_L8 はそれぞれ、 上図で示される前景と背景の構造要素ペア２組を ９０度ずつ回転させた計８組のペアで構成されます。 つまり１回の処理において８回の <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> 処理が行われます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>F_SE_GOLAY_E4, F_SE_GOLAY_E8</b> <div align="center">
+<img src="morphology_se_golay-e.png" alt="morphology_se_golay-e.png">
+</div>
+ スケルトンの枝打ち(pruning)を行うために使われる構造要素ペアです。 F_SE_GOLAY_E4 は４連結での定義、F_SE_GOLAY_E8は８連結での定義となります。 F_SE_GOLAY_E4 は上図で示される前景と背景の構造要素ペア１組を ９０度ずつ回転させた計４組のペアで構成されます。 また、F_SE_GOLAY_E8 は上図で示される前景と背景の構造要素ペア２組を ９０度ずつ回転させた計８組のペアで構成されます。 つまり１回の処理において F_SE_GOLAY_E4 では４回、 F_SE_GOLAY_E8 では８回の <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> 処理が行われます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>F_SE_GOLAY_I4, F_SE_GOLAY_I8</b> <div align="center">
+<img src="morphology_se_golay-i.png" alt="morphology_se_golay-i.png">
+</div>
+ 孤立点の除去を行うために使われる構造要素ペアです。 F_SE_GOLAY_I4 は４連結での定義、F_SE_GOLAY_I8 は８連結での定義となります。 上図で示される前景と背景の構造要素ペア１組で構成されます。 つまり１回の処理において１回の <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> 処理が行われます。</dd></dl>
+<dl class="user" compact><dt><b>繰り返し回数</b></dt><dd>本関数では <em>num</em> パラメータで指定された回数に達するか、 または処理前と処理後で結果が変化しなくなるまで同じ処理を繰り返し実行します。 <em>num</em> に -1 が指定された場合には、繰り返し回数に上限を設けず、 処理前と処理後の結果が同じになるまで繰り返し実行します。</dd></dl>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>se_type</em>&nbsp;</td><td>構造要素ペア指定。下記の何れかを指定。<ul>
+<li>F_SE_GOLAY_L4 GOLAY-L 4連結</li><li>F_SE_GOLAY_L8 GOLAY-L 8連結</li><li>F_SE_GOLAY_E4 GOLAY-E 4連結</li><li>F_SE_GOLAY_E8 GOLAY-E 8連結</li><li>F_SE_GOLAY_I4 GOLAY-I 4連結</li><li>F_SE_GOLAY_I8 GOLAY-I 8連結 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>繰り返し回数( 0 &lt; <em>num</em> または -1 ）<br>
+ -1 を指定すると、画像が変化しなくなるまで繰り返します。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>se_type</em>, <em>num</em> に不正な値が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gcdf07b2d20420ed5dd5e85d0b75e9146" title="構造要素指定 constrained thinning">fnFIE_cthinning()</a>, <a class="el" href="group__fie__morphology.html#g1b1409434d402549ce20bf1b8933fe8b" title="定義済み構造要素によるthickening">fnFIE_thickening_predefined()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は２値画像において繰り返し回数 <em>num</em> = -1 と指定して実行した処理結果例です。 <table class="pretable">
+<tr>
+<th>&nbsp; </th><th>入力画像 </th><th>F_SE_GOLAY_Lx  </th></tr>
+<tr>
+<th>４連結 </th><td><div align="center">
+<img src="fie_thinning_wf.png" alt="fie_thinning_wf.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thinning_wf_l4.png" alt="fie_thinning_wf_l4.png">
+</div>
+  </td></tr>
+<tr>
+<th>８連結 </th><td><div align="center">
+<img src="fie_thinning_wf.png" alt="fie_thinning_wf.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thinning_wf_l8.png" alt="fie_thinning_wf_l8.png">
+</div>
+  </td></tr>
+</table>
+<table class="pretable">
+<tr>
+<th>&nbsp; </th><th>入力画像 </th><th>F_SE_GOLAY_Ix </th><th>F_SE_GOLAY_Ex  </th></tr>
+<tr>
+<th>４連結 </th><td><div align="center">
+<img src="fie_thinning_wf_l4.png" alt="fie_thinning_wf_l4.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thinning_wf_i4.png" alt="fie_thinning_wf_i4.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thinning_wf_e4.png" alt="fie_thinning_wf_e4.png">
+</div>
+  </td></tr>
+<tr>
+<th>８連結 </th><td><div align="center">
+<img src="fie_thinning_wf_l8.png" alt="fie_thinning_wf_l8.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thinning_wf_i8.png" alt="fie_thinning_wf_i8.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thinning_wf_e8.png" alt="fie_thinning_wf_e8.png">
+</div>
+  </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1b1409434d402549ce20bf1b8933fe8b"></a><!-- doxytag: member="fie_morphology2.c::fnFIE_thickening_predefined" ref="g1b1409434d402549ce20bf1b8933fe8b" args="(FHANDLE hsrc_img, FHANDLE hdst_img, enum f_paired_se se_type, INT num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_thickening_predefined           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst_img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__morphology.html#gf330026ecc55a5a6d7c4e0b2e4b3d272">f_paired_se</a>&nbsp;</td>
+          <td class="paramname"> <em>se_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+定義済み構造要素によるthickening 
+<p>
+指定の定義済み構造要素ペア <img class="formulaInl" alt="$\mathbf{B}$" src="form_807.png"> のコンプリメント <img class="formulaInl" alt="$\mathbf{B^C}$" src="form_808.png"> による thickening <img class="formulaInl" alt="$ \mathrm{THICK}_{\mathbf{B^C}} $" src="form_809.png"> を行います。 thickeningの定義については <a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb" title="構造要素指定 constrained thickening">fnFIE_cthickening()</a> のドキュメントを参照してください。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事 </li>
+<li>チャネル数が１である事</li>
+</ul>
+<dl class="user" compact><dt><b>構造要素ペア</b></dt><dd><em>se_type</em> パラメータで指定できる定義済み構造要素ペア <img class="formulaInl" alt="$\mathbf{B}$" src="form_807.png"> は下記の6種類です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>F_SE_GOLAY_L4, F_SE_GOLAY_L8</b> <div align="center">
+<img src="morphology_se_golay-l.png" alt="morphology_se_golay-l.png">
+</div>
+ スケルトンを求めるために使われる構造要素ペアです。 F_SE_GOLAY_L4 は４連結での定義、F_SE_GOLAY_L8 は８連結での定義となります。 F_SE_GOLAY_L4 および F_SE_GOLAY_L8 はそれぞれ、 上図で示される前景と背景の構造要素ペア２組を ９０度ずつ回転させた計８組のペアで構成されます。 つまり１回の処理において８回の <a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb" title="構造要素指定 constrained thickening">fnFIE_cthickening()</a> 処理が行われます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>F_SE_GOLAY_E4, F_SE_GOLAY_E8</b> <div align="center">
+<img src="morphology_se_golay-e.png" alt="morphology_se_golay-e.png">
+</div>
+ スケルトンの枝打ち(pruning)を行うために使われる構造要素ペアです。 F_SE_GOLAY_E4 は４連結での定義、F_SE_GOLAY_E8は８連結での定義となります。 F_SE_GOLAY_E4 は上図で示される前景と背景の構造要素ペア１組を ９０度ずつ回転させた計４組のペアで構成されます。 また、F_SE_GOLAY_E8 は上図で示される前景と背景の構造要素ペア２組を ９０度ずつ回転させた計８組のペアで構成されます。 つまり１回の処理において F_SE_GOLAY_E4 では４回、 F_SE_GOLAY_E8 では８回の <a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb" title="構造要素指定 constrained thickening">fnFIE_cthickening()</a> 処理が行われます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>F_SE_GOLAY_I4, F_SE_GOLAY_I8</b> <div align="center">
+<img src="morphology_se_golay-i.png" alt="morphology_se_golay-i.png">
+</div>
+ 孤立点の除去を行うために使われる構造要素ペアです。 F_SE_GOLAY_I4 は４連結での定義、F_SE_GOLAY_I8 は８連結での定義となります。 上図で示される前景と背景の構造要素ペア１組で構成されます。 つまり１回の処理において１回の <a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb" title="構造要素指定 constrained thickening">fnFIE_cthickening()</a> 処理が行われます。</dd></dl>
+<dl class="user" compact><dt><b>繰り返し回数</b></dt><dd>本関数では <em>num</em> パラメータで指定された回数に達するか、 または処理前と処理後で結果が変化しなくなるまで同じ処理を繰り返し実行します。 <em>num</em> に -1 が指定された場合には、繰り返し回数に上限を設けず、 処理前と処理後の結果が同じになるまで繰り返し実行します。</dd></dl>
+<dl class="user" compact><dt><b>境界部分処理</b></dt><dd>境界部分の処理仕様は <a class="el" href="group__fie__morphology.html#g0102afbd4fd797b65ad0df325c37c0fb" title="構造要素指定 constrained thickening">fnFIE_cthickening()</a> の仕様に準じます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc_img</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst_img</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>se_type</em>&nbsp;</td><td>構造要素ペア指定。下記の何れかを指定。<ul>
+<li>F_SE_GOLAY_L4 GOLAY-L 4連結</li><li>F_SE_GOLAY_L8 GOLAY-L 8連結</li><li>F_SE_GOLAY_E4 GOLAY-E 4連結</li><li>F_SE_GOLAY_E8 GOLAY-E 8連結</li><li>F_SE_GOLAY_I4 GOLAY-I 4連結</li><li>F_SE_GOLAY_I8 GOLAY-I 8連結 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>繰り返し回数。( 0 &lt; <em>num</em> または -1 ）<br>
+ -1 を指定すると、画像が変化しなくなるまで繰り返します。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>se_type</em>, <em>num</em> に不正な値が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ確保に失敗した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__morphology.html#gc9ff003acff6a25515f593f8265d7294" title="構造要素指定 unconstrained thickening">fnFIE_thickening()</a>, <a class="el" href="group__fie__morphology.html#ge38d28fa817cd1e591885c535af0d3f2" title="定義済み構造要素によるthinning">fnFIE_thinning_predefined()</a></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は２値画像において繰り返し回数 <em>num</em> = -1 と指定して実行した処理結果例です。 <table class="pretable">
+<tr>
+<th>&nbsp; </th><th>入力画像 </th><th>F_SE_GOLAY_Lx  </th></tr>
+<tr>
+<th>４連結 </th><td><div align="center">
+<img src="fie_thinning_wf.png" alt="fie_thinning_wf.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thickening_wf_l4.png" alt="fie_thickening_wf_l4.png">
+</div>
+  </td></tr>
+<tr>
+<th>８連結 </th><td><div align="center">
+<img src="fie_thinning_wf.png" alt="fie_thinning_wf.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thickening_wf_l8.png" alt="fie_thickening_wf_l8.png">
+</div>
+  </td></tr>
+</table>
+<table class="pretable">
+<tr>
+<th>&nbsp; </th><th>入力画像 </th><th>F_SE_GOLAY_Ix </th><th>F_SE_GOLAY_Ex  </th></tr>
+<tr>
+<th>４連結 </th><td><div align="center">
+<img src="fie_thickening_wf4.png" alt="fie_thickening_wf4.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thickening_wf_i4.png" alt="fie_thickening_wf_i4.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thickening_wf_e4.png" alt="fie_thickening_wf_e4.png">
+</div>
+  </td></tr>
+<tr>
+<th>８連結 </th><td><div align="center">
+<img src="fie_thickening_wf8.png" alt="fie_thickening_wf8.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thickening_wf_i8.png" alt="fie_thickening_wf_i8.png">
+</div>
+ </td><td><div align="center">
+<img src="fie_thickening_wf_e8.png" alt="fie_thickening_wf_e8.png">
+</div>
+  </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

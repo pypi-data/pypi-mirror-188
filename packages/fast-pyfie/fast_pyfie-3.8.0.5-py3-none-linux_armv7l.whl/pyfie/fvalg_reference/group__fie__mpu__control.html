@@ -1,0 +1,713 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: CPU/FPU制御</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>CPU/FPU制御<br>
+<small>
+[<a class="el" href="group__fie__low__level__func.html">低レベル処理関数</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gbb8a33bd0901ca78299e353312ca578f">F_FPU_EM_MASK</a>&nbsp;&nbsp;&nbsp;0x003f</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g1ca72deea4fa45bd99be311c29d02e03">F_FPU_EM_IM</a>&nbsp;&nbsp;&nbsp;0x0001</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gb0a6f9244ca0b2a3ebb1774b816acc00">F_FPU_EM_DM</a>&nbsp;&nbsp;&nbsp;0x0002</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g3254120c06d58a834aa5fa8d5242353e">F_FPU_EM_ZM</a>&nbsp;&nbsp;&nbsp;0x0004</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gb64331c736f50475c81b01135f864bd0">F_FPU_EM_OM</a>&nbsp;&nbsp;&nbsp;0x0008</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g63243c700197137ae41544051ac167c4">F_FPU_EM_UM</a>&nbsp;&nbsp;&nbsp;0x0010</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gca43a9df82c5466584288d125aed8a49">F_FPU_EM_PM</a>&nbsp;&nbsp;&nbsp;0x0020</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g159683182f1420b78ae3ee1cbab7cd0a">F_FPU_FZ_MASK</a>&nbsp;&nbsp;&nbsp;0x8000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#ge4a12898465d4bd04bfa839f5269d626">F_FPU_FZ_SAVE</a>&nbsp;&nbsp;&nbsp;0x0000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gdd5f74e2a577b93b1856677520613ae2">F_FPU_FZ_FLUSH</a>&nbsp;&nbsp;&nbsp;0x8000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g195907fa8235944b1e05a8eeb8afe9d6">F_FPU_RC_MASK</a>&nbsp;&nbsp;&nbsp;0x0c00</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gad15931cf714a20d5485415633b0b54e">F_FPU_RC_CHOP</a>&nbsp;&nbsp;&nbsp;0x0c00</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#ge5e6fa3e4ab8362526a93eebffe1c183">F_FPU_RC_UP</a>&nbsp;&nbsp;&nbsp;0x0800</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gd7c41980b1f6552cdab133e9d45ce50b">F_FPU_RC_DOWN</a>&nbsp;&nbsp;&nbsp;0x0400</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g1dcdf7c7748be1418407010a7f1f5235">F_FPU_RC_NEAR</a>&nbsp;&nbsp;&nbsp;0x0000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gbb998a42785e24a417a76bdf47859436">F_FPU_PC_MASK</a>&nbsp;&nbsp;&nbsp;0x0300</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g52668f46c1f158bd7554b63865189410">F_FPU_PC_24</a>&nbsp;&nbsp;&nbsp;0x0000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g058a24889d6397f7b89e2dd7a34cc03c">F_FPU_PC_53</a>&nbsp;&nbsp;&nbsp;0x0200</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gcf12ac49b1be7a6b2e596ed2065e5a81">F_FPU_PC_64</a>&nbsp;&nbsp;&nbsp;0x0300</td></tr>
+
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#gdb28690642f71cd3b0eb4cab2a229622">fnFIE_get_control_x87</a> (UINT *val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">x87 FPUコントロールレジスタ値の取得  <a href="#gdb28690642f71cd3b0eb4cab2a229622"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g6f3efab6048593f8f7aa472da0d57886">fnFIE_set_control_x87</a> (UINT set, UINT mask)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">x87 FPUコントロールレジスタ値の設定  <a href="#g6f3efab6048593f8f7aa472da0d57886"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g83d084edf940184e3cd7c93a062c9c7e">fnFIE_get_control_sse</a> (UINT *val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">SSEコントロールレジスタ値の取得  <a href="#g83d084edf940184e3cd7c93a062c9c7e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__mpu__control.html#g1987cc5132b52d85e5321e9199c42f09">fnFIE_set_control_sse</a> (UINT set, UINT mask)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">SSEコントロールレジスタ値の設定  <a href="#g1987cc5132b52d85e5321e9199c42f09"></a><br></td></tr>
+</table>
+<hr><h2>マクロ定義</h2>
+<a class="anchor" name="gbb8a33bd0901ca78299e353312ca578f"></a><!-- doxytag: member="fie.h::F_FPU_EM_MASK" ref="gbb8a33bd0901ca78299e353312ca578f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_MASK&nbsp;&nbsp;&nbsp;0x003f          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+mask for exception mask flags 
+</div>
+</div><p>
+<a class="anchor" name="g1ca72deea4fa45bd99be311c29d02e03"></a><!-- doxytag: member="fie.h::F_FPU_EM_IM" ref="g1ca72deea4fa45bd99be311c29d02e03" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_IM&nbsp;&nbsp;&nbsp;0x0001          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+exception mask : invalid operand 
+</div>
+</div><p>
+<a class="anchor" name="gb0a6f9244ca0b2a3ebb1774b816acc00"></a><!-- doxytag: member="fie.h::F_FPU_EM_DM" ref="gb0a6f9244ca0b2a3ebb1774b816acc00" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_DM&nbsp;&nbsp;&nbsp;0x0002          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+exception mask : denormal 
+</div>
+</div><p>
+<a class="anchor" name="g3254120c06d58a834aa5fa8d5242353e"></a><!-- doxytag: member="fie.h::F_FPU_EM_ZM" ref="g3254120c06d58a834aa5fa8d5242353e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_ZM&nbsp;&nbsp;&nbsp;0x0004          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+exception mask : zero divide 
+</div>
+</div><p>
+<a class="anchor" name="gb64331c736f50475c81b01135f864bd0"></a><!-- doxytag: member="fie.h::F_FPU_EM_OM" ref="gb64331c736f50475c81b01135f864bd0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_OM&nbsp;&nbsp;&nbsp;0x0008          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+exception mask : overflow 
+</div>
+</div><p>
+<a class="anchor" name="g63243c700197137ae41544051ac167c4"></a><!-- doxytag: member="fie.h::F_FPU_EM_UM" ref="g63243c700197137ae41544051ac167c4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_UM&nbsp;&nbsp;&nbsp;0x0010          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+exception mask : underflow 
+</div>
+</div><p>
+<a class="anchor" name="gca43a9df82c5466584288d125aed8a49"></a><!-- doxytag: member="fie.h::F_FPU_EM_PM" ref="gca43a9df82c5466584288d125aed8a49" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_EM_PM&nbsp;&nbsp;&nbsp;0x0020          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+exception mask : inexact (precision) 
+</div>
+</div><p>
+<a class="anchor" name="g159683182f1420b78ae3ee1cbab7cd0a"></a><!-- doxytag: member="fie.h::F_FPU_FZ_MASK" ref="g159683182f1420b78ae3ee1cbab7cd0a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_FZ_MASK&nbsp;&nbsp;&nbsp;0x8000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+mask for denormal control flags 
+</div>
+</div><p>
+<a class="anchor" name="ge4a12898465d4bd04bfa839f5269d626"></a><!-- doxytag: member="fie.h::F_FPU_FZ_SAVE" ref="ge4a12898465d4bd04bfa839f5269d626" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_FZ_SAVE&nbsp;&nbsp;&nbsp;0x0000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+denormal control flag : save state 
+</div>
+</div><p>
+<a class="anchor" name="gdd5f74e2a577b93b1856677520613ae2"></a><!-- doxytag: member="fie.h::F_FPU_FZ_FLUSH" ref="gdd5f74e2a577b93b1856677520613ae2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_FZ_FLUSH&nbsp;&nbsp;&nbsp;0x8000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+denormal control flag : flush to zero 
+</div>
+</div><p>
+<a class="anchor" name="g195907fa8235944b1e05a8eeb8afe9d6"></a><!-- doxytag: member="fie.h::F_FPU_RC_MASK" ref="g195907fa8235944b1e05a8eeb8afe9d6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_RC_MASK&nbsp;&nbsp;&nbsp;0x0c00          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+mask for rounding control flags 
+</div>
+</div><p>
+<a class="anchor" name="gad15931cf714a20d5485415633b0b54e"></a><!-- doxytag: member="fie.h::F_FPU_RC_CHOP" ref="gad15931cf714a20d5485415633b0b54e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_RC_CHOP&nbsp;&nbsp;&nbsp;0x0c00          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+rounding control flag : round toward zero 
+</div>
+</div><p>
+<a class="anchor" name="ge5e6fa3e4ab8362526a93eebffe1c183"></a><!-- doxytag: member="fie.h::F_FPU_RC_UP" ref="ge5e6fa3e4ab8362526a93eebffe1c183" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_RC_UP&nbsp;&nbsp;&nbsp;0x0800          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+rounding control flag : round up 
+</div>
+</div><p>
+<a class="anchor" name="gd7c41980b1f6552cdab133e9d45ce50b"></a><!-- doxytag: member="fie.h::F_FPU_RC_DOWN" ref="gd7c41980b1f6552cdab133e9d45ce50b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_RC_DOWN&nbsp;&nbsp;&nbsp;0x0400          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+rounding control flag : round down 
+</div>
+</div><p>
+<a class="anchor" name="g1dcdf7c7748be1418407010a7f1f5235"></a><!-- doxytag: member="fie.h::F_FPU_RC_NEAR" ref="g1dcdf7c7748be1418407010a7f1f5235" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_RC_NEAR&nbsp;&nbsp;&nbsp;0x0000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+rounding control flag : rownd to nearest 
+</div>
+</div><p>
+<a class="anchor" name="gbb998a42785e24a417a76bdf47859436"></a><!-- doxytag: member="fie.h::F_FPU_PC_MASK" ref="gbb998a42785e24a417a76bdf47859436" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_PC_MASK&nbsp;&nbsp;&nbsp;0x0300          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+mask for precision control flags 
+</div>
+</div><p>
+<a class="anchor" name="g52668f46c1f158bd7554b63865189410"></a><!-- doxytag: member="fie.h::F_FPU_PC_24" ref="g52668f46c1f158bd7554b63865189410" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_PC_24&nbsp;&nbsp;&nbsp;0x0000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+precision control flag : 24bit 
+</div>
+</div><p>
+<a class="anchor" name="g058a24889d6397f7b89e2dd7a34cc03c"></a><!-- doxytag: member="fie.h::F_FPU_PC_53" ref="g058a24889d6397f7b89e2dd7a34cc03c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_PC_53&nbsp;&nbsp;&nbsp;0x0200          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+precision control flag : 53bit 
+</div>
+</div><p>
+<a class="anchor" name="gcf12ac49b1be7a6b2e596ed2065e5a81"></a><!-- doxytag: member="fie.h::F_FPU_PC_64" ref="gcf12ac49b1be7a6b2e596ed2065e5a81" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FPU_PC_64&nbsp;&nbsp;&nbsp;0x0300          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+precision control flag : 64bit 
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gdb28690642f71cd3b0eb4cab2a229622"></a><!-- doxytag: member="fie_fpu.c::fnFIE_get_control_x87" ref="gdb28690642f71cd3b0eb4cab2a229622" args="(UINT *val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_get_control_x87           </td>
+          <td>(</td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>val</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+x87 FPUコントロールレジスタ値の取得 
+<p>
+x87 FPUコントロールレジスタの値を取得します。 取得される値のビット定義は次のようになります。<p>
+<pre>
+	[ 0: 5] : EM : exception mask
+	  bit0: IM : Invalid Operation
+	  bit1: DM : Denormalized Operation
+	  bit2: ZM : Zero divide
+	  bit3: OM : Overflow
+	  bit4: UM : Underflow
+	  bit5: PM : Precision
+	[ 7: 6] : reserved
+	[ 9: 8] : PC : Precision Control
+	  00: 24bit
+	  01: reserved
+	  10: 53bit
+	  11: 64bit
+	[11:10] : RC : Rounding Control
+	  00: Round to Nearest
+	  01: Round Down
+	  10: Round Up
+	  11: Round to Zero
+	[15:12] : reserved
+	</pre><p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>IA32/x64 CPUで無い場合、本関数は F_ERR_UNSUPPORTED エラーを返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>レジスタ値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>サポートされていません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー( <em>val</em> にNULLが渡された)</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__mpu__control.html#g6f3efab6048593f8f7aa472da0d57886" title="x87 FPUコントロールレジスタ値の設定">fnFIE_set_control_x87()</a> <a class="el" href="group__fie__mpu__control.html#g83d084edf940184e3cd7c93a062c9c7e" title="SSEコントロールレジスタ値の取得">fnFIE_get_control_sse()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6f3efab6048593f8f7aa472da0d57886"></a><!-- doxytag: member="fie_fpu.c::fnFIE_set_control_x87" ref="g6f3efab6048593f8f7aa472da0d57886" args="(UINT set, UINT mask)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_set_control_x87           </td>
+          <td>(</td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>mask</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+x87 FPUコントロールレジスタ値の設定 
+<p>
+x87 FPUコントロールレジスタの値を設定します。 レジスタの値は <em>set</em> にて指定された値のうち <em>mask</em> にて1であるビットの部分のみが更新され、 その他の部分は元の値が維持されます。 設定される値のビット定義は次のようになります。<p>
+<pre>
+	[ 0: 5] : EM : exception mask
+	  bit0: IM : Invalid Operation
+	  bit1: DM : Denormalized Operation
+	  bit2: ZM : Zero divide
+	  bit3: OM : Overflow
+	  bit4: UM : Underflow
+	  bit5: PM : Precision
+	[ 7: 6] : reserved
+	[ 9: 8] : PC : Precision Control
+	  00: 24bit
+	  01: reserved
+	  10: 53bit
+	  11: 64bit
+	[11:10] : RC : Rounding Control
+	  00: Round to Nearest
+	  01: Round Down
+	  10: Round Up
+	  11: Round to Zero
+	[15:12] : reserved
+	</pre><p>
+設定がしやすいように各設定値に対応するマクロが次のように定義されています。 <pre>
+	例外マスク設定
+	F_FPU_EM_MASK    0x003f   mask for exception mask flags
+	  F_FPU_EM_IM    0x0001   exception mask : invalid operand
+	  F_FPU_EM_DM    0x0002   exception mask : denormal
+	  F_FPU_EM_ZM    0x0004   exception mask : zero divide
+	  F_FPU_EM_OM    0x0008   exception mask : overflow
+	  F_FPU_EM_UM    0x0010   exception mask : underflow
+	  F_FPU_EM_PM    0x0020   exception mask : inexact (precision)</pre><p>
+<pre>	丸め設定
+	F_FPU_RC_MASK    0x0c00   mask for rounding control flags
+	  F_FPU_RC_CHOP  0x0c00   rounding control flag : round toward zero
+	  F_FPU_RC_UP    0x0800   rounding control flag : round up
+	  F_FPU_RC_DOWN  0x0400   rounding control flag : round down
+	  F_FPU_RC_NEAR  0x0000   rounding control flag : rownd to nearest</pre><p>
+<pre>	精度設定
+	F_FPU_PC_MASK    0x0300   mask for precision control flags
+	  F_FPU_PC_24    0x0000   precision control flag : 24bit
+	  F_FPU_PC_53    0x0200   precision control flag : 53bit
+	  F_FPU_PC_64    0x0300   precision control flag : 64bit
+	</pre><p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>IA32/x64 CPUで無い場合、本関数は F_ERR_UNSUPPORTED エラーを返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>set</em>&nbsp;</td><td>レジスタ値 <br>
+ 次の値のbit-ORによる組み合わせで指定してください<ul>
+<li>F_FPU_EM_IM</li><li>F_FPU_EM_DM</li><li>F_FPU_EM_ZM</li><li>F_FPU_EM_OM</li><li>F_FPU_EM_UM</li><li>F_FPU_EM_PM</li><li>F_FPU_RC_CHOP</li><li>F_FPU_RC_UP</li><li>F_FPU_RC_DOWN</li><li>F_FPU_RC_NEAR</li><li>F_FPU_PC_24</li><li>F_FPU_PC_53</li><li>F_FPU_PC_64</li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mask</em>&nbsp;</td><td>設定マスク <br>
+ 次のマスク値のbit-ORによる組み合わせで指定してください<ul>
+<li>F_FPU_EM_MASK</li><li>F_FPU_RC_MASK</li><li>F_FPU_PC_MASK</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>サポートされていません</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__mpu__control.html#gdb28690642f71cd3b0eb4cab2a229622" title="x87 FPUコントロールレジスタ値の取得">fnFIE_get_control_x87()</a> <a class="el" href="group__fie__mpu__control.html#g1987cc5132b52d85e5321e9199c42f09" title="SSEコントロールレジスタ値の設定">fnFIE_set_control_sse()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g83d084edf940184e3cd7c93a062c9c7e"></a><!-- doxytag: member="fie_fpu.c::fnFIE_get_control_sse" ref="g83d084edf940184e3cd7c93a062c9c7e" args="(UINT *val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_get_control_sse           </td>
+          <td>(</td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>val</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+SSEコントロールレジスタ値の取得 
+<p>
+SSE FPUコントロールレジスタの値を取得します。 取得される値のビット定義は次のようになります。<p>
+<pre>
+	[ 0: 5] : EM : exception mask
+	  bit0: IM : Invalid Operation
+	  bit1: DM : Denormalized Operation
+	  bit2: ZM : Zero divide
+	  bit3: OM : Overflow
+	  bit4: UM : Underflow
+	  bit5: PM : Precision
+	[ 7: 6] : reserved
+	[ 9: 8] : PC : Precision Control
+	  00: 24bit
+	  01: reserved
+	  10: 53bit
+	  11: 64bit
+	[11:10] : RC : Rounding Control
+	  00: Round to Nearest
+	  01: Round Down
+	  10: Round Up
+	  11: Round to Zero
+	[14:12] : reserved
+	[15:15] : zero flush
+	</pre><p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数での指定値は x87 のビット指定値とビット位置が同じになるように 仕様を定めています。そのため、最終的に設定されるMXCSRレジスタの ビット定義とは位置が異なっている事に注意してください。</dd></dl>
+SSEが塔載されていないCPUの場合または、IA32/x64 CPUで無い場合、 本関数は F_ERR_UNSUPPORTED エラーを返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>レジスタ値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>サポートされていません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー( <em>val</em> にNULLが渡された)</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__mpu__control.html#gdb28690642f71cd3b0eb4cab2a229622" title="x87 FPUコントロールレジスタ値の取得">fnFIE_get_control_x87()</a> <a class="el" href="group__fie__mpu__control.html#g6f3efab6048593f8f7aa472da0d57886" title="x87 FPUコントロールレジスタ値の設定">fnFIE_set_control_x87()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1987cc5132b52d85e5321e9199c42f09"></a><!-- doxytag: member="fie_fpu.c::fnFIE_set_control_sse" ref="g1987cc5132b52d85e5321e9199c42f09" args="(UINT set, UINT mask)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_set_control_sse           </td>
+          <td>(</td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>mask</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+SSEコントロールレジスタ値の設定 
+<p>
+SSE コントロールレジスタの値を設定します。 レジスタの値は <em>set</em> にて指定された値のうち <em>mask</em> にて1であるビットの部分のみが更新され、 その他の部分は元の値が維持されます。 設定される値のビット定義は次のようになります。<p>
+<pre>
+	[ 0: 5] : EM : exception mask
+	  bit0: IM : Invalid Operation
+	  bit1: DM : Denormalized Operation
+	  bit2: ZM : Zero divide
+	  bit3: OM : Overflow
+	  bit4: UM : Underflow
+	  bit5: PM : Precision
+	[ 7: 6] : reserved
+	[ 9: 8] : PC : Precision Control
+	  00: 24bit
+	  01: reserved
+	  10: 53bit
+	  11: 64bit
+	[11:10] : RC : Rounding Control
+	  00: Round to Nearest
+	  01: Round Down
+	  10: Round Up
+	  11: Round to Zero
+	[14:12] : reserved
+	[15:15] : zero flush
+	</pre><p>
+設定がしやすいように各設定値に対応するマクロが次のように定義されています。 <pre>
+	例外マスク設定
+	F_FPU_EM_MASK    0x003f   mask for exception mask flags
+	  F_FPU_EM_IM    0x0001   exception mask : invalid operand
+	  F_FPU_EM_DM    0x0002   exception mask : denormal
+	  F_FPU_EM_ZM    0x0004   exception mask : zero divide
+	  F_FPU_EM_OM    0x0008   exception mask : overflow
+	  F_FPU_EM_UM    0x0010   exception mask : underflow
+	  F_FPU_EM_PM    0x0020   exception mask : inexact (precision)</pre><p>
+<pre>	丸め設定
+	F_FPU_RC_MASK    0x0c00   mask for rounding control flags
+	  F_FPU_RC_CHOP  0x0c00   rounding control flag : round toward zero
+	  F_FPU_RC_UP    0x0800   rounding control flag : round up
+	  F_FPU_RC_DOWN  0x0400   rounding control flag : round down
+	  F_FPU_RC_NEAR  0x0000   rounding control flag : rownd to nearest</pre><p>
+<pre>	デノーマル設定
+	F_FPU_FZ_MASK    0x8000   mask for denormal control flags
+	  F_FPU_FZ_SAVE  0x0000   denormal control flag : save state
+	  F_FPU_FZ_FLUSH 0x8000   denormal control flag : flush to zero
+	</pre><p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数での指定値は x87 のビット指定値とビット位置が同じになるように 仕様を定めています。そのため、最終的に設定されるMXCSRレジスタの ビット定義とは位置が異なっている事に注意してください。</dd></dl>
+SSEが塔載されていないCPUの場合または、IA32/x64 CPUで無い場合、 本関数は F_ERR_UNSUPPORTED エラーを返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>set</em>&nbsp;</td><td>レジスタ値 <br>
+ 次の値のbit-ORによる組み合わせで指定してください<ul>
+<li>F_FPU_EM_IM</li><li>F_FPU_EM_DM</li><li>F_FPU_EM_ZM</li><li>F_FPU_EM_OM</li><li>F_FPU_EM_UM</li><li>F_FPU_EM_PM</li><li>F_FPU_FZ_SAVE</li><li>F_FPU_FZ_FLUSH</li><li>F_FPU_RC_CHOP</li><li>F_FPU_RC_UP</li><li>F_FPU_RC_DOWN</li><li>F_FPU_RC_NEAR</li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mask</em>&nbsp;</td><td>設定マスク <br>
+ 次のマスク値のbit-ORによる組み合わせで指定してください<ul>
+<li>F_FPU_EM_MASK</li><li>F_FPU_RC_MASK</li><li>F_FPU_FZ_MASK</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNSUPPORTED</em>&nbsp;</td><td>サポートされていません</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__mpu__control.html#g83d084edf940184e3cd7c93a062c9c7e" title="SSEコントロールレジスタ値の取得">fnFIE_get_control_sse()</a> <a class="el" href="group__fie__mpu__control.html#g6f3efab6048593f8f7aa472da0d57886" title="x87 FPUコントロールレジスタ値の設定">fnFIE_set_control_x87()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

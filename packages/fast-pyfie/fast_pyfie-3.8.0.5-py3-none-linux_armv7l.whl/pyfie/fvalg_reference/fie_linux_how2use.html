@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: FIEライブラリの使い方(FIE for Linuxユーザー向け)</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="fie_linux_how2use">FIEライブラリの使い方(FIE for Linuxユーザー向け) </a></h1><dl class="user" compact><dt><b>提供バイナリ形態とライセンスについて</b></dt><dd>FIEライブラリはライセンス・提供形態の違いにより、幾つかの共有ライブラリに分けられて提供されます。<ul>
+<li>libfvalg.so <br>
+ 弊社単独で作成しているライブラリであり、弊社のソフトウェア製品使用権許諾書の元でご使用頂けます。</li><li>libfvalg_oss.so <br>
+ 弊社の作成部分に加えて、オープンソースソフトウェア を併せて利用したライブラリです。libfvalg_oss.so をご使用頂く場合は、 弊社のソフトウェア製品使用権許諾書に加えて、使用している各オープンソース ソフトウェアのライセンスの両方にご同意頂く必要がございます。 各オープンソースのライセンス条項は <a class="el" href="oss_license.html">ＯＳＳライセンス条項</a> に記載されておりますので、 libfvalg_oss.so をご使用頂く場合は、良くお読み頂いた上、ライセンスを守ってご使用ください。</li><li>libfvalg_camcalib.so <br>
+ カメラキャリブレーションの機能を実装した共有ライブラリです。<br>
+ 本ライブラリはオプションライブラリとして提供されます。本ライブラリの関数を使用するためには、 オプションライセンスの購入が必要になります。<br>
+ また、本ライブラリはオープンソースソフトウェアを併せて利用しています。 本ライブラリを使用する際には、libfvalg_oss.soをアプリケーションにリンクする必要があります。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>インクルードファイル</b></dt><dd>FIEライブラリの関数等の定義は fie.h にて定義されております。 ご使用の際は、使用するソースファイルにて fie.h をインクルードしてください。例外として、ヒープメモリ管理関数のみは oal_aloc.h にて 定義されております。こちらをご使用の際は oal_aloc.h を併せて インクルードしてご使用ください。</dd></dl>
+<dl class="user" compact><dt><b>FIEライブラリの初期化</b></dt><dd>全てのFIEライブラリはライブラリ初期化関数 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> が実行済み でなければなりません。 <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> が実行されていないと、正常に動作しませんので、ユーザープログラム開始直後に <a class="el" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup()</a> を実行することをお忘れにならないようお願いいたします。</dd></dl>
+<dl class="user" compact><dt><b>ユーザープログラム例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+<span class="keywordtype">int</span> main (<span class="keywordtype">void</span>){
+    <span class="comment">/* FIEライブラリの使用前に必ずコールする必要が有ります。 */</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">/* FIEライブラリを使用するコード */</span>
+
+    <span class="comment">/* 終了処理 */</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>ライブラリのリンクに関して</b></dt><dd>gccで開発する場合、コンパイル時に以下のようなオプションを付ける必要があります。 <div class="fragment"><pre class="fragment">gcc sample.c -lm -lpthread -lfvalg -lfvalg_oss -L/opt/FAST/fvalg-1/lib
+</pre></div> オプションのうち -lm -lpthread -L/opt/FAST/fvalg-1/lib は必須です。FIEライブラリのリンクオプションについては以下の表の通りです。 <table class="pretable">
+<tr>
+<th>使用するライブラリ</th><th>共有ライブラリ名</th><th>gccの引数に追加するオプション </th></tr>
+<tr>
+<td>FIEライブラリ</td><td>libfvalg.so</td><td>-lfvalg </td></tr>
+<tr>
+<td>関数の説明に  <img class= inline-img src="oss.png" alt="[[OSS]]">  と記述されているライブラリ</td><td>libfvalg_oss.so</td><td>-lfvalg -lfvalg_oss </td></tr>
+<tr>
+<td>カメラキャリブレーションライブラリ</td><td>libfvalg_camcalib.so</td><td>-lfvalg -lfvalg_oss -lfvalg_camcalib </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>カメラからの画像取り込みや画像の表示等に関して</b></dt><dd>FIEライブラリでは、カメラからの画像取り込みや画像表示、GUIといった、画像処理以外のライブラリを用意していません。 弊社FTLライブラリやカメラメーカーの提供するSDK等をご利用ください。 カメラSDKなど他のライブラリの画像は、 <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe" title="ルート画像の確保(import版)">fnFIE_img_root_import_alloc()</a> 関数を使用してFIEライブラリの画像オブジェクトとして取扱可能です。 詳細は <a class="el" href="group__fie__image.html">画像オブジェクトの説明</a> をご覧ください。 </dd></dl>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:32 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 基本理論</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>基本理論<br>
+<small>
+[<a class="el" href="group__fie__opt__camcalib.html">カメラキャリブレーション</a>]</small>
+</h1><h2><a class="anchor" name="pinhole_cam">
+ピンホールカメラモデル</a></h2>
+同次座標を用いて２次元座標上の点を <img class="formulaInl" alt="$ \tilde{\bf{m}} = \left[ \begin{array}{ccc} u &amp; v &amp; 1 \end{array} \right]^t $" src="form_1041.png"> ３次元座標上の点を <img class="formulaInl" alt="$ \tilde{\bf{M}} = \left[ \begin{array}{cccc} X&amp; Y&amp; Z&amp; 1 \end{array} \right]^t $" src="form_1042.png"> と表します。 この同次座標を用いると、ピンホールカメラモデルでの ３Ｄワールド座標点から画像の２Ｄ座標点（撮像平面） への座標変換は次式にて表現できます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ s\tilde{\bf{m}} = \bf{A}\ [\bf{R}|\bf{T}]\ \tilde{\bf{M}} \]" src="form_1043.png">
+<p>
+ ただし、<br>
+ <img class="formulaInl" alt="$s$" src="form_1044.png"> ： 任意の定数 <br>
+ <img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> ：カメラ内部パラメータ行列 <br>
+ <img class="formulaInl" alt="$[\bf{R}|\bf{T}]$" src="form_1045.png"> ：３Ｄカメラ外部パラメータ行列 <br>
+<p>
+カメラ内部パラメータ行列 <img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> は正規化カメラ座標系から理想画像座標系への変換を表し、 次のように定義されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{A} = \left[ \begin{array}{ccc} \alpha &amp; \gamma &amp; u_0 \\ 0 &amp; \beta &amp; v_0 \\ 0 &amp; 0 &amp; 1 \\ \end{array} \right] \]" src="form_1033.png">
+<p>
+ ただし <br>
+ <img class="formulaInl" alt="$u_0, v_0$" src="form_1046.png"> ：画像上の光軸中心（主点）へのオフセット成分 <br>
+ <img class="formulaInl" alt="$\gamma$" src="form_471.png"> ：スキュー成分 <br>
+ <img class="formulaInl" alt="$\alpha, \beta$" src="form_1047.png"> ：スケール成分 <br>
+<p>
+３Ｄカメラ外部パラメータ行列 <img class="formulaInl" alt="$[\bf{R} | \bf{T}]$" src="form_1048.png"> は、 3x3の回転行列 <img class="formulaInl" alt="$\bf{R}$" src="form_1034.png"> と 1x3の並進行列 <img class="formulaInl" alt="$\bf{T}$" src="form_1035.png"> を結合したもので、 ワールド座標系と正規化カメラ座標系の間の変換を表します。 各成分による表記をすれば、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left[ \bf{R} | \bf{T} \right] = \left[ \begin{array}{cccc} r_{11} &amp; r_{12} &amp; r_{13} &amp; t_1\\ r_{21} &amp; r_{22} &amp; r_{23} &amp; t_2\\ r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \end{array} \right] \]" src="form_1049.png">
+<p>
+ となります。<p>
+次にキャリブレーションに使用するモデルの座標を考えます。 当ライブラリではモデル点列は平面上に存在していると仮定しており、 その平面上に原点を、平面に直交する方向にＺ軸を置きます。 するとこの座標系におけるモデルの３次元座標は、 <img class="formulaInl" alt="$ \tilde{\bf{M}} = \left[ \begin{array}{cccc} X &amp; Y &amp; 0 &amp; 1 \end{array} \right]^t $" src="form_1050.png"> と書けるので、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ s\tilde{\bf{m}} = \bf{A} \left[ \begin{array}{cccc} r_{11} &amp; r_{12} &amp; r_{13} &amp; t_1 \\ r_{21} &amp; r_{22} &amp; r_{23} &amp; t_2 \\ r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \end{array} \right] \left[ \begin{array}{c} X\\ Y\\ 0\\ 1 \end{array} \right] \]" src="form_1051.png">
+<p>
+ となります。 Ｚ軸の値が全てゼロになるため、これを書き直すと、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ s\tilde{\bf{m}} = \bf{A} \left[ \begin{array}{ccc} r_{11} &amp; r_{12} &amp; t_1 \\ r_{21} &amp; r_{22} &amp; t_2 \\ r_{31} &amp; r_{32} &amp; t_3 \end{array} \right] \left[ \begin{array}{c} X\\ Y\\ 1 \end{array} \right] \]" src="form_1052.png">
+<p>
+ となります。 本ライブラリでは、この3x3行列 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{Rt} = \left[ \begin{array}{ccc} r_{11} &amp; r_{12} &amp; t_1 \\ r_{21} &amp; r_{22} &amp; t_2 \\ r_{31} &amp; r_{32} &amp; t_3 \end{array} \right] \]" src="form_1053.png">
+<p>
+ を <img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> と記述し、単に カメラ外部パラメータ と呼称しています。 この行列は正規化カメラ座標系とワールド空間上のある平面、 つまり、２Ｄワールド座標との関係を表しています。 また、<img class="formulaInl" alt="$\bf{A}$" src="form_1015.png"> と <img class="formulaInl" alt="$\bf{Rt}$" src="form_1029.png"> の積によるホモグラフィ行列 <img class="formulaInl" alt="$\bf{H}$" src="form_1031.png"> を <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \bf{H} = \bf{A}\ \bf{Rt} \]" src="form_1054.png">
+<p>
+ と定義し、これを 混合カメラパラメータ と呼称することにします。 この行列は理想画像座標系と２Ｄワールド座標との関係を表しています。<h2><a class="anchor" name="radial_distortion">
+レンズ放射歪み</a></h2>
+実際のカメラはピンホールカメラと異なり、光軸からの距離に応じた 放射歪みを伴います。そのため、これをモデル化し補正する必用が有ります。 本ライブラリでは、この放射歪みを次式によりモデル化しています。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \begin{array}{l} \breve{x} = x+x[k_1(x^2+y^2)+k_2(x^2+y^2)^2] \\ \breve{y} = y+y[k_1(x^2+y^2)+k_2(x^2+y^2)^2] \end{array} \]" src="form_1055.png">
+<p>
+ ただし、<br>
+ <img class="formulaInl" alt="$ k_1, k_2 $" src="form_1056.png"> ：放射歪み係数 <br>
+ <img class="formulaInl" alt="$(u, v)$" src="form_1057.png"> ：歪みのない理想的な(観測することができない)画像座標上での点座標 <br>
+ <img class="formulaInl" alt="$(\breve{u}, \breve{v})$" src="form_1058.png"> ：実際に撮像した、歪みのあるカメラ画像座標上での点座標 <br>
+ <img class="formulaInl" alt="$(x, y)$" src="form_483.png"> ：<img class="formulaInl" alt="$(u, v)$" src="form_1057.png"> を正規化画像座標系へ変換した座標 <br>
+ <img class="formulaInl" alt="$(\breve{x},\breve{y})$" src="form_1059.png"> ：<img class="formulaInl" alt="$(\breve{u}, \breve{v})$" src="form_1058.png"> を正規化画像座標系へ変換した座標 <br>
+<p>
+ここで、<img class="formulaInl" alt="$(x, y)$" src="form_483.png"> はカメラ内部パラメータ行列の成分を用いて <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \begin{array}{l} \breve{u} = \alpha\breve{x}+\gamma\breve{y}+u_0 \\ \breve{v} = \beta\breve{y}+v_0 \end{array} \]" src="form_1060.png">
+<p>
+ と書けるので <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \begin{array}{l} \breve{u} = u+(u-u_0)[k_1(x^2+y^2)+k_2(x^2+y^2)^2] \\ \breve{v} = v+(v-v_0)[k_1(x^2+y^2)+k_2(x^2+y^2)^2] \end{array} \]" src="form_1061.png">
+<p>
+ となります。本ライブラリではこの式を用いて理想画像座標系と 歪みのあるカメラ画像座標系（カメラ画像座標系）との変換を行います。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

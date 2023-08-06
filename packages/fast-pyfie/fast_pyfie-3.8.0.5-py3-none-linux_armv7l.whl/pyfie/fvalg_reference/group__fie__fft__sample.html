@@ -1,0 +1,646 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: サンプルコード</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>サンプルコード<br>
+<small>
+[<a class="el" href="group__fie__fft__base.html">高速フーリエ変換</a>]</small>
+</h1><h2><a class="anchor" name="fie_fft_mag_sample">
+周波数画像可視化サンプル</a></h2>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> INT sample_fft_shift( FHANDLE himg );
+<span class="keyword">static</span> VOID sample_calc_power_2(INT src_value, INT *dst_value, DOUBLE *coeff);
+
+<span class="comment">//周波数画像の可視化を行うサンプル関数.</span>
+INT sample_fft_mag()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+
+    INT width_p2, height_p2;
+    INT s_type, s_ch, s_width, s_height;
+
+    <span class="comment">//アフィン変換各種パラメータ.</span>
+    INT clear_flag = FALSE;
+    INT sampling_mode = <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e14f07e347ff74354ebf9cfcf72f51306" title="最近傍法">F_SAMPLING_NN</a>;<span class="comment">//NN以外は画像周辺が欠けるため変更不可.</span>
+    FHANDLE haffine = NULL;
+    DOUBLE w_coeff, h_coeff;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat = NULL;
+    FHANDLE hsrc_fft = NULL;
+
+    <span class="comment">//FFT用パラメータ.</span>
+    FHANDLE himg_re = NULL, himg_im = NULL;
+    FHANDLE hfft = NULL;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#g6806749ca604740692886dac2e81251a" title="フーリエ変換の向き指定">f_fft_direction</a> direction = <a class="code" href="group__fie__fft.html#gg6806749ca604740692886dac2e81251ab97bedcb3af4117288b73035361c46e5">F_FFT_BIDIRECTION</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#gaa7eab052934ab1797db1a9f603b1fa8" title="フーリエ変換の正規化方法指定">f_fft_normalize_type</a> normalization = <a class="code" href="group__fie__fft.html#ggaa7eab052934ab1797db1a9f603b1fa86b2397c458508e96ee4e9e2023ff77e4">F_FFT_DIV_FWD_BY_N</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#gc2770286dec3ef9f3cb4eb7a6a601ad2" title="フーリエ変換の入力と出力データの型">f_fft_data_type</a> img_data_type = <a class="code" href="group__fie__fft.html#ggc2770286dec3ef9f3cb4eb7a6a601ad2ac3873cc1bc3707f177c7b955a2aac1c">F_2D_FFT_REAL</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#gc2770286dec3ef9f3cb4eb7a6a601ad2" title="フーリエ変換の入力と出力データの型">f_fft_data_type</a> fourier_data_type = <a class="code" href="group__fie__fft.html#ggc2770286dec3ef9f3cb4eb7a6a601ad206ebe3708ea60881f101daf6fc895972">F_2D_FFT_DOUBLEC</a>;
+
+    FHANDLE hmag = NULL;
+
+    <span class="comment">//入力画像読み込み適宜変更 濃淡画像（F_IMG_UC8）1chを想定.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( <span class="stringliteral">"sample.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;s_ch, &amp;s_type, NULL, &amp;s_width, &amp;s_height );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a> != s_type || 1 != s_ch ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//2のべき乗計算.</span>
+    sample_calc_power_2( s_width, &amp;width_p2, &amp;w_coeff );
+    sample_calc_power_2( s_height, &amp;height_p2, &amp;h_coeff );
+
+    <span class="comment">//画像サイズが縦横それぞれ2のn乗でない場合処理できないためサイズ調整.</span>
+    <span class="keywordflow">if</span>( s_width != width_p2 || s_height != height_p2 ){
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        haffine = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( s_type, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == haffine ) <span class="keywordflow">goto</span> exit;
+        mat = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+        <span class="keywordflow">if</span>( NULL == mat ) <span class="keywordflow">goto</span> exit;        
+
+        ret = <a class="code" href="group__fie__cg__geometric__transform.html#g08c98ab142ef574644c9ab3001cf581c" title="スケール変化する同次変換行列を作成">fnFIE_geotrans_calc_scale_matrix</a>( mat, w_coeff, h_coeff );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+        ret = <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>( hsrc, haffine, NULL, mat, clear_flag, sampling_mode );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+        hsrc_fft = haffine;
+    }<span class="keywordflow">else</span>{
+        hsrc_fft = hsrc;
+    }
+
+    <span class="comment">//出力画像準備.</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, s_ch, width_p2, height_p2 );
+    <span class="keywordflow">if</span>( NULL == hdst ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//FFT.</span>
+    {
+        INT freq_img_type = <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>;
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        himg_re = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( freq_img_type, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == himg_re ) <span class="keywordflow">goto</span> exit;
+        himg_im = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( freq_img_type, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == himg_im ) <span class="keywordflow">goto</span> exit;
+        hmag = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == hmag ) <span class="keywordflow">goto</span> exit;
+
+
+        ret = <a class="code" href="group__fie__fft.html#gd1a7a3399177111391d49eb34c74f44d" title="２次元フーリエ変換用にFFTハンドルを初期化する">fnFIE_fft_2D_alloc</a>( &amp;hfft, width_p2, height_p2, direction, normalization, img_data_type, fourier_data_type );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__fft.html#gd3943c2a5c44c063551c1c92dcc258a2" title="２次元実数画像を順方向フーリエ変換する">fnFIE_fft2_fwd_RealtoDD</a>( hfft, hsrc_fft, himg_re, himg_im );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">//強度画像生成.</span>
+    ret = <a class="code" href="group__fie__fft.html#g732c97706536acf260ba8f99b24e3c54" title="周波数領域複素数画像の強度と角度を計算する">fnFIE_fft2_get_mag_and_phase_DD</a>( himg_re, himg_im, hmag, NULL );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//各々見やすい画像になるように要調整.</span>
+    ret = <a class="code" href="group__fie__filter__arithm.html#g78e77e4d0d90370d73ed95e48c1b1577" title="画像と定数の加算">fnFIE_img_add_const</a>( hmag, 1e-9, hmag );<span class="comment">//強度値が0とならないように極小の値を加算.</span>
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    ret = <a class="code" href="group__fie__filter__arithm.html#g684dac465ce3750c416f8108f5fc3ffb" title="画像対数関数値演算">fnFIE_img_log</a>( hmag, hmag );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+        
+    <span class="comment">//DOUBLE -&gt; UC8</span>
+    ret = <a class="code" href="group__fie__std__operation.html#g3d515b8e1843ffa3dc986f67f0185d5c" title="濃度変換付き画像コピー">fnFIE_img_copy_ex</a>( hmag, hdst, 1, 0, 1 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//強度画像保存.</span>
+    ret = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"sample_mag.png"</span>, hdst, -1 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//画像中央が低周波、外側が高周波となるよう画像シフト.</span>
+    ret = sample_fft_shift( hdst );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    <span class="comment">//シフトした画像を保存.</span>
+    ret = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"sample_mag_shift.png"</span>, hdst, -1 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+exit:
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( mat );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( haffine );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg_re );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg_im );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmag );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hfft );
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = sample_fft_mag();
+
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/* ---------------------------------------- Utility Tools ---------------------------------------- */</span>
+
+<span class="comment">/*</span>
+<span class="comment">    画像シフト</span>
+<span class="comment">    </span>
+<span class="comment">    入力画像の上下左右を半分に分割し右上と左下、左上と右下の画素値をそれぞれ入れ替えます。</span>
+<span class="comment">    画像サイズは高さ幅共に2以上の偶数でなければなりません。奇数の場合はエラーを出力します。</span>
+<span class="comment"></span>
+<span class="comment"></span>
+<span class="comment">    「</span>
+<span class="comment">                     |</span>
+<span class="comment">            2        |        1</span>
+<span class="comment">                     |</span>
+<span class="comment">                     |</span>
+<span class="comment">     -----------------------------------</span>
+<span class="comment">                     |</span>
+<span class="comment">                     |</span>
+<span class="comment">            3        |        4</span>
+<span class="comment">                     |</span>
+<span class="comment">                                        」</span>
+<span class="comment"></span>
+<span class="comment">    1 &lt;--&gt; 3 , 2 &lt;--&gt; 4　を入れ替えます。</span>
+<span class="comment"></span>
+<span class="comment"></span>
+<span class="comment">    引数：</span>
+<span class="comment">        [in,out]    himg    入力画像のハンドル ( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri )</span>
+<span class="comment"></span>
+<span class="comment">    戻り値：</span>
+<span class="comment">        F_ERR_NONE          正常終了</span>
+<span class="comment">        F_ERR_NOMEMORY      メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_IMAGE 不正な画像ハンドルが渡された。画像サイズが2未満、または奇数。</span>
+<span class="comment">        F_ERR_NO_LICENCE    ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT sample_fft_shift( FHANDLE himg )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    FHANDLE quadrant_1 = NULL, quadrant_2 = NULL, quadrant_3 = NULL, quadrant_4 = NULL;
+
+    INT s_type, s_ch, s_width, s_height;
+
+    INT half_width, half_height;
+
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( himg, &amp;s_ch, &amp;s_type, NULL, &amp;s_width, &amp;s_height );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span>( 2 &gt; s_width || 2 &gt; s_height ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span>( 0 != s_width % 2 || 0 != s_height % 2 ) <span class="keywordflow">goto</span> exit;
+
+    half_height = s_height / 2;
+    half_width = s_width / 2;
+    
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    quadrant_1 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, half_width, 0, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_1 ) <span class="keywordflow">goto</span> exit;
+    quadrant_2 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, 0, 0, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_2 ) <span class="keywordflow">goto</span> exit;
+    quadrant_3 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, 0, half_height, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_3 ) <span class="keywordflow">goto</span> exit;
+    quadrant_4 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, half_width, half_height, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_4 ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__std__operation.html#g9d030640a1083d0011948014754c1d7d" title="画素値入替え">fnFIE_img_swap</a>( quadrant_1, quadrant_3 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    ret = <a class="code" href="group__fie__std__operation.html#g9d030640a1083d0011948014754c1d7d" title="画素値入替え">fnFIE_img_swap</a>( quadrant_2, quadrant_4 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+exit:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_2 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_3 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_4 );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    入力値に最も近い2以上の2のべき乗値を返します。また、スケール変換に用いる係数も同時に返します。</span>
+<span class="comment">    入力値が2^30を超える場合はオーバーフローを起こすため2^30を返します。</span>
+<span class="comment"></span>
+<span class="comment">    引数：</span>
+<span class="comment">        [in]    src_value       入力値</span>
+<span class="comment">        [out]   dst_value       出力値(2のべき乗)</span>
+<span class="comment">        [out]   coeff           スケール変換の同時行列用係数</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> VOID sample_calc_power_2(INT src_value, INT *dst_value, DOUBLE *coeff)
+{
+    INT corr_value = 2;
+    INT MAX_VALUE = 1 &lt;&lt; 30;
+
+    <span class="keywordflow">if</span>( MAX_VALUE &lt; src_value ) {
+        *dst_value = MAX_VALUE;
+        *coeff = (DOUBLE)MAX_VALUE / (DOUBLE)src_value;
+        <span class="keywordflow">return</span>;
+    }
+
+    <span class="comment">//一旦入力サイズ大きい2のべき乗サイズを取得.</span>
+    <span class="keywordflow">while</span>( src_value &gt; corr_value ){
+        corr_value = corr_value &lt;&lt; 1;
+    }
+
+    <span class="comment">//サイズ変更の幅が小さくなるよう調整.</span>
+    {
+        INT small_value = corr_value &gt;&gt; 1;
+
+        <span class="keywordflow">if</span>( ( abs( corr_value - src_value ) ) &gt; abs( src_value - small_value) )
+            corr_value = small_value;
+    }
+
+    *dst_value = corr_value;
+    *coeff = (DOUBLE)corr_value / (DOUBLE)src_value;
+
+    <span class="keywordflow">return</span>;
+}
+
+</pre></div><p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_fft2_mag.png" alt="fie_fft2_mag.png">
+<p><strong>強度画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_fft2_mag_shift.png" alt="fie_fft2_mag_shift.png">
+<p><strong>強度画像(低周波領域が中央にくるようシフト)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<h2><a class="anchor" name="fie_fft_sample">
+FFTを使用した実画像の周波数フィルタリングのサンプル</a></h2>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;math.h&gt;</span>
+<span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="keyword">static</span> INT sample_fft_shift( FHANDLE himg );
+<span class="keyword">static</span> VOID sample_calc_power_2(INT src_value, INT *dst_value, DOUBLE *coeff);
+
+<span class="comment">//低周波の領域のみを通過させるローパスフィルタリングを行うサンプル関数.</span>
+INT sample_fft()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+
+    INT width_p2, height_p2;
+    INT s_type, s_ch, s_width, s_height;
+
+    <span class="comment">//アフィン変換各種パラメータ.</span>
+    INT clear_flag = FALSE;
+    INT sampling_mode = <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e14f07e347ff74354ebf9cfcf72f51306" title="最近傍法">F_SAMPLING_NN</a>;<span class="comment">//NN以外は画像周辺が欠けるため変更不可.</span>
+    FHANDLE haffine = NULL;
+    FHANDLE hmask = NULL, hmask_affine = NULL;
+    DOUBLE w_coeff, h_coeff;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat = NULL;
+    FHANDLE hsrc_fft = NULL, hmask_fft = NULL;
+    FHANDLE hdst_buff = NULL;
+    BOOL affine_flag = FALSE;
+
+    <span class="comment">//FFT用パラメータ.</span>
+    FHANDLE himg_re = NULL, himg_im = NULL;
+    FHANDLE hfft = NULL;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#g6806749ca604740692886dac2e81251a" title="フーリエ変換の向き指定">f_fft_direction</a> direction = <a class="code" href="group__fie__fft.html#gg6806749ca604740692886dac2e81251ab97bedcb3af4117288b73035361c46e5">F_FFT_BIDIRECTION</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#gaa7eab052934ab1797db1a9f603b1fa8" title="フーリエ変換の正規化方法指定">f_fft_normalize_type</a> normalization = <a class="code" href="group__fie__fft.html#ggaa7eab052934ab1797db1a9f603b1fa86b2397c458508e96ee4e9e2023ff77e4">F_FFT_DIV_FWD_BY_N</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#gc2770286dec3ef9f3cb4eb7a6a601ad2" title="フーリエ変換の入力と出力データの型">f_fft_data_type</a> img_data_type = <a class="code" href="group__fie__fft.html#ggc2770286dec3ef9f3cb4eb7a6a601ad2ac3873cc1bc3707f177c7b955a2aac1c">F_2D_FFT_REAL</a>;
+    <span class="keyword">enum</span> <a class="code" href="group__fie__fft.html#gc2770286dec3ef9f3cb4eb7a6a601ad2" title="フーリエ変換の入力と出力データの型">f_fft_data_type</a> fourier_data_type = <a class="code" href="group__fie__fft.html#ggc2770286dec3ef9f3cb4eb7a6a601ad206ebe3708ea60881f101daf6fc895972">F_2D_FFT_DOUBLEC</a>;
+    DOUBLE scale_factor = 1.0;
+
+    <span class="comment">//入力画像読み込み適宜変更 濃淡画像（F_IMG_UC8）1chを想定.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>( <span class="stringliteral">"sample.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;s_ch, &amp;s_type, NULL, &amp;s_width, &amp;s_height );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a> != s_type || 1 != s_ch ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( s_type, s_ch, s_width, s_height );
+    <span class="keywordflow">if</span>( NULL == hdst ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//低周波の領域のみを通過させるマスクを作成.</span>
+    {
+        <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center;
+        DOUBLE val[<a class="code" href="group__fie__image.html#gae6eaddba13918e14b8f7499b6a84194">F_IMG_MAX_CHANNELS</a>] = { 1.0 };
+        DOUBLE diagonal = 0.0;
+        DOUBLE radius = 0.0;
+        diagonal = sqrt( (DOUBLE)s_width * (DOUBLE)s_width + (DOUBLE)s_height * (DOUBLE)s_height );
+
+        center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = (DOUBLE)s_width / 2.0;
+        center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = (DOUBLE)s_height / 2.0;
+
+        radius = (DOUBLE)diagonal / 2.0 * 0.2;
+
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        hmask = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, s_ch, s_width, s_height );
+        <span class="keywordflow">if</span>( NULL == hmask ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>( hmask, 0.0 );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>( hmask, val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, center, radius );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">//2のべき乗計算.</span>
+    sample_calc_power_2( s_width, &amp;width_p2, &amp;w_coeff );
+    sample_calc_power_2( s_height, &amp;height_p2, &amp;h_coeff );
+
+    <span class="comment">//画像サイズが縦横それぞれ2のn乗でない場合処理できないためサイズ調整.</span>
+    <span class="keywordflow">if</span>( s_width != width_p2 || s_height != height_p2 ){
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        haffine = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( s_type, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == haffine ) <span class="keywordflow">goto</span> exit;
+        hmask_affine = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == hmask_affine ) <span class="keywordflow">goto</span> exit;
+        hdst_buff = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( s_type, s_ch, width_p2, height_p2 );<span class="comment">//アフィン変換を行った場合のIFFTの結果を格納.</span>
+        <span class="keywordflow">if</span>( NULL == hdst_buff ) <span class="keywordflow">goto</span> exit;
+        mat = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+        <span class="keywordflow">if</span>( NULL == mat ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__cg__geometric__transform.html#g08c98ab142ef574644c9ab3001cf581c" title="スケール変化する同次変換行列を作成">fnFIE_geotrans_calc_scale_matrix</a>( mat, w_coeff, h_coeff );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+        ret = <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>( hsrc, haffine, NULL, mat, clear_flag, sampling_mode );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+        ret = <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>( hmask, hmask_affine, NULL, mat, clear_flag, sampling_mode );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+        hsrc_fft = haffine;
+        hmask_fft = hmask_affine;
+        affine_flag = TRUE;
+    }<span class="keywordflow">else</span>{
+        hsrc_fft = hsrc;
+        hmask_fft = hmask;
+    }
+
+    <span class="comment">//マスクの画素をFFTのフィルタ用にシフト.</span>
+    ret = sample_fft_shift( hmask_fft );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//FFT.</span>
+    {
+        INT freq_img_type = <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>;
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        himg_re = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( freq_img_type, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == himg_re ) <span class="keywordflow">goto</span> exit;
+        himg_im = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( freq_img_type, s_ch, width_p2, height_p2 );
+        <span class="keywordflow">if</span>( NULL == himg_im ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__fft.html#gd1a7a3399177111391d49eb34c74f44d" title="２次元フーリエ変換用にFFTハンドルを初期化する">fnFIE_fft_2D_alloc</a>( &amp;hfft, width_p2, height_p2, direction, normalization, img_data_type, fourier_data_type );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__fft.html#gd3943c2a5c44c063551c1c92dcc258a2" title="２次元実数画像を順方向フーリエ変換する">fnFIE_fft2_fwd_RealtoDD</a>( hfft, hsrc_fft, himg_re, himg_im );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">//低周波の領域のみを通過させるマスクを適用.</span>
+    ret = <a class="code" href="group__fie__filter__arithm.html#g505761904db0f05f419c90f371c5faa5" title="画像マスク転送">fnFIE_img_mask</a>(himg_re, hmask_fft, himg_re);
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    ret = <a class="code" href="group__fie__filter__arithm.html#g505761904db0f05f419c90f371c5faa5" title="画像マスク転送">fnFIE_img_mask</a>(himg_im, hmask_fft, himg_im);
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">//IFFT.</span>
+    <span class="comment">//画像を2のn乗サイズに変換している場合は元のサイズに戻す.</span>
+    <span class="keywordflow">if</span>( TRUE == affine_flag ) {
+        ret = <a class="code" href="group__fie__fft.html#gdaa6c579578424371e9a6ac11ef4c2c7" title="２次元複素数画像を逆フーリエ変換し、実数画像を出力する...">fnFIE_fft2_inv_DDtoReal</a>( hfft, himg_re, himg_im, hdst_buff, scale_factor );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+        ret = <a class="code" href="group__fie__cg__geometric__transform.html#g08c98ab142ef574644c9ab3001cf581c" title="スケール変化する同次変換行列を作成">fnFIE_geotrans_calc_scale_matrix</a>( mat, 1.0 / w_coeff, 1.0 / h_coeff );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+        ret = <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>( hdst_buff, hdst, NULL, mat, clear_flag, sampling_mode );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    }<span class="keywordflow">else</span>{
+        ret = <a class="code" href="group__fie__fft.html#gdaa6c579578424371e9a6ac11ef4c2c7" title="２次元複素数画像を逆フーリエ変換し、実数画像を出力する...">fnFIE_fft2_inv_DDtoReal</a>( hfft, himg_re, himg_im, hdst, scale_factor );
+        <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">//結果画像保存.</span>
+    ret = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"sample_dst.png"</span>, hdst, -1 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+exit:
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>( mat );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( haffine );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmask );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmask_affine );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg_re );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg_im );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst_buff );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hfft );
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = sample_fft();
+
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+
+
+<span class="comment">/* ---------------------------------------- Utility Tools ---------------------------------------- */</span>
+
+<span class="comment">/*</span>
+<span class="comment">    画像シフト</span>
+<span class="comment"></span>
+<span class="comment">    入力画像の上下左右を半分に分割し右上と左下、左上と右下の画素値をそれぞれ入れ替えます。</span>
+<span class="comment">    画像サイズは高さ幅共に2以上の偶数でなければなりません。奇数の場合はエラーを出力します。</span>
+<span class="comment"></span>
+<span class="comment"></span>
+<span class="comment">    「</span>
+<span class="comment">                     |</span>
+<span class="comment">            2        |        1</span>
+<span class="comment">                     |</span>
+<span class="comment">                     |</span>
+<span class="comment">     -----------------------------------</span>
+<span class="comment">                     |</span>
+<span class="comment">                     |</span>
+<span class="comment">            3        |        4</span>
+<span class="comment">                     |</span>
+<span class="comment">                                        」</span>
+<span class="comment"></span>
+<span class="comment">    1 &lt;--&gt; 3 , 2 &lt;--&gt; 4　を入れ替える。</span>
+<span class="comment"></span>
+<span class="comment"></span>
+<span class="comment">    引数：</span>
+<span class="comment">        [in,out]    himg    入力画像のハンドル ( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri )</span>
+<span class="comment"></span>
+<span class="comment">    戻り値：</span>
+<span class="comment">        F_ERR_NONE          正常終了</span>
+<span class="comment">        F_ERR_NOMEMORY      メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_IMAGE 不正な画像ハンドルが渡された。画像サイズが2未満、または奇数。</span>
+<span class="comment">        F_ERR_NO_LICENCE    ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT sample_fft_shift( FHANDLE himg )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    FHANDLE quadrant_1 = NULL, quadrant_2 = NULL, quadrant_3 = NULL, quadrant_4 = NULL;
+
+    INT s_type, s_ch, s_width, s_height;
+
+    INT half_width, half_height;
+
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( himg, &amp;s_ch, &amp;s_type, NULL, &amp;s_width, &amp;s_height );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span>( 2 &gt; s_width || 2 &gt; s_height ) <span class="keywordflow">goto</span> exit;
+    <span class="keywordflow">if</span>( 0 != s_width % 2 || 0 != s_height % 2 ) <span class="keywordflow">goto</span> exit;
+
+    half_height = s_height / 2;
+    half_width = s_width / 2;
+    
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    quadrant_1 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, half_width, 0, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_1 ) <span class="keywordflow">goto</span> exit;
+    quadrant_2 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, 0, 0, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_2 ) <span class="keywordflow">goto</span> exit;
+    quadrant_3 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, 0, half_height, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_3 ) <span class="keywordflow">goto</span> exit;
+    quadrant_4 = <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( himg, half_width, half_height, half_width, half_height );
+    <span class="keywordflow">if</span>( NULL == quadrant_4 ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__std__operation.html#g9d030640a1083d0011948014754c1d7d" title="画素値入替え">fnFIE_img_swap</a>( quadrant_1, quadrant_3 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+    ret = <a class="code" href="group__fie__std__operation.html#g9d030640a1083d0011948014754c1d7d" title="画素値入替え">fnFIE_img_swap</a>( quadrant_2, quadrant_4 );
+    <span class="keywordflow">if</span>( <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret ) <span class="keywordflow">goto</span> exit;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+exit:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_2 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_3 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( quadrant_4 );
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    入力値に最も近い2以上の2のべき乗値を返します。また、スケール変換に用いる係数も同時に返します。</span>
+<span class="comment">    入力値が2^30を超える場合はオーバーフローを起こすため2^30を返します。</span>
+<span class="comment"></span>
+<span class="comment">    引数：</span>
+<span class="comment">        [in]    src_value       入力値</span>
+<span class="comment">        [out]   dst_value       出力値(2のべき乗)</span>
+<span class="comment">        [out]   coeff           スケール変換の同時行列用係数</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> VOID sample_calc_power_2( INT src_value, INT *dst_value, DOUBLE *coeff )
+{
+    INT corr_value = 2;
+    INT MAX_VALUE = 1 &lt;&lt; 30;
+
+    <span class="keywordflow">if</span>( MAX_VALUE &lt; src_value ) {
+        *dst_value = MAX_VALUE;
+        *coeff = (DOUBLE)MAX_VALUE / (DOUBLE)src_value;
+        <span class="keywordflow">return</span>;
+    }
+
+    <span class="comment">//一旦入力サイズ大きい2のべき乗サイズを取得.</span>
+    <span class="keywordflow">while</span>( src_value &gt; corr_value ){
+        corr_value = corr_value &lt;&lt; 1;
+    }
+
+    <span class="comment">//サイズ変更の幅が小さくなるよう調整.</span>
+    {
+        INT small_value = corr_value &gt;&gt; 1;
+
+        <span class="keywordflow">if</span>( ( abs( corr_value - src_value ) ) &gt; abs( src_value - small_value ) )
+            corr_value = small_value;
+    }
+
+    *dst_value = corr_value;
+    *coeff = (DOUBLE)corr_value / (DOUBLE)src_value;
+
+    <span class="keywordflow">return</span>;
+}
+</pre></div><p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_fft2.png" alt="fie_fft2.png">
+<p><strong>出力画像(高周波成分除去)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

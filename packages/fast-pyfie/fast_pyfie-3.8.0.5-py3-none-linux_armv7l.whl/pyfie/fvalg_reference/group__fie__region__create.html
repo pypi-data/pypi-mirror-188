@@ -1,0 +1,749 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: リージョン作成</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>リージョン作成<br>
+<small>
+[<a class="el" href="group__fie__region__base.html">リージョン処理</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__create.html#gcc0da34f7bc79d63c33de8bac510b3bc">fnFIE_create_region_rect</a> (INT iXS, INT iYS, INT iWidth, INT iHeight)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">長方形リージョンを作成する関数  <a href="#gcc0da34f7bc79d63c33de8bac510b3bc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__create.html#g1c18c632f70571583ec21c356524a977">fnFIE_create_region_circle</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> dpntCenter, DOUBLE dRadius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">円形リージョンを作成する関数  <a href="#g1c18c632f70571583ec21c356524a977"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__create.html#g878124f568152fbea1ee63af3c3008c2">fnFIE_create_region_ellipse</a> (<a class="el" href="structDPNT__T.html">DPNT_T</a> dpntCenter, DOUBLE dMajor, DOUBLE dMinor, DOUBLE dTheta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">楕円形リージョンを作成する関数  <a href="#g878124f568152fbea1ee63af3c3008c2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__create.html#g3095c28e034f240e04c80eb8bd67c6bd">fnFIE_create_region_polygon</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *dpntVertex, UINT uiVerNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">多角形リージョンを作成する関数  <a href="#g3095c28e034f240e04c80eb8bd67c6bd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__create.html#g2d44ba25cc0df446a79254611cacc720">fnFIE_create_region_runlength</a> (const <a class="el" href="structF__RUNLENGTH.html">F_RUNLENGTH</a> *pRuns, UINT uiRunNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ラン配列によってリージョンを作成  <a href="#g2d44ba25cc0df446a79254611cacc720"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gcc0da34f7bc79d63c33de8bac510b3bc"></a><!-- doxytag: member="fie_region_create.c::fnFIE_create_region_rect" ref="gcc0da34f7bc79d63c33de8bac510b3bc" args="(INT iXS, INT iYS, INT iWidth, INT iHeight)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_create_region_rect           </td>
+          <td>(</td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iXS</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iYS</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iWidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iHeight</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+長方形リージョンを作成する関数 
+<p>
+長方形リージョンを作成し、作成されたリージョンのハンドルを返します。 <em>iWidth</em> 及び <em>iHeight</em> は画素の中心間距離を表す値として処理されるため、 作成後の画素数には注意が必要です。 たとえば <em>iWidth=2</em>, <em>iHeight=3</em> にて作成した場合、 作成されるリージョンは横3画素、縦4画素の長方形になります。 また <em>iWidth</em> = 0, <em>iHeight</em> = 0 にて作成した場合は１画素の点リージョンが作成されます。<p>
+作成されたリージョンが不要になった後は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて ハンドルを解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iXS</em>&nbsp;</td><td>リージョンの左上のX座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iYS</em>&nbsp;</td><td>リージョンの左上のY座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iWidth</em>&nbsp;</td><td>リージョンの横サイズ(0以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iHeight</em>&nbsp;</td><td>リージョンの縦サイズ(0以上)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>正常終了</em>&nbsp;</td><td>作成されたリージョンのハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__img__draw.html#g862787acd9a7fc7efec46816c6090a8c" title="長方形の描画">fnFIE_draw_rect()</a>, <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="preprocessor">#define WIDTH 256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 192</span>
+<span class="preprocessor"></span>
+VOID create_region_rect()
+{
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    FHANDLE hreg = NULL;    <span class="comment">//リージョン</span>
+
+    <span class="comment">//描画の際のオフセット量</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">//リージョン</span>
+    INT  xs;        <span class="comment">//リージョンの左上のX座標</span>
+    INT  ys;        <span class="comment">//リージョンの左上のY座標</span>
+    INT  r_width;   <span class="comment">//リージョンの横サイズ（0以上） </span>
+    INT  r_height;   <span class="comment">//リージョンの縦サイズ（0以上）</span>
+
+    <span class="comment">//パラメータ設定 </span>
+    xs = 0;     
+    ys = 0;
+    r_width = 100;
+    r_height = 70;
+
+    <span class="comment">//出力画像の領域を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT);
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//長方形リージョンを作成する関数</span>
+    hreg = <a class="code" href="group__fie__region__create.html#gcc0da34f7bc79d63c33de8bac510b3bc" title="長方形リージョンを作成する関数">fnFIE_create_region_rect</a>(xs, ys, r_width, r_height);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = (r_width-WIDTH)/2;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = (r_height-HEIGHT)/2;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> -= r_width/2;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> -= r_height/2;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> += r_width;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> += r_height;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">// 結果画像をPNG形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"result.png"</span>, hdst, -1 );
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    create_region_rect();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は, <a class="el" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode()</a>にてリージョンを画像に描画した結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="region_rect.png" alt="region_rect.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1c18c632f70571583ec21c356524a977"></a><!-- doxytag: member="fie_region_create.c::fnFIE_create_region_circle" ref="g1c18c632f70571583ec21c356524a977" args="(DPNT_T dpntCenter, DOUBLE dRadius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_create_region_circle           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>dpntCenter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dRadius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+円形リージョンを作成する関数 
+<p>
+円形リージョンを作成し、作成されたリージョンのハンドルを返します。 作成される円形リージョンは <a class="el" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle()</a> F_DRAW_FILL_INモード で描画される図形と同一形状になります。<p>
+下図に示す円は、中心が(4.0, 4.0)、半径が 2.0 の円リージョンを作成した場合の例です。 なお、与えられたパラメータは四捨五入されて処理されます。 そのため、中心が(3.5, 3.5)、半径が1.5の円と、中心が(4.4, 4.4)、半径が2.4の円は、 下図と同じ円リージョンとなります。 また、半径が0の円は、中心座標１画素のみの点として描画されます。<p>
+<div align="center">
+<img src="draw_circle.png" alt="draw_circle.png">
+</div>
+<p>
+作成されたリージョンが不要になった後は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて ハンドルを解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dpntCenter</em>&nbsp;</td><td>円形リージョンの円心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dRadius</em>&nbsp;</td><td>円形リージョンの半径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>正常終了</em>&nbsp;</td><td>作成されたリージョンのハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle()</a>, <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="preprocessor">#define WIDTH 256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 192</span>
+<span class="preprocessor"></span>
+VOID create_region_circle()
+{
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    FHANDLE hreg = NULL;    <span class="comment">//リージョン</span>
+
+    <span class="comment">//描画の際のオフセット量</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">//リージョン</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  pnt_center; <span class="comment">//円リージョンの円心座標</span>
+    DOUBLE  radius;     <span class="comment">//円リージョンの半径</span>
+
+    <span class="comment">//パラメータ設定</span>
+    pnt_center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=0;     
+    pnt_center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=0;
+    radius = 40;
+
+    <span class="comment">//出力画像の領域を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT);
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//円形リージョンを作成する関数</span>
+    hreg = <a class="code" href="group__fie__region__create.html#g1c18c632f70571583ec21c356524a977" title="円形リージョンを作成する関数">fnFIE_create_region_circle</a>(pnt_center, radius);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = -(WIDTH/2);
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = -(HEIGHT/2);
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> -= (INT)radius;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> -= (INT)radius;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> += (INT)radius*2;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> += (INT)radius*2;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">// 結果画像をPNG形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"result.png"</span>, hdst, -1 );
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    create_region_circle();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は, <a class="el" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode()</a>にてリージョンを画像に描画した結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="region_circle.png" alt="region_circle.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g878124f568152fbea1ee63af3c3008c2"></a><!-- doxytag: member="fie_region_create.c::fnFIE_create_region_ellipse" ref="g878124f568152fbea1ee63af3c3008c2" args="(DPNT_T dpntCenter, DOUBLE dMajor, DOUBLE dMinor, DOUBLE dTheta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_create_region_ellipse           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>dpntCenter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dMajor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dMinor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTheta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+楕円形リージョンを作成する関数 
+<p>
+楕円形リージョンを作成し、作成されたリージョンのハンドルを返します。 作成される楕円リージョンは <a class="el" href="group__fie__img__draw.html#g8a051485d36dcfc4857f18af1e1975c1" title="楕円の描画">fnFIE_draw_ellipse()</a> F_DRAW_FILL_INモード で描画される図形と同一形状になります。<p>
+下図に示す楕円は、中心が(5.0, 4.0)、長軸半径が3.0、短軸半径が2.0の楕円リージョンを作成した場合の例です。 また、長軸半径と短軸半径をともに0とした場合、１点のリージョンが作成されます。<p>
+<div align="center">
+<img src="draw_ellipse.png" alt="draw_ellipse.png">
+</div>
+<p>
+作成されたリージョンが不要になった後は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて ハンドルを解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dpntCenter</em>&nbsp;</td><td>楕円リージョンの円心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dMajor</em>&nbsp;</td><td>楕円長軸の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dMinor</em>&nbsp;</td><td>楕円短軸の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTheta</em>&nbsp;</td><td>楕円回転角（ラジアン）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>正常終了</em>&nbsp;</td><td>作成されたリージョンのハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__img__draw.html#g8a051485d36dcfc4857f18af1e1975c1" title="楕円の描画">fnFIE_draw_ellipse()</a>, <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="preprocessor">#define WIDTH 256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 192</span>
+<span class="preprocessor"></span>
+VOID create_region_ellipse()
+{
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    FHANDLE hreg = NULL;    <span class="comment">//リージョン</span>
+
+    <span class="comment">//描画</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">//リージョン</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnt_center;  <span class="comment">//楕円リージョンの円心座標  </span>
+    DOUBLE major;       <span class="comment">//楕円長軸の半径  </span>
+    DOUBLE minor;       <span class="comment">//楕円短軸の半径  </span>
+    DOUBLE theta;       <span class="comment">//楕円回転角（ラジアン） </span>
+
+    <span class="comment">//パラメータ設定</span>
+    pnt_center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>=0;     
+    pnt_center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>=0;
+    major = 25;
+    minor = 50;
+    theta = PI/4;
+
+    <span class="comment">//出力画像の領域を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT);
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//楕円リージョンを作成する関数</span>
+    hreg = <a class="code" href="group__fie__region__create.html#g878124f568152fbea1ee63af3c3008c2" title="楕円形リージョンを作成する関数">fnFIE_create_region_ellipse</a>(pnt_center, major, minor, theta);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = -(WIDTH/2);
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = -(HEIGHT/2);
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> -= (INT)sqrt((major*major)+(minor*minor));
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> -= (INT)sqrt((major*major)+(minor*minor));
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> += ((INT)sqrt((major*major)+(minor*minor)))*2;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> += ((INT)sqrt((major*major)+(minor*minor)))*2;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">// 結果画像をPNG形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"result.png"</span>, hdst, -1 );
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    create_region_ellipse();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は, <a class="el" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode()</a>にてリージョンを画像に描画した結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="region_ellipse.png" alt="region_ellipse.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3095c28e034f240e04c80eb8bd67c6bd"></a><!-- doxytag: member="fie_region_create.c::fnFIE_create_region_polygon" ref="g3095c28e034f240e04c80eb8bd67c6bd" args="(const DPNT_T *dpntVertex, UINT uiVerNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_create_region_polygon           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>dpntVertex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>uiVerNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+多角形リージョンを作成する関数 
+<p>
+多角形リージョンを作成し、作成されたリージョンのハンドルを返します。<p>
+与えられた頂点を、Pn = { p(0),p(1),…,p(n-2),p(n-1)} とし、 これらの頂点により作成される多角形のリージョンを作成します。 p(0)と p(n-1)は、接続しているとして処理します。 ただし、頂点数が１の場合は点の、２の場合は線状のリージョンとなります。<p>
+作成されるリージョンは <a class="el" href="group__fie__img__draw.html#g0045909ea39b11183dc8776dd8e832b7" title="多角形の描画">fnFIE_draw_polygon()</a> F_DRAW_FILL_IN モード で描画される図形とほぼ同一形状になります。 頂点の集合が占める縦横のサイズがI32_MAXより充分に小さくない場合に一部異なります。<p>
+作成されたリージョンが不要になった後は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて ハンドルを解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dpntVertex</em>&nbsp;</td><td>頂点の集合 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiVerNum</em>&nbsp;</td><td>頂点数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>正常終了</em>&nbsp;</td><td>作成されたリージョンのハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__img__draw.html#g0045909ea39b11183dc8776dd8e832b7" title="多角形の描画">fnFIE_draw_polygon()</a>, <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="preprocessor">#define WIDTH 256</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 192</span>
+<span class="preprocessor"></span>
+VOID create_region_polygon()
+{
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;  <span class="comment">//R画像</span>
+    FHANDLE hrgb_g = NULL;  <span class="comment">//G画像</span>
+    FHANDLE hrgb_b = NULL;  <span class="comment">//B画像</span>
+
+    FHANDLE hreg = NULL;    <span class="comment">//リージョン</span>
+
+    <span class="comment">//描画</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">//リージョン</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnt_vertex[6];   <span class="comment">//頂点の集合  </span>
+    UINT ver_num;           <span class="comment">//頂点数 </span>
+ 
+    <span class="comment">//パラメータ設定</span>
+    pnt_vertex[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;  pnt_vertex[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    pnt_vertex[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 60; pnt_vertex[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    pnt_vertex[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 40; pnt_vertex[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 30;
+    pnt_vertex[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 60; pnt_vertex[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;
+    pnt_vertex[4].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;  pnt_vertex[4].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;
+    pnt_vertex[5].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 20; pnt_vertex[5].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 30;
+    
+    ver_num = 6;        <span class="comment">//頂点数6</span>
+
+    <span class="comment">//出力画像の領域を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT);
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//多角形リージョンを作成する関数</span>
+    hreg = <a class="code" href="group__fie__region__create.html#g3095c28e034f240e04c80eb8bd67c6bd" title="多角形リージョンを作成する関数">fnFIE_create_region_polygon</a>(pnt_vertex, ver_num);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = ((INT)pnt_vertex[1].x-WIDTH)/2;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = ((INT)pnt_vertex[3].y-HEIGHT)/2;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> -= (INT)pnt_vertex[1].x;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> -= (INT)pnt_vertex[3].y;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_g, offset, 0);
+
+    <span class="comment">//オフセット設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> += (INT)pnt_vertex[1].x*2;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> += (INT)pnt_vertex[3].y*2;
+
+    <span class="comment">//リージョンを描画する</span>
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_r, offset, 0);
+    <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>(hreg, hrgb_b, offset, 0);
+
+    <span class="comment">// 結果画像をPNG形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"result.png"</span>, hdst, -1 );
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_r);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_g);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hrgb_b);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    create_region_polygon();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は, <a class="el" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode()</a>にてリージョンを画像に描画した結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="region_polygon.png" alt="region_polygon.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2d44ba25cc0df446a79254611cacc720"></a><!-- doxytag: member="fie_region_runlength.c::fnFIE_create_region_runlength" ref="g2d44ba25cc0df446a79254611cacc720" args="(const F_RUNLENGTH *pRuns, UINT uiRunNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_create_region_runlength           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__RUNLENGTH.html">F_RUNLENGTH</a> *&nbsp;</td>
+          <td class="paramname"> <em>pRuns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>uiRunNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ラン配列によってリージョンを作成 
+<p>
+入力ラン配列によって新たにリージョンを作成します。 生成されるリージョンオブジェクトには入力ラン <em>pRuns</em> の内容がコピーされます。 <em>pRuns</em> が生成されるリージョンオブジェクトに関連づけられるわけではありません。<p>
+作成したリージョンオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pRuns</em>&nbsp;</td><td>ラン配列のポインタ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiRunNum</em>&nbsp;</td><td>配列中のランの数</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は作成されたリージョンのハンドルを返します。 異常終了した場合はNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

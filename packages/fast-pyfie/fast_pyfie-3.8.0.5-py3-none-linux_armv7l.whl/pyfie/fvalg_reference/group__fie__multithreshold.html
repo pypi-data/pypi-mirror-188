@@ -1,0 +1,523 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 多値化</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>多値化<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multithreshold.html#gb09a31f438a635bb4ea162619cc0f517">fnFIE_meanshift_multithreshold</a> (FHANDLE hsrc, FHANDLE hdst, INT **thresh, INT *num_discrimination, DOUBLE bandwidth, DOUBLE union_thresh, INT dst_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Mean-Shift 法による多値化  <a href="#gb09a31f438a635bb4ea162619cc0f517"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multithreshold.html#ga2766ddc3bfa53dd65d18a2bd805e1c6">fnFIE_discrimination_multithreshold</a> (FHANDLE hsrc, FHANDLE hdst, INT *thresh, INT num_discrimination, INT dst_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">判別分析法による多値化  <a href="#ga2766ddc3bfa53dd65d18a2bd805e1c6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__multithreshold.html#g25c09c43dd28fd3dd22c3336d03027f4">fnFIE_kittler_multithreshold</a> (FHANDLE hsrc, FHANDLE hdst, INT *thresh, INT num_discrimination, INT dst_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">キトラー(Kittler)法による多値化  <a href="#g25c09c43dd28fd3dd22c3336d03027f4"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gb09a31f438a635bb4ea162619cc0f517"></a><!-- doxytag: member="fie_meanshift_multithreshold.c::fnFIE_meanshift_multithreshold" ref="gb09a31f438a635bb4ea162619cc0f517" args="(FHANDLE hsrc, FHANDLE hdst, INT **thresh, INT *num_discrimination, DOUBLE bandwidth, DOUBLE union_thresh, INT dst_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_meanshift_multithreshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>thresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_discrimination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>bandwidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>union_thresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dst_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Mean-Shift 法による多値化 
+<p>
+Mean-Shift 法によるクラスタリングを利用し、多値化処理をします。<br>
+ 多値化の分割数は自動的に決まります。<br>
+ <br>
+ 画素を標本点と見なして濃度値空間で Mean-Shift を実行し、 近い収束値に到達した標本点を同じクラスタに属するものとします。 濃度値が近いものはひとまとまりにされ、遠いものと分離されます。 また、小さなクラスタを濃度値が近い大きなクラスタにまとめ、過剰な濃度値の分割を抑制することもできます。<br>
+ 上記のようにクラスタリングを行った後、1つのクラスタに1つの出力値を割り当てることによって多値化を行います。<br>
+ <br>
+ 本関数では、確率密度関数の推定には Epanechnikov カーネルを使用します。<br>
+ そのほか、Mean-Shift 法に関するアルゴリズムは、 <a class="el" href="group__fie__filter.html#gde55fb9f2758774da4717eca45c09911" title="Mean-Shift 法による平滑化フィルタ">fnFIE_meanshift_filter()</a> を参照してください。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像オブジェクト (type:uc8,us16,s16 and ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>結果格納用画像オブジェクト <br>
+ 出力画像が必要でない場合には NULL を指定可能です。<br>
+ NULL でない場合、入力画像オブジェクトと同じ画像タイプ、サイズの 1ch 画像である必要があります。<br>
+ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>thresh</em>&nbsp;</td><td>多値化しきい値結果格納バッファ <br>
+ しきい値が必要でない場合には NULL を指定可能です。<br>
+ NULL 以外が指定された場合、 <em>thresh</em> は、関数内部で必要なメモリを確保します。 関数へのエントリー時、<em>*thresh</em> は NULL でなければいけません。確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。<br>
+ <em>num_discrimination</em> が 1 以外の場合、<em>thresh</em> は、(<em>num_discrimination</em> - 1) 個分のメモリを確保し、しきい値を格納します。 <em>num_discrimination</em> が 1 の場合は、要素1個分のメモリを確保し、入力画像が取りうる値の最小値を格納します。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_discrimination</em>&nbsp;</td><td>多値化の分割数 <br>
+ 多値化の分割数が必要でない場合には NULL を指定可能です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bandwidth</em>&nbsp;</td><td>カーネル幅 (0 &lt; <em>bandwidth</em>) <br>
+ 大きくなるほど多値化の分割数が小さくなります。 また、収束値の差が <em>bandwidth</em> 以下の標本点は、同じクラスタと見なされます。つまり、<em>dst_mode</em> = 0 の場合、出力画像の出現濃度値の間隔は、<em>bandwidth</em> 以上が保証されます。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>union_thresh</em>&nbsp;</td><td>クラスタ統合しきい値 (0 ≦ <em>union_thresh</em> ≦ 1)<br>
+ 所属する標本点数が <em>union_thresh</em> * (全体の画素数) 以下のクラスタを最も近いものに統合します。推奨値は、0.01 ~ 0.05 です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_mode</em>&nbsp;</td><td>出力画像を生成する際の動作モード (<em>hdst</em> に NULL が指定された場合にはこの値は使用されません) <br>
+<ul>
+<li>0 : 出力値は、注目クラスタの Mean-Shift 収束値の平均を四捨五入した値</li><li>1 : 出力値は、入力画像 hsrc における画像タイプの濃度値範囲を <em>num_discrimination</em> で分割する際の等間隔値</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献:</b></dt><dd><ul>
+<li>D. Comaniciu and P. Meer, "Mean Shift: A Robust Approach Toward Feature Space Analysis," IEEE Trans. on Pattern Analysis and Machine Intelligence, vol.24, no.5, pp.603-619, 2002. </li>
+<li>岡田和典. "ミーンシフトの原理と応用". コンピュータビジョン最先端ガイド2. 八木 康史 他 編著 アドコムメディア株式会社. 2010. pp.61-89</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>処理結果例(bandwidth = 5, union_thresh = 0.05):</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像(type:uc8)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_multithresh_meanshift_mode0.png" alt="fie_multithresh_meanshift_mode0.png">
+<p><strong>結果画像(<em>dst_mode</em> = 0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_multithresh_meanshift_mode1.png" alt="fie_multithresh_meanshift_mode1.png">
+<p><strong>結果画像(<em>dst_mode</em> = 1)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数では、内部で画像ヒストグラムの取得を行っています。<br>
+ 画像ヒストグラムを UINT で計算するため、入力画像サイズが <img class="formulaInl" alt="$ 2^{32} $" src="form_747.png"> 画素以上の場合にはオーバーフローの可能性が有ります。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#gde55fb9f2758774da4717eca45c09911" title="Mean-Shift 法による平滑化フィルタ">fnFIE_meanshift_filter</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga2766ddc3bfa53dd65d18a2bd805e1c6"></a><!-- doxytag: member="fie_multi_threshold.c::fnFIE_discrimination_multithreshold" ref="ga2766ddc3bfa53dd65d18a2bd805e1c6" args="(FHANDLE hsrc, FHANDLE hdst, INT *thresh, INT num_discrimination, INT dst_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_discrimination_multithreshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>thresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_discrimination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dst_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+判別分析法による多値化 
+<p>
+判別分析法による２値化(<a class="el" href="group__fie__threshold.html#ga89aa2327d69620aa7be206dc439ed15" title="[非推奨]判別分析法による画像２値化">fnFIE_discrimination_threshold()</a> )を、多値化に拡張したものです。多値化処理には動的計画法を実装し、アルゴリズム上での高速化を図っています。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像オブジェクト(type:uc8,us16,s16 and ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>結果格納用画像オブジェクト。入力画像オブジェクトと同じ画像タイプ、サイズであること。出力画像が必要でない場合にはNULLを指定可能です。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>thresh</em>&nbsp;</td><td>多値化しきい値結果格納バッファ。しきい値の格納用に <em>num_discrimination</em> -1 個のメモリを確保しておいてください。しきい値が必要でない場合にはNULLを指定可能です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_discrimination</em>&nbsp;</td><td>多値化の分割数(2 ≦ <em>num_discrimination</em> ≦ 入力画像の持つ階調数) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_mode</em>&nbsp;</td><td>出力画像を生成する際の各区間の値を決定する動作モード(<em>hdst</em> にNULLが指定された場合にはこの値は使用されません)<ul>
+<li>0:出力値は、入力画像 <em>hsrc</em> のヒストグラムについて、得られたしきい値 <em>thresh</em> の各区間に存在する値の重み付き平均値</li><li>1:出力値は、入力画像 <em>hsrc</em> における画像タイプの濃度値範囲を <em>num_discrimination</em> で分割する際の等間隔値</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID discrimination_multithreshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    FHANDLE hdst2 = NULL;
+    INT width, height;
+    INT threshold[4];       <span class="comment">//5値化を行うためにしきい値を格納する配列を4つ宣言</span>
+    INT i;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width, height );
+    hdst2 = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width, height );
+
+    <span class="comment">//判別分析法により画像を多値化します</span>
+    <span class="comment">//dst_mode=0の場合（5値化），しきい値も取得する</span>
+    <a class="code" href="group__fie__multithreshold.html#ga2766ddc3bfa53dd65d18a2bd805e1c6" title="判別分析法による多値化">fnFIE_discrimination_multithreshold</a>( hsrc, hdst, threshold, 5, 0);
+    <span class="comment">//dst_mode=1の場合（5値化），しきい値は取得しない</span>
+    <a class="code" href="group__fie__multithreshold.html#ga2766ddc3bfa53dd65d18a2bd805e1c6" title="判別分析法による多値化">fnFIE_discrimination_multithreshold</a>( hsrc, hdst2, NULL, 5, 1);
+
+    <span class="comment">//判別分析法により求めたしきい値を表示します（しきい値の個数4）</span>
+    <span class="keywordflow">for</span>(i=0; i &lt; 4; i++)
+    {
+        printf(<span class="stringliteral">"しきい値[%d] = %d\n"</span>, i, threshold[i]);
+    }
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result2.png"</span>, hdst2, -1);
+
+    <span class="comment">//確保した画像領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst2 );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    discrimination_multithreshold();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例(5値化):</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像(type:uc8)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_multithresh5_discrimination_wm.png" alt="fie_multithresh5_discrimination_wm.png">
+<p><strong>　　処理結果画像(<em>dst_mode</em> =0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_multithresh5_discrimination_eq.png" alt="fie_multithresh5_discrimination_eq.png">
+<p><strong>　　処理結果画像(<em>dst_mode</em> =1)</strong></p></div>
+   </td></tr>
+</table>
+得られたしきい値に対しては、次のように多値化画像を作成しています。<br>
+ 入力画像の濃度最小値を min, 最大値を maxとし、この画像に対して n値化を行う場合、 入力画像の濃度値を<img class="formulaInl" alt="$X$" src="form_273.png">,対応する多値化後の値をval[i]<img class="formulaInl" alt="$(i=0 \ldots n)$" src="form_819.png">とすると、 <pre>
+      val[ 0 ]:      min   ≦ X ＜<em>thresh</em>[ 0 ]
+      val[ 1 ]:<em>thresh</em>[ 0 ] ≦ X ＜<em>thresh</em>[ 1 ]
+         ：          ：      ：        ：
+         ：          ：      ：        ：
+      val[n-2]:<em>thresh</em>[n-3] ≦ X ＜<em>thresh</em>[n-2]
+      val[n-1]:<em>thresh</em>[n-2] ≦ X ≦  max
+	</pre> となります。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>画像ヒストグラムをUINTで計算するため、入力画像サイズが <img class="formulaInl" alt="$ 2^{32} $" src="form_747.png"> 画素以上の場合には オーバーフローの可能性が有ります。</li><li>出力パラメータ <em>hdst</em> と <em>thresh</em> には、必要がない場合には NULL 指定が可能ですが、両方同時にNULL を指定すると F_ERR_INVALID_PARAM を返します。</li><li>本関数は動的計画法を用いて高速化を行っていますが、場合によっては秒以上の処理時間が掛かることがございます。 本アルゴリズムの計算量については多値化の分割数を<img class="formulaInl" alt="$N$" src="form_0.png">, 濃度の範囲を<img class="formulaInl" alt="$L$" src="form_820.png">としますと、<img class="formulaInl" alt="$ NL^{2} $" src="form_821.png"> のオーダーになります。 これは例えば、256階調の画像に対して 1(ms)掛かる状況下で 65536階調の画像を処理した場合、理論的には<img class="formulaInl" alt="$(\frac{65536}{256})^{2} &amp;=&amp; 65536(ms) $" src="form_822.png">掛かることを表しています。 特に 16ビット画像(type:us16,s16)を用いて 3値化以上の処理を行う場合にはご注意ください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#ga89aa2327d69620aa7be206dc439ed15" title="[非推奨]判別分析法による画像２値化">fnFIE_discrimination_threshold</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>パターン認識‐理論と応用 (行動計量学シリーズ) p75 大津 展之, 関田 巌, 栗田 多喜夫(著) 出版社: 朝倉書店 (1996/07) ISBN-10: 4254126522, ISBN-13: 978-4254126525 </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="g25c09c43dd28fd3dd22c3336d03027f4"></a><!-- doxytag: member="fie_multi_threshold.c::fnFIE_kittler_multithreshold" ref="g25c09c43dd28fd3dd22c3336d03027f4" args="(FHANDLE hsrc, FHANDLE hdst, INT *thresh, INT num_discrimination, INT dst_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_kittler_multithreshold           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>thresh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_discrimination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>dst_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+キトラー(Kittler)法による多値化 
+<p>
+キトラー法による２値化( <a class="el" href="group__fie__threshold.html#g912109cbf4d36893385674afec2fb08f" title="キトラー(kittler)法による画像２値化">fnFIE_kittler_threshold()</a> )を、多値化に拡張したものです。多値化処理には動的計画法を実装し、アルゴリズム上での高速化を図っています。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像オブジェクト(type:uc8,us16,s16 and ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>結果格納用画像オブジェクト。入力画像オブジェクトと同じ画像タイプ、サイズであること。出力画像が必要でない場合にはNULLを指定可能です。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>thresh</em>&nbsp;</td><td>多値化しきい値結果格納バッファ。しきい値の格納用に <em>num_discrimination</em> -1 個のメモリを確保しておいてください。しきい値が必要でない場合にはNULLを指定可能です。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_discrimination</em>&nbsp;</td><td>多値化の分割数(2 ≦ <em>num_discrimination</em> ≦ 入力画像の持つ階調数)<br>
+ ただし、画像の階調数/2 よりも大きな値を指定すると計算不可能になってしまいますので、F_ERR_CALC_IMPOSSIBLE を返します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dst_mode</em>&nbsp;</td><td>出力画像を生成する際の各区間の値を決定する動作モード(<em>hdst</em> にNULLが指定された場合にはこの値は使用されません)<ul>
+<li>0:出力値は、入力画像 <em>hsrc</em> のヒストグラムについて、<em>thresh</em> の各区間に存在する値の重み付き平均値</li><li>1:出力値は、入力画像 <em>hsrc</em> における画像タイプの濃度値範囲を <em>num_discrimination</em> で分割する際の等間隔値</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+VOID kittler_multithreshold()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    FHANDLE hdst2 = NULL;
+    INT width, height;
+    INT threshold[4];       <span class="comment">//5値化を行うためにしきい値を格納する配列を4つ宣言</span>
+    INT i;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"book.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc );
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width, height );
+    hdst2 = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width, height );
+
+    <span class="comment">//キトラー(kittler)により画像を多値化します</span>
+    <span class="comment">//dst_mode=0の場合（5値化），しきい値も取得する</span>
+    <a class="code" href="group__fie__multithreshold.html#g25c09c43dd28fd3dd22c3336d03027f4" title="キトラー(Kittler)法による多値化">fnFIE_kittler_multithreshold</a>( hsrc, hdst, threshold, 5, 0);
+    <span class="comment">//dst_mode=1の場合（5値化），しきい値は取得しない</span>
+    <a class="code" href="group__fie__multithreshold.html#g25c09c43dd28fd3dd22c3336d03027f4" title="キトラー(Kittler)法による多値化">fnFIE_kittler_multithreshold</a>( hsrc, hdst2, NULL, 5, 1);
+
+    <span class="comment">//判別分析法により求めたしきい値を表示します（しきい値の個数4）</span>
+    <span class="keywordflow">for</span>(i=0; i &lt; 4; i++)
+    {
+        printf(<span class="stringliteral">"しきい値[%d] = %d\n"</span>, i, threshold[i]);
+    }
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result2.png"</span>, hdst2, -1);
+
+    <span class="comment">//確保した画像領域を解放します</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst2 );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    kittler_multithreshold();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例(5値化):</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="book.png" alt="book.png">
+<p><strong>入力画像(type:uc8)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_multithresh5_kittler_wm.png" alt="fie_multithresh5_kittler_wm.png">
+<p><strong>　　処理結果画像(<em>dst_mode</em> =0)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_multithresh5_kittler_eq.png" alt="fie_multithresh5_kittler_eq.png">
+<p><strong>　　処理結果画像(<em>dst_mode</em> =1)</strong></p></div>
+   </td></tr>
+</table>
+得られたしきい値に対しては、次のように多値化画像を作成しています。<br>
+ 入力画像の濃度最小値を min, 最大値を maxとし、この画像に対して n値化を行う場合、 入力画像の濃度値を<img class="formulaInl" alt="$X$" src="form_273.png">,対応する多値化後の値をval[i]<img class="formulaInl" alt="$(i=0 \ldots n)$" src="form_819.png">とすると、 <pre>
+      val[ 0 ]:      min   ≦ X ＜<em>thresh</em>[ 0 ]
+      val[ 1 ]:<em>thresh</em>[ 0 ] ≦ X ＜<em>thresh</em>[ 1 ]
+         ：          ：      ：        ：
+         ：          ：      ：        ：
+      val[n-2]:<em>thresh</em>[n-3] ≦ X ＜<em>thresh</em>[n-2]
+      val[n-1]:<em>thresh</em>[n-2] ≦ X ≦  max
+	</pre> となります。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>画像ヒストグラムをUINTで計算するため、入力画像サイズが <img class="formulaInl" alt="$ 2^{32} $" src="form_747.png"> 画素以上の場合には オーバーフローの可能性が有ります。</li><li>出力パラメータ <em>hdst</em> と <em>thresh</em> には、必要がない場合には NULL 指定が可能ですが、両方同時にNULL を指定すると F_ERR_INVALID_PARAM を返します。</li><li>本関数は動的計画法を用いて高速化を行っていますが、場合によっては秒以上の処理時間が掛かることがございます。 本アルゴリズムの計算量については多値化の分割数を<img class="formulaInl" alt="$N$" src="form_0.png">, 濃度の範囲を<img class="formulaInl" alt="$L$" src="form_820.png">としますと、<img class="formulaInl" alt="$ NL^{2} $" src="form_821.png"> のオーダーになります。 これは例えば、256階調の画像に対して 1(ms)掛かる状況下で 65536階調の画像を処理した場合、理論的には<img class="formulaInl" alt="$(\frac{65536}{256})^{2} &amp;=&amp; 65536(ms) $" src="form_822.png">掛かることを表しています。 特に 16ビット画像(type:us16,s16)を用いて 3値化以上の処理を行う場合にはご注意ください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#g912109cbf4d36893385674afec2fb08f" title="キトラー(kittler)法による画像２値化">fnFIE_kittler_threshold</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>パターン認識‐理論と応用 (行動計量学シリーズ) 大津 展之, 関田 巌, 栗田 多喜夫(著) 出版社: 朝倉書店 (1996/07) ISBN-10: 4254126522, ISBN-13: 978-4254126525 </li></ul>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

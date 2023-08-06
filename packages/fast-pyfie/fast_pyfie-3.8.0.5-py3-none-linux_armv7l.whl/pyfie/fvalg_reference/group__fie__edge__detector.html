@@ -1,0 +1,1899 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ２次元エッジ検出</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>２次元エッジ検出<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__SOBEL__PARAMS.html">F_EDGE_SOBEL_PARAMS</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sobelエッジ用パラメータ構造体  <a href="structF__EDGE__SOBEL__PARAMS.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__MAX__PARAMS.html">F_EDGE_CORR_MAX_PARAMS</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">強度上限付相関エッジ用パラメータ構造体  <a href="structF__EDGE__CORR__MAX__PARAMS.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__SOBEL__MAX__PARAMS.html">F_EDGE_SOBEL_MAX_PARAMS</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">強度上限付Sobelエッジ用パラメータ構造体  <a href="structF__EDGE__SOBEL__MAX__PARAMS.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__GROOVE__PARAMS.html">F_EDGE_GROOVE_PARAMS</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">細線エッジ用パラメータ構造体  <a href="structF__EDGE__GROOVE__PARAMS.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ点クラスタ構造体  <a href="structF__EDGE__CLUST.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE.html">F_EDGE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">勾配方向、強度付エッジ点構造体(整数型)  <a href="structF__EDGE.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__DEDGE.html">F_DEDGE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">勾配方向、強度付エッジ点構造体(浮動小数点型)  <a href="structF__DEDGE.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE__CORR__PARAMS.html">F_EDGE_CORR_PARAMS</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">相関エッジ用パラメータ構造体  <a href="structF__EDGE__CORR__PARAMS.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g2e668b3309be953805977e5f77e23461"></a><!-- doxytag: member="fie_edge_detector::F_EDGE_FEAT_NONE" ref="g2e668b3309be953805977e5f77e23461" args="" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g2e668b3309be953805977e5f77e23461">F_EDGE_FEAT_NONE</a>&nbsp;&nbsp;&nbsp;0x00000000</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ勾配方向、強度保持指定フラグ エッジの勾配方向、強度供に取得しない <br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="gab06ee1eabf515033bc20eb7c505179a"></a><!-- doxytag: member="fie_edge_detector::F_EDGE_FEAT_MAG_SUM" ref="gab06ee1eabf515033bc20eb7c505179a" args="" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gab06ee1eabf515033bc20eb7c505179a">F_EDGE_FEAT_MAG_SUM</a>&nbsp;&nbsp;&nbsp;0x00000001</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ勾配方向、強度保持指定フラグ エッジの強度をＸ方向微分とＹ方向微分の絶対値和として取得する <br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="g6c64da97e0a702b3ca1c19ef56a030ba"></a><!-- doxytag: member="fie_edge_detector::F_EDGE_FEAT_MAG_SQRT" ref="g6c64da97e0a702b3ca1c19ef56a030ba" args="" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g6c64da97e0a702b3ca1c19ef56a030ba">F_EDGE_FEAT_MAG_SQRT</a>&nbsp;&nbsp;&nbsp;0x00000002</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ勾配方向、強度保持指定フラグ エッジの強度をＸ方向微分とＹ方向微分のユークリッド距離として取得する <br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="gf1b0219a1aaa48472cfc9f272687d30f"></a><!-- doxytag: member="fie_edge_detector::F_EDGE_FEAT_DIRECT" ref="gf1b0219a1aaa48472cfc9f272687d30f" args="" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gf1b0219a1aaa48472cfc9f272687d30f">F_EDGE_FEAT_DIRECT</a>&nbsp;&nbsp;&nbsp;0x00000004</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ勾配方向、強度保持指定フラグ エッジの勾配方向を取得する <br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gd0c7af0ef0a97af269484d161d390bbe">fnFIE_edge_canny</a> (FHANDLE hImgSrc, FHANDLE hImgOut, INT iTSwitch, DOUBLE dTHigh, DOUBLE dTLow, DOUBLE dSigma, UINT uiMinLen)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Canny 法によるエッジ検出  <a href="#gd0c7af0ef0a97af269484d161d390bbe"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gd54c4316499db1351f50db5ad85b5598">fnFIE_nms_canny</a> (FHANDLE hMagX, FHANDLE hMagY, FHANDLE hMag, DOUBLE dTLow, DOUBLE dTHigh, USHORT *ushpTLow, USHORT *ushpTHigh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">非極大値の抑制（Canny 法によるエッジ検出で利用）  <a href="#gd54c4316499db1351f50db5ad85b5598"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g85de218e9de455fe4c3cecaee16141a6">fnFIE_nms</a> (FHANDLE hMagX, FHANDLE hMagY, FHANDLE hMag, DOUBLE dThresh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">非極大値の抑制（エッジ勾配を利用）  <a href="#g85de218e9de455fe4c3cecaee16141a6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g6fbeb4bcc800cb57a72ae871d80588f9">fnFIE_nms_simple</a> (FHANDLE hSrc, FHANDLE hTar, INT iBrdMod, DOUBLE dBrdVal)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">非極大値の抑制 単純  <a href="#g6fbeb4bcc800cb57a72ae871d80588f9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gbaa6ecc9003f4c61077eb48608e3e13d">fnFIE_edge_binary_boundary</a> (FHANDLE hsrc, INT smooth_size, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">領域の境界点列を利用したエッジ検出  <a href="#gbaa6ecc9003f4c61077eb48608e3e13d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gf3f049059fb7b65fdb023875f4d535e5">fnFIE_edge_corr</a> (FHANDLE hsrc, FHANDLE hmag, const <a class="el" href="structF__EDGE__CORR__PARAMS.html">F_EDGE_CORR_PARAMS</a> *params, UINT feat_mode, INT border_mode, <a class="el" href="structPNT__T.html">PNT_T</a> offset, <a class="el" href="structF__EDGE.html">F_EDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">相関エッジフィルタを利用したエッジ検出  <a href="#gf3f049059fb7b65fdb023875f4d535e5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907">fnFIE_edge_corr_subpix</a> (FHANDLE hsrc, FHANDLE hmag, const <a class="el" href="structF__EDGE__CORR__PARAMS.html">F_EDGE_CORR_PARAMS</a> *params, UINT feat_mode, INT border_mode, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">相関エッジフィルタを利用したエッジ検出（サブピクセル精度）  <a href="#g11b7db6e608ebad2f09339c80e4ce907"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g9bf56aaaf7fe4912bdb2a0a340b60996">fnFIE_edge_sobel</a> (FHANDLE hsrc, FHANDLE hmag, const <a class="el" href="structF__EDGE__SOBEL__PARAMS.html">F_EDGE_SOBEL_PARAMS</a> *params, UINT feat_mode, INT border_mode, <a class="el" href="structPNT__T.html">PNT_T</a> offset, <a class="el" href="structF__EDGE.html">F_EDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ソーベルフィルタを利用したエッジ検出  <a href="#g9bf56aaaf7fe4912bdb2a0a340b60996"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673">fnFIE_edge_sobel_subpix</a> (FHANDLE hsrc, FHANDLE hmag, const <a class="el" href="structF__EDGE__SOBEL__PARAMS.html">F_EDGE_SOBEL_PARAMS</a> *params, UINT feat_mode, INT border_mode, <a class="el" href="structDPNT__T.html">DPNT_T</a> offset, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ソーベルフィルタを利用したエッジ検出(サブピクセル精度)  <a href="#g4ec620016bd6eeec73e1ad5bc3ddd673"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#gb6d10e0166ffa9f55186ca32e63dbc77">fnFIE_img_get_points_bin</a> (const FHANDLE hsrc, INT color, INT max_pnt_num, <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT *pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２値画像からの点データ取得  <a href="#gb6d10e0166ffa9f55186ca32e63dbc77"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g3ed6c6c00fdc248fdbf24cb143fcd108">fnFIE_img_get_points_gray</a> (const FHANDLE hsrc, DOUBLE tlow, DOUBLE thigh, INT max_pnt_num, <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT *pnt_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">濃淡画像からの点データ列取得  <a href="#g3ed6c6c00fdc248fdbf24cb143fcd108"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__detector.html#g1170a2e063a8860c96aaf7043eabc759">fnFIE_nms_dir</a> (FHANDLE hmagx, FHANDLE hmagy, FHANDLE hthin, DOUBLE thresh)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">非極大値の抑制（エッジ勾配方向を利用）  <a href="#g1170a2e063a8860c96aaf7043eabc759"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gd0c7af0ef0a97af269484d161d390bbe"></a><!-- doxytag: member="fie_edge.c::fnFIE_edge_canny" ref="gd0c7af0ef0a97af269484d161d390bbe" args="(FHANDLE hImgSrc, FHANDLE hImgOut, INT iTSwitch, DOUBLE dTHigh, DOUBLE dTLow, DOUBLE dSigma, UINT uiMinLen)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_canny           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImgSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImgOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iTSwitch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTHigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dSigma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>uiMinLen</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Canny 法によるエッジ検出 
+<p>
+Canny 法によるエッジ検出を行います。 Canny 法によるエッジ検出は、望ましい評価基準として、以下の３つの点を考慮しています。 <ul>
+<li>実際のエッジを検出しそこねる可能性が低く、かつエッジではない点や線をエッジとする確率が低いこと。 </li>
+<li>エッジとして検出した線や点が、真のエッジの中心の近くにあること。 </li>
+<li>１つのエッジに対して、唯一のエッジ検出結果が与えられること。</li>
+</ul>
+本関数は内部で、 <a class="el" href="group__fie__filter.html#g668628884fe59386d798393780719f29" title="gaussian1D filter(convolution(FIR)版)">fnFIE_gaussian_1Dfilter_conv()</a> , <a class="el" href="group__fie__filter.html#g689edde2219d9bcf7a30b22d9c34010a" title="gaussian1D filter(recursive(IIR)版)">fnFIE_gaussian_1Dfilter_iir()</a>, <a class="el" href="group__fie__edge__detector.html#gd54c4316499db1351f50db5ad85b5598" title="非極大値の抑制（Canny 法によるエッジ検出で利用）">fnFIE_nms_canny()</a> , <a class="el" href="group__fie__threshold.html#g0712352d1ef41d3a6b81ad58c1e54ccf" title="ヒステリシス特性による２値化（ランレングスを利用したアルゴリズ...">fnFIE_hysteresis_rle_uf()</a> を使用しています。 出力は、 UC8 型の画像オブジェクトとなり、エッジ点は 255 , 背景は 0 です。<p>
+本関数では、ヒステリシス特性で利用される２つの閾値は、２つの異なるモードで与えることがきます。 １つは、両方の閾値を 1.0 より小さく与えることです。 例えば、 <em>dTLow</em> = 0.2 、 <em>dTHigh</em> = 0.7 として与えた場合、 <em>dTLow</em> よって関数内部で計算された閾値より小さいエッジ勾配強度が、全体の画素の 20% であることを示します。 さらに、 70% の画素は、エッジ勾配強度が <em>dTHigh</em> によって計算された閾値より小さいことを示します。 もう一方のモードは、直接、取得したいエッジ勾配強度の値を２つの閾値で指定します。 指定する閾値は、 2^16 - 1 以下の値で指定してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImgSrc</em>&nbsp;</td><td>入力画像 ( type: uc8 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hImgOut</em>&nbsp;</td><td>出力画像 ( type: uc8 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iTSwitch</em>&nbsp;</td><td>閾値のタイプ指定 <ul>
+<li><em>iTSwitch</em> = 0 ：２つの閾値である割合が 0 &lt; <em>threshold</em> &lt; 1 </li>
+<li><em>iTSwitch</em> = 1 ：２つの閾値が任意の値 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTLow</em>&nbsp;</td><td>閾値の下限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTHigh</em>&nbsp;</td><td>閾値の上限 <ul>
+<li>( <em>iTSwitch</em> == 0 &amp;&amp; 0 &lt; <em>dTLow</em> &lt; 1 &amp;&amp; 0 &lt; <em>dTHigh</em> &lt; 1 ) の場合<br>
+ 指定する閾値は割合です </li>
+<li>( <em>iTSwitch</em> == 1 &amp;&amp; <em>dTLow</em> &gt;= 0 &amp;&amp; <em>dTHigh</em> &gt; 0 ) の場合 <br>
+ 指定する閾値は任意の値です <br>
+ ２つの閾値ともに 2^16 より小さい値を指定してください </li>
+<li>( <em>iTSwitch</em> == 0 &amp;&amp; <em>dTLow</em> == 0 &amp;&amp; <em>dTHigh</em> == 0 ) の場合 <br>
+ <em>dTHigh（0</em>.7） 、 <em>dTLow（0</em>.28）のデフォルト値が指定されます </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dSigma</em>&nbsp;</td><td>ガウシアンマスクのσ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>uiMinLen</em>&nbsp;</td><td>エッジの最小の長さ <br>
+ この値より小さい孤立したエッジはノイズと判定して削除されます</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>不正な値の閾値 </li>
+<li><em>dSigma</em> &lt; 0.6 </li>
+<li>画像の幅、または高さが (INT)(6 * <em>dSigma</em> + 2) より小さい </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された <ul>
+<li>入力画像と出力画像のサイズが異なる </li>
+<li>画像の幅、または高さが３より小さい </li>
+<li>画像オブジェクトではないハンドルが渡された </li>
+<li>画像のチャネルが１ではない </li>
+<li>画像サイズが ( 3 * <em>dSigma</em> + 1 ) * 2 より小さい </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>1. Canny, J. "A computational approach to edge detection", IEEE Trans. PAMI, 1986, Vol. 8(6), 679-698. </li>
+<li>2. Parker, J. "Algorithms for Image Processing and Computer Vision", John Wiley &amp; Sons, 1996, Chap. 1: Advanced Edge-Detection Techniques, pp. 1-62 </li>
+<li>3. 高木幹雄・下田陽久, "新編 画像解析ハンドブック", 東京大学出版会, 2004, pp.1238-1239</li>
+</ul>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_canny_edge.png" alt="fie_canny_edge.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd54c4316499db1351f50db5ad85b5598"></a><!-- doxytag: member="fie_edge.c::fnFIE_nms_canny" ref="gd54c4316499db1351f50db5ad85b5598" args="(FHANDLE hMagX, FHANDLE hMagY, FHANDLE hMag, DOUBLE dTLow, DOUBLE dTHigh, USHORT *ushpTLow, USHORT *ushpTHigh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_nms_canny           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMagX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMagY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTHigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">USHORT *&nbsp;</td>
+          <td class="paramname"> <em>ushpTLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">USHORT *&nbsp;</td>
+          <td class="paramname"> <em>ushpTHigh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+非極大値の抑制（Canny 法によるエッジ検出で利用） 
+<p>
+非極大抑制は、画像に対して１次微分を施した後に実行されます。 注目画素の勾配を選択させた２つの隣接した画素の勾配と比較します。 注目画素の勾配が隣接した画素の勾配より大きかった場合、 局所的な最大値となり勾配強度は保持されて後の処理に利用されます。 そうでない場合は、０が設定されます。<p>
+非極大抑制は、細線化のような効果がありますが、勾配方向を考慮しているため 処理結果は必ずしも１画素の幅の線になるとは限りません。<p>
+本関数では、出力画像の周囲１画素は０になります。 また、 <em>hMagX</em> と <em>hMagY</em> で与えられたｘ方向とｙ方向のエッジ勾配強度は、 互いに絶対値演算が計算されて、エッジ勾配強度として処理に利用されます。<p>
+入力パラメータの <em>dTLow</em> と <em>dTHigh</em> は 0.0～1.0 の範囲で指定してください。 これらのパラメータは、計算時に使用される閾値で画素の割合を表しています。 つまり、すべての画素と特徴量が閾値より小さい画素との割合を表しています。 例えば、 <em>dTHigh=0</em>.7 が与えられた場合、エッジ勾配強度が <em>dTHigh</em> から計算される上限閾値 より小さな値の画素は、画像全体の 70% であることを示します。 また、 <em>dTLow=0</em>.2 が与えられた場合、エッジ勾配強度が <em>dTLow</em> から計算される下限閾値 より小さな値の画素は、画像全体の 20% であることを示します。 <em>dTLow</em> 、 <em>dTHigh</em> が共に0.0の場合は、デフォルトの <em>dTHight=0</em>.7 、 <em>dTLow=0</em>.35 が与えられます。<p>
+入力画像、出力画像は下記の条件をすべて満たしている必要が有ります。 <ul>
+<li>サイズ(幅・高さ)が等しい </li>
+<li>縦横サイズは3画素以上 </li>
+<li>チャネル数が等しい </li>
+<li>チャネル数は１ </li>
+<li>入力画像の型はF_IMG_S16 </li>
+<li>出力画像の型はF_IMG_US16</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMagX</em>&nbsp;</td><td>X方向のエッジ勾配強度画像 ( type: s16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMagY</em>&nbsp;</td><td>Y方向のエッジ勾配強度画像 ( type: s16 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hMag</em>&nbsp;</td><td>エッジ勾配強度画像 (type: us16) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTLow</em>&nbsp;</td><td>ピクセル数の下限方向の割合を決定するための閾値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTHigh</em>&nbsp;</td><td>ピクセル数の上限方向の割合を決定するための閾値 <ul>
+<li>0 &lt; <em>dTLow</em> &lt; 1.0 &amp;&amp; 0 &lt; <em>dTHigh</em> &lt; 1.0 </li>
+<li><em>dTLow</em> &lt; <em>dTHigh</em> or <em>dTLow</em> == <em>dTHigh</em> == 0.0 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ushpTLow</em>&nbsp;</td><td><em>dTLow</em> から得られた下限閾値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ushpTHigh</em>&nbsp;</td><td><em>dTHigh</em> から得られた上限閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>( <em>dTHigh</em> &lt;= <em>dTLow</em> &amp;&amp; ( <em>dTHigh</em> != 0.0 &amp;&amp; <em>dTLow</em> != 0.0 ) ) or ( <em>dTHigh</em> &gt;= 1 || <em>dTLow</em> &gt;= 1 || <em>dTHigh</em> &lt; 0 || <em>dTLow</em> &lt; 0 ) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された <ul>
+<li>各画像のサイズが違う(縦横サイズ、チャネル数) </li>
+<li>不正な画像が渡された </li>
+<li>画像横縦サイズはいずれが3以下 </li>
+<li>画像のチャネル数は1以上 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>バッファーメモリ配分失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g85de218e9de455fe4c3cecaee16141a6"></a><!-- doxytag: member="fie_edge.c::fnFIE_nms" ref="g85de218e9de455fe4c3cecaee16141a6" args="(FHANDLE hMagX, FHANDLE hMagY, FHANDLE hMag, DOUBLE dThresh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_nms           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMagX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMagY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dThresh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+非極大値の抑制（エッジ勾配を利用） 
+<p>
+非極大抑制は、画像に対して１次微分を施した後に実行されます。 注目画素の勾配を、勾配方向に隣接した２つの画素の勾配と比較します。 注目画素の勾配が隣接した画素の勾配より大きかった場合、 局所的な最大値となり勾配強度は保持されて後の処理に利用されます。 そうでない場合は、０が設定されます。<p>
+非極大抑制は、細線化のような効果があります。 しかしながら、勾配方向を考慮しており、処理結果は必ずしも１画素の幅の線になるとは限りません。<p>
+なお本関数では、出力画像の周囲１画素は０になります。 また、 <em>hMagX</em> と <em>hMagY</em> で与えられたｘ方向とｙ方向のエッジ勾配強度は、 互いに絶対値演算がなされて、エッジ勾配強度として処理に利用されます。<p>
+<em>dThresh</em> は勾配の非常に小さい値を取り除くために利用されます。 １以上の値を与えてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMagX</em>&nbsp;</td><td>X方向のエッジ勾配強度画像 (type: s16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMagY</em>&nbsp;</td><td>Y方向のエッジ勾配強度画像 (type: s16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hMag</em>&nbsp;</td><td>エッジ勾配強度画像 (type: us16, double ) <ul>
+<li><em>hMagX</em> と <em>hMagY</em> が S16 型の場合、 <em>hMag</em> は US16 型 または DOUBLE 型となる </li>
+<li><em>hMagX</em> と <em>hMagY</em> が DOUBLE 型の場合、 <em>hMag</em> は DOUBLE 型となる </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dThresh</em>&nbsp;</td><td>非常に小さい勾配を取り除くための閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>dThresh</em> &lt; 0 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>各画像のサイズが違う、不正な画像が渡された <br>
+ 画像サイズの横縦いずれかが3以下, 或いは (2^16 - 1) 以上 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>バッファーメモリ配分失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_UNKNOWN</em>&nbsp;</td><td>原因不明なエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6fbeb4bcc800cb57a72ae871d80588f9"></a><!-- doxytag: member="fie_edge.c::fnFIE_nms_simple" ref="g6fbeb4bcc800cb57a72ae871d80588f9" args="(FHANDLE hSrc, FHANDLE hTar, INT iBrdMod, DOUBLE dBrdVal)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_nms_simple           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hTar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBrdMod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dBrdVal</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+非極大値の抑制 単純 
+<p>
+3x3の領域中、注目画素が周囲の画素よりも小さかったら濃度を零にします。等しかったり大きかったら何もしません。 通常のNMSは線の接続性を見るため、それよりも多めに線を分断します。 ボーダー処理モード <em>iBrdMod</em> に F_BORDER_NONE 指定した場合は、境界上の画素の濃度値は０になります。<p>
+入力画像と出力画像は下記の条件をすべて満たしている必要が有ります。<ul>
+<li>サイズ(幅・高さ)が等しい</li><li>チャネル数が等しい</li><li>入力画像の型はF_IMG_UC8, F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE のいずれか</li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>入力画像 (uc8, s16, us16, double) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hTar</em>&nbsp;</td><td>出力画像 (uc8, s16, us16, double) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBrdMod</em>&nbsp;</td><td>ボーダー処理モード <br>
+ <ul>
+<li>F_BORDER_NONE ボーダー処理無し </li>
+<li>F_BORDER_ZERO ０埋めモード </li>
+<li>F_BORDER_VALUE 一定値モード </li>
+<li>F_BORDER_CONTINUOUS 端延長モード </li>
+<li>F_BORDER_REPEAT 繰り返しモード </li>
+<li>F_BORDER_MIRROR1 反転モード１ </li>
+<li>F_BORDER_MIRROR2 反転モード２ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dBrdVal</em>&nbsp;</td><td>ボーダー濃度値 <br>
+ <em>iBrdMod</em> がF_BORDER_VALUEの場合のみ使用されます。 その他のモードの場合は、この値は無視されます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なボーダー処理モードが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>各画像のサイズが違う、不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERROR_NOMEMORY</em>&nbsp;</td><td>メモリー不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbaa6ecc9003f4c61077eb48608e3e13d"></a><!-- doxytag: member="fie_edge_binary_boundary.c::fnFIE_edge_binary_boundary" ref="gbaa6ecc9003f4c61077eb48608e3e13d" args="(FHANDLE hsrc, INT smooth_size, DPNT_T offset, F_DEDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_binary_boundary           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>smooth_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+領域の境界点列を利用したエッジ検出 
+<p>
+サブピクセル精度で、領域の境界点列を利用してエッジを検出します。<p>
+本関数はリージョンや２値画像からFPMに使用できるエッジを検出するために使用できます。 <a class="el" href="group__fie__fpm__pattern.html#g31178a1ca29cf3f37fb802470a02f9b2" title="点情報から FPM オブジェクト生成">fnFIE_fpm_import_alloc()</a> や <a class="el" href="group__fie__fpm__feature.html#g293f33d79db56ff1e562f341c1af4887" title="点情報から FPM特徴量オブジェクトを生成">fnFIE_fpm_feature_import_alloc()</a> に検出されたエッジを入力して使用してください。<p>
+入力オブジェクト <em>hsrc</em> には以下の２つのオブジェクトのうち、どちらかを使用できます。 <ul>
+<li>リージョンオブジェクト </li>
+<li>２値画像の画像オブジェクト</li>
+</ul>
+<dl class="user" compact><dt><b>移動平均フィルタサイズ <em>smooth_size</em>:</b></dt><dd>境界点列に対する平滑化の強さを決定するパラメータです。 1以上の奇数を指定します。 <br>
+ 大きな値を設定することによりエッジ点の位置と角度を安定化できますが、領域形状との差異が生じます。 <br>
+ 3から7程度の値を指定することを推奨します。 <br>
+ 1つの連結した領域がごく小さい場合、過剰な平滑化を避けるため、フィルタサイズは自動的に縮小されます。 具体的には、1つの領域の境界点列の点の数を n とし (n &gt; 1)、 n が <em>smooth_size</em> * 2 より小さい場合、その領域に対するフィルタサイズは n ÷ 2 を超えない最大の奇数となります。</dd></dl>
+<dl class="user" compact><dt><b>オフセット量 <em>offset</em>:</b></dt><dd>取得したエッジの座標に、指定したオフセット量を加えます。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジ:</b></dt><dd>本関数では検出されたエッジ点を保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><em>*edges</em> が NULL で初期化されている場合は、 <em>*edges</em> は内部でメモリが自動的に確保されます。 検出されたエッジ個数は、 <em>edge_num</em> を参照してください。 <em>*edges</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールして確保したメモリを解放してください。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><em>*edges</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>edge_num</em> に確保したメモリの個数を入力してください（1以上）。 ただし、 <em>edge_num</em> はエッジを検出後、検出されたエッジ点個数に上書きされます。 検出されたエッジ点個数は入力された <em>edge_num</em> 以下となります。 入力された <em>edge_num</em> を超える分のエッジ点は出力されません。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの座標範囲:</b></dt><dd>入力オブジェクト <em>hsrc</em> が画像の場合、取得エッジの範囲は以下の通りとなります。 <ul>
+<li>0 &lt;= <em>edges-&gt;x</em> &lt;= width - 1 </li>
+<li>0 &lt;= <em>edges-&gt;y</em> &lt;= height - 1</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>入力オブジェクト <em>hsrc</em> がリージョンの場合、取得エッジの範囲は以下の通りとなります。 <ul>
+<li>xmin &lt;= <em>edges-&gt;x</em> &lt;= xmax </li>
+<li>ymin &lt;= <em>edges-&gt;y</em> &lt;= ymax <br>
+ ただし、xmin, ymin, xmax, ymaxは <a class="el" href="group__fie__region__feature.html#g2ed01873b2e40b50e0497b1ce0fca434" title="REGION特徴量：座標の最大最小値">fnFIE_region_get_xyrange()</a> にて取得される領域のｘ、ｙ座標の最大値と最小値です。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの勾配方向、強度範囲:</b></dt><dd>取得エッジに保持されている強度は不明（mag=0）とします。 <br>
+ 取得エッジに保持されている勾配方向は、以下の範囲で取得されます。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 なお、入力オブジェクト <em>hsrc</em> がリージョンの場合、領域内を白、領域外を黒とみなして角度を取得します。 <ul>
+<li>勾配方向：<img class="formulaInl" alt="$-\pi$" src="form_73.png"> ≦ <em>edges-&gt;q</em> ≦ <img class="formulaInl" alt="$\pi$" src="form_74.png"> (単位：ラジアン)</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力FIEオブジェクト <ul>
+<li>リージョン </li>
+<li>２値画像ハンドル( type : bin, ch : 1 ) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>smooth_size</em>&nbsp;</td><td>移動平均フィルタサイズ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>オフセット量 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>取得したエッジ </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>取得したエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf3f049059fb7b65fdb023875f4d535e5"></a><!-- doxytag: member="fie_edge_corr.c::fnFIE_edge_corr" ref="gf3f049059fb7b65fdb023875f4d535e5" args="(FHANDLE hsrc, FHANDLE hmag, const F_EDGE_CORR_PARAMS *params, UINT feat_mode, INT border_mode, PNT_T offset, F_EDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_corr           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE__CORR__PARAMS.html">F_EDGE_CORR_PARAMS</a> *&nbsp;</td>
+          <td class="paramname"> <em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>feat_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE.html">F_EDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+相関エッジフィルタを利用したエッジ検出 
+<p>
+相関エッジフィルタを利用してエッジを検出します。 エッジ情報を細線化後、特徴量を抽出します。 ノイズやボケ、シェーディングなどの悪条件に比較的強い傾向がありますが、 ソーベルより処理時間が掛かり、パラメータ調整にも熟練が必要です。<p>
+なお、本関数ではエッジをサブピクセル精度で取得はしません。 サブピクセル精度でエッジを取得したい場合は、 <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix()</a> を使用してください。<p>
+<dl class="user" compact><dt><b>エッジ検出のためのパラメータ:</b></dt><dd>下表のパラメータがあります。パラメータの意味や決定方法については <a class="el" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a> 構造体を参照してください。 <table class="pretable">
+<tr>
+<th>名前</th><th>推奨値</th><th>値域  </th></tr>
+<tr>
+<td>相関エッジフィルタの幅( <em>width</em> ) </td><td>13</td><td>3 ≦ <em>width</em> ≦ 255の奇数, <em>height</em> ≦ <em>width</em>   </td></tr>
+<tr>
+<td>相関エッジフィルタの高さ( <em>height</em> ) </td><td>5</td><td>1 ≦ <em>height</em> ≦ 255の奇数, <em>height</em> ≦ <em>width</em>   </td></tr>
+<tr>
+<td>シグモイド係数( <em>sigmoid_k</em> ) </td><td>1.0</td><td>0 &lt; <em>sigmoid_k</em>   </td></tr>
+<tr>
+<td>分散しきい値( <em>var_threshold</em> ) </td><td>UC8型の場合は25</td><td>0 &lt; <em>var_threshold</em> ≦上限値。上限値は画像型に依存  </td></tr>
+<tr>
+<td>強度しきい値( <em>mag_threshold</em> ) </td><td>160</td><td>0 ≦ <em>mag_threshold</em> ≦ 255  </td></tr>
+<tr>
+<td>非極大抑制のフィルタ片幅( <em>nms_length</em> ) </td><td>6 (= ( <em>width</em> - 1) / 2) </td><td>1 ≦ <em>nms_length</em>   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード:</b></dt><dd>エッジ点構造体( <a class="el" href="structF__EDGE.html" title="勾配方向、強度付エッジ点構造体(整数型)">F_EDGE</a> )に勾配方向、強度データを保持するかどうかを指定するためのフラグです。 ビットフラグで指定します。 以下のマクロ定義を組み合わせて使用してください。 <ul>
+<li>F_EDGE_FEAT_NONE ： 勾配方向、強度共に保持しない </li>
+<li>F_EDGE_FEAT_MAG_SUM ： 強度( 絶対値和： <img class="formulaInl" alt="$Gxy_{(i,j)} = |Gx_{(i,j)}|+|Gy_{(i,j)}|$" src="form_556.png"> )を保持 </li>
+<li>F_EDGE_FEAT_MAG_SQRT ： 強度( ユークリッド距離： <img class="formulaInl" alt="$Gsqrt_{(i,j)} = \sqrt{Gx_{(i,j)}^2+Gy_{(i,j)}^2}$" src="form_557.png"> )を保持 </li>
+<li>F_EDGE_FEAT_DIRECT ： 勾配方向( <img class="formulaInl" alt="$\arctan{ \left( Gy_{(i,j)} , Gx_{(i,j)} \right)}$" src="form_558.png"> )を保持</li>
+</ul>
+ここで、 <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> は、ｘ方向微分画像、ｙ方向微分画像に対する座標( <em>x</em> , <em>y</em> ) での微分値となります。 <br>
+<br>
+ 本フラグの指定により、以下の通りにデータが保持されます。 <ul>
+<li>F_FEAT_EDGE_MAG_…が指定されており、F_EDGE_FEAT_DIRECTが指定されていない場合は、強度のみが保持されます。 勾配方向には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTが指定されており、F_EDGE_FEAT_MAG_…が指定されていない場合は、勾配方向のみが保持されます。 強度には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTとF_EDGE_FEAT_MAG_…が共に指定されている場合は、勾配方向と強度の両方が保持されます。 </li>
+<li>F_EDGE_FEAT_NONEが指定された場合は、勾配方向、強度共に０が代入されます。 </li>
+<li>エッジ検出実行時は、F_EDGE_FEAT_MAG_SUM と F_EDGE_FEAT_MAG_SQRT を同時に強度を指定することはできません。</li>
+</ul>
+本マクロ定義以外のビットのフラグがオン(1)になっている場合はエラーとなります。</dd></dl>
+<dl class="user" compact><dt><b>オフセット量:</b></dt><dd>取得したエッジの座標に、指定したオフセット量を加えます。 <em>edges</em> の <em>x</em> 、 <em>y</em> にのみ反映されます。 エッジ強度画像( <em>hmag</em> )には反映されません。</dd></dl>
+<dl class="user" compact><dt><b>エッジ強度画像:</b></dt><dd><em>feat_mode</em> で指定したエッジの強度を画像として出力します。 必要がない場合は、 <em>hmag</em> を NULLで指定してください。 <em>feat_mode</em> で強度が指定されていなくて、 <em>hmag</em> がNULLでない場合は、エラーとなります。 なお、エッジ強度画像が、画素タイプが F_IMG_US16 、チャネル数、サイズは入力画像と同じである必要があります。 <br>
+<br>
+ また、取得される強度は、理論上の最大値が US16_MAX(65535)となるように正規化されています。 実際に取得されたエッジ点の強度の最大値ではありません。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジ:</b></dt><dd><em>edges</em> は、関数内部で必要なメモリを確保します。 メモリを確保した配列を指定しないでください。 また、 <em>*edges</em> がNULLで初期化されていない場合は、エラーとなります。 確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの座標範囲:</b></dt><dd>取得エッジの範囲は以下の通りとなります。 <ul>
+<li>0 ≦ <em>edges-&gt;x</em> ≦ width - 1 </li>
+<li>0 ≦ <em>edges-&gt;y</em> ≦ height - 1</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの勾配方向、強度範囲:</b></dt><dd>取得エッジに保持されている勾配方向、強度は、以下の範囲で取得されます。 <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix()</a> とは、勾配方向の単位や、強度の範囲が異なりますので注意してください。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 <ul>
+<li>勾配方向：-180 ≦ <em>edges-&gt;q</em> ≦ 180 (単位：度) </li>
+<li>強度：0 ≦ <em>edges-&gt;mag</em> ≦ 16384</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>入力画像のサイズ:</b></dt><dd>画像内でエッジが取得可能な領域は、以下のパラメータによって決定されます。 <ul>
+<li>相関エッジフィルタの幅( <em>parans.width</em> ) </li>
+<li>非極大抑制のフィルタ片幅( <em>params.nms_length</em> )</li>
+</ul>
+ボーダーモードなしで本関数を実行した場合、画像の周囲[ (INT) <em>parans.width</em> / 2 + <em>params.nms_length</em>]画素は、エッジが取得できません。 そのため、入力画像の幅、高さは[ <em>parans.width</em> + <em>params.nms_length</em> * 2]以上でない場合は、エラーとなります。</dd></dl>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd>入力画像の型が F_IMG_UC8 かつステップ数が8の倍数でない場合、処理速度が遅くなります。 注意してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像(type:uc8, s16, us16, double / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmag</em>&nbsp;</td><td>エッジ強度画像(type:us16 / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>params</em>&nbsp;</td><td>エッジ検出のための各種パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>feat_mode</em>&nbsp;</td><td>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダーモード <ul>
+<li>F_BORDER_NONE ボーダー処理無し </li>
+<li>F_BORDER_CONTINUOUS 端延長モード </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>オフセット量 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>取得したエッジ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>取得したエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>保刈久明, シグモイド関数との相関によるエッジ抽出, ビジョン技術の実利用ワークショップ (ViEW2006) 講演論文集, I-6, 2006</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>処理のために指定したパラメータは以下の通りとなります。 <ul>
+<li><em>params.width</em> = 5 </li>
+<li><em>params.height</em> = 3 </li>
+<li><em>params.var_threshold</em> = 25 </li>
+<li><em>params.sigmoid_k</em> = 1 </li>
+<li><em>params.mag_threshold</em> = 100 </li>
+<li><em>params.nms_length</em> = 1</li>
+</ul>
+<br>
+ なお処理結果画像は、実際に取得したエッジ点を入力画像に描画した画像です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_edge2d_corr.png" alt="fie_edge2d_corr.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+INT main()
+{
+    INT i;
+
+    <span class="comment">// 入力画像</span>
+    FHANDLE hsrc = NULL;
+
+    <span class="comment">// パラメータ</span>
+    <a class="code" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a> params;
+    UINT feat_mode;
+    INT border_mode;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">// 取得されるエッジ</span>
+    <a class="code" href="structF__EDGE.html" title="勾配方向、強度付エッジ点構造体(整数型)">F_EDGE</a> * pedges = NULL;
+
+    <span class="comment">// 取得されるエッジの数</span>
+    INT edge_num;
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 入力画像をファイルから読み込む</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>(<span class="stringliteral">"src_img.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">// パラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6" title="相関エッジフィルタの長さ">width</a> = 5;           <span class="comment">// 相関エッジフィルタの幅</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2" title="相関エッジフィルタの高さ">height</a>= 3;           <span class="comment">// 相関エッジフィルタの高さ</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b" title="シグモイド係数">sigmoid_k</a> = 1.0;     <span class="comment">// シグモイド係数</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e" title="分散しきい値">var_threshold</a> = 25;  <span class="comment">// 分散しきい値</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512" title="強度しきい値">mag_threshold</a> = 100; <span class="comment">// 強度しきい値</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236" title="非極大抑制のフィルタ片幅">nms_length</a> = 1;      <span class="comment">// 非極大抑制のフィルタ片幅</span>
+
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#g2e668b3309be953805977e5f77e23461" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向、強度供に取得し...">F_EDGE_FEAT_NONE</a>;   <span class="comment">// 勾配方向、強度データ保持の指定</span>
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;    <span class="comment">// ボーダー処理</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;        <span class="comment">// オフセット量</span>
+
+    <span class="comment">// 相関エッジフィルタを利用したエッジ検出の実行</span>
+    <a class="code" href="group__fie__edge__detector.html#gf3f049059fb7b65fdb023875f4d535e5" title="相関エッジフィルタを利用したエッジ検出">fnFIE_edge_corr</a>(hsrc, NULL, 
+                  &amp;params, feat_mode, border_mode, offset,
+                  &amp;pedges, &amp;edge_num);
+
+    <span class="comment">// 取得したエッジ点を入力画像上にプロットし、ファイルへ保存する</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;edge_num; i++){
+        <a class="code" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177" title="指定座標の濃度値設定">fnFIE_img_set_dens</a>(hsrc, 0, pedges[i].x, pedges[i].y, 255);
+    }
+
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"dst_img.bmp"</span>, hsrc);
+
+    <span class="comment">// 入力画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+
+    <span class="comment">// 取得したエッジは fnOAL_free関数により解放する</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g11b7db6e608ebad2f09339c80e4ce907"></a><!-- doxytag: member="fie_edge_corr.c::fnFIE_edge_corr_subpix" ref="g11b7db6e608ebad2f09339c80e4ce907" args="(FHANDLE hsrc, FHANDLE hmag, const F_EDGE_CORR_PARAMS *params, UINT feat_mode, INT border_mode, DPNT_T offset, F_DEDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_corr_subpix           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE__CORR__PARAMS.html">F_EDGE_CORR_PARAMS</a> *&nbsp;</td>
+          <td class="paramname"> <em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>feat_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+相関エッジフィルタを利用したエッジ検出（サブピクセル精度） 
+<p>
+サブピクセル精度で、相関エッジフィルタを利用してエッジを検出します。 エッジ情報を細線化後、特徴量を抽出します。 ノイズやボケ、シェーディングなどの悪条件に比較的強い傾向がありますが、 ソーベルより処理時間が掛かり、パラメータ調整にも熟練が必要です。<p>
+<dl class="user" compact><dt><b>エッジ検出のためのパラメータ:</b></dt><dd>下表のパラメータがあります。パラメータの意味や決定方法については <a class="el" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a> 構造体を参照してください。 <table class="pretable">
+<tr>
+<th>名前</th><th>推奨値</th><th>値域  </th></tr>
+<tr>
+<td>相関エッジフィルタの幅( <em>width</em> ) </td><td>13</td><td>3 ≦ <em>width</em> ≦ 255の奇数, <em>height</em> ≦ <em>width</em>   </td></tr>
+<tr>
+<td>相関エッジフィルタの高さ( <em>height</em> ) </td><td>5</td><td>1 ≦ <em>height</em> ≦ 255の奇数, <em>height</em> ≦ <em>width</em>   </td></tr>
+<tr>
+<td>シグモイド係数( <em>sigmoid_k</em> ) </td><td>1.0</td><td>0 &lt; <em>sigmoid_k</em>   </td></tr>
+<tr>
+<td>分散しきい値( <em>var_threshold</em> ) </td><td>UC8型の場合は25</td><td>0 &lt; <em>var_threshold</em> ≦上限値。上限値は画像型に依存  </td></tr>
+<tr>
+<td>強度しきい値( <em>mag_threshold</em> ) </td><td>160</td><td>0 ≦ <em>mag_threshold</em> ≦ 255  </td></tr>
+<tr>
+<td>非極大抑制のフィルタ片幅( <em>nms_length</em> ) </td><td>6 (= ( <em>width</em> - 1) / 2) </td><td>1 ≦ <em>nms_length</em>   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード:</b></dt><dd>エッジ点構造体( <a class="el" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> )に勾配方向、強度データを保持するかどうかを指定するためのフラグです。 ビットフラグで指定します。 以下のマクロ定義を組み合わせて使用してください。 <ul>
+<li>F_EDGE_FEAT_NONE ： 勾配方向、強度共に保持しない </li>
+<li>F_EDGE_FEAT_MAG_SUM ： 強度( 絶対値和： <img class="formulaInl" alt="$Gxy_{(i,j)} = |Gx_{(i,j)}|+|Gy_{(i,j)}|$" src="form_556.png"> )を保持 </li>
+<li>F_EDGE_FEAT_MAG_SQRT ： 強度( ユークリッド距離： <img class="formulaInl" alt="$Gsqrt_{(i,j)} = \sqrt{Gx_{(i,j)}^2+Gy_{(i,j)}^2}$" src="form_557.png"> )を保持 </li>
+<li>F_EDGE_FEAT_DIRECT ： 勾配方向( <img class="formulaInl" alt="$\arctan{ \left( Gy_{(i,j)}^{'} , Gx_{(i,j)}^{'} \right)}$" src="form_560.png"> )を保持</li>
+</ul>
+ここで、 <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> は、ｘ方向微分画像、ｙ方向微分画像に対する座標( <em>x</em> , <em>y</em> ) での微分値となります。 なお、 本関数では勾配方向は <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> により計算されていません。 勾配方向の精度向上を目的として、 <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> の周囲画像を利用した補正計算により求められた <img class="formulaInl" alt="$ Gx_{(i,j)}^{'} , Gy_{(i,j)}^{'} $" src="form_561.png"> により計算されます。 ただし、強度の計算には <img class="formulaInl" alt="$ Gx_{(i,j)}^{'} , Gy_{(i,j)}^{'} $" src="form_561.png"> ではなく、 <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> がそのまま利用されます。 <br>
+<br>
+ 本フラグの指定により、以下の通りにデータが保持されます。 <ul>
+<li>F_EDGE_FEAT_MAG_…が指定されており、F_EDGE_FEAT_DIRECTが指定されていない場合は、強度のみが保持されます。 勾配方向には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTが指定されており、F_EDGE_FEAT_MAG_…が指定されていない場合は、勾配方向のみが保持されます。 強度には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTとF_EDGE_FEAT_MAG_…が共に指定されている場合は、勾配方向と強度の両方が保持されます。 </li>
+<li>F_EDGE_FEAT_NONEが指定された場合は、勾配方向、強度共に０が代入されます。 </li>
+<li>エッジ検出実行時は、F_EDGE_FEAT_MAG_SUM と F_EDGE_FEAT_MAG_SQRT を同時に強度を指定することはできません。</li>
+</ul>
+本マクロ定義以外のビットのフラグがオン(1)になっている場合はエラーとなります。</dd></dl>
+<dl class="user" compact><dt><b>オフセット量:</b></dt><dd>取得したエッジの座標に、指定したオフセット量を加えます。 <em>edges</em> の <em>x</em> 、 <em>y</em> にのみ反映されます。 エッジ強度画像( <em>hmag</em> )には反映されません。</dd></dl>
+<dl class="user" compact><dt><b>エッジ強度画像:</b></dt><dd><em>feat_mode</em> で指定したエッジの強度を画像として出力します。 必要がない場合は、 <em>hmag</em> を NULLで指定してください。 <em>feat_mode</em> で強度が指定されていなくて、 <em>hmag</em> がNULLでない場合は、エラーとなります。 なお、エッジ強度画像が、画素タイプが F_IMG_US16 、チャネル数、サイズは入力画像と同じである必要があります。 <br>
+<br>
+ また、取得される強度は、理論上の最大値が US16_MAX(65535)となるように正規化されています。 実際に取得されたエッジ点の強度の最大値ではありません。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジ:</b></dt><dd><em>edges</em> は、関数内部で必要なメモリを確保します。 メモリを確保した配列を指定しないでください。 また、 <em>*edges</em> がNULLで初期化されていない場合は、エラーとなります。 確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの座標範囲:</b></dt><dd>取得エッジの範囲は以下の通りとなります。 <ul>
+<li>-0.5 &lt; <em>edges-&gt;x</em> &lt; width - 0.5 </li>
+<li>-0.5 &lt; <em>edges-&gt;y</em> &lt; height - 0.5</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの勾配方向、強度範囲:</b></dt><dd>取得エッジに保持されている勾配方向、強度は、以下の範囲で取得されます。 <a class="el" href="group__fie__edge__detector.html#gf3f049059fb7b65fdb023875f4d535e5" title="相関エッジフィルタを利用したエッジ検出">fnFIE_edge_corr()</a> とは、勾配方向の単位や、強度の範囲が異なりますので注意してください。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 <ul>
+<li>勾配方向：<img class="formulaInl" alt="$-\pi$" src="form_73.png"> ≦ <em>edges-&gt;q</em> ≦ <img class="formulaInl" alt="$\pi$" src="form_74.png"> (単位：ラジアン) </li>
+<li>強度：0.0 ≦ <em>edges-&gt;mag</em> ≦ 1.0</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>入力画像のサイズ:</b></dt><dd>画像内でエッジが取得可能な領域は、以下のパラメータによって決定されます。 <ul>
+<li>相関エッジフィルタの幅( <em>parans.width</em> ) </li>
+<li>非極大抑制のフィルタ片幅( <em>params.nms_length</em> ) </li>
+<li>エッジの座標点をサブピクセル精度で求めるためのマスクサイズ( ３×３固定 )</li>
+</ul>
+ボーダーモードなしで本関数を実行した場合、画像の周囲[ (INT) <em>parans.width</em> / 2 +<em>params.nms_length</em> + 1]画素は、エッジが取得できません。 なお最後に加えた１は、サブピクセル精度で求めるためのマスクの片幅です。 そのため、入力画像の幅、高さは[ <em>parans.width</em> + <em>params.nms_length</em> * 2 + 2]以上でない場合は、エラーとなります。</dd></dl>
+<dl class="note" compact><dt><b>覚え書き:</b></dt><dd>入力画像の型が F_IMG_UC8 かつステップ数が8の倍数でない場合、処理速度が遅くなります。 注意してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像(type:uc8, s16, us16, double / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmag</em>&nbsp;</td><td>エッジ強度画像(type:us16 / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>params</em>&nbsp;</td><td>エッジ検出のための各種パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>feat_mode</em>&nbsp;</td><td>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダーモード <ul>
+<li>F_BORDER_NONE ボーダー処理無し </li>
+<li>F_BORDER_CONTINUOUS 端延長モード </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>オフセット量 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>取得したエッジ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>取得したエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>保刈久明, シグモイド関数との相関によるエッジ抽出, ビジョン技術の実利用ワークショップ (ViEW2006) 講演論文集, I-6, 2006</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>処理のために指定したパラメータは以下の通りとなります。 <ul>
+<li><em>params.width</em> = 5 </li>
+<li><em>params.height</em> = 3 </li>
+<li><em>params.var_threshold</em> = 25 </li>
+<li><em>params.sigmoid_k</em> = 1 </li>
+<li><em>params.mag_threshold</em> = 100 </li>
+<li><em>params.nms_length</em> = 1</li>
+</ul>
+<br>
+ なお処理結果画像は、実際に取得したエッジ点を入力画像に描画した画像です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_edge2d_corr_subpix.png" alt="fie_edge2d_corr_subpix.png">
+<p><strong>処理結果画像</strong></p></div>
+  </td></tr>
+<tr>
+</tr>
+</table>
+<table class="pretable">
+</table>
+使用例 <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+INT main()
+{
+    INT i;
+
+    <span class="comment">// 入力画像</span>
+    FHANDLE hsrc = NULL;
+
+    <span class="comment">// パラメータ</span>
+    <a class="code" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a> params;
+    UINT feat_mode;
+    INT border_mode;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> offset;
+
+    <span class="comment">// 取得されるエッジ</span>
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> * pedges = NULL;
+
+    <span class="comment">// 取得されるエッジの数</span>
+    INT edge_num;
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 入力画像をファイルから読み込む</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>(<span class="stringliteral">"src_img.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">// パラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6" title="相関エッジフィルタの長さ">width</a> = 5;               <span class="comment">// 相関エッジフィルタの幅</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2" title="相関エッジフィルタの高さ">height</a>= 3;               <span class="comment">// 相関エッジフィルタの高さ</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b" title="シグモイド係数">sigmoid_k</a> = 1.0;         <span class="comment">// シグモイド係数</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e" title="分散しきい値">var_threshold</a> = 25;      <span class="comment">// 分散しきい値</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512" title="強度しきい値">mag_threshold</a> = 100;     <span class="comment">// 強度しきい値</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236" title="非極大抑制のフィルタ片幅">nms_length</a> = 1;          <span class="comment">// 非極大抑制のフィルタ片幅</span>
+
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#g2e668b3309be953805977e5f77e23461" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向、強度供に取得し...">F_EDGE_FEAT_NONE</a>;   <span class="comment">// 勾配方向、強度データの保持の指定</span>
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;    <span class="comment">// ボーダー処理</span>
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0.0;      <span class="comment">// オフセット量</span>
+
+    <span class="comment">// 相関エッジフィルタを利用したエッジ検出(サブピクセル精度)の実行</span>
+    <a class="code" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix</a>(hsrc, NULL,
+                        &amp;params, feat_mode, border_mode, offset,
+                        &amp;pedges, &amp;edge_num);
+
+    <span class="comment">// 取得したエッジ点を入力画像上にプロットし、ファイルへ保存する</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;edge_num; i++){
+        <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnt;
+        DOUBLE prot_val = 255.0;
+
+        pnt.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pedges[i].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;
+        pnt.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pedges[i].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;
+
+        <a class="code" href="group__fie__img__draw.html#g1b6fc1f2fec4bc09638f042ced117401" title="点の描画">fnFIE_draw_point</a>(hsrc, &amp;prot_val, pnt);
+    }
+
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"dst_img.bmp"</span>, hsrc);
+
+    <span class="comment">// 入力画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+
+    <span class="comment">// 取得したエッジは fnOAL_free関数により解放する</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9bf56aaaf7fe4912bdb2a0a340b60996"></a><!-- doxytag: member="fie_edge_sobel.c::fnFIE_edge_sobel" ref="g9bf56aaaf7fe4912bdb2a0a340b60996" args="(FHANDLE hsrc, FHANDLE hmag, const F_EDGE_SOBEL_PARAMS *params, UINT feat_mode, INT border_mode, PNT_T offset, F_EDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_sobel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE__SOBEL__PARAMS.html">F_EDGE_SOBEL_PARAMS</a> *&nbsp;</td>
+          <td class="paramname"> <em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>feat_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE.html">F_EDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ソーベルフィルタを利用したエッジ検出 
+<p>
+ソーベルフィルタ( <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> )を利用してエッジを検出します。 エッジ情報を細線化後、特徴量を抽出します。 ソーベルフィルタを利用したエッジ検出は、直感的にわかりやすいパラメータで高速で処理が可能ですが、 環境変化に弱く、対象物の焦点ずれ等によるボケが生じた場合に精度の安定性が低い傾向があります。<p>
+なお、本関数ではエッジをサブピクセル精度で取得はしません。 サブピクセル精度でエッジを取得したい場合は、 <a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a> を使用してください。<p>
+<dl class="user" compact><dt><b>ソーベルフィルタ:</b></dt><dd>本関数で使用しているフィルタは以下のようになります。</dd></dl>
+<ul>
+<li>Ｘ方向 <br>
+ Ｘ方向微分を表す、下記の3x3カーネルにてコンボリューション演算(下式)を行った結果値を出力します。 出力画像の型が符号無し型の場合は、絶対値を取ります。 また、結果値が出力画像の型の最大値を超える場合は、その最大値でサチュレーション処理されます。 <pre>
+		[-1][0][1]
+		[-2][0][2]
+		[-1][0][1]
+	</pre> <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} Gx_{(i,j)} = &amp;- \{ f_{(i-1,j-1)} + 2 f_{(i-1,j)} + f_{(i-1,j+1)} \} \\ &amp;+ f_{(i+1,j-1)} + 2 f_{(i+1,j)} + f_{(i+1,j+1)} \end{eqnarray*}" src="form_562.png">
+<p>
+</li>
+</ul>
+<ul>
+<li>Ｙ方向 <br>
+ Ｙ方向微分を表す、下記の3x3カーネルにてコンボリューション演算(下式)を行った結果値を出力します。 出力画像の型が符号無し型の場合は、絶対値を取ります。 また、結果値が出力画像の型の最大値を超える場合は、その最大値で飽和処理されます。 <pre>
+		[-1][-2][-1]
+		[ 0][ 0][ 0]
+		[ 1][ 2][ 1]
+	</pre> <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} Gy_{(i,j)} = &amp;- \{ f_{(i-1,j-1)} + 2 f_{(i,j-1)} + f_{(i+1,j-1)} \} \\ &amp;+ f_{(i-1,j+1)} + 2 f_{(i,j+1)} + f_{(i+1,j+1)} \end{eqnarray*}" src="form_563.png">
+<p>
+ 入力画像に対して、ｘ方向、ｙ方向のソーベルフィルタを施した微分画像をそれぞれ生成し、その後の処理をします。</li>
+</ul>
+<dl class="user" compact><dt><b>エッジ検出のためのパラメータ:</b></dt><dd>強度しきい値( <em>mag_threshold</em> ) <ul>
+<li>推奨値：120 </li>
+<li>エッジの強度に対するしきい値を設定します。 設定値以上のエッジ強度を持つ画素をエッジとみなします。 対象となるマスターパタンと背景のコントラストによって値を調整する必要があります。 (設定範囲： 0 ≦ <em>mag_threshold</em> ≦ 1023 )</li>
+</ul>
+非極大抑制のフィルタ片幅( <em>nms_length</em> ) <ul>
+<li>推奨値：1 </li>
+<li>細線化処理を行う際の幅を設定します。 正しいエッジ位置の近隣に余計なエッジが生じる場合には値を大きくします。 ( 1 ≦ <em>nms_length</em> )</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード:</b></dt><dd>エッジ点構造体( <a class="el" href="structF__EDGE.html" title="勾配方向、強度付エッジ点構造体(整数型)">F_EDGE</a> )に勾配方向、強度データを保持するかどうかを指定するためのフラグです。 ビットフラグで指定します。 以下のマクロ定義を組み合わせて使用してください。 <ul>
+<li>F_EDGE_FEAT_NONE ： 勾配方向、強度共に保持しない </li>
+<li>F_EDGE_FEAT_MAG_SUM ： 強度( 絶対値和： <img class="formulaInl" alt="$Gxy_{(i,j)} = |Gx_{(i,j)}|+|Gy_{(i,j)}|$" src="form_556.png"> )を保持 </li>
+<li>F_EDGE_FEAT_MAG_SQRT ： 強度( ユークリッド距離： <img class="formulaInl" alt="$Gsqrt_{(i,j)} = \sqrt{Gx_{(i,j)}^2+Gy_{(i,j)}^2}$" src="form_557.png"> )を保持 </li>
+<li>F_EDGE_FEAT_DIRECT ： 勾配方向( <img class="formulaInl" alt="$\arctan{ \left( Gy_{(i,j)} , Gx_{(i,j)} \right)}$" src="form_558.png"> )を保持</li>
+</ul>
+ここで、 <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> は、ｘ方向微分画像、ｙ方向微分画像に対する座標( <em>x</em> , <em>y</em> ) での微分値となります。 なお、絶対値和は、 <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> とは異なり２で除算していませんので注意してください。 <br>
+<br>
+ 本フラグの指定により、以下の通りにデータが保持されます。 <ul>
+<li>F_EDGE_FEAT_MAG_…が指定されており、F_EDGE_FEAT_DIRECTが指定されていない場合は、強度のみが保持されます。 勾配方向には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTが指定されており、F_EDGE_FEAT_MAG_…が指定されていない場合は、勾配方向のみが保持されます。 強度には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTとF_EDGE_FEAT_MAG_…が共に指定されている場合は、勾配方向と強度の両方が保持されます。 </li>
+<li>F_EDGE_FEAT_NONEが指定された場合は、勾配方向、強度共に０が代入されます。 </li>
+<li>エッジ検出実行時は、F_EDGE_FEAT_MAG_SUM と F_EDGE_MAG_SQRT を同時に強度を指定することはできません。</li>
+</ul>
+本マクロ定義以外のビットのフラグがオン(1)になっている場合はエラーとなります。</dd></dl>
+<dl class="user" compact><dt><b>オフセット量:</b></dt><dd>取得したエッジの座標に、指定したオフセット量を加えます。 <em>edges</em> の <em>x</em> 、 <em>y</em> にのみ反映されます。 エッジ強度画像( <em>hmag</em> )には反映されません。</dd></dl>
+<dl class="user" compact><dt><b>エッジ強度画像:</b></dt><dd><em>feat_mode</em> で指定したエッジの強度を画像として出力します。 必要がない場合は、 <em>hmag</em> を NULLで指定してください。 <em>feat_mode</em> で強度が指定されていなくて、 <em>hmag</em> がNULLでない場合は、エラーとなります。 なお、エッジ強度画像が、画素タイプが F_IMG_US16 、チャネル数、サイズは入力画像と同じである必要があります。 <br>
+<br>
+ また、取得される強度は、理論上の最大値が US16_MAX(65535)となるように正規化されています。 実際に取得されたエッジ点の強度の最大値ではありません。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジ:</b></dt><dd><em>edges</em> は、関数内部で必要なメモリを確保します。 メモリを確保した配列を指定しないでください。 また、 <em>*edges</em> がNULLで初期化されていない場合は、エラーとなります。 確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの座標範囲:</b></dt><dd>取得エッジの範囲は以下の通りとなります。 <ul>
+<li>0 ≦ <em>edges-&gt;x</em> ≦ width - 1 </li>
+<li>0 ≦ <em>edges-&gt;y</em> ≦ height - 1</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの勾配方向、強度範囲:</b></dt><dd>取得エッジに保持されている勾配方向、強度は、以下の範囲で取得されます。 <a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a> とは、勾配方向の単位や、強度の範囲が異なりますので注意してください。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 <ul>
+<li>勾配方向：-180 ≦ <em>edges-&gt;q</em> ≦ 180 (単位：度) </li>
+<li>強度：0 ≦ <em>edges-&gt;mag</em> ≦ 16384</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>入力画像のサイズ:</b></dt><dd>画像内でエッジが取得可能な領域は、以下のパラメータによって決定されます。 <ul>
+<li>ソーベルフィルタの幅( ３固定 ) </li>
+<li>非極大抑制のフィルタ片幅( <em>params.nms_length</em> )</li>
+</ul>
+ボーダーモードなしで本関数を実行した場合、画像の周囲[1 + <em>params.nms_length</em>]画素は、エッジが取得できません。 なお最初に加えたエッジはソーベルフィルタの片幅です。 そのため、入力画像の幅、高さは[3 + <em>params.nms_length</em> * 2]以上でない場合は、エラーとなります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像(type:uc8 / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmag</em>&nbsp;</td><td>エッジ強度画像(type:us16 / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>params</em>&nbsp;</td><td>エッジ検出のための各種パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>feat_mode</em>&nbsp;</td><td>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダーモード <ul>
+<li>F_BORDER_NONE ボーダー処理無し </li>
+<li>F_BORDER_CONTINUOUS 端延長モード </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>オフセット量 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>取得したエッジ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>取得したエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>処理のために指定したパラメータは以下の通りとなります。 <ul>
+<li><em>params.mag_threshold</em> = 40 </li>
+<li><em>params.nms_length</em> = 1</li>
+</ul>
+<br>
+ なお処理結果画像は、実際に取得したエッジ点を入力画像に描画した画像です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_edge2d_sobel.png" alt="fie_edge2d_sobel.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+INT main()
+{
+    INT i;
+
+    <span class="comment">// 入力画像</span>
+    FHANDLE hsrc = NULL;
+
+    <span class="comment">// パラメータ</span>
+    <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a> params;
+    UINT feat_mode;
+    INT border_mode;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">// 取得されるエッジ</span>
+    <a class="code" href="structF__EDGE.html" title="勾配方向、強度付エッジ点構造体(整数型)">F_EDGE</a> * pedges = NULL;
+
+    <span class="comment">// 取得されるエッジの数</span>
+    INT edge_num;
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 入力画像をファイルから読み込む</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>(<span class="stringliteral">"src_img.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">// パラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">mag_threshold</a> = 40;  <span class="comment">// 強度しきい値</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">nms_length</a> = 1;      <span class="comment">// 非極大抑制のフィルタ片幅</span>
+
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#g2e668b3309be953805977e5f77e23461" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向、強度供に取得し...">F_EDGE_FEAT_NONE</a>;   <span class="comment">// 勾配方向、強度データ保持の指定</span>
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;    <span class="comment">// ボーダー処理</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;        <span class="comment">// オフセット量</span>
+
+    <span class="comment">// ソーベルフィルタを利用したエッジ検出の実行</span>
+    <a class="code" href="group__fie__edge__detector.html#g9bf56aaaf7fe4912bdb2a0a340b60996" title="ソーベルフィルタを利用したエッジ検出">fnFIE_edge_sobel</a>(hsrc, NULL,
+                   &amp;params, feat_mode, border_mode, offset,
+                   &amp;pedges, &amp;edge_num);
+
+    <span class="comment">// 取得したエッジ点を入力画像上にプロットし、ファイルへ保存する</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;edge_num; i++){
+        <a class="code" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177" title="指定座標の濃度値設定">fnFIE_img_set_dens</a>(hsrc, 0, pedges[i].x, pedges[i].y, 255);
+    }
+
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"dst_img.bmp"</span>, hsrc);
+
+    <span class="comment">// 入力画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+
+    <span class="comment">// 取得したエッジは fnOAL_free関数により解放する</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4ec620016bd6eeec73e1ad5bc3ddd673"></a><!-- doxytag: member="fie_edge_sobel.c::fnFIE_edge_sobel_subpix" ref="g4ec620016bd6eeec73e1ad5bc3ddd673" args="(FHANDLE hsrc, FHANDLE hmag, const F_EDGE_SOBEL_PARAMS *params, UINT feat_mode, INT border_mode, DPNT_T offset, F_DEDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_sobel_subpix           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE__SOBEL__PARAMS.html">F_EDGE_SOBEL_PARAMS</a> *&nbsp;</td>
+          <td class="paramname"> <em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>feat_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ソーベルフィルタを利用したエッジ検出(サブピクセル精度) 
+<p>
+サブピクセル精度で、ソーベルフィルタ( <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> )を利用してエッジを検出します。 エッジ情報を細線化後、特徴量を抽出します。 ソーベルフィルタを利用したエッジ検出は、直感的にわかりやすいパラメータで高速で処理が可能ですが、 環境変化に弱く、対象物の焦点ずれ等によるボケが生じた場合に精度の安定性が低い傾向があります。<p>
+<dl class="user" compact><dt><b>ソーベルフィルタ:</b></dt><dd>本関数で使用しているフィルタは以下のようになります。</dd></dl>
+<ul>
+<li>Ｘ方向 <br>
+ Ｘ方向微分を表す、下記の3x3カーネルにてコンボリューション演算(下式)を行った結果値を出力します。 出力画像の型が符号無し型の場合は、絶対値を取ります。 また、結果値が出力画像の型の最大値を超える場合は、その最大値でサチュレーション処理されます。 <pre>
+		[-1][0][1]
+		[-2][0][2]
+		[-1][0][1]
+	</pre> <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} Gx_{(i,j)} = &amp;- \{ f_{(i-1,j-1)} + 2 f_{(i-1,j)} + f_{(i-1,j+1)} \} \\ &amp;+ f_{(i+1,j-1)} + 2 f_{(i+1,j)} + f_{(i+1,j+1)} \end{eqnarray*}" src="form_562.png">
+<p>
+</li>
+</ul>
+<ul>
+<li>Ｙ方向 <br>
+ Ｙ方向微分を表す、下記の3x3カーネルにてコンボリューション演算(下式)を行った結果値を出力します。 出力画像の型が符号無し型の場合は、絶対値を取ります。 また、結果値が出力画像の型の最大値を超える場合は、その最大値で飽和処理されます。 <pre>
+		[-1][-2][-1]
+		[ 0][ 0][ 0]
+		[ 1][ 2][ 1]
+	</pre> <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} Gy_{(i,j)} = &amp;- \{ f_{(i-1,j-1)} + 2 f_{(i,j-1)} + f_{(i+1,j-1)} \} \\ &amp;+ f_{(i-1,j+1)} + 2 f_{(i,j+1)} + f_{(i+1,j+1)} \end{eqnarray*}" src="form_563.png">
+<p>
+ 入力画像に対して、ｘ方向、ｙ方向のソーベルフィルタを施した微分画像をそれぞれ生成し、その後の処理をします。</li>
+</ul>
+<dl class="user" compact><dt><b>エッジ検出のためのパラメータ:</b></dt><dd>強度しきい値( <em>mag_threshold</em> ) <ul>
+<li>推奨値：120 </li>
+<li>エッジの強度に対するしきい値を設定します。 設定値以上のエッジ強度を持つ画素をエッジとみなします。 対象となるマスターパタンと背景のコントラストによって値を調整する必要があります。 (設定範囲： 0 ≦ <em>mag_threshold</em> ≦ 1023 )</li>
+</ul>
+非極大抑制のフィルタ片幅( <em>nms_length</em> ) <ul>
+<li>推奨値：1 </li>
+<li>細線化処理を行う際の幅を設定します。 正しいエッジ位置の近隣に余計なエッジが生じる場合には値を大きくします。 ( 1 ≦ <em>nms_length</em> )</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード:</b></dt><dd>エッジ点構造体( <a class="el" href="structF__EDGE.html" title="勾配方向、強度付エッジ点構造体(整数型)">F_EDGE</a> )に勾配方向、強度データを保持するかどうかを指定するためのフラグです。 ビットフラグで指定します。 以下のマクロ定義を組み合わせて使用してください。 <ul>
+<li>F_EDGE_FEAT_NONE ： 勾配方向、強度共に保持しない </li>
+<li>F_EDGE_FEAT_MAG_SUM ： 強度( 絶対値和： <img class="formulaInl" alt="$Gxy_{(i,j)} = |Gx_{(i,j)}|+|Gy_{(i,j)}|$" src="form_556.png"> )を保持 </li>
+<li>F_EDGE_FEAT_MAG_SQRT ： 強度( ユークリッド距離： <img class="formulaInl" alt="$Gsqrt_{(i,j)} = \sqrt{Gx_{(i,j)}^2+Gy_{(i,j)}^2}$" src="form_557.png"> )を保持 </li>
+<li>F_EDGE_FEAT_DIRECT ： 勾配方向( <img class="formulaInl" alt="$\arctan{ \left( Gy_{(i,j)} , Gx_{(i,j)} \right)}$" src="form_558.png"> )を保持</li>
+</ul>
+ここで、 <img class="formulaInl" alt="$ Gx_{(i,j)} , Gy_{(i,j)} $" src="form_559.png"> は、ｘ方向微分画像、ｙ方向微分画像に対する座標( <em>x</em> , <em>y</em> ) での微分値となります。 なお、絶対値和は、 <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> とは異なり２で除算していませんので注意してください。<br>
+<br>
+ 本フラグの指定により、以下の通りにデータが保持されます。 <ul>
+<li>F_EDGE_FEAT_MAG_…が指定されており、F_EDGE_FEAT_DIRECTが指定されていない場合は、強度のみが保持されます。 勾配方向には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTが指定されており、F_EDGE_FEAT_MAG_…が指定されていない場合は、勾配方向のみが保持されます。 強度には０が代入されます。 </li>
+<li>F_EDGE_FEAT_DIRECTとF_FEAT_EDGE_MAG_…が共に指定されている場合は、勾配方向と強度の両方が保持されます。 </li>
+<li>F_EDGE_FEAT_NONEが指定された場合は、勾配方向、強度共に０が代入されます。 </li>
+<li>エッジ検出実行時は、F_EDGE_FEAT_MAG_SUM と F_EDGE_FEAT_MAG_SQRT を同時に強度を指定することはできません。</li>
+</ul>
+本マクロ定義以外のビットのフラグがオン(1)になっている場合はエラーとなります。</dd></dl>
+<dl class="user" compact><dt><b>オフセット量:</b></dt><dd>取得したエッジの座標に、指定したオフセット量を加えます。 <em>edges</em> の <em>x</em> 、 <em>y</em> にのみ反映されます。 エッジ強度画像( <em>hmag</em> )には反映されません。</dd></dl>
+<dl class="user" compact><dt><b>エッジ強度画像:</b></dt><dd><em>feat_mode</em> で指定したエッジの強度を画像として出力します。 必要がない場合は、 <em>hmag</em> を NULLで指定してください。 <em>feat_mode</em> で強度が指定されていなくて、 <em>hmag</em> がNULLでない場合は、エラーとなります。 なお、エッジ強度画像が、画素タイプが F_IMG_US16 、チャネル数、サイズは入力画像と同じである必要があります。 <br>
+<br>
+ また、取得される強度は、理論上の最大値が US16_MAX(65535)となるように正規化されています。 実際に取得されたエッジ点の強度の最大値ではありません。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジ:</b></dt><dd><em>edges</em> は、関数内部で必要なメモリを確保します。 メモリを確保した配列を指定しないでください。 また、 <em>*edge</em> がNULLで初期化されていない場合は、エラーとなります。 確保されたメモリは、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> で解放してください。</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの座標範囲:</b></dt><dd>取得エッジの範囲は以下の通りとなります。 <ul>
+<li>-0.5 &lt; <em>edge-&gt;x</em> &lt; width - 0.5 </li>
+<li>-0.5 &lt; <em>edge-&gt;y</em> &lt; height - 0.5</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>取得エッジの勾配方向、強度範囲:</b></dt><dd>取得エッジに保持されている勾配方向、強度は、以下の範囲で取得されます。 <a class="el" href="group__fie__edge__detector.html#g9bf56aaaf7fe4912bdb2a0a340b60996" title="ソーベルフィルタを利用したエッジ検出">fnFIE_edge_sobel()</a> とは、勾配方向の単位や、強度の範囲が異なりますので注意してください。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。 <ul>
+<li>勾配方向：<img class="formulaInl" alt="$-\pi$" src="form_73.png"> ≦ <em>edges-&gt;q</em> ≦ <img class="formulaInl" alt="$\pi$" src="form_74.png"> (単位：ラジアン) </li>
+<li>強度：0.0 ≦ <em>edges-&gt;mag</em> ≦ 1.0</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>入力画像のサイズ:</b></dt><dd>画像内でエッジが取得可能な領域は、以下のパラメータによって決定されます。 <ul>
+<li>ソーベルフィルタの幅( ３固定 ) </li>
+<li>非極大抑制のフィルタ片幅( <em>params.nms_length</em> ) </li>
+<li>エッジの座標点をサブピクセル精度で求めるためのマスクサイズ( ３×３固定 )</li>
+</ul>
+ボーダーモードなしで本関数を実行した場合、画像の周囲[1 + <em>params.nms_length</em> + 1]画素は、エッジが取得できません。 なお最初に加えたエッジはソーベルフィルタの片幅、最後に加えた１はサブピクセル精度で求めるためのマスクの片幅です。 そのため、入力画像の幅、高さは[3 + <em>params.nms_length</em> * 2 + 2]以上でない場合は、エラーとなります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像(type:uc8 / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmag</em>&nbsp;</td><td>エッジ強度画像(type:us16 / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>params</em>&nbsp;</td><td>エッジ検出のための各種パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>feat_mode</em>&nbsp;</td><td>勾配方向、強度付きエッジ点構造体に保持するデータを指定するモード </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダーモード <ul>
+<li>F_BORDER_NONE ボーダー処理無し </li>
+<li>F_BORDER_CONTINUOUS 端延長モード </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>オフセット量 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>取得したエッジ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>取得したエッジ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>処理のために指定したパラメータは以下の通りとなります。 <ul>
+<li><em>params.mag_threshold</em> = 40 </li>
+<li><em>params.nms_length</em> = 1</li>
+</ul>
+<br>
+ なお処理結果画像は、実際に取得したエッジ点を入力画像に描画した画像です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_edge2d_sobel_subpix.png" alt="fie_edge2d_sobel_subpix.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+INT main()
+{
+    INT i;
+
+    <span class="comment">// 入力画像</span>
+    FHANDLE hsrc = NULL;
+
+    <span class="comment">// パラメータ</span>
+    <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a> params;
+    UINT feat_mode;
+    INT border_mode;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> offset;
+
+    <span class="comment">// 取得されるエッジ</span>
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> * pedges = NULL;
+
+    <span class="comment">// 取得されるエッジの数</span>
+    INT edge_num;
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 入力画像をファイルから読み込む</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>(<span class="stringliteral">"src_img.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">// パラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">mag_threshold</a> = 40;  <span class="comment">// 強度しきい値</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">nms_length</a> = 1;      <span class="comment">// 非極大抑制のフィルタ片幅</span>
+
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#g2e668b3309be953805977e5f77e23461" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向、強度供に取得し...">F_EDGE_FEAT_NONE</a>;   <span class="comment">// 勾配方向、強度データ保持の指定</span>
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;    <span class="comment">// ボーダー処理</span>
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0.0;      <span class="comment">// オフセット量</span>
+
+    <span class="comment">// ソーベルフィルタを利用したエッジ検出(サブピクセル精度)の実行</span>
+    <a class="code" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix</a>(hsrc, NULL,
+                         &amp;params, feat_mode, border_mode, offset,
+                         &amp;pedges, &amp;edge_num);
+
+    <span class="comment">// 取得したエッジ点を入力画像上にプロットし、ファイルへ保存する</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;edge_num; i++){
+        <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> pnt;
+        DOUBLE prot_val = 255.0;
+
+        pnt.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pedges[i].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;
+        pnt.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pedges[i].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;
+
+        <a class="code" href="group__fie__img__draw.html#g1b6fc1f2fec4bc09638f042ced117401" title="点の描画">fnFIE_draw_point</a>(hsrc, &amp;prot_val, pnt);
+    }
+
+    <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>(<span class="stringliteral">"dst_img.bmp"</span>, hsrc);
+
+    <span class="comment">// 入力画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+
+    <span class="comment">// 取得したエッジは fnOAL_free関数により解放する</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb6d10e0166ffa9f55186ca32e63dbc77"></a><!-- doxytag: member="fie_img_point.c::fnFIE_img_get_points_bin" ref="gb6d10e0166ffa9f55186ca32e63dbc77" args="(const FHANDLE hsrc, INT color, INT max_pnt_num, PNT_T *pnts, INT *pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_points_bin           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２値画像からの点データ取得 
+<p>
+２値画像から指定色の画素を点データとして取得します。 本関数の結果として得られるデータはラスタ走査順序データとなります。<p>
+点データの数が引数で指定された最大数に達した場合は処理を中断します。 ただし、この場合は正常終了となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type:bin / ch:1 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>color</em>&nbsp;</td><td>対象エリア色 <ul>
+<li>0：黒 </li>
+<li>1：白 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_pnt_num</em>&nbsp;</td><td>点データの最大数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>点データ格納バッファ( sizeof(PNT_T) * max_pnt_num byte 必要 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>取得された点数(0以上)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>pnts</em> または <em>pnt_num</em> がNULL </li>
+<li><em>max_pnt_num</em> が０以下 </li>
+<li><em>color</em> が０または１ではない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3ed6c6c00fdc248fdbf24cb143fcd108"></a><!-- doxytag: member="fie_img_point.c::fnFIE_img_get_points_gray" ref="g3ed6c6c00fdc248fdbf24cb143fcd108" args="(const FHANDLE hsrc, DOUBLE tlow, DOUBLE thigh, INT max_pnt_num, PNT_T *pnts, INT *pnt_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_points_gray           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>tlow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>thigh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_pnt_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pnt_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+濃淡画像からの点データ列取得 
+<p>
+濃淡画像から指定範囲内の濃度値をもつ画素を点データとして取得します。 本関数の結果として得られるデータはラスタ走査順序データとなります。<p>
+濃度値の範囲は <em>tlow</em> ≦ (濃度値) ≦ <em>thigh</em> とします。 画像が整数型の場合、 <em>tlow</em> および <em>thigh</em> は単純キャストで整数に変換されます。 <em>tlow</em> および <em>thigh</em> が対象となる画素タイプの濃度値範囲を超えていた場合は、サチュレーション処理が行われます。<p>
+点データの数が引数で指定された最大数に達した場合は処理を中断します。 ただし、この場合は正常終了となります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type:uc8,s16,us16,double / ch:1 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>tlow</em>&nbsp;</td><td>２値化閾値の下限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>thigh</em>&nbsp;</td><td>２値化閾値の上限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_pnt_num</em>&nbsp;</td><td>点データの最大数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>点データ格納バッファ( sizeof(PNT_T) * max_pnt_num byte 必要 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnt_num</em>&nbsp;</td><td>取得された点数(0以上)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>pnts</em> または <em>pnt_num</em> がNULL </li>
+<li><em>max_pnt_num</em> が０以下 </li>
+<li><em>tlow</em> &gt; <em>thigh</em> </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1170a2e063a8860c96aaf7043eabc759"></a><!-- doxytag: member="fie_nms_dir.c::fnFIE_nms_dir" ref="g1170a2e063a8860c96aaf7043eabc759" args="(FHANDLE hmagx, FHANDLE hmagy, FHANDLE hthin, DOUBLE thresh)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_nms_dir           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmagx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmagy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hthin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>thresh</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+非極大値の抑制（エッジ勾配方向を利用） 
+<p>
+非極大抑制は、画像に対して１次微分を施した後に実行されます。 注目画素の勾配を、勾配方向に隣接した２つの画素の勾配と比較します。 注目画素の勾配が、隣接した画素の勾配より大きかった場合、局所的な最大値となり強度は保持されて、 後の処理に利用されます。 そうでない場合は、０が設定されます。<p>
+非極大抑制は、細線化のような効果があります。 しかしながら、勾配方向を考慮しており、処理結果は必ずしも１画素の幅の線になるとは限りません。<p>
+本関数では、出力画像の周囲１画素は０になります。 また、 <em>hmagx</em> と <em>hmagy</em> で与えられたｘ方向とｙ方向の強度は、以下のように決定されます。<p>
+<ul>
+<li>ｘ、ｙ方向共にエッジがない場合：０ </li>
+<li>ｘ方向のみエッジがある場合：１ </li>
+<li>ｙ方向のみエッジがある場合：２ </li>
+<li>ｘ、ｙ方向共にエッジがある場合：３</li>
+</ul>
+<em>thresh</em> は勾配の非常に小さい値を取り除くために利用されます。 <em>hmagx</em> と <em>hmagy</em> は絶対値演算がなされた後、加算演算がなされます。 加算演算された画像に対して、 <em>thresh</em> 未満の値は０となります。 <em>thresh</em> は、０以上の値を入力してください。<p>
+<em>hmagx</em> , <em>hmagy</em> , <em>hthin</em> の幅、高さ共に３以上である必要があります。 また、すべての画像のサイズも同じである必要があります。<p>
+出力画像の周囲１画素は０となります。<p>
+以下に処理結果を示します。 <a class="el" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel()</a> により、ｘ方向、ｙ方向に処理した微分データを <em>hmagx</em> と <em>hmagy</em> 、そして <em>thresh</em> を 64 として 処理しています。 なお <em>hmagx</em> と <em>hmagy</em> は、入出力画像の画素タイプが共に F_IMG_UC8 として処理した場合を以下に示していますが、 実際の処理では出力画像の画素タイプは F_IMG_S16 として処理したデータを用いて、非極大値の抑制処理を行っています。 また細線化画像は、実際の値を８５倍して表示しています。 (1)入力画像、(2)ｘ方向微分データ画像、(3)ｙ方向微分データ画像、(4)処理結果画像となります。 <div align="center">
+<img src="fie_nms_dir.png" alt="fie_nms_dir.png">
+</div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmagx</em>&nbsp;</td><td>X方向のエッジ強度画像(type:s16, double) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmagy</em>&nbsp;</td><td>Y方向のエッジ強度画像(type:s16, double) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hthin</em>&nbsp;</td><td>細線化画像(type:uc8) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>thresh</em>&nbsp;</td><td>非常に小さい勾配を取り除くための閾値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li><em>thresh</em> が０未満 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+INT main()
+{
+    FHANDLE hsrc = NULL;    <span class="comment">// (1) 入力画像</span>
+
+    FHANDLE hmagx = NULL;   <span class="comment">// (2) x方向微分データ画像</span>
+    FHANDLE hmagy = NULL;   <span class="comment">// (3) y方向微分データ画像</span>
+    FHANDLE hthin = NULL;   <span class="comment">// (4) 処理結果画像(細線化画像)</span>
+
+    DOUBLE thresh = 64.0;   <span class="comment">// 非常に小さい勾配を取除く為の閾値</span>
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 入力画像をファイルから読み込む</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>(<span class="stringliteral">"src_img.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">// 画像オブジェクトの生成</span>
+    hmagx = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939" title="符号付き16bit濃淡画像">F_IMG_S16</a>, 1, <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(hsrc), <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(hsrc));
+    hmagy = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939" title="符号付き16bit濃淡画像">F_IMG_S16</a>, 1, <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(hsrc), <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(hsrc));
+    hthin = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(hsrc), <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(hsrc));
+
+    <span class="comment">// 入力画像をx方向で微分する</span>
+    <a class="code" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel</a>(hsrc, hmagx, <a class="code" href="group__fie__filter.html#gga50348c58bcabe2ab5c96de134a2485a1ff7f321af8a6d96f225f1f05c84125e" title="Ｘ方向微分">F_SOBEL_X_MODE</a>, <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>, 0.0);
+
+    <span class="comment">// 入力画像をy方向で微分する</span>
+    <a class="code" href="group__fie__filter.html#gb1ef89e88ff6d8a402992d42f1680a40" title="sobel フィルタ">fnFIE_sobel</a>(hsrc, hmagy, <a class="code" href="group__fie__filter.html#gga50348c58bcabe2ab5c96de134a2485afe91c149657ffee034cf0c258830e8b7" title="Ｙ方向微分">F_SOBEL_Y_MODE</a>, <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>, 0.0);
+
+    <span class="comment">// 非極大値の抑制(エッジ勾配方向を利用)の実行</span>
+    <a class="code" href="group__fie__edge__detector.html#g1170a2e063a8860c96aaf7043eabc759" title="非極大値の抑制（エッジ勾配方向を利用）">fnFIE_nms_dir</a>(hmagx, hmagy, hthin, thresh);
+
+    <span class="comment">// 可視化の為、細線化画像の濃度値を85倍にする</span>
+    <a class="code" href="group__fie__filter__arithm.html#g9ecbc49d4897dce5b48927090b1764e6" title="画像と定数の乗算">fnFIE_img_mul_const</a>(hthin, 85.0, hthin);
+
+    <span class="comment">// 細線化画像をファイルへ保存する</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"dst_img.png"</span>, hthin, 9);
+
+    <span class="comment">// 画像オブジェクトの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hmagx);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hmagy);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hthin);
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__edge__detector.html#g85de218e9de455fe4c3cecaee16141a6" title="非極大値の抑制（エッジ勾配を利用）">fnFIE_nms()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

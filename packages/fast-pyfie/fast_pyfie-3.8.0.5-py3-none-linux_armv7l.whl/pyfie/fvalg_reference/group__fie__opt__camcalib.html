@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: カメラキャリブレーション</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>カメラキャリブレーション<br>
+<small>
+[<a class="el" href="group__FIE__OPT.html">FIE optional module</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+カメラキャリブレーションのためのモジュールです。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>モジュール</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__doc.html">説明</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__theory.html">基本理論</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__doc__definition.html">用語定義</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__template__usage.html">キャリブレーションテンプレートの利用</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__init.html">初期化</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__exec.html">実行</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib__use.html">結果利用</a></td></tr>
+
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__CAMERA__PARAM.html">F_CAMERA_PARAM</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カメラ内部パラメータ構造体 (intrinsic parameters)  <a href="structF__CAMERA__PARAM.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__opt__camcalib.html#gb418eab3ada5bdd30dfeb809b631fcac">fie_calib_model_type</a> { <a class="el" href="group__fie__opt__camcalib.html#ggb418eab3ada5bdd30dfeb809b631fcacc073d88940b4a77d3529a3c68de54d25">F_CALIB_MODEL_NONE</a> =  0, 
+<a class="el" href="group__fie__opt__camcalib.html#ggb418eab3ada5bdd30dfeb809b631fcac89428bd9220616f3e16090bffe85dc27">F_CALIB_MODEL_CIRCLE</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カメラキャリブレーションモデル種別  <a href="group__fie__opt__camcalib.html#gb418eab3ada5bdd30dfeb809b631fcac">[詳細]</a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gb418eab3ada5bdd30dfeb809b631fcac"></a><!-- doxytag: member="fie.h::fie_calib_model_type" ref="gb418eab3ada5bdd30dfeb809b631fcac" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__opt__camcalib.html#gb418eab3ada5bdd30dfeb809b631fcac">fie_calib_model_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カメラキャリブレーションモデル種別 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggb418eab3ada5bdd30dfeb809b631fcacc073d88940b4a77d3529a3c68de54d25"></a><!-- doxytag: member="F_CALIB_MODEL_NONE" ref="ggb418eab3ada5bdd30dfeb809b631fcacc073d88940b4a77d3529a3c68de54d25" args="" -->F_CALIB_MODEL_NONE</em>&nbsp;</td><td>
+無指定 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb418eab3ada5bdd30dfeb809b631fcac89428bd9220616f3e16090bffe85dc27"></a><!-- doxytag: member="F_CALIB_MODEL_CIRCLE" ref="ggb418eab3ada5bdd30dfeb809b631fcac89428bd9220616f3e16090bffe85dc27" args="" -->F_CALIB_MODEL_CIRCLE</em>&nbsp;</td><td>
+プレート１　円マーカ </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

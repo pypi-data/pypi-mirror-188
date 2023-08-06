@@ -1,0 +1,775 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: サンプルコード</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>サンプルコード<br>
+<small>
+[<a class="el" href="group__fie__machine__leaning.html">機械学習</a>]</small>
+</h1><h2><a class="anchor" name="fie_machine_leaning_sample_code_basic">
+基本的な使用例</a></h2>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_basic_code">
+コード</a></h3>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// FIE関数の異常終了時に処理終了するためのマクロ定義</span>
+<span class="preprocessor">#define ERROR_CHECK(expr) if ((err = (expr)) != F_ERR_NONE) { printf("err: %d, line: %d\n", err, __LINE__); goto exit; }</span>
+<span class="preprocessor"></span><span class="preprocessor">#define ASSERT(expr) if (!(expr)) { err = F_ERR_UNKNOWN; printf("assertfail at line: %d\n", __LINE__); goto exit; }</span>
+<span class="preprocessor"></span>
+<span class="comment">// 特徴ベクトルの次元数</span>
+<span class="preprocessor">#define FEATURE_DIM 2</span>
+<span class="preprocessor"></span>
+<span class="comment">// 乱数により生成する教師データ数</span>
+<span class="comment">// 識別精度の向上のため、教師データ数は十分に多く用意してください。</span>
+<span class="preprocessor">#define NUM_TRAIN_DATA 100</span>
+<span class="preprocessor"></span>
+<span class="comment">// -- 内部関数 --</span>
+
+<span class="comment">// 教師データを乱数とXOR演算により生成し、機械学習モデルを訓練する。</span>
+<span class="comment">// 機械学習オブジェクトを返す。</span>
+<span class="keyword">static</span> FHANDLE generate_xor_dataset_and_train(INT num_train_data)
+{
+    <span class="comment">// 教師データオブジェクト</span>
+    FHANDLE hml_sample = NULL;
+    <span class="comment">// 機械学習オブジェクト</span>
+    FHANDLE hml = NULL;
+    <span class="comment">// 擬似乱数用デスクリプタ</span>
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a> rnd;
+
+    INT i;
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// -- 教師データオブジェクト作成 --</span>
+    <span class="comment">// サンプルのため、教師データは疑似乱数により生成する。</span>
+    <span class="comment">// 教師データの特徴ベクトルは2次元とする。</span>
+    <span class="comment">// 2次元とも符号が等しければラベルは0、そうでなければラベルは1とする。</span>
+
+    <span class="comment">// 疑似乱数初期化</span>
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>(1, &amp;rnd);
+    hml_sample = <a class="code" href="group__fie__ml__sample.html#gaff1ab128187d36ec095e241403ece1c" title="教師データオブジェクトの生成">fnFIE_ml_sample_alloc</a>(FEATURE_DIM);
+    ASSERT(hml_sample != NULL);
+    <span class="keywordflow">for</span> (i = 0; i &lt; num_train_data; i++)
+    {
+        <span class="comment">// 平均0.0の乱数により教師データ生成</span>
+        DOUBLE data[] = {
+            <a class="code" href="group__fie__random.html#ga5461a5eb4846eddb702b165f778d490" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似正規乱数...">fnFIE_mtrand_gauss</a>(&amp;rnd),
+            <a class="code" href="group__fie__random.html#ga5461a5eb4846eddb702b165f778d490" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似正規乱数...">fnFIE_mtrand_gauss</a>(&amp;rnd),
+        };
+        <span class="comment">// 符号のXORによりラベルを生成</span>
+        INT label = (data[0] &gt; 0) ^ (data[1] &gt; 0);
+
+        <span class="comment">// 教師データ追加</span>
+        ERROR_CHECK(<a class="code" href="group__fie__ml__sample.html#g51ba9ae12bc9189b65c5033cf05c71b4" title="教師データの追加">fnFIE_ml_sample_add_data</a>(hml_sample, data, label));
+    }
+
+    <span class="comment">// -- 機械学習モデルの訓練 --</span>
+    {
+        <span class="comment">// ここでは決定木を使用する</span>
+        INT max_depth = 12;
+        INT min_sample = 4;
+        INT k_fold = 1;
+        INT pruning_type = <a class="code" href="group__fie__ml__dtree__train.html#gg53dc40bcca3b09a8f12f15af04427ccecaf9261a1b539b456a85d173f6e6772b" title="枝刈り無し 学習で構成された決定木がそのまま出力されます...">F_ML_DTREE_NO_PRUNING</a>;
+        INT var_type = <a class="code" href="group__fie__machine__leaning.html#gg22c435c4313b27a0f350465bcc9e53f8186f8e3047ed296805f266ca2505ac1b" title="数値型 特徴ベクトルの各特長量・目的変数が実数値(例：面積、幅などの...">F_ML_SAMPLE_NUMERICAL</a>;
+
+        INT preprocess = 0;
+        INT time = 0;
+        hml = <a class="code" href="group__fie__ml__dtree__train.html#g2477de9e39b1a73097df24a3c851b436" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  決定木による...">fnFIE_ml_do_train_dtree</a>(
+            hml_sample, max_depth, min_sample, k_fold, pruning_type, var_type, preprocess, time, NULL);
+        ASSERT(hml != NULL);
+    }
+
+    <span class="comment">// note: 一般に機械学習の訓練には多くの処理時間を要します。</span>
+    <span class="comment">//       アプリの実行の度に訓練を行わないようにするには、下記の手順を実施してください。</span>
+    <span class="comment">//       1. fnFIE_ml_get_train_data() 関数を用いて学習結果をバイナリデータとして出力する。</span>
+    <span class="comment">//       2. そのバイナリデータをファイルに保存する。</span>
+    <span class="comment">//       3. アプリの実行時に、保存したバイナリデータを読み込み、</span>
+    <span class="comment">//          fnFIE_ml_restore_train_data() 関数で機械学習オブジェクトを復元する。</span>
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+exit:
+    <span class="comment">// 各種解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml_sample);
+    <span class="keywordflow">if</span> (err == <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">return</span> hml;
+    }
+    <span class="keywordflow">else</span> {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml);
+        <span class="keywordflow">return</span> NULL;
+    }
+}
+
+<span class="comment">// -- サンプル本体 --</span>
+
+<span class="comment">// 機械学習のサンプル。</span>
+<span class="comment">// 疑似乱数で生成した教師データによる機械学習モデルの訓練と、訓練したモデルを用いた識別を行う。</span>
+<span class="keyword">static</span> INT do_train_and_predict_xor_data()
+{
+    <span class="comment">// テスト用データ</span>
+    DOUBLE test_data[][FEATURE_DIM] = {
+        {+1, -1},
+        {+1, +1},
+        {-1, +1},
+        {-1, -1}
+    };
+    <span class="comment">// 上記テスト用データに対応するクラスラベル</span>
+    INT expected_test_labels[] = {
+        1,
+        0,
+        1,
+        0
+    };
+
+    <span class="comment">// 機械学習オブジェクト</span>
+    FHANDLE hml = NULL;
+
+    INT i;
+    INT err;
+
+    <span class="comment">// -- 機械学習モデルの訓練 --</span>
+    hml = generate_xor_dataset_and_train(NUM_TRAIN_DATA);
+
+    <span class="comment">// -- テスト実施 --</span>
+    <span class="keywordflow">for</span> (i = 0; i &lt; <span class="keyword">sizeof</span>(test_data) / <span class="keyword">sizeof</span>(test_data[0]); i++)
+    {
+        <span class="comment">// テスト用画像のラベル（識別結果）</span>
+        INT response_label;
+
+        <span class="comment">// データの識別</span>
+        ERROR_CHECK(<a class="code" href="group__fie__ml.html#g8a2df349dd2fb1029049337851d06be8" title="機械学習に基づいた、入力データの判別">fnFIE_ml_predict</a>(hml, test_data[i], &amp;response_label));
+
+        <span class="comment">// 識別結果表示</span>
+        printf(<span class="stringliteral">"data: (%.1f, %.1f), predict: %d, success: %s\n"</span>, test_data[i][0], test_data[i][1],
+            response_label, response_label == expected_test_labels[i] ? <span class="stringliteral">"Yes"</span> : <span class="stringliteral">"No"</span>);
+    }
+
+exit:
+    <span class="comment">// 解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml);
+
+    <span class="keywordflow">return</span> err;
+}
+
+INT main()
+{
+    INT err;
+
+    <span class="comment">// FIEライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 機械学習の実施</span>
+    err = do_train_and_predict_xor_data();
+
+    <span class="comment">// ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> err;
+}
+</pre></div><h3><a class="anchor" name="fie_machine_leaning_sample_code_basic_output">
+出力例</a></h3>
+<pre>
+	data: (1.0, -1.0), predict: 1, success: Yes
+	data: (1.0, 1.0), predict: 0, success: Yes
+	data: (-1.0, 1.0), predict: 1, success: Yes
+	data: (-1.0, -1.0), predict: 0, success: Yes
+	</pre><h2><a class="anchor" name="fie_machine_leaning_sample_code_color">
+カラー画素の画素値による識別</a></h2>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_color_code">
+コード</a></h3>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// FIE関数の異常終了時に処理終了するためのマクロ定義</span>
+<span class="preprocessor">#define ERROR_CHECK(expr) if ((err = (expr)) != F_ERR_NONE) { printf("err: %d, line: %d\n", err, __LINE__); goto exit; }</span>
+<span class="preprocessor"></span><span class="preprocessor">#define ASSERT(expr) if (!(expr)) { err = F_ERR_UNKNOWN; printf("assertfail at line: %d\n", __LINE__); goto exit; }</span>
+<span class="preprocessor"></span>
+<span class="comment">// ラベル0は赤色を、ラベル1は赤色以外を表す</span>
+<span class="preprocessor">#define LABEL_RED 0</span>
+<span class="preprocessor"></span><span class="preprocessor">#define LABEL_NON_RED 1</span>
+<span class="preprocessor"></span>
+<span class="comment">// -- 内部関数 --</span>
+
+<span class="comment">// カラー画像ファイル名リスト train_img_fnames とクラスラベルのリスト train_labelsを受け取り、</span>
+<span class="comment">// カラー分類用機械学習モデルを訓練する。</span>
+<span class="comment">// 赤色と赤色以外の2クラス分類とする。</span>
+<span class="comment">// 機械学習オブジェクトを返す。</span>
+<span class="comment">// 色を抽出する領域はマスクを表すリージョン hmask にて指定する。</span>
+<span class="keyword">static</span> FHANDLE load_imgs_and_train(
+    <span class="keyword">const</span> CHAR** train_img_fnames, INT* train_labels, INT num_train_data, <span class="keyword">const</span> FHANDLE hmask)
+{
+    <span class="comment">// 画像</span>
+    FHANDLE himg = NULL;
+    <span class="comment">// 教師データオブジェクト</span>
+    FHANDLE hml_sample = NULL;
+    <span class="comment">// 機械学習オブジェクト</span>
+    FHANDLE hml = NULL;
+
+    INT i;
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+
+    <span class="comment">// -- 教師データオブジェクト作成 --</span>
+    hml_sample = <a class="code" href="group__fie__ml__tools.html#ge6ec69c7214ed5d578161994933bf3ef" title="画素のカラー分類用 教師オブジェクトの生成">fnFIE_ml_sample_alloc_color</a>();
+    ASSERT(hml_sample != NULL);
+    <span class="keywordflow">for</span> (i = 0; i &lt; num_train_data; i++)
+    {
+        <span class="comment">// パタン画像読み込み</span>
+        ERROR_CHECK(<a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(train_img_fnames[i], &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>));
+
+        <span class="comment">// 教師データ追加</span>
+        ERROR_CHECK(<a class="code" href="group__fie__ml__tools.html#g9e2b5807c1ef411fee5ec0a36b2d4944" title="カラー分類用教師データの追加(マスクによる領域指定)">fnFIE_ml_sample_add_color_area</a>(hml_sample, himg, hmask, train_labels[i]));
+
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+        himg = NULL;
+    }
+
+    <span class="comment">// -- 機械学習モデルの訓練 --</span>
+    {
+        <span class="comment">// ここではブースティングを使用する</span>
+        INT var_type = <a class="code" href="group__fie__machine__leaning.html#gg22c435c4313b27a0f350465bcc9e53f8186f8e3047ed296805f266ca2505ac1b" title="数値型 特徴ベクトルの各特長量・目的変数が実数値(例：面積、幅などの...">F_ML_SAMPLE_NUMERICAL</a>;
+        INT boost_type = <a class="code" href="group__fie__ml__boost__train.html#gg3ba08bec8b42275ca96962dd225501a09a868151e9f33bf1225b3eec389934de" title="Discrete AdaBoost 学習サンプルの重みを適応的に更新し識別器を作成する、最...">F_BOOST_TYPE_DISCRETE</a>;
+        INT pred_num = 100;
+        DOUBLE stop_rate = 0.00001;
+
+        INT preprocess = 0;
+        INT time = 0;
+        hml = <a class="code" href="group__fie__ml__boost__train.html#gf32e03c62e83f2aaa765f294f5279dd4" title="Boostingによる機械学習">fnFIE_ml_do_train_boost</a>(
+            hml_sample, var_type, boost_type, pred_num, stop_rate, preprocess, time, NULL);
+        ASSERT(hml != NULL);
+    }
+
+    <span class="comment">// note: 一般に機械学習の訓練には多くの処理時間を要します。</span>
+    <span class="comment">//       アプリの実行の度に訓練を行わないようにするには、下記の手順を実施してください。</span>
+    <span class="comment">//       1. fnFIE_ml_get_train_data() 関数を用いて学習結果をバイナリデータとして出力する。</span>
+    <span class="comment">//       2. そのバイナリデータをファイルに保存する。</span>
+    <span class="comment">//       3. アプリの実行時に、保存したバイナリデータを読み込み、</span>
+    <span class="comment">//          fnFIE_ml_restore_train_data() 関数で機械学習オブジェクトを復元する。</span>
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+exit:
+    <span class="comment">// 各種解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml_sample);
+    <span class="keywordflow">if</span> (err == <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">return</span> hml;
+    }
+    <span class="keywordflow">else</span> {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml);
+        <span class="keywordflow">return</span> NULL;
+    }
+}
+
+<span class="comment">// -- サンプル本体 --</span>
+
+<span class="comment">// カラー分類用機械学習のサンプル。</span>
+<span class="comment">// 機械学習モデルの訓練と、訓練したモデルを用いた識別を行う。</span>
+<span class="keyword">static</span> INT do_train_and_predict_using_color()
+{
+    <span class="comment">// 学習用画像のファイルパス</span>
+    <span class="keyword">const</span> CHAR* train_img_fnames[] = {
+        <span class="stringliteral">"train/red/red_0.png"</span>,
+        <span class="stringliteral">"train/red/red_1.png"</span>,
+        <span class="stringliteral">"train/red/red_2.png"</span>,
+        <span class="stringliteral">"train/non_red/blue_0.png"</span>,
+        <span class="stringliteral">"train/non_red/brown_0.png"</span>,
+        <span class="stringliteral">"train/non_red/dark_green_0.png"</span>,
+        <span class="stringliteral">"train/non_red/orange_0.png"</span>,
+        <span class="stringliteral">"train/non_red/yellow_0.png"</span>,
+    };
+    <span class="comment">// 上記学習用画像に対応するクラスラベル。それぞれの画像に、ラベルに対応する数字が含まれている</span>
+    INT train_labels[] = {
+        LABEL_RED,
+        LABEL_RED,
+        LABEL_RED,
+        LABEL_NON_RED,
+        LABEL_NON_RED,
+        LABEL_NON_RED,
+        LABEL_NON_RED,
+        LABEL_NON_RED,
+    };
+
+    <span class="comment">// テスト用画像のファイルパス</span>
+    <span class="keyword">const</span> CHAR* test_img_fnames[] = {
+        <span class="stringliteral">"test/red/red_3.png"</span>,
+        <span class="stringliteral">"test/red/red_4.png"</span>,
+        <span class="stringliteral">"test/non_red/blue_1.png"</span>,
+        <span class="stringliteral">"test/non_red/brown_1.png"</span>,
+        <span class="stringliteral">"test/non_red/dark_green_1.png"</span>,
+        <span class="stringliteral">"test/non_red/lime_1.png"</span>,
+        <span class="stringliteral">"test/non_red/orange_1.png"</span>,
+        <span class="stringliteral">"test/non_red/white_1.png"</span>,
+        <span class="stringliteral">"test/non_red/yellow_1.png"</span>,
+    };
+
+    <span class="comment">// 画像</span>
+    FHANDLE himg = NULL;
+    <span class="comment">// 機械学習オブジェクト</span>
+    FHANDLE hml = NULL;
+    <span class="comment">// 学習用画像から教師データの画素を取得する範囲マスクを表すリージョン</span>
+    FHANDLE hmask_train = NULL;
+    <span class="comment">// テスト用画像に対して推論を行う画素の位置</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> infer_point = { 50, 50 };
+
+    INT i;
+    INT err;
+
+    <span class="comment">// -- 機械学習モデルの訓練 --</span>
+    <span class="comment">// マスクを設定。画像の特定領域とする</span>
+    hmask_train = <a class="code" href="group__fie__region__create.html#gcc0da34f7bc79d63c33de8bac510b3bc" title="長方形リージョンを作成する関数">fnFIE_create_region_rect</a>(40, 40, 20 - 1, 20 - 1);
+    ASSERT(hmask_train != NULL);
+    hml = load_imgs_and_train(
+        train_img_fnames, train_labels, <span class="keyword">sizeof</span>(train_img_fnames) / <span class="keyword">sizeof</span>(train_img_fnames[0]),
+        hmask_train);
+
+    <span class="comment">// -- テスト実施 --</span>
+    <span class="keywordflow">for</span> (i = 0; i &lt; <span class="keyword">sizeof</span>(test_img_fnames) / <span class="keyword">sizeof</span>(test_img_fnames[0]); i++)
+    {
+        <span class="comment">// テスト用画像のラベル（識別結果）</span>
+        INT response_label;
+
+        <span class="comment">// テスト用画像読み込み</span>
+        ERROR_CHECK(<a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(test_img_fnames[i], &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>));
+
+        <span class="comment">// カラーの識別</span>
+        ERROR_CHECK(<a class="code" href="group__fie__ml__tools.html#g949f8c21906a254ae9fc4262fb4af8fc" title="入力画像の指定座標の画素の分類">fnFIE_ml_predict_color_point</a>(hml, himg, infer_point, &amp;response_label));
+
+        <span class="comment">// 識別結果表示</span>
+        printf(<span class="stringliteral">"img: %s, predict: %d (%s)\n"</span>, test_img_fnames[i], response_label,
+            response_label == LABEL_RED ? <span class="stringliteral">"RED"</span> : <span class="stringliteral">"NON_RED"</span>);
+
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+        himg = NULL;
+    }
+
+exit:
+    <span class="comment">// 各種解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hmask_train);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml);
+
+    <span class="keywordflow">return</span> err;
+}
+
+INT main()
+{
+    INT err;
+
+    <span class="comment">// FIEライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// カラー分類機械学習の実施</span>
+    err = do_train_and_predict_using_color();
+
+    <span class="comment">// ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> err;
+}
+</pre></div><h3><a class="anchor" name="fie_machine_leaning_sample_code_color_train">
+訓練用画像</a></h3>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="red_0.png" alt="red_0.png">
+<p><strong>train/red/red_0.png</strong></p></div>
+  </td><td><div align="center">
+<img src="red_1.png" alt="red_1.png">
+<p><strong>train/red/red_1.png</strong></p></div>
+  </td><td><div align="center">
+<img src="red_2.png" alt="red_2.png">
+<p><strong>train/red/red_2.png</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="blue_0.png" alt="blue_0.png">
+<p><strong>train/non_red/blue_0.png</strong></p></div>
+  </td><td><div align="center">
+<img src="brown_0.png" alt="brown_0.png">
+<p><strong>train/non_red/brown_0png</strong></p></div>
+  </td><td><div align="center">
+<img src="dark_green_0.png" alt="dark_green_0.png">
+<p><strong>train/non_red/dark_green_0.png</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="orange_0.png" alt="orange_0.png">
+<p><strong>train/non_red/orange_0.png</strong></p></div>
+  </td><td><div align="center">
+<img src="yellow_0.png" alt="yellow_0.png">
+<p><strong>train/non_red/yellow_0.png</strong></p></div>
+   </td></tr>
+</table>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_color_test">
+テスト用画像</a></h3>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="red_3.png" alt="red_3.png">
+<p><strong>test/red/red_3.png</strong></p></div>
+  </td><td><div align="center">
+<img src="red_4.png" alt="red_4.png">
+<p><strong>test/red/red_4.png</strong></p></div>
+  </td><td><div align="center">
+<img src="blue_1.png" alt="blue_1.png">
+<p><strong>test/non_red/blue_1.png</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="brown_1.png" alt="brown_1.png">
+<p><strong>test/non_red/brown_1png</strong></p></div>
+  </td><td><div align="center">
+<img src="dark_green_1.png" alt="dark_green_1.png">
+<p><strong>test/non_red/dark_green_1.png</strong></p></div>
+  </td><td><div align="center">
+<img src="orange_1.png" alt="orange_1.png">
+<p><strong>test/non_red/orange_1.png</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="yellow_1.png" alt="yellow_1.png">
+<p><strong>test/non_red/yellow_1.png</strong></p></div>
+  </td><td><div align="center">
+<img src="lime_1.png" alt="lime_1.png">
+<p><strong>test/non_red/lime_1.png</strong></p></div>
+  </td><td><div align="center">
+<img src="white_1.png" alt="white_1.png">
+<p><strong>test/non_red/white_1.png</strong></p></div>
+   </td></tr>
+</table>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_color_output">
+出力例</a></h3>
+<pre>
+	img: test/red/red_3.png, predict: 0 (RED)
+	img: test/red/red_4.png, predict: 0 (RED)
+	img: test/non_red/blue_1.png, predict: 1 (NON_RED)
+	img: test/non_red/brown_1.png, predict: 1 (NON_RED)
+	img: test/non_red/dark_green_1.png, predict: 1 (NON_RED)
+	img: test/non_red/lime_1.png, predict: 1 (NON_RED)
+	img: test/non_red/orange_1.png, predict: 1 (NON_RED)
+	img: test/non_red/white_1.png, predict: 1 (NON_RED)
+	img: test/non_red/yellow_1.png, predict: 1 (NON_RED)
+	</pre><h2><a class="anchor" name="fie_machine_leaning_sample_code_region">
+リージョンの形状による識別</a></h2>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_region_code">
+コード</a></h3>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// FIE関数の異常終了時に処理終了するためのマクロ定義</span>
+<span class="preprocessor">#define ERROR_CHECK(expr) if ((err = (expr)) != F_ERR_NONE) { printf("err: %d, line: %d\n", err, __LINE__); goto exit; }</span>
+<span class="preprocessor"></span><span class="preprocessor">#define ASSERT(expr) if (!(expr)) { err = F_ERR_UNKNOWN; printf("assertfail at line: %d\n", __LINE__); goto exit; }</span>
+<span class="preprocessor"></span>
+<span class="comment">// -- 内部関数 --</span>
+
+<span class="comment">// 二値画像ファイル名リスト train_img_fnames とクラスラベルのリスト train_labels を受け取り、</span>
+<span class="comment">// リージョンの形状識別を行う機械学習モデルを訓練する。</span>
+<span class="comment">// 機械学習オブジェクトを返す。</span>
+<span class="keyword">static</span> FHANDLE load_imgs_and_train(<span class="keyword">const</span> CHAR** train_img_fnames, INT* train_labels, INT num_train_data)
+{
+    <span class="comment">// 画像</span>
+    FHANDLE himg = NULL;
+    <span class="comment">// リージョン</span>
+    FHANDLE hreg = NULL;
+    <span class="comment">// 教師データオブジェクト</span>
+    FHANDLE hml_sample = NULL;
+    <span class="comment">// 機械学習オブジェクト</span>
+    FHANDLE hml = NULL;
+    <span class="comment">// リージョンのオフセット</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset = { 0, 0 };
+
+    INT i;
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// -- 教師データオブジェクト作成 --</span>
+    hml_sample = <a class="code" href="group__fie__ml__tools.html#gfa005da98cf6cfc1054b8105753752bd" title="リージョンの形状識別用 教師オブジェクトの生成">fnFIE_ml_sample_alloc_region_shape</a>();
+    ASSERT(hml_sample != NULL);
+    <span class="keywordflow">for</span> (i = 0; i &lt; num_train_data; i++)
+    {
+        <span class="comment">// パタン画像読み込み</span>
+        ERROR_CHECK(<a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(train_img_fnames[i], &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>));
+        <span class="comment">// リージョンに変換</span>
+        hreg = <a class="code" href="group__fie__region__coding.html#gf7dceb88d05e22b5bbb6ac9be798211b" title="画像からREGIONを抽出する">fnFIE_region_encode</a>(himg, offset);
+        ASSERT(hreg != NULL);
+
+        <span class="comment">// 教師データ追加</span>
+        ERROR_CHECK(<a class="code" href="group__fie__ml__tools.html#g6e72b2831c3b88fe2475684813897a2c" title="リージョン分類用 教師データの追加">fnFIE_ml_sample_add_region</a>(hml_sample, hreg, train_labels[i]));
+
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+        himg = NULL;
+        hreg = NULL;
+    }
+
+    <span class="comment">// -- 機械学習モデルの訓練 --</span>
+    {
+        <span class="comment">// ここでは線形SVMを使用する</span>
+        INT svm_type = <a class="code" href="group__fie__ml__svm.html#gg0dd699f0f602eb25781e7718c03e493e05390be800467640a975a04716b12113" title="データのはずれ値に対するペナルティパラメータを持つ、多クラス識別SVM...">F_ML_SVM_TYPE_C_SVM</a>;
+        DOUBLE margin = 10.0;
+        DOUBLE stop_rate = 0.001;
+        INT kernel_type = <a class="code" href="group__fie__ml__svm.html#gg0a535308d0a4bcc6129b74ee7abb13101f2b176c35e66cf01a2efd6ccaee4ce3" title="線形カーネル　高次元への写像は行わず、もとの特徴空間内で線形分離が...">F_ML_SVM_KERNEL_LINEAR</a>;
+
+        INT preprocess = 1;
+        INT time = 0;
+        hml = <a class="code" href="group__fie__ml__svm.html#g54131a68d96ed497cb1e3ae7a1dc5129" title="サポートベクターマシンによる機械学習">fnFIE_ml_do_train_svm</a>(
+            hml_sample, svm_type, margin, stop_rate, kernel_type, 0, 0, 0, preprocess, time, NULL);
+        ASSERT(hml != NULL);
+    }
+
+    <span class="comment">// note: 一般に機械学習の訓練には多くの処理時間を要します。</span>
+    <span class="comment">//       アプリの実行の度に訓練を行わないようにするには、下記の手順を実施してください。</span>
+    <span class="comment">//       1. fnFIE_ml_get_train_data() 関数を用いて学習結果をバイナリデータとして出力する。</span>
+    <span class="comment">//       2. そのバイナリデータをファイルに保存する。</span>
+    <span class="comment">//       3. アプリの実行時に、保存したバイナリデータを読み込み、</span>
+    <span class="comment">//          fnFIE_ml_restore_train_data() 関数で機械学習オブジェクトを復元する。</span>
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+exit:
+    <span class="comment">// 各種解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml_sample);
+    <span class="keywordflow">if</span> (err == <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">return</span> hml;
+    }
+    <span class="keywordflow">else</span> {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml);
+        <span class="keywordflow">return</span> NULL;
+    }
+}
+
+<span class="comment">// -- サンプル本体 --</span>
+
+<span class="comment">// リージョンの形状識別用の機械学習のサンプル。</span>
+<span class="comment">// 機械学習モデルの訓練と、訓練したモデルを用いた識別を行う。</span>
+<span class="keyword">static</span> INT do_train_and_predict_using_regions()
+{
+    <span class="comment">// 学習用画像のファイルパス</span>
+    <span class="keyword">const</span> CHAR* train_img_fnames[] = {
+        <span class="stringliteral">"train/1_1.bmp"</span>,
+        <span class="stringliteral">"train/1_2.bmp"</span>,
+        <span class="stringliteral">"train/1_3.bmp"</span>,
+        <span class="stringliteral">"train/2_1.bmp"</span>,
+        <span class="stringliteral">"train/2_2.bmp"</span>,
+        <span class="stringliteral">"train/2_3.bmp"</span>,
+        <span class="stringliteral">"train/3_1.bmp"</span>,
+        <span class="stringliteral">"train/3_2.bmp"</span>,
+        <span class="stringliteral">"train/3_3.bmp"</span>,
+    };
+    <span class="comment">// 上記学習用画像に対応するクラスラベル。それぞれの画像に、ラベルに対応する数字が含まれている</span>
+    INT train_labels[] = {
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+    };
+
+    <span class="comment">// テスト用画像のファイルパス</span>
+    <span class="keyword">const</span> CHAR* test_img_fnames[] = {
+        <span class="stringliteral">"test/1_4.bmp"</span>,
+        <span class="stringliteral">"test/1_5.bmp"</span>,
+        <span class="stringliteral">"test/2_4.bmp"</span>,
+        <span class="stringliteral">"test/2_5.bmp"</span>,
+        <span class="stringliteral">"test/3_4.bmp"</span>,
+        <span class="stringliteral">"test/3_5.bmp"</span>,
+    };
+
+    <span class="comment">// 画像</span>
+    FHANDLE himg = NULL;
+    <span class="comment">// リージョン</span>
+    FHANDLE hreg = NULL;
+    <span class="comment">// 機械学習オブジェクト</span>
+    FHANDLE hml = NULL;
+    <span class="comment">// リージョンのオフセット</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset = { 0, 0 };
+
+    INT i;
+    INT err;
+
+    <span class="comment">// -- 機械学習モデルの訓練 --</span>
+    hml = load_imgs_and_train(
+        train_img_fnames, train_labels, <span class="keyword">sizeof</span>(train_img_fnames) / <span class="keyword">sizeof</span>(train_img_fnames[0]));
+
+    <span class="comment">// -- テスト実施 --</span>
+    <span class="keywordflow">for</span> (i = 0; i &lt; <span class="keyword">sizeof</span>(test_img_fnames) / <span class="keyword">sizeof</span>(test_img_fnames[0]); i++)
+    {
+        <span class="comment">// テスト用画像のラベル（識別結果）</span>
+        INT response_label;
+
+        <span class="comment">// テスト用画像読み込み</span>
+        ERROR_CHECK(<a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(test_img_fnames[i], &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>));
+        <span class="comment">// リージョンに変換</span>
+        hreg = <a class="code" href="group__fie__region__coding.html#gf7dceb88d05e22b5bbb6ac9be798211b" title="画像からREGIONを抽出する">fnFIE_region_encode</a>(himg, offset);
+        ASSERT(hreg != NULL);
+
+        <span class="comment">// リージョンの識別</span>
+        ERROR_CHECK(<a class="code" href="group__fie__ml__tools.html#g97af4db8de3332be75fd44a9bdeb1662" title="入力されたリージョンの識別">fnFIE_ml_predict_region_shape</a>(hml, hreg, &amp;response_label));
+
+        <span class="comment">// 識別結果表示</span>
+        printf(<span class="stringliteral">"img: %s, predict: %d\n"</span>, test_img_fnames[i], response_label);
+
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+        himg = NULL;
+        hreg = NULL;
+    }
+
+exit:
+    <span class="comment">// 各種解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hml);
+
+    <span class="keywordflow">return</span> err;
+}
+
+INT main()
+{
+    INT err;
+
+    <span class="comment">// FIEライブラリのセットアップ</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// リージョン識別機械学習の実施</span>
+    err = do_train_and_predict_using_regions();
+
+    <span class="comment">// ライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> err;
+}
+</pre></div><h3><a class="anchor" name="fie_machine_leaning_sample_code_region_train">
+訓練用画像</a></h3>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="1_1.bmp" alt="1_1.bmp">
+<p><strong>train/1_1.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="1_2.bmp" alt="1_2.bmp">
+<p><strong>train/1_2.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="1_3.bmp" alt="1_3.bmp">
+<p><strong>train/1_3.bmp</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="2_1.bmp" alt="2_1.bmp">
+<p><strong>train/2_1.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="2_2.bmp" alt="2_2.bmp">
+<p><strong>train/2_2.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="2_3.bmp" alt="2_3.bmp">
+<p><strong>train/2_3.bmp</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="3_1.bmp" alt="3_1.bmp">
+<p><strong>train/3_1.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="3_2.bmp" alt="3_2.bmp">
+<p><strong>train/3_2.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="3_3.bmp" alt="3_3.bmp">
+<p><strong>train/3_3.bmp</strong></p></div>
+   </td></tr>
+</table>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_region_test">
+テスト用画像</a></h3>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="1_4.bmp" alt="1_4.bmp">
+<p><strong>test/1_4.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="1_5.bmp" alt="1_5.bmp">
+<p><strong>test/1_5.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="2_4.bmp" alt="2_4.bmp">
+<p><strong>test/2_4.bmp</strong></p></div>
+   </td></tr>
+<tr>
+<td><div align="center">
+<img src="2_5.bmp" alt="2_5.bmp">
+<p><strong>test/2_5.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="3_4.bmp" alt="3_4.bmp">
+<p><strong>test/3_4.bmp</strong></p></div>
+  </td><td><div align="center">
+<img src="3_5.bmp" alt="3_5.bmp">
+<p><strong>test/3_5.bmp</strong></p></div>
+   </td></tr>
+</table>
+<h3><a class="anchor" name="fie_machine_leaning_sample_code_region_output">
+出力例</a></h3>
+<pre>
+	img: test/1_4.bmp, predict: 1
+	img: test/1_5.bmp, predict: 1
+	img: test/2_4.bmp, predict: 2
+	img: test/2_5.bmp, predict: 2
+	img: test/3_4.bmp, predict: 3
+	img: test/3_5.bmp, predict: 3
+	</pre> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

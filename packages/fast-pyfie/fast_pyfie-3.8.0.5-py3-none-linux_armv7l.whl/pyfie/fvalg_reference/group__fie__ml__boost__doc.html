@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__ml__boost.html">ブースティング</a>]</small>
+</h1><h2><a class="anchor" name="fie_Boost">
+Boostingについて</a></h2>
+<h3><a class="anchor" name="">
+</a></h3>
+Boostingとは、教師有り機械学習を実行するための機械学習メタアルゴリズムです。つまり、一般の機械学習を より精度良く実行するためのフレームワークと言えます。Boostingで構築される識別器の概念を以下に示します。<br>
+<p>
+<div align="center">
+<img src="fie_ml_boost.png" alt="fie_ml_boost.png">
+</div>
+<p>
+Boostingは、複数の弱い学習機をまとめ、その結果に重みを付けて足し合わせることで、 一つの強い学習機を構築することを目的とします。ここで、弱い学習機とは、識別の正解確率がまったくの 当てずっぽう(つまり正解確率が50パーセント)なものよりも性能がよいだけの、非常にシンプルなものとなります。 しかし、多数の弱い学習機を多数作成し、組み合わせて用いることで、強力な強い学習機を作成することができます。 一般に、作成される弱い学習機は「弱識別器」、最終的に構成される強い学習機は「強識別器」と呼ばれます。<br>
+<p>
+弱識別にどのような機械学習アルゴリズムを用いるかは特に制限はありません。本ライブラリでは、Boostingの実装として、 代表的な弱識別器の一つである決定株(=高さ1の決定木)を用いた、AdaBoostの学習を実装しています。<br>
+ また、本ライブラリの実装は、2クラス識別にのみ対応をしており、3クラス以上の識別には対応していません。<p>
+<hr>
+ <h3><a class="anchor" name="About_AdaBoost">
+AdaBoost</a></h3>
+AdaBoost(アダブースト)は、Boostingの枠組みの中でも最も代表的なアルゴリズムです。<br>
+<p>
+AdaBoostの基本的な処理は以下のようになります。<p>
+1: 各教師データの重みを<img class="formulaInl" alt="$\frac{1}{N}$" src="form_430.png">に初期化する。(ここで<img class="formulaInl" alt="$N$" src="form_0.png">は教師データの個数とします)<br>
+<p>
+2: 弱識別器を<img class="formulaInl" alt="$T$" src="form_431.png">個作成するとする<br>
+<p>
+3: <img class="formulaInl" alt="$t$" src="form_432.png">番目(<img class="formulaInl" alt="$t=1,2,\dots,T$" src="form_433.png">)番目の弱識別器を学習する。学習は重みつきの教師データを用いて、誤り率が最小となるように行う<br>
+<p>
+4: 各教師データへの重みを更新する。重みは弱識別器<img class="formulaInl" alt="$t$" src="form_432.png">の誤り率を用いて以下のように行う<br>
+ <ul>
+<li>弱識別器<img class="formulaInl" alt="$t$" src="form_432.png">が誤って識別したデータ → 重みが高くなるように更新 </li>
+<li>弱識別器<img class="formulaInl" alt="$t$" src="form_432.png">が正しく識別したデータ → 重みが低くなるように更新</li>
+</ul>
+5: 各教師データの重みの和が1となるように正規化を行う<br>
+<p>
+6: <img class="formulaInl" alt="$T$" src="form_431.png">個の弱識別器が作成されるまで、3,4,5を繰り返す<br>
+<p>
+AdaBoostは、与えられた各教師データに対して重み付けを行い、その重みを適応的に変化させながら、 逐次的に弱識別器を学習・作成していきます。弱識別器は、重み付けされた教師データに対して、 誤り率(=誤識別をした教師データの重みの和)が最小となるように学習されます。そして、ある弱識別器が 誤識別をした教師データは重みを増し、正しく識別をした教師データは重みを小さくします。そして、その 重み分布の元で、次の弱識別器を学習します。<br>
+<p>
+<div align="center">
+<img src="fie_ml_adaboost.png" alt="fie_ml_adaboost.png">
+</div>
+<p>
+このように、各教師データの重みを、作成した弱識別器の識別性能に応じて適応的に変化させる事で、 ある弱識別器が苦手とする教師データを、次の弱識別器は優先して正しく識別できるようになります。<br>
+ (互いに欠点を補い合えるような弱識別器を作成していく、と考えてもよいでしょう)<br>
+<p>
+識別を行うときは、各弱識別器の出力を元に多数決をとり、その符号の正負で2クラスのどちらであるかを識別します。<br>
+<p>
+本ライブラリでは、AdaBoostの枠組みとして、以下のアルゴリズムを実装しています。<p>
+<ul>
+<li>Discrete AdaBoost </li>
+<li>Real AdaBoost</li>
+</ul>
+<dl class="user" compact><dt><b>Discrete AdaBoost</b></dt><dd>Discrete AdaBoostは、AdaBoostの中で最も標準的なアルゴリズムです (一般にAdaBoostというと、このDiscrete AdaBoostを指します)。 Discrete AdaBoostは、+1, -1の二値の出力と、その識別の信頼度をもつ弱識別器で構成されます。 弱識別器の選択は、教師データに対する重みつきの誤識別率、つまり誤識別をした教師データに付与されている 重みの和が最小となるものを選択します。<br>
+ 強識別器の出力は、各弱識別器の出力に、信頼度を乗じた値の和で出力され、その値の符号で識別を行います。<br>
+</dd></dl>
+<div align="center">
+<img src="fie_ml_discrete_adaboost.png" alt="fie_ml_discrete_adaboost.png">
+</div>
+<p>
+<dl class="user" compact><dt><b></b></dt><dd>なお、弱識別器の選択の結果、選択された弱識別器の重みつき誤り率がちょうど0.5(=50%)となった場合は、 この時点で学習を打ち切ります。 これは、アルゴリズム上、誤り率が0.5となってしまった場合は、重みの更新が出来なくなってしまうためです。</dd></dl>
+<dl class="user" compact><dt><b>Real AdaBoost</b></dt><dd>Real AdaBoostは、R.E.Schapireらが発表した、AdaBoostの派生系のアルゴリズムです。Discrete AdaBoostの弱識別器は、 +1, -1の二値出力と、その識別の信頼度で構成されていますが、Real AdaBoostでは、弱識別器の出力を、特徴量の 確率密度分布に応じて多値化します。つまり、各特長量の重み付分布をクラス毎にヒストグラムとして表し、 その二つのヒストグラム間の分離の度合いを出力とします。<br>
+ 弱識別器の選択は、2つのヒストグラムの類似度を示す距離であるBhattacharyya距離(バタチャリア距離)が、 最も大きなもの(最も離れているもの)を選択します。<br>
+ 強識別器の出力は、各弱識別器が出力する出力値の線形和で出力され、その値の符号で識別を行います。<br>
+</dd></dl>
+<div align="center">
+<img src="fie_ml_real_adaboost.png" alt="fie_ml_real_adaboost.png">
+</div>
+<p>
+<dl class="user" compact><dt><b></b></dt><dd>Real AdaBoostはサンプルに対してどの程度の識別が可能であるかがわかるため、効果的な重みの更新が可能であり、 Discrete AdaBoostに比べて学習の収束が早く、少ない弱識別器で高精度な識別が可能です。</dd></dl>
+<hr>
+ <h3><a class="anchor" name="Boost_Categocical_and_Numerical">
+カテゴリ属性と数値属性の扱い</a></h3>
+AdaBoostでは、入力の特徴ベクトルの属性として、「数値属性」と「カテゴリ属性」を扱うことができます。<br>
+<p>
+数値属性とは、特徴ベクトルの各値が連続変数、つまり2つの異なる値が数値として比較可能なものであることを意味します。 例として、"画素の濃度"や"対象物の面積"のように、具体的に数値として観測されたものが当たります。<br>
+<p>
+カテゴリ属性とは、特徴ベクトルの各値が、離散的なクラスラベルを示す値であることを意味します。 例として「矩形 = 0」「円 = 1」「楕円 = 2」のように、特定の属性を数値と対応させ、その属性を示す ラベルとしたものが当たります。<br>
+<p>
+なお、カテゴリ属性のベクトルを扱う場合、特徴ベクトルの各値は全て整数値である必要があります。<p>
+<hr>
+ <h3><a class="anchor" name="Boosting_Parameter">
+Boostingのパラメータ</a></h3>
+Boostingで必要となるパラメータを説明します。<p>
+<dl class="user" compact><dt><b>特徴ベクトルの属性</b></dt><dd>入力された教師データの特徴ベクトルが、数値属性であるか、カテゴリ属性であるかを指定します。 数値属性を指定した場合は、教師データの各値を連続的な数値として扱います、 カテゴリ属性を指定した場合は、特徴ベクトルの各値を、離散的なラベルとして扱います。<br>
+ なお、カテゴリ属性を指定する場合は、特徴ベクトルの値は全て整数値である必要があります。 そのため、小数点以下の値が含まれていた場合は、小数点以下の値は内部で強制的に切り捨てられ、 整数値に変換されます。つまり、カテゴリの区別は全て整数値部分の値のみで行われます。</dd></dl>
+<dl class="user" compact><dt><b>Boostingのタイプ</b></dt><dd>学習で用いるBoostingのタイプを指定します。指定できるパラメータは以下のようになります。</dd></dl>
+<ul>
+<li>F_BOOST_TYPE_DISCRETE : Discrete AdaBoostによる学習を行います。 </li>
+<li>F_BOOST_TYPE_REAL : Real AdaBoostによる学習を行います。</li>
+</ul>
+<dl class="user" compact><dt><b>弱識別器の数</b></dt><dd>強識別器を構成する、弱識別器の数を指定します。強識別器を構成する弱識別器の数が この値に達した場合、学習を終了します。</dd></dl>
+<dl class="user" compact><dt><b>学習を終了する誤識別率</b></dt><dd>学習を終了する、教師データに対する強識別器の誤識別率を指定します。<br>
+ 学習中、弱識別器を追加する度に、教師データに対する現在の強識別器の性能(誤識別率)を計算し、 その値がパラメータで指定した値以下になった場合は学習を終了します。<br>
+ F_ML_BOOST_STOPRATE_INVALIDを指定した場合は、誤識別率による停止判定は行わず、 指定された弱識別器数に達するまで学習を続けます。</dd></dl>
+<dl class="user" compact><dt><b>事前処理</b></dt><dd>学習を開始する前に、与えられた教師データに行う前処理を指定します。 指定可能な事前処理は以下のものになり、これらは組み合わせて同時に指定可能です。</dd></dl>
+<ul>
+<li>重複した教師データの削除<br>
+ 入力された教師データの中で、特徴量がまったく同じデータが複数存在したときに、以下のルールに従って データを削除します。<ul>
+<li>同一クラス内の重複データ ：クラス内に一つだけ残るようにして、他を全て削除します。</li><li>複数クラス間での重複データ：「矛盾データ」と判断して、全て削除します。</li></ul>
+</li>
+</ul>
+<ul>
+<li>データの正規化<br>
+ 教師データとして与えられた特徴ベクトルの各成分ごとの最大値・最小値を探索し、その値で 全ての特徴ベクトルを [-1.0, 1.0] の範囲に正規化します。入力される特徴ベクトルが極めて小さい場合など、 数値計算上の誤差が考えられる場合、正規化を行うことで、これを回避するなどの効果が期待できます。<br>
+</li>
+</ul>
+<dl class="user" compact><dt><b></b></dt><dd>教師データの特徴ベクトルがカテゴリ属性で合った場合は、事前処理の指定は無視されます。これは以下の理由によります<ul>
+<li>特徴ベクトルの値は属性を示すラベルを意味し、数値的な意味を持たない</li><li>カテゴリ属性の場合は、重複性は分岐を決定する上でむしろ情報となるため</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>学習時間</b></dt><dd>学習を行う時間の上限を秒単位で設定します。教師データの内容や、パラメータ の指定によっては、学習に極端に時間がかかる場合があります。このパラメータで学習に用いる時間の 上限を設定しておくと、学習の終了条件を満たす前であっても学習を打ち切ります。 値を0にすると、終了条件を満たすまで学習を続ける設定になります。</dd></dl>
+<hr>
+ <h3><a class="anchor" name="Note">
+その他</a></h3>
+<dl class="user" compact><dt><b>Boostingの特徴:</b></dt><dd>Boostingの特徴として、以下のものが挙げられます。<br>
+</dd></dl>
+<ul>
+<li>調整するパラメータ数が少ない<br>
+ 他の機械学習に比べ、設定するパラメータが少なく、調整や評価が容易です。<br>
+</li>
+</ul>
+<ul>
+<li>過学習を起こしにくい<br>
+ Boostingの識別性能は、構成する弱識別器の数に依存します。このとき、弱識別器の数を多くしていっても、 教師データに対する過学習が起きにくいことが示されています。そのため、ある程度大雑把な設定であっても 識別性能がさほど低下しません。<br>
+</li>
+</ul>
+<ul>
+<li>ノイズや、はずれ値の影響を受けやすい<br>
+ Boosting(AdaBoost)は、作成した弱識別器の誤識別に応じて、教師データの重みを変化させます。 そのため、教師データのはずれ値や、ノイズに対しても適応をしようとするため、結果的に識別性能に影響を 受けやすいという性質があります。</li>
+</ul>
+<dl class="user" compact><dt><b>Discrete AdaBoostの学習結果:</b></dt><dd>Discrete AdaBoostで学習を行った結果、弱識別器の数が指定数よりも少なく、かつ識別性能が高くないケースがあります。 これは、先の説明でもあったように、弱識別器の学習を行った結果、重み付き誤り率がちょうど0.5であるような弱識別器しか 作成できなくなった場合、重みの更新の計算が不可能となるために発生します。<br>
+ このような状態になった場合は、以下の事を検討してください。<ul>
+<li>Real AdaBoostを使用する</li><li>教師データの数を増やす・特徴量を見直す</li><li>他の機械学習を用いる</li></ul>
+</dd></dl>
+<hr>
+ <dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>[1]C.M.ビショップ. パターン認識と機械学習 -ベイズ理論による統計的予測(下). 元田 浩 他 監訳 . 丸善出版. 2008. 433p</li><li>[2]三田 雄志. "AdaBoost". コンピュータビジョン最先端ガイド1. 八木 康史 他 編著. アドコムメディア株式会社. 2008. p.132-154</li><li>[3]R.E.Shapire, Y.Singer. 'Improved Boosting Algorithms Using Confidence-rated Predictions'. Machine Learning, 37, pp297-336,(1999) </li></ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

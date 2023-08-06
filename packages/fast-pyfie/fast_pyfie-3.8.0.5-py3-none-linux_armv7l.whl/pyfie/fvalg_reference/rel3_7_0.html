@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 3.7.0</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel3_7_0">release 3.7.0 </a></h1><div style="text-align:right">2021/08/31</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel3_7_0.html#fie3_7_0">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie3_7_0">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">FIE関数の追加</h3>
+<p>
+<h3 class="relnote_sub">基本画像操作</h3>
+<p>
+<ul>
+<li>画像伸長 / <a class="el" href="group__fie__std__operation.html#g3a97dfafd4d861fb1b1280b7676f7fd7" title="画像伸長">fnFIE_img_expand()</a></li><li>画像のリサイズ / <a class="el" href="group__fie__geometric__transform.html#gb2957ee054f017d2103ffcd181ea5743" title="画像のリサイズ">fnFIE_img_resize()</a></li></ul>
+<p>
+<h3 class="relnote_sub">サーチ：FPM(特徴点応用マッチング)</h3>
+<p>
+<ul>
+<li>マッチングで使用した圧縮特徴量を取得（勾配方向付きエッジ型） / <a class="el" href="group__fie__fpm__tool.html#gff1ed53e94ffe7fdaae5068405ffae04" title="マッチングで使用した圧縮特徴量を取得（勾配方向付きエッジ型）...">fnFIE_fpm_get_compressed_feature_edges()</a></li><li>エッジ減点領域の設定 / <a class="el" href="group__fie__fpm__pattern.html#g39d4fdc49f09357e7d03c7739cab4cb8" title="エッジ減点領域の設定">fnFIE_fpm_set_pattern_edgeless_mask()</a></li><li>エッジ減点領域情報の取得 / <a class="el" href="group__fie__fpm__pattern.html#g6850d50fb21378e9409704b907b1c0e9" title="エッジ減点領域情報の取得">fnFIE_fpm_get_pattern_edgeless_mask()</a></li><li>特定領域エッジ減点スコア計算 / <a class="el" href="group__fie__fpm__match.html#g1fb9d1438306bd84df0a15dcf6cafd5e" title="特定領域エッジ減点スコア計算">fnFIE_fpm_matching_recalc_with_edgeless_mask()</a></li></ul>
+<p>
+<h3 class="relnote_sub">幾何計算</h3>
+<p>
+<ul>
+<li>変換前後の点列を用いて座標変換マップを作成 / <a class="el" href="group__fie__cg__geometric__transform.html#g396b0a5f9d3b135344f81e88d404684c" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  変換前後の点...">fnFIE_geotrans_estimate_warp_map()</a></li></ul>
+<p>
+<h3 class="relnote_sub">ビジョンツール：２Ｄコード認識：ＱＲコード認識</h3>
+<p>
+<ul>
+<li>タイムアウトの設定 / <a class="el" href="group__fie__qr__code.html#g8839cf61e79d3b4d0ce67d3770ea8af8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  タイ...">fnFIE_qr_set_timeout()</a></li><li>タイムアウトの取得 / <a class="el" href="group__fie__qr__code.html#g71ce0af73107e59527fb9978a7cadb32" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  タイ...">fnFIE_qr_get_timeout()</a></li></ul>
+<p>
+<h3 class="relnote_sub">ビジョンツール：２Ｄコード認識：データマトリックス認識</h3>
+<p>
+<ul>
+<li>タイムアウトの設定 / <a class="el" href="group__fie__datamatrix.html#g00ee66358d2cb0b5d40f8980e7285c17" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  タイ...">fnFIE_dm_set_timeout()</a></li><li>タイムアウトの取得 / <a class="el" href="group__fie__datamatrix.html#g9dcd645c31e4104196cae4b5c8413ec0" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  タイ...">fnFIE_dm_get_timeout()</a></li></ul>
+<p>
+<h3 class="relnote">機能追加および、変更</h3>
+<p>
+<ul>
+<li>#742 <a class="el" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp()</a><ul>
+<li>ヘッダ情報の画像高さが負の画像に対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter__arithm.html#g505761904db0f05f419c90f371c5faa5" title="画像マスク転送">fnFIE_img_mask()</a>, <a class="el" href="group__fie__filter__arithm.html#g2c4b90a9325701962aead117a631703f" title="画像マスク転送2">fnFIE_img_mask2()</a><ul>
+<li>マスクをリージョンに対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#574 <a class="el" href="group__fie__color__convert__main.html#g4a71052ea8082da8877cf08493ff81d2" title="色彩特徴量画像の生成（HSV色空間基準）">fnFIE_img_hsv_to_gray()</a><ul>
+<li>メモリ使用量を改善し、処理を高速化.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#648 <a class="el" href="group__fie__img__feature.html#g391db0d938710d136d0317b0b4f90e20" title="画像間類似度計算">fnFIE_img_calc_similarity()</a><ul>
+<li>計算精度を向上.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#648 <a class="el" href="group__fie__img__feature.html#ga5dcf83038c95998c4aac51049a16e2a" title="画像濃度値の平均計算">fnFIE_img_calc_average()</a>, <a class="el" href="group__fie__img__feature.html#ga82ad302f1422f159b1972138646b157" title="画像濃度値の分散計算">fnFIE_img_calc_variance()</a><ul>
+<li>計算精度を向上し、処理を高速化.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#696 <a class="el" href="group__fie__histogram.html#g29e38794ce3eb94c4616092a035cddf0" title="画像ヒストグラム作成">fnFIE_make_histogram()</a><ul>
+<li>特定環境での処理を高速化.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold()</a><ul>
+<li>処理を高速化.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a><ul>
+<li>検出数が極めて多いときの処理をわずかに高速化.</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>#608 <a class="el" href="group__fie__region__create.html#g3095c28e034f240e04c80eb8bd67c6bd" title="多角形リージョンを作成する関数">fnFIE_create_region_polygon()</a><ul>
+<li>生成されるリージョンの幅が極めて大きくなるような特定の点列を入力するとメモリアクセス違反が発生する問題を修正.<br>
+ この修正により、生成されるリージョンの幅が2^(31)-3を超える場合は、その幅を超えないように変形されたリージョンを生成するように仕様変更された.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#644 <a class="el" href="group__fie__measure__feature.html#ga596327193c3a682fce67ead68fea25b" title="重心２次モーメントの取得">fnFIE_measure_get_central_moment2()</a><ul>
+<li>FVALG 3.3.1 にて実施した特定の環境における出力結果がわずかに異なることがある問題の修正を、より多くの環境に対して適用.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#646 <a class="el" href="group__fie__img__feature.html#ga5dcf83038c95998c4aac51049a16e2a" title="画像濃度値の平均計算">fnFIE_img_calc_average()</a>, <a class="el" href="group__fie__img__feature.html#ga82ad302f1422f159b1972138646b157" title="画像濃度値の分散計算">fnFIE_img_calc_variance()</a><ul>
+<li>画素数が2^31以上となる画像で処理結果が不正となる問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__img__feature.html#g391db0d938710d136d0317b0b4f90e20" title="画像間類似度計算">fnFIE_img_calc_similarity()</a><ul>
+<li>#646 類似度計算モードが2 (ZNCC) の場合、画素数が2^31以上となる画像で処理結果が不正となる問題を修正.</li><li>#748 類似度計算モードが2 (ZNCC) の場合、複数チャネル画像に対して定義式通りの処理結果が得られない問題を修正.</li><li>類似度計算モードが0 (SAD) または1 (SSD) の場合、特定の状況でメモリリークが発生する問題を修正.<br>
+ 特定の状況とは、マスク画像を使用し、かつ本関数が処理できない画像型が入力された場合である.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__edge__1d__detector.html#g86f1aa1874fdfdddcd562e2e3f402d72" title="計測ライン(線分)上からの複数エッジ点の検出">fnFIE_edge1d_line()</a>, <a class="el" href="group__fie__edge__1d__detector.html#gf9104f5a6a160952dda5ae318e4e11f3" title="計測ライン(円弧)上からの複数エッジ点の検出">fnFIE_edge1d_arc()</a>, <a class="el" href="group__fie__edge__1d__detector__core.html#gba273c0d857afb9d5ef2577cc3796095" title="DoGフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_DoG()</a>, <a class="el" href="group__fie__edge__1d__detector__core.html#g7f752ab2fcbb5bb22000a73c9b3dffcb" title="相関エッジフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_corr()</a><ul>
+<li>#659 計測ラインの長さ及び濃度プロファイル配列長の下限の誤りを修正.</li><li>#661 int最大値付近の値をもつ濃度プロファイル配列を入力するとメモリアクセス違反が発生することがある問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#676 <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a>, <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a>, <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a><ul>
+<li>特定環境にて、パタン画像のエッジ点群のX座標またはY座標の平均値がちょうど整数になるとき、サーチに失敗することがある問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#696 <a class="el" href="group__fie__threshold.html#g976a28f9cc96f5b4ecc2992313ff8063" title="微分ヒストグラム法による画像２値化">fnFIE_grad_hist_threshold()</a>, <a class="el" href="group__fie__threshold.html#gcba5dc736e0d8d820f8bfad3676bfd77" title="[非推奨]ラプラシアンヒストグラム法による画像の２値化">fnFIE_lap_hist_threshold()</a><ul>
+<li>画像型が F_IMG_S16, F_IMG_US16 の場合に、特定環境で処理速度が低速となる問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#720 <a class="el" href="group__fie__pseudo__color.html#gba73c96c85b4ac23310630d36b1ca8fa" title="疑似カラー表示用マップ生成">fnFIE_make_pseudo_colormap()</a>, <a class="el" href="group__fie__pseudo__color.html#g336a597f8d162daacec170cf21690818" title="疑似カラー表示用マップ生成(double版)">fnFIE_make_pseudo_colormap_dbl()</a><ul>
+<li>テーブルサイズが1の場合にメモリアクセス違反が発生する問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#722 <a class="el" href="group__fie__filter.html#g946bc69fe30c2c51d730bf1a2ddcc86c" title="平均化フィルタ(M×N)">fnFIE_averageMxN()</a><ul>
+<li>画像型が F_IMG_S16, F_IMG_US16 の場合に、フィルタ高さが極めて大きい（約3万を超える）ときに処理結果が不正となることがある問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a><ul>
+<li>#724 特定の環境で特定の画像に対して読み取り結果が不正となる問題を修正.<br>
+ バーコード認識の際に作成される2値画像において、バーコードを構成する黒色のブローブがちょうど傾きのない長方形となるときに、 特定の環境ではわずかにバーコードの検出位置が変化し、読み取り結果が変化するバグがあった.</li><li>#745 タイムアウトまでの時間を大きく超過してバーコードが検出される問題を緩和.</li><li>#746 CODE39とNW-7のバーコードについて、スタートキャラクタの太細比とストップキャラクタの太細比が大きく異なるときに読み取り失敗する問題を緩和.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#726 <a class="el" href="group__fie__cg__fitting.html#g89b070926a4901fb38f67a27a145471a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの楕...">fnFIE_fit_ellipse()</a><ul>
+<li>近似モードが F_FIT_MESTIMATOR または F_FIT_MESTIMATOR2 の場合、座標値が大きい点が多数ある際に楕円推定に失敗することがある問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#727 <a class="el" href="group__fie__cg__voronoi.html#g202d24af50253a87d0a49d34b610c6a7" title="２次元ボロノイ図のオープン">fnFIE_cg_voronoi_open()</a><ul>
+<li>リエントラントでなかった問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#731 <a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective()</a><ul>
+<li>特定の行列と一定サイズ以上の画像を入力するとメモリアクセス違反が発生する問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#732 <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a><ul>
+<li>マルチコアCPU環境で処理を実行した場合、実行するたびに処理結果が変化することがある問題を修正.<br>
+ 本修正により、パタン画像が小さい、または開始圧縮度における検出数が少ないときに、処理時間がわずかに（5%程度）増加する.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#734 <a class="el" href="group__fie__fpm__pattern.html#g075080552b40a802d3f93fa1f25a2b47" title="高精度ポーズ推定における姿勢の範囲境界モードの設定">fnFIE_fpm_set_refine_pose_boundary_mode()</a><ul>
+<li>範囲境界モードを F_FPM_POSE_BOUNDED にしてスケール変化を含むサーチを実行すると処理結果が不正となる問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#735 サンプルコード <a class="el" href="group__sample__code__edge__detection.html#smp_edge_box">一次元エッジ検出(矩形)</a><ul>
+<li>エッジ検出範囲が検出片幅分だけ本来より小さい問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a><ul>
+<li>#736 符号化スキームがASCIIの場合、シンボルに含まれる拡張ASCII値のデコード結果が不正となる問題を修正.</li><li>#743 特定の検出最小セル幅・検出最大セル幅を指定すると、検出最大セル幅に近いセル幅をもつシンボルの読み取りに失敗することがある問題を修正.</li><li>シンボルサイズが144×144である特定のシンボルの読み取りに失敗する問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#741 サンプルコード <a class="el" href="group__sample__code__search.html#smp_gray_search_rotate">回転対応グレイサーチ</a>, <a class="el" href="group__sample__code__search.html#smp_gray_search_multipat">微小変形する対象のサーチにおける位置決め（マルチパターンサーチ）</a><ul>
+<li>サーチ結果数が指定した取得個数よりも多い場合にメモリアクセス違反が発生する問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#744 <a class="el" href="group__fie__img__draw.html#g862787acd9a7fc7efec46816c6090a8c" title="長方形の描画">fnFIE_draw_rect()</a><ul>
+<li>描画する長方形の幅または回転角が小さい場合、傾きがあるにもかかわらず傾きのない長方形が描画されることがある問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#747 <a class="el" href="group__fie__region__logical.html#g72c26c67eb35f15e056407c567d8e08f" title="リージョンと画像のAND演算">fnFIE_region_and_img()</a><ul>
+<li>画像幅が32未満で特定のビットポジションをもつ二値画像を入力すると処理結果が不正となる問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#750 <a class="el" href="group__fie__genetic__algorithm.html#gfc2e6f5195718c2f334488c8f45e391d" title="ＧＡの実行">fnFIE_ga_execute()</a>, <a class="el" href="group__fie__neural__network.html#g4652ef2eb689c2f3af2100114df14e11" title="ニューラルネットワークの学習(確率的バックプロパゲーション法)...">fnFIE_neuro_learning()</a><ul>
+<li>内部で使用する疑似乱数生成アルゴリズムの問題を修正.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix()</a>, <a class="el" href="group__fie__cg__geometric__transform.html#gc69a6eef00db76385387367ff62823b1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  アフィン変換...">fnFIE_geotrans_estimate_affine_matrix()</a>, <a class="el" href="group__fie__cg__geometric__transform.html#gcd3cd58c4749314e7457ca839e45d503" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  相似変換の変...">fnFIE_geotrans_estimate_similarity_matrix()</a><ul>
+<li>メモリ不足エラーとなるべき状況下でメモリアクセス違反が発生することがある問題を修正.</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">サンプルコード追加</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__machine__leaning__sample__code.html">機械学習サンプルコード</a></li></ul>
+<p>
+<h3 class="relnote">ドキュメント修正</h3>
+<p>
+<ul>
+<li>#721 <a class="el" href="group__fie__pseudo__color.html#gba73c96c85b4ac23310630d36b1ca8fa" title="疑似カラー表示用マップ生成">fnFIE_make_pseudo_colormap()</a>, <a class="el" href="group__fie__pseudo__color.html#g336a597f8d162daacec170cf21690818" title="疑似カラー表示用マップ生成(double版)">fnFIE_make_pseudo_colormap_dbl()</a><ul>
+<li>設定可能なカラーマップタイプの記載漏れを修正.</li></ul>
+</li><li>#737 <a class="el" href="group__fie__fpm__tool.html#g7f287859a538f6fe6be1a7e0d46d5cef" title="自動マーク認識＆画像生成">fnFIE_fpm_pattern_make_image()</a></li><li><a class="el" href="group__fie__img__feature.html#g391db0d938710d136d0317b0b4f90e20" title="画像間類似度計算">fnFIE_img_calc_similarity()</a></li><li><a class="el" href="group__fie__edge__1d__detector__core.html#gba273c0d857afb9d5ef2577cc3796095" title="DoGフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_DoG()</a>, <a class="el" href="group__fie__edge__1d__detector__core.html#g7f752ab2fcbb5bb22000a73c9b3dffcb" title="相関エッジフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_corr()</a>, <a class="el" href="group__fie__edge__1d__detector__core.html#g23f481fcaa204a6a52d7299f4accc466" title="１次微分によるエッジ検出">fnFIE_edge1d_detect_edges_diff()</a><ul>
+<li>エラーコードの誤りを修正.</li></ul>
+</li><li>#738 <a class="el" href="group__fie__barcode__NW7.html">バーコード仕様　NW-7</a></li><li>#739 <a class="el" href="group__fie__barcode__EAN.html">バーコード仕様　EAN</a></li><li><a class="el" href="group__fie__features.html#feature_equivalent_disk">特徴量　面積等価円直径</a><ul>
+<li>細かな誤りを修正.</li></ul>
+</li><li>#740 <a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping()</a></li><li><a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold()</a><ul>
+<li>表現を改善.</li></ul>
+</li><li><a class="el" href="group__fie__img__feature.html">画像統計量　画像特徴量計算</a><ul>
+<li><a class="el" href="group__fie__region__img__feature.html">リージョン処理　画像特徴量計算</a> への参照を追加.</li></ul>
+</li><li><a class="el" href="group__fie__radon__transform.html#g842b8b9c819884ad9b5fd2251e0158a5" title="ラドン変換">fnFIE_radon()</a><ul>
+<li>図の投影位置のずれを改善.</li></ul>
+</li><li><a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a><ul>
+<li>サンプルコードの誤りを修正.</li></ul>
+</li><li><a class="el" href="group__fie__fpm__pattern.html#gd31922528cfd499bd34855a90ea40df4" title="サーチ対象画像の特徴量数の取得">fnFIE_fpm_get_matching_feature_num()</a>, <a class="el" href="group__fie__fpm__pattern.html#g4f6447b83e4416bb2e7f45ad027bae37" title="マッチングで使用した特徴量を取得（勾配方向付きエッジ型）...">fnFIE_fpm_get_matching_feature_edges()</a><ul>
+<li>関数が使用可能な状況の記載漏れを修正.</li></ul>
+</li><li><a class="el" href="group__fie__fpm__match.html#g7036d46089e09426c677605c0c25eae0" title="領域スコア再計算">fnFIE_fpm_matching_areascore()</a>, <a class="el" href="group__fie__fpm__match.html#g7b9429144335ed6d0eac3c83fbb79a0a" title="不可欠領域スコア計算">fnFIE_fpm_matching_essential()</a><ul>
+<li>スコアしきい値を下回るマッチング回答がFPMオブジェクトから削除されることを明記. </li></ul>
+</li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

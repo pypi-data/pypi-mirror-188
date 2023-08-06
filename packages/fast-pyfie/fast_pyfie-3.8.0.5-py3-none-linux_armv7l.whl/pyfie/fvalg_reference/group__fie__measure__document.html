@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 全体説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>全体説明<br>
+<small>
+[<a class="el" href="group__fie__measure.html">２値ブローブ解析</a>]</small>
+</h1><ul>
+<li><a class="el" href="group__fie__measure__document.html#fie_measure_document_image_size">解析可能画像サイズ</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">解析対象色</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_background">背景</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_connectivity">連結条件</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_hierarchy">親子関係</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_invalid_blob">有効/無効ブローブ</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_region">領域の取得</a></li><li><a class="el" href="group__fie__measure__document.html#fie_measure_document_features">特徴量</a></li></ul>
+<p>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_image_size">
+解析可能画像サイズ</a></h2>
+本ブローブ解析ライブラリは、画像の幅、高さ共に 65535 以下の２値画像を 解析可能です。但し <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> にて offset値を０以外に設定する場合には、 下記の制限が発生します。offsetを付加した画像の座標範囲、<p>
+<ul>
+<li>offset.x ≦ x ≦ (offset.x + (画像の幅) - 1) </li>
+<li>offset.y ≦ y ≦ (offset.y + (画像の高さ) - 1)</li>
+</ul>
+が、それぞれ<p>
+<ul>
+<li>-65534 ≦ x ≦ 65534 </li>
+<li>-65534 ≦ y ≦ 65534</li>
+</ul>
+を満たしていなければなりません。<p>
+これらの関係を図示すると、下図のようになり、 解析領域は、図の赤で示す領域の中に入っている必要があります。 <div align="center">
+<img src="measure_coordinate_max.png" alt="measure_coordinate_max.png">
+</div>
+<p>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_color">
+解析対象色</a></h2>
+本ブローブ解析ライブラリでは、解析時に前景色のみを解析するか、 又は前景色と背景色の両方を解析するかを選択することが出来ます。 （<a class="el" href="structF__MEASURE__PARAMS.html">F_MEASURE_PARAMS</a> の <em>color_mode</em> を参照。） 通常は前景と背景両方を解析するモードを設定することを推奨しますが、 処理時間に対する要求が厳しく、且つ前景のみ解析出来れば良い場合は、 前景のみの解析モードとすることで、処理時間の短縮を図ることが出来ます。<p>
+但し前景のみの解析モード(単色解析モード)の場合、背景を解析しないため親子関係を構築しません（下図）。 そのため、親子関係を利用する一部の特徴量は計算することが出来ないため注意してください。 （どの特徴量が計算不能かどうかは <a class="el" href="group__fie__measure__document.html#fie_measure_document_features">特徴量</a> の表と各計算関数のドキュメントを参照）<p>
+<div align="center">
+<img src="measure_color_mode.png" alt="measure_color_mode.png">
+<p><strong>Fig. 解析色モードによる親子関係の違い</strong></p></div>
+ <hr>
+ <h2><a class="anchor" name="fie_measure_document_background">
+背景</a></h2>
+本ブローブ解析ライブラリでは、解析対象領域（画像）の外側には、 ブローブ番号０番の背景色ブローブが広がっていると定義しています。（下図参照）<p>
+<div align="center">
+<img src="measure_background1.png" alt="measure_background1.png">
+</div>
+<p>
+この領域の外側と連結する背景色ブローブを「背景ブローブ」と呼び、 特殊な扱いをします。背景ブローブはブローブ番号が必ず０番になります。 背景ブローブが１画素も存在していない時でも、０番ブローブは 背景を指す番号として存在し、この場合は０番はヌル領域を指し示します。 また親子関係において、０番ブローブは必ずツリーの最上位となります。<p>
+但し、解析対象色の設定（<a class="el" href="structF__MEASURE__PARAMS.html">F_MEASURE_PARAMS</a> の <em>color_mode</em> ）で、 前景色のみを解析するよう設定した場合は、 ０番ブローブは存在するものの、常にヌル領域となります。<p>
+<div align="center">
+<img src="measure_background2.png" alt="measure_background2.png">
+</div>
+<p>
+上図は解析対象色に前景=白、背景=黒を指定したときの例です。 このとき、青で示した領域は、解析領域の外側の０番ブローブと 連結していると見なせるため、０番ブローブとなります。<p>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_connectivity">
+連結条件</a></h2>
+連結条件とは、ある画素とその近傍にある画素が同一ブローブに属しているかどうかを決定する条件です。 本ブローブ解析ライブラリでは、画素の連結条件として、４連結と８連結を選択する事が出来ます。 ４近傍の画素に対して連結をさせる場合を４連結、８近傍の画素に対して連結をさせる場合を８連結と呼びます。<p>
+<div align="center">
+<img src="measure_connectivity1.png" alt="measure_connectivity1.png">
+</div>
+<p>
+例えば、下図の黒画素について考えると、４連結の場合は５個のブローブとなり、 ８連結の場合は、１個のブローブとなります。<p>
+<div align="center">
+<img src="measure_connectivity2.png" alt="measure_connectivity2.png">
+</div>
+<p>
+連結条件の設定は <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> 実行時に <a class="el" href="structF__MEASURE__PARAMS.html">F_MEASURE_PARAMS</a> の neighborhood にて行います。 解析対象色の設定（<a class="el" href="structF__MEASURE__PARAMS.html">F_MEASURE_PARAMS</a> の <em>color_mode</em> ）で、 前景と背景の両方を解析するよう設定した場合、前景の連結条件と、背景の連結条件は逆になります。 つまり、前景の連結条件として４連結を指定した場合、背景の連結条件は８連結に。 逆に、前景の連結条件として８連結を指定した場合、背景の連結条件は４連結になります。<p>
+この事は、下図の真ん中（青部）のブローブについて考えれば、何故そうしなければいけないのか自明です。 <div align="center">
+<img src="measure_connectivity3.png" alt="measure_connectivity3.png">
+</div>
+<p>
+白を４連結として考えると、上図青部は赤部と連結しないことになるため、 青部は緑部の子供にならなければ矛盾します。ということは、緑部（つまり黒）は８連結でなければなりません。 逆に白を８連結として考えると、上図青部は赤部と連結することになるため、 緑部は青部と赤部を合わせたブローブの子供にならなければ矛盾します。ということは、 緑部（つまり黒）は４連結でなければなりません。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a>, <a class="el" href="structF__MEASURE__PARAMS.html" title="ブローブ解析処理パラメータ">F_MEASURE_PARAMS</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_hierarchy">
+親子関係</a></h2>
+親子関係とは、ブローブの幾何的な位置関係を木構造にて表したものです。 あるブローブＡがあったときに、このブローブＡの穴ブローブをブローブＡの子供と呼びます。 逆に、この穴ブローブから見たブローブＡを親と呼びます。 また、同じ階層にあるブローブ同士は兄弟と呼びます。<p>
+<div align="center">
+<img src="measure_hierarchy1.png" alt="measure_hierarchy1.png">
+</div>
+ 上図において、1,2,3 はそれぞれ兄弟ブローブです。 また、1,2,3の親は0であり、0の子供は 1,2,3 です。<p>
+全てのブローブにはブローブ番号が割り振られており、この番号によるリンクによって親子関係の木構造は取得できます。 但し、全てのリンクは１対１の関係で表されるため、親から子への関係など１対多の関係を取得する際には リンクをたどって行くことになります。各リンクの取得には、次の関数をそれぞれ利用します。<p>
+<ul>
+<li>親ブローブ番号の取得： <a class="el" href="group__fie__measure__result.html#gbca0c78c378b8398bf3bb8022181d552" title="親ブローブの取得">fnFIE_measure_get_parent()</a> </li>
+<li>子ブローブ番号の取得： <a class="el" href="group__fie__measure__result.html#g072d42e9ec331cfb98171a064fede04d" title="子ブローブの取得">fnFIE_measure_get_child()</a> </li>
+<li>兄弟ブローブの番号取得： <a class="el" href="group__fie__measure__result.html#g431fda29f7c4abb65e99acc740d7e25b" title="１つ次の兄弟ブローブの取得">fnFIE_measure_get_sibling_next()</a> と <a class="el" href="group__fie__measure__result.html#gfe70fe52709ebf0db1905b2aad3740a7" title="１つ後ろの兄弟ブローブの取得">fnFIE_measure_get_sibling_back()</a></li>
+</ul>
+上図のブローブ例でのリンクを表したのが下図です。 <div align="center">
+<img src="measure_hierarchy2.png" alt="measure_hierarchy2.png">
+</div>
+ <a class="el" href="group__fie__measure__result.html#g072d42e9ec331cfb98171a064fede04d" title="子ブローブの取得">fnFIE_measure_get_child()</a> で取得される子供リンクは１番目の子供となります。 全ての子供を取得するには <a class="el" href="group__fie__measure__result.html#g072d42e9ec331cfb98171a064fede04d" title="子ブローブの取得">fnFIE_measure_get_child()</a> で１番目の子供を取得した後、 その子供の兄弟を <a class="el" href="group__fie__measure__result.html#g431fda29f7c4abb65e99acc740d7e25b" title="１つ次の兄弟ブローブの取得">fnFIE_measure_get_sibling_next()</a> 又は <a class="el" href="group__fie__measure__result.html#gfe70fe52709ebf0db1905b2aad3740a7" title="１つ後ろの兄弟ブローブの取得">fnFIE_measure_get_sibling_back()</a> にて 辿っていくことで取得します。また、兄弟リンクは双方向循環リストになっており、 リンクをたどっていくと自分に戻ってきます。 なお、兄弟の順番、及び、親からリンクされる子供（＝兄弟のうちどのブローブが親から子としてリンクされるか） には特別の意味は無く、処理の都合によって決定されるものです。<p>
+また、全てのブローブは背景の子供か又はその子孫になるため、 親子関係の木構造のルートは必ず０番ブローブになります。 ０番が背景以外のブローブに割り当てられる事はないため、 ０番から順に親子関係の木構造を辿っていけば全てのブローブを参照できます。 背景の項でも述べたとおり、背景が１画素も存在していない場合や、 解析対象色の設定（<a class="el" href="structF__MEASURE__PARAMS.html">F_MEASURE_PARAMS</a> の <em>color_mode</em> ）で前景のみ を解析対象とするよう設定した場合でも、０番ブローブは存在するため、 この事は成り立ちます。<p>
+解析対象色の設定（<a class="el" href="structF__MEASURE__PARAMS.html">F_MEASURE_PARAMS</a> の <em>color_mode</em> ）で前景のみ を解析対象とするよう設定した場合は、全てのブローブは０番の子供となります。<p>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_invalid_blob">
+有効/無効ブローブ</a></h2>
+<a class="el" href="group__fie__measure__main.html#g64951fdf80e771dabde978988de06abd" title="ブローブ解析の続行">fnFIE_measure_continue()</a> を使用する場合は、無効ブローブが現れます。 無効ブローブとは、元々有効ブローブとして存在していたブローブが、 <a class="el" href="group__fie__measure__main.html#g64951fdf80e771dabde978988de06abd" title="ブローブ解析の続行">fnFIE_measure_continue()</a> によって追加された部分によって 他のブローブに連結するなどして無くなってしまったブローブのことを言います。 あるブローブが有効ブローブか無効ブローブかどうかを調べるためには、 <a class="el" href="group__fie__measure__result.html#ge08e7c600639b7a9c2b9303d9a7b8320" title="ブローブ番号の有効/無効チェック">fnFIE_measure_get_is_valid()</a> 関数を使用します。 無効ブローブは親子関係の木構造から切り離されるため <a class="el" href="group__fie__measure__result.html#gbca0c78c378b8398bf3bb8022181d552" title="親ブローブの取得">fnFIE_measure_get_parent()</a> などの リンク取得関数でリンクを取得することは出来ません（エラーになる）。 また、特徴量も取得することは出来ず、取得しようとした場合はエラーになります。<p>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_region">
+領域の取得</a></h2>
+解析後のブローブに対して後処理を行いたい場合は、 そのブローブのリージョンを取得して処理を行います。 ( <a class="el" href="group__fie__measure__result.html#g215dbd234382563737797dfbd76c03d7" title="REGION取得">fnFIE_measure_get_region()</a> を参照 ) 濃淡特徴量を取得したい場合も、ブローブの領域をリージョンオブジェクトとして 取得し、それを使用して処理を行います。<p>
+<hr>
+ <h2><a class="anchor" name="fie_measure_document_features">
+特徴量</a></h2>
+本ブローブ解析ライブラリで取得可能なブローブの特徴量は下表の通りです。<p>
+<table class="pretable">
+<tr>
+<th colspan="2">特徴量 </th><th>取得関数 </th><th>内部保存 </th><th>単色解析 <p>
+</th></tr>
+<tr>
+<td colspan="2">ブローブ色</td><td><a class="el" href="group__fie__measure__feature.html#gc11edeba6a64c01cee87cdf364ecd508" title="色の取得">fnFIE_measure_get_color()</a></td><td>○</td><td>○  </td></tr>
+<tr>
+<td rowspan="2">面積 </td><td><a class="el" href="group__fie__features.html#feature_area">面積(穴を含まない)</a> </td><td><a class="el" href="group__fie__measure__feature.html#gf27bc5074483987e194eddddca50c9c1" title="対象ブローブの面積の取得">fnFIE_measure_get_area()</a> </td><td>○</td><td>○  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_hole_area">面積(穴を含む)</a></td><td><a class="el" href="group__fie__measure__feature.html#g7dfd2d80d8c5c76690579a5fa5a9ac31" title="面積（穴面積含む）の取得">fnFIE_measure_get_area_with_hole()</a></td><td>○</td><td>×<p>
+</td></tr>
+<tr>
+<td rowspan="3">穴 </td><td><a class="el" href="group__fie__features.html#feature_holes">穴数</a></td><td><a class="el" href="group__fie__measure__feature.html#g9154311b81a242d3a858f32dfff72503" title="穴数の取得">fnFIE_measure_get_hole_num()</a></td><td>○</td><td>×  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_hole_area">穴面積</a></td><td><a class="el" href="group__fie__measure__feature.html#g24427dccca49bcd2aec826ccd7c12844" title="穴面積の取得">fnFIE_measure_get_hole_area()</a></td><td>○</td><td>× </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_hole_ratio">穴面積比</a></td><td><a class="el" href="group__fie__measure__feature.html#gecda9324457592427004f7d913df2209" title="穴面積比の取得">fnFIE_measure_get_hole_ratio()</a></td><td>○</td><td>×<p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_distance_to_childs">子供距離最大・最小・平均</a></td><td><a class="el" href="group__fie__measure__feature.html#g6e0798f559191307aefcb1a2782e361e" title="子供距離の取得">fnFIE_measure_get_distance_to_childs()</a></td><td>×</td><td>× <p>
+</td></tr>
+<tr>
+<td rowspan="2">隣接エリア<br>
+(兄弟エリア) </td><td><a class="el" href="group__fie__features.html#feature_distance_to_siblings">隣接エリア間距離 最大・最小・平均</a> </td><td><a class="el" href="group__fie__measure__feature.html#gb715a19caa848351727f1a90c6ada228" title="隣接エリア（兄弟ブローブ）間距離の取得">fnFIE_measure_get_distance_to_siblings()</a></td><td>×</td><td>×  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_ns">隣接エリア数</a></td><td><a class="el" href="group__fie__measure__feature.html#gecf2c56c180f258c7740af939da58a49" title="兄弟ブローブ数の取得">fnFIE_measure_get_sibling_num()</a></td><td>×</td><td>×<p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_xyrange">ｘ／ｙ座標最大最小</a> </td><td><a class="el" href="group__fie__measure__feature.html#g5b1cb22f5cc0e469f631f8937b2cfa43" title="xyrangeの取得">fnFIE_measure_get_xyrange()</a><br>
+<a class="el" href="group__fie__measure__feature.html#gc8f48d0c29d4c5a049e0d95e39fa4ad2" title="座標の最大最小位置の取得">fnFIE_measure_get_maxminpos()</a></td><td>○</td><td>○ <p>
+</td></tr>
+<tr>
+<td rowspan="8">モーメント </td><td><a class="el" href="group__fie__features.html#feature_moment1">１次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#gdbc6860336e4fd5d98b43affb31d5385" title="１次モーメントの取得">fnFIE_measure_get_moment1()</a></td><td>○</td><td>○  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_moment2">２次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#g9c51abbf3926b804dd20e3cb7ae24808" title="２次モーメントの取得">fnFIE_measure_get_moment2()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_moment">３次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#g6c64da81d9e86d0b7d474fb684e79028" title="３次モーメントの取得">fnFIE_measure_get_moment3()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_moment">Ｎ次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#gde8e6f95ca9d7603a452d8715e3ab3ab" title="Ｎ次モーメントの取得">fnFIE_measure_get_moment()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_central_moment">重心２次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#ga596327193c3a682fce67ead68fea25b" title="重心２次モーメントの取得">fnFIE_measure_get_central_moment2()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_central_moment">重心３次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#g56e44d2f93c80682b13b5c40abf70271" title="重心３次モーメントの取得">fnFIE_measure_get_central_moment3()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_central_moment">重心Ｎ次モーメント</a></td><td><a class="el" href="group__fie__measure__feature.html#gce64be3e1fa19de5d1c532e8da4644dc" title="重心Ｎ次モーメントの取得">fnFIE_measure_get_central_moment()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量</a></td><td><a class="el" href="group__fie__measure__feature.html#gb9abc4e765b4c54128f65a3e9b1ceaf4" title="Huモーメント不変量の取得">fnFIE_measure_get_hu_moments()</a></td><td>×</td><td>○<p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_center">重心</a> </td><td><a class="el" href="group__fie__measure__feature.html#gb4e989070282da9a84b2a454371391fc" title="重心の取得">fnFIE_measure_get_center()</a></td><td>○</td><td>○ <p>
+</td></tr>
+<tr>
+<td>慣性等価楕円 </td><td><a class="el" href="group__fie__features.html#feature_equivalent_ellipse">主軸長・副軸長・主軸角・主軸/副軸長比</a> </td><td><a class="el" href="group__fie__measure__feature.html#ge37f46482ea0503b947aeafdf28fc05d" title="等価楕円の取得">fnFIE_measure_get_equivalent_ellipse()</a></td><td>○</td><td>○ <p>
+</td></tr>
+<tr>
+<td rowspan="2">等価円 </td><td><a class="el" href="group__fie__features.html#feature_equivalent_disk">面積等価円</a> </td><td><a class="el" href="group__fie__measure__feature.html#g2cc9a22b44905611f3059c881c928fd8" title="面積等価円の取得">fnFIE_measure_get_equivalent_disk()</a></td><td>×</td><td>○  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_equivalent_circle">周囲長等価円</a></td><td><a class="el" href="group__fie__measure__feature.html#g599fd38ec059de358b57f04b28ee689c" title="周囲長等価円の取得">fnFIE_measure_get_equivalent_circle()</a></td><td>×</td><td>○<p>
+</td></tr>
+<tr>
+<td rowspan="5">外接長方形(角度０） </td><td>頂点座標</td><td>ｘ／ｙ座標最大最小 と等しい</td><td>---</td><td>---  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_xydiff">縦・横長</a></td><td><a class="el" href="group__fie__measure__feature.html#gd01a021a3587c658bebe7404f245f1ce" title="外接矩形サイズの取得">fnFIE_measure_get_xydiff()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect1_area">面積</a></td><td><a class="el" href="group__fie__measure__feature.html#gc9b8c90e6881bbf8de538a8fd18bba54" title="外接矩形面積の取得">fnFIE_measure_get_rect1_area()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect1_lratio">縦横比</a></td><td><a class="el" href="group__fie__measure__feature.html#gd943062b246b82e58cec937fa6d8d9da" title="外接矩形縦横比の取得">fnFIE_measure_get_rect1_lratio()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect1_sratio">面積比</a></td><td><a class="el" href="group__fie__measure__feature.html#gfe7dca84ac72f3edff1dec5b2d8efb91" title="外接矩形面積比の取得">fnFIE_measure_get_rect1_sratio()</a></td><td>○</td><td>○<p>
+</td></tr>
+<tr>
+<td rowspan="6">外接長方形(慣性主軸と平行) </td><td><a class="el" href="group__fie__features.html#feature_rect2pos">頂点座標</a></td><td><a class="el" href="group__fie__measure__feature.html#gd5abc924f081e050f425d9e6b1bb97eb" title="外接長方形の頂点座標の取得">fnFIE_measure_get_rect2pos()</a></td><td>×</td><td>○  </td></tr>
+<tr>
+<td>角度</td><td>等価楕円の主軸角と等しい</td><td>---</td><td>--- </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect2_size">縦・横長</a></td><td><a class="el" href="group__fie__measure__feature.html#ga29bde22672cedbfa4570e42d2bcf573" title="外接長方形の取得">fnFIE_measure_get_rect2_size()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect2_area">面積</a></td><td><a class="el" href="group__fie__measure__feature.html#g222c24c474098800f17f413762914e0e" title="外接長方形面積の取得">fnFIE_measure_get_rect2_area()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect2_lratio">縦横比</a></td><td><a class="el" href="group__fie__measure__feature.html#g26f35e0cc5c802c00227ba35c9741201" title="外接長方形縦横比の取得">fnFIE_measure_get_rect2_lratio()</a></td><td>○</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_rect2_sratio">面積比</a></td><td><a class="el" href="group__fie__measure__feature.html#g0c437b830f7b296a8419f1595c946549" title="外接長方形面積比の取得">fnFIE_measure_get_rect2_sratio()</a></td><td>○</td><td>○<p>
+</td></tr>
+<tr>
+<td>外接長方形(指定角) </td><td><a class="el" href="group__fie__features.html#feature_bounding_rotated_rect_pos">頂点座標</a> </td><td><a class="el" href="group__fie__measure__feature.html#g0d8d9f9908564ca3159b890cfd6c558a" title="指定角度外接長方形の頂点座標の取得">fnFIE_measure_get_bounding_rotated_rect_pos()</a></td><td>×</td><td>○ <p>
+</td></tr>
+<tr>
+<td rowspan="2">フェレ径 </td><td><a class="el" href="group__fie__features.html#feature_feret_diameter">角度指定</a> </td><td><a class="el" href="group__fie__measure__feature.html#g875a8bf5fcd01c181b37f7e6519ce3f4" title="フェレ径の取得">fnFIE_measure_get_feret_diameter()</a></td><td>×</td><td>○  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_feret_maxmin">最大最小フェレ径 長さ・角度</a></td><td><a class="el" href="group__fie__measure__feature.html#g3f9997ba7c13d9f04e13d79dae169864" title="最大フェレ径、最小フェレ径の取得">fnFIE_measure_get_feret_diameter_maxmin()</a></td><td>×</td><td>○<p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_perimeter">周囲長</a> </td><td><a class="el" href="group__fie__measure__feature.html#g68c4d94811ee25bf1c2cf7e4d458c866" title="対象ブローブの周囲長の取得">fnFIE_measure_get_perimeter()</a></td><td>○</td><td>○ <p>
+</td></tr>
+<tr>
+<td rowspan="2">面積周囲長比 </td><td>Peround</td><td>真円度＃１と同じ。</td><td>---</td><td>---  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_pps">PPS</a></td><td><a class="el" href="group__fie__measure__feature.html#g8f0f902472e5b24e5a0d027102230bc6" title="面積周囲長比(pps)の取得">fnFIE_measure_get_pps()</a></td><td>×</td><td>○<p>
+</td></tr>
+<tr>
+<td rowspan="3">凸包 </td><td><a class="el" href="group__fie__features.html#feature_convex2d">頂点座標</a> </td><td><a class="el" href="group__fie__measure__feature.html#g4b0298944561f6211921abe219ff5265" title="凸包の取得">fnFIE_measure_get_convex2d()</a></td><td>×</td><td>○  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_convexfeature">面積・周囲長</a></td><td><a class="el" href="group__fie__measure__feature.html#g4567ea798529acc6b35a254fd99c5951" title="凸包面積・周囲長の取得">fnFIE_measure_get_convexfeature()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_convexratio">面積比・周囲長比</a></td><td><a class="el" href="group__fie__measure__feature.html#gf252f4a38e0272232df441a157babf9e" title="凸包面積比・周囲長比の取得">fnFIE_measure_get_convexratio()</a></td><td>×</td><td>○<p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_circumcircle">最小外接円</a> </td><td><a class="el" href="group__fie__measure__feature.html#gc6384a93cdd7ae9e16e1fa00107a7b64" title="最小外接円の取得">fnFIE_measure_get_circmcircle()</a></td><td>×</td><td>○ <p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_boundary">境界座標点列</a> </td><td><a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a></td><td>×</td><td>○ <p>
+</td></tr>
+<tr>
+<td colspan="2"><a class="el" href="group__fie__features.html#feature_distance_to_boundary">外周距離 最大・最小・標準偏差</a> </td><td><a class="el" href="group__fie__measure__feature.html#g0f56986a47da0eea756b99d9990a4e13" title="外周距離の取得">fnFIE_measure_get_distance_to_boundary()</a></td><td>○</td><td>○ <p>
+</td></tr>
+<tr>
+<td rowspan="3">真円度 </td><td><a class="el" href="group__fie__features.html#feature_circularity1">＃１</a></td><td><a class="el" href="group__fie__measure__feature.html#gfe8455a3f759d30ce99ebf30ab8be890" title="真円度＃１の取得">fnFIE_measure_get_circularity1()</a></td><td>×</td><td>○  </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_circularity2">＃２</a></td><td><a class="el" href="group__fie__measure__feature.html#ga2788b2d670499c7bd2b6252d5fca434" title="真円度＃２の取得">fnFIE_measure_get_circularity2()</a></td><td>×</td><td>○ </td></tr>
+<tr>
+<td><a class="el" href="group__fie__features.html#feature_circularity3">＃３</a></td><td><a class="el" href="group__fie__measure__feature.html#g176f0f9a21a55ee786f5f794991c52e2" title="真円度＃３の取得">fnFIE_measure_get_circularity3()</a></td><td>×</td><td>○<p>
+</td></tr>
+</table>
+<p>
+<ul>
+<li>内部保存：計算済み特徴量値を保存しておくかどうか。 結果値を保存する特徴量では、同一ブローブに対する計算が再実行されたときに、 前回の計算結果値をそのまま返すため、２回目以降は処理時間が短くてなる。</li><li>単色解析：単色解析モード時に計算できるかどうか。 詳細は <a class="el" href="group__fie__measure__document.html#fie_measure_document_color">解析対象色</a> を参照してください。 </li></ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

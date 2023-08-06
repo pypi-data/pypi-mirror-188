@@ -1,0 +1,642 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 特徴量</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>特徴量<br>
+<small>
+[<a class="el" href="group__fie__document.html">総合ドキュメント</a>]</small>
+</h1>本ページでは、リージョンの特徴量計算と２値ブローブ解析の特徴量計算 で求められる特徴量について説明しています。<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_area">area</a></li><li><a class="el" href="group__fie__features.html#feature_xyrange">xmin, ymin, xmax, ymax</a></li><li><a class="el" href="group__fie__features.html#feature_maxminpos">xmax_at_ymin, xmax_at_ymax, ymin_at_xmax, ymax_at_xmin</a></li><li><a class="el" href="group__fie__features.html#feature_xydiff">xdiff, ydiff</a></li><li><a class="el" href="group__fie__features.html#feature_rect1_area">rect1_area</a></li><li><a class="el" href="group__fie__features.html#feature_rect1_lratio">rect1_lratio</a></li><li><a class="el" href="group__fie__features.html#feature_rect1_sratio">rect1_sratio</a></li><li><a class="el" href="group__fie__features.html#feature_moment1">sumx, sumy</a></li><li><a class="el" href="group__fie__features.html#feature_moment2">sumx2, sumy2, sumxy</a></li><li><a class="el" href="group__fie__features.html#feature_moment">モーメント</a></li><li><a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント</a></li><li><a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量</a></li><li><a class="el" href="group__fie__features.html#feature_center">centerx, centery</a></li><li><a class="el" href="group__fie__features.html#feature_equivalent_ellipse">majoraxis, minoraxis, axistheta, axisratio</a></li><li><a class="el" href="group__fie__features.html#feature_equivalent_disk">diameter_equidisk</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_size">lsize, wsize</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_area">rect2_area</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_lratio">rect2_lratio</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_sratio">rect2_sratio</a></li><li><a class="el" href="group__fie__features.html#feature_feret_diameter">feret_diameter</a></li><li><a class="el" href="group__fie__features.html#feature_feret_maxmin">feretmax, feretmin, fmax_theta, fmin_theta</a></li><li><a class="el" href="group__fie__features.html#feature_convex2d">凸包</a></li><li><a class="el" href="group__fie__features.html#feature_circumcircle">最小外接円</a></li><li><a class="el" href="group__fie__features.html#feature_rect2pos">外接長方形の頂点座標</a></li><li><a class="el" href="group__fie__features.html#feature_bounding_rotated_rect_pos">外接長方形の頂点座標（指定角）</a></li><li><a class="el" href="group__fie__features.html#feature_equivalent_circle">diameter_equicircle</a></li><li><a class="el" href="group__fie__features.html#feature_convexfeature">convex_area, convex_perim</a></li><li><a class="el" href="group__fie__features.html#feature_convexratio">convex_arearatio, convex_perimratio</a></li><li><a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmax, dpmin, dpave, dpsigma</a></li><li><a class="el" href="group__fie__features.html#feature_circularity1">circularity1</a></li><li><a class="el" href="group__fie__features.html#feature_circularity2">circularity2</a></li><li><a class="el" href="group__fie__features.html#feature_circularity3">circularity3</a></li><li><a class="el" href="group__fie__features.html#feature_ns">ns</a></li><li><a class="el" href="group__fie__features.html#feature_holes">holes</a></li><li><a class="el" href="group__fie__features.html#feature_hole_area">sc, st</a></li><li><a class="el" href="group__fie__features.html#feature_hole_ratio">hratio</a></li><li><a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsmax, dsmin, dsave</a></li><li><a class="el" href="group__fie__features.html#feature_distance_to_childs">dcmax, dcmin, dcave</a></li><li><a class="el" href="group__fie__features.html#feature_pps">pps</a></li><li><a class="el" href="group__fie__features.html#feature_perimeter">perim</a></li><li><a class="el" href="group__fie__features.html#feature_boundary">feature_boundary</a></li></ul>
+<p>
+<hr>
+ <h2><a class="anchor" name="feature_area">
+area</a></h2>
+領域の面積を表す特徴量です。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__measure__feature.html#gf27bc5074483987e194eddddca50c9c1" title="対象ブローブの面積の取得">fnFIE_measure_get_area()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_xyrange">
+xmin, ymin, xmax, ymax</a></h2>
+領域のｘ、ｙ座標の最大値と最小値を表す特徴量です。<p>
+<div align="center">
+<img src="blob_xydiff.png" alt="blob_xydiff.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g2ed01873b2e40b50e0497b1ce0fca434" title="REGION特徴量：座標の最大最小値">fnFIE_region_get_xyrange()</a>, <a class="el" href="group__fie__measure__feature.html#g5b1cb22f5cc0e469f631f8937b2cfa43" title="xyrangeの取得">fnFIE_measure_get_xyrange()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_maxminpos">
+xmax_at_ymin, xmax_at_ymax, ymin_at_xmax, ymax_at_xmin</a></h2>
+領域のｘ、ｙ座標の最大最小位置を表す特徴量です。<p>
+<div align="center">
+<img src="blob_maxminpos.png" alt="blob_maxminpos.png">
+</div>
+<p>
+<ul>
+<li>xmin_at_ymin : ｙの最小位置におけるｘの最小値</li><li>xmax_at_ymax : ｙの最大位置におけるｘの最大値</li><li>ymin_at_xmax : ｘの最大位置におけるｙの最小値</li><li>ymax_at_xmin : ｘの最小位置におけるｙの最大値</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd60a5efa4ecbcd79170c502ce3c875ad" title="REGION特徴量：座標の最大最小位置">fnFIE_region_get_maxminpos()</a>, <a class="el" href="group__fie__measure__feature.html#gc8f48d0c29d4c5a049e0d95e39fa4ad2" title="座標の最大最小位置の取得">fnFIE_measure_get_maxminpos()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_xydiff">
+xdiff, ydiff</a></h2>
+外接矩形の横サイズ(xdiff)と縦サイズ(ydiff)を表す特徴量です。 <div align="center">
+<img src="blob_xydiff.png" alt="blob_xydiff.png">
+</div>
+<p>
+下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it xdiff} = xmax - xmin + 1\]" src="form_363.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it ydiff} = ymax - ymin + 1\]" src="form_364.png">
+<p>
+<p>
+<ul>
+<li>xdiff : 外接矩形横サイズ</li><li>ydiff : 外接矩形縦サイズ</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd3caf57f1520ce54be42145fa9dda76d" title="REGION特徴量：外接矩形サイズ取得（xdiff、ydiff）">fnFIE_region_get_xydiff()</a>, <a class="el" href="group__fie__measure__feature.html#gd01a021a3587c658bebe7404f245f1ce" title="外接矩形サイズの取得">fnFIE_measure_get_xydiff()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_rect1_area">
+rect1_area</a></h2>
+傾き０の外接長方形の面積を表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it rect1\_area} = {\it xdiff} \times {\it ydiff}\]" src="form_365.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_xydiff">xdiff</a> : 外接矩形横サイズ</li><li><a class="el" href="group__fie__features.html#feature_xydiff">ydiff</a> : 外接矩形縦サイズ</li><li>rect1_area : 外接長方形の面積</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#ge37ab5e4812fd06e6ab0c787b3ec2f4e" title="REGION特徴量：外接矩形面積">fnFIE_region_get_rect1_area()</a>, <a class="el" href="group__fie__measure__feature.html#gc9b8c90e6881bbf8de538a8fd18bba54" title="外接矩形面積の取得">fnFIE_measure_get_rect1_area()</a> <hr>
+ </dd></dl>
+<h2><a class="anchor" name="feature_rect1_lratio">
+rect1_lratio</a></h2>
+傾き０の外接長方形の縦横比を表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it rect1\_lratio} = \frac{\it ydiff}{\it xdiff}\]" src="form_366.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_xydiff">xdiff</a> : 外接矩形横サイズ</li><li><a class="el" href="group__fie__features.html#feature_xydiff">ydiff</a> : 外接矩形縦サイズ</li><li>rect1_lratio : 外接長方形の縦横比</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gee402daea0bbe82cf813f2ebf6f7e087" title="REGION特徴量：外接矩形縦横比">fnFIE_region_get_rect1_lratio()</a>, <a class="el" href="group__fie__measure__feature.html#gd943062b246b82e58cec937fa6d8d9da" title="外接矩形縦横比の取得">fnFIE_measure_get_rect1_lratio()</a> <hr>
+ </dd></dl>
+<h2><a class="anchor" name="feature_rect1_sratio">
+rect1_sratio</a></h2>
+傾き０の外接長方形の面積比を表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it rect1\_sratio} = \frac{area}{\it rect1\_area}\]" src="form_367.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_area">area</a> : 領域の面積</li><li><a class="el" href="group__fie__features.html#feature_rect1_area">rect1_area</a> : 外接矩形の面積</li><li>rect1_sratio : 外接長方形の面積比</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3431667bf2d6da1b1eb50ee758616a3f" title="REGION特徴量：外接矩形面積比">fnFIE_region_get_rect1_sratio()</a>, <a class="el" href="group__fie__measure__feature.html#gfe7dca84ac72f3edff1dec5b2d8efb91" title="外接矩形面積比の取得">fnFIE_measure_get_rect1_sratio()</a> <hr>
+ </dd></dl>
+<h2><a class="anchor" name="feature_moment1">
+sumx, sumy</a></h2>
+１次モーメントを表す特徴量です 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[sumx = \sum_{y}\sum_{x}{x} \]" src="form_368.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[sumy = \sum_{y}\sum_{x}{y} \]" src="form_369.png">
+<p>
+<p>
+<ul>
+<li>x : 領域内の各画素のｘ座標</li><li>y : 領域内の各画素のｙ座標</li><li>sumx : ｘ方向１次モーメント</li><li>sumy : ｙ方向１次モーメント</li></ul>
+<p>
+より一般化したＮ次モーメントの定義は <a class="el" href="group__fie__features.html#feature_moment">モーメント</a> を参照してください<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g5899ab358ad11fe4c3a3a6e56b7e5e13" title="REGION特徴量：１次モーメント">fnFIE_region_get_moment1()</a>, <a class="el" href="group__fie__measure__feature.html#gdbc6860336e4fd5d98b43affb31d5385" title="１次モーメントの取得">fnFIE_measure_get_moment1()</a> <hr>
+ </dd></dl>
+<h2><a class="anchor" name="feature_moment2">
+sumx2, sumy2, sumxy</a></h2>
+２次モーメントを表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[sumx2 = \sum_{y}\sum_{x}{x^2} \]" src="form_370.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[sumy2 = \sum_{y}\sum_{x}{y^2} \]" src="form_371.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[sumxy = \sum_{y}\sum_{x}{xy} \]" src="form_372.png">
+<p>
+<p>
+<ul>
+<li>x : 領域内の各画素のｘ座標</li><li>y : 領域内の各画素のｙ座標</li><li>sumx2 : ｘ方向２次モーメント</li><li>sumy2 : ｙ方向２次モーメント</li><li>sumxy : 相乗２次モーメント</li></ul>
+<p>
+より一般化したＮ次モーメントの定義は <a class="el" href="group__fie__features.html#feature_moment">モーメント</a> を参照してください<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g196a87140354f5d6887dc9165dfb1c5f" title="REGION特徴量：２次モーメント">fnFIE_region_get_moment2()</a>, <a class="el" href="group__fie__measure__feature.html#g9c51abbf3926b804dd20e3cb7ae24808" title="２次モーメントの取得">fnFIE_measure_get_moment2()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_moment">
+モーメント</a></h2>
+モーメントを表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[M_{pq} = \sum_{(x,y) \in R}{x^p y^q} \]" src="form_373.png">
+<p>
+<p>
+ここで、<ul>
+<li>R : 領域</li><li>x : 各画素のｘ座標</li><li>y : 各画素のｙ座標</li><li>p : Ｘの次数</li><li>q : Ｙの次数</li></ul>
+<p>
+なお、p=q=0 のとき、 <img class="formulaInl" alt="$M_{pq}$" src="form_374.png"> は面積と等しく、式で表せば <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ M_{00} = area \]" src="form_375.png">
+<p>
+ となります。<p>
+また、<a class="el" href="group__fie__features.html#feature_moment1">sumx, sumy</a> および <a class="el" href="group__fie__features.html#feature_moment2">sumx2, sumy2, sumxy</a> はそれぞれ M の別名称です。それぞれ次のように対応しています。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M_{10} = sumx \]" src="form_376.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M_{01} = sumy \]" src="form_377.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M_{20} = sumx2 \]" src="form_378.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M_{02} = sumy2 \]" src="form_379.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[M_{11} = sumxy \]" src="form_380.png">
+<p>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g5899ab358ad11fe4c3a3a6e56b7e5e13" title="REGION特徴量：１次モーメント">fnFIE_region_get_moment1()</a>, <a class="el" href="group__fie__measure__feature.html#gdbc6860336e4fd5d98b43affb31d5385" title="１次モーメントの取得">fnFIE_measure_get_moment1()</a> <p>
+<a class="el" href="group__fie__region__feature.html#g196a87140354f5d6887dc9165dfb1c5f" title="REGION特徴量：２次モーメント">fnFIE_region_get_moment2()</a>, <a class="el" href="group__fie__measure__feature.html#g9c51abbf3926b804dd20e3cb7ae24808" title="２次モーメントの取得">fnFIE_measure_get_moment2()</a> <p>
+<a class="el" href="group__fie__region__feature.html#gb894333201980f37ce0256dfba20ee95" title="REGION特徴量：３次モーメント">fnFIE_region_calc_moment3()</a>, <a class="el" href="group__fie__measure__feature.html#g6c64da81d9e86d0b7d474fb684e79028" title="３次モーメントの取得">fnFIE_measure_get_moment3()</a> <p>
+<a class="el" href="group__fie__region__feature.html#gc72eacc53ce969a03a11164ca2115999" title="REGION特徴量：Ｎ次モーメント">fnFIE_region_calc_moment()</a>, <a class="el" href="group__fie__measure__feature.html#gde8e6f95ca9d7603a452d8715e3ab3ab" title="Ｎ次モーメントの取得">fnFIE_measure_get_moment()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_central_moment">
+重心モーメント</a></h2>
+重心モーメントを表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[MG_{pq} = \sum_{(x,y) \in R}{(x-centerx)^p(y-centery)^q} \]" src="form_381.png">
+<p>
+<p>
+なお、p+q≦1 のときは次のようになります。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ MG_{00} = M_{00} = area \]" src="form_382.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ MG_{10} = 0 \]" src="form_383.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ MG_{01} = 0 \]" src="form_384.png">
+<p>
+<p>
+ここで、<ul>
+<li>R : 領域</li><li>x : 各画素のｘ座標</li><li>y : 各画素のｙ座標</li><li><a class="el" href="group__fie__features.html#feature_center">centerx</a> : 重心のＸ座標</li><li><a class="el" href="group__fie__features.html#feature_center">centery</a> : 重心のＹ座標</li><li>p : Ｘの次数(0以上)</li><li>q : Ｙの次数(0以上)</li><li><a class="el" href="group__fie__features.html#feature_area">area</a> : 面積</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd56424deef46d991fb9f2542062ff883" title="REGION特徴量：重心２次モーメント">fnFIE_region_calc_central_moment2()</a>, <a class="el" href="group__fie__measure__feature.html#ga596327193c3a682fce67ead68fea25b" title="重心２次モーメントの取得">fnFIE_measure_get_central_moment2()</a> <p>
+<a class="el" href="group__fie__region__feature.html#g126f11160e93894a66f3fc657008a38e" title="REGION特徴量：重心３次モーメント">fnFIE_region_calc_central_moment3()</a>, <a class="el" href="group__fie__measure__feature.html#g56e44d2f93c80682b13b5c40abf70271" title="重心３次モーメントの取得">fnFIE_measure_get_central_moment3()</a> <p>
+<a class="el" href="group__fie__region__feature.html#g1a7b1267f22967a6db606909b12f8108" title="REGION特徴量：重心Ｎ次モーメント">fnFIE_region_calc_central_moment()</a>, <a class="el" href="group__fie__measure__feature.html#gce64be3e1fa19de5d1c532e8da4644dc" title="重心Ｎ次モーメントの取得">fnFIE_measure_get_central_moment()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_hu_moment_invariants">
+Huモーメント不変量</a></h2>
+領域のHuモーメント不変量を表す特徴量です。 Huモーメント不変量は、正規化された <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント</a> から算出される、平行移動、 回転、スケール変化に不変な7つの値 <img class="formulaInl" alt="$h[i]$" src="form_385.png"> です <img class="formulaInl" alt="$(0 <= i < 7)$" src="form_386.png">。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \begin{aligned} h[0] &amp;= N_{20} + N_{02} \\ h[1] &amp;= (N_{20} - N_{02})^2 + 4 N_{11}^2 \\ h[2] &amp;= (N_{30} - 3 N_{12})^2 + (3 N_{21} - N_{03})^2 \\ h[3] &amp;= (N_{30} + N_{12})^2 + (N_{21} + N_{03})^2 \\ h[4] &amp;= (N_{30} - 3 N_{12})(N_{30} + N_{12}) ((N_{30} + N_{12})^2 - 3(N_{21} + N_{03})^2) + (3 N_{21} - N_{03})(N_{21} + N_{03}) (3(N_{30} + N_{12})^2 - (N_{21} + N_{03})^2) \\ h[5] &amp;= (N_{20} - N_{02}) ((N_{30} + N_{12})^2 - (N_{21} + N_{03})^2) + 4 N_{11}(N_{30} + N_{12})(N_{21} + N_{03}) \\ h[6] &amp;= (3 N_{21} - N_{03})(N_{30} + N_{12}) ((N_{30} + N_{12})^2 - 3(N_{21} + N_{03})^2) - (N_{30} - 3 N_{12})(N_{21} + N_{03}) (3(N_{30} + N_{12})^2 - (N_{21} + N_{03})^2) \\ \end{aligned} \]" src="form_387.png">
+<p>
+<p>
+ここで <img class="formulaInl" alt="$N_{pq}$" src="form_388.png"> は正規化された重心モーメントであり、下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[N_{pq} = \frac{MG_{pq}}{area^{(p+q)/2+1}}\]" src="form_389.png">
+<p>
+<p>
+<ul>
+<li>p : Ｘの次数(0以上)</li><li>q : Ｙの次数(0以上)</li><li><img class="formulaInl" alt="$MG_{pq}$" src="form_390.png"> : <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント</a></li><li><a class="el" href="group__fie__features.html#feature_area">area</a> : 面積</li></ul>
+<p>
+正規化された重心モーメントは、平行移動に加えてスケール変化に対しても不変です。<p>
+必ずしも高い識別性能が得られるわけではありませんが、Huモーメント不変量は領域の識別に利用することができます。<p>
+<dl class="user" compact><dt><b>参考文献</b></dt><dd><ul>
+<li>M.-K. Hu, Visual pattern recognition by moment invariants, IRE Transactions on Information Theory, vol. 8, no. 2, pp. 179-187, 1962. </li>
+<li>Z. Huang, J. Leng, Analysis of Hu's moment invariants on image scaling and rotation, International Conference on Computer Engineering and Technology, pp. V7-476-V7-480, 2010.</li>
+</ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g18174ca8f7e6fbc3a694fd67752b2787" title="REGION特徴量：Huモーメント不変量">fnFIE_region_calc_hu_moments()</a>, <a class="el" href="group__fie__measure__feature.html#gb9abc4e765b4c54128f65a3e9b1ceaf4" title="Huモーメント不変量の取得">fnFIE_measure_get_hu_moments()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_center">
+centerx, centery</a></h2>
+領域の重心を表す特徴量です。 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[centerx = \frac{sumx}{area}\]" src="form_391.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[centery = \frac{sumy}{area}\]" src="form_392.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_moment1">sumx</a> : 領域のｘ方向１次モーメント</li><li><a class="el" href="group__fie__features.html#feature_moment1">sumy</a> : 領域のｙ方向１次モーメント</li><li><a class="el" href="group__fie__features.html#feature_area">area</a> : 領域の面積</li><li>centerx : 重心のＸ座標</li><li>centery : 重心のＹ座標</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g6c5ab9e3b9b196307b5be0d0c5594ffe" title="REGION特徴量：重心">fnFIE_region_get_center()</a>, <a class="el" href="group__fie__measure__feature.html#gb4e989070282da9a84b2a454371391fc" title="重心の取得">fnFIE_measure_get_center()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_equivalent_ellipse">
+majoraxis, minoraxis, axistheta, axisratio</a></h2>
+領域の２次モーメントと等価な楕円（慣性等価楕円）を表す特徴量です。 慣性等価楕円の中心は、重心と同じです。<br>
+ <div align="center">
+<img src="blob_equi_ellipse.png" alt="blob_equi_ellipse.png">
+</div>
+<p>
+下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} majoraxis &amp;=&amp; \sqrt{2}\sqrt{\mu_{20}+\mu_{02}+\sqrt{(\mu_{20}-\mu_{02})^2+4\mu_{11}^2}}\\ minoraxis &amp;=&amp; \sqrt{2}\sqrt{\mu_{20}+\mu_{02}-\sqrt{(\mu_{20}-\mu_{02})^2+4\mu_{11}^2}}\\ axistheta &amp;=&amp; \frac{1}{2}{\tt atan2}(2 \mu_{11},\mu_{20}-\mu_{02})\\ axisratio &amp;=&amp; \frac{minoraxis}{majoraxis} \end{eqnarray*}" src="form_393.png">
+<p>
+<p>
+但し、axisratio は右辺分母 majoraxis が０の時は０になります。 また、axistheta はラジアンで表され、その角度範囲は <img class="formulaInl" alt="$ \frac{-\pi}{2} \le \theta < \frac{\pi}{2} $" src="form_394.png"> です。<p>
+ここで、 <img class="formulaInl" alt="$\mu_{20}, \mu_{02}, \mu_{11}$" src="form_395.png"> はブローブの 正規化された重心２次モーメントであり、それぞれ次のように計算されます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} \mu_{20} &amp;=&amp; \frac{mg20}{area} \\ \mu_{02} &amp;=&amp; \frac{mg02}{area} \\ \mu_{11} &amp;=&amp; \frac{mg11}{area} \end{eqnarray*}" src="form_396.png">
+<p>
+<p>
+<ul>
+<li>majoraxis : 慣性等価楕円 主軸半径</li><li>minoraxis : 慣性等価楕円 副軸半径</li><li>axistheta : 慣性等価楕円 主軸傾き</li><li>axisratio : 慣性等価楕円 主軸副軸長比</li><li><a class="el" href="group__fie__features.html#feature_moment1">sumx</a> : ｘ方向１次モーメント</li><li><a class="el" href="group__fie__features.html#feature_moment1">sumy</a> : ｙ方向１次モーメント</li><li><a class="el" href="group__fie__features.html#feature_moment2">sumx2</a> : ｘ方向２次モーメント</li><li><a class="el" href="group__fie__features.html#feature_moment2">sumy2</a> : ｙ方向２次モーメント</li><li><a class="el" href="group__fie__features.html#feature_moment2">sumxy</a> : 相乗２次モーメント</li><li><a class="el" href="group__fie__features.html#feature_central_moment">mg20</a> : ｘ方向重心２次モーメント</li><li><a class="el" href="group__fie__features.html#feature_central_moment">mg02</a> : ｙ方向重心２次モーメント</li><li><a class="el" href="group__fie__features.html#feature_central_moment">mg11</a> : 相乗重心２次モーメント</li></ul>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>ブローブの面積が１（１画素のみブローブ）のときは、majoraxis, minoraxis が共に０になります。 ブローブの構成画素が１直線上に並んでいる場合は、minoraxis が０になります。</dd></dl>
+<dl class="user" compact><dt><b>参考文献</b></dt><dd>Robert M. Haralick and Linda G. Shapio, ``Computer and Robot Vision, Vol.1'' ISBN 0-201-10877-1, Addison-Wesley Publishing Company, 1991, pp.639-</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd0e3bc69b8c2074947f1bfe5595c994a" title="REGION特徴量：等価楕円">fnFIE_region_get_equivalent_ellipse()</a>, <a class="el" href="group__fie__measure__feature.html#ge37f46482ea0503b947aeafdf28fc05d" title="等価楕円の取得">fnFIE_measure_get_equivalent_ellipse()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_equivalent_disk">
+diameter_equidisk</a></h2>
+領域の面積と等価な円を表す特徴量です。<br>
+ 下式のように定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[diameter\_equidisk = 2 \sqrt{ \frac{area}{\pi} }\]" src="form_397.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_area">area</a> : 面積</li><li>diameter_equidisk : 面積等価円 直径</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3bd7d20634c1488202f19576f9f7215f" title="REGION特徴量：面積等価円">fnFIE_region_calc_equivalent_disk()</a>, <a class="el" href="group__fie__measure__feature.html#g2cc9a22b44905611f3059c881c928fd8" title="面積等価円の取得">fnFIE_measure_get_equivalent_disk()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_rect2_size">
+lsize, wsize</a></h2>
+慣性主軸と同じ傾きの、領域に外接する長方形のサイズを表す特徴量です。 慣性主軸とは慣性等価楕円の主軸のことで、 <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> と本ライブラリでは表記しています。 領域内の点(x,y)は(x-0.5,y-0.5),(x+0.5,y-0.5),(x-0.5,y+0.5),(x+0.5,y+0.5)で囲まれる 矩形分の広がりを持っているという定義で外接長方形を求めています。（ <a class="el" href="group__fie__features.html#feature_feret_diameter">feret_diameter</a> 参照 ）<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> : 慣性等価楕円 主軸傾き（慣性主軸角）</li><li>lsize : 外接長方形横長</li><li>wsize : 外接長方形縦長</li></ul>
+<p>
+<div align="center">
+<img src="blob_rect2.png" alt="blob_rect2.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g80ae4adcb98ea6859ae5fba5857abb1e" title="REGION特徴量：外接長方形">fnFIE_region_get_rect2_size()</a>, <a class="el" href="group__fie__measure__feature.html#ga29bde22672cedbfa4570e42d2bcf573" title="外接長方形の取得">fnFIE_measure_get_rect2_size()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_rect2_area">
+rect2_area</a></h2>
+慣性主軸と同じ傾きの、領域に外接する長方形の面積を表す特徴量です。 慣性主軸とは慣性等価楕円の主軸のことで、 <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> と本ライブラリでは表記しています。<p>
+rect2_area は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it rect2\_area} = wsize \times lsize \]" src="form_398.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_rect2_size">lsize</a> : 外接長方形横長</li><li><a class="el" href="group__fie__features.html#feature_rect2_size">wsize</a> : 外接長方形縦長</li><li>rect2_area : 外接長方形面積</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g30ef624cc7a7facfa5408bdc517993d0" title="REGION特徴量：外接長方形面積">fnFIE_region_get_rect2_area()</a>, <a class="el" href="group__fie__measure__feature.html#g222c24c474098800f17f413762914e0e" title="外接長方形面積の取得">fnFIE_measure_get_rect2_area()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_rect2_lratio">
+rect2_lratio</a></h2>
+慣性主軸と同じ傾きの、領域に外接する長方形の縦横比を表す特徴量です。 慣性主軸とは慣性等価楕円の主軸のことで、 <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> と本ライブラリでは表記しています。<p>
+rect2_lratio は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it rect2\_lratio} = \frac{wsize}{lsize}\]" src="form_399.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_rect2_size">lsize</a> : 外接長方形横長</li><li><a class="el" href="group__fie__features.html#feature_rect2_size">wsize</a> : 外接長方形縦長</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g8ab04bc42476e5c2f85f367773dcfb1f" title="REGION特徴量：外接長方形縦横比">fnFIE_region_get_rect2_lratio()</a>, <a class="el" href="group__fie__measure__feature.html#g26f35e0cc5c802c00227ba35c9741201" title="外接長方形縦横比の取得">fnFIE_measure_get_rect2_lratio()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_rect2_sratio">
+rect2_sratio</a></h2>
+慣性主軸と同じ傾きの領域に外接する長方形の面積比を表す特徴量です。 慣性主軸とは慣性等価楕円の主軸のことで、 <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> と本ライブラリでは表記しています。<p>
+rect2_sratio は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it rect2\_sratio} = \frac{area}{\it rect2\_area}\]" src="form_400.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_area">area</a> : 面積</li><li><a class="el" href="group__fie__features.html#feature_rect2_area">rect2_area</a> : 外接長方形面積</li><li>rect2_sratio : 外接長方形面積比</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g6b88e3bdcefa77598dcedad2f6f73d7d" title="REGION特徴量：外接長方形面積比">fnFIE_region_get_rect2_sratio()</a>, <a class="el" href="group__fie__measure__feature.html#g0c437b830f7b296a8419f1595c946549" title="外接長方形面積比の取得">fnFIE_measure_get_rect2_sratio()</a> <hr>
+ </dd></dl>
+<h2><a class="anchor" name="feature_feret_diameter">
+feret_diameter</a></h2>
+領域の指定角でのフェレ径を表す特徴量です。<p>
+フェレ径は、座標点の広がりを考える場合と、考えない場合の２通りの計測モードがあります。 座標点の広がりを考えないモードでは、１点のみの領域はどの角度で計測してもフェレ径の値は0となります。<p>
+座標点の広がりを考えるモードでは、領域の面積が１画素以上有る場合、出力のフェレ径の値は1.0以上となります。 （例えば1点のみの領域の場合で角度が0度、または±90度のときに1.0が出力されます。） 領域内の１点は幅１の正方矩形領域であるという定義の下に幅計測します。 例えば、領域上の座標(x,y)の点は、左上(x-0.5,y-0.5)、左下(x-0.5,y+0.5)、右下(x+0.5,y+0.5)、右上(x+0.5,y-0.5)で囲まれる矩形領域とみなします。 この時、1画素のみの領域を45度で計測したフェレ径の値は<img class="formulaInl" alt="$\sqrt{2}$" src="form_401.png">となります。<p>
+<div align="center">
+<img src="blob_feret_1pix.png" alt="blob_feret_1pix.png">
+</div>
+<p>
+4画素の正方形領域に対して、45度でのフェレ径の、各モードでの例を下図に示します。<p>
+<div align="center">
+<img src="blob_feret_4pix.png" alt="blob_feret_4pix.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>フェレ径（Feret's diameter）とは</b></dt><dd></dd></dl>
+フェレ径とは、物体が２本の平行な直線によって挟まれた時の２直線の距離です。 下図のＦは、斜めに傾いた２直線に領域が挟まれた場合の直線間距離ですが、これがフェレ径のイメージです。 同じく下図のFxが水平方向のフェレ径、Fyが垂直方向のフェレ径になります。 なお点の広がりを考えた場合は、Fxはxdiffと、Fyはydiffとそれぞれ等しい値となります。<p>
+<div align="center">
+<img src="blob_feret1.png" alt="blob_feret1.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>角度について</b></dt><dd></dd></dl>
+引数の角度(theta)には幅を計測する軸とＸ軸がなす角度を入力してください。<p>
+<div align="center">
+<img src="blob_feret2.png" alt="blob_feret2.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#ga294f51a165e5f1f048a84287fde9f45" title="REGION特徴量：指定角度フェレ径計測">fnFIE_region_calc_feret_diameter()</a>, <a class="el" href="group__fie__measure__feature.html#g875a8bf5fcd01c181b37f7e6519ce3f4" title="フェレ径の取得">fnFIE_measure_get_feret_diameter()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_feret_maxmin">
+feretmax, feretmin, fmax_theta, fmin_theta</a></h2>
+領域の <a class="el" href="group__fie__features.html#feature_feret_diameter">フェレ径</a> が最大となる計測角度とそのときのフェレ径、 また、最小となる計測角度とそのときのフェレ径です。 角度値(fmax_theta, f_min_theta)はラジアンで、角度範囲は <img class="formulaInl" alt="$ \frac{-\pi}{2} \le \theta < \frac{\pi}{2}$" src="form_402.png"> です。 （フェレ径計測角度は+PI回転しても同じなので、この角度範囲となります。）<p>
+<ul>
+<li>feretmax : 最大フェレ径</li><li>fmax_theta : 最大フェレ径の計測角度</li><li>feretmin : 最小フェレ径</li><li>fmin_theta : 最小フェレ径の計測角度</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#geaa75d89d65aca1b6ca0444e73575209" title="REGION特徴量：最大フェレ径、最小フェレ径">fnFIE_region_calc_feret_diameter_maxmin()</a>, <a class="el" href="group__fie__measure__feature.html#g3f9997ba7c13d9f04e13d79dae169864" title="最大フェレ径、最小フェレ径の取得">fnFIE_measure_get_feret_diameter_maxmin()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_convex2d">
+凸包</a></h2>
+凸包とは、その領域を含む最小の凸多角形のことです。 直感的に言い表すと、木の板に釘を(同じ面に)いくつか打ち付けた後、 その釘がすべて入るように外側から輪ゴムで留めたときにできる輪ゴムの形が凸包となります。 データ解析的には凸多角形という非常に扱い易い形で点集合全体を近似している、と考えられます。<p>
+<div align="center">
+<img src="blob_convex2d.png" alt="blob_convex2d.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g8e83e0579fb5e1a8d7d4123656e225b3" title="REGION特徴量：凸包生成">fnFIE_region_calc_convex2d()</a>, <a class="el" href="group__fie__measure__feature.html#g4b0298944561f6211921abe219ff5265" title="凸包の取得">fnFIE_measure_get_convex2d()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_circumcircle">
+最小外接円</a></h2>
+最小外接円（最小包含円とも呼ばれる）とは、 領域外周の点の2点または3点に接する（点を通る）円で、 かつ領域内のすべての点を内包する円のうち最小のものです。<p>
+<div align="center">
+<img src="blob_circumcircle.png" alt="blob_circumcircle.png">
+<p><strong>最小外接円例</strong></p></div>
+ 但し、点の広がりについては考慮しません。円と接する点においては、 円はその点の中心を通ります。このため、領域内の点が１点しか無い場合は 最小外接円を求めることは出来ません。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g416d84221fff9070c8f88a81c5c8a161" title="REGION特徴量：最小外接円">fnFIE_region_calc_circumcircle()</a>, <a class="el" href="group__fie__measure__feature.html#gc6384a93cdd7ae9e16e1fa00107a7b64" title="最小外接円の取得">fnFIE_measure_get_circmcircle()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_rect2pos">
+外接長方形の頂点座標</a></h2>
+対象ブローブの外接長方形の４頂点座標です。 座標点列は、0度のときに画像座標系で左上となる点を始点に、 時計回りに頂点を返します。<p>
+<div align="center">
+<img src="blob_rect2pos.png" alt="blob_rect2pos.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g7c201dac6f9975b8cf80cbf807c108dc" title="REGION特徴量：外接長方形の頂点">fnFIE_region_calc_rect2pos()</a>, <a class="el" href="group__fie__measure__feature.html#gd5abc924f081e050f425d9e6b1bb97eb" title="外接長方形の頂点座標の取得">fnFIE_measure_get_rect2pos()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_bounding_rotated_rect_pos">
+外接長方形の頂点座標（指定角）</a></h2>
+対象ブローブの指定した傾きをもった外接長方形の４頂点座標です。 座標点列は、0度のときに画像座標系で左上となる点を始点に、 時計回りに頂点を返します。<p>
+<div align="center">
+<img src="blob_bounding_rotated_rect_pos.png" alt="blob_bounding_rotated_rect_pos.png">
+</div>
+<p>
+領域内の点(x,y)は(x-0.5,y-0.5),(x+0.5,y-0.5),(x-0.5,y+0.5),(x+0.5,y+0.5)で囲まれる 矩形分の広がりを持っているという定義で指定角の外接長方形を求めています。（ <a class="el" href="group__fie__features.html#feature_feret_diameter">feret_diameter</a> 参照 ）<p>
+<dl class="user" compact><dt><b>角度について</b></dt><dd></dd></dl>
+引数の角度(theta)には外接長方形のある一辺に平行な軸とＸ軸がなす角度を入力してください。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g845b8e2e9fc73eefecfdb6760829aea7" title="REGION特徴量：指定角度外接長方形の頂点">fnFIE_region_calc_bounding_rotated_rect_pos()</a>, <a class="el" href="group__fie__measure__feature.html#g0d8d9f9908564ca3159b890cfd6c558a" title="指定角度外接長方形の頂点座標の取得">fnFIE_measure_get_bounding_rotated_rect_pos()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_equivalent_circle">
+diameter_equicircle</a></h2>
+領域の周囲長と円周が等価な円の直径です。<p>
+diameter_equicircle は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it diameter\_equicircle} = \frac{perim}{\pi}\]" src="form_403.png">
+<p>
+<p>
+<ul>
+<li><a class="el" href="group__fie__features.html#feature_perimeter">perim</a> : 周囲長</li><li>diameter_equicircle : 円周等価円</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gb44844cdbfbffc0997cc7dce4c174969" title="REGION特徴量：周囲長等価円">fnFIE_region_calc_equivalent_circle()</a>, <a class="el" href="group__fie__measure__feature.html#g599fd38ec059de358b57f04b28ee689c" title="周囲長等価円の取得">fnFIE_measure_get_equivalent_circle()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_convexfeature">
+convex_area, convex_perim</a></h2>
+凸包の面積と周囲長を表す特徴量です。 凸包については <a class="el" href="group__fie__features.html#feature_convex2d">ここ</a> を参照してください。<p>
+<ul>
+<li>convex_area : 凸包面積</li><li>convex_perim : 凸包周囲長</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g0bef5b8a58237a243c0fd5bb8a9c9514" title="REGION特徴量：凸包面積・周囲長">fnFIE_region_calc_convexfeature()</a>, <a class="el" href="group__fie__measure__feature.html#g4567ea798529acc6b35a254fd99c5951" title="凸包面積・周囲長の取得">fnFIE_measure_get_convexfeature()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_convexratio">
+convex_arearatio, convex_perimratio</a></h2>
+凸包の面積比(領域の面積/凸包面積)、凸包の周囲長比(領域の周囲長/凸包周囲長)を表す特徴量です。<p>
+それぞれ下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it convex\_arearatio} = \frac{\it area}{\it convex\_area}\]" src="form_404.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[{\it convex\_perimratio} = \frac{\it perim}{\it convex\_perim}\]" src="form_405.png">
+<p>
+<p>
+<ul>
+<li>convex_arearatio : 凸包面積比</li><li>convex_perimratio : 凸包周囲長比</li><li><a class="el" href="group__fie__features.html#feature_convexfeature">convex_area</a> : 凸包面積</li><li><a class="el" href="group__fie__features.html#feature_convexfeature">convex_perim</a> : 凸包周囲長</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g43037b7b2c0cb40e12609a1a8d56f245" title="REGION特徴量：凸包面積比・周囲長比">fnFIE_region_calc_convexratio()</a>, <a class="el" href="group__fie__measure__feature.html#gf252f4a38e0272232df441a157babf9e" title="凸包面積比・周囲長比の取得">fnFIE_measure_get_convexratio()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_distance_to_boundary">
+dpmax, dpmin, dpave, dpsigma</a></h2>
+領域の重心と境界点列の距離最小値、距離最大値、距離平均値、距離標準偏差値を 表す特徴量です。<p>
+<div align="center">
+<img src="blob_dp.png" alt="blob_dp.png">
+</div>
+<p>
+<ul>
+<li>dpmax : 重心・境界点間距離 最大値</li><li>dpmin : 重心・境界点間距離 最小値</li><li>dpave : 重心・境界点間距離 平均値</li><li>dpsigma : 重心・境界点間距離 標準偏差</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g106e10598f406b12fd93f173886ca0f0" title="REGION特徴量：外周距離">fnFIE_region_get_distance_to_boundary()</a>, <a class="el" href="group__fie__measure__feature.html#g0f56986a47da0eea756b99d9990a4e13" title="外周距離の取得">fnFIE_measure_get_distance_to_boundary()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_circularity1">
+circularity1</a></h2>
+領域の真円度を表す特徴量です。 circularity1 は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[circularity1 = 4\pi \frac{area}{perim^2} \]" src="form_406.png">
+<p>
+<p>
+<ul>
+<li>circularity1 : 真円度＃１</li><li><a class="el" href="group__fie__features.html#feature_area">area</a> : 面積</li><li><a class="el" href="group__fie__features.html#feature_perimeter">perim</a> : 周囲長</li></ul>
+<p>
+但し、分母が０（周囲長が０）の時は circularity1 は0.0とします。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g412047e79832bfaaf4c574e885824c28" title="REGION特徴量：真円度＃１">fnFIE_region_calc_circularity1()</a>, <a class="el" href="group__fie__measure__feature.html#gfe8455a3f759d30ce99ebf30ab8be890" title="真円度＃１の取得">fnFIE_measure_get_circularity1()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_circularity2">
+circularity2</a></h2>
+領域の真円度を表す特徴量です。 circularity2 は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[circularity2 = \frac{area}{\pi * dpmax^2} \]" src="form_407.png">
+<p>
+<p>
+<ul>
+<li>circularity2 : 真円度＃２</li><li>area : 面積</li><li><a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmax</a> : 重心・境界間距離最大値</li></ul>
+<p>
+但し、分母が０（外周距離最大値dpmaxが０）の時は circularity2 は 0.0とします。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g8c25d7ff398c44dee23616ad165de222" title="REGION特徴量：真円度＃２">fnFIE_region_calc_circularity2()</a>, <a class="el" href="group__fie__measure__feature.html#ga2788b2d670499c7bd2b6252d5fca434" title="真円度＃２の取得">fnFIE_measure_get_circularity2()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_circularity3">
+circularity3</a></h2>
+領域の真円度を表す特徴量です。 circularity3 は下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[circularity3 = 1-\frac{dpsigma}{dpave} \]" src="form_408.png">
+<p>
+<p>
+<ul>
+<li>circularity3 : 真円度＃３</li><li><a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpsigma</a> : 重心・境界間距離標準偏差</li><li><a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpave</a> : 重心・境界間距離平均値</li></ul>
+<p>
+但し、分母が０（外周距離平均値dpaveが０）の時は circularity3 は 1.0 とします。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g167c97087dbf40a5aa590daa682d8c8a" title="REGION特徴量：真円度＃３">fnFIE_region_calc_circularity3()</a>, <a class="el" href="group__fie__measure__feature.html#g176f0f9a21a55ee786f5f794991c52e2" title="真円度＃３の取得">fnFIE_measure_get_circularity3()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_ns">
+ns</a></h2>
+ブローブの兄弟数を表す特徴量です。 ブローブの親子関係については <a class="el" href="group__fie__measure__document.html#fie_measure_document_hierarchy">親子関係</a> を参照してください。<p>
+<ul>
+<li>ns : 兄弟数</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#gecf2c56c180f258c7740af939da58a49" title="兄弟ブローブ数の取得">fnFIE_measure_get_sibling_num()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_holes">
+holes</a></h2>
+領域の穴の数を表す特徴量です。<p>
+<ul>
+<li>holes : 穴数</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g9154311b81a242d3a858f32dfff72503" title="穴数の取得">fnFIE_measure_get_hole_num()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_hole_area">
+sc, st</a></h2>
+領域の穴の面積と、穴を含んだ全面積を表す特徴量です。<p>
+<ul>
+<li>sc : 穴面積</li><li>st : 全面積 (scと <a class="el" href="group__fie__features.html#feature_area">area</a> を足した値)</li></ul>
+<p>
+<dl class="user" compact><dt><b>注意</b></dt><dd>２値ブローブ解析では、穴はブローブの子供とその子孫を全て含んだ領域 と定義しています。そのため、子供ブローブ面積の総和と穴面積は異なることが 有ることに注意してください。</dd></dl>
+<div align="center">
+<img src="blob_holes.png" alt="blob_holes.png">
+<p><strong>Fig. 穴面積と子供面積が異なる例</strong></p></div>
+ <dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g24427dccca49bcd2aec826ccd7c12844" title="穴面積の取得">fnFIE_measure_get_hole_area()</a> <hr>
+ </dd></dl>
+<h2><a class="anchor" name="feature_hole_ratio">
+hratio</a></h2>
+領域の穴面積比を表す特徴量です。 hratioは下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ hratio = \frac{sc}{st} \]" src="form_409.png">
+<p>
+<p>
+<ul>
+<li>hratio : 穴面積比</li><li><a class="el" href="group__fie__features.html#feature_hole_area">sc, st</a> sc "sc" : 穴面積</li><li><a class="el" href="group__fie__features.html#feature_hole_area">sc, st</a> st "st" : 全面積</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#gecda9324457592427004f7d913df2209" title="穴面積比の取得">fnFIE_measure_get_hole_ratio()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_distance_to_siblings">
+dsmax, dsmin, dsave</a></h2>
+兄弟ブローブ間距離を表す特徴量です。 計測対象対象のブローブの重心と、そのブローブの兄弟ブローブの重心との距離を計測します。 ブローブの親子関係については <a class="el" href="group__fie__measure__document.html#fie_measure_document_hierarchy">親子関係</a> を参照してください。<p>
+<div align="center">
+<img src="blob_distance_to_siblings.png" alt="blob_distance_to_siblings.png">
+</div>
+<p>
+<ul>
+<li>dsmax : 兄弟ブローブ間距離 最大値</li><li>dsmin : 兄弟ブローブ間距離 最小値</li><li>dsave : 兄弟ブローブ間距離 平均値</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#gb715a19caa848351727f1a90c6ada228" title="隣接エリア（兄弟ブローブ）間距離の取得">fnFIE_measure_get_distance_to_siblings()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_distance_to_childs">
+dcmax, dcmin, dcave</a></h2>
+子供ブローブ間距離を表す特徴量です。 計測対象のブローブの重心と、そのブローブの子供ブローブの重心との距離を計測します。 ブローブの親子関係については <a class="el" href="group__fie__measure__document.html#fie_measure_document_hierarchy">親子関係</a> を参照してください。<p>
+<div align="center">
+<img src="blob_distance_to_childs.png" alt="blob_distance_to_childs.png">
+</div>
+<p>
+<ul>
+<li>dcmax : 子供ブローブ間距離 最大値</li><li>dcmin : 子供ブローブ間距離 最小値</li><li>dcave : 子供ブローブ間距離 平均値</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g6e0798f559191307aefcb1a2782e361e" title="子供距離の取得">fnFIE_measure_get_distance_to_childs()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_pps">
+pps</a></h2>
+面積周囲長比を表す特徴量です。 ppsは下式にて定義されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ pps = \frac{perim^2}{st} \]" src="form_410.png">
+<p>
+<p>
+<ul>
+<li>pps : 面積周囲長比</li><li><a class="el" href="group__fie__features.html#feature_perimeter">perim</a> : 周囲長</li><li><a class="el" href="group__fie__features.html#feature_hole_area">st</a>: 穴を含む全面積</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__feature.html#g8f0f902472e5b24e5a0d027102230bc6" title="面積周囲長比(pps)の取得">fnFIE_measure_get_pps()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_perimeter">
+perim</a></h2>
+周囲長を表す特徴量です。 ブローブの境界点列のユークリッド距離を周囲長と定義し、その値を計算します。<p>
+<ul>
+<li>perim : 周囲長</li></ul>
+<p>
+<dl class="user" compact><dt><b>注意</b></dt><dd>周囲長は連結性の設定により値が変化します。( <a class="el" href="group__fie__features.html#feature_boundary">feature_boundary</a> の項参照 ) 連結性の設定は、リージョンの場合は <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> にて、 ブローブ解析の場合は <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> の実行時パラメータにて設定します。 また、ブローブ解析の場合は、前景ブローブの連結性と、背景ブローブの連結性が 逆になりますので注意してください。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gb1b47ed8bf09ac5f308c15bccaa94a29" title="REGION特徴量：周囲長計測">fnFIE_region_get_perimeter()</a>, <a class="el" href="group__fie__measure__feature.html#g68c4d94811ee25bf1c2cf7e4d458c866" title="対象ブローブの周囲長の取得">fnFIE_measure_get_perimeter()</a></dd></dl>
+<hr>
+ <h2><a class="anchor" name="feature_boundary">
+feature_boundary</a></h2>
+領域の周囲座標列です。 領域の境界には external boundary と internal boundary の２種類があります。（下図参照）<p>
+<div align="center">
+<img src="fie_region_boundary_01.png" alt="fie_region_boundary_01.png">
+</div>
+<p>
+また、周囲座標は４連結と８連結の場合で座標が異なることがあります。 <div align="center">
+<img src="fie_region_boundary_02.png" alt="fie_region_boundary_02.png">
+</div>
+<p>
+本ライブラリでは境界座標は、external boundaryは画像座標系で反時計回りに探索（右手の法則）、 internal boundaryは画像座標系で時計回りに探索します。<p>
+<dl class="user" compact><dt><b>注意</b></dt><dd><ul>
+<li>周囲座標は連結性の設定により値が変化します。 </li>
+<li>連結性の設定：リージョンの場合は <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> にて、 ブローブ解析の場合は <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> の実行時パラメータにて設定します。 また、ブローブ解析の場合は、前景ブローブの連結性と、背景ブローブの連結性が 逆になりますので注意してください。 </li>
+<li>FVLなどのFASTの境界点抽出ライブラリとは得られる結果が異なります。</li>
+</ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a>, <a class="el" href="group__fie__measure__feature.html#gb43179acf8e966559c97420a428cfadb" title="周囲座標の取得">fnFIE_measure_get_boundary()</a> <p>
+<a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd" title="REGION境界点抽出(拡張版)">fnFIE_region_calc_boundary_ex()</a>, <a class="el" href="group__fie__measure__feature.html#gefdd44a748c2a64a045306bb7b5d47e9" title="周囲座標の取得">fnFIE_measure_get_boundary_ex()</a> </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

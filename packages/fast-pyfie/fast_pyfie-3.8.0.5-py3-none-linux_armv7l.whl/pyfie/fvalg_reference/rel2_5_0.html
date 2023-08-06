@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 2.5.0</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel2_5_0">release 2.5.0 </a></h1><div style="text-align:right">2011/06/15</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel2_5_0.html#fie2_5_0">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie2_5_0">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">FIE関数の追加</h3>
+<p>
+<h3 class="relnote_sub">幾何変換</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__geometric__transform.html#gf4914db1caea3d101c00eceb6e0e7696">画像の回転(90度の倍数)</a></li></ul>
+<p>
+<h3 class="relnote_sub">フィルタ全般</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g633a7e7079f25e06e605f34d900c20f0">画像縦横方向の投影</a></li></ul>
+<p>
+<h3 class="relnote_sub">画像統計量</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__histogram.html#g8347ef399e84870c180e856b1a388505">ヒストグラムからの２値化閾値決定</a></li><li><a class="el" href="group__fie__histogram.html#g9917d7731f0e6f322714b2e7e496b1b7">ヒストグラムからの多値化閾値決定</a></li></ul>
+<p>
+<h3 class="relnote_sub">２値化/セグメンテーション</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__threshold.html#gfe6ff6606a4a55ffd7813dba6774189d">判別分析法による画像２値化</a></li><li><a class="el" href="group__fie__threshold.html#g952719300717e4bb97fef0172033c480">ラプラシアンヒストグラム法による画像の２値化</a></li><li><a class="el" href="group__fie__threshold.html#g9af3a8a5105798b335daa82fb06c4c96">局所メディアン値をバックグランドとして除去して得られた画像を判別分析法で２値化</a></li></ul>
+<p>
+<h3 class="relnote_sub">行列演算</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__math__matrix__lalgebra.html#g0bdc11f9780c8698870dc616227601cc">行列の擬似逆行列計算</a></li></ul>
+<p>
+<h3 class="relnote_sub">グレイサーチ(正規化相関サーチ)</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__gs2__pattern.html#g5653ddd779afb37191defc8c0ae61d2e">圧縮画像を取得する</a></li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>#517: <a class="el" href="group__fie__edge__tools.html#gf9933ffa963a85e2eda733e10d26d1c0" title="[非推奨]エッジ点の連結">fnFIE_edge_connecting()</a> で短い閉曲線の場合処理結果インデックス配列の末尾要素が不定値になるバグを修正</li><li>#523: <a class="el" href="group__fie__std__operation.html#g1d8298598a6efc9e67df891c6470e6dd" title="画像比較">fnFIE_img_compare()</a> でサイズの小さいUC8画像を入力すると正常に動作しないバグを修正</li><li>#525: <a class="el" href="group__fie__bayer.html#g1aa1cf905e23b38ee7f601b8cc7255cc" title="ベイヤー色合成 各種のベイヤー色合成を引数で手法選択して使用できます...">fnFIE_bayer_interpolation()</a> で処理すべき領域以外にゲインとオフセットを加えているバグを修正</li><li>#526: <a class="el" href="group__fie__filter__arithm.html#g6995cd0eb0545bcbf1b83523cf6efe76" title="複合画像間計算[ (A*const1)+const2 ]">fnFIE_img_mixope2()</a> で浮動小数点の丸め方法が画素によって異なる場合があるバグを修正</li><li>#527: <a class="el" href="group__fie__genetic__algorithm.html#gfc2e6f5195718c2f334488c8f45e391d" title="ＧＡの実行">fnFIE_ga_execute()</a> で特定パラメータを設定すると強制終了するバグを修正</li><li>#528: <a class="el" href="group__fie__hough__line.html#ga582d236dcc0152bdda897bd5daba7e6" title="ハフ空間への投票（実数型エッジ点群）">fnFIE_hough_lines_voting_d()</a>、 <a class="el" href="group__fie__hough__line.html#g7c2ee05252eb2e49b4490afe9747606c" title="ハフ空間への投票（整数型エッジ点群）">fnFIE_hough_lines_voting()</a> で投票するエッジ点の座標が領域外だった場合にチェックを行うよう仕様変更 </li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:32 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

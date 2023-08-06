@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ツール</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ツール<br>
+<small>
+[<a class="el" href="group__fie__fpm.html">FPM(特徴点応用マッチング)</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__tool.html#g4a1c4b1fbe75f49c797159116b802829">fnFIE_fpm_pattern_automask</a> (FHANDLE hsrc, enum <a class="el" href="group__fie__fpm__define.html#g8807205a70816c5eff23ed438033c592">f_fpm_markshape</a> shape, INT hole, INT offset, INT threshold, INT mask_type, FHANDLE *hmask, <a class="el" href="structF__FPM__MARKINFO.html">F_FPM_MARKINFO</a> *fpm_markinfo, INT *score)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">自動マーク認識＆マスク設定  <a href="#g4a1c4b1fbe75f49c797159116b802829"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__tool.html#g7f287859a538f6fe6be1a7e0d46d5cef">fnFIE_fpm_pattern_make_image</a> (FHANDLE hsrc, enum <a class="el" href="group__fie__fpm__define.html#g8807205a70816c5eff23ed438033c592">f_fpm_markshape</a> shape, INT hole, INT threshold, FHANDLE *hdst, <a class="el" href="structF__FPM__MARKINFO.html">F_FPM_MARKINFO</a> *fpm_markinfo, INT *score)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">自動マーク認識＆画像生成  <a href="#g7f287859a538f6fe6be1a7e0d46d5cef"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__fpm__tool.html#gff1ed53e94ffe7fdaae5068405ffae04">fnFIE_fpm_get_compressed_feature_edges</a> (FHANDLE hfpm, FHANDLE htarget, BOOL is_pattern, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *edges, INT *edges_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マッチングで使用した圧縮特徴量を取得（勾配方向付きエッジ型）  <a href="#gff1ed53e94ffe7fdaae5068405ffae04"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g4a1c4b1fbe75f49c797159116b802829"></a><!-- doxytag: member="fie_fpm_automask.c::fnFIE_fpm_pattern_automask" ref="g4a1c4b1fbe75f49c797159116b802829" args="(FHANDLE hsrc, enum f_fpm_markshape shape, INT hole, INT offset, INT threshold, INT mask_type, FHANDLE *hmask, F_FPM_MARKINFO *fpm_markinfo, INT *score)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_pattern_automask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g8807205a70816c5eff23ed438033c592">f_fpm_markshape</a>&nbsp;</td>
+          <td class="paramname"> <em>shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>hole</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mask_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>hmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__FPM__MARKINFO.html">F_FPM_MARKINFO</a> *&nbsp;</td>
+          <td class="paramname"> <em>fpm_markinfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>score</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+自動マーク認識＆マスク設定 
+<p>
+プログラム内部で発生させたモデルとなるマークの形状（円，長方形，十字）をテンプレートとし， 対象物となるマークとのマッチングを行い、形状情報を抽出し、その画像上で形状の輪郭だけを残すようなマスク画像を作成します。 さらにその形状情報(中心、円の半径、傾き、頂点座標)を取得することも可能です．<p>
+<div align="center">
+<img src="fpm_automask.png" alt="fpm_automask.png">
+<p><strong>自動マーク認識とマスク設定</strong></p></div>
+<p>
+<dl class="user" compact><dt><b>中抜きについて(パラメータ hole)</b></dt><dd>中抜きパラメータを使用するとマークに穴が開いていることを判断し、マークとして認識します。 ただし、背景エリアと同じ濃度変化をもつ方向の穴のみが検出可能です。 <div align="center">
+<img src="fpm_automaskhole.png" alt="fpm_automaskhole.png">
+<p><strong>中抜き有りor無しマークの定義</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b>オフセットパラメータについて(パラメータ offset)</b></dt><dd>認識したマークに対してマスクをかける場合に、マスクをオフにする領域を決定するパラメータです。 このパラメータを大きくするほど、多くのエッジが残ることになります。 なお、抽出されるマスクの設定に関するパラメータなので、この値を変更しても本関数のスコアやマーク検出性能には関係しません。 <div align="center">
+<img src="fpm_automaskoffset.png" alt="fpm_automaskoffset.png">
+<p><strong>offsetパラメータの効果</strong></p></div>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>対象画像オブジェクト(type:uc8のみ) チャネル数は 1 でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>shape</em>&nbsp;</td><td>マーク形状の指定 <br>
+ F_FPM_SHAPE_AUTO を実行した場合には形状、中抜きの有無の検出を自動で行いますが、全ての形状に対しての検出処理を行うため処理時間は掛かってしまいます。 <ul>
+<li>F_FPM_SHAPE_AUTO 自動判別 </li>
+<li>F_FPM_SHAPE_CIRC 円 </li>
+<li>F_FPM_SHAPE_RECT 長方形 </li>
+<li>F_FPM_SHAPE_CROSS 十字</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hole</em>&nbsp;</td><td>中抜きの有無。shape にF_FPM_SHAPE_AUTOを指定した場合にはこの値は使用せず、中抜きの有無を自動で検出します。 <ul>
+<li>TRUE 中抜きあり </li>
+<li>FALSE 中抜きなし </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>検出したマークの周辺でマスクをキャンセルする(エッジを残す)際の片幅を指定します(1≦offset≦10)<br>
+ 輪郭が綺麗でないマークの場合にはこの値を大きめにします(推奨値：3，単位:画素)。<br>
+ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>スコアしきい値(範囲:10≦threshold≦99)<br>
+ この値を超えたスコアを持つパタンの結果を格納します(推奨値：50)。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mask_type</em>&nbsp;</td><td>作成するマスク画像オブジェクトの画像タイプを指定します。FPMで使用するマスクを生成する場合には 0 の uc8 を指定してください。 <ul>
+<li>0 uc8 の画像生成 </li>
+<li>1 bin の画像生成 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>マスク画像を格納する画像オブジェクトへのポインタ<br>
+ hsrcと同じサイズの画像オブジェクト(uc8 or bin)が生成され、マスクをONの箇所には1, マスクをOFFの箇所には0が入ります。<br>
+ hmask にNULLを指定した場合には結果の格納を行いません。<br>
+ 　*hmask の値は0で初期化しておいてください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fpm_markinfo</em>&nbsp;</td><td>検出したFPMマーク情報を格納する構造体のポインタ<br>
+ fpm_markinfoにNULLを指定した場合には結果の格納を行いません。<br>
+ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>score</em>&nbsp;</td><td>正常終了した場合のマークのスコア(100点満点)<br>
+ NULLを指定した場合には結果の格納を行いません。<br>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可能(対応するマークが見つかりませんでした) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量計測不可 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>指定した画像オブジェクト内に一つのマークが存在するような状況でのみ有効です。２つ以上のマークが存在する場合にはマークごとにエリアを区切り、別々に処理する必要があります。</li><li>hmaskオブジェクトによってマスク情報を取得した場合には、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li><li>本関数でマスクを作成し、サーチ等に使用する際には必ず確認作業を行ってください。<ul>
+<li>マーク情報が正しくできているか(fpm_markinfoの値を確認)。</li><li>画像とマスクを描画し、マーク以外の箇所がマスクできているか。</li><li>マスク設定後のエッジ情報を取得して、マークの輪郭のエッジが残っているか。</li></ul>
+</li><li>中抜きに関しては、検出したマークに穴が開いている状態を示しており、検出したマークの中に背景色のマークが存在する状態になります。よって、コントラスト変化の方向(明&lt;-&gt;暗)が関係します。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7f287859a538f6fe6be1a7e0d46d5cef"></a><!-- doxytag: member="fie_fpm_automask.c::fnFIE_fpm_pattern_make_image" ref="g7f287859a538f6fe6be1a7e0d46d5cef" args="(FHANDLE hsrc, enum f_fpm_markshape shape, INT hole, INT threshold, FHANDLE *hdst, F_FPM_MARKINFO *fpm_markinfo, INT *score)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_pattern_make_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__fpm__define.html#g8807205a70816c5eff23ed438033c592">f_fpm_markshape</a>&nbsp;</td>
+          <td class="paramname"> <em>shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>hole</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__FPM__MARKINFO.html">F_FPM_MARKINFO</a> *&nbsp;</td>
+          <td class="paramname"> <em>fpm_markinfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>score</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+自動マーク認識＆画像生成 
+<p>
+・プログラム内部で発生させたモデルとなるマーク形状（円，長方形，十字）をテンプレートとし， 対象物となるマークとのマッチングを行い，その画像を生成します。 さらにその形状情報(中心、円の半径、傾き、頂点座標)を取得することも可能です．<p>
+<div align="center">
+<img src="fpm_makeimage.png" alt="fpm_makeimage.png">
+<p><strong>自動マーク認識と画像生成</strong></p></div>
+<p>
+<dl class="user" compact><dt><b>中抜きについて(パラメータ hole)</b></dt><dd>中抜きパラメータを使用するとマークに穴が開いていることを判断し、マークとして認識します。 ただし、背景エリアと同じ濃度変化をもつ方向の穴のみが検出可能です。 <div align="center">
+<img src="fpm_automaskhole.png" alt="fpm_automaskhole.png">
+<p><strong>中抜き有りor無しマークの定義</strong></p></div>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>対象画像オブジェクト(type:uc8のみ) チャネル数は 1 でなければいけません。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>shape</em>&nbsp;</td><td>マーク形状の指定 <br>
+ F_FPM_SHAPE_AUTO を実行した場合には形状、中抜きの有無の検出を自動で行いますが、全ての形状に対しての検出処理を行うため処理時間は掛かってしまいます。 <ul>
+<li>F_FPM_SHAPE_AUTO 自動判別 </li>
+<li>F_FPM_SHAPE_CIRC 円 </li>
+<li>F_FPM_SHAPE_RECT 長方形 </li>
+<li>F_FPM_SHAPE_CROSS 十字 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hole</em>&nbsp;</td><td>中抜きの有無。shape にF_FPM_SHAPE_AUTOを指定した場合にはこの値は使用せず、中抜きの有無を自動で検出します。 <ul>
+<li>TRUE 中抜きあり </li>
+<li>FALSE 中抜きなし </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>スコアしきい値(範囲:10≦threshold≦99)<br>
+ この値を超えたスコアを持つパタンの結果を格納します(推奨値：50)。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>パタン画像を格納する画像オブジェクトへのポインタ<br>
+ hsrcと同じサイズの画像オブジェクト(type:uc8)が生成され、認識した背景、パタンそれぞれの平均濃度値を求めて描画します。 hdst にNULLを指定した場合には結果の格納を行いません。<br>
+ 　*hdst の値は0で初期化しておいてください。<br>
+ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fpm_markinfo</em>&nbsp;</td><td>検出したFPMマーク情報を格納する構造体のポインタ<br>
+ fpm_markinfoにNULLを指定した場合には結果の格納を行いません。<br>
+ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>score</em>&nbsp;</td><td>正常終了した場合のマークのスコア(100点満点)<br>
+ NULLを指定した場合には結果の格納を行いません。<br>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不可能(対応するマークが見つかりませんでした) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが入力されました </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量計測不可(識別したマークの平均濃度が一致したため、塗りつぶしによる判断が不可能です。)<br>
+ただしこの場合でもNULL以外を指定した場合には fpm_markinfo にマーク情報が格納されます。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>指定した画像オブジェクト内に一つのマークが存在するような状況でのみ有効です。２つ以上のマークが存在する場合にはマークごとにエリアを区切り、別々に処理する必要があります。</li><li>hdstオブジェクトによってパタン画像情報を取得した場合には、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li><li>本関数で画像を作成し、その後の処理に使用する場合には、必ず確認作業を行ってください。<ul>
+<li>取得した画像に正しくマークが描かれているか。</li><li>マーク情報が正しくできているか(fpm_markinfoの値を確認)。</li></ul>
+</li><li>中抜きに関しては、検出したマークに穴が開いている状態を示しており、検出したマークの中に背景色のマークが存在する状態になります。よって、コントラスト変化の方向(明&lt;-&gt;暗)が関係します。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gff1ed53e94ffe7fdaae5068405ffae04"></a><!-- doxytag: member="fie_fpm_pattern.c::fnFIE_fpm_get_compressed_feature_edges" ref="gff1ed53e94ffe7fdaae5068405ffae04" args="(FHANDLE hfpm, FHANDLE htarget, BOOL is_pattern, F_DEDGE *edges, INT *edges_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_fpm_get_compressed_feature_edges           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hfpm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>htarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>is_pattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edges_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マッチングで使用した圧縮特徴量を取得（勾配方向付きエッジ型） 
+<p>
+FPMの粗い精度でのマッチングの内部処理で生成される圧縮された特徴量を、勾配方向付きエッジデータ型で取得します。<p>
+マスターパタン特徴量から算出された圧縮特徴量を取得する場合はパラメータ <em>is_pattern</em> に TRUE を、 サーチ対象の特徴量から算出された圧縮特徴量を取得する場合は FALSE を設定してください。<p>
+<em>edges</em> には予め必要な領域を確保する必要があります。 必要な領域の最大数は下記の関数で求めることができます。<p>
+<ul>
+<li>マスターパタン特徴量から取得する場合： <a class="el" href="group__fie__fpm__pattern.html#g5ed6da9ac505681cc806a8101a2e5bbe" title="マスターパタン特徴量数の取得">fnFIE_fpm_get_pattern_feature_num()</a></li><li>FPMオブジェクトに格納された特徴量から取得する場合： <a class="el" href="group__fie__fpm__pattern.html#gd31922528cfd499bd34855a90ea40df4" title="サーチ対象画像の特徴量数の取得">fnFIE_fpm_get_matching_feature_num()</a></li><li>特徴量オブジェクト <em>htarget</em> に格納された特徴量から取得する場合： <a class="el" href="group__fie__fpm__feature.html#ge49f2b1dc924e578a6fc2334b78497a3" title="特徴量数の取得">fnFIE_fpm_feature_get_num()</a></li></ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hfpm</em>&nbsp;</td><td>FPMオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>htarget</em>&nbsp;</td><td>圧縮特徴量取得に使用する特徴量情報が格納されたオブジェクト <br>
+ 特徴量オブジェクトが有効です。 NULLが指定された場合にはFPMオブジェクトに格納された(最後にマッチングに使用した)特徴量情報を使用します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>is_pattern</em>&nbsp;</td><td>取得する圧縮特徴量がマスターパタンのものであるかどうか </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>勾配付き圧縮エッジ情報 <br>
+ 予め必要な領域を確保する必要があります。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges_num</em>&nbsp;</td><td>取得した圧縮特徴量数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>引数オブジェクトの種別が異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_FPM_NOFEATURE</em>&nbsp;</td><td>特徴量がありません </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>指定するFPMオブジェクトは、マッチング処理( <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a> or <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a> or <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a> )を実行済みのものを指定する必要があります。</li><li>指定するFPMオブジェクトとターゲットオブジェクトに格納された特徴量は、同じマッチングモードで生成したものでなければなりません。</li><li>強度の出力値は0が入ります。</li><li>圧縮率やマッチングの状況によっては、取得される圧縮特徴量は無圧縮の特徴量と一致する場合があります。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

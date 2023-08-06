@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 3.8.0</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel3_8_0">release 3.8.0 </a></h1><div style="text-align:right">2023/01/13</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel3_8_0.html#fie3_8_0">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie3_8_0">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">FIE関数の追加</h3>
+<p>
+<h3 class="relnote_sub">基本画像操作</h3>
+<p>
+<ul>
+<li>指定座標の濃度値取得（全チャネル一括） / <a class="el" href="group__fie__std__operation.html#gd19c8a0f69f56c641fcd79eb4d123282" title="指定座標の濃度値取得(全チャネル一括)">fnFIE_img_get_dens_channels()</a></li><li>指定座標の濃度値設定（全チャネル一括） / <a class="el" href="group__fie__std__operation.html#gefe15b9ef29eafdccdc121181f0bfce8" title="指定座標の濃度値設定(全チャネル一括)">fnFIE_img_set_dens_channels()</a></li></ul>
+<p>
+<h3 class="relnote_sub">画像ファイルアクセス</h3>
+<p>
+<ul>
+<li>PNGファイルの保存（詳細設定付き） / <a class="el" href="group__fie__file__image.html#g4f78820e0502e03eae4157eadddf11fc" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_png_ex()</a></li></ul>
+<p>
+<h3 class="relnote_sub">画像ファイルアクセス：低レベル関数</h3>
+<p>
+<ul>
+<li>PNGファイルの保存（詳細設定付き） / <a class="el" href="group__fie__file__image__core.html#g447d8f7d45f99d4683dce6d7dfb73f06" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_core_png_ex()</a></li></ul>
+<p>
+<h3 class="relnote">機能追加および、変更</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g785d22136b67f0d76137c48660f64274" title="指定座標の濃度値取得">fnFIE_img_get_dens()</a>, <a class="el" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177" title="指定座標の濃度値設定">fnFIE_img_set_dens()</a><ul>
+<li>画像型 F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g0985fa53a4dac8efb83c69c56bbe3e2b" title="指定座標の濃度値取得(補間付き)">fnFIE_img_get_subdens()</a><ul>
+<li>画像型 F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine()</a><ul>
+<li>画像型 F_IMG_S16, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g1d8298598a6efc9e67df891c6470e6dd" title="画像比較">fnFIE_img_compare()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a>, <a class="el" href="group__fie__geometric__transform.html#g56bb51a6e92d9f38a930561182d08d38" title="画像ミラー反転">fnFIE_img_mirror()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g86937144344ab431cb1411b6773de24c" title="B.Jaehne のテスト画像を生成する">fnFIE_jaehne_testimg()</a><ul>
+<li>画像型 F_IMG_BIN, F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__std__operation.html#g4d9b74c0ff763577a4fee361e8075be4" title="チェスボード画像を作成する。">fnFIE_chessboard_image()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp()</a>, <a class="el" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp()</a><ul>
+<li>画像型 F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__file__image.html#g8be4f3da74066582498a00b10db65e32" title="RAW画像読込">fnFIE_load_raw()</a>, <a class="el" href="group__fie__file__image.html#g2202b8d6370d73a83bc4eb9066bd486e" title="画像をRAW形式で保存">fnFIE_save_raw()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter__arithm.html#g78e77e4d0d90370d73ed95e48c1b1577" title="画像と定数の加算">fnFIE_img_add_const()</a>, <a class="el" href="group__fie__filter__arithm.html#g9ecbc49d4897dce5b48927090b1764e6" title="画像と定数の乗算">fnFIE_img_mul_const()</a>, <a class="el" href="group__fie__filter__arithm.html#g7d062d573ea99aee9a10dbe195aed551" title="画像と定数の除算">fnFIE_img_div_const1()</a><ul>
+<li>画像型 F_IMG_BIN, F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter__arithm.html#ga85ba6117e5d53d7d19b5869aecc339e" title="画像と定数の減算">fnFIE_img_sub_const1()</a>, <a class="el" href="group__fie__filter__arithm.html#g69809fe18d43941f7373f360618e2701" title="定数と画像の減算">fnFIE_img_sub_const2()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g1b91825599c366d70463a6aa86134808" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  uniform...">fnFIE_add_noise_uniform()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_FLOAT に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g75f5ca260db119df17d07380ee77d787" title="average filter">fnFIE_average()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_I64, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g946bc69fe30c2c51d730bf1a2ddcc86c" title="平均化フィルタ(M×N)">fnFIE_averageMxN()</a><ul>
+<li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__threshold.html#g01410167407adb0cb7bb4f11d264fb46" title="Watershed法による領域分割">fnFIE_watershed()</a><ul>
+<li>画像型 F_IMG_S16, F_IMG_US16, F_IMG_FLOAT, F_IMG_DOUBLE, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g0e4f1d9feeb74d47480965a164c59679" title="最小値フィルタ (MxN)">fnFIE_minMxN()</a>, <a class="el" href="group__fie__filter.html#gaf7a8a3b9925524667a0d22b12181fb9" title="最大値フィルタ (MxN)">fnFIE_maxMxN()</a><ul>
+<li>処理を高速化.</li><li>画像型 F_IMG_I32, F_IMG_UI32, F_IMG_FLOAT, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE に新規対応.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac" title="局所平均値と標準偏差を用いてSauvola法による画像２値化">fnFIE_sauvola_threshold()</a>, <a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold()</a><ul>
+<li>特定環境で処理を高速化. 演算誤差の影響を低減.</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g619e1dfb25b7e82af69da263bfb6ed8f" title="median filter with variable filtering window">fnFIE_medianMxN()</a><ul>
+<li>フィルタサイズが1×1の場合でも正常動作するように変更.</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>#753 <a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b" title="FPM オブジェクト生成">fnFIE_fpm_alloc()</a>, <a class="el" href="group__fie__fpm__feature.html#gf250806b575ee18e06aacc4c55fbd8fa" title="特徴量を取得">fnFIE_fpm_feature_alloc()</a>, <a class="el" href="group__fie__fpm__feature.html#gc0ddd8ec72900d3124a18a60250e2753" title="ウィンドウを指定して特徴量を取得">fnFIE_fpm_feature_window_alloc()</a><ul>
+<li>特定のパラメータにNULLを入力するとNULLポインタデリファレンスが起きる問題を修正.</li></ul>
+</li><li>#754 <a class="el" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add()</a><ul>
+<li>入力画像1の画像型を F_IMG_UC8、入力画像2の画像型を F_IMG_S16、出力画像の画像型を F_IMG_US16 にすると計算結果が不正になる問題を修正.</li></ul>
+</li><li>#757 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a><ul>
+<li>バージョン28（129x129セル）以上のQRコードを読み取ろうとすると読み取り失敗しメモリ不足エラーが発生する問題を修正.</li></ul>
+</li><li>#760 <a class="el" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_save_tiff()</a>, <a class="el" href="group__fie__file__image__core.html#g1423806dec62bbaf2ac7054088575231" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_save_core_tiff()</a><ul>
+<li>圧縮レベル (quality) のパラメータが反映されない問題を修正.</li></ul>
+</li><li>#761 <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a>, <a class="el" href="group__fie__file__image__core.html#g7a625e4849f0d2f1866f2f8200018864" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_core_tiff()</a>, <a class="el" href="group__fie__file__image__core.html#ge15f3ab9599a50c73081bc12f56f4216" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_check_tiff_info()</a><ul>
+<li>圧縮形式を F_TIFF_COMPRESSION_JPEG と設定した <a class="el" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイルの...">fnFIE_save_tiff()</a> により保存したカラー画像の読み込みに失敗する問題を修正.</li></ul>
+</li><li>FVALG OSS モジュールが依存するサードパーティ製オープンソースソフトウェア (OSS) の一部をより新しいバージョンに更新. これによりいくつかの脆弱性が修正された.</li></ul>
+<p>
+<h3 class="relnote">ドキュメント修正</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイルの...">fnFIE_save_png()</a><ul>
+<li>カラータイプの誤りを修正し、圧縮レベルの説明を改善.</li></ul>
+</li><li>#758 <a class="el" href="group__fie__math__matrix__lalgebra.html#gb4aa11e4e31d57c4b6303493c1dfac7c" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  連立一次方程...">fnFIE_mat_linsolve()</a>, <a class="el" href="group__fie__math__matrix__lalgebra.html#g2c20fa54f8476309162d38857fa83f5e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  連立一次方程...">fnFIE_mat_linsolve2()</a><ul>
+<li>ゼロ判定閾値のパラメータの入出力属性の誤りを修正. </li></ul>
+</li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

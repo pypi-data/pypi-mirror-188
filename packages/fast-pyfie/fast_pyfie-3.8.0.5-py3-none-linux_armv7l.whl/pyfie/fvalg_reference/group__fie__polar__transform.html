@@ -1,0 +1,2120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 極座標変換</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>極座標変換<br>
+<small>
+[<a class="el" href="group__fie__std__operation__base.html">基本画像操作</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<h2><a class="anchor" name="fie_polar_transform_coordinate_system">
+極座標</a></h2>
+本ライブラリでの極座標とは、２次元ユークリッド空間での極座標であり、 円座標（Circular Polar Coordinate）です。 Fig1に座標系を示します。<p>
+<div align="center">
+<img src="polar_cordinate_system.png" alt="polar_cordinate_system.png">
+<p><strong>Fig1. 極座標系</strong></p></div>
+ ここで、変換式は以下の通りとなります。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{c} x \\ y \\ \end{array} \right) = \left( \begin{array}{c} r\cos \theta \\ r\sin \theta \\ \end{array} \right) \\ \]" src="form_826.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \left( \begin{array}{c} r \\ \theta \\ \end{array} \right) = \left( \begin{array}{c} \sqrt{x^2+y^2} \vspace{.5em} \\ \tan^{-1}\left(\dfrac{y}{x}\right) \vspace{.5em} \\ \end{array} \right) \\ \]" src="form_827.png">
+<p>
+<h2><a class="anchor" name="fie_polar_transform_polar_inv">
+極座標変換と逆変換</a></h2>
+本ライブラリではFig2に示す左図から右図への変換を極座標変換と定義します。 右図から左図への変換は逆変換となります。<p>
+<div align="center">
+<img src="polar_transform.png" alt="polar_transform.png">
+<p><strong>Fig2. 極座標変換と逆変換</strong></p></div>
+ <h2><a class="anchor" name="fie_polar_transform_coord_mode">
+変換式と回転軸</a></h2>
+本節では、各関数で共通となるパラメータの詳細を記述します。 パラメータの意味はすべての関数で共通です。 ただし、本節で記述するパラメータがすべての関数に存在する訳ではありません。 関数によっては必要のないパラメータもあります。<p>
+Fig3に回転軸位置の設定について示します。 それぞれ塗りつぶされている部分が、対象領域です。 回転軸位置は <em>coord_mode</em> パラメータとして与えられます。 <em>coord_mode</em> により、左側の座標での回転軸位置を設定します。 回転軸位置は４つのパターンから指定します。 F_PT_LEFT は左辺、 F_PT_RIGHT は右辺、 F_PT_UPPER は上辺， そして F_PT_LOWER は下辺が回転軸となります。 指定されるパターンにより左側と右側の座標では対応する <img class="formulaInl" alt="$r\theta$" src="form_828.png"> 座標と xy 座標が異なります。 左側の座標で F_PT_LEFT と F_PT_RIGHT が指定されていれば、 r が x 軸， <img class="formulaInl" alt="$\theta$" src="form_621.png"> が y 軸、 F_PT_UPPER と F_PT_LOWER が指定されていれば、 r が y 軸、 <img class="formulaInl" alt="$\theta$" src="form_621.png"> が x 軸とそれぞれ対応しています。 そのため、回転中心座標 <img class="formulaInl" alt="$M_{0}$" src="form_829.png"> とw、hの位置関係や、座標変換式の符号等が異なります。<p>
+Fig3において、 <img class="formulaInl" alt="$M_{0}\left(m_{0},n_{0}\right)$" src="form_830.png"> と <img class="formulaInl" alt="$P_{0}\left(p_{0},q_{0}\right)$" src="form_831.png"> がそれぞれの回転中心座標であり、対応関係となります。 以後，本節では <em>coord_mode</em> が F_PT_LEFT を指定した場合を用いて説明をします。 以下に、 <img class="formulaInl" alt="$M\left(m,n\right)$" src="form_832.png"> から <img class="formulaInl" alt="$P\left(p,q\right)$" src="form_833.png"> への変換式と、その逆変換式を示します。 なお、簡単のため <img class="formulaInl" alt="$\theta$" src="form_621.png"> の処理開始角度は0、処理範囲は <img class="formulaInl" alt="$2\pi$" src="form_183.png"> とします。 ここで、 <img class="formulaInl" alt="$P_{0}\left(p_{0},q_{0}\right)$" src="form_831.png"> を原点とした <img class="formulaInl" alt="$P\left(p,q\right)$" src="form_833.png"> での r を r' 、 <img class="formulaInl" alt="$\theta$" src="form_621.png"> を <img class="formulaInl" alt="$\theta\acute{}$" src="form_834.png"> とすると、<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ r\acute{} = \sqrt{\left(p-p_{0}\right)^2+\left(q-q_{0}\right)^2} \]" src="form_835.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \theta\acute{} = \tan^{-1} \frac{q-q_{0}}{p-p_{0}} \]" src="form_836.png">
+<p>
+<p>
+となります。r と w の対応関係より、以下の式が導かれます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ r\ :\ \textgt{w} = r\acute{}\ :\ \left(m-m_{0}\right) \]" src="form_837.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ m = \frac{\textgt{w}}{r}\ r\acute{}+m_{0} \]" src="form_838.png">
+<p>
+<p>
+続いて、右側の座標での円弧長を L とします。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ L = r\theta\acute{} \]" src="form_839.png">
+<p>
+<p>
+<img class="formulaInl" alt="$\theta$" src="form_621.png"> とhの対応関係より、以下の式が導かれます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ 2\pi r\ :\ \textgt{h} = L\ :\ \left(n-n_{0}\right) \]" src="form_840.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ n = \frac{\textgt{h}}{2\pi}\ \theta\acute{}+n_{0} \]" src="form_841.png">
+<p>
+<p>
+以上より、 <img class="formulaInl" alt="$P\left(p,q\right)$" src="form_833.png"> から <img class="formulaInl" alt="$M\left(m,n\right)$" src="form_832.png"> への変換式が求められました。<p>
+<img class="formulaInl" alt="$M\left(m,n\right)$" src="form_832.png"> から <img class="formulaInl" alt="$P\left(p,q\right)$" src="form_833.png"> への変換式は、 まず、 r' と <img class="formulaInl" alt="$\theta\acute{}$" src="form_834.png"> を求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ r\acute{} = \frac{r}{\textgt{w}}m-\frac{rm_{0}}{\textgt{w}} \]" src="form_842.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \theta\acute{} = \frac{2\pi}{\textgt{h}}n-\frac{2\pi n_{0}}{\textgt{h}} \]" src="form_843.png">
+<p>
+<p>
+続いて、 p と q を求めます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ p = r\acute{}\cos \theta\acute{} \]" src="form_844.png">
+<p>
+<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ q = r\acute{}\sin \theta\acute{} \]" src="form_845.png">
+<p>
+<p>
+<div align="center">
+<img src="polar_coord_mode.png" alt="polar_coord_mode.png">
+<p><strong>Fig3. 回転軸位置の設定</strong></p></div>
+ また、Fig3の左図で示されているように、指定された <em>coord_mode</em> により、 x 、 y 軸と r 、 <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸の対応関係と軸方向が異なります。 そのため、処理対象領域を設定されるための基準は以下の通りとなります。 以下に示す各変数は、Fig3に従います。<p>
+F_PT_UPPER <ul>
+<li><img class="formulaInl" alt="$\min\left(x\right) = m_{0} - \textrm{w}$" src="form_846.png"> </li>
+<li><img class="formulaInl" alt="$\min\left(y\right) = n_{0}$" src="form_847.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(x\right) = m_{0}$" src="form_848.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(y\right) = n_{0} + \textrm{h}$" src="form_849.png"></li>
+</ul>
+F_PT_LOWER <ul>
+<li><img class="formulaInl" alt="$\min\left(x\right) = m_{0}$" src="form_850.png"> </li>
+<li><img class="formulaInl" alt="$\min\left(y\right) = n_{0} - \textrm{h}$" src="form_851.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(x\right) = m_{0} + \textrm{w}$" src="form_852.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(y\right) = n_{0}$" src="form_853.png"></li>
+</ul>
+F_PT_LEFT <ul>
+<li><img class="formulaInl" alt="$\min\left(x\right) = m_{0}$" src="form_850.png"> </li>
+<li><img class="formulaInl" alt="$\min\left(y\right) = n_{0}$" src="form_847.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(x\right) = m_{0} + \textrm{w}$" src="form_852.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(y\right) = n_{0} + \textrm{h}$" src="form_849.png"></li>
+</ul>
+F_PT_RIGHT <ul>
+<li><img class="formulaInl" alt="$\max\left(x\right) = m_{0} - \textrm{w}$" src="form_854.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(y\right) = n_{0} - \textrm{h}$" src="form_855.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(x\right) = m_{0}$" src="form_848.png"> </li>
+<li><img class="formulaInl" alt="$\max\left(y\right) = n_{0}$" src="form_853.png"></li>
+</ul>
+<h2><a class="anchor" name="fie_polar_transform_param">
+パラメータの対応関係</a></h2>
+Fig4に、パラメータの対応関係を示します。 本図では、左が入力側、右が出力側とします。 <em>coord_mode</em> は F_PT_LEFT を指定しているものとします。 <em>origin_in</em> が <em>origin_out</em> に変換されます。 逆変換も同様です。<p>
+Fig.4の塗りつぶされている領域は、処理対象となる領域です。 本領域は、ユーザーが任意に指定するパラメータによって決定されます。 ここでのパラメータとは、 <em>origin_in</em> 、 <em>width</em> 、 <em>height</em> 、 <em>origin_out</em> 、 <em>radius</em> 、 <em>start_angle</em> 、 そして <em>range_angle</em> です。 入力画像、出力画像のサイズには依存しません。 画像領域は、処理対象領域と別に考えなければなりません。 入力側、出力側共に、処理対象領域と画像領域が重なり合う領域が必要です。 どちらか一方でも、重なり合う領域がない場合には、処理がなされません。<p>
+<div align="center">
+<img src="polar_transform_param.png" alt="polar_transform_param.png">
+<p><strong>Fig4. パラメータとの対応関係</strong></p></div>
+ <h2><a class="anchor" name="fie_polar_transform_interpolation_method">
+濃度補間方法</a></h2>
+濃度補間法は以下の３つから指定することができます。<p>
+<ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+使用可能な濃度補間法は、画素タイプにより異なります。 以下の表を参照してください。 各濃度補間方法の詳細については、<a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。<p>
+<center> <table class="pretable">
+<tr>
+<th>&nbsp;</th><th>F_IMG_BIN</th><th>F_IMG_UC8</th><th>F_IMG_US16</th><th>F_IMG_DOUBLE </th></tr>
+<tr>
+<th>F_SAMPLING_NN</th><td><center>○</center></td><td><center>○</center></td><td><center>○</center></td><td><center>○</center> </td></tr>
+<tr>
+<th>F_SAMPLING_BILINEAR</th><td><center>×</center></td><td><center>○</center></td><td><center>○</center></td><td><center>○</center> </td></tr>
+<tr>
+<th>F_SAMPLING_CUBIC</th><td><center>×</center></td><td><center>○</center></td><td><center>○</center></td><td><center>○</center> </td></tr>
+</table>
+</center> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3">F_PT_UPPER</a> =  1, 
+<a class="el" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80">F_PT_LOWER</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c">F_PT_LEFT</a> =  3, 
+<a class="el" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930">F_PT_RIGHT</a> =  4
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">回転軸の位置を指定  <a href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#g4241880e49122cc5625b7f4a2ef23173">fnFIE_polar_trans_img</a> (const FHANDLE hsrc, FHANDLE hdst, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_in, DOUBLE width, DOUBLE height, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_out, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> coord_mode, INT back_clear, enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a> sampling_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間の極座標変換  <a href="#g4241880e49122cc5625b7f4a2ef23173"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#g9a9979c0121b0eaade31f9eb5acc514f">fnFIE_polar_trans_img_inv</a> (const FHANDLE hsrc, FHANDLE hdst, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_in, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_out, DOUBLE width, DOUBLE height, enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> coord_mode, INT back_clear, enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a> sampling_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間の逆極座標変換  <a href="#g9a9979c0121b0eaade31f9eb5acc514f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#g9bea4dd8c0b2557ef427c830607dcaed">fnFIE_polar_trans_map</a> (FHANDLE hmap, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_in, DOUBLE width, DOUBLE height, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_out, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> coord_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">極座標変換マップの作成  <a href="#g9bea4dd8c0b2557ef427c830607dcaed"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#g9b9a0c96c1f7e4f31962ab3e505394e7">fnFIE_polar_trans_map_inv</a> (FHANDLE hmap, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_in, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_out, DOUBLE width, DOUBLE height, enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> coord_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">逆極座標変換マップの作成  <a href="#g9b9a0c96c1f7e4f31962ab3e505394e7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#g306f54bf28f17bb75b86b58911000c76">fnFIE_polar_trans_pnt</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *psrc, <a class="el" href="structDPNT__T.html">DPNT_T</a> *pdst, INT num_pnt, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_in, DOUBLE width, DOUBLE height, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_out, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> coord_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群間の極座標変換  <a href="#g306f54bf28f17bb75b86b58911000c76"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__polar__transform.html#gd50b5b435a062f7b444752c45f138866">fnFIE_polar_trans_pnt_inv</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *psrc, <a class="el" href="structDPNT__T.html">DPNT_T</a> *pdst, INT num_pnt, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_in, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, <a class="el" href="structDPNT__T.html">DPNT_T</a> origin_out, DOUBLE width, DOUBLE height, enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a> coord_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">点群間の逆極座標変換  <a href="#gd50b5b435a062f7b444752c45f138866"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g8af95457e42d693eb80e7bc1e5647901"></a><!-- doxytag: member="fie.h::f_coord_mode" ref="g8af95457e42d693eb80e7bc1e5647901" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+回転軸の位置を指定 
+<p>
+回転軸位置を指定します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3"></a><!-- doxytag: member="F_PT_UPPER" ref="gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" args="" -->F_PT_UPPER</em>&nbsp;</td><td>
+上辺が回転軸 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80"></a><!-- doxytag: member="F_PT_LOWER" ref="gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" args="" -->F_PT_LOWER</em>&nbsp;</td><td>
+下辺が回転軸 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c"></a><!-- doxytag: member="F_PT_LEFT" ref="gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" args="" -->F_PT_LEFT</em>&nbsp;</td><td>
+左辺が回転軸 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930"></a><!-- doxytag: member="F_PT_RIGHT" ref="gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" args="" -->F_PT_RIGHT</em>&nbsp;</td><td>
+右辺が回転軸 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g4241880e49122cc5625b7f4a2ef23173"></a><!-- doxytag: member="fie_polar_transform.c::fnFIE_polar_trans_img" ref="g4241880e49122cc5625b7f4a2ef23173" args="(const FHANDLE hsrc, FHANDLE hdst, DPNT_T origin_in, DOUBLE width, DOUBLE height, DPNT_T origin_out, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, enum f_coord_mode coord_mode, INT back_clear, enum f_sampling_mode sampling_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_polar_trans_img           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>coord_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>back_clear</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sampling_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間の極座標変換 
+<p>
+画像間の極座標変換をします。<p>
+全般 <ul>
+<li>入力画像と出力画像は画素タイプとチャネル数が同じである必要があります。 </li>
+<li>チャネルは、マルチチャネル対応となります。 </li>
+<li>本関数内で、出力画像のメモリ確保は行いません。 ユーザーが必要なメモリを確保した画像オブジェクトを用意する必要があります。</li>
+</ul>
+<em>origin_in</em> <ul>
+<li><em>coord_mode</em> で指定されたパラメータに基づいて、 入力画像での処理対象領域（四角形）の基準座標を指定します。 </li>
+<li>指定する座標は、入力画像外でも構いません。</li>
+</ul>
+<em>width</em> <ul>
+<li><em>origin_in</em> で指定された座標からの処理対象領域の幅を指定します。 </li>
+<li><em>width</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>width</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 y = ( <em>origin_in.y</em> + <em>height</em> ) 軸上での <em>width</em> は、 出力画像での扇形の円弧の長さと対応します。円弧の長さは、 <em>width</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>width</em> が r 軸と対応している場合、 r の長さは、 <em>width</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>height</em> <ul>
+<li><em>origin_in</em> で指定された座標からの処理対象領域の高さを指定します。 </li>
+<li><em>height</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>height</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 x = ( <em>origin_in.x</em> + <em>width</em> ) 軸上での <em>height</em> は、 出力画像での円弧の長さと対応します。円弧の長さは、 <em>height</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>height</em> が r 軸と対応している場合、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>origin_out</em> <ul>
+<li>出力画像の左上を基準とした回転中心座標を指定します。 </li>
+<li>指定する座標は、出力画像外でも構いません。</li>
+</ul>
+<em>radius</em> <ul>
+<li>出力画像での扇形の半径を指定します。 </li>
+<li><em>radius</em> ≧ 0 の範囲で指定します。</li>
+</ul>
+<em>start_angle</em> <ul>
+<li>出力画像での回転開始角度をラジアン単位で指定します。 </li>
+<li>0 ≦ <em>start_angle</em> ＜ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定します。</li>
+</ul>
+<em>range_angle</em> <ul>
+<li>回転開始角度 <em>start_angle</em> からの処理範囲をラジアン単位で指定します。範囲の大きさに指定はありませんが、以下のように処理されます。<ol type=1>
+<li><em>range_angle</em> が正ならば時計回り、負ならば反時計回りとして処理をします。</li><li><em>range_angle</em> ＞ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定した場合、<img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えた分は出力されません。 <em>range_angle</em> ＜ <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> の場合も同様に、<img class="formulaInl" alt="$-2\pi$" src="form_856.png"> を下回った分は出力されません。</li></ol>
+</li>
+</ul>
+<em>coord_mode</em> <ul>
+<li>
+入力側の回転軸の位置を指定します。 <ul>
+<li>
+F_PT_UPPER 上辺が回転軸 </li>
+<li>
+F_PT_LOWER 下辺が回転軸 </li>
+<li>
+F_PT_LEFT 左辺が回転軸 </li>
+<li>
+F_PT_RIGHT 右辺が回転軸 </li>
+</ul>
+</li>
+</ul>
+<p>
+<em>back_clear</em> <ul>
+<li>
+結果画像中の領域外になる画素(入力座標系での座標が処理対象画像の外側になる画素) の処理方法の指定です。 <ul>
+<li>
+TRUE ０クリア </li>
+<li>
+FALSE 処理なし </li>
+</ul>
+</li>
+</ul>
+<p>
+<em>sampling_mode</em> <ul>
+<li>
+濃度補間方法の指定します。以下の３種類から選択できます。 <ul>
+<li>
+F_SAMPLING_NN 最近傍法 </li>
+<li>
+F_SAMPLING_BILINEAR 共一次線形補間法 </li>
+<li>
+F_SAMPLING_CUBIC 三次畳み込み法 </li>
+</ul>
+</li>
+<li>
+処理対象画像の型が ２値(F_IMG_BIN) の場合は、F_SAMPLING_NN のみ使用可能です。 </li>
+</ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type : bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type : bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_in</em>&nbsp;</td><td>入力側での処理対象領域の開始座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>入力側での処理対象領域の幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>入力側での処理対象領域の高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_out</em>&nbsp;</td><td>出力側での円板の回転中心 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>出力側での円板の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>出力側での処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>出力側での角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coord_mode</em>&nbsp;</td><td>入力側での回転中心位置 <ul>
+<li>F_PT_UPPER 処理対象領域の右上座標 </li>
+<li>F_PT_LOWER 処理対象領域の左下座標 </li>
+<li>F_PT_LEFT 処理対象領域の左上座標 </li>
+<li>F_PT_RIGHT 処理対象領域の右下座標 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>back_clear</em>&nbsp;</td><td>出力画像の背景処理方法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sampling_mode</em>&nbsp;</td><td>濃度補間法 <ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間法により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足（F_SAMPLING_CUBICを指定した場合のみ） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>極座標変換ライブラリの使用例</b></dt><dd>Fig1に、 <em>coord_mode</em> の指定例を示します。 本例は、左図から右図への変換です。 <ul>
+<li>左図のオレンジの線で囲まれている領域が、 <em>coord_mode</em> 毎の処理対象領域です。 </li>
+<li>左図の緑色のｘ印は、基準座標の位置です。 <em>coord_mode</em> 毎に指定する位置が異なります。 </li>
+<li>右図の赤線が <em>start_angle</em> で指定された角度です。本図では、 0.0 が指定されています。 </li>
+<li><em>range_angle</em> は、 <img class="formulaInl" alt="$2\pi$" src="form_183.png"> が指定されています。</li>
+</ul>
+<div align="center">
+<img src="polar_transform_ref.png" alt="polar_transform_ref.png">
+<p><strong>Fig1. <em>cood_mode</em> の指定例</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><em>start_angle</em> 、 <em>range_angle</em> 、 <em>width</em> 、 <em>height</em> の各パラメータの設定例を示します。 本図では、例として「FIE Polar Transform Library」の文字列を極座標変換を施しています。 <em>coord_mode</em> は <em>F_PT_LEFT</em> 、<em>sampling_mode</em> は <em>F_SAMPLING_NN</em> を指定しているものとします。 <ul>
+<li>入力画像は、幅400、高さ800、<em>origin_in.x</em> = 0、<em>origin_in.y</em> = 0とします。 </li>
+<li>(1)は、基準となる例です。 この際の、 <em>width</em> と <em>height</em> 、 つまり、入力側の処理対象領域は共に400、800とします。 </li>
+<li>(2)は、 <em>range_angle</em> を(1)の半分で指定した例です。 文字列はすべて含まれていますが、出力領域が半分の角度範囲となります。 </li>
+<li>(3)は、(2)の条件に対して、さらに <em>height</em> を半分で指定した例です。 (1)の結果を半分にした結果なります。 </li>
+<li>(4)は、 <em>height</em> を(1)の半分で指定した例です。文字列が半分しか含まれていません。 </li>
+<li>(5)は、 <em>range_angle</em> を(1)に対して負に指定した例です。文字列が反転しています。 </li>
+<li>(6)は、(5)の条件に対して、 <em>range_angle</em> を半分で指定した例です。 文字列が反転している以外に、(2)と比較して出力領域の位置が反転しています。 </li>
+<li>(7)は、 <em>start_angle</em> に、 <img class="formulaInl" alt="$1.5\pi$" src="form_857.png"> を指定しています。 それ以外は(1)の条件と同じです。文字列の開始位置がずれています。 </li>
+<li>(8)は、 <em>width</em> を(1)の0.8倍で指定した例です。文字列が外側にずれています。 また、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定されるため、 文字の r 方向のサイズも大きくなります。 内側にずらす場合には、 1.0より大きい値を掛けます。文字の r 方向のサイズも小さくなります。 サイズを変更せずに移動させたい場合は、 <em>origin_in</em> を変更してください。 </li>
+<li>(9)は、<em>range_angle</em> に <img class="formulaInl" alt="$3\pi$" src="form_858.png"> を指定しています。<img class="formulaInl" alt="$3\pi$" src="form_858.png">まで出力するという意味になりますが、 表示ができるのが<img class="formulaInl" alt="$2\pi$" src="form_183.png">までなので、<em>height</em> の2/3が出力されています。 </li>
+<li>(10)は、<em>range_angle</em> に <img class="formulaInl" alt="$-3\pi$" src="form_859.png"> を指定しています。(9)を反転した画像が出力されます。</li>
+</ul>
+<table class="layoutTable">
+<tr>
+<td><b>入力画像</b>  </td><td></td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_src.png" alt="polar_src.png">
+</div>
+  </td><td></td></tr>
+<tr>
+<td>&nbsp; </td><td></td></tr>
+<tr>
+<td><b></b>(1)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$2\pi$" src="form_183.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800  </td><td><b></b>(2)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$\pi$" src="form_74.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800   </td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_s0_r2_w400_h800.png" alt="polar_s0_r2_w400_h800.png">
+</div>
+  </td><td><div align="center">
+<img src="polar_s0_r1_w400_h800.png" alt="polar_s0_r1_w400_h800.png">
+</div>
+   </td></tr>
+<tr>
+<td>&nbsp; </td><td></td></tr>
+<tr>
+<td><b></b>(3)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$\pi$" src="form_74.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 400  </td><td><b></b>(4)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$2\pi$" src="form_183.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 400   </td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_s0_r1_w400_h400.png" alt="polar_s0_r1_w400_h400.png">
+</div>
+  </td><td><div align="center">
+<img src="polar_s0_r2_w400_h400.png" alt="polar_s0_r2_w400_h400.png">
+</div>
+   </td></tr>
+<tr>
+<td>&nbsp; </td><td></td></tr>
+<tr>
+<td><b></b>(5)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> , <br>
+ <em>width</em> = 400 , <em>height</em> = 800  </td><td><b></b>(6)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$-\pi$" src="form_73.png"> , <br>
+ <em>width</em> = 400 , <em>height</em> = 800   </td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_s0_r-2_w400_h800.png" alt="polar_s0_r-2_w400_h800.png">
+</div>
+  </td><td><div align="center">
+<img src="polar_s0_r-1_w400_h800.png" alt="polar_s0_r-1_w400_h800.png">
+</div>
+   </td></tr>
+<tr>
+<td>&nbsp; </td><td></td></tr>
+<tr>
+<td><b></b>(7)<em>start_angle</em> = <img class="formulaInl" alt="$1.5\pi$" src="form_857.png"> , <em>range_angle</em> = <img class="formulaInl" alt="$2\pi$" src="form_183.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800  </td><td><b></b>(8)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$2\pi$" src="form_183.png"> ,<br>
+ <em>width</em> = 320 , <em>height</em> = 800   </td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_s1.5_r2_w400_h800.png" alt="polar_s1.5_r2_w400_h800.png">
+</div>
+  </td><td><div align="center">
+<img src="polar_s0_r2_w320_h800.png" alt="polar_s0_r2_w320_h800.png">
+</div>
+   </td></tr>
+<tr>
+<td>&nbsp; </td><td></td></tr>
+<tr>
+<td><b></b>(9)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$3\pi$" src="form_858.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800  </td><td><b></b>(10)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$-3\pi$" src="form_859.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800   </td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_s0_r3_w400_h800.png" alt="polar_s0_r3_w400_h800.png">
+</div>
+  </td><td><div align="center">
+<img src="polar_s0_r-3_w400_h800.png" alt="polar_s0_r-3_w400_h800.png">
+</div>
+   </td></tr>
+</table>
+</dd></dl>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 左図から右図への変換</span>
+VOID polar_transform_img()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  origin_in, origin_out;
+    DOUBLE  width, height, radius, start_angle, range_angle;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// width = 256.0, height = 256.0</span>
+    <a class="code" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイル読...">fnFIE_load_tiff</a>( <span class="stringliteral">"fie_poloar_transform.tif"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 出力画像のメモリ確保</span>
+    <span class="comment">// チャネル数は同じ必要がある</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 128, 128 );
+
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64.0;
+
+    radius = 64.0;
+
+    start_angle = 0.0;
+    range_angle = 2.0 * PI;
+
+    <span class="comment">// F_PT_UPPER</span>
+    <span class="comment">// 入力側の対象領域の右上の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 178.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 6.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <span class="comment">// 背景は０クリア</span>
+    <span class="comment">// 濃度補間法は最近傍法</span>
+    <a class="code" href="group__fie__polar__transform.html#g4241880e49122cc5625b7f4a2ef23173" title="画像間の極座標変換">fnFIE_polar_trans_img</a>( hsrc, hdst, origin_in, width, height, 
+                           origin_out, radius, start_angle, range_angle,
+                           <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" title="上辺が回転軸">F_PT_UPPER</a>, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e14f07e347ff74354ebf9cfcf72f51306" title="最近傍法">F_SAMPLING_NN</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_upper.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LOWER</span>
+    <span class="comment">// 入力側の対象領域の左下の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 78.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 250.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <span class="comment">// 背景は０クリア</span>
+    <span class="comment">// 濃度補間法は共一次線形補間法</span>
+    <a class="code" href="group__fie__polar__transform.html#g4241880e49122cc5625b7f4a2ef23173" title="画像間の極座標変換">fnFIE_polar_trans_img</a>( hsrc, hdst, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle,
+                           <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" title="下辺が回転軸">F_PT_LOWER</a>, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8ef37e277b29f4302b27d157d83fa19643" title="共一次線形補間法">F_SAMPLING_BILINEAR</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_lower.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LEFT</span>
+    <span class="comment">// 入力側の対象領域の左上の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 6.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 78.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <span class="comment">// 背景は０クリア</span>
+    <span class="comment">// 濃度補間法は三次畳み込み法</span>
+    <a class="code" href="group__fie__polar__transform.html#g4241880e49122cc5625b7f4a2ef23173" title="画像間の極座標変換">fnFIE_polar_trans_img</a>( hsrc, hdst, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle,
+                           <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" title="左辺が回転軸">F_PT_LEFT</a>, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_left.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_RIGHT</span>
+    <span class="comment">// 入力側の対象領域の右下の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 178.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <span class="comment">// 背景は０クリア</span>
+    <span class="comment">// 濃度補間法は三次畳み込み法</span>
+    <a class="code" href="group__fie__polar__transform.html#g4241880e49122cc5625b7f4a2ef23173" title="画像間の極座標変換">fnFIE_polar_trans_img</a>( hsrc, hdst, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle,
+                           <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" title="右辺が回転軸">F_PT_RIGHT</a>, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_right.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    polar_transform_img();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> 
+</div>
+</div><p>
+<a class="anchor" name="g9a9979c0121b0eaade31f9eb5acc514f"></a><!-- doxytag: member="fie_polar_transform.c::fnFIE_polar_trans_img_inv" ref="g9a9979c0121b0eaade31f9eb5acc514f" args="(const FHANDLE hsrc, FHANDLE hdst, DPNT_T origin_in, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, DPNT_T origin_out, DOUBLE width, DOUBLE height, enum f_coord_mode coord_mode, INT back_clear, enum f_sampling_mode sampling_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_polar_trans_img_inv           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>coord_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>back_clear</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sampling_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間の逆極座標変換 
+<p>
+画像間の逆極座標変換をします。<p>
+<em>全般</em> <ul>
+<li>入力画像と出力画像は画素タイプとチャネル数が同じである必要があります。 </li>
+<li>チャネルは、マルチチャネル対応となります。 </li>
+<li>本関数内で、出力画像のメモリ確保は行いません。 ユーザーが必要なメモリを確保した画像オブジェクトを用意する必要があります。</li>
+</ul>
+<em>origin_in</em> <ul>
+<li>入力画像の左上を基準とした回転中心座標を指定します。 </li>
+<li>指定する座標は、出力画像外でも構いません。</li>
+</ul>
+<em>radius</em> <ul>
+<li>入力画像での扇形の半径を指定します。 </li>
+<li><em>radius</em> ≧ 0 の範囲で指定します。</li>
+</ul>
+<em>start_angle</em> <ul>
+<li>入力画像での回転開始角度をラジアン単位で指定します。 </li>
+<li>0 ≦ <em>start_angle</em> ＜ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定します。</li>
+</ul>
+<em>range_angle</em> <ul>
+<li>回転開始角度 <em>start_angle</em> からの処理範囲をラジアン単位で指定します。範囲の大きさに指定はありませんが、以下のように処理されます。<ol type=1>
+<li><em>range_angle</em> が正ならば時計回り、負ならば反時計回りとして処理をします。</li><li><em>range_angle</em> ＞ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定した場合、<img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えた分の範囲が繰り返し出力されます。 <em>range_angle</em> ＜ <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> の場合も同様に、<img class="formulaInl" alt="$-2\pi$" src="form_856.png"> を下回った分の範囲が繰り返し出力されます。</li></ol>
+</li>
+</ul>
+<em>origin_out</em> <ul>
+<li><em>coord_mode</em> で指定されたパラメータに基づいて、 出力画像での処理対象領域（四角形）の基準座標を指定します。 </li>
+<li>指定する座標は、出力画像外でも構いません。</li>
+</ul>
+<em>width</em> <ul>
+<li><em>origin_out</em> で指定された座標からの処理対象領域の幅を指定します。 </li>
+<li><em>width</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>width</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 y = ( <em>origin_in.y</em> + <em>height</em> ) 軸上での <em>width</em> は、 入力画像での扇形の円弧の長さと対応します。 円弧の長さは、 <em>width</em> と | <em>radius</em> * range_angle | の比によって決定します。 </li>
+<li><em>width</em> が r 軸と対応している場合、 r の長さは、 <em>width</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>height</em> <ul>
+<li><em>origin_out</em> で指定された座標からの処理対象領域の高さを指定します。 </li>
+<li><em>height</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>height</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 x = ( <em>origin_in.x</em> + <em>width</em> ) 軸上での <em>height</em> は、 入力画像での円弧の長さと対応します。円弧の長さは、 <em>height</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>height</em> が r 軸と対応している場合、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>coord_mode</em> <ul>
+<li>
+出力側の回転軸の位置を指定します。 <ul>
+<li>
+F_PT_UPPER 上辺が回転軸 </li>
+<li>
+F_PT_LOWER 下辺が回転軸 </li>
+<li>
+F_PT_LEFT 左辺が回転軸 </li>
+<li>
+F_PT_RIGHT 右辺が回転軸 </li>
+</ul>
+</li>
+</ul>
+<p>
+<em>back_clear</em> <ul>
+<li>
+結果画像中の領域外になる画素(入力座標系での座標が処理対象画像の外側になる画素) の処理方法の指定です。 <ul>
+<li>
+TRUE ０クリア </li>
+<li>
+FALSE 処理なし </li>
+</ul>
+</li>
+</ul>
+<p>
+<em>sampling_mode</em> <ul>
+<li>
+濃度補間方法の指定します。以下の３種類から選択できます。 <ul>
+<li>
+F_SAMPLING_NN 最近傍法 </li>
+<li>
+F_SAMPLING_BILINEAR 共一次線形補間法 </li>
+<li>
+F_SAMPLING_CUBIC 三次畳み込み法 </li>
+</ul>
+</li>
+<li>
+処理対象画像の型が ２値(F_IMG_BIN) の場合は、F_SAMPLING_NN のみ使用可能です。 </li>
+</ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type : bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type : bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_in</em>&nbsp;</td><td>入力側での処理対象領域の開始座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>入力側での円板の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>入力側での処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>入力側での角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_out</em>&nbsp;</td><td>出力側での円板の回転中心 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>出力側での処理対象領域の幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>出力側での処理対象領域の高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coord_mode</em>&nbsp;</td><td>出力側での回転中心位置 <ul>
+<li>F_PT_UPPER 処理対象領域の右上座標 </li>
+<li>F_PT_LOWER 処理対象領域の左下座標 </li>
+<li>F_PT_LEFT 処理対象領域の左上座標 </li>
+<li>F_PT_RIGHT 処理対象領域の右下座標 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>back_clear</em>&nbsp;</td><td>出力画像の背景処理方法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sampling_mode</em>&nbsp;</td><td>濃度補間法 <ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間法により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足（F_SAMPLING_CUBICを指定した場合のみ） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>極座標変換ライブラリの使用例</b></dt><dd>Fig1に、 <em>coord_mode</em> の指定例を示します。 本例は、右図から左図への変換です。 <ul>
+<li>左図のオレンジの線で囲まれている領域が、 <em>coord_mode</em> 毎の処理対象領域です。 </li>
+<li>左図の緑色のｘ印は、基準座標の位置です。 <em>coord_mode</em> 毎に指定する位置が異なります。 </li>
+<li>右図の赤線が <em>start_angle</em> で指定された角度です。本図では、 0.0 が指定されています。 </li>
+<li><em>range_angle</em> は、 <img class="formulaInl" alt="$2\pi$" src="form_183.png"> が指定されています。</li>
+</ul>
+<div align="center">
+<img src="polar_transform_ref.png" alt="polar_transform_ref.png">
+<p><strong>Fig1. 極座標変換ライブラリの使用例</strong></p></div>
+ </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><em>start_angle</em> 、 <em>range_angle</em> 、 <em>width</em> 、<em>height</em> の各パラメータの設定例を示します。 本図では、例として「FIE Polar Transform Library」の文字列を逆極座標変換を施しています。 <em>coord_mode</em> は <em>F_PT_LEFT</em> 、<em>sampling_mode</em> は <em>F_SAMPLING_NN</em> を指定しているものとします。 <ul>
+<li>入力画像は、幅500、高さ500、<em>origin_in.x</em> = 250、<em>origin_in.y</em> = 250とします。 </li>
+<li>(1)は、基準となる例です。 この際の、 <em>width</em> と <em>height</em> 、 つまり、出力側の処理対象領域は共に400、800とします。 </li>
+<li>(2)は、<em>range_angle</em> に <img class="formulaInl" alt="$4\pi$" src="form_860.png"> を指定しています。<img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えた分の範囲は繰り返し表示されるので、<img class="formulaInl" alt="$4\pi$" src="form_860.png"> では2周表示されます。</li>
+</ul>
+<table class="layoutTable">
+<tr>
+<td><b>入力画像</b>  </td><td></td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_s0_r2_w400_h800.png" alt="polar_s0_r2_w400_h800.png">
+</div>
+  </td><td></td></tr>
+<tr>
+<td>&nbsp; </td><td></td></tr>
+<tr>
+<td><b></b>(1)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$2\pi$" src="form_183.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800  </td><td><b></b>(2)<em>start_angle</em> = 0 , <em>range_angle</em> = <img class="formulaInl" alt="$4\pi$" src="form_860.png"> ,<br>
+ <em>width</em> = 400 , <em>height</em> = 800   </td></tr>
+<tr>
+<td><div align="center">
+<img src="polar_inv_s0_r2_w400_h800.png" alt="polar_inv_s0_r2_w400_h800.png">
+</div>
+  </td><td><div align="center">
+<img src="polar_inv_s0_r4_w400_h800.png" alt="polar_inv_s0_r4_w400_h800.png">
+</div>
+   </td></tr>
+</table>
+</dd></dl>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 右図から左図への変換</span>
+VOID polar_transform_img_inv()
+{
+    FHANDLE hsrc = NULL, hdst = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  origin_in, origin_out;
+    DOUBLE  width, height, radius, start_angle, range_angle;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// width = 128.0, height = 128.0</span>
+    <a class="code" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイル読...">fnFIE_load_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv.tif"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 出力画像のメモリ確保</span>
+    <span class="comment">// チャネル数は同じ必要がある</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 256, 256 );
+
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64.0;
+
+    radius = 64.0;
+
+    start_angle = 0.0;
+    range_angle = 2.0 * PI;
+
+    <span class="comment">// F_PT_UPPER</span>
+    <span class="comment">// 出力側の対象領域の右上の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 178.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 6.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <span class="comment">// 背景は処理しない</span>
+    <span class="comment">// 濃度補間法は最近傍法</span>
+    <a class="code" href="group__fie__polar__transform.html#g9a9979c0121b0eaade31f9eb5acc514f" title="画像間の逆極座標変換">fnFIE_polar_trans_img_inv</a>( hsrc, hdst, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height,
+                               <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" title="上辺が回転軸">F_PT_UPPER</a>, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e14f07e347ff74354ebf9cfcf72f51306" title="最近傍法">F_SAMPLING_NN</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_upper.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LOWER</span>
+    <span class="comment">// 出力側の対象領域の左下の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 78.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 250.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <span class="comment">// 背景は処理しない</span>
+    <span class="comment">// 濃度補間法は共一次線形補間法</span>
+    <a class="code" href="group__fie__polar__transform.html#g9a9979c0121b0eaade31f9eb5acc514f" title="画像間の逆極座標変換">fnFIE_polar_trans_img_inv</a>( hsrc, hdst, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height,
+                               <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" title="下辺が回転軸">F_PT_LOWER</a>, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8ef37e277b29f4302b27d157d83fa19643" title="共一次線形補間法">F_SAMPLING_BILINEAR</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_lower.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LEFT</span>
+    <span class="comment">// 出力側の対象領域の左上の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 6.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 78.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <span class="comment">// 背景は処理しない</span>
+    <span class="comment">// 濃度補間法は三次畳み込み法</span>
+    <a class="code" href="group__fie__polar__transform.html#g9a9979c0121b0eaade31f9eb5acc514f" title="画像間の逆極座標変換">fnFIE_polar_trans_img_inv</a>( hsrc, hdst, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height,
+                               <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" title="左辺が回転軸">F_PT_LEFT</a>, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_left.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_RIGHT</span>
+    <span class="comment">// 出力側の対象領域の右下の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 178.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <span class="comment">// 背景は処理しない</span>
+    <span class="comment">// 濃度補間法は三次畳み込み法</span>
+    <a class="code" href="group__fie__polar__transform.html#g9a9979c0121b0eaade31f9eb5acc514f" title="画像間の逆極座標変換">fnFIE_polar_trans_img_inv</a>( hsrc, hdst, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height,
+                               <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" title="右辺が回転軸">F_PT_RIGHT</a>, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_right.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    polar_transform_img_inv();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> 
+</div>
+</div><p>
+<a class="anchor" name="g9bea4dd8c0b2557ef427c830607dcaed"></a><!-- doxytag: member="fie_polar_transform.c::fnFIE_polar_trans_map" ref="g9bea4dd8c0b2557ef427c830607dcaed" args="(FHANDLE hmap, DPNT_T origin_in, DOUBLE width, DOUBLE height, DPNT_T origin_out, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, enum f_coord_mode coord_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_polar_trans_map           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>coord_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+極座標変換マップの作成 
+<p>
+極座標変換マップを作成します。極座標変換マップは、 <a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab">fnFIE_geotrans_warpping</a> で利用されます。<p>
+<em>全般</em> <ul>
+<li>画素タイプが F_IMG_DOUBLE または F_IMG_FLOAT 、チャネル数が２の画像オブジェクトを指定します。 マップ画像の各画素値は結果画像の変換前の座標値として使用されますので、 結果画像の変換前の x 座標を <em>hmap</em> のチャネル０、 y 座標はチャネル１に入力します。 </li>
+<li><a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab">fnFIE_geotrans_warpping</a> 実行時において、 <em>hmap</em> に入力されている座標値が処理対象画像の外側を示す場合は、無効画素として処理されます。 また、処理対象画像のチャネル数が複数である場合には、 すべてのチャネルに同じ座標変換マップを使用します。 </li>
+<li>本関数内で、出力画像のメモリ確保は行いません。 ユーザーが必要なメモリを確保した画像オブジェクトを用意する必要があります。</li>
+</ul>
+<em>origin_in</em> <ul>
+<li><em>coord_mode</em> で指定されたパラメータに基づいて、 原点 <img class="formulaInl" alt="$O\left(0,0\right)$" src="form_861.png"> からの基準座標を指定します。</li>
+</ul>
+<em>width</em> <ul>
+<li><em>origin_in</em> で指定された座標からの処理対象領域の幅を指定します。 </li>
+<li><em>width</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>width</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 y = ( <em>origin_in.y</em> + <em>height</em> ) 軸上での <em>width</em> は、 出力画像での扇形の円弧の長さと対応します。円弧の長さは、 <em>width</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>width</em> が r 軸と対応している場合、 r の長さは、 <em>width</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>height</em> <ul>
+<li><em>origin_in</em> で指定された座標からの処理対象領域の高さを指定します。 </li>
+<li><em>height</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>height</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 x = ( <em>origin_in.x</em> + <em>width</em> ) 軸上での <em>height</em> は、 出力画像での円弧の長さと対応します。円弧の長さは、 <em>height</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>height</em> が r 軸と対応している場合、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>origin_out</em> <ul>
+<li>出力画像の左上を基準とした回転中心座標を指定します。 </li>
+<li>指定する座標は、出力画像外でも構いません。</li>
+</ul>
+<em>radius</em> <ul>
+<li>出力画像での扇形の半径を指定します。 </li>
+<li><em>radius</em> ≧ 0 の範囲で指定します。</li>
+</ul>
+<em>start_angle</em> <ul>
+<li>出力画像での回転開始角度をラジアン単位で指定します。 </li>
+<li>0 ≦ <em>start_angle</em> ＜ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定します。</li>
+</ul>
+<em>range_angle</em> <ul>
+<li>回転開始角度 <em>start_angle</em> からの処理範囲をラジアン単位で指定します。範囲の大きさに指定はありませんが、以下のように処理されます。<ol type=1>
+<li><em>range_angle</em> が正ならば時計回り、負ならば反時計回りとして処理をします。</li><li><em>range_angle</em> ＞ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定した場合、<img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えた分は出力されません。 <em>range_angle</em> ＜ <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> の場合も同様に、<img class="formulaInl" alt="$-2\pi$" src="form_856.png"> を下回った分は出力されません。</li></ol>
+</li>
+</ul>
+<em>coord_mode</em> <ul>
+<li>
+入力側の回転軸の位置を指定します。 <ul>
+<li>
+F_PT_UPPER 上辺が回転軸 </li>
+<li>
+F_PT_LOWER 下辺が回転軸 </li>
+<li>
+F_PT_LEFT 左辺が回転軸 </li>
+<li>
+F_PT_RIGHT 右辺が回転軸 </li>
+</ul>
+</li>
+</ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmap</em>&nbsp;</td><td>変換マップ( type : double, float / channel : 2 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_in</em>&nbsp;</td><td>入力側での処理対象領域の開始座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>入力側での処理対象領域の幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>入力側での処理対象領域の高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_out</em>&nbsp;</td><td>出力側での円板の回転中心 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>出力側での円板の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>出力側での処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>出力側での角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coord_mode</em>&nbsp;</td><td>入力側での回転中心位置 <ul>
+<li>F_PT_UPPER 処理対象領域の右上座標 </li>
+<li>F_PT_LOWER 処理対象領域の左下座標 </li>
+<li>F_PT_LEFT 処理対象領域の左上座標 </li>
+<li>F_PT_RIGHT 処理対象領域の右下座標</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>極座標変換ライブラリの使用例</b></dt><dd>Fig1に、 <em>coord_mode</em> の指定例を示します。 本例は、左図から右図への変換です。 <ul>
+<li>左図のオレンジの線で囲まれている領域が、 <em>coord_mode</em> 毎の処理対象領域です。 </li>
+<li>左図の緑色のｘ印は、基準座標の位置です。 <em>coord_mode</em> 毎に指定する位置が異なります。 </li>
+<li>右図の赤線が <em>start_angle</em> で指定された角度です。本図では、 0.0 が指定されています。 </li>
+<li><em>range_angle</em> は、 <img class="formulaInl" alt="$2\pi$" src="form_183.png"> が指定されています。</li>
+</ul>
+<div align="center">
+<img src="polar_transform_ref.png" alt="polar_transform_ref.png">
+<p><strong>Fig1. 極座標変換ライブラリの使用例</strong></p></div>
+ <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 左図から右図への変換</span>
+VOID polar_transform_map()
+{
+    FHANDLE hsrc = NULL, hdst = NULL, hmap = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  origin_in, origin_out;
+    DOUBLE  width, height, radius, start_angle, range_angle;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// width = 256.0, height = 256.0</span>
+    <a class="code" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイル読...">fnFIE_load_tiff</a>( <span class="stringliteral">"fie_poloar_transform.tif"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 座標マップと出力画像のメモリ確保</span>
+    <span class="comment">// チャネル数は同じ必要がある</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 128, 128 );
+    hmap = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 2, 128, 128 );
+
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64.0;
+
+    radius = 64.0;
+
+    start_angle = 0.0;
+    range_angle = 2.0 * PI;
+
+    <span class="comment">// F_PT_UPPER</span>
+    <span class="comment">// 入力側の対象領域の右上の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 178.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 6.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9bea4dd8c0b2557ef427c830607dcaed" title="極座標変換マップの作成">fnFIE_polar_trans_map</a>( hmap, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" title="上辺が回転軸">F_PT_UPPER</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_upper.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LOWER</span>
+    <span class="comment">// 入力側の対象領域の左下の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 78.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 250.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9bea4dd8c0b2557ef427c830607dcaed" title="極座標変換マップの作成">fnFIE_polar_trans_map</a>( hmap, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" title="下辺が回転軸">F_PT_LOWER</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_lower.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LEFT</span>
+    <span class="comment">// 入力側の対象領域の左上の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 6.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 78.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9bea4dd8c0b2557ef427c830607dcaed" title="極座標変換マップの作成">fnFIE_polar_trans_map</a>( hmap, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" title="左辺が回転軸">F_PT_LEFT</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_left.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_RIGHT</span>
+    <span class="comment">// 入力側の対象領域の右下の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 178.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9bea4dd8c0b2557ef427c830607dcaed" title="極座標変換マップの作成">fnFIE_polar_trans_map</a>( hmap, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" title="右辺が回転軸">F_PT_RIGHT</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_right.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmap );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    polar_transform_map();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9b9a0c96c1f7e4f31962ab3e505394e7"></a><!-- doxytag: member="fie_polar_transform.c::fnFIE_polar_trans_map_inv" ref="g9b9a0c96c1f7e4f31962ab3e505394e7" args="(FHANDLE hmap, DPNT_T origin_in, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, DPNT_T origin_out, DOUBLE width, DOUBLE height, enum f_coord_mode coord_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_polar_trans_map_inv           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>coord_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+逆極座標変換マップの作成 
+<p>
+逆極座標変換マップを作成します。極座標変換マップは、 <a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab">fnFIE_geotrans_warpping</a> で利用されます。<p>
+<em>全般</em> <ul>
+<li>画素タイプが F_IMG_DOUBLE または F_IMG_FLOAT 、チャネル数が２の画像オブジェクトを指定します。 マップ画像の各画素値は結果画像の変換前の座標値として使用されますので、 結果画像の変換前の x 座標を <em>hmap</em> のチャネル０、 y 座標はチャネル１に入力します。 </li>
+<li><a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab">fnFIE_geotrans_warpping</a> 実行時において、 <em>hmap</em> に入力されている座標値が処理対象画像の外側を示す場合は、無効画素として処理されます。 また、処理対象画像のチャネル数が複数である場合には、 すべてのチャネルに同じ座標変換マップを使用します。 </li>
+<li>本関数内で、出力画像のメモリ確保は行いません。 ユーザーが必要なメモリを確保した画像オブジェクトを用意する必要があります。</li>
+</ul>
+<em>origin_in</em> <ul>
+<li>原点 <img class="formulaInl" alt="$O\left(0,0\right)$" src="form_861.png"> からの回転中心座標を指定します。</li>
+</ul>
+<em>radius</em> <ul>
+<li>扇形の半径を指定します。 </li>
+<li>radius ≧ 0 の範囲で指定します。</li>
+</ul>
+<em>start_angle</em> <ul>
+<li>回転開始角度をラジアン単位で指定します。 </li>
+<li>0 ≦ <em>start_angle</em> ＜ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定します。</li>
+</ul>
+<em>range_angle</em> <ul>
+<li>回転開始角度 <em>start_angle</em> からの処理範囲をラジアン単位で指定します。範囲の大きさに指定はありませんが、以下のように処理されます。<ol type=1>
+<li><em>range_angle</em> が正ならば時計回り、負ならば反時計回りとして処理をします。</li><li><em>range_angle</em> ＞ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定した場合、<img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えた分の範囲が繰り返し出力されます。 <em>range_angle</em> ＜ <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> の場合も同様に、<img class="formulaInl" alt="$-2\pi$" src="form_856.png"> を下回った分の範囲が繰り返し出力されます。</li></ol>
+</li>
+</ul>
+<em>origin_out</em> <ul>
+<li><em>coord_mode</em> で指定されたパラメータに基づいて、 出力画像での処理対象領域（四角形）の基準座標を指定します。 </li>
+<li>指定する座標は、出力画像外でも構いません。</li>
+</ul>
+<em>width</em> <ul>
+<li><em>origin_out</em> で指定された座標からの処理対象領域の幅を指定します。 </li>
+<li><em>width</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>width</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 y = ( <em>origin_in.y</em> + <em>height</em> ) 軸上での <em>width</em> は、 出力画像での扇形の円弧の長さと対応します。円弧の長さは、 <em>width</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>width</em> が r 軸と対応している場合、 r の長さは、 <em>width</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>height</em> <ul>
+<li><em>origin_out</em> で指定された座標からの処理対象領域の高さを指定します。 </li>
+<li><em>height</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>height</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 x = ( <em>origin_in.x</em> + <em>width</em> ) 軸上での <em>height</em> は、 出力画像での円弧の長さと対応します。円弧の長さは、 <em>height</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>height</em> が r 軸と対応している場合、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>coord_mode</em> <ul>
+<li>
+出力側の回転軸の位置を指定します。 <ul>
+<li>
+F_PT_UPPER 上辺が回転軸 </li>
+<li>
+F_PT_LOWER 下辺が回転軸 </li>
+<li>
+F_PT_LEFT 左辺が回転軸 </li>
+<li>
+F_PT_RIGHT 右辺が回転軸 </li>
+</ul>
+</li>
+</ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hmap</em>&nbsp;</td><td>変換マップ( type : double, float / channel : 2 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_in</em>&nbsp;</td><td>入力側での処理対象領域の開始座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>入力側での円板の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>入力側での処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>入力側での角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_out</em>&nbsp;</td><td>出力側での円板の回転中心 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>出力側での処理対象領域の幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>出力側での処理対象領域の高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coord_mode</em>&nbsp;</td><td>出力側での回転中心位置 <ul>
+<li>F_PT_UPPER 処理対象領域の右上座標 </li>
+<li>F_PT_LOWER 処理対象領域の左下座標 </li>
+<li>F_PT_LEFT 処理対象領域の左上座標 </li>
+<li>F_PT_RIGHT 処理対象領域の右下座標</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>極座標変換ライブラリの使用例</b></dt><dd>Fig1に、 <em>coord_mode</em> の指定例を示します。 本例は、右図から左図への変換です。 <ul>
+<li>左図のオレンジの線で囲まれている領域が、 <em>coord_mode</em> 毎の処理対象領域です。 </li>
+<li>左図の緑色のｘ印は、基準座標の位置です。 <em>coord_mode</em> 毎に指定する位置が異なります。 </li>
+<li>右図の赤線が <em>start_angle</em> で指定された角度です。本図では、 0.0 が指定されています。 </li>
+<li><em>range_angle</em> は、 <img class="formulaInl" alt="$2\pi$" src="form_183.png"> が指定されています。</li>
+</ul>
+<div align="center">
+<img src="polar_transform_ref.png" alt="polar_transform_ref.png">
+<p><strong>Fig1. 極座標変換ライブラリの使用例</strong></p></div>
+ <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 右図から左図への変換</span>
+VOID polar_transform_map_inv()
+{
+    FHANDLE hsrc = NULL, hdst = NULL, hmap = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  origin_in, origin_out;
+    DOUBLE  width, height, radius, start_angle, range_angle;
+
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// width = 128.0, height = 128.0</span>
+    <a class="code" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイル読...">fnFIE_load_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv.tif"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 座標マップと出力画像のメモリ確保</span>
+    <span class="comment">// チャネル数は同じ必要がある</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 256, 256 );
+    hmap = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 2, 256, 256 );
+
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64.0;
+
+    radius = 64.0;
+
+    start_angle = 0.0;
+    range_angle = 2.0 * PI;
+
+    <span class="comment">// F_PT_UPPER</span>
+    <span class="comment">// 出力側の対象領域の右上の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 178.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 6.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9b9a0c96c1f7e4f31962ab3e505394e7" title="逆極座標変換マップの作成">fnFIE_polar_trans_map_inv</a>( hmap, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" title="上辺が回転軸">F_PT_UPPER</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_upper.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LOWER</span>
+    <span class="comment">// 出力側の対象領域の左下の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 78.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 250.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9b9a0c96c1f7e4f31962ab3e505394e7" title="逆極座標変換マップの作成">fnFIE_polar_trans_map_inv</a>( hmap, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" title="下辺が回転軸">F_PT_LOWER</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_lower.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_LEFT</span>
+    <span class="comment">// 出力側の対象領域の左上の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 6.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 78.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9b9a0c96c1f7e4f31962ab3e505394e7" title="逆極座標変換マップの作成">fnFIE_polar_trans_map_inv</a>( hmap, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" title="左辺が回転軸">F_PT_LEFT</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_left.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <span class="comment">// F_PT_RIGHT</span>
+    <span class="comment">// 出力側の対象領域の右下の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 178.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g9b9a0c96c1f7e4f31962ab3e505394e7" title="逆極座標変換マップの作成">fnFIE_polar_trans_map_inv</a>( hmap, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" title="右辺が回転軸">F_PT_RIGHT</a> );
+
+    <span class="comment">// 幾何変換ライブラリの fnFIE_geotrans_warpping() を使用して画像にする</span>
+    <a class="code" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab" title="座標変換マップに従って座標を変換する">fnFIE_geotrans_warpping</a>( hsrc, hmap, hdst, NULL, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <a class="code" href="group__fie__file__image.html#gca7a00987db232fc64f0093a1d11fa27" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  TIFFファイルの...">fnFIE_save_tiff</a>( <span class="stringliteral">"fie_poloar_transform_inv_right.tif"</span>, hdst, <a class="code" href="group__fie__file__image.html#gg8d2609ff61f5bd24666e6c78d70c75ae14a33994a87cd6bfade852c9378581b7" title="gzipの圧縮アルゴリズムで保存">F_TIFF_COMPRESSION_DEFLATE</a>, -1 );
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hmap );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    polar_transform_map_inv();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g306f54bf28f17bb75b86b58911000c76"></a><!-- doxytag: member="fie_polar_transform.c::fnFIE_polar_trans_pnt" ref="g306f54bf28f17bb75b86b58911000c76" args="(const DPNT_T *psrc, DPNT_T *pdst, INT num_pnt, DPNT_T origin_in, DOUBLE width, DOUBLE height, DPNT_T origin_out, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, enum f_coord_mode coord_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_polar_trans_pnt           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>psrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>coord_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群間の極座標変換 
+<p>
+点群間の極座標変換をします。<p>
+<em>全般</em> <ul>
+<li>与えられた点群の極座標変換をします。 </li>
+<li><em>origin_in</em> と <em>origin_out</em> により、変換時の位置情報が決定されます。 </li>
+<li><em>width</em>, <em>height</em> と <em>radius</em>, <em>start_angle</em>, <em>range_angle</em> により変換時のスケールが決定されます。 </li>
+<li>本関数内で、出力用の配列のメモリ確保は行いません。 ユーザーが必要なメモリを確保した配列を用意する必要があります。 </li>
+<li>出力座標群配列は、入力座標群配列と同じか大きい配列を用意する必要があります。 小さい場合の動作は不定です。 </li>
+<li><em>num_pnt</em> は、入力座標群配列の要素数です。 実際の要素数より大きい値を指定した場合の動作は不定です。</li>
+</ul>
+<em>origin_in</em> <ul>
+<li><em>coord_mode</em> で指定されたパラメータに基づいて、 原点 <img class="formulaInl" alt="$O\left(0,0\right)$" src="form_861.png"> からの基準座標を指定します。</li>
+</ul>
+<em>width</em> <ul>
+<li><em>origin_in</em> で指定された座標からの処理対象領域の幅を指定します。 </li>
+<li><em>width</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>width</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 y = ( <em>origin_in.y</em> + <em>height</em> ) 軸上での <em>width</em> は、 扇形の円弧の長さと対応します。円弧の長さは、 <em>width</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>width</em> が r 軸と対応している場合、 r の長さは、 <em>width</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>height</em> <ul>
+<li><em>origin_in</em> で指定された座標からの処理対象領域の高さを指定します。 </li>
+<li><em>height</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>height</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 x = ( <em>origin_in.x</em> + <em>width</em> ) 軸上での <em>height</em> は、 円弧の長さと対応します。円弧の長さは、 <em>height</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>height</em> が r 軸と対応している場合、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>origin_out</em> <ul>
+<li>原点 <img class="formulaInl" alt="$O\left(0,0\right)$" src="form_861.png"> からの回転中心座標を指定します。</li>
+</ul>
+<em>radius</em> <ul>
+<li>扇形の半径を指定します。 </li>
+<li><em>radius</em> ≧ 0 の範囲で指定します。</li>
+</ul>
+<em>start_angle</em> <ul>
+<li>回転開始角度をラジアン単位で指定します。 </li>
+<li>0 ≦ <em>start_angle</em> ＜ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定します。</li>
+</ul>
+<em>range_angle</em> <ul>
+<li>回転開始角度 <em>start_angle</em> からの処理範囲をラジアン単位で指定します。範囲に指定はありません。 </li>
+<li><em>range_angle</em> が正ならば時計回り、負ならば反時計回りとして処理をします。 </li>
+<li><em>range_angle</em> ＞ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> または <em>range_angle</em> ＜ <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> の範囲で指定する事が可能です。 <a class="el" href="group__fie__polar__transform.html#g4241880e49122cc5625b7f4a2ef23173" title="画像間の極座標変換">fnFIE_polar_trans_img()</a>では <img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えて表示ができませんが、 この関数は点群を変換の対象としているため <img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えても極座標変換できます。また、異なる入力座標が同じ出力座標になることがあります。 <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> も同様に下回っても極座標変換できます。</li>
+</ul>
+<em>coord_mode</em> <ul>
+<li>
+入力側の回転軸の位置を指定します。 <ul>
+<li>
+F_PT_UPPER 上辺が回転軸 </li>
+<li>
+F_PT_LOWER 下辺が回転軸 </li>
+<li>
+F_PT_LEFT 左辺が回転軸 </li>
+<li>
+F_PT_RIGHT 右辺が回転軸 </li>
+</ul>
+</li>
+</ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>psrc</em>&nbsp;</td><td>入力座標群配列の先頭ポインタ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdst</em>&nbsp;</td><td>出力座標群配列の先頭ポインタ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_pnt</em>&nbsp;</td><td>座標数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_in</em>&nbsp;</td><td>入力側での処理対象領域の開始座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>入力側での処理対象領域の幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>入力側での処理対象領域の高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_out</em>&nbsp;</td><td>出力側での円板の回転中心 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>出力側での円板の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>出力側での処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>出力側での角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coord_mode</em>&nbsp;</td><td>入力側での回転中心位置 <ul>
+<li>F_PT_UPPER 処理対象領域の右上座標 </li>
+<li>F_PT_LOWER 処理対象領域の左下座標 </li>
+<li>F_PT_LEFT 処理対象領域の左上座標 </li>
+<li>F_PT_RIGHT 処理対象領域の右下座標</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>極座標変換ライブラリの使用例</b></dt><dd>Fig1に、 <em>coord_mode</em> の指定例を示します。 本例は、左図から右図への変換です。 <ul>
+<li>左図のオレンジの線で囲まれている領域が、 <em>coord_mode</em> 毎の処理対象領域です。 </li>
+<li>左図の緑色のｘ印は、基準座標の位置です。 <em>coord_mode</em> 毎に指定する位置が異なります。 </li>
+<li>右図の赤線が <em>start_angle</em> で指定された角度です。本図では、 0.0 が指定されています。 </li>
+<li><em>range_angle</em> は、 <img class="formulaInl" alt="$2\pi$" src="form_183.png"> が指定されています。</li>
+</ul>
+<div align="center">
+<img src="polar_transform_ref.png" alt="polar_transform_ref.png">
+<p><strong>Fig1. 極座標変換ライブラリの使用例</strong></p></div>
+ <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 左図から右図への変換</span>
+VOID polar_transform_pnt()
+{
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *psrc = NULL, *pdst = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  origin_in, origin_out;
+    DOUBLE  width, height, radius, start_angle, range_angle;
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a> r;
+    INT i;
+
+    <span class="comment">// メモリの確保</span>
+    psrc = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*) <a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>( <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> ) * 100 );
+    pdst = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*) <a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>( <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> ) * 100 );
+
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>( 234796, &amp;r );
+
+    <span class="comment">// 入力点群に適当な値を代入する</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; 100; i ++ ){
+        psrc[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = <a class="code" href="group__fie__random.html#g9750e5cae267bc734bcd3ccc65371a70" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real1</a>(&amp;r) * 1024.0;
+        psrc[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = <a class="code" href="group__fie__random.html#g9750e5cae267bc734bcd3ccc65371a70" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real1</a>(&amp;r) * 1024.0;
+    }
+
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64.0;
+
+    radius = 64.0;
+
+    start_angle = 0.0;
+    range_angle = 2.0 * PI;
+
+    <span class="comment">// F_PT_UPPER</span>
+    <span class="comment">// 入力側の対象領域の右上の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 178.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 6.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g306f54bf28f17bb75b86b58911000c76" title="点群間の極座標変換">fnFIE_polar_trans_pnt</a>( psrc, pdst, 100, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" title="上辺が回転軸">F_PT_UPPER</a> );
+
+    <span class="comment">// F_PT_LOWER</span>
+    <span class="comment">// 入力側の対象領域の左下の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 78.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 250.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g306f54bf28f17bb75b86b58911000c76" title="点群間の極座標変換">fnFIE_polar_trans_pnt</a>( psrc, pdst, 100, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" title="下辺が回転軸">F_PT_LOWER</a> );
+
+    <span class="comment">// F_PT_LEFT</span>
+    <span class="comment">// 入力側の対象領域の左上の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 6.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 78.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g306f54bf28f17bb75b86b58911000c76" title="点群間の極座標変換">fnFIE_polar_trans_pnt</a>( psrc, pdst, 100, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" title="左辺が回転軸">F_PT_LEFT</a> );
+
+    <span class="comment">// F_PT_RIGHT</span>
+    <span class="comment">// 入力側の対象領域の右下の座標を指定する</span>
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 178.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#g306f54bf28f17bb75b86b58911000c76" title="点群間の極座標変換">fnFIE_polar_trans_pnt</a>( psrc, pdst, 100, origin_in, width, height,
+                           origin_out, radius, start_angle, range_angle, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" title="右辺が回転軸">F_PT_RIGHT</a> );
+
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( psrc );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( pdst );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    polar_transform_pnt();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd50b5b435a062f7b444752c45f138866"></a><!-- doxytag: member="fie_polar_transform.c::fnFIE_polar_trans_pnt_inv" ref="gd50b5b435a062f7b444752c45f138866" args="(const DPNT_T *psrc, DPNT_T *pdst, INT num_pnt, DPNT_T origin_in, DOUBLE radius, DOUBLE start_angle, DOUBLE range_angle, DPNT_T origin_out, DOUBLE width, DOUBLE height, enum f_coord_mode coord_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_polar_trans_pnt_inv           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>psrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num_pnt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>origin_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__polar__transform.html#g8af95457e42d693eb80e7bc1e5647901">f_coord_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>coord_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+点群間の逆極座標変換 
+<p>
+点群間の逆極座標変換をします。<p>
+<ul>
+<li>与えられた点群の逆極座標変換をします。 </li>
+<li><em>origin_in</em> と <em>origin_out</em> により、変換時の位置情報が決定されます。 </li>
+<li><em>width</em>, <em>height</em> と <em>radius</em>, <em>start_angle</em>, <em>range_angle</em> により変換時のスケールが決定されます。 </li>
+<li>本関数内で、出力用の配列のメモリ確保は行いません。 ユーザーが必要なメモリを確保した配列を用意する必要があります。 </li>
+<li>出力座標群配列は、入力座標群配列と同じか大きい配列を用意する必要があります。 小さい場合の動作は不定です。 </li>
+<li><em>num_pnt</em> は、入力座標群配列の要素数です。 実際の要素数より大きい値を指定した場合の動作は不定です。</li>
+</ul>
+<em>origin_in</em> <ul>
+<li>原点 <img class="formulaInl" alt="$O\left(0,0\right)$" src="form_861.png"> からの回転中心座標を指定します。</li>
+</ul>
+<em>radius</em> <ul>
+<li>扇形の半径を指定します。 </li>
+<li><em>radius</em> ≧ 0 の範囲で指定します。</li>
+</ul>
+<em>start_angle</em> <ul>
+<li>回転開始角度をラジアン単位で指定します。 </li>
+<li>0 ≦ start_angle ＜ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> の範囲で指定します。</li>
+</ul>
+<em>range_angle</em> <ul>
+<li>回転開始角度 <em>start_angle</em> からの処理範囲をラジアン単位で指定します。範囲に指定はありません。 </li>
+<li><em>range_angle</em> が正ならば時計回り、負ならば反時計回りとして処理をします。 </li>
+<li><em>range_angle</em> ＞ <img class="formulaInl" alt="$2\pi$" src="form_183.png"> または <em>range_angle</em> ＜ <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> の範囲で指定する事が可能です。 <a class="el" href="group__fie__polar__transform.html#g9a9979c0121b0eaade31f9eb5acc514f" title="画像間の逆極座標変換">fnFIE_polar_trans_img_inv()</a>では <img class="formulaInl" alt="$2\pi$" src="form_183.png"> を超えるまたは <img class="formulaInl" alt="$-2\pi$" src="form_856.png"> を下回った場合は繰り返し表示されますが、 この関数では点群を変換の対象としているため、対応座標が1対1の関係になり、1つの入力座標が2つ以上の出力座標と対応することはありません。</li>
+</ul>
+<em>origin_out</em> <ul>
+<li><em>coord_mode</em> で指定されたパラメータに基づいて、 原点 <img class="formulaInl" alt="$O\left(0,0\right)$" src="form_861.png"> からの基準座標を指定します。</li>
+</ul>
+<em>width</em> <ul>
+<li><em>origin_out</em> で指定された座標からの処理対象領域の幅を指定します。 </li>
+<li><em>width</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>width</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 y = ( <em>origin_in.y</em> + <em>height</em> ) 軸上での <em>width</em> は、 扇形の円弧の長さと対応します。円弧の長さは、 <em>width</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>width</em> が r 軸と対応している場合、 r の長さは、 <em>width</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>height</em> <ul>
+<li><em>origin_out</em> で指定された座標からの処理対象領域の高さを指定します。 </li>
+<li><em>height</em> ≧ 0 の範囲で指定します。 </li>
+<li><em>height</em> が <img class="formulaInl" alt="$\theta$" src="form_621.png"> 軸と対応している場合、 x = ( <em>origin_in.x</em> + <em>width</em> ) 軸上での <em>height</em> は、 円弧の長さと対応します。円弧の長さは、 <em>height</em> と | <em>radius</em> * <em>range_angle</em> | の比によって決定します。 </li>
+<li><em>height</em> が r 軸と対応している場合、 r の長さは、 <em>height</em> と <em>radius</em> の比によって決定します。</li>
+</ul>
+<em>coord_mode</em> <ul>
+<li>
+出力側の回転軸の位置を指定します。 <ul>
+<li>
+F_PT_UPPER 上辺が回転軸 </li>
+<li>
+F_PT_LOWER 下辺が回転軸 </li>
+<li>
+F_PT_LEFT 左辺が回転軸 </li>
+<li>
+F_PT_RIGHT 右辺が回転軸 </li>
+</ul>
+</li>
+</ul>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>psrc</em>&nbsp;</td><td>入力座標群配列の先頭ポインタ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdst</em>&nbsp;</td><td>出力座標群配列の先頭ポインタ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num_pnt</em>&nbsp;</td><td>座標数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_in</em>&nbsp;</td><td>入力側での処理対象領域の開始座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>入力側での円板の半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>入力側での処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>入力側での角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>origin_out</em>&nbsp;</td><td>出力側での円板の回転中心 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width</em>&nbsp;</td><td>出力側での処理対象領域の幅 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>height</em>&nbsp;</td><td>出力側での処理対象領域の高さ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coord_mode</em>&nbsp;</td><td>出力側での回転中心位置 <ul>
+<li>F_PT_UPPER 処理対象領域の右上座標 </li>
+<li>F_PT_LOWER 処理対象領域の左下座標 </li>
+<li>F_PT_LEFT 処理対象領域の左上座標 </li>
+<li>F_PT_RIGHT 処理対象領域の右下座標</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>極座標変換ライブラリの使用例</b></dt><dd>Fig1に、 <em>coord_mode</em> の指定例を示します。 本例は、右図から左図への変換です。 <ul>
+<li>左図のオレンジの線で囲まれている領域が、 <em>coord_mode</em> 毎の処理対象領域です。 </li>
+<li>左図の緑色のｘ印は、基準座標の位置です。 <em>coord_mode</em> 毎に指定する位置が異なります。 </li>
+<li>右図の赤線が <em>start_angle</em> で指定された角度です。本図では、 0.0 が指定されています。 </li>
+<li><em>range_angle</em> は、 <img class="formulaInl" alt="$2\pi$" src="form_183.png"> が指定されています。</li>
+</ul>
+<div align="center">
+<img src="polar_transform_ref.png" alt="polar_transform_ref.png">
+<p><strong>Fig1. 極座標変換ライブラリの使用例</strong></p></div>
+ <div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">// 右図から左図への変換</span>
+VOID polar_transform_pnt_inv()
+{
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *psrc = NULL, *pdst = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>  origin_in, origin_out;
+    DOUBLE  width, height, radius, start_angle, range_angle;
+    <a class="code" href="structF__RANDDESC.html" title="擬似乱数用構造体">F_RANDDESC</a> r;
+    INT i;
+
+    <span class="comment">// メモリの確保</span>
+    psrc = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*) <a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>( <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> ) * 100 );
+    pdst = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*) <a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( <span class="keyword">sizeof</span>( <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> ) * 100 );
+
+    <a class="code" href="group__fie__random.html#ge2e934bcfe30c288b5ff0a586a420798" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  擬似乱数初期...">fnFIE_mtrand_init</a>( 234796, &amp;r );
+
+    <span class="comment">// 入力点群に適当な値を代入する</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; 100; i ++ ){
+        psrc[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = <a class="code" href="group__fie__random.html#g9750e5cae267bc734bcd3ccc65371a70" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real1</a>(&amp;r) * 1024.0;
+        psrc[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = <a class="code" href="group__fie__random.html#g9750e5cae267bc734bcd3ccc65371a70" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  [0...">fnFIE_mtrand_real1</a>(&amp;r) * 1024.0;
+    }
+
+    origin_in.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 64.0;
+    origin_in.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 64.0;
+
+    radius = 64.0;
+
+    start_angle = 0.0;
+    range_angle = 2.0 * PI;
+
+    <span class="comment">// F_PT_UPPER</span>
+    <span class="comment">// 出力側の対象領域の右上の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 178.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 6.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#gd50b5b435a062f7b444752c45f138866" title="点群間の逆極座標変換">fnFIE_polar_trans_pnt_inv</a>( psrc, pdst, 100, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e564790156344d60456f24828e92e80bebe629b3" title="上辺が回転軸">F_PT_UPPER</a> );
+
+    <span class="comment">// F_PT_LOWER</span>
+    <span class="comment">// 出力側の対象領域の左下の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 78.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 250.0;
+
+    width = 64.0;
+    height = 172.0;
+
+    <a class="code" href="group__fie__polar__transform.html#gd50b5b435a062f7b444752c45f138866" title="点群間の逆極座標変換">fnFIE_polar_trans_pnt_inv</a>( psrc, pdst, 100, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479017f5cbe9ba4246a36890443398e53ad80" title="下辺が回転軸">F_PT_LOWER</a> );
+
+    <span class="comment">// F_PT_LEFT</span>
+    <span class="comment">// 出力側の対象領域の左上の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 6.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 78.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#gd50b5b435a062f7b444752c45f138866" title="点群間の逆極座標変換">fnFIE_polar_trans_pnt_inv</a>( psrc, pdst, 100, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e5647901d2577fcb2eb9aae0661655dcd779eb5c" title="左辺が回転軸">F_PT_LEFT</a> );
+
+    <span class="comment">// F_PT_RIGHT</span>
+    <span class="comment">// 出力側の対象領域の右下の座標を指定する</span>
+    origin_out.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250.0;
+    origin_out.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 178.0;
+
+    width = 172.0;
+    height = 64.0;
+
+    <a class="code" href="group__fie__polar__transform.html#gd50b5b435a062f7b444752c45f138866" title="点群間の逆極座標変換">fnFIE_polar_trans_pnt_inv</a>( psrc, pdst, 100, origin_in, radius, start_angle, range_angle,
+                               origin_out, width, height, <a class="code" href="group__fie__polar__transform.html#gg8af95457e42d693eb80e7bc1e56479018afdad2fa2f302a803ce22b99a292930" title="右辺が回転軸">F_PT_RIGHT</a> );
+
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( psrc );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( pdst );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    polar_transform_pnt_inv();
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

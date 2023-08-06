@@ -1,0 +1,919 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 双方向リスト</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>双方向リスト<br>
+<small>
+[<a class="el" href="group__fie__low__level__func.html">低レベル処理関数</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+fnFIE_dlist_* 関数群は、双方向リストを扱うための関数群です。 リストはF_DLIST_ELEM構造体のみによって構成され、下図のようになります。<p>
+<div align="center">
+<img src="dlist.png" alt="dlist.png">
+</div>
+<p>
+本リファレンスでは、図中黄色のF_DLIST_ELEM構造体のインスタンスを「要素」、 図中緑色の各要素が持つデータを「データ」と表現します。 本関数群でメモリ操作されるのは、要素のみであり、それぞれが持つデータに関しては 操作されません。従って、リストに要素を追加したり、削除したりする場合は、 それがもつデータをユーザー側が管理をしなければいけません。<p>
+本関数群には、リストと要素を入力し、要素を基にリストを操作する関数も提供されていますが、 リストと要素の整合性についてはチェックされません(速度重視のため)。 そのため、要素とリストの整合性については、ユーザー側が管理・保障する必要があります。<br>
+ <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると、指定した要素がリストに対して有効で あるかどうかの確認ができます。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">双方向リスト要素  <a href="structF__DLIST__ELEM.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g2b3bcc9e17c73cf60ee0fb108a443282">fnFIE_dlist_push_back</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">末尾に追加  <a href="#g2b3bcc9e17c73cf60ee0fb108a443282"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#gaf855e387c84fa66fbb317e704fec774">fnFIE_dlist_pop_back</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">末尾の要素を取り出して削除  <a href="#gaf855e387c84fa66fbb317e704fec774"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#gde3926f064e2869d4f21e67160bd92b1">fnFIE_dlist_push_front</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">先頭に追加  <a href="#gde3926f064e2869d4f21e67160bd92b1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g798cada4154faee44c5d14cda610d573">fnFIE_dlist_pop_front</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">先頭から要素を取り出して削除  <a href="#g798cada4154faee44c5d14cda610d573"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g14709d366f4da209eacd6a29217c7a68">fnFIE_dlist_findit</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, const VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">*pを持つ要素の番号を取得  <a href="#g14709d366f4da209eacd6a29217c7a68"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g0a71640a388df7ee2b4cf68976519fb4">fnFIE_dlist_erase</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, INT idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">idx番目の要素を削除  <a href="#g0a71640a388df7ee2b4cf68976519fb4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#gfc2a5ae403c1e97fd266aaf1e7bf1b5b">fnFIE_dlist_clear</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">要素を全部削除  <a href="#gfc2a5ae403c1e97fd266aaf1e7bf1b5b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g7ed6580b0bddf921bd0aff49cc0b18b3">fnFIE_dlist_get_sz</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リストのサイズを取得  <a href="#g7ed6580b0bddf921bd0aff49cc0b18b3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">VOID *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g526fa47ba4fa786130560b53f2a86e5e">fnFIE_dlist_getat</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, INT idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">idx番目のデータを取得  <a href="#g526fa47ba4fa786130560b53f2a86e5e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g1949221ffbdbb339c76f205a370f7a9e">fnFIE_dlist_get_listelem</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, INT idx)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">idx番目の要素を取得  <a href="#g1949221ffbdbb339c76f205a370f7a9e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g05b843f7d2d1872e8666efbcba123225">fnFIE_dlist_get_tail_listelem</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リスト末尾の要素を取得  <a href="#g05b843f7d2d1872e8666efbcba123225"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#ge4dbeab84302d418dc4b06d320208a98">fnFIE_dlist_insert_after</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の直後に新たな要素を挿入  <a href="#ge4dbeab84302d418dc4b06d320208a98"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#ge65d92ed79fca285eaf276ae7ee33e99">fnFIE_dlist_insert_before</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, <a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem, VOID *p)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の直前に新たな要素を挿入  <a href="#ge65d92ed79fca285eaf276ae7ee33e99"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g5fb4bc8a20c35e693462bb0b39627f75">fnFIE_dlist_remove_after</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の直後の要素を削除  <a href="#g5fb4bc8a20c35e693462bb0b39627f75"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g0e65888d996140ec71b61a95a1c18587">fnFIE_dlist_remove_before</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, <a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の直前の要素を削除  <a href="#g0e65888d996140ec71b61a95a1c18587"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#ga6a95af9a1271f0d7858a28d3ee2d0fc">fnFIE_dlist_remove_all_after</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の後にある要素全てを削除  <a href="#ga6a95af9a1271f0d7858a28d3ee2d0fc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#gc6a80c2d729632c87a4dea1b2d08ffaa">fnFIE_dlist_remove_all_before</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, <a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の前にある要素全てを削除  <a href="#gc6a80c2d729632c87a4dea1b2d08ffaa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g06ceb5183e1fa952d5924b5dedba0355">fnFIE_dlist_remove_non_designated</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, <a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素以外を削除  <a href="#g06ceb5183e1fa952d5924b5dedba0355"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#ge09b6da53443bd9e9a719adf7ca2e772">fnFIE_dlist_remove</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, <a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素を削除  <a href="#ge09b6da53443bd9e9a719adf7ca2e772"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee">fnFIE_dlist_find_listelem_idx</a> (<a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **listtop, <a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *listelem)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定した要素の要素番号を取得  <a href="#g45be6ca56337329870f817101063b0ee"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g2b3bcc9e17c73cf60ee0fb108a443282"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_push_back" ref="g2b3bcc9e17c73cf60ee0fb108a443282" args="(F_DLIST_ELEM **listtop, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_push_back           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+末尾に追加 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>追加するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数での処理時間は、リストの要素数に比例します。 すなわち、リストの要素数がn個であった場合の計算オーダーはO(n)となります。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gaf855e387c84fa66fbb317e704fec774"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_pop_back" ref="gaf855e387c84fa66fbb317e704fec774" args="(F_DLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_dlist_pop_back           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+末尾の要素を取り出して削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了時は取り出した要素が持つデータのポインタを返します。 異常終了した場合は、NULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数での処理時間は、リストの要素数に比例します。 すなわち、リストの要素数がn個であった場合の計算オーダーはO(n)となります。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gde3926f064e2869d4f21e67160bd92b1"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_push_front" ref="gde3926f064e2869d4f21e67160bd92b1" args="(F_DLIST_ELEM **listtop, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_push_front           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+先頭に追加 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>追加するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g798cada4154faee44c5d14cda610d573"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_pop_front" ref="g798cada4154faee44c5d14cda610d573" args="(F_DLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_dlist_pop_front           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+先頭から要素を取り出して削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了時は取り出した要素が持つデータのポインタを返します。 異常終了した場合は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g14709d366f4da209eacd6a29217c7a68"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_findit" ref="g14709d366f4da209eacd6a29217c7a68" args="(F_DLIST_ELEM **listtop, const VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_findit           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+*pを持つ要素の番号を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>探し出すデータのアドレス</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>データが見つかった場合は、その要素番号を返します。 見つからなかった場合もしくは、入力が不正だった場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0a71640a388df7ee2b4cf68976519fb4"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_erase" ref="g0a71640a388df7ee2b4cf68976519fb4" args="(F_DLIST_ELEM **listtop, INT idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_erase           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+idx番目の要素を削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>削除する要素番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfc2a5ae403c1e97fd266aaf1e7bf1b5b"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_clear" ref="gfc2a5ae403c1e97fd266aaf1e7bf1b5b" args="(F_DLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID FVALGAPI fnFIE_dlist_clear           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+要素を全部削除 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7ed6580b0bddf921bd0aff49cc0b18b3"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_get_sz" ref="g7ed6580b0bddf921bd0aff49cc0b18b3" args="(F_DLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_get_sz           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リストのサイズを取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>リストの要素数を返します。入力が不正だった場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g526fa47ba4fa786130560b53f2a86e5e"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_getat" ref="g526fa47ba4fa786130560b53f2a86e5e" args="(F_DLIST_ELEM **listtop, INT idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VOID* FVALGAPI fnFIE_dlist_getat           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+idx番目のデータを取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>取得する要素の番号</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は指定番号の要素が持つデータのポインタを返します。 入力が不正だった場合（<em>idx</em> が範囲外、<em>listtop</em> がNULL）は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1949221ffbdbb339c76f205a370f7a9e"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_get_listelem" ref="g1949221ffbdbb339c76f205a370f7a9e" args="(F_DLIST_ELEM **listtop, INT idx)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a>* FVALGAPI fnFIE_dlist_get_listelem           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>idx</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+idx番目の要素を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>idx</em>&nbsp;</td><td>取得する要素の番号</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は指定番号の要素のポインタを返します。 入力が不正だった場合（<em>idx</em> が範囲外、<em>listtop</em> がNULL）は、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g05b843f7d2d1872e8666efbcba123225"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_get_tail_listelem" ref="g05b843f7d2d1872e8666efbcba123225" args="(F_DLIST_ELEM **listtop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a>* FVALGAPI fnFIE_dlist_get_tail_listelem           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リスト末尾の要素を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合はリスト末尾の要素のポインタを返します。 入力が不正だった場合（<em>listtop</em> がNULL）は、NULLを返します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>本関数での要素取得に必要な計算時間は、リストの要素数に比例します。 すなわち、 リストの要素数がn個であった場合の計算オーダーはO(n)となります。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge4dbeab84302d418dc4b06d320208a98"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_insert_after" ref="ge4dbeab84302d418dc4b06d320208a98" args="(F_DLIST_ELEM *listelem, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_insert_after           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の直後に新たな要素を挿入 
+<p>
+<em>listelem</em> に指定された要素の直後に新たな要素を追加します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>挿入するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge65d92ed79fca285eaf276ae7ee33e99"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_insert_before" ref="ge65d92ed79fca285eaf276ae7ee33e99" args="(F_DLIST_ELEM **listtop, F_DLIST_ELEM *listelem, VOID *p)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_insert_before           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VOID *&nbsp;</td>
+          <td class="paramname"> <em>p</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の直前に新たな要素を挿入 
+<p>
+<em>listelem</em> に指定された要素の直前に新たな要素を追加します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>p</em>&nbsp;</td><td>挿入するデータのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5fb4bc8a20c35e693462bb0b39627f75"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_remove_after" ref="g5fb4bc8a20c35e693462bb0b39627f75" args="(F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_remove_after           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の直後の要素を削除 
+<p>
+<em>listelem</em> に指定された要素の直後の要素を削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+指定された要素の後ろに要素がない場合は処理を行わずに正常終了を返します。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0e65888d996140ec71b61a95a1c18587"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_remove_before" ref="g0e65888d996140ec71b61a95a1c18587" args="(F_DLIST_ELEM **listtop, F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_remove_before           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の直前の要素を削除 
+<p>
+<em>listelem</em> に指定された要素の直前の要素を削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+指定された要素の前に要素がない場合は処理を行わずに正常終了を返します。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga6a95af9a1271f0d7858a28d3ee2d0fc"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_remove_all_after" ref="ga6a95af9a1271f0d7858a28d3ee2d0fc" args="(F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_remove_all_after           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の後にある要素全てを削除 
+<p>
+<em>listelem</em> に指定された要素の後にある要素を全て削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+指定された要素の後ろに要素がない場合は処理を行わずに正常終了を返します。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc6a80c2d729632c87a4dea1b2d08ffaa"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_remove_all_before" ref="gc6a80c2d729632c87a4dea1b2d08ffaa" args="(F_DLIST_ELEM **listtop, F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_remove_all_before           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の前にある要素全てを削除 
+<p>
+<em>listelem</em> に指定された要素の前にある要素を全て削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+指定された要素の前に要素がない場合は処理を行わずに正常終了を返します。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g06ceb5183e1fa952d5924b5dedba0355"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_remove_non_designated" ref="g06ceb5183e1fa952d5924b5dedba0355" args="(F_DLIST_ELEM **listtop, F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_remove_non_designated           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素以外を削除 
+<p>
+<em>listelem</em> に指定された要素以外の要素を全て削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge09b6da53443bd9e9a719adf7ca2e772"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_remove" ref="ge09b6da53443bd9e9a719adf7ca2e772" args="(F_DLIST_ELEM **listtop, F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_remove           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素を削除 
+<p>
+<em>listelem</em> に指定された要素を削除します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正のため異常終了</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>要素のポインタはリストに対して有効である必要があります。 <a class="el" href="group__fie__container__dlist.html#g45be6ca56337329870f817101063b0ee" title="指定した要素の要素番号を取得">fnFIE_dlist_find_listelem_idx()</a> を使用すると有効であるかどうかの確認ができます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g45be6ca56337329870f817101063b0ee"></a><!-- doxytag: member="fie_dlist.c::fnFIE_dlist_find_listelem_idx" ref="g45be6ca56337329870f817101063b0ee" args="(F_DLIST_ELEM **listtop, F_DLIST_ELEM *listelem)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dlist_find_listelem_idx           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> **&nbsp;</td>
+          <td class="paramname"> <em>listtop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DLIST__ELEM.html">F_DLIST_ELEM</a> *&nbsp;</td>
+          <td class="paramname"> <em>listelem</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定した要素の要素番号を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listtop</em>&nbsp;</td><td>リスト先頭 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listelem</em>&nbsp;</td><td>指定した要素</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>指定した要素が見つかった場合は、その要素番号を返します。 見つからなかった場合もしくは、入力が不正だった場合は、-1を返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

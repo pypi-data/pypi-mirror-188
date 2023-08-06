@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 画像特徴量計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>画像特徴量計算<br>
+<small>
+[<a class="el" href="group__fie__img__statistics.html">画像統計量</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+画像の特定の領域のみから特徴量を計算したい場合は、 <a class="el" href="group__fie__region__img__feature.html">リージョン処理の画像特徴量計算</a> を参照ください。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__feature.html#ga5dcf83038c95998c4aac51049a16e2a">fnFIE_img_calc_average</a> (FHANDLE himg, DOUBLE *average)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像濃度値の平均計算  <a href="#ga5dcf83038c95998c4aac51049a16e2a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__feature.html#g391db0d938710d136d0317b0b4f90e20">fnFIE_img_calc_similarity</a> (FHANDLE himg1, FHANDLE himg2, FHANDLE hmask, INT mode, DOUBLE *value)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間類似度計算  <a href="#g391db0d938710d136d0317b0b4f90e20"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__feature.html#ga82ad302f1422f159b1972138646b157">fnFIE_img_calc_variance</a> (FHANDLE himg, DOUBLE *variance)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像濃度値の分散計算  <a href="#ga82ad302f1422f159b1972138646b157"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__img__feature.html#g91b4f1f09da6da17d8d6f42008c4a728">fnFIE_img_minmaxdens</a> (FHANDLE himg, DOUBLE *mindens, DOUBLE *maxdens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小最大濃度値計算  <a href="#g91b4f1f09da6da17d8d6f42008c4a728"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="ga5dcf83038c95998c4aac51049a16e2a"></a><!-- doxytag: member="fie_calc_average.c::fnFIE_img_calc_average" ref="ga5dcf83038c95998c4aac51049a16e2a" args="(FHANDLE himg, DOUBLE *average)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_calc_average           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>average</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像濃度値の平均計算 
+<p>
+画像のチャネルごとの濃度値の平均を計算します。<br>
+ チャネル数は最大16チャネルです。<p>
+画像 <em>himg</em> のチャネル番号Nの濃度値の平均はそれぞれ <em>average</em>[N] に格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>入力画像 ( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>average</em>&nbsp;</td><td>濃度値の平均の配列 <br>
+ <em>himg</em> のチャネル数分の配列長が必要です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 ( averageがNULL ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g391db0d938710d136d0317b0b4f90e20"></a><!-- doxytag: member="fie_calc_sad.c::fnFIE_img_calc_similarity" ref="g391db0d938710d136d0317b0b4f90e20" args="(FHANDLE himg1, FHANDLE himg2, FHANDLE hmask, INT mode, DOUBLE *value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_calc_similarity           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間類似度計算 
+<p>
+画像間の類似度を計算します。 入力画像は同じ画像型、チャネル、サイズでなければなりません。 マスクに画像を用いる場合、入力画像と同じサイズの1ch画像でなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg1</em>&nbsp;</td><td>入力画像 ( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg2</em>&nbsp;</td><td>入力画像 ( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>リージョンまたはマスク画像( type: bin, uc8 ) <br>
+ リージョンの場合、リージョンと重なる画素を計算に使用します。 <br>
+ マスク画像の場合、マスク画像がゼロでない画素を計算に使用します。 <br>
+ マスクせず入力画像全体を処理したい場合はNULLを渡します。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>類似度計算モード<ul>
+<li>0 : 差分絶対値総和 SAD ( Sum of Abusolute Difference )</li><li>1 : 差分二乗和 SSD ( Sum of Squared Difference )</li><li>2 : 正規化相互相関 ZNCC ( Zero-means Normalized Cross Correlation ) </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>value</em>&nbsp;</td><td>計算結果</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>類似度計算モード</b></dt><dd><ul>
+<li>0 : SAD <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ value = \sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1}| Img1_{(c,x,y)} - Img2_{(c,x,y)} | \]" src="form_515.png">
+<p>
+</li><li>1 : SSD <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ value = \sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1}( Img1_{(c,x,y)} - Img2_{(c,x,y)} )^2 \]" src="form_516.png">
+<p>
+</li><li>2 : ZNCC <p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} value &amp;=&amp; \frac{ V_{12} }{ \sqrt{ V_{1} \cdot V_{2} } }\\ V_{1} &amp;=&amp; \frac{1}{N}\sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1}( Img1_{(c,x,y)} )^2 - \frac{1}{N^2} \left( SUM_{1} \right)^2\\ V_{2} &amp;=&amp; \frac{1}{N}\sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1}( Img2_{(c,x,y)} )^2 - \frac{1}{N^2} \left( SUM_{2} \right)^2\\ V_{12} &amp;=&amp; \frac{1}{N}\sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1}( Img1_{(c,x,y)} \cdot Img2_{(c,x,y)} ) - \frac{1}{N^2} \left( SUM_{1} \cdot SUM_{2} \right)\\ N &amp;=&amp; channels \cdot width \cdot height\\ SUM_{1} &amp;=&amp; \sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1} Img1_{(c,x,y)}\\ SUM_{2} &amp;=&amp; \sum_{c=0}^{channels-1}\sum_{y=0}^{hight-1}\sum_{x=0}^{width-1} Img2_{(c,x,y)} \end{eqnarray*}" src="form_517.png">
+<p>
+</li></ul>
+</dd></dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>maskにリージョンでも画像でもないオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 正規化相互相関において分散が0の画像が入力されたりマスクで計算すべき領域が消えたりしたなど </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga82ad302f1422f159b1972138646b157"></a><!-- doxytag: member="fie_calc_variance.c::fnFIE_img_calc_variance" ref="ga82ad302f1422f159b1972138646b157" args="(FHANDLE himg, DOUBLE *variance)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_calc_variance           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>variance</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像濃度値の分散計算 
+<p>
+画像のチャネルごとの濃度値の分散を計算します。<br>
+ チャネル数は最大16チャネルです。<br>
+ 入力画像のサイズは幅と高さが共に1ではないものとします。<br>
+ 本関数での分散値は標本分散を計算しています。<br>
+ 画像の総画素数を<em>n</em> 濃度値を<em>x</em> とすると分散値<img class="formulaInl" alt="$ \sigma^2 $" src="form_518.png"> は<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \sigma^2=\frac{1}{n} \sum^{n}_{i=1}x_{i}^{2} - \bar{x}^{2}\]" src="form_519.png">
+<p>
+<p>
+となります。<p>
+画像 <em>himg</em> のチャネル番号Nの濃度値の分散はそれぞれ <em>variance</em>[N] に格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>入力画像 ( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>variance</em>&nbsp;</td><td>濃度値の分散の配列 <br>
+ <em>himg</em> のチャネル数分の配列長が必要です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 ( varianceがNULL ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g91b4f1f09da6da17d8d6f42008c4a728"></a><!-- doxytag: member="fie_img_minmaxdens.c::fnFIE_img_minmaxdens" ref="g91b4f1f09da6da17d8d6f42008c4a728" args="(FHANDLE himg, DOUBLE *mindens, DOUBLE *maxdens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_minmaxdens           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mindens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>maxdens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小最大濃度値計算 
+<p>
+画像のチャネルごとの最小最大濃度値を計算します。<p>
+画像 <em>himg</em> のチャネル番号Nの最大最小濃度値はそれぞれ <em>mindens</em>[N], <em>maxdens</em>[N] に格納されます。 ただし、 <em>himg</em> が F_IMG_RGBQUAD または F_IMG_RGBTRIPLE の場合には、以下のように 濃度値が格納されます。<br>
+<p>
+<em>F_IMG_RGBQUADの場合</em> <br>
+<ul>
+<li><em>mindens</em>[0], <em>maxdens</em>[0] : 赤成分(rgbRed)の最大・最小濃度値</li><li><em>mindens</em>[1], <em>maxdens</em>[1] : 緑成分(rgbGreen)の最大・最小濃度値</li><li><em>mindens</em>[2], <em>maxdens</em>[2] : 青成分(rgbBlue)の最大・最小濃度値</li></ul>
+<p>
+<em>F_IMG_RGBTRIPLEの場合</em> <br>
+<ul>
+<li><em>mindens</em>[0], <em>maxdens</em>[0] : 青成分の最大・最小濃度値</li><li><em>mindens</em>[1], <em>maxdens</em>[1] : 緑成分の最大・最小濃度値</li><li><em>mindens</em>[2], <em>maxdens</em>[2] : 赤成分の最大・最小濃度値</li></ul>
+<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li><em>himg</em> の型が F_IMG_RGBQUAD または F_IMG_RGBTRIPLE である場合には チャネル数は１でなければいけません。</li><li><em>maxdens</em>, <em>mindens</em> には画像 <em>himg</em> のチャネル数分の配列長が必要です。 ただし <em>himg</em> が F_IMG_RGBQUAD の場合には配列長は4以上、 F_IMG_RGBTRIPLE の場合には配列長は３以上必要です。</li><li><em>himg</em> にNULLチャイルド画像が渡された場合はエラーとなり、 F_ERR_INVALID_IMAGE を返します。</li></ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>入力画像 ( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mindens</em>&nbsp;</td><td>最小濃度値の配列 <br>
+ <em>himg</em> のチャネル数分の長さが必要です。<br>
+ <em>himg</em> がF_IMG_RGBQUADの場合には長さ４以上の配列、F_IMG_RGBTRIPLE型の場合には長さ３以上の配列を指定してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>maxdens</em>&nbsp;</td><td>最大濃度値の配列 <br>
+ <em>himg</em> のチャネル数分の長さが必要です。<br>
+ <em>himg</em> がF_IMG_RGBQUADの場合には長さ４以上の配列、F_IMG_RGBTRIPLE型の場合には長さ３以上の配列を指定してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

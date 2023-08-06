@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 3.6.0</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel3_6_0">release 3.6.0 </a></h1><div style="text-align:right">2020/04/07</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel3_6_0.html#fie3_6_0">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie3_6_0">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">FIE関数の追加</h3>
+<p>
+<h3 class="relnote_sub">画像フィルタ：フィルタ全般</h3>
+<p>
+<ul>
+<li>ウィーナフィルタによる画像復元 / <a class="el" href="group__fie__filter.html#g65579ed62534ebb36cb37f86d64e7193" title="ウィーナフィルタによる画像復元">fnFIE_wiener()</a></li><li>Inf(無限大)を数値に置き換える / <a class="el" href="group__fie__filter.html#gfc206af2977187465a865c37192a57f1" title="Inf(無限大)を数値に置き換える">fnFIE_replace_inf()</a></li><li>NaN( 非数 )を数値に置き換える / <a class="el" href="group__fie__filter.html#gb060832ca0c76b163ef4c66ad073e7b4" title="NaN( 非数 )を数値に置き換える">fnFIE_replace_nan()</a></li></ul>
+<p>
+<h3 class="relnote_sub">画像フィルタ：高速フーリエ変換</h3>
+<p>
+<ul>
+<li>splitted format の複素数画像間の乗算 / <a class="el" href="group__fie__fft.html#gdd96153fe4b8fa227713cacd732ce4e3" title="splitted format の複素数画像間の乗算">fnFIE_fft2_mul_DDtoDD()</a></li><li>splitted format の複素数画像間の除算 / <a class="el" href="group__fie__fft.html#gfce529e81854e989a727e13e610a077e" title="splitted format の複素数画像間の除算">fnFIE_fft2_div_DDtoDD()</a></li></ul>
+<p>
+<h3 class="relnote">機能追加および、変更</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__fpm__feature.html#g935b7be5bfed9ce5d7510d2db555946f" title="特徴量のマスク">fnFIE_fpm_feature_mask()</a>, <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a>, <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a>, <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a><ul>
+<li>特定環境でのFPM高速化</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__edge__detector.html#gf3f049059fb7b65fdb023875f4d535e5" title="相関エッジフィルタを利用したエッジ検出">fnFIE_edge_corr()</a>, <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix()</a><ul>
+<li>処理を高速化</li><li>画像型 F_IMG_S16, F_IMG_US16, F_IMG_DOUBLE に新規対応</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#696 #715 <a class="el" href="group__fie__histogram.html#g29e38794ce3eb94c4616092a035cddf0" title="画像ヒストグラム作成">fnFIE_make_histogram()</a><ul>
+<li>ヒストグラム生成の処理速度向上</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__image.html#g90c008bc8b33aac5b443b16e714f3d4b" title="チャイルド画像をルート画像へ割り当てる">fnFIE_img_child_attach()</a>, <a class="el" href="group__fie__image.html#gd289152b7f5861a193eb6ab45253d16f" title="チャイルド画像をルート画像へ割り当てる">fnFIE_img_child_attach_single_ch()</a>, <a class="el" href="group__fie__image.html#g6a41b453f862196468fb2b8b6fcf20ba" title="チャイルド画像のルート画像への割り当てを解除(NULLチャイルド画像にす...">fnFIE_img_child_detach()</a><ul>
+<li>特定環境においてチャイルド画像割り当てを高速化</li></ul>
+</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#g619e1dfb25b7e82af69da263bfb6ed8f" title="median filter with variable filtering window">fnFIE_medianMxN()</a><ul>
+<li>画像型が F_IMG_DOUBLE かつフィルタの幅と高さがともに3の場合において処理を高速化</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>#638 <a class="el" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp()</a><ul>
+<li>24bit カラー ビットマップ画像保存時、ヘッダ情報にあった不具合を修正</li></ul>
+</li><li>#708 <a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba" title="FPM画像オブジェクトからのマッチング実行">fnFIE_fpm_matching_image()</a>, <a class="el" href="group__fie__fpm__match.html#gc83e6c4b140ac81e8d95c0526bb41e48" title="FPM特徴量オブジェクトからのマッチング実行">fnFIE_fpm_matching_feature()</a>, <a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0" title="一連のマッチング実行">fnFIE_fpm_matching()</a><ul>
+<li>高速モードのサーチ中、特徴点が極めて少ない場合にメモリ不足エラーが発生することがあった問題を修正</li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#709 <a class="el" href="group__fie__edge__detector.html#g9bf56aaaf7fe4912bdb2a0a340b60996" title="ソーベルフィルタを利用したエッジ検出">fnFIE_edge_sobel()</a>, <a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a>, <a class="el" href="group__fie__edge__detector.html#gf3f049059fb7b65fdb023875f4d535e5" title="相関エッジフィルタを利用したエッジ検出">fnFIE_edge_corr()</a>, <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix()</a><ul>
+<li>検出エッジ数0でも強度画像を出力するように修正　従来は元の画像を保持していた</li></ul>
+</li><li>#710 <a class="el" href="group__fie__pseudo__color.html#gba73c96c85b4ac23310630d36b1ca8fa" title="疑似カラー表示用マップ生成">fnFIE_make_pseudo_colormap()</a>, <a class="el" href="group__fie__pseudo__color.html#g336a597f8d162daacec170cf21690818" title="疑似カラー表示用マップ生成(double版)">fnFIE_make_pseudo_colormap_dbl()</a><ul>
+<li>一部の虹色疑似カラーマップ生成で範囲外メモリアクセスを解消</li><li>一部の虹色疑似カラーマップ生成で結果が変化することがあった不具合を修正</li></ul>
+</li><li>#711 <a class="el" href="group__fie__math__matrix__lalgebra.html#g3449efe8a42fd0d2281792523e94d89c" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  行列のコレス...">fnFIE_mat_chol()</a><ul>
+<li>不正な引数を入力した場合にエラーメッセージが表示されることがあった不具合を修正</li></ul>
+</li><li>#712 <a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b" title="グレイサーチパターンオブジェクトの生成">fnFIE_gs2_pattern_alloc()</a>, <a class="el" href="group__fie__gs2__main.html#gf9841a022b06e4863006dac3edcd1f59" title="グレイサーチの実行">fnFIE_gs2_search()</a>, <a class="el" href="group__fie__gs2__main.html#gf2b05b7b2e49b5e2326fe60cb7c4bd5d" title="[非推奨]グレイサーチの実行（圧縮度を強制する版）">fnFIE_gs2_search_enforce()</a>, <a class="el" href="group__fie__gs2__main.html#g772a7f230cfa987c5f20e22cceffe39d" title="グレイサーチの実行（圧縮度を強制する版２：サブピクセル推定近傍指定...">fnFIE_gs2_search_enforce2()</a>, <a class="el" href="group__fie__std__operation.html#g08defee9068bf4fb47e1b4dbac364f4e" title="1/N画像圧縮">fnFIE_img_shrink()</a><ul>
+<li>一部環境で他環境と異なる画像ピラミッドや圧縮画像を生成していた不具合を修正</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">ドキュメント修正</h3>
+<p>
+<ul>
+<li>#589 無名だった列挙型を命名（ボーダー処理モード、sobelの計算モード、線(曲線)抽出フィルタの抽出する線の種類）</li><li>#621 円近似 <a class="el" href="group__fie__cg__fitting.html#g86dac7f4f2b292fc1d1fcfa96e74eed7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  点群からの円...">fnFIE_fit_circle2()</a> などのドキュメント誤りを修正 (入力点群の個数制限等)</li><li>#699 ２値ブローブ解析の特徴量一覧表で、単色解析モードで計算可能な特徴量の一部が計算不可と表記されていたので修正</li><li><a class="el" href="group__fie__filter__arithm.html#g63a8817c2292d4bf3c9350d89efd92ba" title="画像間除算">fnFIE_img_div()</a> <a class="el" href="group__fie__filter__arithm.html#g9b70bd808b5a1b0645bf670e9c3cff4e" title="定数と画像の除算">fnFIE_img_div_const2()</a> ドキュメントの引数にあった誤字を修正</li><li><a class="el" href="group__fie__img__draw.html#g862787acd9a7fc7efec46816c6090a8c" title="長方形の描画">fnFIE_draw_rect()</a> 回転角の単位がラジアンであることを明記</li><li><a class="el" href="group__fie__modelview.html#gfbe4f50e09a43a308cc31fe3df35a3e7" title="点群の変換係数の算出による、座標系変換行列の生成">fnFIE_modelview_set_points()</a> 点群が同一直線状に並んだ際の挙動を明記</li><li><a class="el" href="group__fie__edge__1d__detector.html#g0a94878e8e9a663c371ade960de0b48c" title="計測ライン(線分)上からの複数エッジ点の検出">fnFIE_edge1d_line2()</a> などにおいて、エッジ取得間隔はエッジ方向が等しいエッジ同士にのみ適用されることを明記</li><li>ドキュメントグループ 「画像フィルタ：FFT変換」の表記を「画像フィルタ：高速フーリエ変換」に変更</li><li>高速フーリエ変換のドキュメントにて interleaved format 形式の画像を <a class="el" href="group__fie__std__operation.html#ge20b5a6ac1a6deb2fb045ebf51e971f2" title="複数チャネル画像のパッキング関数">fnFIE_packing_ch()</a> により作成できることを追記</li><li>高速フーリエ変換のサンプルコードを追加</li><li>相関エッジフィルタのドキュメントを改善</li><li>FPM高精度ポーズ推定のドキュメントを改善</li><li>画像オブジェクトの誤字修正、関数リンク追加</li><li>サンプルコード一覧の修正</li><li>FIE for Linux のための使用法を追加 </li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

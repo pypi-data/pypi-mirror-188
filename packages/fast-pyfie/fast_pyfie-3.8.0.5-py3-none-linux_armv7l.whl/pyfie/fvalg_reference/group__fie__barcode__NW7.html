@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: NW-7 (CODABAR)</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>NW-7 (CODABAR)<br>
+<small>
+[<a class="el" href="group__fie__barcode__doc.html">仕様</a>]</small>
+</h1><div align="center">
+<img src="barcode_NW7.png" alt="barcode_NW7.png">
+</div>
+<p>
+<hr>
+ <dl class="user" compact><dt><b>目次:</b></dt><dd><ul>
+<li><a class="el" href="group__fie__barcode__NW7.html#barcode_NW7_Outline">概要</a> </li>
+<li><a class="el" href="group__fie__barcode__NW7.html#barcode_NW7_Structure">構成</a> </li>
+<li><a class="el" href="group__fie__barcode__NW7.html#barcode_NW7_CharCode">文字コード表</a> </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd></dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_NW7_Outline">
+概要</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd>NW-7 は、２値（ナロー幅、ワイド幅）のスペースとバーで構成されます。 ７本（４本のバーと３本のスペース）で１文字を表します。 スタート・ストップコードは、各４種類（a,b,c,d）の組み合わせで16種類あります。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><b>特徴:</b><br>
+ <table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey">使用可能な文字 </td><td>０～９の数字、記号（- $ : / . +）  </td></tr>
+<tr>
+<td class="indexkey">桁数 </td><td>任意  </td></tr>
+<tr>
+<td class="indexkey">１文字の構成 </td><td>７本（４本のバーと３本のスペース）  </td></tr>
+<tr>
+<td class="indexkey">バーの太さ </td><td>２値（ナロー幅／ワイド幅）  </td></tr>
+<tr>
+<td class="indexkey">チェックデジット </td><td>不要  </td></tr>
+</table>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_NW7_Structure">
+構成</a></h2>
+<dl class="user" compact><dt><b></b></dt><dd>下図は、『12345678』を表しています。 </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ol type=1>
+<li>マージンは、ナロー幅の１０倍以上が必要です。</li><li>スタート・ストップコードは、各４種類（a,b,c,d）の組み合わせで16種類あります。</li><li>データフィールドは可変長です。 </li></ol>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><div align="center">
+<img src="barcode_NW7_structure.png" alt="barcode_NW7_structure.png">
+</div>
+ </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b>スペースとバー:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center" colspan="2">スペース </td><td class="indexkey" align="center" colspan="2">バー  </td></tr>
+<tr>
+<td class="indexkey" align="center">ナロー幅 </td><td class="indexkey" align="center">ワイド幅 </td><td class="indexkey" align="center">ナロー幅 </td><td class="indexkey" align="center">ワイド幅  </td></tr>
+<tr>
+<td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+0  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#FFFFFF" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+1  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+0  </td><td align="center"><table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp; </td><td align="center" bgcolor="#000000" bordercolor="#3F3F3F">&nbsp;  </td></tr>
+</table>
+1   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>スタート・ストップコード:</b></dt><dd></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>スタート・ストップコードは、各４種類（a,b,c,d）の組み合わせで１６種類あります。 下図の赤色で示すバーがスタートコード(左端)とストップコード(右端)です。<br>
+ <br>
+ <table border="0" cellspacing="0" cellpadding="0" class="pretable">
+<tr>
+<td valign="top"><b>LABEL-a:</b> </td><td><div align="center">
+<img src="barcode_NW7_start_stop_a.png" alt="barcode_NW7_start_stop_a.png">
+</div>
+   </td></tr>
+<tr>
+<td valign="top"><b>LABEL-c:</b> </td><td><div align="center">
+<img src="barcode_NW7_start_stop_b.png" alt="barcode_NW7_start_stop_b.png">
+</div>
+   </td></tr>
+<tr>
+<td valign="top"><b>LABEL-c:</b> </td><td><div align="center">
+<img src="barcode_NW7_start_stop_c.png" alt="barcode_NW7_start_stop_c.png">
+</div>
+   </td></tr>
+<tr>
+<td valign="top"><b>LABEL-d:</b> </td><td><div align="center">
+<img src="barcode_NW7_start_stop_d.png" alt="barcode_NW7_start_stop_d.png">
+</div>
+   </td></tr>
+</table>
+</dd></dl>
+<hr>
+ <h2><a class="anchor" name="barcode_NW7_CharCode">
+文字コード表</a></h2>
+下表に、NW-7 で表現可能な文字を示します。<p>
+<ol type=1>
+<li>LABEL-a,b,c,d は、スタート・ストップコードを意味します。 本ライブラリでは文字として取得できません。</li><li>RawData の覧は、ライブラリが返す『生データ』を意味します。</li></ol>
+<p>
+<table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">RawData </td><td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">ウェイト  </td></tr>
+<tr>
+<td align="center">0</td><td align="center">0</td><td align="center">0000011 </td></tr>
+<tr>
+<td align="center">1</td><td align="center">1</td><td align="center">0000110 </td></tr>
+<tr>
+<td align="center">2</td><td align="center">2</td><td align="center">0001001 </td></tr>
+<tr>
+<td align="center">3</td><td align="center">3</td><td align="center">1100000 </td></tr>
+<tr>
+<td align="center">4</td><td align="center">4</td><td align="center">0010010 </td></tr>
+<tr>
+<td align="center">5</td><td align="center">5</td><td align="center">1000010 </td></tr>
+<tr>
+<td align="center">6</td><td align="center">6</td><td align="center">0100001 </td></tr>
+<tr>
+<td align="center">7</td><td align="center">7</td><td align="center">0100100 </td></tr>
+<tr>
+<td align="center">8</td><td align="center">8</td><td align="center">0110000 </td></tr>
+<tr>
+<td align="center">9</td><td align="center">9</td><td align="center">1001000 </td></tr>
+<tr>
+<td align="center">10</td><td align="center">-</td><td align="center">0001100 </td></tr>
+<tr>
+<td align="center">11</td><td align="center">$</td><td align="center">0011000 </td></tr>
+<tr>
+<td align="center">12</td><td align="center">/</td><td align="center">1010001 </td></tr>
+<tr>
+<td align="center">13</td><td align="center">:</td><td align="center">1000101 </td></tr>
+<tr>
+<td align="center">14</td><td align="center">+</td><td align="center">0010101 </td></tr>
+<tr>
+<td align="center">15</td><td align="center">.</td><td align="center">1010100 </td></tr>
+</table>
+<p>
+<table border="1" cellspacing="0" cellpadding="3" class="pretable">
+<tr>
+<td class="indexkey" align="center">RawData </td><td class="indexkey" align="center">文字 </td><td class="indexkey" align="center">ウェイト </td><td class="indexkey" align="center">意味  </td></tr>
+<tr>
+<td align="center">16</td><td align="center">a </td><td align="center">0011010</td><td align="center">LABEL-a </td></tr>
+<tr>
+<td align="center">17</td><td align="center">b </td><td align="center">0101001</td><td align="center">LABEL-b </td></tr>
+<tr>
+<td align="center">18</td><td align="center">c </td><td align="center">0001011</td><td align="center">LABEL-c </td></tr>
+<tr>
+<td align="center">19</td><td align="center">d </td><td align="center">0001110</td><td align="center">LABEL-d </td></tr>
+</table>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

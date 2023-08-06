@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: リージョン&lt;-&gt;画像変換</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>リージョン&lt;-&gt;画像変換<br>
+<small>
+[<a class="el" href="group__fie__region__base.html">リージョン処理</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94">fnFIE_region_decode</a> (FHANDLE hreg, FHANDLE himg, <a class="el" href="structPNT__T.html">PNT_T</a> offset, DOUBLE dens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リージョンを画像に描画する  <a href="#g29393624aea303cf1a902418206b7b94"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__coding.html#gf7dceb88d05e22b5bbb6ac9be798211b">fnFIE_region_encode</a> (FHANDLE himg, <a class="el" href="structPNT__T.html">PNT_T</a> offset)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像からREGIONを抽出する  <a href="#gf7dceb88d05e22b5bbb6ac9be798211b"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g29393624aea303cf1a902418206b7b94"></a><!-- doxytag: member="fie_region_coding.c::fnFIE_region_decode" ref="g29393624aea303cf1a902418206b7b94" args="(FHANDLE hreg, FHANDLE himg, PNT_T offset, DOUBLE dens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_decode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リージョンを画像に描画する 
+<p>
+画像 <em>himg</em> に リージョン <em>hreg</em> を濃度値 <em>dens</em> で描画します。 リージョンの領域外は濃度を変更せずに、元の画像の状態を保持します。 必要であれば事前に画像をクリアして下さい。<p>
+描画先画像は、チャネル数１でなければいけません。<p>
+<em>offset</em> は２値画像の座標の原点を指定するためのパラメータです。 画像(0,0)の画素の座標をいくつと見なすかを設定します（下図参照）。 チャイルド画像に対して描画を行う際に、ルート画像の原点を 座標の原点としたい場合などに利用します。<p>
+<div align="center">
+<img src="measure_offset.png" alt="measure_offset.png">
+<p><strong>Fig. offsetパラメータの説明</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>描画するリージョンオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>描画先画像オブジェクトハンドル( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>描画先画像の原点オフセット </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dens</em>&nbsp;</td><td>描画する濃度値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトハンドルが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf7dceb88d05e22b5bbb6ac9be798211b"></a><!-- doxytag: member="fie_region_coding.c::fnFIE_region_encode" ref="gf7dceb88d05e22b5bbb6ac9be798211b" args="(FHANDLE himg, PNT_T offset)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_region_encode           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>offset</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像からREGIONを抽出する 
+<p>
+２値画像 <em>himg</em> の濃度値１の部分をREGIONにして生成します。<p>
+抽出元画像は、チャネル数１の２値画像(F_IMG_BIN)でなければいけません。<p>
+<em>offset</em> は２値画像の座標の原点を指定するためのパラメータです。 画像(0,0)の画素の座標をいくつと見なすかを設定します（下図参照）。 チャイルド画像からREGIONの抽出を行う際に、ルート画像の原点を 座標の原点としたい場合などに利用します。<p>
+<div align="center">
+<img src="measure_offset.png" alt="measure_offset.png">
+<p><strong>Fig. offsetパラメータの説明</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>抽出元画像( type: bin ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>抽出元画像原点オフセット</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したリージョンオブジェクトのハンドルを返します。 返されたリージョンオブジェクトが不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて オブジェクトを解放して下さい。 パラメータエラー、メモリ不足、ライセンスエラー、または未初期化エラーにより 処理が失敗した場合はNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

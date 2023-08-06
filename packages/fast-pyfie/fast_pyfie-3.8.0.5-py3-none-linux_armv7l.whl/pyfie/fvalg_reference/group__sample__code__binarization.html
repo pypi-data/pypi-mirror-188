@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 2値化 応用例</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>2値化 応用例<br>
+<small>
+[<a class="el" href="group__fie__sample__code__list.html">サンプルコード一覧</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="smp_fie_magic_wand">
+マジックワンド風リージョン取得</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">マジックワンド風のリージョン取得を行うサンプルコードです。</span>
+<span class="comment">指定した座標の色に近い連続領域をリージョンとして取得します。</span>
+<span class="comment">*/</span>
+
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+<span class="comment">//-----------------------------------------------------------------</span>
+<span class="comment">// 関数プロトタイプ</span>
+FHANDLE fnSMP_magic_wand( FHANDLE hsrc, <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> point, DOUBLE band, INT *exerr );
+
+<span class="comment">//-----------------------------------------------------------------</span>
+<span class="comment">// 実装</span>
+<span class="comment">/*</span>
+<span class="comment">マジックワンド風リージョン取得</span>
+<span class="comment"></span>
+<span class="comment">入力画像の指定した座標の画素値に近い画素の連続領域を、リージョンとして取得します。</span>
+<span class="comment"></span>
+<span class="comment">指定座標の画素値を取得し、その画素値と指定したバンド幅に基づいて設定した閾値で二値化</span>
+<span class="comment">処理を行います。そして得た二値画像に対してブローブ解析を行い、指定座標を含むブローブ</span>
+<span class="comment">をリージョンに変換します。閾値設定と二値化処理の説明は下記を参照してください。</span>
+<span class="comment"></span>
+<span class="comment">引数：</span>
+<span class="comment">[in]    hsrc    入力画像 (type: uc8, s16, us16, double, rgbq)</span>
+<span class="comment">                rgbq型の場合、チャネル数1でなければならない</span>
+<span class="comment">[in]    point   指定座標（入力画像に含まれる座標でなければならない）</span>
+<span class="comment">[in]    band    バンド幅（非負の値でなければならない）</span>
+<span class="comment">[out]   *exerr  エラーコード。エラーコードを受け取る必要のない場合は、NULLを指</span>
+<span class="comment">                定します。エラーコードの内容は以下の通りです。</span>
+<span class="comment">    F_ERR_NONE          正常終了</span>
+<span class="comment">    F_ERR_NO_LICENCE    ライセンスエラー、または未初期化エラー</span>
+<span class="comment">    F_ERR_INVALID_IMAGE 入力画像が不正</span>
+<span class="comment">    F_ERR_INVALID_PARAM パラメータが不正</span>
+<span class="comment">    F_ERR_NOMEMORY      メモリ確保失敗</span>
+<span class="comment"></span>
+<span class="comment">戻り値：</span>
+<span class="comment">    正常に終了した場合は、リージョンオブジェクトハンドルを返します。何らかのエラーが</span>
+<span class="comment">    発生し、処理が終了した場合はNULLを返します。exerrパラメータにエラーコード受け</span>
+<span class="comment">    取り先変数のポインタが渡された場合には、正常、異常のどちらの場合もそこにエラーコ</span>
+<span class="comment">    ードを代入して返します。リージョンが不要になったら、fnFIE_free_object()で解</span>
+<span class="comment">    放してください。</span>
+<span class="comment"></span>
+<span class="comment">二値化閾値の設定：</span>
+<span class="comment">    座標(x, y)、チャネルchにおける入力画像の画素値をS(x,y,ch)とします。このとき、</span>
+<span class="comment">    二値化閾値の上下限thigh(ch), tlow(ch)をそれぞれ</span>
+<span class="comment">    thigh(ch) = S(point.x, point.y, ch) + band</span>
+<span class="comment">    tlow(ch) = S(point.x, point.y, ch) - band</span>
+<span class="comment">    とします。またrgbq型は1チャネル画像ですが、3チャネルの画像として閾値を設定します。</span>
+<span class="comment"></span>
+<span class="comment">二値化処理：</span>
+<span class="comment">    入力画像のチャネル数がchsであるとき、二値化画像の座標(x, y)における画素値D(x, y)は</span>
+<span class="comment">        tlow(0) &lt;= S(x, y, 0) &lt;= thigh(0)</span>
+<span class="comment">    &amp;&amp;  tlow(1) &lt;= S(x, y, 1) &lt;= thigh(1)</span>
+<span class="comment">    :</span>
+<span class="comment">    &amp;&amp;  tlow(chs-1) &lt;= S(x, y, chs-1) &lt;= thigh(chs-1)</span>
+<span class="comment">    を満たすときD(x, y)=1、満たさないときD(x, y)=0となります。</span>
+<span class="comment"></span>
+<span class="comment">*/</span>
+FHANDLE fnSMP_magic_wand( FHANDLE hsrc, <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> point, DOUBLE band, INT *exerr )
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    INT channels, type, width, height;
+    INT ch_cur;
+    UINT blobno;
+    DOUBLE *dens = NULL, *tlow = NULL, *thigh = NULL;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+    FHANDLE hbin = NULL;
+    FHANDLE hblob = NULL;
+    FHANDLE hreg = NULL;
+    <a class="code" href="structF__MEASURE__PARAMS.html" title="ブローブ解析処理パラメータ">F_MEASURE_PARAMS</a> params;
+
+    <span class="comment">// ブローブ解析の設定</span>
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#0a4c84e6c664bfca952d4dc3f77a60d7" title="最大ラン数">max_runs</a> = 0;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#e80d394dfb1597dfa49ed2570086c2b5" title="最大ブローブ数">max_blobs</a> = 0;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#67b429aad87d40b3c72bedf3f37588da" title="最大行数">max_rows</a> = 0;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#9ba122ef13d4c79988806461d5484cad" title="対象色モード">color_mode</a> = <a class="code" href="group__fie__measure__main.html#ggfe80b71496c984d9459048d428fcd746c8e9f5985fa0cbac5db07ed4e16a309f" title="前景が白(1)、背景が黒(0)">F_MEASURE_WHITEFG_BLACKBG</a>;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#35810a826947a74b9d854cbbad6b9ffa" title="連結モード">neighborhood</a> = 4;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#77b55a99169e94b52d2418685ced159f" title="事前計算特徴量指定">precalc_features</a> = 0;
+    params.<a class="code" href="structF__MEASURE__PARAMS.html#7378ebf6a0f848b494126c7dc8f2b2f9" title="オーバーフローエラー発生時の結果維持オプション">keep_results_after_overflow</a> = FALSE;
+
+    <span class="comment">//************************</span>
+    <span class="comment">// パラメータチェック</span>
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>( hsrc, &amp;channels, &amp;type, NULL, &amp;width, &amp;height );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// fnFIE_band_threshold_ch()に対応する画像型か</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span> (
+        type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a> &amp;&amp;
+        type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb9ec6eedbfcdfe9ebd46308650f083939" title="符号付き16bit濃淡画像">F_IMG_S16</a> &amp;&amp;
+        type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb63726dfd831e50f091b93b401b6251a1" title="16bit濃淡画像">F_IMG_US16</a> &amp;&amp;
+        type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a> &amp;&amp;
+        type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a>
+        )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// rgbq型はチャネル数1でなければならない</span>
+    <span class="keywordflow">if</span> ( type == <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> &amp;&amp; channels != 1 )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// 指定座標が画像に含まれるか</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> ( point.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> &lt; 0 || width - 1 &lt; point.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> ||
+        point.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> &lt; 0 || height - 1 &lt; point.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// 閾値の上下限が逆転しないか</span>
+    <span class="comment">// なお、閾値が画像型の表現可能な値の範囲を超えたときの処理は、fnFIE_band_threshold_ch()側で行われる</span>
+    <span class="keywordflow">if</span> ( band &lt; 0 )
+        <span class="keywordflow">goto</span> EXIT;
+    <span class="comment">//************************</span>
+
+    <span class="comment">// 入力画像がrgbq型のとき、fnFIE_img_get_subdens()および</span>
+    <span class="comment">// fnFIE_band_threshold_ch()ではチャネル数3分の配列を要求される</span>
+    <span class="keywordflow">if</span> ( type == <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb7d79e4f1a6661afb93dc278bb1e61a8d" title="32bitパッキングカラー画像">F_IMG_RGBQUAD</a> )
+        channels = 3;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    dens  = (DOUBLE*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( channels, <span class="keyword">sizeof</span>( DOUBLE ) );
+    <span class="keywordflow">if</span> ( dens == NULL )
+        <span class="keywordflow">goto</span> EXIT;
+    tlow  = (DOUBLE*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( channels, <span class="keyword">sizeof</span>( DOUBLE ) );
+    <span class="keywordflow">if</span> ( tlow == NULL )
+        <span class="keywordflow">goto</span> EXIT;
+    thigh = (DOUBLE*)<a class="code" href="group__memory__alloc.html#g5fadeb9bbf82477d7ab6bc77dc43e059" title="０クリア済みメモリブロックの割り当て">fnOAL_calloc</a>( channels, <span class="keyword">sizeof</span>( DOUBLE ) );
+    <span class="keywordflow">if</span> ( thigh == NULL )
+        <span class="keywordflow">goto</span> EXIT;
+    hbin = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb8e708cf83f7fd2942b40f45fec46da92" title="２値画像(1bit/1画素)">F_IMG_BIN</a>, 1, width, height );
+    <span class="keywordflow">if</span> ( hbin == NULL )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// 濃度値は最近傍法で取得</span>
+    ret = <a class="code" href="group__fie__std__operation.html#g0985fa53a4dac8efb83c69c56bbe3e2b" title="指定座標の濃度値取得(補間付き)">fnFIE_img_get_subdens</a>( hsrc, (DOUBLE)point.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>, (DOUBLE)point.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e14f07e347ff74354ebf9cfcf72f51306" title="最近傍法">F_SAMPLING_NN</a>, dens );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// 閾値の設定はチャネルごとに行う</span>
+    <span class="keywordflow">for</span> ( ch_cur = 0; ch_cur &lt; channels; ch_cur++ )
+    {
+        tlow[ch_cur]  = dens[ch_cur] - band;
+        thigh[ch_cur] = dens[ch_cur] + band;
+    }
+
+    <span class="comment">// back_clear=TRUE: 閾値の指定範囲外になる画素は0クリア </span>
+    ret = <a class="code" href="group__fie__threshold.html#gccacc1973605b68ef276319a97528bae" title="２つの固定しきい値を用いたセグメンテーション処理">fnFIE_band_threshold_ch</a>( hsrc, hbin, tlow, thigh, TRUE );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    hblob = <a class="code" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute</a>( hbin, offset, &amp;params, &amp;ret );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__measure__feature.html#g7264fa3e4e2540b835c5225e3888bd7d" title="座標(x,y)の位置のブローブ番号取得">fnFIE_measure_get_blobno_on_xy</a>( hblob, point.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>, point.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>, &amp;blobno );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    hreg = <a class="code" href="group__fie__measure__result.html#g215dbd234382563737797dfbd76c03d7" title="REGION取得">fnFIE_measure_get_region</a>( hblob, blobno, &amp;ret );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( tlow );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( thigh );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( dens );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hbin );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hblob );
+
+    <span class="keywordflow">if</span> ( exerr != NULL )
+        *exerr = ret;
+
+    <span class="keywordflow">return</span> hreg;
+}
+
+<span class="comment">//-----------------------------------------------------------------</span>
+<span class="comment">// 実行サンプル</span>
+<span class="keyword">static</span> INT execute()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    DOUBLE band;
+    FHANDLE hsrc = NULL;
+    FHANDLE hreg = NULL;
+    FHANDLE hresult = NULL;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> point;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> offset;
+
+    <span class="comment">// マジックワンド用パラメータ</span>
+    <span class="comment">// 指定座標</span>
+    point.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 130;
+    point.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 60;
+    <span class="comment">// バンド幅</span>
+    band = 30;
+
+    <span class="comment">// 画像読込</span>
+    <span class="comment">// 適宜目的の画像に置き換えてください</span>
+    ret = <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"src.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// メインサンプル実行</span>
+    hreg = fnSMP_magic_wand( hsrc, point, band, &amp;ret );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">// 取得したリージョンを画像に変換して確認</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    hresult = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(
+        <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>,
+        1,
+        <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc ),
+        <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc )
+    );
+    <span class="keywordflow">if</span> ( hresult == NULL )
+        <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>( hresult, 0 );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    offset.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    offset.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    ret = <a class="code" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode</a>( hreg, hresult, offset, 255 );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>( <span class="stringliteral">"region.bmp"</span>, hresult );
+    <span class="keywordflow">if</span> ( ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> )
+        <span class="keywordflow">goto</span> EXIT;
+
+EXIT:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hreg );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hresult );
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = execute();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>
