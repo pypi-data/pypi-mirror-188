@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "adrenaline"
+version = "1.1.0"
+description = "Keep your OS from sleeping (supports Windows and macOS)"
+authors = ["Tamas Nepusz <ntamas@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/ntamas/adrenaline"
+repository = "https://github.com/ntamas/adrenaline"
+packages = [
+    { include = "adrenaline", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pyobjc-core = {platform = "darwin", version = "^9.0.1"}
+pyobjc-framework-Cocoa = {platform = "darwin", version = "^9.0.1"}
+setuptools = {platform = "darwin", version = "^67"}
+jeepney = {platform = "linux", version = "^0.8.0"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.1"
+coverage = {extras = ["toml"], version = "^7.1.0"}
+pytest-cov = "^4.0.0"
+tox = "^4.4.3"
+typing-extensions = {version = "^4.4.0", python = "<3.8"}
+
+[tool.poetry.scripts]
+adrenaline = "adrenaline.__main__:main"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.coverage.paths]
+source = ["src"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
