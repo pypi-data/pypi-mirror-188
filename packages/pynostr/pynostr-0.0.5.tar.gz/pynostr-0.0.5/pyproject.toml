@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["pynostr"]
+
+[project]
+name = "pynostr"
+authors = [
+  { name="Holger Nahrstaedt", email="nahrstaedt@gmail.com" },
+]
+description = "Python Library for nostr."
+keywords = ["nostr"]
+urls = { Homepage = "https://github.com/holgern/pynostr" }
+readme = "README.md"
+requires-python = ">3.7.0"
+dependencies = [
+    "coincurve>=1.8.0",
+    "cryptography",
+    "tlv8",
+    "click"
+]
+license = {file = "LICENSE"}
+classifiers=[
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: MacOS :: MacOS X',
+]
+
+dynamic=["version"]
+
+[tool.setuptools_scm]
+write_to = "pynostr/_version.py"
+
+[project.scripts]
+pynostr = "pynostr.cli:main"
+
+[project.optional-dependencies]
+test = [
+  "pytest >=7.2.0",
+  "pytest-cov[all]"
+]
