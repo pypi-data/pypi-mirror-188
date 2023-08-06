@@ -1,0 +1,17 @@
+# How to use
+In version 1.0.2 of anime-wallpaper there are only two use cases:
+___
+### Generate Wallpaper:
+
+		import anime_wallpaper
+		
+		print(anime_wallpaper.wallpaper())
+### Output:
+	https://images8.alphacoders.com/872/872837.jpg
+___
+### Generate Wallpaper with discord webhook:
+		import anime_wallpaper
+		
+		anime_wallpaper.imageWebhook("Your discord webhook here")
+### Output in discord:
+![enter image description here](https://cdn.discordapp.com/attachments/1069718308435263498/1070040906583003246/image.png)
