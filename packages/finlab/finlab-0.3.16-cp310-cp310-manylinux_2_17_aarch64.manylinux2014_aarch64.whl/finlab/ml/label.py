@@ -1,0 +1,24 @@
+import pandas as pd
+from collections.abc import Iterable
+from finlab import ml
+from finlab.market_info import MarketInfo, TWMarketInfo
+from typing import Optional
+from finlab.ml.utils import resampler
+
+def create_pct_change(index: pd.Index, resample=None, period=1, market:Optional[MarketInfo]=TWMarketInfo(), **kwargs):
+
+    if market is None:
+        market = ml.market
+
+    assert market is not None
+
+    adj = market.get_price('close', adj=True).shift(-1)
+    uadj = resampler(adj, resample, **kwargs)
+    return (uadj.shift(-period) / uadj).unstack().reindex(index)
+
+
+
+
+
+
+
