@@ -1,0 +1,9 @@
+# Contributing to ConvertColour
+
+## <img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/light/color-fg-default/bug-24.svg#gh-light-mode-only" alt=""></img><img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/dark/color-fg-default/bug-24.svg#gh-dark-mode-only" alt=""></img>Reporting a Bug
+
+## <img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/light/color-fg-default/plus-24.svg#gh-light-mode-only" alt=""></img><img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/dark/color-fg-default/plus-24.svg#gh-dark-mode-only" alt=""></img>Requesting a Feature
+
+## <img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/light/color-fg-default/code-square-24.svg#gh-light-mode-only" alt=""></img><img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/dark/color-fg-default/code-square-24.svg#gh-dark-mode-only" alt=""></img>Contributing Code
+
+## <img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/light/color-fg-default/typography-24.svg#gh-light-mode-only" alt=""></img><img width="24" style="vertical-align: bottom; margin-right: 7px;" src="https://github.com/Pigeon43/GitHub-icons/blob/main/dark/color-fg-default/typography-24.svg#gh-dark-mode-only" alt=""></img>Translations
