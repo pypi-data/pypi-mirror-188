@@ -1,0 +1,177 @@
+// Calling `pwsh` first leverages my personal $PROFILE to activate `.venv`.
+// Alternatively, we could use `.venv/Scripts/python.exe` and change the `args`, but
+// this is platform-specific anyways.
+
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "board",
+      "type": "pickString",
+      "description": "board",
+      "default": "",
+      "options": [
+        "Detect bubbles",
+        "Get a job",
+        "Keep up",
+        "Process data",
+        "Run experiment",
+        "Simulate bubbles",
+        "Write dissertation"
+      ]
+    },
+    {
+      "id": "card",
+      "type": "promptString",
+      "description": "card"
+    },
+    {
+      "id": "days",
+      "type": "promptString",
+      "description": "days",
+      "default": "0"
+    }
+  ],
+  "tasks": [
+    // * -------------------------------------------------------------------------- * //
+    // * PROJECT-SPECIFIC * //
+    {
+      "label": "proj: Generate report",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "lookback generate-report --days=7"],
+      "problemMatcher": []
+    },
+    {
+      "label": "proj: Get comments from task",
+      "type": "process",
+      "command": "pwsh",
+      "args": [
+        "-Command",
+        "lookback get-comments '${input:board}' '${input:card}' --days=${input:days}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "proj: Generate model",
+      "type": "process",
+      "command": "pwsh",
+      "args": [
+        "-Command",
+        "lookback generate-model 'G:/My Drive/Blake/School/Grad/Time Tracking/Trello/JSON/Latest/c1tDMXSa.json' src/lookback/model.py"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "proj: Generate schema",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "lookback generate-schema"],
+      "problemMatcher": []
+    },
+
+    // * -------------------------------------------------------------------------- * //
+    // * GIT * //
+    {
+      "label": "git: Rebase back to fork",
+      "type": "process",
+      "command": "git",
+      "args": ["rebase", "-i", "--fork-point", "main"],
+      "problemMatcher": []
+    },
+
+    // * -------------------------------------------------------------------------- * //
+    // * PROJECT SETUP * //
+    {
+      "label": "setup: Initialize template",
+      "type": "process",
+      "command": "pwsh",
+      "args": [".tools/scripts/init_template.ps1"],
+      "problemMatcher": []
+    },
+    {
+      "label": "setup: Setup project",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["setup.ps1"],
+      "problemMatcher": []
+    },
+    {
+      "label": "setup: Update project",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["update.ps1"],
+      "problemMatcher": []
+    },
+
+    // * -------------------------------------------------------------------------- * //
+    // * PRE-COMMIT * //
+
+    {
+      "label": "pre-commit: All files",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "pre-commit run --all-files"],
+      "problemMatcher": []
+    },
+
+    // * -------------------------------------------------------------------------- * //
+    // * OTHER TASKS * //
+
+    {
+      "label": "task: sphinx-autobuild docs (preview)",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "sphinx-autobuild docs _site"],
+      "problemMatcher": []
+    },
+    {
+      "label": "task: snakeviz",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "snakeviz .prof"],
+      "problemMatcher": []
+    },
+    {
+      "label": "task: autoflake current file",
+      "type": "process",
+      "command": "pwsh",
+      "args": [
+        "-Command",
+        "autoflake -i --remove-all-unused-imports --ignore-init-module-imports ${file}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "task: pytest-cov: Generate coverage",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "pytest --cov --cov-report xml"],
+      "problemMatcher": []
+    },
+    {
+      "label": "task: Remove *.rej",
+      "type": "process",
+      "command": "pwsh",
+      "args": [
+        "-Command",
+        "Get-ChildItem -Recurse -Filter *.rej | Remove-Item"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "task: black: Ignore magic comma in this file",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "black -C ${file}"],
+      "problemMatcher": []
+    },
+    {
+      "label": "task: black: Ignore magic comma in all project files",
+      "type": "process",
+      "command": "pwsh",
+      "args": ["-Command", "black -C src tests"],
+      "problemMatcher": []
+    }
+  ]
+}
