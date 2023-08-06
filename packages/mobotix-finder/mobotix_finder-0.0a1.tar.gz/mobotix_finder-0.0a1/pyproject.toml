@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.11.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mobotix-finder"
+description = "Mobotix camera finder using ZoomEye"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Hannah Einstein", email = "hannah.a.einstein@gmail.com" }]
+keywords = ["zoomeye", "mobotix", "camera", "security"]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "beautifulsoup4==4.11.1",
+    "html5lib==1.1",
+    "python-dotenv==0.21.1",
+    "requests>=2.26.0",
+    "tqdm==4.64.1",
+    "zoomeye==2.1.2",
+]
+requires-python = ">=3.10"
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["hatch", "wheel", "ipython", "black", "isort"]
+
+[project.urls]
+Homepage = "https://github.com/egginabucket/mobotix-finder"
+
+[project.scripts]
+find-mobotix = "mobotix_finder.find_mobotix:main"
+
+[tool.hatch.version]
+path = "src/mobotix_finder/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mobotix_finder"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
