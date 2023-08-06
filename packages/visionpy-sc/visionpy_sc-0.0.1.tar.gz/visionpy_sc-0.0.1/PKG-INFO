@@ -1,0 +1,138 @@
+Metadata-Version: 2.1
+Name: visionpy-sc
+Version: 0.0.1
+Summary: Signature Analysis and Visualization for Single-Cell RNA-seq
+Project-URL: Documentation, https://visionpy.readthedocs.io/
+Project-URL: Source, https://github.com/yoseflab/visionpy
+Project-URL: Home-page, https://github.com/yoseflab/visionpy
+Author: Adam Gayoso
+Maintainer-email: Adam Gayoso <adamgayoso@berkeley.edu>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2021, Yosef Lab
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+License-File: LICENSE
+Requires-Python: >=3.8
+Requires-Dist: anndata
+Requires-Dist: click
+Requires-Dist: flask
+Requires-Dist: flask-compress
+Requires-Dist: leidenalg
+Requires-Dist: rich
+Requires-Dist: scanpy
+Provides-Extra: dev
+Requires-Dist: bump2version; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Provides-Extra: doc
+Requires-Dist: ipykernel; extra == 'doc'
+Requires-Dist: ipython!=8.7.0; extra == 'doc'
+Requires-Dist: myst-nb; extra == 'doc'
+Requires-Dist: scanpydoc[typehints]>=0.7.4; extra == 'doc'
+Requires-Dist: sphinx-book-theme; extra == 'doc'
+Requires-Dist: sphinx-copybutton; extra == 'doc'
+Requires-Dist: sphinx<5.3,>=4; extra == 'doc'
+Requires-Dist: sphinxcontrib-bibtex>=1.0.0; extra == 'doc'
+Provides-Extra: test
+Requires-Dist: black; extra == 'test'
+Requires-Dist: flake8; extra == 'test'
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Description-Content-Type: text/markdown
+
+<img src="https://raw.githubusercontent.com/YosefLab/VISION/master/man/figures/logo.svg" align="right" width="150" />
+
+# Functional Interpretation for <br/> scRNA-seq Data
+
+[![Tests][badge-tests]][link-tests]
+[![Documentation][badge-docs]][link-docs]
+
+[badge-tests]: https://img.shields.io/github/actions/workflow/status/yoseflab/visionpy/test.yaml?branch=main
+[link-tests]: https://github.com/yoseflab/visionpy/actions/workflows/test.yml
+[badge-docs]: https://img.shields.io/readthedocs/visionpy
+
+NOTE: THIS PACKAGE IS UNDER ACTIVE DEVELOPMENT AND IS NOT YET READY FOR USE.
+
+This is a Python port of the VISION [R package](https://github.com/yoseflab/vision). VISION aids in the interpretation of single-cell RNA-seq (scRNA-seq) data by selecting for gene signatures which describe coordinated variation between cells. While the software only requires an expression matrix and a signature library (available in online databases), it is also designed to integrate into existing scRNA-seq analysis pipelines by taking advantage of precomputed dimensionality reductions, trajectory inferences or clustering results. The results of this analysis are made available through a dynamic web-app which can be shared with collaborators without requiring them to install any additional software.
+
+-   [Nature Communications publication](https://www.nature.com/articles/s41467-019-12235-0)
+-   [Full R Documentation](https://yoseflab.github.io/VISION/)
+-   [R package](https://github.com/yoseflab/vision)
+
+## Installing visionpy
+
+You need to have Python 3.8 or newer installed on your system. If you don't have
+Python installed, we recommend installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+
+There are several alternative options to install visionpy:
+
+<!--
+1) Install the latest release of `visionpy` from `PyPI <https://pypi.org/project/visionpy/>`_:
+
+```bash
+pip install visionpy
+```
+-->
+
+1. Install the latest release on PyPI:
+
+```bash
+pip install visionpy-sc
+```
+
+2. Install the latest development version:
+
+```bash
+pip install git+https://github.com/yoseflab/visionpy.git@main
+```
+
+## How to run visionpy
+
+### From the command line
+
+```
+visionpy --adata ./my_adata.h5ad --norm_data_key use_raw --compute_neighbors_on_key X_scvi --name Test Vision
+```
+
+### From Python
+
+```python
+from visionpy.api import start_vision
+from visionpy import signatures_from_gmt
+
+adata.varm["signatures"] = signatures_from_gmt(["./signatures.gmt"], adata)
+start_vision(
+    adata=adata,
+    name="Test Session",
+    norm_data_key="log1pcp10k",
+    compute_neighbors_on_key="X_pca",
+    signture_varm_key="signatures",
+    name="Test Vision",
+)
+```
+
+[link-docs]: https://visionpy.readthedocs.io
