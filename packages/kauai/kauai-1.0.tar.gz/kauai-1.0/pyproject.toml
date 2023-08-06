@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kauai"
+description = "Kauai is a namespace for a collection of Django apps."
+readme = "README.rst"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Stephen Lutes" },
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Framework :: Django",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Typing :: Typed",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+kauai = "kauai:main"
+
+[project.urls]
+Documentation = "https://github.com/stephenlutes/kauai#readme"
+Source = "https://github.com/stephenlutes/kauai"
+
+[tool.hatch.version]
+path = "src/kauai/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pre-commit",
+]
+
+[tool.hatch.envs.default.scripts]
+lint = "pre-commit run"
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "src/kauai/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
