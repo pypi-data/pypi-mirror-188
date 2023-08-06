@@ -1,0 +1,26 @@
+{
+	"name": "DevContainer (can be used for contributing to kubify core)",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"docker-compose.yml"
+	],
+	"service": "kubify",
+	"workspaceFolder": "/var/folders/kubify",
+	"postStartCommand": "make clean && make lint && make help && make security && make package && make coverage && make test", // "kubify up"
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"amazonwebservices.aws-toolkit-vscode",
+				"eamodio.gitlens",
+				"ms-azuretools.vscode-docker",
+				"hashicorp.terraform",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				// "GitHub.copilot-nightly"
+			]
+		}
+	},
+}
