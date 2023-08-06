@@ -1,0 +1,24 @@
+# location_annotation_with_openstreetmap
+Easy-to-use python package for annotating location data with OpenStreetMap Point-of-interest tags
+
+
+The SemanticAnnotator class aims to annotate location data using geofabrik database created by geofabrik_database.py. 
+
+There are three annotation methods:
+    1. annotate_single_point(lat, lon): annotate single point with semantic labels from OpenStreetMap database.
+        - pro: return distances to all POI types 
+        - con: time-consuming (~1 hours/point). Method 3 is recommended for batch of points. 
+    2. annotate_single_shape(lat_list, lon_list): annotate single shape (e.g., bounding box, polygon) with semantic labels from OpenStreetMap database. 
+        - pro: **most accurate method**
+        - con: need a set of points define the query shape
+    3. annotate_batch_points(dataframe, latitude_colname, longitude_colname): annotate a batch of points (usually centroids of places) with semantic labels from OpenStreetMap database.
+        - pro: **fastest method**. Fit for annotating many centroids of places simultaneously. 
+        - con: just return the label of the nearest POI and the distance.   
+    
+This script uses the geodf and dist functions from the GPS2space package (https://gps2space.readthedocs.io/en/latest/).
+
+### Intall
+> pip install osm_annotation
+
+### Example of Method 1
+> 
