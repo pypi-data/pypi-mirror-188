@@ -1,0 +1,58 @@
+{% extends "multitenancy/admin/base.html" %}
+{% load static %}
+{% block page_title %}General Settings{% endblock page_title %}
+
+{%block custom_css%}
+    <link rel="stylesheet" href="{% static 'admin/css/settings.css' %}">
+{%endblock%}
+{%block breadcrumbs%}
+<li class="breadcrumb-item " ><a href="{% url 'settings_index' %}">Settings</a></li>
+<li class="breadcrumb-item active">General Settings</li>
+{% endblock%}
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="list-group">
+            
+            <a href="{% url 'update_logo' %}" class="list-group-item inline-block">
+              <img class="img-thumbnail" src="{{logo.logo.url}}" style="width:100px" alt="Company Logo"/>
+              <h4 class="list-group-item-heading">{{logo}}</h4>
+              <p class="list-group-item-text">
+                {{logo.help_text}}
+              </p>
+            </a>
+            
+            <a href="{% url 'update_info' %}" class="list-group-item">
+              <h4 class="list-group-item-heading">{{info}}</h4>
+              <p class="list-group-item-text">
+                {{info.help_text}}
+              </p>
+            </a>
+            <a href="{% url 'update_address' %}" class="list-group-item">
+                <h4 class="list-group-item-heading">{{address}}</h4>
+                <p class="list-group-item-text">
+                  {{address.help_text}}
+                </p>
+              </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="list-group">
+            <a href="{% url 'update_adminsettings' %}" class="list-group-item">
+              <h4 class="list-group-item-heading">{{admin_settings}}</h4>
+              <p class="list-group-item-text">
+                {{admin_settings.help_text}}
+              </p>
+            </a>
+            
+            
+          </div>
+        </div>
+      </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
