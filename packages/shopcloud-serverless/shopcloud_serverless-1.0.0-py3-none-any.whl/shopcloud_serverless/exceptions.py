@@ -1,0 +1,2 @@
+class ConfigInvalidVersion(Exception):
+    pass
