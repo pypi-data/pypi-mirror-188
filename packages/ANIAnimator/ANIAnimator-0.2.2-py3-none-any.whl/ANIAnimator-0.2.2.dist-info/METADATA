@@ -1,0 +1,152 @@
+Metadata-Version: 2.1
+Name: ANIAnimator
+Version: 0.2.2
+Summary: ANIAnimator makes the GIF file from a given chemical ANI file
+Home-page: https://github.com/eftalgezer/ANIAnimator
+Author: Eftal Gezer
+Author-email: eftal.gezer@astrobiyoloji.org
+Project-URL: Bug Reports, https://github.com/eftalgezer/ANIAnimator/issues
+Project-URL: Source, https://github.com/eftalgezer/ANIAnimator/
+Project-URL: Blog, https://beyondthearistotelian.blogspot.com/search/label/ANIAnimator
+Project-URL: Developer, https://www.eftalgezer.com/
+Keywords: ANI,GIF,animation,molecular calculations,chemistry,physics,ANI to GIF converter
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Education
+Classifier: Topic :: Multimedia :: Graphics :: Graphics Conversion
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.1
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mogli
+Requires-Dist: pillow
+
+# ANIAnimator
+[![PyPI version](https://badge.fury.io/py/ANIAnimator.svg)](https://badge.fury.io/py/ANIAnimator)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/ANIAnimator.svg)](https://pypi.python.org/pypi/ANIAnimator/)
+[![Python package](https://github.com/eftalgezer/ANIAnimator/actions/workflows/python-package.yml/badge.svg)](https://github.com/eftalgezer/ANIAnimator/actions/workflows/python-package.yml)
+[![codecov](https://codecov.io/gh/eftalgezer/ANIAnimator/branch/main/graph/badge.svg?token=Q9TJFIN1U1)](https://codecov.io/gh/eftalgezer/ANIAnimator)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b0a14b0216c4451a8743ebb9712eac64)](https://www.codacy.com/gh/eftalgezer/ANIAnimator/dashboard?utm_source=github.com&utm_medium=referral&utm_content=eftalgezer/ANIAnimator&utm_campaign=Badge_Coverage)
+[![PyPI download month](https://img.shields.io/pypi/dm/ANIAnimator.svg)](https://pypi.python.org/pypi/ANIAnimator/)
+[![PyPI download week](https://img.shields.io/pypi/dw/ANIAnimator.svg)](https://pypi.python.org/pypi/ANIAnimator/)
+[![PyPI download day](https://img.shields.io/pypi/dd/ANIAnimator.svg)](https://pypi.python.org/pypi/ANIAnimator/)
+![GitHub all releases](https://img.shields.io/github/downloads/eftalgezer/ANIAnimator/total?style=flat)
+[![GitHub contributors](https://img.shields.io/github/contributors/eftalgezer/ANIAnimator.svg)](https://github.com/eftalgezer/ANIAnimator/graphs/contributors/)
+[![CodeFactor](https://www.codefactor.io/repository/github/eftalgezer/ANIAnimator/badge)](https://www.codefactor.io/repository/github/eftalgezer/ANIAnimator)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b0a14b0216c4451a8743ebb9712eac64)](https://www.codacy.com/gh/eftalgezer/ANIAnimator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=eftalgezer/ANIAnimator&amp;utm_campaign=Badge_Grade)
+[![PyPI license](https://img.shields.io/pypi/l/ANIAnimator.svg)](https://pypi.python.org/pypi/ANIAnimator/)
+[![DOI](https://zenodo.org/badge/541231117.svg)](https://zenodo.org/badge/latestdoi/541231117)
+
+ANIAnimator makes the GIF file from a given chemical ANI file.
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install ANIAnimator.
+
+```bash
+$ pip install ANIAnimator
+
+# to make sure you have the latest version
+$ pip install -U ANIAnimator
+
+# latest available code base
+$ pip install -U git+https://github.com/eftalgezer/ANIAnimator.git
+```
+
+## Tutorial
+
+- [ANIAnimator v0.0.1 tutorial](https://beyondthearistotelian.blogspot.com/2022/09/anianimator-v001-tutorial.html)
+- [What is new in ANIAnimator v0.1.0?](https://beyondthearistotelian.blogspot.com/2022/10/what-is-new-in-anianimator-v010.html)
+
+## Usage
+
+### In code
+
+#### Simple usage
+
+```python
+ANIAnimator.animate(anifile="graphene.ANI")
+
+```
+
+#### Advance usage
+
+```python
+ANIAnimator.animate(anifile="graphene.ANI", width=1920, height=1080) # defaults are 1920 × 1080, respectively
+
+ANIAnimator.animate(anifile="graphene.ANI", loop=1) # default is 0; 0 means loop, 1 means no loop
+
+ANIAnimator.animate(anifile="graphene.ANI", bonds_param=1.3) # default is 1.3, sets the bonds between atoms
+
+ANIAnimator.animate(anifile="graphene.ANI", camera=((40, 0, 0),
+                                                    (0, 0, 0),
+                                                    (0, 1, 0))) # if you need to set the camera
+```
+### In terminal
+
+#### Simple usage
+
+```sh
+$ python -m ANIAnimator graphene.ANI
+```
+
+#### Advance usage
+
+```sh
+$ python -m ANIAnimator <ANI file> <width> <height> <loop> <bonds_param> camera=<param>
+
+$ python -m ANIAnimator graphene.ANI 1920 1080 1 1.3
+
+$ python -m ANIAnimator graphene.ANI 1920 1080 1 1.3 camera=40,0,0,0,0,0,0,1,0 # if you need to set the camera
+
+```
+
+### About `bonds_param` parameter
+ANIAnimator uses [mogli](https://github.com/sciapp/mogli) to create PNG images of the steps in ANI files. The default of mogli package is `1.0`. ANIAnimator default is `1.3` since the experience shows that `1.3` is better. For details, see the [README.md of mogli package](https://github.com/sciapp/mogli/blob/master/README.md).
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## Citation
+If you are using ANIAnimator, please citate relevant version. You can find the relevant citation [here](https://doi.org/10.5281/zenodo.7112024).
+
+```bibtex
+@software{eftal_gezer_2023_7182193,
+  author       = {Eftal Gezer},
+  title        = {eftalgezer/ANIAnimator: v0.2.2},
+  month        = jan,
+  year         = 2023,
+  publisher    = {Zenodo},
+  version      = {v0.2.2},
+  doi          = {10.5281/zenodo.7577421},
+  url          = {https://doi.org/10.5281/zenodo.7577421}
+}
+```
+
+## License
+[GNU General Public License v3.0](https://github.com/eftalgezer/ANIAnimator/blob/master/LICENSE) 
+ 
