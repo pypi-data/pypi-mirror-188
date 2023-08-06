@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: django-init-admin-command
+Version: 0.1.0
+Summary: A Django admin command to create an admin user if no user exists
+Home-page: https://github.com/gri38/django_init_admin
+Author: gri38
+Author-email: onzeweb@zaclys.net
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django (>=2.2)
+
+# django_init_admin
+Django admin command to create an admin/admin superuser if no user exists
+
+
+The main purpose is to init an admin user for the applications you deliver. Your end-user will be able to login with admin (pwd: admin) and manage his users.
+
+# usage 
+* Install the command in your python environment:
+  ```bash
+  pip install django_init_admin_command
+  ```
+* Include this command in you project settings.py file:
+   ```python
+   INSTALLED_APPS = [
+    # ...
+    'init_admin_command',
+    # ...
+   ```
+* Create the admin user in a deploy / install script:
+   ```bash
+   python manage.py initadmin
+   ```
