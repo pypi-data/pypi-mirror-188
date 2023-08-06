@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "viburnum"
+version = "0.1.7.dev1"
+description = "It's abstraction on top of AWS CDK, that helps in building serverless web applications."
+authors = ["Yaroslav Martynenko <stikblacklabel@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/yarik2215/Viburnum"
+keywords = ["aws", "serverless"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+constructs = {version = "^2.51", optional = true}
+aws-cdk-lib = {version = "^2.50.0", optional = true}
+boto3 = {version = "^1.26.8", optional = true}
+typer = {extras = ["all"], version = "^0.7.0", optional=true}
+"aws-cdk.aws-lambda-python-alpha" = {version="^2.51.1a0", optional=true}
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.15.5"
+black = "^22.10.0"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+deployer = ["constructs", "aws-cdk-lib", "boto3", "typer", "aws-cdk.aws-lambda-python-alpha"]
+
+[tool.poetry.scripts]
+viburnum = 'viburnum.cli:app'
