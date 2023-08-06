@@ -1,0 +1,240 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "normcap"
+version = "0.4.0"
+description = "OCR-powered screen-capture tool to capture information instead of images."
+keywords = ["screenshot", "ocr", "capture", "clipboard"]
+license = "GPLv3"
+authors = ["dynobo <dynobo@mailbox.org>"]
+readme = "README.md"
+homepage = "https://dynobo.github.io/normcap/"
+repository = "https://github.com/dynobo/normcap"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Utilities",
+  "Topic :: Multimedia :: Graphics :: Capture :: Screen Capture",
+  "Intended Audience :: End Users/Desktop",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+]
+include = [
+  "README.md",
+  "CHANGELOG.md",
+  "LICENSE",
+  "normcap/**/*.icns",
+  "normcap/**/*.ico",
+  "normcap/**/*.png",
+  "normcap/**/*.svg",
+]
+
+[tool.poetry.urls]
+"FAQs" = "https://dynobo.github.io/normcap/#faqs"
+"Issues" = "https://github.com/dynobo/normcap/issues"
+
+[tool.poetry.scripts]
+normcap = "normcap.app:main"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+PySide6-Essentials = "^6.4.1"
+pytesseract = ">=0.3.10"
+certifi = "^2022.12.7"
+jeepney = "^0.8.0"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=22.3.0"
+briefcase = "0.3.9"
+coverage = { extras = ["toml"], version = "^6.4.2" }
+coveralls = ">=3.3.1"
+Levenshtein = ">=0.18.1"
+mdformat-gfm = ">=0.3.5"
+mypy = ">=0.991"
+pre-commit = ">=2.19"
+pydeps = ">=1.10.18"
+pytest = ">=7.2.0"
+pytest-cov = ">=3.0.0"
+pytest-qt = ">=4.1.0"
+pytest-xvfb = "^2.0.0"
+rope = ">=1.1.1"
+ruff = ">=0.0.124"
+tbump = ">=6.9.0"
+toml = ">=0.10.2"
+types-Pillow = ">=9.0.19"
+types-toml = ">=0.10.7"
+typing-extensions = "^4.4.0"
+pip-audit = "^2.4.12"
+
+[tool.poetry.group.analysis]
+optional = true
+
+[tool.poetry.group.analysis.dependencies]
+radon = ">=5.1.0"
+viztracer = ">=0.15.3"
+vulture = "^2.4"
+
+[tool.poetry.group.nuitka]
+optional = true
+
+[tool.poetry.group.nuitka.dependencies]
+Nuitka = "^1.0.3"
+
+[tool.black]
+line-length = 88
+include = '''
+(
+    ^/tests/.*py
+  | ^/normcap/.*py
+)
+'''
+exclude = '''
+(
+    __pycache__
+)
+'''
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+exclude = [".vscode", ".venv", "linux"]
+select = [
+  "F",   # Pyflakes
+  "E",   # pycodestyle
+  "I",   # Isort
+  "D",   # pydocstyle
+  "UP",  # pyupgrad
+  "N",   # pep8-naming
+  "S",   # flake8-bandits
+  "C",   # flake8-comprehensions
+  "B",   # flake8-bugbear
+  "A",   # flake8-builtins
+  "T",   # flake8-print
+  "Q",   # flake8-quotes
+  "ANN", # flake8-annotations
+  "RUF", # meta rules (unused noqa)
+]
+ignore = [
+  "D100",   # Missing docstring in public module
+  "D101",   # Missing docstring in public class
+  "D102",   # Missing docstring in public method
+  "D103",   # Missing docstring in public function
+  "D104",   # Missing docstring in public package
+  "D105",   # Missing docstring in magic method
+  "D107",   # Missing docstring in __init__
+  "D203",   # 1 blank line required before class docstring
+  "D213",   # Multi-line docstring summary should start at the second line
+  "ANN101", # Missing type annotation for `self` in method
+  "UP007",  # Use X | Y for type annotations
+]
+per-file-ignores = { "tests*" = ["S101", "ANN", "D"] }
+
+[tool.mypy]
+files = ["normcap/**/*.py", "tests/**/*.py", "bundle/**/*.py"]
+follow_imports = "skip"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+qt_api = "pyside6"
+xvfb_width = 1920
+xvfb_height = 1080
+addopts = ["--durations=7"]
+
+[tool.coverage.run]
+source = ["normcap"]
+
+[tool.briefcase]
+project_name = "NormCap"
+bundle = "eu.dynobo"
+version = "0.4.0"
+url = "https://github.com/dynobo/normcap"
+license = "GPLv3"
+author = 'dynobo'
+author_email = "dynobo@mailbox.org"
+
+[tool.briefcase.app.normcap]
+formal_name = "NormCap"
+description = "OCR-powered screen-capture tool to capture information instead of images"
+sources = ["normcap"]
+icon = "bundle/imgs/normcap"
+installer_icon = "bundle/imgs/normcap_install"
+installer_background = "bundle/imgs/normcap_install_bg"
+
+requires = ["pyside6", "jeepney", "pytesseract", "certifi"]
+
+[tool.briefcase.app.normcap.macOS]
+requires = ["std-nslog==1.0.0"]
+
+[tool.briefcase.app.normcap.linux]
+requires = ["Pillow==9.2.0", "--no-binary", "pillow"]
+system_requires = [
+  "tesseract-ocr",
+  "libnotify-bin",
+  "pkg-config",
+  "build-essential",
+  "libtiff-dev",
+  "libpng-dev",
+  "libjpeg-dev",
+  "libfuse2",
+  "libwayland-dev",
+  "wayland-protocols",
+  "meson",
+  "ninja-build",
+  "git",
+  # "wl-clipboard", Only available on Ubuntu 20.04+
+]
+
+[tool.briefcase.app.normcap.windows]
+
+[tool.tbump]
+
+[tool.tbump.version]
+current = "0.4.0"
+regex = '''
+  (?P<major>\d+)
+  \.
+  (?P<minor>\d+)
+  \.
+  (?P<patch>\d+)
+  ((?P<extra>.+))?
+  '''
+
+[tool.tbump.git]
+message_template = "Bump to {new_version}"
+tag_template = "v{new_version}"
+
+[[tool.tbump.file]]
+# Poetry version and Briefcase version
+src = "pyproject.toml"
+search = 'version = "{current_version}"'
+
+[[tool.tbump.file]]
+src = "normcap/__init__.py"
+search = '__version__ = "{current_version}"'
+
+[[tool.tbump.file]]
+src = "docs/index.html"
+
+[[tool.tbump.file]]
+src = "README.md"
+search = 'NormCap-{current_version}-'
+
+[[tool.tbump.file]]
+src = "README.md"
+search = 'download/v{current_version}/'
+
+[[tool.tbump.file]]
+src = "bundle/normcap.wxs"
+search = 'ProductVersion = "{current_version}"'
+
+[[tool.tbump.before_commit]]
+name = "check changelog"
+cmd = "grep -q {new_version} CHANGELOG.md"
