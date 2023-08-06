@@ -1,0 +1,132 @@
+![img](./Assets/etaml_logo-transpartent.svg#center)
+
+## Summary
+This project aims to create a template for solving classification problems based on tabular data.
+The template handles *binary and multi-class* problems. Among others, the project includes an *exploratory data analysis*, a *preprocessing* pipeline before train/test splitting, a fold-wise preprocessing pipeline after train/test splitting, a scalable and robust *Monte Carlo cross-validation* scheme, *various classification algorithms* which are evaluated for *multiple performance metrics* and a set of capabilities enabling *explainable artificial intelligence* including visualizations.
+
+<img src="./Assets/tct_flow_simple.png" alt="Workflow diagram" width="600"/>
+
+Content:
+
+- Exploratory data analysis 
+    - Report via Pandas Profiling
+    - Visualization by dimensionality reduction (via PCA, tSNE and UMAP)
+- Preprocessing
+    - Removing all-NA instances
+    - Removing features with constant value over all instances (ignoring NaNs)
+    - Removing features with a user-provided ratio of missing values
+    - One hot encoding of non-numeric features
+- Fold-wise preprocessing
+    - Normalization / Standardization
+    - Filling missing values using kNN or MICE imputation
+    - Resampling for handling label imbalances via SMOTE
+- Performance estimation using Monte Carlo cross validation with multiple metrics
+    - Accuracy
+    - Area under the receiver operating characteristic curve (AUC)
+    - Balanced accuracy
+    - Sensitivity / Recall / True positive rate
+    - Specificity / True negative rate
+    - Positive predictive value (Precision)
+    - Negative predictive value
+- Receiver operating characteristic curve
+- Feature selection using mRMR (or univariate filter methods)
+- Hyperparameter optimization (using cross-validated randomized search)
+- Training and evaluation of multiple classification algorithms
+    - Explainable boosting machine (EBM)
+    - Extreme gradient boosting (XGBoost)
+    - k-nearest neighbors (kNN)
+    - Decision tree (DT)
+    - Random forest (RF)
+    - Neural network (NN)
+    - Support vector machine (SVM)
+    - Logistic regression (LGR)
+- Probability calibration (not supported for EBM)
+    - Calibration plots with Brier score
+- Explainable Artificial Intelligence (XAI)
+    - Permutation feature importance (+ visualizations)
+    - Individual conditional expectation (ICE) and partial dependence plots (PDPs)
+    - EBM-specific global feature-wise PDPs
+    - SHAP values (+ summary visualization)
+    - Surrogate models (approximation via DT and EBM)
+- Visualization of performance evaluation
+    - Performance metrics for each classification model
+    - Confusion matrices
+    - Detailed list of predictions for each cross-validation sample
+    - Receiver operating characteristic (ROC) curve for each model
+
+## Output
+Output content:
+    - EDA: results as `html` report
+    - Intermediate data: preprocessed data for final models as `csv`
+    - Input data: input table and settings
+    - Models: `joblib` objects and tuned hyperparameters as `json`
+    - Performance: Confusion matrices and overall performance metrics for each model as `csv` and visalization as `svg`
+    - XAI: Partial dependence plots, permutation feature importances and SHAP summary plots as `csv` and `svg`
+    
+Output structure:
+    
+```
+Results/
+    ├── EDA
+    |   ├── exploratory_data_analysis.html
+    |   └── umap.html
+    ├── Intermediate_data
+    |   ├── preprocessed_features.csv
+    |   └── preprocessed_labels.csv
+    ├── Models
+    |   ├── ebm_model.pickle
+    |   ├── ebm_model_hyperparameters.json
+    |   └── ... (other pickled models and hyperparameters)
+    ├── Performance
+    |   ├── confusion_matrix-ebm.csv
+    |   ├── confusion_matrix-ebm.png
+    |   ├── ... (other models confusion matrices)
+    |   ├── performance.png
+    |   └── performances.csv
+    └── XAI
+        ├── Partial_dependence_plots
+        |   ├── partial_dependence-ebm_feature-1_class-A.png
+        |   └── ... (PDPs of other features, models and classes)
+        ├── Permutation_importances   
+        |   ├── permutation_importance_ebm-test.png
+        |   ├── permutation_importance_ebm-train.png
+        |   ├── ... (other models permutation importances for train and test set)
+        ├── Surrogate_models
+        |   ├── dt_surrogate_model_for_opaque_model.pickle
+        |   ├── ebm_surrogate_model_for_opaque_model.pickle 
+        |   ├── dt_surrogate_model_for_opaque_model.svg 
+        └── SHAP
+            ├── label-0_shap-values.csv
+            ├── ... (other labels shap values if multiclass)
+            ├── shap_summary-ebm.png
+            └── ... (other models shap summary plots)
+```
+
+## Installation
+Recommended: Create and activate a virtual environment
+```
+python3 -m venv /path/to/new/virtual/environment
+cd /path/to/new/virtual/environment
+source bin/activate
+```
+
+Clone this repository, navigate to the corresponding directory and install the supplied `requirements.txt`. The project was built using `python 3.9.5`.
+```
+pip install -r requirements.txt
+```
+Alternatively, the individual packages contained in the `requirements.txt` file can be installed manually.
+
+Afterwards, run the software using 
+```
+python etaml.py --config ../Example_data/settings.ini
+```
+
+
+## System specifications
+The software was tested with the following specifications
+
+- Ubuntu 18.04 LTS (64-bit)
+- Ubuntu 20.04 LTS (64-bit)
+- Windows 11 (64-bit)
+- Python 3.8
+- Python 3.9
