@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: google_spell_checker
+Version: 0.2.1
+Summary: Google Spell Checker
+Home-page: https://github.com/cahya-wirawan/google-spell-checker
+Author: Cahya Wirawan
+Author-email: cahya.wirawan@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Google Spell Checker
+
+It is a simple multilingual Spell Checker using Google Text Completion.
+
+## Installation
+
+```
+pip install google-spell-checker
+```
+## Usage
+
+GoogleSpellChecker.check(word) returns a tuple, the first variable is the correctness of the text,
+the second variable is the most possible correct word (or None if it is a correct word).
+```
+from google_spell_checker import GoogleSpellChecker
+
+spell_checker = GoogleSpellChecker()
+print(spell_checker.check("developmnet"))
+# (False, 'development')
+print(spell_checker.check("martialartz"))
+# (False, 'martial arts')
+print(spell_checker.check("amoxicillin-clavulanic"))
+# (True, None)
+```
+### Different Language Code
+The GoogleSpellChecker uses the default language code "en-EN", but you can change it by passing the parameter 
+lang to GoogleSpellChecker() as follow:
+```
+# For example, we use lang="id" for Indonesian
+spell_checker = GoogleSpellChecker(lang="id")
+print(spell_checker.check("sayalaparsekali, say ingn makn dirumha"))
+# (False, 'saya lapar sekali, saya ingin makan di rumah')
+```
+
