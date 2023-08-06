@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "noto"
+authors = [
+    {name = "ctcq", email = "homepage.ctcq@gmail.com"},
+]
+description = "Non-Deterministic Note Box"
+readme = "Readme.md"
+requires-python = ">=3.7"
+keywords = ["notes", "fun"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    'SQLAlchemy==2.0.0rc3',
+]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "noto.__version__"}
+
+[project.scripts]
+noto = "noto.main:main"
