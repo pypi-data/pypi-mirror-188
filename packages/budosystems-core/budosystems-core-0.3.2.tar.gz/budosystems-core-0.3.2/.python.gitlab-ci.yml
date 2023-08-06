@@ -1,0 +1,121 @@
+# Official language image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/python/tags/
+image: python:3.9
+
+variables:
+  # Change pip's cache directory to be inside the project directory since we can
+  # only cache local items.
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+  PIP_INSTALL_PYLINT_GITLAB: .[lintcheck] pylint pylint-venv pylint-pytest pylint-gitlab anybadge $PIP_INSTALL_PYLINT_GITLAB_EXTRAS
+  PIP_INSTALL_MYPY_GITLAB: .[typecheck] mypy[reports] mypy-xml-score anybadge lxml $PIP_INSTALL_MYPY_GITLAB_EXTRAS
+  PIP_INSTALL_PYTEST_GITLAB: .[test] pytest pytest-cov $PIP_INSTALL_PYTEST_GITLAB_EXTRAS
+
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/reference/pip_install/#caching
+#
+# If you want to also cache the installed packages, you have to install
+# them in a virtualenv and cache it as well.
+cache:
+  key: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}
+  paths:
+    - .cache/pip
+    - venv/
+
+stages:
+  - lint
+  - test
+  - build
+
+
+.default-before-script: &default-before-script
+  - python -V  # Print out python version for debugging
+  - python -m venv venv
+  - source venv/bin/activate
+  - python -m pip install --upgrade pip setuptools wheel
+
+pylint:
+  stage: lint
+  before_script:
+    - *default-before-script
+    - mkdir -p $CI_JOB_NAME
+    - echo undefined > $CI_JOB_NAME/score.txt
+    - echo $PIP_INSTALL_PYLINT_GITLAB
+    - pip install $PIP_INSTALL_PYLINT_GITLAB
+    - pylint --version
+  script:
+    - "pylint 
+    -j 1
+    --output-format=colorized,\
+      text:$CI_JOB_NAME/pylint.txt,\
+      pylint_gitlab.GitlabCodeClimateReporter:codeclimate.json,\
+      pylint_gitlab.GitlabPagesHtmlReporter:$CI_JOB_NAME/index.html 
+    src"
+    - sed -n "s/^Your code has been rated at \([0-9.]*\)\/.*/\1/p" $CI_JOB_NAME/pylint.txt | tee $CI_JOB_NAME/score.txt
+  after_script:
+    - source venv/bin/activate
+    - anybadge -o -l $CI_JOB_NAME -v $(cat $CI_JOB_NAME/score.txt) -f $CI_JOB_NAME/score.svg 4=red 6=orange 8=yellow 10=green
+    - |
+      echo "Your score is: $(cat $CI_JOB_NAME/score.txt)"
+  artifacts:
+    paths:
+      - $CI_JOB_NAME
+    reports:
+      codequality: codeclimate.json
+    when: always
+  rules:
+    - allow_failure: true
+
+
+mypy:
+  stage: lint
+  before_script:
+    - *default-before-script
+    - mkdir -p $CI_JOB_NAME
+    - echo undefined > $CI_JOB_NAME/score.txt
+    - echo $PIP_INSTALL_MYPY_GITLAB
+    - pip install $PIP_INSTALL_MYPY_GITLAB
+    - mypy --version
+  script:
+    - mypy --no-error-summary --xml-report $CI_JOB_NAME src
+  after_script:
+    - source venv/bin/activate
+    - mypy_xml_score -i $CI_JOB_NAME/index.xml -o $CI_JOB_NAME/score.txt
+    - anybadge -o -l $CI_JOB_NAME -v $(cat $CI_JOB_NAME/score.txt) -f $CI_JOB_NAME/mypy-score.svg 4=red 6=orange 8=yellow 10=green
+  artifacts:
+    when: always
+    paths:
+      - $CI_JOB_NAME/
+  rules:
+    - allow_failure: true
+
+pytest:
+  stage: test
+  before_script:
+    - *default-before-script
+    - echo $PIP_INSTALL_PYTEST_GITLAB
+    - pip install $PIP_INSTALL_PYTEST_GITLAB
+  script:
+    - pytest --cov --junitxml=pytest-report.xml
+    - coverage report -m --skip-covered --skip-empty
+    - coverage xml
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+      junit: pytest-report.xml
+
+build:
+  stage: build
+  before_script:
+    - *default-before-script
+    - pip install build twine
+  script:
+    - python -m build
+    - twine upload --non-interactive -u __token__ --verbose dist/*
+  artifacts:
+    paths:
+      - dist
+  rules:
+    - if: $TWINE_PASSWORD && $CI_COMMIT_TAG
