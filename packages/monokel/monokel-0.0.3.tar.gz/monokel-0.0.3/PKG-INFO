@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: monokel
+Version: 0.0.3
+Summary: A simple but flexible and containerized observer pipeline for filesystem events featured by docker.
+Author: Rico Koschmitzky
+Author-email: contact@ricokoschmitzky.com
+Maintainer-email: Rico Koschmitzky <contact@ricokoschmitzky.com>
+License: MIT License
+        
+        Copyright (c) 2023 Rico Koschmitzky
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: repository, https://github.com/rkoschmitzky/monokel
+Keywords: python,docker,events,pipeline,docker-compose,watchdog
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: watchdog
+License-File: LICENSE.md
+
+# Monokel
+Monokel sits on top of [Watchdog](https://pythonhosted.org/watchdog/) and exposes an easy way on how to register filesystem event handlers that will eventually run inside a [Docker](https://www.docker.com/) container.
+
+## Install
+
+Install and update using [pip](https://pip.pypa.io/en/stable/getting-started/):
+
+```
+$ pip install -U monokel
+```
+
+## Getting Started
+
+### The build step
+To run an event loop that observes filesystem events from within the container we have to configure and build the actual docker-compose file first.
+
+Monokel provides a build script that will do most of that for you and creates everything the resulting compose file needs to set up the final service. 
+
+```
+monokel-build --help
+```
+
+The script itself can be used without requiring any dependencies. There are several components you can optionally provide and a mandatory one - the python file we call **_the config_**.
+
+### The (python) config
+The idea of **_the config_** is to provide a single entry point as a file for the event loop that will eventually run within the docker container. It defines what [Observer](https://pythonhosted.org/watchdog/api.html#module-watchdog.observers) to run and which [eventhandlers](https://pythonhosted.org/watchdog/api.html#module-watchdog.events) to schedule for given paths. 
+
+As your eventhandlers might become very specific and require external packages it is by intention that you can make use of them from within the config as long as they can be found in PYPI and installed via pip. See [config requirements](https://github.com/rkoschmitzky/monokel/blob/main/README.md#the-config-requirements).
+
+The config file itself can have any name as you can provide the location to the script path.
+
+### The config requirements
+TBC...
