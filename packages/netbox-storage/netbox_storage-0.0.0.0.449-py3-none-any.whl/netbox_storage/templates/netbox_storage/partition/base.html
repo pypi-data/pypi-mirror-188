@@ -1,0 +1,18 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+{% load plugins %}
+{% load render_table from django_tables2 %}
+{% load perms %}
+
+{% block extra_controls %}
+{% if object.get_affiliated_physical_volume % }
+{% else %}
+<a href="{% url 'plugins:netbox_storage:physicalvolume_add' %}?partition={{ object.id }}&pv_name={{ object.device }}&description=The PV has the size {{ object.size }}" class="btn btn-sm btn-primary" role="button">
+    <i class="mdi mdi-plus-thick"></i> Add Physical Volume
+</a>
+<a href="{% url 'plugins:netbox_storage:linuxvolume_add' %}?partition={{ object.id }}&size={{ object.size }}" class="btn btn-sm btn-primary" role="button">
+    <i class="mdi mdi-plus-thick"></i> Add Linux Volume
+</a>
+{% endif %}
+{{ block.super }}
+{% endblock %}
