@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ludvig"
+version = "0.2.6"
+authors = [{ name = "Frode Hus", email = "frode@frodehus.dev" }]
+description = "A simple vulnerability scanner"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'cyclonedx-python-lib == 3.1.5',
+    'packageurl-python==0.10.4',
+    'requests==2.28.2',
+    'yara-python==4.2.3',
+    'knack==0.10.1',
+    'jschema_to_python==1.2.3',
+    'sarif_om==1.0.4',
+    'urllib3==1.26.14',
+]
+
+
+[project.scripts]
+ludvig = "ludvig.__main__:main"
+
+
+[project.urls]
+"Homepage" = "https://github.com/frodehus/ludvig"
+"Bug Tracker" = "https://github.com/frodehus/ludvig/issues"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+[tool.bumpver]
+current_version = "0.2.6"
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"ludvig/__init__.py" = ["{version}"]
