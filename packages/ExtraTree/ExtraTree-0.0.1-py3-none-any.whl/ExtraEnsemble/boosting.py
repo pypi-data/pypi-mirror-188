@@ -1,0 +1,362 @@
+import numpy as np
+from ExtraTree import StandardTreeRegressor, ExtraTreeRegressor
+from sklearn.metrics import mean_squared_error as MSE
+from multiprocessing import Pool
+
+
+BASE_LEARNER = {
+    "standard_tree_regressor": StandardTreeRegressor,
+    "extra_tree_regressor": ExtraTreeRegressor
+    }
+
+
+
+def pred_parallel(input_tuple):
+    """Parallel instrumental function for prediction. 
+
+    Parameters
+    ----------
+    input_tuple : (ree object, array of (n_samples_, dim))
+        The tuple for parallelization.
+    
+    Returns
+    -------
+    prediction : array-like of shape (n_sample_, ) 
+        Prediction.
+    """
+    tree, X = input_tuple
+    return tree.predict(X)
+
+
+class BaseGradientBoosting(object):
+    """ Abstact Boosting Structure.
+    
+    
+    Parameters
+    ----------
+    n_estimators : int
+        Number of base learners.
+    
+    max_samples : float
+        Proportion of samples to be bootstrapped, can be larger than 1. 
+        
+    rho : float
+        The learning rate. 
+        
+    ensemble_parallel : int
+        If 0, no parallel. If positive, the parallization is conducted in 
+        ensemble_parallel threads.
+    
+    splitter : splitter keyword in SPLITTERS
+        Splitting scheme
+        
+    estimator : estimator keyword in ESTIMATORS
+        Estimation scheme
+        
+    min_samples_split : int
+        The minimum number of samples required to split an internal node.
+    
+    min_samples_leaf : int
+        The minimum number of samples required in the subnodes to split an 
+        internal node.
+    
+    max_depth : int
+        Maximum depth of the individual regression estimators.
+        
+    order : int > 0
+        Extrapolation order.
+    
+    log_Xrange : bool
+        If True, the points in each cell is recorded. 
+        
+    random_state : int
+        Random state for building the tree.
+        
+    parallel_jobs : int
+        If 0, no parallel for base learners. If positive, the parallization is 
+        conducted in parallel_jobs threads. Can not be positive with ensemble_parallel
+        simutanously. 
+        
+    V : int or "auto"
+        Parameter for homothetic estimation. If int, the estimations are taken at 
+        i/V, i = 1, ..., V. If auto, it is set to max(n_samples * 2^(- 2 - max_depth), 5). 
+        
+    r_range_low : float in [0, 1]
+        Lower bound of homothetic ratio to consider.
+    
+    r_range_up : float in [0, 1], > r_range_low
+        Upper bound of homothetic ratio to consider.        
+    
+    lamda : float in [0,infty)
+        Ridge regularization parameter. 
+        
+    max_features : float in (0,1]
+        Proportion of dimensions to consider when splitting. 
+        
+    search_number : int
+        Number of points to search on when looking for best split point.
+        
+    threshold : float in [0, infty]
+        Threshold for haulting when criterion reduction is too small.
+        
+    Attributes
+    ----------
+    trees : list
+        List of base learners. 
+    
+    """
+    def __init__(self,  n_estimators = 20, 
+                 max_features = 1.0, 
+                 max_samples = 1.0,
+                 rho = 0.1,
+                 ensemble_parallel = 0,
+                 splitter = "maxedge", 
+                 base_learner = "standard_tree_regressor",
+                 min_samples_split = 5, 
+                 min_samples_leaf = 2,
+                 max_depth = 2, 
+                 order = 0, 
+                 log_Xrange = True, 
+                 random_state = 666,
+                 parallel_jobs = 0, 
+                 V = 2,
+                 r_range_low = 0,
+                 r_range_up = 1,
+                 lamda = 0.01, 
+                 search_number = 10,
+                 threshold = 0
+                 ):
+        
+        self.n_estimators = n_estimators
+        self.max_features = max_features
+        self.max_samples = max_samples
+        self.rho = rho
+        self.ensemble_parallel = ensemble_parallel
+        self.splitter = splitter
+        self.base_learner = base_learner
+        self.min_samples_split = min_samples_split
+        self.min_samples_leaf = min_samples_leaf
+        self.max_depth = max_depth
+        self.order=order
+        self.log_Xrange = log_Xrange
+        self.random_state = random_state
+        self.parallel_jobs = parallel_jobs
+        self.V = V
+        self.r_range_up =r_range_up
+        self.r_range_low =r_range_low
+        self.lamda=lamda
+        self.search_number = search_number
+        self.threshold = threshold
+
+
+        self.trees = []
+
+        
+    def fit(self, X, y):
+        
+        assert self.ensemble_parallel * self.parallel_jobs == 0
+        
+        f_hat = np.zeros(X.shape[0])
+        for i in range(self.n_estimators):
+            bootstrap_idx = np.random.choice(X.shape[0], int(X.shape[0] * self.max_samples))
+            
+            self.trees.append(BASE_LEARNER[self.base_learner](splitter = self.splitter, 
+                                             min_samples_split = self.min_samples_split,
+                                             min_samples_leaf = self.min_samples_leaf,
+                                             max_depth = self.max_depth,
+                                             order = self.order, 
+                                             log_Xrange = self.log_Xrange, 
+                                             random_state = i,
+                                             parallel_jobs = self.parallel_jobs,
+                                             V = self.V,
+                                             r_range_low = self.r_range_low,
+                                             r_range_up = self.r_range_up,
+                                             lamda = self.lamda,
+                                             max_features = self.max_features,
+                                             search_number = self.search_number,
+                                             threshold = self.threshold))
+            
+            self.trees[i].fit(X[bootstrap_idx], (y-f_hat)[bootstrap_idx])
+            f_hat += self.rho * self.trees[i].predict(X)
+        
+    def get_params(self, deep=True):
+        """Get parameters for this estimator.
+
+        Parameters
+        ----------
+        deep : boolean, optional
+            If True, will return the parameters for this estimator and
+            contained subobjects that are estimators.
+
+        Returns
+        -------
+        params : mapping of string to any
+            Parameter names mapped to their values.
+        """
+        out = dict()
+        for key in [ "n_estimators" ,'min_samples_split', "max_features", "max_samples", "rho"
+                    "splitter", "min_samples_leaf", "max_depth", "order", "V", 
+                    "r_range_low", "r_range_up", "lamda",
+                    "search_number", "threshold"]:
+            value = getattr(self, key, None)
+            if deep and hasattr(value, 'get_params'):
+                deep_items = value.get_params().items()
+                out.update((key + '__' + k, val) for k, val in deep_items)
+            out[key] = value
+        return out
+    
+    
+    def set_params(self, **params):
+        """Set the parameters of this estimator.
+
+        The method works on simple estimators as well as on nested objects
+        (such as pipelines). The latter have parameters of the form
+        ``<component>__<parameter>`` so that it's possible to update each
+        component of a nested object.
+
+        Returns
+        -------
+        self
+        """
+        if not params:
+            # Simple optimization to gain speed (inspect is slow)
+            return self
+        valid_params = self.get_params(deep=True)
+
+
+        for key, value in params.items():
+            if key not in valid_params:
+                raise ValueError('Invalid parameter %s for estimator %s. '
+                                 'Check the list of available parameters '
+                                 'with `estimator.get_params().keys()`.' %
+                                 (key, self))
+            setattr(self, key, value)
+            valid_params[key] = value
+
+        return self
+    
+    def predict(self, X):
+        if self.ensemble_parallel == 0:
+            y_hat = np.zeros(X.shape[0])
+            for i in range(self.n_estimators):
+                y_hat += self.rho * self.trees[i].predict(X)
+            return y_hat
+
+        else:
+            with Pool(min(self.ensemble_parallel, self.n_estimators)) as pp:
+                y_hat = pp.map(pred_parallel, [(self.trees[i],X) for i in range(self.n_estimators)])
+            y_hat = self.rho* np.array(y_hat).sum(axis = 0)
+            return y_hat
+    
+    
+
+    
+    
+class GradientBoostingTreeRegressor(BaseGradientBoosting):
+    """Standard gradient boosted regression trees using naive estimator.
+    """
+    def __init__(self, n_estimators = 20, 
+                 max_features = 1.0, 
+                 max_samples = 1.0,
+                 rho = 0.1,
+                 ensemble_parallel = 0,
+                 splitter = "maxedge", 
+                 min_samples_split = 5, 
+                 min_samples_leaf = 2,
+                 max_depth = 2, 
+                 order = 0, 
+                 log_Xrange = True, 
+                 random_state = 666,
+                 parallel_jobs = 0, 
+                 V = 2,
+                 r_range_low = 0,
+                 r_range_up = 1,
+                 lamda = 0.01, 
+                 search_number = 10,
+                 threshold = 0):
+        super(GradientBoostingTreeRegressor, self).__init__(n_estimators = n_estimators,
+                                                 max_features = max_features,
+                                                 max_samples = max_samples,
+                                                 rho = rho,
+                                                 ensemble_parallel = ensemble_parallel,
+                                                 splitter = splitter,
+                                                 base_learner = "standard_tree_regressor", 
+                                                 min_samples_split = min_samples_split,
+                                                 min_samples_leaf = min_samples_leaf,
+                                                 max_depth = max_depth, 
+                                                 order = order,
+                                                 log_Xrange = log_Xrange, 
+                                                 random_state = random_state,
+                                                 parallel_jobs = parallel_jobs,
+                                                 V = V,
+                                                 r_range_low = r_range_low,
+                                                 r_range_up = r_range_up,
+                                                 lamda = lamda,
+                                                 search_number = search_number,
+                                                 threshold = threshold)
+        
+    def score(self, X, y):
+        """Reture the regression score, i.e. MSE.
+        """
+        return -MSE(self.predict(X),y)
+    
+    
+    
+    
+class GradientBoostingExtraTreeRegressor(BaseGradientBoosting):
+    """Gradient boosted extrapolated regression trees using extrapolated trees.
+    """
+    def __init__(self, n_estimators = 20, 
+                 max_features = 1.0, 
+                 max_samples = 1.0,
+                 rho = 0.1,
+                 ensemble_parallel = 0,
+                 splitter = "maxedge", 
+                 min_samples_split = 5, 
+                 min_samples_leaf = 2,
+                 max_depth = 2, 
+                 order = 0, 
+                 log_Xrange = True, 
+                 random_state = 666,
+                 parallel_jobs = 0, 
+                 V = 2,
+                 r_range_low = 0,
+                 r_range_up = 1,
+                 lamda = 0.01, 
+                 search_number = 10,
+                 threshold = 0):
+        super(GradientBoostingExtraTreeRegressor, self).__init__(n_estimators = n_estimators,
+                                                 max_features = max_features,
+                                                 max_samples = max_samples,
+                                                 rho = rho,
+                                                 ensemble_parallel = ensemble_parallel,
+                                                 splitter = splitter,
+                                                 base_learner = "extra_tree_regressor", 
+                                                 min_samples_split = min_samples_split,
+                                                 min_samples_leaf = min_samples_leaf,
+                                                 max_depth = max_depth, 
+                                                 order = order,
+                                                 log_Xrange = log_Xrange, 
+                                                 random_state = random_state,
+                                                 parallel_jobs = parallel_jobs,
+                                                 V = V,
+                                                 r_range_low = r_range_low,
+                                                 r_range_up = r_range_up,
+                                                 lamda = lamda,
+                                                 search_number = search_number,
+                                                 threshold = threshold)
+        
+    def score(self, X, y):
+        """Reture the regression score, i.e. MSE.
+        """
+        return -MSE(self.predict(X),y)
+
+
+
+
+
+
+
+
+
+
