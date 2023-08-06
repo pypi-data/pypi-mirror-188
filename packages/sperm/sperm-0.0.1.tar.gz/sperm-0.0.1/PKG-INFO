@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: sperm
+Version: 0.0.1
+Summary: SPERM (Shape Prior Embedded Regression Models) targets providing flexible shape prior embeddings into base regression models.
+Project-URL: Homepage, https://github.com/XiangCHEN-dvi/sperm
+Project-URL: Bug Tracker, https://github.com/XiangCHEN-dvi/sperm/issues
+Author-email: Xiang CHEN <xiangchen.ai@outlook.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# SPERM
+
+SPERM (Shape Prior Embedded Regression Models) targets providing flexible shape prior (nonnegativity, monotonicity, convexity, quasi-convexity, etc.) embeddings into base regression models (linear models, tree-based models, gaussian process regressors, MLPs, etc.), with an API as compatible to [scikit-learn](https://scikit-learn.org/) as possible. There have been many research works on this direction, but normally providing one or a few specific shape prior embeddings into one base model. We hope to fill the gap between research and application by integrating the proposed methods into one package.
+
+An overall look at which shape priors are supported on which base models currently:
+
+|                              | linear models |
+| ---------------------------- |:-------------:|
+| nonnegative / nonpositive    |      X        |
+| increasing / decreasing      |      √        |
+| Lipschitz                    |      √        |
+| quasi-convex / quasi-concave |      X        |
+| convex / concave             |      X        |
+
+- √: supported
+- -: not yet supported
+- X: not supported (it is impossible or degrading to provide such shape priors on the base model)
