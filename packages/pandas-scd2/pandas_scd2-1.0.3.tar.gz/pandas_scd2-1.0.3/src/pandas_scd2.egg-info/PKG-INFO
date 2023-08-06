@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: pandas-scd2
+Version: 1.0.3
+Summary: slowly changing dimension with pandas
+Home-page: https://gitlab.com/liranc/pandas_scd
+Keywords: scd,slowly changing dimension,pandas
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# pandas_scd
+
+  
+
+executing slowly changing dimension type 2 on pandas dataframes
+
+given pandas df of the source table, and pandas df of the target table, returning pandas df with the entire new target after scd2
+
+
+
+## Installation  
+basic installtion :
+ 
+    pip install pandas-scd2 
+
+## Getting started
+ 
+
+    from pandas_scd import scd2
+    import pandas as df
+
+    tgt = pd.DataFrame.from_dict({'first_name': ["Chris"], 'last_name': ['Paul'], 'team': ["Clippers"], "start_ts": [datetime(2012, 1, 14, 3, 21, 34)], "end_ts": [None], "is_active": [True]})
+
+    src = pd.DataFrame.from_dict({'first_name': ["Chris"], 'last_name': ['Paul'], 'team': ['Suns']})
+
+    final_df = scd2(src, tgt)
+
+
+
+tgt:
+    
+| first_name | last_name | team     | start_ts            | end_ts | is_active |
+|------------|-----------|----------|---------------------|--------|-----------|
+| Chris      | Paul      | Clippers | 2012-01-14 03:21:34 |        | True      |
+
+
+
+src:
+
+| first_name | last_name | team     |
+|------------|-----------|----------|
+| Chris      | Paul      | Clippers |
+
+
+
+
+final_df:
+
+| first_name | last_name | team     | start_ts            | end_ts              | is_active |
+|------------|-----------|----------|---------------------|---------------------|-----------|
+| Chris      | Paul      | Clippers | 2012-01-14 03:21:34 | 2018-01-01 00:00:00 | False     |
+| Chris      | Paul      | Suns     | 2018-01-01 00:00:00 |                     | True      |
+
+
+
+**src:** pandas dataframe with the source of the SCD
+
+**tgt:** pandas dataframe with the target of the SCD (target can be empty)
+
+**cols_to_track:** list of columns to track changes (default is all columns from the source table)
+
+**tz:** pytz time zone to use on start_ts and end_ts, default is None (will use local time)
+
