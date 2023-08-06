@@ -1,0 +1,22 @@
+language: python
+python:
+- 3.5
+- 3.6
+- 3.7
+- 3.8
+before_install:
+- python --version
+- pip install -U pip
+- pip install -U pytest
+script:
+- pytest
+deploy:
+  provider: pypi
+  username: __token__
+  password:
+    secure: SNkKjl+O8eKPI2JpKdmrJftfIpugO/yRUqtLwr2a+mY6DHMtX+/otU7jJkT+z3Aj/SymDnlu2xd/pQLJmeVONO8WooBwlpfvg708vefaIV7Qnmh50G+aDcF28jTqhjhHw/uHnd9VYfE8u3V/vYLUJXrXqfGap+5BXE3YHKQ8+wO23tCDJzhIHwmf/R+CSVIzWirYV6jhVnSL6EzQCC9D9mdxnSI+UoWZCKL1P0SI2wXggnfQ4L62CBGiz1ikyXpbtluuEnz6BL6ICGxHbQHtuDSvUG/Dybb2qyfwqdx7TtoFIq1edEcrVeaA85QbmZieSx3OI/oq8pI/mUrN823Lvr4TWYekFL7RZuMuuNtqRg9mNBanpAD1x1+YQtXh1FBaL1ARdWG81XmWREP6ljrthEaQ6bOrxM9ReamfVZ04ro/epj85tbTY0n6Opcm3nhAM7ehKFIMhVeAHN6fiykpbHWAdE8hgYzn8ZD5CfiWO9zh6hWbzsAZyVrayxHh73/KjRjXu/DPOT6j+b7fh63yBTrDnHLwS2I4OnSSK6L165OzYFVbjXW8XxRwHd7Wfp/HWsEXQETT99okyncqgd6LWziWDIp7VI51GjvhjnVXXBGIud7ma9ixdegM3MJPyMeNWKDmHL6AeuQciPE18Ut1Hy85x32jqvvWBPeFvCy5oNYU=
+  skip_cleanup: true
+  skip_existing: true
+  on:
+    tags: true
+  distributions: "sdist bdist_wheel"  
