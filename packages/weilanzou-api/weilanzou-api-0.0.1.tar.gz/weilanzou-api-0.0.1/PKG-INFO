@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: weilanzou-api
+Version: 0.0.1
+Summary: Fixed the old version of LanZouCloud API.
+Home-page: https://github.com/acloudtwei/WeiLanZouCloud-API
+Author: Acloudtwei
+Author-email: 1559295172@qq.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+<p align="center">
+<img src="https://pc.woozooo.com/img/logo2.gif" width="200">
+</p>
+
+<h1 align="center">- 蓝奏云API -</h1>
+
+<p align="center">
+<img src="https://img.shields.io/badge/version-0.0.1-blue?logo=iCloud">
+<img src="https://img.shields.io/badge/support-Windows-blue?logo=Windows">
+<img src="https://img.shields.io/badge/support-Linux-yellow?logo=Linux">
+<img src="https://img.shields.io/badge/Publish%20to%20PyPI-passing-brightgreen?logo=python">
+</p>
+
+
+# 简介
+
+- 本库基于zaxtyson开源的LanZouCloud-API进行二开，除了修复一些正则表达式的bug以外，还加上了一些自己认为比较方便的functions。
+- 主要封装了蓝奏的基本功能：Cookie登录、注销、获取文件(夹)列表、下载文件、上传文件、删除文件(夹)、
+移动文件、清空回收站、恢复文件(夹)、创建文件夹、设置文件(夹)访问密码、设置文件(夹)描述
+- 解决了蓝奏云的上传格式限制和单文件大小限制，同时增加了以下功能: 批量上传/下载文件、
+上传/下载时断点续传、清理"幽灵"文件夹、移动文件夹、获取下载直链
+- 如果有任何问题或建议, 欢迎提 issue, 维护不易，求一个 star (\*/ω＼*)
+
+# 免责声明
+
+- 本项目仅供个人学习使用，严禁用于商业用途
+- **本项目没有任何担保**，如果您使用这些代码，您必需承担其带来的风险
+
+# API 文档
+
+- `dev` 分支用于修复错误，待稳定后再推到 `master` 分支
+- `master` 分支将自动发布到 PyPI，使用 `pip install lanzou-api` 即可安装
+- API 文档请查看 [wiki](https://github.com/acloudtwei/WeiLanZouCloud-API/wiki) 页面
+
+# 更新日志
+
+## `v0.0.1` 修复说明
+- 主要修复通过分享链接获取文件夹的信息的api无法解析文件的bug
+- 除了修复bug之外，还加上了fake_useragent UA库，以保证每次请求lanzouAPI是不同的UA
+- 在get_folder_info_by_url(share_url, dir_pwd='', mark_time=0, is_phone_ua=False)这个api，增加了两个参数！其中一个参数mark_time表示是否获取该分享链接今天更新的文件信息；而is_phone_ua表示是否使用手机UA（因为有些蓝奏链接要该手机UA才能打开，当然也可以改蓝奏域名，比如lanzouw -> lanzoui）
+- 修复和修改这个蓝奏库主要的原因还是自己业务上的需求，当然这个蓝奏库的原理也是爬虫，然后通过正则表达式匹配（我可能会替换成xpath匹配）
+- 其他功能和原作者【zaxtyson】所开发的功能一样，但是开发者一些弃用的api还没有删除，我将打算在下个版本删除弃用的api
+
+# 作者
+### 开发者：***Acloudtwei***
+
+### 公众号：*软件阿威*
+
+### 官网：[*阿威导航站*](https://www.rjawei.vip/)
+
