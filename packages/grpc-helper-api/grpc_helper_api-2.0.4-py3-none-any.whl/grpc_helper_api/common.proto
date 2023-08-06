@@ -1,0 +1,83 @@
+/*
+Common API elements for GRPC helper interfaces
+*/
+syntax = "proto3";
+
+// Some Java options
+option java_multiple_files = true;
+option java_package = "grpc_helper_api";
+
+/*
+Common result codes
+*/
+enum ResultCode {
+    OK = 0;                         // All good
+    ERROR = 1;                      // Unspecified error
+    ARGS = 2;                       // Reserved for command-line arguments parsing
+
+    // RPC related errors
+    ERROR_PORT_BUSY = 10;           // Server can't start because port is not available
+    ERROR_API_CLIENT_TOO_OLD = 11;  // Client API version is too old for this server
+    ERROR_API_SERVER_TOO_OLD = 12;  // Client API version is too recent for this server
+    ERROR_RPC = 13;                 // Inner RPC error
+    ERROR_PROXY_UNREGISTERED = 14;  // Service known to be served as a proxy one, but not registered yet
+    ERROR_STREAM_SHUTDOWN = 15;     // Output stream interrupted because of a service shutdown
+
+    // Parameters related errors
+    ERROR_PARAM_MISSING = 20;       // Some mandatory parameter is missing
+    ERROR_PARAM_INVALID = 21;       // Some parameter value is invalid
+    ERROR_PARAM_UNSUPPORTED = 22;   // Unsupported parameter value
+
+    // Items related errors
+    ERROR_ITEM_UNKNOWN = 30;        // One of the required items is unknown
+    ERROR_ITEM_CONFLICT = 31;       // Some conflict is detected between several items
+    ERROR_ITEM_BUSY = 32;           // Item is currently processing something and can't be interrupted
+    ERROR_ITEM_MULTIPLE = 33;       // Multiple items matching
+
+    // Data model related errors
+    ERROR_MODEL_INVALID = 40;       // Data model structure is invalid
+    ERROR_MODEL_SYNTAX = 41;        // Data model syntax is invalid
+
+    // Internal requests related errors
+    ERROR_REQUEST_FAILED = 50;      // Internal request performed during operation has failed
+    ERROR_REQUEST_TIMEOUT = 51;     // Internal request timeout
+    ERROR_REQUEST_UNSUPPORTED = 52; // Unsupported operation
+
+    // State related errors
+    ERROR_STATE_UNREACHABLE = 60;   // Something is unreachable, unable to perform operation
+    ERROR_STATE_UNEXPECTED = 61;    // Something is in an unexpected state, unable to perform operation
+
+    // ----------------------------
+    // -- End of common errors code
+    // ----------------------------
+    ERROR_CUSTOM = 100;             // All service specific errors shall be greater than this value
+}
+
+/*
+Return message and code, used as return status by all methods
+*/
+message Result {
+    ResultCode code = 1;    // Operation result code
+    string msg = 2;         // Operation result/progress message
+    string stack = 3;       // Exception stacktrace in case of error
+}
+
+/*
+Simple return message, including just a Result
+*/
+message ResultStatus {
+    Result r = 1;   // Operation result
+}
+
+/*
+Shared empty message (for operations without input parameters)
+*/
+message Empty {}
+
+/*
+Shared filter message (for listing/getting operations able to return filtered result)
+*/
+message Filter {
+    repeated string names = 1;  // List of item names to be returned
+    bool ignore_unknown = 2;    // If true, operation shell not return any error if some of the required names are unknown
+}

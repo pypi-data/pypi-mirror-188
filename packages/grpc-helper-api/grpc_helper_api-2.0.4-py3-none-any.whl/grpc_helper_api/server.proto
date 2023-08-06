@@ -1,0 +1,67 @@
+/*
+Server handling service
+*/
+syntax = "proto3";
+import "grpc_helper_api/common.proto";
+
+// Some Java options
+option java_multiple_files = true;
+option java_package = "grpc_helper_api";
+
+/*
+API versions:
+When connecting, the client must check versions with the following rules:
+ - if its current version is greater than the server current one, the server is "too old" for that client
+ - if its current version is lower than the server minimum one, that client is "too old" for the server
+*/
+enum ServerApiVersion {
+    option allow_alias = true;
+    SERVER_API_UNKNOWN = 0;
+    SERVER_API_SUPPORTED = 1;   // Minimum supported version for clients
+    SERVER_API_CURRENT = 1;     // Current version
+}
+
+// Service information message
+message ServiceInfo {
+    string name = 1;                    // Service name
+    string version = 2;                 // Component name & version
+    uint32 current_api_version = 3;     // Current RPC API version of the service
+    uint32 supported_api_version = 4;   // Minimum supported RPC API version of the service
+    bool is_proxy = 5;                  // Is this service a proxy one or not
+    string proxy_host = 6;              // Proxied service only: Host to be used to forward service calls; if empty, will use rpc-proxy-host config item
+    uint32 proxy_port = 7;              // Proxied service only: Port to be used to forward service calls
+}
+
+// Composite service information message
+message MultiServiceInfo {
+    Result r = 1;                   // Operation result
+    repeated ServiceInfo items = 2; // Composition of service information messages
+}
+
+// Shutdown request
+message ShutdownRequest {
+    int32 timeout = 1;  // Grace period before really shutting down the server
+}
+
+// Proxy register request
+message ProxyRegisterRequest {
+    repeated string names = 1;  // Service names to be registered in proxy
+    string version = 2;         // Component name & version
+    string host = 3;            // Host to be used to forward service calls
+    uint32 port = 4;            // Port to be used to forward service calls
+}
+
+// Generic server behavior handling service
+service RpcServerService {
+    // Get information
+    rpc info (Filter) returns (MultiServiceInfo);
+
+    // Graceful shutdown request
+    rpc shutdown (ShutdownRequest) returns (ResultStatus);
+
+    // Register proxy services
+    rpc proxy_register (ProxyRegisterRequest) returns (ResultStatus);
+
+    // Forget previously registered proxy services
+    rpc proxy_forget (Filter) returns (ResultStatus);
+}

@@ -1,0 +1,71 @@
+/*
+Configuration service handling
+*/
+syntax = "proto3";
+import "grpc_helper_api/common.proto";
+
+// Some Java options
+option java_multiple_files = true;
+option java_package = "grpc_helper_api";
+
+/*
+API versions:
+When connecting, the client must check versions with the following rules:
+ - if its current version is greater than the server current one, the server is "too old" for that client
+ - if its current version is lower than the server minimum one, that client is "too old" for the server
+*/
+enum ConfigApiVersion {
+    CONFIG_API_UNKNOWN = 0;
+    CONFIG_API_SUPPORTED = 1; // Minimum supported version for clients
+    CONFIG_API_CURRENT = 2;   // Current version
+}
+
+// Configuration item validators
+enum ConfigValidator {
+    CONFIG_VALID_STRING = 0;    // Default one: free string
+    CONFIG_VALID_CUSTOM = 1;    // Custom validation
+    CONFIG_VALID_INT = 2;       // Any integer
+    CONFIG_VALID_POS_INT = 3;   // Strictly positive integer
+    CONFIG_VALID_FLOAT = 4;     // Any float
+    CONFIG_VALID_POS_FLOAT = 5; // Strictly positive float
+}
+
+// Configuration item
+message ConfigItem {
+    string name = 1;                // Item name
+    string description = 2;         // Item one-line description
+    string value = 3;               // Item current value
+    string default_value = 4;       // Item default value
+    bool can_be_empty = 5;          // States if the item value can be empty
+    ConfigValidator validator = 6;  // The used validator for this item
+}
+
+// Configuration status
+message ConfigStatus {
+    Result r = 1;                   // Operation result
+    repeated ConfigItem items = 2;  // Returned configuration items for the operation
+}
+
+// Configuration item update
+message ConfigItemUpdate {
+    string name = 1;    // Name of the item to be updated
+    string value = 2;   // New value for the item
+}
+
+// Configuration update request
+message ConfigUpdate {
+    repeated ConfigItemUpdate items = 1;    // Items to be updated
+    bool ignore_unknown = 2;                // If true, operation shell not return any error if some of the required names are unknown
+}
+
+// Config service
+service ConfigService {
+    // Get configuration items
+    rpc get(Filter) returns (ConfigStatus);
+
+    // Reset configuration items to their default value
+    rpc reset(Filter) returns (ConfigStatus);
+
+    // Update configuration items values
+    rpc set(ConfigUpdate) returns (ConfigStatus);
+}
