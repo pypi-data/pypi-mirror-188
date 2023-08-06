@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: pytatsu-tui
+Version: 0.2.2
+Summary: A way to save/manage *OS blobs using pytatsu
+Home-page: https://github.com/doms9/tatsumanager
+License: LGPL-3.0-only
+Author: doms9
+Author-email: domsenueve@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: attrs (==22.2.0)
+Requires-Dist: click (==8.1.3)
+Requires-Dist: colorama (==0.4.6)
+Requires-Dist: httpx (==0.23.3)
+Requires-Dist: nest-asyncio (==1.5.6)
+Requires-Dist: pyimg4 (==0.7)
+Requires-Dist: pytatsu (==0.1.4)
+Requires-Dist: remotezip (==0.9.4)
+Requires-Dist: send2trash (==1.8.0)
+Requires-Dist: termcolor (==2.2.0)
+Project-URL: Bug Tracker, https://github.com/doms9/tatsumanager/issues
+Project-URL: Repository, https://github.com/doms9/tatsumanager
+Description-Content-Type: text/markdown
+
+## What is this?
+
+A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Tatsu)
+
+## Prerequisites
+
+- Windows/Linux/macOS
+- [Python](https://www.python.org/downloads/) (**>= 3.10**)
+  - [Tkinter](https://tkdocs.com/tutorial/install.html)
+
+## Usage
+
+```sh
+$ python3 -m pip install pytatsu-tui --upgrade
+
+$ tatsu-tui
+
+$ tatsu-tui -u/--unset # Unset the saved config directory
+```
+
+For every device you have, you'll be asked to provide the following information:
+
+- [Device Model and Board Configuration](https://github.com/doms9/tatsumanager/blob/default/apple_devices.md)
+- [Exclusive Chip Identification](https://www.theiphonewiki.com/wiki/ECID#Getting_the_ECID) (Decimal and Hex formats supported)
+- [ApNonce](https://gist.github.com/m1stadev/5464ea557c2b999cb9324639c777cd09#getting-a-generator-apnonce-pair-jailbroken) (Required for A12+)
+  - This **<ins>DOES NOT</ins>** freeze your ApNonce if your device isn't jailbroken, do that beforehand.
+- [Generator](https://www.idownloadblog.com/2021/03/08/futurerestore-guide-1-generator/) (Required for A12+)
+  - (Eg. 0x1111111111111111 for [unc0ver](https://unc0ver.dev/), 0xbd34a880be0b53f3 for [Electra](https://coolstar.org/electra/)/[Chimera](https://chimera.coolstar.org/)/[Odyssey](https://theodyssey.dev/)/[Taurine](https://taurine.app/)/[Cheyote](https://www.cheyote.io/))
+
+## Preview
+
+![](https://github.com/doms9/tatsu-tui/blob/default/preview.gif)
+
+---
+
+###### [API used for Apple's Stable Firmwares](https://ipswdownloads.docs.apiary.io/#)
+
+###### [API used for Apple's Beta Firmwares](https://github.com/m1stadev/ios-beta-api)
+
+###### [Cryptiiiic's Pytatsu](https://github.com/Cryptiiiic/Tatsu)
+
