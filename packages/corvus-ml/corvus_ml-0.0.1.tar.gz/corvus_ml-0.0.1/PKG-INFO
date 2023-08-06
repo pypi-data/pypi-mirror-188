@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: corvus-ml
+Version: 0.0.1
+Summary: Search ShareableAI Models
+License: LGPL-3.0-or-later
+Author: Lissa Hyacinth
+Author-email: lissa@shareableai.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: click (>=8,<9)
+Requires-Dist: jackdaw-ml (>=0.0.5)
+Requires-Dist: rich (>=13,<14)
+Requires-Dist: setuptools (>=67.0.0)
+Requires-Dist: tomli (==2.0.1)
+Requires-Dist: tomli-w (==1.0.0)
+Description-Content-Type: text/markdown
+
+# Corvus - Search ShareableAI Models
+
+Corvus is a CLI tool that wraps the Searcher from [Jackdaw](https://github.com/shareableai/jackdaw). Designed for interactive and programmatic access to models saved via the ShareableAI toolkit.
+## Usage
+
+### Set API Key
+```bash
+corvus set api_key
+```
+Follow the interactive prompt - this helps avoid having the API Key visible within the terminal history.
+
+### List Models
+
+#### Local Models
+```bash
+corvus list --local
+```
+
+#### Remote Models
+Requires an API Key to be set
+```bash
+corvus list --remote
+```
+
+#### Search
+Searches for all models in the Jackdaw repo on the main branch.
+```bash
+corvus list --repo jackdaw --branch main
+```
+
+Search for all models on the main branch of any repo;
+```bash
+corvus list --branch main
+```
+
+Search for all models on feature branches;
+```bash
+corvus list --repo 'feat/%'
+```
+
+
