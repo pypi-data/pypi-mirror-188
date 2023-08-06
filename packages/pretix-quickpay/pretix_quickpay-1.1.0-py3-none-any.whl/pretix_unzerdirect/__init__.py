@@ -1,0 +1,1 @@
+from pretix_quickpay import __version__
