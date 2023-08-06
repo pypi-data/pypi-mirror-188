@@ -1,0 +1,170 @@
+Metadata-Version: 2.1
+Name: viburnum
+Version: 0.1.7.dev1
+Summary: It's abstraction on top of AWS CDK, that helps in building serverless web applications.
+Home-page: https://github.com/yarik2215/Viburnum
+License: MIT
+Keywords: aws,serverless
+Author: Yaroslav Martynenko
+Author-email: stikblacklabel@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Provides-Extra: deployer
+Requires-Dist: aws-cdk-lib (>=2.50.0,<3.0.0); extra == "deployer"
+Requires-Dist: aws-cdk.aws-lambda-python-alpha (>=2.51.1a0,<3.0.0); extra == "deployer"
+Requires-Dist: boto3 (>=1.26.8,<2.0.0); extra == "deployer"
+Requires-Dist: constructs (>=2.51,<3.0); extra == "deployer"
+Requires-Dist: typer[all] (>=0.7.0,<0.8.0); extra == "deployer"
+Project-URL: Repository, https://github.com/yarik2215/Viburnum
+Description-Content-Type: text/markdown
+
+# Viburnum
+
+**Viburum** - it's a small framework built on top of AWS CDK to simplify development and deploying AWS Serverless web applications.
+
+## Installing
+
+### Installing CDK toolkit
+
+Viburnum uses [CDK toolkit](https://docs.aws.amazon.com/cdk/v2/guide/cli.html), so first of all you need to install it:
+
+```bash
+npm install -g aws-cdk  
+```
+
+### Installing Viburnum
+
+Package consist of two pats `primitives` that help to describe your handlers and resources and `deployer` that will convert primitives into CloudFormation using CDK.
+
+#### Installing only primitives
+
+```bash
+pip install viburnum
+```
+
+#### Installing with deployer
+
+```bash
+pip install "viburnum[deployer]"
+```
+
+Lambda function will require only primitives to work correctly. That's why it's recommended to add `viburnum` into `requirements.txt` and `viburnum[deployer]` into `requirements-dev.txt`
+
+## Project structure
+
+Each Lambda function handler is represented as folder with `handler.py` inside and other files if required.
+
+**Example** `handler.py`:
+
+```python
+from viburnum.application import Request, Response, route
+
+@route("/tests/{id}", methods=["GET"])
+def get_test(request: Request, test_queue):
+    print(f"Get test: {request.path_params.get('id')}")
+    return Response(200, {})
+```
+
+In the root folder you need to have `app.py` file with `Application`, this file used by deployer and CDK to determine all related resources.
+
+**Example** `app.py`
+
+```python
+import aws_cdk as cdk
+from viburnum.deployer.builders import AppConstruct
+from viburnum.application import Application, Sqs
+
+from functions.api.get_test.handler import get_test
+
+app = Application("TestApp")
+# Handlers
+app.add_handler(get_test)
+
+context = cdk.App()
+AppConstruct(context, app)
+context.synth()
+```
+
+All logic that shared across all lambdas, must be placed inside `shared` folder, and it will be plugged into Lambda as a Layer.
+
+Configurations are stored in `config.py` file.
+
+**Example** `config.py`
+
+```python
+# config.py
+from viburnum.deployer import Configuration
+from aws_cdk import Environment, aws_lambda
+
+
+# DEV CONFIG
+Configuration(
+    env_name="dev",
+    env=Environment(account="267695621767", region="eu-central-1"),
+    python_version=aws_lambda.Runtime.PYTHON_3_9,
+    ...
+)
+```
+
+### Recommended structure
+
+```project
+├── functions
+│   ├── __init__.py
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── some_api
+│   │   │    ├── __init__.py
+│   │   │    ├── handler.py
+│   │   │    └── ...
+│   │   │
+│   │   └── ...
+│   │   
+│   ├── jobs
+│   │   ├── __init__.py
+│   │   ├── some_job
+│   │   │    ├── __init__.py
+│   │   │    ├── handler.py
+│   │   │    └── ...
+│   │   │
+│   │   └── ...
+│   │   
+│   └── workers
+│       ├── __init__.py
+│       ├── some_job
+│       │    ├── __init__.py
+│       │    ├── handler.py
+│       │    └── ...
+│       │
+│       └── ...
+│      
+├── shared
+│   ├── __init__.py
+│   └── ...
+│
+├── app.py
+├── config.py
+├── requirements-dev.txt
+└── requirements.txt
+```
+
+### CLI tool
+
+Viburnum deployer include CLI tool that helps initializing project and creating a new handlers.
+After initializing project folder with `cdk init app --language python` you can call `virburnum init`, that command will change some files so Virburnum can work correctly.
+There is command for creating new handlers `virburnum add [HANDLER_TYPE]` that will create a handler.
+
+Supported `HANDLER_TYPE`:
+
+- `api`
+- `worker`
+- `job`
+
+## Example app
+
+Simple [example app](https://github.com/yarik2215/Viburnum-example)
+
