@@ -1,0 +1,132 @@
+Qrogue<
+Name = "This level is used to showcase QRogue's world in our paper."
+Description = Speaker "0" ""
+NO_TELEPORTER
+
+// Introduced Concepts:
+// 
+
+[Robot]
+2 qubits [ *xgate, *hgate, *cxgate ]
+circuit_space = 3
+maxenergy = 100
+
+[Layout]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| __ .. __ .. ee 11 bb == bd == cc == ff |
+| ..    ..    22    11    ..    ==    .. |
+| __ .. __ .. dd 31 SR 32 ba == aa .. __ |
+| ..    ..    ..    ..    ..    ..    .. |
+| __ .. __ .. __ .. __ .. __ .. __ .. __ |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[Custom Rooms]
+
+aa (Wild):
+#############
+# o o 4 _ o #
+# o 0 _ 6 c #
+# _ 0 0 _ o #
+# _ _ 0 o o #
+# m _ _ _ _ #
+#############
+c gate *xgate
+m *message
+
+bb (Wild):
+#############
+# _ 0 7 o o #
+# _ o _ o o #
+# _ o 2 _ 0 #
+# 2 o o o o #
+# _ 1 _ _ _ #
+#############
+
+cc (Wild):
+#############
+# _ _ _ _ _ #
+# _ o o o _ #
+# _ o c o _ #
+# o o 0 o o #
+# 1 1 _ 2 2 #
+#############
+c key 1
+m *doneMsg trigger *done
+
+dd (Wild):
+#############
+# 8 9 _ 0 0 #
+# 3 o o o 0 #
+# m o o o _ #
+# _ o o o _ #
+# 4 _ _ 3 7 #
+#############
+m *message
+
+ee (Wild):
+#############
+# c _ _ _ _ #
+# o o _ _ _ #
+# c o o 4 0 #
+# 2 _ 3 1 3 #
+# _ _ 0 4 1 #
+#############
+c gate *hgate
+c key 1
+
+ff (Wild):
+#############
+# _ _ o _ _ #
+# _ _ 0 _ _ #
+# _ _ 0 _ m #
+# _ _ 0 _ _ #
+# _ _ o _ _ #
+#############
+m *doneMsg
+
+ba (Wild):
+#############
+# _ 6 _ 9 _ #
+# _ o o o _ #
+# _ _ 0 _ _ #
+# _ o o o _ #
+# _ 7 _ 8 _ #
+#############
+
+bd (Wild):
+#############
+# o o o o o #
+# _ 4 o 6 _ #
+# _ _ o _ _ #
+# _ _ o _ _ #
+# _ 0 _ 0 _ #
+#############
+
+[Hallways]
+11 (locked; ; )
+22 (closed; one way North permanent; )
+31 (closed; ; entangled [32])
+32 (closed; ; entangled [31])
+
+[StateVector Pools]
+custom
+*myStvPool [ [0j, -0j, -1j, +0], [0.5, -.5j, +.5, 0.5j ] ]
+
+default random [ [.707, +0, -0, .707j] ]
+
+[Reward Pools]
+custom 
+*energySmall [energy 10]
+*energyBig [energy 20]
+
+default *energySmall
+
+
+[Messages]
+// highlight text by encapsulating it in "//02abcd//" where "abcd" is the text to highlight and "02" one of the available styles: 01 is for tiles, 02 is for game objects, 03 for actions, 04 for keys on the keyboard and 05 for other words
+// speaker: 0 = Examiner, 1 = Scientist, 2 = System, 3 = Player
+
+*doneMsg "Congrats!"
+*message "A simple message"
+
+>Qrogue
