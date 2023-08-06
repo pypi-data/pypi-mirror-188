@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rest &mdash; Django Building Blocks  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contrib" href="contrib.html" />
+    <link rel="prev" title="Consts" href="consts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Django Building Blocks
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consts.html">Consts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rest</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#serializers">Serializers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.rest.serializers.NameSlugSerializer"><code class="docutils literal notranslate"><span class="pre">NameSlugSerializer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.rest.serializers.HasUUIDSerializer"><code class="docutils literal notranslate"><span class="pre">HasUUIDSerializer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.rest.serializers.SluggedKaosModelSerializer"><code class="docutils literal notranslate"><span class="pre">SluggedKaosModelSerializer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.rest.serializers.CurrentProfileDefault"><code class="docutils literal notranslate"><span class="pre">CurrentProfileDefault</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contrib</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Building Blocks</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Rest</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/rest.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rest">
+<h1><a class="toc-backref" href="#id1">Rest</a><a class="headerlink" href="#rest" title="Permalink to this heading"></a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#rest" id="id1">Rest</a></p>
+<ul>
+<li><p><a class="reference internal" href="#serializers" id="id2">Serializers</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="serializers">
+<h2><a class="toc-backref" href="#id2">Serializers</a><a class="headerlink" href="#serializers" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.rest.serializers.NameSlugSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.rest.serializers.</span></span><span class="sig-name descname"><span class="pre">NameSlugSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.rest.serializers.NameSlugSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for NameSlug</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.rest.serializers.HasUUIDSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.rest.serializers.</span></span><span class="sig-name descname"><span class="pre">HasUUIDSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.rest.serializers.HasUUIDSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for HasUUID</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.rest.serializers.SluggedKaosModelSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.rest.serializers.</span></span><span class="sig-name descname"><span class="pre">SluggedKaosModelSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.rest.serializers.SluggedKaosModelSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for SluggedKaosModel</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.rest.serializers.CurrentProfileDefault">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.rest.serializers.</span></span><span class="sig-name descname"><span class="pre">CurrentProfileDefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile_cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.rest.serializers.CurrentProfileDefault" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CurrentUserDefault</span></code></p>
+<p>Rest serializer field to set default value for a profile field, if the user has the profile</p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">profile</span> <span class="o">=</span> <span class="n">UserProfileSerializer</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">CurrentProfileDefault</span><span class="p">(</span><span class="n">UserProfile</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="consts.html" class="btn btn-neutral float-left" title="Consts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contrib.html" class="btn btn-neutral float-right" title="Contrib" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

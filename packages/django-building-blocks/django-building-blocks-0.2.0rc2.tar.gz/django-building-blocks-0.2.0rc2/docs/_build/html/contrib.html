@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contrib &mdash; Django Building Blocks  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Rest" href="rest.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Django Building Blocks
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consts.html">Consts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">Rest</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contrib</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-building_blocks.contrib.admin">Admin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.DuplicableAdminMixin"><code class="docutils literal notranslate"><span class="pre">DuplicableAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.DuplicableAdminMixin.change_actions"><code class="docutils literal notranslate"><span class="pre">DuplicableAdminMixin.change_actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.DuplicableAdminMixin.duplicate"><code class="docutils literal notranslate"><span class="pre">DuplicableAdminMixin.duplicate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin"><code class="docutils literal notranslate"><span class="pre">HasGeneratableImageAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.actions"><code class="docutils literal notranslate"><span class="pre">HasGeneratableImageAdminMixin.actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.change_actions"><code class="docutils literal notranslate"><span class="pre">HasGeneratableImageAdminMixin.change_actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.generate_image"><code class="docutils literal notranslate"><span class="pre">HasGeneratableImageAdminMixin.generate_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.media"><code class="docutils literal notranslate"><span class="pre">HasGeneratableImageAdminMixin.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.HasImageAdminMixin"><code class="docutils literal notranslate"><span class="pre">HasImageAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasImageAdminMixin.fieldsets"><code class="docutils literal notranslate"><span class="pre">HasImageAdminMixin.fieldsets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasImageAdminMixin.image_display"><code class="docutils literal notranslate"><span class="pre">HasImageAdminMixin.image_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasImageAdminMixin.media"><code class="docutils literal notranslate"><span class="pre">HasImageAdminMixin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasImageAdminMixin.readonly_fields"><code class="docutils literal notranslate"><span class="pre">HasImageAdminMixin.readonly_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.HasTimeRangeAdmin"><code class="docutils literal notranslate"><span class="pre">HasTimeRangeAdmin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasTimeRangeAdmin.fields"><code class="docutils literal notranslate"><span class="pre">HasTimeRangeAdmin.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasTimeRangeAdmin.media"><code class="docutils literal notranslate"><span class="pre">HasTimeRangeAdmin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.HasTimeRangeAdmin.readonly_fields"><code class="docutils literal notranslate"><span class="pre">HasTimeRangeAdmin.readonly_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.SnapshotableAdminMixin"><code class="docutils literal notranslate"><span class="pre">SnapshotableAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.SnapshotableAdminMixin.change_actions"><code class="docutils literal notranslate"><span class="pre">SnapshotableAdminMixin.change_actions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.SnapshotableAdminMixin.snapshot"><code class="docutils literal notranslate"><span class="pre">SnapshotableAdminMixin.snapshot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.get_link_content"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.get_link_content()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.get_link_url"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.get_link_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_content"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.link_content</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_display"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.link_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_field"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.link_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.list_display"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.list_display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.readonly_fields"><code class="docutils literal notranslate"><span class="pre">WithLinkDisplayAdminMixin.readonly_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.WithPNGVisualizeAdminMixin"><code class="docutils literal notranslate"><span class="pre">WithPNGVisualizeAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithPNGVisualizeAdminMixin.media"><code class="docutils literal notranslate"><span class="pre">WithPNGVisualizeAdminMixin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithPNGVisualizeAdminMixin.visualize_display"><code class="docutils literal notranslate"><span class="pre">WithPNGVisualizeAdminMixin.visualize_display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.WithSVGVisualizeAdminMixin"><code class="docutils literal notranslate"><span class="pre">WithSVGVisualizeAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithSVGVisualizeAdminMixin.media"><code class="docutils literal notranslate"><span class="pre">WithSVGVisualizeAdminMixin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithSVGVisualizeAdminMixin.visualize_display"><code class="docutils literal notranslate"><span class="pre">WithSVGVisualizeAdminMixin.visualize_display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin"><code class="docutils literal notranslate"><span class="pre">WithVisualizeAdminMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.fieldsets"><code class="docutils literal notranslate"><span class="pre">WithVisualizeAdminMixin.fieldsets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.media"><code class="docutils literal notranslate"><span class="pre">WithVisualizeAdminMixin.media</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.readonly_fields"><code class="docutils literal notranslate"><span class="pre">WithVisualizeAdminMixin.readonly_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.visualize_display"><code class="docutils literal notranslate"><span class="pre">WithVisualizeAdminMixin.visualize_display()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-building_blocks.contrib.models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-building_blocks.contrib.models.enums">enums</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.models.enums.DynamicTimeRangeChoice"><code class="docutils literal notranslate"><span class="pre">DynamicTimeRangeChoice</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-building_blocks.contrib.models.fields">fields</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.models.fields.DynamicTimeRangeField"><code class="docutils literal notranslate"><span class="pre">DynamicTimeRangeField</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-building_blocks.contrib.models.interfaces">interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.models.interfaces.HasVisualizationInterface"><code class="docutils literal notranslate"><span class="pre">HasVisualizationInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.models.models.DuplicableModel"><code class="docutils literal notranslate"><span class="pre">DuplicableModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.contrib.models.models.HasTimeRangeModel"><code class="docutils literal notranslate"><span class="pre">HasTimeRangeModel</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Building Blocks</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Contrib</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contrib.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contrib">
+<h1><a class="toc-backref" href="#id2">Contrib</a><a class="headerlink" href="#contrib" title="Permalink to this heading"></a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#contrib" id="id2">Contrib</a></p>
+<ul>
+<li><p><a class="reference internal" href="#module-building_blocks.contrib.admin" id="id3">Admin</a></p></li>
+<li><p><a class="reference internal" href="#module-building_blocks.contrib.models" id="id4">Models</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="module-building_blocks.contrib.admin">
+<span id="admin"></span><h2><a class="toc-backref" href="#id3">Admin</a><a class="headerlink" href="#module-building_blocks.contrib.admin" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.DuplicableAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">DuplicableAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.DuplicableAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.DuplicableAdminMixin.change_actions">
+<span class="sig-name descname"><span class="pre">change_actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('duplicate',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.DuplicableAdminMixin.change_actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.DuplicableAdminMixin.duplicate">
+<span class="sig-name descname"><span class="pre">duplicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.DuplicableAdminMixin.duplicate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasGeneratableImageAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">HasGeneratableImageAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasGeneratableImageAdminMixin.actions">
+<span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('generate_image',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasGeneratableImageAdminMixin.change_actions">
+<span class="sig-name descname"><span class="pre">change_actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('generate_image',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.change_actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasGeneratableImageAdminMixin.generate_image">
+<span class="sig-name descname"><span class="pre">generate_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.generate_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasGeneratableImageAdminMixin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#building_blocks.contrib.admin.HasGeneratableImageAdminMixin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasImageAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">HasImageAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.HasImageAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasImageAdminMixin.fieldsets">
+<span class="sig-name descname"><span class="pre">fieldsets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('Display',</span> <span class="pre">{'fields':</span> <span class="pre">('image_display',)}),)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.HasImageAdminMixin.fieldsets" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasImageAdminMixin.image_display">
+<span class="sig-name descname"><span class="pre">image_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.HasImageAdminMixin.image_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasImageAdminMixin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#building_blocks.contrib.admin.HasImageAdminMixin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasImageAdminMixin.readonly_fields">
+<span class="sig-name descname"><span class="pre">readonly_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('image_display',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.HasImageAdminMixin.readonly_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasTimeRangeAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">HasTimeRangeAdmin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.HasTimeRangeAdmin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasTimeRangeAdmin.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('_time_range_dynamic',</span> <span class="pre">'_time_range_start',</span> <span class="pre">'_time_range_end')</span></em><a class="headerlink" href="#building_blocks.contrib.admin.HasTimeRangeAdmin.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasTimeRangeAdmin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#building_blocks.contrib.admin.HasTimeRangeAdmin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.HasTimeRangeAdmin.readonly_fields">
+<span class="sig-name descname"><span class="pre">readonly_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('time_range__start',</span> <span class="pre">'time_range__end')</span></em><a class="headerlink" href="#building_blocks.contrib.admin.HasTimeRangeAdmin.readonly_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.SnapshotableAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">SnapshotableAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.SnapshotableAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.SnapshotableAdminMixin.change_actions">
+<span class="sig-name descname"><span class="pre">change_actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('snapshot',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.SnapshotableAdminMixin.change_actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.SnapshotableAdminMixin.snapshot">
+<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.SnapshotableAdminMixin.snapshot" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">WithLinkDisplayAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Add a <cite>link_display</cite> admin display method to show a certain url as a link.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.get_link_content">
+<span class="sig-name descname"><span class="pre">get_link_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.get_link_content" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.get_link_url">
+<span class="sig-name descname"><span class="pre">get_link_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.get_link_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_content">
+<span class="sig-name descname"><span class="pre">link_content</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'🔗</span> <span class="pre">Link'</span></em><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_content" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_display">
+<span class="sig-name descname"><span class="pre">link_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_field">
+<span class="sig-name descname"><span class="pre">link_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.link_field" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.list_display">
+<span class="sig-name descname"><span class="pre">list_display</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('link_display',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.list_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithLinkDisplayAdminMixin.readonly_fields">
+<span class="sig-name descname"><span class="pre">readonly_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('link_display',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.WithLinkDisplayAdminMixin.readonly_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithPNGVisualizeAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">WithPNGVisualizeAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithPNGVisualizeAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithPNGVisualizeAdminMixin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithPNGVisualizeAdminMixin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithPNGVisualizeAdminMixin.visualize_display">
+<span class="sig-name descname"><span class="pre">visualize_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#building_blocks.contrib.models.interfaces.HasVisualizationInterface" title="building_blocks.contrib.models.interfaces.HasVisualizationInterface"><span class="pre">HasVisualizationInterface</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.WithPNGVisualizeAdminMixin.visualize_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithSVGVisualizeAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">WithSVGVisualizeAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithSVGVisualizeAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithSVGVisualizeAdminMixin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithSVGVisualizeAdminMixin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithSVGVisualizeAdminMixin.visualize_display">
+<span class="sig-name descname"><span class="pre">visualize_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#building_blocks.contrib.models.interfaces.HasVisualizationInterface" title="building_blocks.contrib.models.interfaces.HasVisualizationInterface"><span class="pre">HasVisualizationInterface</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.WithSVGVisualizeAdminMixin.visualize_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithVisualizeAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.admin.</span></span><span class="sig-name descname"><span class="pre">WithVisualizeAdminMixin</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithVisualizeAdminMixin.fieldsets">
+<span class="sig-name descname"><span class="pre">fieldsets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('Display',</span> <span class="pre">{'fields':</span> <span class="pre">('visualize_display',)}),)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.fieldsets" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithVisualizeAdminMixin.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.media" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithVisualizeAdminMixin.readonly_fields">
+<span class="sig-name descname"><span class="pre">readonly_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('visualize_display',)</span></em><a class="headerlink" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.readonly_fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.admin.WithVisualizeAdminMixin.visualize_display">
+<span class="sig-name descname"><span class="pre">visualize_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#building_blocks.contrib.models.interfaces.HasVisualizationInterface" title="building_blocks.contrib.models.interfaces.HasVisualizationInterface"><span class="pre">HasVisualizationInterface</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.admin.WithVisualizeAdminMixin.visualize_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-building_blocks.contrib.models">
+<span id="models"></span><h2><a class="toc-backref" href="#id4">Models</a><a class="headerlink" href="#module-building_blocks.contrib.models" title="Permalink to this heading"></a></h2>
+<section id="module-building_blocks.contrib.models.enums">
+<span id="enums"></span><h3>enums<a class="headerlink" href="#module-building_blocks.contrib.models.enums" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.enums.DynamicTimeRangeChoice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.models.enums.</span></span><span class="sig-name descname"><span class="pre">DynamicTimeRangeChoice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.enums.DynamicTimeRangeChoice" title="Permalink to this definition"></a></dt>
+<dd><p>Numbers are in seconds, as in seconds ago from now</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_24hrs">
+<span class="sig-name descname"><span class="pre">last_24hrs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">86400</span></em><a class="headerlink" href="#building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_24hrs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_30days">
+<span class="sig-name descname"><span class="pre">last_30days</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2592000</span></em><a class="headerlink" href="#building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_30days" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_hour">
+<span class="sig-name descname"><span class="pre">last_hour</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3600</span></em><a class="headerlink" href="#building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_hour" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_week">
+<span class="sig-name descname"><span class="pre">last_week</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">604800</span></em><a class="headerlink" href="#building_blocks.contrib.models.enums.DynamicTimeRangeChoice.last_week" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-building_blocks.contrib.models.fields">
+<span id="fields"></span><h3>fields<a class="headerlink" href="#module-building_blocks.contrib.models.fields" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.fields.DynamicTimeRangeField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.models.fields.</span></span><span class="sig-name descname"><span class="pre">DynamicTimeRangeField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.fields.DynamicTimeRangeField" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.fields.DynamicTimeRangeField.deconstruct">
+<span class="sig-name descname"><span class="pre">deconstruct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.fields.DynamicTimeRangeField.deconstruct" title="Permalink to this definition"></a></dt>
+<dd><p>Return enough information to recreate the field as a 4-tuple:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The name of the field on the model, if contribute_to_class() has
+been run.</p></li>
+<li><p>The import path of the field, including the class, e.g.
+django.db.models.IntegerField. This should be the most portable
+version, so less specific may be better.</p></li>
+<li><p>A list of positional arguments.</p></li>
+<li><p>A dict of keyword arguments.</p></li>
+</ul>
+</div></blockquote>
+<p>Note that the positional or keyword arguments must contain values of
+the following types (including inner values of collection types):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>None, bool, str, int, float, complex, set, frozenset, list, tuple,
+dict</p></li>
+<li><p>UUID</p></li>
+<li><p>datetime.datetime (naive), datetime.date</p></li>
+<li><p>top-level classes, top-level functions - will be referenced by their
+full import path</p></li>
+<li><p>Storage instances - these have their own deconstruct() method</p></li>
+</ul>
+</div></blockquote>
+<p>This is because the values here must be serialized into a text format
+(possibly new Python code, possibly JSON) and these are the only types
+with encoding handlers defined.</p>
+<p>There’s no need to return the exact way the field was instantiated this
+time, just ensure that the resulting field is the same - prefer keyword
+arguments over positional ones, and omit parameters with their default
+values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-building_blocks.contrib.models.interfaces">
+<span id="interfaces"></span><h3>interfaces<a class="headerlink" href="#module-building_blocks.contrib.models.interfaces" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.interfaces.HasVisualizationInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.models.interfaces.</span></span><span class="sig-name descname"><span class="pre">HasVisualizationInterface</span></span><a class="headerlink" href="#building_blocks.contrib.models.interfaces.HasVisualizationInterface" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.interfaces.HasVisualizationInterface.visualize">
+<span class="sig-name descname"><span class="pre">visualize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.interfaces.HasVisualizationInterface.visualize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="id1">
+<h3>models<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<span class="target" id="module-building_blocks.contrib.models.models"></span><dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.DuplicableModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.models.models.</span></span><span class="sig-name descname"><span class="pre">DuplicableModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.models.DuplicableModel" title="Permalink to this definition"></a></dt>
+<dd><dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.DuplicableModel.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#building_blocks.contrib.models.models.DuplicableModel.Meta" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.DuplicableModel.Meta.abstract">
+<span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#building_blocks.contrib.models.models.DuplicableModel.Meta.abstract" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.DuplicableModel.duplicate">
+<span class="sig-name descname"><span class="pre">duplicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.models.DuplicableModel.duplicate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.HasTimeRangeModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.contrib.models.models.</span></span><span class="sig-name descname"><span class="pre">HasTimeRangeModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.models.HasTimeRangeModel" title="Permalink to this definition"></a></dt>
+<dd><dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.HasTimeRangeModel.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#building_blocks.contrib.models.models.HasTimeRangeModel.Meta" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.HasTimeRangeModel.Meta.abstract">
+<span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#building_blocks.contrib.models.models.HasTimeRangeModel.Meta.abstract" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.HasTimeRangeModel.get__time_range_dynamic_display">
+<span class="sig-name descname"><span class="pre">get__time_range_dynamic_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;building_blocks.contrib.models.fields.DynamicTimeRangeField:</span> <span class="pre">_time_range_dynamic&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.contrib.models.models.HasTimeRangeModel.get__time_range_dynamic_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.HasTimeRangeModel.time_range__end">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_range__end</span></span><a class="headerlink" href="#building_blocks.contrib.models.models.HasTimeRangeModel.time_range__end" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.contrib.models.models.HasTimeRangeModel.time_range__start">
+<span class="sig-name descname"><span class="pre">time_range__start</span></span><a class="headerlink" href="#building_blocks.contrib.models.models.HasTimeRangeModel.time_range__start" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rest.html" class="btn btn-neutral float-left" title="Rest" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

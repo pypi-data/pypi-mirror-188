@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin blocks &mdash; Django Building Blocks  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Admin for Abstracts" href="abstracts.html" />
+    <link rel="prev" title="Admin" href="../admin.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Django Building Blocks
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">Admin</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Admin blocks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bases">Bases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.base.BaseAdminBlock"><code class="docutils literal notranslate"><span class="pre">BaseAdminBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.base.AdminBlock"><code class="docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementations">Implementations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.base.HasUUIDAdminBlock"><code class="docutils literal notranslate"><span class="pre">HasUUIDAdminBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.base.HasSlugAdminBlock"><code class="docutils literal notranslate"><span class="pre">HasSlugAdminBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.base.TimeStampedAdminBlock"><code class="docutils literal notranslate"><span class="pre">TimeStampedAdminBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.UnnamedBaseKaosModelAdminBlock"><code class="docutils literal notranslate"><span class="pre">UnnamedBaseKaosModelAdminBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.extra.KaosModelAdminBlock"><code class="docutils literal notranslate"><span class="pre">KaosModelAdminBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.SluggedKaosModelAdminBlock"><code class="docutils literal notranslate"><span class="pre">SluggedKaosModelAdminBlock</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utils">Utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.blocks.base.AdminFieldsetTitle"><code class="docutils literal notranslate"><span class="pre">AdminFieldsetTitle</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="abstracts.html">Admin for Abstracts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.base">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.mixins">Mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../consts.html">Consts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rest.html">Rest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contrib.html">Contrib</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Django Building Blocks</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../admin.html">Admin</a></li>
+      <li class="breadcrumb-item active">Admin blocks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/admin/blocks.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="admin-blocks">
+<h1>Admin blocks<a class="headerlink" href="#admin-blocks" title="Permalink to this heading"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#bases" id="id1">Bases</a></p></li>
+<li><p><a class="reference internal" href="#implementations" id="id2">Implementations</a></p></li>
+<li><p><a class="reference internal" href="#utils" id="id3">Utils</a></p></li>
+</ul>
+</div>
+<span class="target" id="module-building_blocks.admin.blocks"></span><p>Admin blocks hold values for django admin fields for various models. As we follow a compositions model for defining our
+data models, we have created a parallel system to build django admin panels for the composition models. Optimized for
+mixing, matching and combining django admin config for various models.</p>
+<section id="bases">
+<h2><a class="toc-backref" href="#id1">Bases</a><a class="headerlink" href="#bases" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.base.BaseAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.base.</span></span><span class="sig-name descname"><span class="pre">BaseAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.base.BaseAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>BaseAdminBlock is the base class for creating custom admin blocks. It provides a set of fields and methods that can
+be overridden and extended to create custom behavior and appearance for the admin interface.</p>
+<p>Corresponds to <cite>django.contrib.admin.BaseModelAdmin</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_fields</strong> – A list of fields to be displayed in the admin interface.</p></li>
+<li><p><strong>extra_fields</strong> – A list of extra/optional fields to be displayed in the admin interface.</p></li>
+<li><p><strong>admin_fields</strong> – fields that should be always included in the admin fieldset</p></li>
+<li><p><strong>extra_admin_fields</strong> – extra/optional fields that should be always included in the admin fieldset</p></li>
+<li><p><strong>readonly_fields</strong> – fields that should be always readonly in the admin form</p></li>
+<li><p><strong>extra_readonly_fields</strong> – fields that should be readonly in the admin form, but optionally</p></li>
+<li><p><strong>edit_readonly_fields</strong> – fields that should be always readonly in the admin form when editing an existing object</p></li>
+<li><p><strong>extra_edit_readonly_fields</strong> – fields that should be readonly in the admin form when editing an existing object,
+but optionally</p></li>
+<li><p><strong>autocomplete_fields</strong> – fields that should use autocomplete widgets in the admin form</p></li>
+<li><p><strong>extra_autocomplete_fields</strong> – fields that should use autocomplete widgets in the admin form, but optionally</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.base.AdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.base.</span></span><span class="sig-name descname"><span class="pre">AdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.base.AdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.blocks.base.BaseAdminBlock" title="building_blocks.admin.blocks.base.BaseAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAdminBlock</span></code></a></p>
+<p>AdminBlock is used to configure views for the admin interface. It inherits from BaseAdminBlock and contains fields
+for django admin list view config.</p>
+<p>Corresponds to <cite>django.contrib.admin.ModelAdmin</cite>. Usually contains config for list views over <cite>BaseAdminBlock</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actions</strong> – A list of predefined actions that can be performed on selected objects in the admin list view.</p></li>
+<li><p><strong>extra_actions</strong> – A list of extra/optional actions that can be performed on selected objects in the admin list
+view.</p></li>
+<li><p><strong>search_fields</strong> – A list of fields to be searched when the user enters a search query in the admin list view.</p></li>
+<li><p><strong>extra_search_fields</strong> – A list of extra/optional fields to be searched when the user enters a search query in
+the admin list view.</p></li>
+<li><p><strong>list_display</strong> – A list of fields to be displayed in the admin list view.</p></li>
+<li><p><strong>extra_list_display</strong> – A list of extra/optional fields to be displayed in the admin list view.</p></li>
+<li><p><strong>list_filter</strong> – A list of fields to be used as filters in the admin list view.</p></li>
+<li><p><strong>extra_list_filter</strong> – A list of extra/optional fields to be used as filters in the admin list view.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="implementations">
+<h2><a class="toc-backref" href="#id2">Implementations</a><a class="headerlink" href="#implementations" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.base.HasUUIDAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.base.</span></span><span class="sig-name descname"><span class="pre">HasUUIDAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.base.HasUUIDAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+<p>AdminBlock for models extending <cite>building_blocks.models.blocks.HasUUID</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readonly_fields</strong> – (UUID,)</p></li>
+<li><p><strong>admin_fields</strong> – (UUID,)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.base.HasSlugAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.base.</span></span><span class="sig-name descname"><span class="pre">HasSlugAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.base.HasSlugAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+<p>AdminBlock for models with a <cite>slug</cite> field</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>admin_fields</strong> – (SLUG,)</p></li>
+<li><p><strong>edit_readonly_fields</strong> – (SLUG,)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.base.TimeStampedAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.base.</span></span><span class="sig-name descname"><span class="pre">TimeStampedAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.base.TimeStampedAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+<p>AdminBlock for models extending <cite>TimeStampedModel</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readonly_fields</strong> – (CREATED, MODIFIED)</p></li>
+<li><p><strong>admin_fields</strong> – (CREATED,)</p></li>
+<li><p><strong>extra_admin_fields</strong> – (MODIFIED,)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.UnnamedBaseKaosModelAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.</span></span><span class="sig-name descname"><span class="pre">UnnamedBaseKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.UnnamedBaseKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>AdminBlock for models extending <cite>UnnamedBaseKaosModel</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>admin_fields</strong> – (UUID, CREATED)</p></li>
+<li><p><strong>extra_admin_fields</strong> – (MODIFIED,)</p></li>
+<li><p><strong>readonly_fields</strong> – (UUID, CREATED, MODIFIED,)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.extra.KaosModelAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.extra.</span></span><span class="sig-name descname"><span class="pre">KaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.extra.KaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">XXXAdminBlock</span></code></p>
+<p>AdminBlock for models extending <cite>KaosModel</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>admin_fields</strong> – (UUID, CREATED)</p></li>
+<li><p><strong>base_fields</strong> – (NAME,)</p></li>
+<li><p><strong>extra_admin_fields</strong> – (MODIFIED,)</p></li>
+<li><p><strong>readonly_fields</strong> – (UUID, CREATED, MODIFIED,)</p></li>
+<li><p><strong>the_fieldset</strong> – (None, {‘fields’: (NAME,)})</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.SluggedKaosModelAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.</span></span><span class="sig-name descname"><span class="pre">SluggedKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.blocks.SluggedKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>AdminBlock for models extending both <cite>SluggedModel</cite> and <cite>UnnamedBaseKaosModel</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>admin_fields</strong> – (SLUG, UUID, CREATED)</p></li>
+<li><p><strong>base_fields</strong> – (NAME,)</p></li>
+<li><p><strong>edit_readonly_fields</strong> – (SLUG,)</p></li>
+<li><p><strong>extra_admin_fields</strong> – (MODIFIED,)</p></li>
+<li><p><strong>readonly_fields</strong> – (UUID, CREATED, MODIFIED,)</p></li>
+<li><p><strong>the_fieldset</strong> – (None, {‘fields’: (NAME,)})</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="utils">
+<h2><a class="toc-backref" href="#id3">Utils</a><a class="headerlink" href="#utils" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.blocks.base.AdminFieldsetTitle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.blocks.base.</span></span><span class="sig-name descname"><span class="pre">AdminFieldsetTitle</span></span><a class="headerlink" href="#building_blocks.admin.blocks.base.AdminFieldsetTitle" title="Permalink to this definition"></a></dt>
+<dd><p>Class to hold constant values for django fieldset titles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>admin</strong> – “Admin”</p></li>
+<li><p><strong>extra</strong> – “Extra”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../admin.html" class="btn btn-neutral float-left" title="Admin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="abstracts.html" class="btn btn-neutral float-right" title="Admin for Abstracts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

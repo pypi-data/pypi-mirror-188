@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin for Abstracts &mdash; Django Building Blocks  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Consts" href="../consts.html" />
+    <link rel="prev" title="Admin blocks" href="blocks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Django Building Blocks
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">Admin</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blocks.html">Admin blocks</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Admin for Abstracts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-building_blocks.admin.abstracts.archivable">Archivable</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#admin-blocks">Admin Blocks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mixins">Mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filters">Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-building_blocks.admin.abstracts.publishable">Publishable</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Admin Blocks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#status">Status</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.admin.abstracts.status.HasStatusAdminBlock"><code class="docutils literal notranslate"><span class="pre">HasStatusAdminBlock</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.base">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.mixins">Mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html#module-building_blocks.admin.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../consts.html">Consts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rest.html">Rest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contrib.html">Contrib</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Django Building Blocks</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../admin.html">Admin</a></li>
+      <li class="breadcrumb-item active">Admin for Abstracts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/admin/abstracts.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-building_blocks.admin.abstracts">
+<span id="admin-for-abstracts"></span><h1>Admin for Abstracts<a class="headerlink" href="#module-building_blocks.admin.abstracts" title="Permalink to this heading"></a></h1>
+<p>Admins for models extending <cite>building_blocks.models.abstracts</cite></p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-building_blocks.admin.abstracts.archivable" id="id4">Archivable</a></p>
+<ul>
+<li><p><a class="reference internal" href="#admin-blocks" id="id5">Admin Blocks</a></p></li>
+<li><p><a class="reference internal" href="#mixins" id="id6">Mixins</a></p></li>
+<li><p><a class="reference internal" href="#filters" id="id7">Filters</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#module-building_blocks.admin.abstracts.publishable" id="id8">Publishable</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id9">Admin Blocks</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id10">Mixins</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id11">Filters</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#status" id="id12">Status</a></p></li>
+</ul>
+</div>
+<section id="module-building_blocks.admin.abstracts.archivable">
+<span id="archivable"></span><h2><a class="toc-backref" href="#id4">Archivable</a><a class="headerlink" href="#module-building_blocks.admin.abstracts.archivable" title="Permalink to this heading"></a></h2>
+<p>Admins for models extending <cite>Archivable</cite></p>
+<section id="admin-blocks">
+<h3><a class="toc-backref" href="#id5">Admin Blocks</a><a class="headerlink" href="#admin-blocks" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>AdminBlock for models extending <cite>KaosModel</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actions</strong> – (‘archive’, ‘restore’)</p></li>
+<li><p><strong>admin_fields</strong> – (‘is_available’,)</p></li>
+<li><p><strong>extra_admin_fields</strong> – (‘is_archived’,)</p></li>
+<li><p><strong>extra_list_display</strong> – (‘is_archived’,)</p></li>
+<li><p><strong>readonly_fields</strong> – (‘is_available’, ‘is_archived’)</p></li>
+<li><p><strong>list_filter</strong> – (ArchivableAdminFilter,)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableHasUUIDAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableHasUUIDAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableHasUUIDAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.ArchivableAdminBlock" title="building_blocks.admin.abstracts.archivable.ArchivableAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableAdminBlock</span></code></a>, <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.base.HasUUIDAdminBlock" title="building_blocks.admin.blocks.base.HasUUIDAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">HasUUIDAdminBlock</span></code></a>, <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableUnnamedKaosModelAdminBlock">
+<span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableUnnamedKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableUnnamedKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">XXXAdminBlock</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableKaosModelAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.ArchivableAdminBlock" title="building_blocks.admin.abstracts.archivable.ArchivableAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableAdminBlock</span></code></a>, <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.extra.KaosModelAdminBlock" title="building_blocks.admin.blocks.extra.KaosModelAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">KaosModelAdminBlock</span></code></a>, <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableSluggedKaosModelAdminBlock">
+<span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableSluggedKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableSluggedKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">XXXAdminBlock</span></code></p>
+</dd></dl>
+
+</section>
+<section id="mixins">
+<h3><a class="toc-backref" href="#id6">Mixins</a><a class="headerlink" href="#mixins" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.BaseArchivableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">BaseArchivableMixinAdmin</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.BaseArchivableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModelAdmin</span></code></p>
+<p>Mixin for ArchivableAdmin with archive and restore actions and display fields</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.BaseStatusArchivableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">BaseStatusArchivableMixinAdmin</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.BaseStatusArchivableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.BaseArchivableMixinAdmin" title="building_blocks.admin.abstracts.archivable.BaseArchivableMixinAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseArchivableMixinAdmin</span></code></a></p>
+<p><cite>BaseArchivableMixinAdmin</cite> but for StatusArchivables</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.BasicArchivableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">BasicArchivableMixinAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.BasicArchivableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.BaseArchivableMixinAdmin" title="building_blocks.admin.abstracts.archivable.BaseArchivableMixinAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseArchivableMixinAdmin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+<p>Basic ArchivableMixinAdmin</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableChangeActionsAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableChangeActionsAdminMixin</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableChangeActionsAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DjangoObjectActionsPermissionsMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DjangoObjectActions</span></code></p>
+<p>Mixin to bring in <cite>DjangoObjectActions</cite> enhancements to ArchivableAdmins</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.archivable.ArchivableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.archivable.</span></span><span class="sig-name descname"><span class="pre">ArchivableMixinAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.admin.abstracts.archivable.ArchivableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AreYouSureActionsAdminMixin</span></code>, <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.ArchivableChangeActionsAdminMixin" title="building_blocks.admin.abstracts.archivable.ArchivableChangeActionsAdminMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableChangeActionsAdminMixin</span></code></a>, <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.BasicArchivableMixinAdmin" title="building_blocks.admin.abstracts.archivable.BasicArchivableMixinAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicArchivableMixinAdmin</span></code></a></p>
+<p>Mixin this class to model admins for models extending Archivable</p>
+</dd></dl>
+
+</section>
+<section id="filters">
+<h3><a class="toc-backref" href="#id7">Filters</a><a class="headerlink" href="#filters" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.filters.ArchivableAdminFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.filters.</span></span><span class="sig-name descname"><span class="pre">ArchivableAdminFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.admin.abstracts.filters.ArchivableAdminFilter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerysetChoiceFilter</span></code></p>
+<p>Admin filter to filter archivable objects by their availability status</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-building_blocks.admin.abstracts.publishable">
+<span id="publishable"></span><h2><a class="toc-backref" href="#id8">Publishable</a><a class="headerlink" href="#module-building_blocks.admin.abstracts.publishable" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3><a class="toc-backref" href="#id9">Admin Blocks</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.publishable.PublishableAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.publishable.</span></span><span class="sig-name descname"><span class="pre">PublishableAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.publishable.PublishableAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.status.HasStatusAdminBlock" title="building_blocks.admin.abstracts.status.HasStatusAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">HasStatusAdminBlock</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.publishable.PublishableKaosModelAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.publishable.</span></span><span class="sig-name descname"><span class="pre">PublishableKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.publishable.PublishableKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.publishable.PublishableAdminBlock" title="building_blocks.admin.abstracts.publishable.PublishableAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">PublishableAdminBlock</span></code></a>, <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.extra.KaosModelAdminBlock" title="building_blocks.admin.blocks.extra.KaosModelAdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">KaosModelAdminBlock</span></code></a>, <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.publishable.PublishableSluggedKaosModelAdminBlock">
+<span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.publishable.</span></span><span class="sig-name descname"><span class="pre">PublishableSluggedKaosModelAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.publishable.PublishableSluggedKaosModelAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">XXXAdminBlock</span></code></p>
+</dd></dl>
+
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id10">Mixins</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.publishable.BasePublishableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.publishable.</span></span><span class="sig-name descname"><span class="pre">BasePublishableMixinAdmin</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.publishable.BasePublishableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.BaseStatusArchivableMixinAdmin" title="building_blocks.admin.abstracts.archivable.BaseStatusArchivableMixinAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseStatusArchivableMixinAdmin</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.publishable.BasicPublishableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.publishable.</span></span><span class="sig-name descname"><span class="pre">BasicPublishableMixinAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.admin.abstracts.publishable.BasicPublishableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.publishable.BasePublishableMixinAdmin" title="building_blocks.admin.abstracts.publishable.BasePublishableMixinAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePublishableMixinAdmin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.publishable.PublishableMixinAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.publishable.</span></span><span class="sig-name descname"><span class="pre">PublishableMixinAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.admin.abstracts.publishable.PublishableMixinAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AreYouSureActionsAdminMixin</span></code>, <a class="reference internal" href="#building_blocks.admin.abstracts.archivable.ArchivableChangeActionsAdminMixin" title="building_blocks.admin.abstracts.archivable.ArchivableChangeActionsAdminMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableChangeActionsAdminMixin</span></code></a>, <a class="reference internal" href="#building_blocks.admin.abstracts.publishable.BasicPublishableMixinAdmin" title="building_blocks.admin.abstracts.publishable.BasicPublishableMixinAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicPublishableMixinAdmin</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h3><a class="toc-backref" href="#id11">Filters</a><a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.filters.PublishableAdminFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.filters.</span></span><span class="sig-name descname"><span class="pre">PublishableAdminFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.admin.abstracts.filters.PublishableAdminFilter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.admin.abstracts.filters.ArchivableAdminFilter" title="building_blocks.admin.abstracts.filters.ArchivableAdminFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableAdminFilter</span></code></a></p>
+<p>Admin filter to filter publishable objects by their publishing status</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="status">
+<h2><a class="toc-backref" href="#id12">Status</a><a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.admin.abstracts.status.HasStatusAdminBlock">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.admin.abstracts.status.</span></span><span class="sig-name descname"><span class="pre">HasStatusAdminBlock</span></span><a class="headerlink" href="#building_blocks.admin.abstracts.status.HasStatusAdminBlock" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blocks.html#building_blocks.admin.blocks.base.AdminBlock" title="building_blocks.admin.blocks.base.AdminBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdminBlock</span></code></a></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="blocks.html" class="btn btn-neutral float-left" title="Admin blocks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../consts.html" class="btn btn-neutral float-right" title="Consts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; Django Building Blocks  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Admin" href="admin.html" />
+    <link rel="prev" title="Welcome to Django Building Blocks’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Django Building Blocks
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.KaosModel"><code class="docutils literal notranslate"><span class="pre">KaosModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.UnnamedKaosModel"><code class="docutils literal notranslate"><span class="pre">UnnamedKaosModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.SluggedKaosModel"><code class="docutils literal notranslate"><span class="pre">SluggedKaosModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mixins">Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.HasUUIDModel"><code class="docutils literal notranslate"><span class="pre">HasUUIDModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.NamedModel"><code class="docutils literal notranslate"><span class="pre">NamedModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.SluggedModel"><code class="docutils literal notranslate"><span class="pre">SluggedModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.OrderableModel"><code class="docutils literal notranslate"><span class="pre">OrderableModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.Orderable0Model"><code class="docutils literal notranslate"><span class="pre">Orderable0Model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#base">Base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.UnnamedBaseKaosModel"><code class="docutils literal notranslate"><span class="pre">UnnamedBaseKaosModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.BaseKaosModel"><code class="docutils literal notranslate"><span class="pre">BaseKaosModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracts">Abstracts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.Archivable"><code class="docutils literal notranslate"><span class="pre">Archivable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.StatusArchivable"><code class="docutils literal notranslate"><span class="pre">StatusArchivable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.Publishable"><code class="docutils literal notranslate"><span class="pre">Publishable</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#querysets">QuerySets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.ArchivableQuerySet"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.ArchivableQuerySet.archived"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySet.archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.ArchivableQuerySet.available"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySet.available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.ArchivableQuerySet.set_archived"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySet.set_archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.ArchivableQuerySet.set_restored"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySet.set_restored()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.StatusArchivableQuerySet"><code class="docutils literal notranslate"><span class="pre">StatusArchivableQuerySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.StatusArchivableQuerySet.archived"><code class="docutils literal notranslate"><span class="pre">StatusArchivableQuerySet.archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.StatusArchivableQuerySet.available"><code class="docutils literal notranslate"><span class="pre">StatusArchivableQuerySet.available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.StatusArchivableQuerySet.set_archived"><code class="docutils literal notranslate"><span class="pre">StatusArchivableQuerySet.set_archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.StatusArchivableQuerySet.set_restored"><code class="docutils literal notranslate"><span class="pre">StatusArchivableQuerySet.set_restored()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.archived"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.available"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.draft"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.draft()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.published"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.published()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.set_archived"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.set_archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.set_published"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.set_published()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.set_restored"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.set_restored()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.PublishableQuerySet.set_unpublished"><code class="docutils literal notranslate"><span class="pre">PublishableQuerySet.set_unpublished()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-building_blocks.models.interfaces">Interfaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableInterface"><code class="docutils literal notranslate"><span class="pre">ArchivableInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableInterface.archive"><code class="docutils literal notranslate"><span class="pre">ArchivableInterface.archive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableInterface.restore"><code class="docutils literal notranslate"><span class="pre">ArchivableInterface.restore()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableInterface.unarchive"><code class="docutils literal notranslate"><span class="pre">ArchivableInterface.unarchive()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.archived"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface.archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.available"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface.available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.set_archived"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface.set_archived()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.set_restored"><code class="docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface.set_restored()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-building_blocks.models.blocks">Blocks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.blocks.HasUUIDModel"><code class="docutils literal notranslate"><span class="pre">HasUUIDModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.blocks.NamedModel"><code class="docutils literal notranslate"><span class="pre">NamedModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.blocks.Orderable0Model"><code class="docutils literal notranslate"><span class="pre">Orderable0Model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.blocks.OrderableModel"><code class="docutils literal notranslate"><span class="pre">OrderableModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.blocks.SluggedModel"><code class="docutils literal notranslate"><span class="pre">SluggedModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building_blocks.models.blocks.SluggedModel.set_auto_fields"><code class="docutils literal notranslate"><span class="pre">SluggedModel.set_auto_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building_blocks.models.blocks.TitledModel"><code class="docutils literal notranslate"><span class="pre">TitledModel</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consts.html">Consts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">Rest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contrib</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Building Blocks</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="models">
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this heading"></a></h1>
+<section id="id1">
+<h2>Models<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.KaosModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">KaosModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.KaosModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.BaseKaosModel" title="building_blocks.models.base.BaseKaosModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseKaosModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RulesModel</span></code></p>
+<p>Abstract Base Model that comes with UUID, create and modified, and name fields. Powered up by django-rules through
+<cite>RulesModel</cite>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.UnnamedKaosModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">UnnamedKaosModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.UnnamedKaosModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.UnnamedBaseKaosModel" title="building_blocks.models.base.UnnamedBaseKaosModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnnamedBaseKaosModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RulesModel</span></code></p>
+<p>Abstract Base Model that comes with UUID, create and modified fields. Powered up by django-rules through
+<cite>RulesModel</cite>. Cousin of KaosModel but without the name field.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.SluggedKaosModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">SluggedKaosModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.SluggedKaosModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.blocks.SluggedModel" title="building_blocks.models.blocks.SluggedModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SluggedModel</span></code></a>, <a class="reference internal" href="#building_blocks.models.KaosModel" title="building_blocks.models.models.KaosModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">KaosModel</span></code></a></p>
+<p><cite>KaosModel</cite> with slug.</p>
+</dd></dl>
+
+</section>
+<section id="mixins">
+<h2>Mixins<a class="headerlink" href="#mixins" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.HasUUIDModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">HasUUIDModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.HasUUIDModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Add a unique UUID field to the model</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.NamedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">NamedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.NamedModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model with a name field. <cite>__str__()</cite> reflects the name.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.SluggedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">SluggedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.SluggedModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HasAutoFields</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model with a slug field. Optionally autogenerate from another field denoted by <cite>slug_source</cite></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.OrderableModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">OrderableModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.OrderableModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Adds field order to the inheriting model. Used for manual sorting.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.Orderable0Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">Orderable0Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Orderable0Model" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.blocks.OrderableModel" title="building_blocks.models.blocks.OrderableModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderableModel</span></code></a></p>
+<p>Same as OrderableModel, but the default order is set to 0 instead of a large number.</p>
+</dd></dl>
+
+</section>
+<section id="base">
+<h2>Base<a class="headerlink" href="#base" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.UnnamedBaseKaosModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">UnnamedBaseKaosModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.UnnamedBaseKaosModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.blocks.HasUUIDModel" title="building_blocks.models.blocks.HasUUIDModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">HasUUIDModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeStampedModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.BaseKaosModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">BaseKaosModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.BaseKaosModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.blocks.NamedModel" title="building_blocks.models.blocks.NamedModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NamedModel</span></code></a>, <a class="reference internal" href="#building_blocks.models.UnnamedBaseKaosModel" title="building_blocks.models.base.UnnamedBaseKaosModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnnamedBaseKaosModel</span></code></a></p>
+</dd></dl>
+
+<section id="abstracts">
+<h3>Abstracts<a class="headerlink" href="#abstracts" title="Permalink to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.Archivable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">Archivable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Archivable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.interfaces.ArchivableInterface" title="building_blocks.models.interfaces.ArchivableInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableInterface</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Provides and interface to create archivable (or soft deletable) models. If you don’t want to delete an instance from
+your DB, but want to mark it inactive use this abstract model.
+Filter for available (i.e. not archived) objects using the queryset method .available(). It is provided through the
+model’s objects manager.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.Archivable.archive">
+<span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Archivable.archive" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as archived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>force</strong> – By default, the method checks if the object is archived and will through an error if it is. Set
+<cite>force</cite> to True to disable this check.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.Archivable.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Archivable.restore" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as not archived (available).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>force</strong> – By default, the method checks if the object is not archived and will through an error if it is.
+Set <cite>force</cite> to True to disable this check.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">StatusArchivable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.interfaces.ArchivableInterface" title="building_blocks.models.interfaces.ArchivableInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableInterface</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">HasStatus</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivable.archive">
+<span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivable.archive" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as archived.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivable.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivable.restore" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as not archived (available).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.Publishable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">Publishable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Publishable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.StatusArchivable" title="building_blocks.models.abstracts.StatusArchivable"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatusArchivable</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.Publishable.archive">
+<span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Publishable.archive" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as archived.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.Publishable.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.Publishable.restore" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as not archived (available).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="querysets">
+<h2>QuerySets<a class="headerlink" href="#querysets" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.ArchivableQuerySet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">ArchivableQuerySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.ArchivableQuerySet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface" title="building_blocks.models.interfaces.ArchivableQuerySetInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.ArchivableQuerySet.archived">
+<span class="sig-name descname"><span class="pre">archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.ArchivableQuerySet.archived" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are archived</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.ArchivableQuerySet.available">
+<span class="sig-name descname"><span class="pre">available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.ArchivableQuerySet.available" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are “available” (aka not archived)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.ArchivableQuerySet.set_archived">
+<span class="sig-name descname"><span class="pre">set_archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.ArchivableQuerySet.set_archived" title="Permalink to this definition"></a></dt>
+<dd><p>Archive the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.ArchivableQuerySet.set_restored">
+<span class="sig-name descname"><span class="pre">set_restored</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.ArchivableQuerySet.set_restored" title="Permalink to this definition"></a></dt>
+<dd><p>Restore (unarchive) the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivableQuerySet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">StatusArchivableQuerySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivableQuerySet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface" title="building_blocks.models.interfaces.ArchivableQuerySetInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArchivableQuerySetInterface</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivableQuerySet.archived">
+<span class="sig-name descname"><span class="pre">archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivableQuerySet.archived" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are archived</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivableQuerySet.available">
+<span class="sig-name descname"><span class="pre">available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivableQuerySet.available" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are “available” (aka not archived)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivableQuerySet.set_archived">
+<span class="sig-name descname"><span class="pre">set_archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivableQuerySet.set_archived" title="Permalink to this definition"></a></dt>
+<dd><p>Archive the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.StatusArchivableQuerySet.set_restored">
+<span class="sig-name descname"><span class="pre">set_restored</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.StatusArchivableQuerySet.set_restored" title="Permalink to this definition"></a></dt>
+<dd><p>Restore (unarchive) the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.</span></span><span class="sig-name descname"><span class="pre">PublishableQuerySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#building_blocks.models.StatusArchivableQuerySet" title="building_blocks.models.querysets.StatusArchivableQuerySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatusArchivableQuerySet</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.archived">
+<span class="sig-name descname"><span class="pre">archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.archived" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are archived</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.available">
+<span class="sig-name descname"><span class="pre">available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.available" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are “available” (aka not archived)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.draft">
+<span class="sig-name descname"><span class="pre">draft</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.draft" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are in draft</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.published">
+<span class="sig-name descname"><span class="pre">published</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.published" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are published</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.set_archived">
+<span class="sig-name descname"><span class="pre">set_archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.set_archived" title="Permalink to this definition"></a></dt>
+<dd><p>Archive the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.set_published">
+<span class="sig-name descname"><span class="pre">set_published</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.set_published" title="Permalink to this definition"></a></dt>
+<dd><p>Publish the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.set_restored">
+<span class="sig-name descname"><span class="pre">set_restored</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.set_restored" title="Permalink to this definition"></a></dt>
+<dd><p>Restore (unarchive) the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.PublishableQuerySet.set_unpublished">
+<span class="sig-name descname"><span class="pre">set_unpublished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.PublishableQuerySet.set_unpublished" title="Permalink to this definition"></a></dt>
+<dd><p>Unpublish the objects (set to draft) in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-building_blocks.models.interfaces">
+<span id="interfaces"></span><h2>Interfaces<a class="headerlink" href="#module-building_blocks.models.interfaces" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.interfaces.</span></span><span class="sig-name descname"><span class="pre">ArchivableInterface</span></span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Interface for Archivable objects</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableInterface.archive">
+<span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableInterface.archive" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as archived.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableInterface.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableInterface.restore" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as not archived (available).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableInterface.unarchive">
+<span class="sig-name descname"><span class="pre">unarchive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableInterface.unarchive" title="Permalink to this definition"></a></dt>
+<dd><p>Set the object as not archived (available).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableQuerySetInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.interfaces.</span></span><span class="sig-name descname"><span class="pre">ArchivableQuerySetInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Default queryset interface for Archivable objects. Adds queryset methods to interact with the Archivable interface.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableQuerySetInterface.archived">
+<span class="sig-name descname"><span class="pre">archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.archived" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are archived</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableQuerySetInterface.available">
+<span class="sig-name descname"><span class="pre">available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.available" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset with db rows that are “available” (aka not archived)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableQuerySetInterface.set_archived">
+<span class="sig-name descname"><span class="pre">set_archived</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.set_archived" title="Permalink to this definition"></a></dt>
+<dd><p>Archive the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.interfaces.ArchivableQuerySetInterface.set_restored">
+<span class="sig-name descname"><span class="pre">set_restored</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.interfaces.ArchivableQuerySetInterface.set_restored" title="Permalink to this definition"></a></dt>
+<dd><p>Restore (unarchive) the objects in this queryset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the return value from <cite>.update()</cite> i.e. the count of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-building_blocks.models.blocks">
+<span id="blocks"></span><h2>Blocks<a class="headerlink" href="#module-building_blocks.models.blocks" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.HasUUIDModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.blocks.</span></span><span class="sig-name descname"><span class="pre">HasUUIDModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.HasUUIDModel" title="Permalink to this definition"></a></dt>
+<dd><p>Add a unique UUID field to the model</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.NamedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.blocks.</span></span><span class="sig-name descname"><span class="pre">NamedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.NamedModel" title="Permalink to this definition"></a></dt>
+<dd><p>Model with a name field. <cite>__str__()</cite> reflects the name.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.Orderable0Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.blocks.</span></span><span class="sig-name descname"><span class="pre">Orderable0Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.Orderable0Model" title="Permalink to this definition"></a></dt>
+<dd><p>Same as OrderableModel, but the default order is set to 0 instead of a large number.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.OrderableModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.blocks.</span></span><span class="sig-name descname"><span class="pre">OrderableModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.OrderableModel" title="Permalink to this definition"></a></dt>
+<dd><p>Adds field order to the inheriting model. Used for manual sorting.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.SluggedModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.blocks.</span></span><span class="sig-name descname"><span class="pre">SluggedModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.SluggedModel" title="Permalink to this definition"></a></dt>
+<dd><p>Model with a slug field. Optionally autogenerate from another field denoted by <cite>slug_source</cite></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.SluggedModel.set_auto_fields">
+<span class="sig-name descname"><span class="pre">set_auto_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.SluggedModel.set_auto_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Override this method to set the fields that need to be automatically set</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="building_blocks.models.blocks.TitledModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building_blocks.models.blocks.</span></span><span class="sig-name descname"><span class="pre">TitledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building_blocks.models.blocks.TitledModel" title="Permalink to this definition"></a></dt>
+<dd><p>Model with a title field. <cite>__str__()</cite> reflects the title.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Django Building Blocks’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin.html" class="btn btn-neutral float-right" title="Admin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
