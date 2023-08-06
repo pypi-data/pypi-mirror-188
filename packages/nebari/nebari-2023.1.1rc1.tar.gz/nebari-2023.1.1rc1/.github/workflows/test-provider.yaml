@@ -1,0 +1,107 @@
+name: "Test Nebari Provider"
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/test-provider.yaml"
+      - "tests/**"
+      - "tests_deployment/**"
+      - "tests_e2e/**"
+      - "scripts/**"
+      - "nebari/**"
+      - "setup.cfg"
+      - "pyproject.yoml"
+  push:
+    branches:
+      - main
+      - develop
+      - release/\d{4}.\d{1,2}.\d{1,2}
+    paths:
+      - ".github/workflows/test-provider.yaml"
+      - "tests/**"
+      - "tests_deployment/**"
+      - "tests_e2e/**"
+      - "scripts/**"
+      - "nebari/**"
+      - "setup.cfg"
+      - "pyproject.yoml"
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+
+env:
+  DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+jobs:
+  test-render-providers:
+    if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name != 'pull_request'
+    name: "Test Nebari Provider"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        provider:
+          - aws
+          - azure
+          - do
+          - gcp
+          - local
+          - existing
+        cicd:
+          - none
+          - github-actions
+          - gitlab-ci
+    steps:
+      - name: "Checkout Infrastructure"
+        uses: actions/checkout@v3
+
+      - name: Checkout the branch from the PR that triggered the job
+        if: ${{ github.event_name == 'issue_comment' }}
+        run: hub pr checkout ${{ inputs.pr_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        if: ${{ matrix.provider == 'gcp' }}
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: Use gcloud CLI
+        if: ${{ matrix.provider == 'gcp' }}
+        run: gcloud info
+      - name: Login to Azure
+        uses: azure/login@v1
+        if: ${{ matrix.provider == 'azure' }}
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Use az CLI
+        if: ${{ matrix.provider == 'azure' }}
+        run: az version
+      - name: Install Nebari
+        run: |
+          pip install .[dev]
+      - name: Nebari Initialize
+        run: |
+          nebari init "${{ matrix.provider }}" --project "TestProvider" --domain "${{ matrix.provider }}.nebari.dev" --auth-provider github --disable-prompt --ci-provider ${{ matrix.cicd }}
+          cat "nebari-config.yaml"
+      - name: Nebari Render
+        run: |
+          nebari render -c "nebari-config.yaml" -o "nebari-${{ matrix.provider }}-${{ matrix.cicd }}-deployment"
+          cp "nebari-config.yaml" "nebari-${{ matrix.provider }}-${{ matrix.cicd }}-deployment/nebari-config.yaml"
+      - name: Nebari Render Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: "nebari-${{ matrix.provider }}-${{ matrix.cicd }}-artifact"
+          path: "nebari-${{ matrix.provider }}-${{ matrix.cicd }}-deployment"
