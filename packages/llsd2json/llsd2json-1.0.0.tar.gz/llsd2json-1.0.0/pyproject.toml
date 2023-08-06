@@ -1,0 +1,35 @@
+[project]
+name = "llsd2json"
+description = "CLIs to convert between LLSD and JSON"
+readme = "README.md"
+dynamic = ["version"]
+license = {text = "MIT"}
+authors = [
+    {name = "Bennett Goble", email="151138+bennettgoble@users.noreply.github.com"},
+]
+dependencies = [
+    "llsd",
+    'importlib-metadata; python_version<"3.8"',
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/bennettgoble/llsd2json"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[project.scripts]
+llsd2json = "llsd2json.cli:llsd2json"
+json2llsd = "llsd2json.cli:json2llsd"
+
+[tool.setuptools_scm]
+
+[build-system]
+requires = ["setuptools", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
