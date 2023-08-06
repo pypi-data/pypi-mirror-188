@@ -1,0 +1,49 @@
+# By tjsh
+# Web: https://bbs.flexible-world.com/
+
+# How do I install it?:
+```
+pip install hz_scanvirus
+```
+
+***
+
+# Module List:
+    [ScanFile.py] - Scan a File.
+    [GetMD5.py] - Get a File MD5.
+    [ListDirectory.py] - Lists all files in the directory.
+
+***
+
+# How do I use it?
+
+### Here is an example of scanning a file.
+```
+import hz_scanvirus
+r = hz_scanvirus.ScanFile('path')
+print(r)
+```
+
+
+### The following results are returned.
+- if False/None : Not detected
+- if not False/None : This is the virus name
+- if Error : try again.Feedback the Error? To https://bbs.flexible-world.com !
+
+### If you want to get the file hash code, or use other features, read the module help.
+***
+### Currently completed features:
+- [x] Scan Module
+  - [x] Scan File
+  - [x] Get Hash
+  - [x] Get File List
+- [ ] NetWork
+  - [ ] VirusTotal API
+  - [ ] Update DataBase
+***
+- Update URL: [Update File Download](https://bbs.flexible-world.com/down/bd.fne)
+- Update Date: [Update Date](https://bbs.flexible-world.com/down/ver.txt)
+- Git: [Software Gitee](https://gitee.com/tjsh/hezhong-antivir49 )
+- Pack Git: [Pack Gitee](https://gitee.com/tjsh/hz_scanvirus)
+- My Gitee: [My Gitee](https://gitee.com/tjsh)
+
