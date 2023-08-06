@@ -1,0 +1,42 @@
+[tool.robotpy-build.metadata]
+name = "picocolorsensor"
+description = "Use a REV Color Sensor V3 via Raspberry Pi Pico"
+author = "David Vo"
+author_email = "david@thedropbears.org.au"
+url = "https://github.com/thedropbears/picocolorsensor"
+license = "BSD-3-Clause"
+install_requires = [
+	"wpilib<2024,>=2023.2.1",
+]
+
+[build-system]
+requires = [
+	"robotpy-build<2024,>=2023.0.0",
+	"wpilib~=2023.2.1",
+	"wheel",
+]
+
+[tool.robotpy-build]
+base_package = "picocolorsensor"
+
+[tool.robotpy-build.wrappers."picocolorsensor"]
+name = "picocolorsensor"
+extension = "_impl"
+sources = [
+	"src/main.cpp",
+	"src/PicoColorSensor.cpp",
+]
+depends = [
+	"wpilib_core",
+	"wpilibc",
+	"wpiHal",
+	"ntcore",
+	"wpimath_cpp",
+	"wpiutil",
+]
+
+extra_includes = ["src"]
+generation_data = "gen"
+
+[tool.robotpy-build.wrappers."picocolorsensor".autogen_headers]
+PicoColorSensor = "PicoColorSensor.h"
