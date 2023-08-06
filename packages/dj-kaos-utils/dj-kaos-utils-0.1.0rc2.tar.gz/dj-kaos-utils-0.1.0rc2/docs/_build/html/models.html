@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; Django Kaos Utils  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="REST utilities" href="rest.html" />
+    <link rel="prev" title="Forms" href="forms.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Django Kaos Utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="querysets.html">QuerySets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datetime.html">Datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="argparse.html">Argument Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management.html">Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fields">Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.TwoPlacesDecimalField"><code class="docutils literal notranslate"><span class="pre">TwoPlacesDecimalField</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.MoneyField"><code class="docutils literal notranslate"><span class="pre">MoneyField</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.CaseInsensitiveFieldMixin"><code class="docutils literal notranslate"><span class="pre">CaseInsensitiveFieldMixin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.ToLowerCaseFieldMixin"><code class="docutils literal notranslate"><span class="pre">ToLowerCaseFieldMixin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.LowerCaseCharField"><code class="docutils literal notranslate"><span class="pre">LowerCaseCharField</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#querysets">QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mixins">Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.HasAutoFields"><code class="docutils literal notranslate"><span class="pre">HasAutoFields</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dj_kaos_utils.models.HasAutoFields.set_auto_fields"><code class="docutils literal notranslate"><span class="pre">HasAutoFields.set_auto_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.HasInitials"><code class="docutils literal notranslate"><span class="pre">HasInitials</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dj_kaos_utils.models.HasInitials.initials"><code class="docutils literal notranslate"><span class="pre">HasInitials.initials</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.HasWarnings"><code class="docutils literal notranslate"><span class="pre">HasWarnings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dj_kaos_utils.models.HasWarnings.get_warnings"><code class="docutils literal notranslate"><span class="pre">HasWarnings.get_warnings()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#admin">Admin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.admin.HasWarningsAdmin"><code class="docutils literal notranslate"><span class="pre">HasWarningsAdmin</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Kaos Utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="models">
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this heading"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#fields" id="id1">Fields</a></p></li>
+<li><p><a class="reference internal" href="#querysets" id="id2">QuerySets</a></p></li>
+<li><p><a class="reference internal" href="#mixins" id="id3">Mixins</a></p></li>
+<li><p><a class="reference internal" href="#admin" id="id4">Admin</a></p></li>
+</ul>
+</div>
+<section id="fields">
+<h2><a class="toc-backref" href="#id1">Fields</a><a class="headerlink" href="#fields" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.TwoPlacesDecimalField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">TwoPlacesDecimalField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.TwoPlacesDecimalField" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DecimalField</span></code></p>
+<p>A DecimalField with 2 decimal places</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.MoneyField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">MoneyField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.MoneyField" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dj_kaos_utils.models.TwoPlacesDecimalField" title="dj_kaos_utils.models.fields.TwoPlacesDecimalField"><code class="xref py py-class docutils literal notranslate"><span class="pre">TwoPlacesDecimalField</span></code></a></p>
+<p>Model field representing an amount of money</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.CaseInsensitiveFieldMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">CaseInsensitiveFieldMixin</span></span><a class="headerlink" href="#dj_kaos_utils.models.CaseInsensitiveFieldMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RegisterLookupMixin</span></code></p>
+<p>Field mixin that uses case-insensitive lookup alternatives if they exist.</p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">LowerCaseLookupCharField</span><span class="p">(</span><span class="n">CaseInsensitiveFieldMixin</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.ToLowerCaseFieldMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">ToLowerCaseFieldMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose_name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_key=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blank=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">null=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_index=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;class</span> <span class="pre">'django.db.models.fields.NOT_PROVIDED'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">editable=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serialize=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_for_date=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_for_month=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_for_year=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help_text=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_column=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_tablespace=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_created=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validators=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_messages=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.ToLowerCaseFieldMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></p>
+<p>Always save the field as lowercase</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.LowerCaseCharField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">LowerCaseCharField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_collation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.LowerCaseCharField" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dj_kaos_utils.models.CaseInsensitiveFieldMixin" title="dj_kaos_utils.models.fields.CaseInsensitiveFieldMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CaseInsensitiveFieldMixin</span></code></a>, <a class="reference internal" href="#dj_kaos_utils.models.ToLowerCaseFieldMixin" title="dj_kaos_utils.models.fields.ToLowerCaseFieldMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToLowerCaseFieldMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></p>
+<p>CharField that saves the values passed to it as lowercase.</p>
+</dd></dl>
+
+</section>
+<section id="querysets">
+<h2><a class="toc-backref" href="#id2">QuerySets</a><a class="headerlink" href="#querysets" title="Permalink to this heading"></a></h2>
+<p>Refer to <a class="reference internal" href="querysets.html"><span class="doc">QuerySets</span></a></p>
+</section>
+<section id="mixins">
+<h2><a class="toc-backref" href="#id3">Mixins</a><a class="headerlink" href="#mixins" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.HasAutoFields">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">HasAutoFields</span></span><a class="headerlink" href="#dj_kaos_utils.models.HasAutoFields" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mixin for models that have fields that can be automatically set, for example from the value of other fields.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.HasAutoFields.set_auto_fields">
+<span class="sig-name descname"><span class="pre">set_auto_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.HasAutoFields.set_auto_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Override this method to set the fields that need to be automatically set</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.HasInitials">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">HasInitials</span></span><a class="headerlink" href="#dj_kaos_utils.models.HasInitials" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Add property <cite>initials</cite> to its inheritor classes. Take the value form the field defined by <cite>take_initials_from</cite> and
+return the initial letters of each word in it, capitalized.
+Interface using <cite>instance.initials</cite>.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.HasInitials.initials">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initials</span></span><a class="headerlink" href="#dj_kaos_utils.models.HasInitials.initials" title="Permalink to this definition"></a></dt>
+<dd><p>Take the value form the field defined by <cite>take_initials_from</cite> and return the initial letters of each word in it,
+capitalized.
+Example: John Smith =&gt; JS
+:return: Initial letters of each word in the value from the field <cite>take_initials_from</cite>, capitalized.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.HasWarnings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">HasWarnings</span></span><a class="headerlink" href="#dj_kaos_utils.models.HasWarnings" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Adds a method <cite>get_warnings</cite> useful to catch issues that aren’t worthy of throwing a <cite>ValidationError</cite></p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">get_warnings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">warnings</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_warnings</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fulfills_condition</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="k">return</span> <span class="p">[</span><span class="o">*</span><span class="n">warnings</span><span class="p">,</span> <span class="s2">&quot;New warning&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">warnings</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.HasWarnings.get_warnings">
+<span class="sig-name descname"><span class="pre">get_warnings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dj_kaos_utils.models.HasWarnings.get_warnings" title="Permalink to this definition"></a></dt>
+<dd><p>Override this method and append any warnings to the result of calling <cite>super()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of warnings. Each item in the list is either a tuple of (field_name, warning description) or
+just warning description.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="admin">
+<h2><a class="toc-backref" href="#id4">Admin</a><a class="headerlink" href="#admin" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.admin.HasWarningsAdmin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.admin.</span></span><span class="sig-name descname"><span class="pre">HasWarningsAdmin</span></span><a class="headerlink" href="#dj_kaos_utils.models.admin.HasWarningsAdmin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModelAdmin</span></code></p>
+<p>A Django ModelAdmin class to display warnings associated with an object of <cite>HasWarnings</cite> class.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="forms.html" class="btn btn-neutral float-left" title="Forms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rest.html" class="btn btn-neutral float-right" title="REST utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

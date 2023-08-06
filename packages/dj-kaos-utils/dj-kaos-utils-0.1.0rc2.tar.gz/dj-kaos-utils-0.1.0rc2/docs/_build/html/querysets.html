@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuerySets &mdash; Django Kaos Utils  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Admin" href="admin.html" />
+    <link rel="prev" title="Welcome to Django Kaos Utils’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Django Kaos Utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">QuerySets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dj_kaos_utils.models.RankedQuerySetMixin"><code class="docutils literal notranslate"><span class="pre">RankedQuerySetMixin</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.RankedQuerySetMixin.annotate_rank"><code class="docutils literal notranslate"><span class="pre">RankedQuerySetMixin.annotate_rank()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dj_kaos_utils.models.PageableQuerySet"><code class="docutils literal notranslate"><span class="pre">PageableQuerySet</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.PageableQuerySet.paginate"><code class="docutils literal notranslate"><span class="pre">PageableQuerySet.paginate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.PageableQuerySet.paginate_minmax"><code class="docutils literal notranslate"><span class="pre">PageableQuerySet.paginate_minmax()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.PageableQuerySet.paginate_pks"><code class="docutils literal notranslate"><span class="pre">PageableQuerySet.paginate_pks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.PageableQuerySet.paginate_pks_mutating"><code class="docutils literal notranslate"><span class="pre">PageableQuerySet.paginate_pks_mutating()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.PageableQuerySet.paginated_update"><code class="docutils literal notranslate"><span class="pre">PageableQuerySet.paginated_update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dj_kaos_utils.models.BulkUpdateCreateQuerySet"><code class="docutils literal notranslate"><span class="pre">BulkUpdateCreateQuerySet</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.models.BulkUpdateCreateQuerySet.bulk_update_or_create"><code class="docutils literal notranslate"><span class="pre">BulkUpdateCreateQuerySet.bulk_update_or_create()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datetime.html">Datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="argparse.html">Argument Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management.html">Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Kaos Utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>QuerySets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/querysets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="querysets">
+<h1>QuerySets<a class="headerlink" href="#querysets" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.RankedQuerySetMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">RankedQuerySetMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.RankedQuerySetMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></p>
+<p>Mixin that adds an <cite>annotate_rank</cite> method to the QuerySet classes that inherit it. Used to annotate the rank of each
+row based on a field</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.RankedQuerySetMixin.annotate_rank">
+<span class="sig-name descname"><span class="pre">annotate_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank_annotation_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rank'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QS</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.RankedQuerySetMixin.annotate_rank" title="Permalink to this definition"></a></dt>
+<dd><p>Annotate the rank of each row based on the values in the designated field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> – Rank entries based on values in this field</p></li>
+<li><p><strong>rank_annotation_name</strong> – The name of the annotation to store the rank. By default, <code class="docutils literal notranslate"><span class="pre">rank</span></code>.</p></li>
+<li><p><strong>asc</strong> – Whether to rank the entries from lowest to highest. By default, rank from highest to lowest.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Queryset with rank annotated by <cite>field</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.PageableQuerySet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">PageableQuerySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.PageableQuerySet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></p>
+<p>Provide support for paginating django querysets. Useful for running expensive operations in batches.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.PageableQuerySet.paginate">
+<span class="sig-name descname"><span class="pre">paginate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QS</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.PageableQuerySet.paginate" title="Permalink to this definition"></a></dt>
+<dd><p>A shortcut to the favourite way of paginating for the queryset class.
+By default, set to paginate_minmax, which should give the best performance in most cases.
+Override this method to change the default strategy used by the inheritor queryset class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>limit</strong> – Size of each page</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>iterator with each object being a page of the queryset with maximum size of limit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.PageableQuerySet.paginate_minmax">
+<span class="sig-name descname"><span class="pre">paginate_minmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'id'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QS</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.PageableQuerySet.paginate_minmax" title="Permalink to this definition"></a></dt>
+<dd><p>Paginate by slicing the queryset using an autoincrement field.
+Requires the model in this queryset to have an autoincrement field, like id.
+Each page is guaranteed to have a maximum count of limit, but it each individual page could have a lower count.
+Does not retain the original order of the queryset in any way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>limit</strong> – Size of each page</p></li>
+<li><p><strong>id_field</strong> – The field to use for paging</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>iterator with each object being a page of the queryset with maximum size of limit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.PageableQuerySet.paginate_pks">
+<span class="sig-name descname"><span class="pre">paginate_pks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QS</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.PageableQuerySet.paginate_pks" title="Permalink to this definition"></a></dt>
+<dd><p>Paginate the queryset by identifying each object in the queryset by its primary key, and reloading them from the
+queryset, page by page, by looking up their pks. Guarantees each page except the last page to have a size of
+limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>limit</strong> – Size of each page</p></li>
+<li><p><strong>simple</strong> – If True, any queryset filtering or annotations on the base queryset (self) will be cleared for
+simplicity and efficiency</p></li>
+<li><p><strong>mutating</strong> – If the base queryset (self) mutates during each iteration over the pages, set to True, which
+will cache the PK values into memory instead of reading from the DB on each page. Setting to True increases
+memory usage but guarantees that each page returned corresponds to the original objects in the queryset
+before any write/edit operations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>iterator with each object being a page of the queryset with maximum size of limit. Guaranteed each page
+except the last page to have a size of limit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.PageableQuerySet.paginate_pks_mutating">
+<span class="sig-name descname"><span class="pre">paginate_pks_mutating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QS</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.PageableQuerySet.paginate_pks_mutating" title="Permalink to this definition"></a></dt>
+<dd><p>A shortcut for self.paginate_pks(limit, simple=simple, mutating=True)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.PageableQuerySet.paginated_update">
+<span class="sig-name descname"><span class="pre">paginated_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">QuerySet</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.PageableQuerySet.paginated_update" title="Permalink to this definition"></a></dt>
+<dd><p>Run operation page_op on the queryset page by page. Each operation on a page is an atomic transaction, and will
+be committed to the database upon success.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>limit</strong> – Page size</p></li>
+<li><p><strong>page_op</strong> – Operation to run on each page. It should at the end update the database and return the number of
+rows updated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the total number of rows updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.BulkUpdateCreateQuerySet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.models.</span></span><span class="sig-name descname"><span class="pre">BulkUpdateCreateQuerySet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.models.BulkUpdateCreateQuerySet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.models.BulkUpdateCreateQuerySet.bulk_update_or_create">
+<span class="sig-name descname"><span class="pre">bulk_update_or_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">M</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QS</span></span></span><a class="headerlink" href="#dj_kaos_utils.models.BulkUpdateCreateQuerySet.bulk_update_or_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates or updates in bulk a list of objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objs</strong> – List of model instances</p></li>
+<li><p><strong>lookup_fields</strong> – Name of field(s) that uniquely identify the objects. You can pass a string to look up
+using one field, or an itertable to look up using multiple fields</p></li>
+<li><p><strong>update_fields</strong> – List of fields to update. If value is falsy such as empty list, bulk_update won’t run,
+which is useful for batch creating missing objects.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>queryset containing all the objects, created and updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Django Kaos Utils’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin.html" class="btn btn-neutral float-right" title="Admin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

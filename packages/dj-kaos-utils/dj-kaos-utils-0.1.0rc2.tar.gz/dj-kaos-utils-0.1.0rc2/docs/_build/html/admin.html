@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin &mdash; Django Kaos Utils  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Datetime" href="datetime.html" />
+    <link rel="prev" title="QuerySets" href="querysets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Django Kaos Utils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="querysets.html">QuerySets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Admin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#filters">Filters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.BooleanAdminFilter"><code class="docutils literal notranslate"><span class="pre">BooleanAdminFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dj_kaos_utils.admin.BooleanAdminFilter.filter"><code class="docutils literal notranslate"><span class="pre">BooleanAdminFilter.filter()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mixins">Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.EditReadonlyAdminMixin"><code class="docutils literal notranslate"><span class="pre">EditReadonlyAdminMixin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inlines">Inlines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.NoViewInlineMixin"><code class="docutils literal notranslate"><span class="pre">NoViewInlineMixin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.NoAddInlineMixin"><code class="docutils literal notranslate"><span class="pre">NoAddInlineMixin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.NoChangeInlineMixin"><code class="docutils literal notranslate"><span class="pre">NoChangeInlineMixin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.utils.pp_json"><code class="docutils literal notranslate"><span class="pre">pp_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.utils.render_element"><code class="docutils literal notranslate"><span class="pre">render_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.utils.render_img"><code class="docutils literal notranslate"><span class="pre">render_img()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.utils.render_anchor"><code class="docutils literal notranslate"><span class="pre">render_anchor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.utils.get_admin_link"><code class="docutils literal notranslate"><span class="pre">get_admin_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dj_kaos_utils.admin.utils.render_admin_link"><code class="docutils literal notranslate"><span class="pre">render_admin_link()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datetime.html">Datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="argparse.html">Argument Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management.html">Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django Kaos Utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Admin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/admin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="admin">
+<h1>Admin<a class="headerlink" href="#admin" title="Permalink to this heading"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#filters" id="id1">Filters</a></p></li>
+<li><p><a class="reference internal" href="#mixins" id="id2">Mixins</a></p></li>
+<li><p><a class="reference internal" href="#inlines" id="id3">Inlines</a></p></li>
+<li><p><a class="reference internal" href="#utils" id="id4">Utils</a></p></li>
+</ul>
+</div>
+<section id="filters">
+<h2><a class="toc-backref" href="#id1">Filters</a><a class="headerlink" href="#filters" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.BooleanAdminFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.</span></span><span class="sig-name descname"><span class="pre">BooleanAdminFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_admin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.BooleanAdminFilter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleListFilter</span></code></p>
+<p>An admin filter that works like an on-off switch; two options: on, off (all)</p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ByAvailableFilter</span><span class="p">(</span><span class="n">BooleanAdminFilter</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;availability&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">parameter_name</span> <span class="o">=</span> <span class="s1">&#39;is_available&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_available</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.BooleanAdminFilter.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.BooleanAdminFilter.filter" title="Permalink to this definition"></a></dt>
+<dd><p>Override this method to filter the queryset when the filter value is set to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – the request from the admin site</p></li>
+<li><p><strong>queryset</strong> – the queryset passed by the admin</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>filtered queryset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="mixins">
+<h2><a class="toc-backref" href="#id2">Mixins</a><a class="headerlink" href="#mixins" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.EditReadonlyAdminMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.</span></span><span class="sig-name descname"><span class="pre">EditReadonlyAdminMixin</span></span><a class="headerlink" href="#dj_kaos_utils.admin.EditReadonlyAdminMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModelAdmin</span></code></p>
+<p>Fields defined in <code class="xref py py-attr docutils literal notranslate"><span class="pre">edit_readonly_fields</span></code> are editable upon creation, but after that they become readonly
+Set <code class="xref py py-attr docutils literal notranslate"><span class="pre">allow_superusers</span></code> to True to allow superusers to edit such fields even in an edit form.</p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">EditReadonlyAdminMixin</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">edit_readonly_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;slug&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="inlines">
+<h2><a class="toc-backref" href="#id3">Inlines</a><a class="headerlink" href="#inlines" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.NoViewInlineMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.</span></span><span class="sig-name descname"><span class="pre">NoViewInlineMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.NoViewInlineMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">InlineModelAdmin</span></code></p>
+<p>Admin inline mixin that doesn’t show any objects (but can show the form to add).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.NoAddInlineMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.</span></span><span class="sig-name descname"><span class="pre">NoAddInlineMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.NoAddInlineMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">InlineModelAdmin</span></code></p>
+<p>Admin inline mixin that doesn’t show the form to add new objects</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.NoChangeInlineMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.</span></span><span class="sig-name descname"><span class="pre">NoChangeInlineMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">admin_site</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.NoChangeInlineMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">InlineModelAdmin</span></code></p>
+<p>Admin inline mixin that makes the existing objects not be editable.</p>
+</dd></dl>
+
+</section>
+<section id="utils">
+<h2><a class="toc-backref" href="#id4">Utils</a><a class="headerlink" href="#utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.utils.pp_json">
+<span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.utils.</span></span><span class="sig-name descname"><span class="pre">pp_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.utils.pp_json" title="Permalink to this definition"></a></dt>
+<dd><p>Return a syntax highlighted python dictionary/json in html</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> – The dictionary/json to be pretty printed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>syntax highlighted python dictionary/json in html</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nd">@admin</span><span class="o">.</span><span class="n">display</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">json_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">pp_json</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.utils.render_element">
+<span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.utils.</span></span><span class="sig-name descname"><span class="pre">render_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.utils.render_element" title="Permalink to this definition"></a></dt>
+<dd><p>Render safe html element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tag</strong> – the html tag to render, i.e. p or h1</p></li>
+<li><p><strong>children</strong> – the children of the html element, will be escaped unless marked safe</p></li>
+<li><p><strong>attrs</strong> – dictionary of attributes to render on the element</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>safe html element with tag, attributes and children</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nd">@admin</span><span class="o">.</span><span class="n">display</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">alert_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">render_element</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="s2">&quot;Alert&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;alert&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.utils.render_img">
+<span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.utils.</span></span><span class="sig-name descname"><span class="pre">render_img</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.utils.render_img" title="Permalink to this definition"></a></dt>
+<dd><p>Render img tag with src, alt and attrs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> – src of img</p></li>
+<li><p><strong>alt</strong> – alt attribute</p></li>
+<li><p><strong>attrs</strong> – dict of extra attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>safe html of img tag</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nd">@admin</span><span class="o">.</span><span class="n">display</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">image_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">render_img</span><span class="p">(</span><span class="s1">&#39;image.jpg&#39;</span><span class="p">,</span> <span class="s2">&quot;Image&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;thumbnail&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.utils.render_anchor">
+<span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.utils.</span></span><span class="sig-name descname"><span class="pre">render_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">href</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_tab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_tab_icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.utils.render_anchor" title="Permalink to this definition"></a></dt>
+<dd><p>Render anchor/link tag with href, children, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>href</strong> – the href link of the anchor</p></li>
+<li><p><strong>children</strong> – what to render inside the anchor tag</p></li>
+<li><p><strong>attrs</strong> – other attributes to put on the element</p></li>
+<li><p><strong>new_tab</strong> – whether the link should open a new tab</p></li>
+<li><p><strong>new_tab_icon</strong> – whether to render a mini icon at the end of the link denoting it will open in a new tab.
+Only goes into effect if new_tab is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>anchor tag</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nd">@admin</span><span class="o">.</span><span class="n">display</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">url_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">render_anchor</span><span class="p">(</span><span class="s1">&#39;https://www.example.com&#39;</span><span class="p">,</span> <span class="s2">&quot;Link&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.utils.get_admin_link">
+<span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.utils.</span></span><span class="sig-name descname"><span class="pre">get_admin_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.utils.get_admin_link" title="Permalink to this definition"></a></dt>
+<dd><p>Return the admin change page link for the given object, or None if the link cannot be generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>django model instance</em>) – the object for which to get the admin change page link</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the admin change page link if it exists or None otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><cite>NoReverseMatch</cite> if the admin change URL does not exist for the given object</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">get_admin_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dj_kaos_utils.admin.utils.render_admin_link">
+<span class="sig-prename descclassname"><span class="pre">dj_kaos_utils.admin.utils.</span></span><span class="sig-name descname"><span class="pre">render_admin_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dj_kaos_utils.admin.utils.render_admin_link" title="Permalink to this definition"></a></dt>
+<dd><p>Return marked-as-safe html containing an anchor tag linking to the admin change page of the object. If the object
+doesn’t have an admin change page, return the string representation of the object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> – the model instance to grab the link for</p></li>
+<li><p><strong>kwargs</strong> – extra kwargs to pass to <cite>render_anchor</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>marked-as-safe html of the anchor tag</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">parent_display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">render_admin_link</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="querysets.html" class="btn btn-neutral float-left" title="QuerySets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datetime.html" class="btn btn-neutral float-right" title="Datetime" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kaos Labs Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
