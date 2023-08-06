@@ -1,0 +1,128 @@
+![Build Status](https://drone.mcos.nc/api/badges/scrippy/scrippy-mail/status.svg) ![License](https://img.shields.io/static/v1?label=license&color=orange&message=MIT) ![Language](https://img.shields.io/static/v1?label=language&color=informational&message=Python)
+
+![Scrippy, mon ami le scrangourou](./scrippy-mail.png "Scrippy, mon ami le scrangourou")
+
+# `scrippy_mail`
+
+Client _Git_ pour le cadriciel [`Scrippy`](https://codeberg.org/scrippy).
+
+## Prérequis
+
+### Modules Python
+
+#### Liste des modules nécessaires
+
+- Aucun
+
+## Installation
+
+### Manuelle
+
+```bash
+git clone https://codeberg.org/scrippy/scrippy-mail.git
+cd scrippy-mail.git
+sudo python3 -m pip install -r requirements.txt
+make install
+```
+
+### Avec `pip`
+
+```bash
+pip install scrippy-mail
+```
+
+### Utilisation
+
+### `scrippy_mail`
+
+Le module `scrippy_mail.mail`  propose une interface simplifiée permettant l'envoi de courriels via l'objet `Mailer`.
+
+Ce module propose également une interface à `SpamAssassin` via l'objet `SpamAssassinClient` et une interface `POP3` via l'objet `PopClient`.
+
+Ces deux dernières interfaces ne sont pas encore documentées et n'implémente pas l'intégralité des protocoles qu'elles sont censées supporter. Cependant elles sont utilisées en production pour des besoins limités.
+
+Le code source des modules `scrippy_mail.mail.popclient` et `scrippy_mail.mail.spamassassin` et les commentaires qu'il contient reste la meilleure source de documentation. [`Use the Source, Luke`](https://en.wiktionary.org/wiki/UTSL).
+
+Les paramètres suivants sont optionnels à l'instanciation d'un objet `scrippy_mail.mail.Mailer`:
+- `host`: Le nom du serveur de mails à utiliser (défaut: localhost)
+- `port`: Le numéro du port sur lequel contacter le serveur de mails (défaut: 25)
+- `user`: Le nom d'utilisateur avec lequel s'authentifier sur le serveur de mails
+- `password`: Le mot de passe avec lequel s'authentifier sur le serveur de mails
+- `starttls`: Un booléen indiquant s'il faut utiliser STARTTLS (défaut: False)
+- `timeout`: Un entier indiquant le délai maximum en secondes pour réussir une connexion (défaut: 60)
+
+#### Envoi de mail
+
+La méthode `Mailer.send()` permettant l'envoi du message accepte les 4 arguments obligatoires suivants:
+- `subject`: Une chaîne de caractère utilisée comme sujet du courriel
+- `body`: Une chaîne de caractère utilisée comme corps du courriel
+- `to_addrs`: Un *tuple* contenant la liste des adresses de courriels de destination
+- `from_addr`: L'adresse de courriel de l'expéditeur
+
+Si l'argument `to_addrs` n'est pas un *tuple*, il sera converti comme tel. Typiquement si le courriel n'a qu'un seul destinataire, passer la seule adresse de courriel de ce destinataire comme une chaîne de caractères sera suffisant.
+
+Si le courriel doit être expédié à plusieurs destinataires, les adresses de destination devront être fournies sous formes de *tuple*.
+
+Chaque adresse de courriel doit être une adresse de courriel répondant à la [RFC 5322](https://tools.ietf.org/html/rfc5322.html).
+
+La méthode `Mailer.send()` renvoie `True` en cas de succès et `False` en cas d'échec de l'envoi du courriel.
+
+```python
+from scrippy_mail import mail
+
+mail_host = "smtp.flying.circus"
+mail_port = "465"
+mail_tls = True
+mail_from = "luigi.vercotti@flying.circus"
+mail_to = "harry.fink@flying.circus"
+mail_subject = "Rapport d'erreur"
+mail_body = """Bonjour Harry Fink
+
+Vous recevez cet e-mail car vous faites partie des administrateurs fonctionnels de l'application Dead Parrot.
+
+L'exécution du script s'est terminé avec l'erreur suivante:
+- It's not pinin’! It's passed on! This parrot is no more!
+
+--
+Cordialement.
+Luiggi Vercotti
+"""
+
+mailer = mail.Mailer(host=mail_host, port=mail_port, starttls=mail_tls)
+to_addrs = (mail_to,)
+
+if mailer.send(subject, body, to_addrs, mail_from):
+  logging.info("Courriel envoyé avec succès")
+```
+
+#### Récupération de mails (POP3)
+
+Le client `PopClient` permet d'interroger un serveur _POP3_. Ce client très basique ne gère pas les connexions chiffrées _TLS_.
+
+```python
+import email
+from scrippy_mail import mail
+
+mail_host = "smtp.flying.circus"
+mail_port = "110"
+mail_account = "luigi.vercotti@flying.circus"
+mail_password = "D3ADP4ARR0T"
+
+client = mail.PopClient(host=mail_host, port=mail_port, timeout=5)
+client.connect()
+client.authenticate(mail_account, mail_password)
+# Récupère le nombre de mails disponibles
+# client.stat() renvoie la donnée brute, il appartient au développeur
+# De la traiter pour pouvoir l'exploiter.
+num_mails = client.stat()
+# Récupère le dernier mails
+mail_content = client.retr(1)
+# Récupération du contenu (Body)
+mail_content = email.message_from_bytes(mail_content).get_payload()
+mail_content = mail_content.replace("=\r\n", "")
+mail_content = mail_content.replace("\r\n.\r\n", "\n")
+mail_content = "\n".join(mail_content.split("\r\n"))
+# Supprime le dernier mail
+client.dele(1)
+client.bye()
+```
