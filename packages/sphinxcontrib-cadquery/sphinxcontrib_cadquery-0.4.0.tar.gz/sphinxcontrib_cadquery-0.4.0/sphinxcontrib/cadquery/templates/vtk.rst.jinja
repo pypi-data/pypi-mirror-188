@@ -1,0 +1,21 @@
+.. raw:: html
+
+    <div class="cadquery-container cadquery-align-{{align}}" style="margin-bottom: 24px; width:{{width}};">
+        <div class="cadquery-vtk" style="height:{{height}};border: 1px solid #ddd;">
+            <script>
+                var parent_element = {{element}};
+                var data = {{vtk_json}};
+                render(data, parent_element);
+            </script>
+        </div>
+
+{% if include_source %}
+.. code-block:: python
+
+    {{script_source|indent(4)}}
+{% endif %}
+
+.. raw:: html
+
+    </div>
+    <div style="clear:both;"></div>
