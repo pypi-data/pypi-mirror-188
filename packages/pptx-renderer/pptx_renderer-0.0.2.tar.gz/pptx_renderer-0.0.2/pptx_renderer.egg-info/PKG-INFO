@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: pptx-renderer
+Version: 0.0.2
+Summary: Render ppt like a jupyter notebook
+Author-email: Najeem Muhammed <najeem@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023, Najeem Muhammed
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/idling-mind/pptx_renderer
+Project-URL: Bug Tracker, https://github.com/idling-mind/pptx_renderer/issues
+Keywords: powerpoint,ppt,pptx,presentation,slides
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: test
+License-File: LICENSE
+
+# PPTX Renderer
+
+This package let's you run your powerpoint presentations like a jupyter-notebook.
+You can insert placeholders in the ppt and also write python code in the ppt's
+notes and use either a python function or an equivalent commandline tool to
+convert it into an output rendered presentation.
+
+Below is a simple example.
+
+```python
+from pptx_renderer import PPTXRenderer
+p = PPTXRenderer("template.pptx")
+
+someval = "hello"
+def mymethod(abc):
+    return f"{abc} " * 5
+
+myimage = r"is_it_worth_the_time.png"
+mytable = [["a", "b", "c", "d", "e"]] * 10
+p.render(
+    "output.pptx", 
+    {
+        "someval": someval, "mymethod": mymethod, "myimage": myimage,
+        "mytable": mytable,
+    }
+)
+```
+
+This will convert this
+
+![Before](docs/_src/_static/before.png)
+
+to this.
+
+![After](docs/_src/_static/after.png)
+
+
+You can define some functions within the ppt itself by writing python code in
+the notes section of slides. And the variables and functions in this code
+can be used in the main ppt.
+
+For example: write the following in one of the slide's notes.
+
+<pre>
+```python
+def myfunc(input):
+    return input * 42
+```
+</pre>
+
+Now you can, for example, add the placeholder `{{{myfunc(42)}}}` in your slides.
+
+
+If the template ppt is a self contained python script ie: if it does not require
+variable values and function definition to be passed from outside, you can
+generate the output ppt directly from the commandline using the following
+command.
+
+```console
+pptx-renderer input_template.pptx output_file.pptx
+```
