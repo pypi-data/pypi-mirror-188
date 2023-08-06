@@ -1,0 +1,61 @@
+% extends default_template2
+
+%% page_start
+
+%% page_head
+
+%% nav
+
+%% login
+
+%% body_start
+
+%% body_init
+
+%% panel
+
+%% messages
+
+%% navglobal
+
+%% sidebar
+
+%% tabs
+    head
+        meta charset=utf-8
+        title
+            {{title}}
+
+        %if form:
+            %if form.errors or errors:
+                meta name=target,,,content=_self
+                meta name=RETURN,,,content=$$RETURN_RELOAD_PAGE
+
+    % with NO_TABS=True:
+        {{block.super}}
+
+%% content_start
+    % if form.errors or errors:
+        {{block.super}}
+
+%% content_end
+    % if form.errors or errors:
+        {{block.super}}
+        
+%% body_desktop
+    % with ONLY_CONTENT=True:
+        {{ block.super }}
+
+%% html_widgets_init
+
+%% body_footer
+
+%% page_footer
+
+%% body_footer_scripts
+
+%% body_end
+
+%% page_end
+
+%% js_all_scripts
