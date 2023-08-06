@@ -1,0 +1,30 @@
+# Release Notes
+---
+
+## [1.0.4](https://github.com/osl-incubator/containers-sugar/compare/1.0.3...1.0.4) (2023-01-26)
+
+
+### Bug Fixes
+
+* Fix the sh call ([#15](https://github.com/osl-incubator/containers-sugar/issues/15)) ([6e26308](https://github.com/osl-incubator/containers-sugar/commit/6e263088458ece50bd66d9a3575ed5d0cec51f8a))
+
+## [1.0.3](https://github.com/osl-incubator/containers-sugar/compare/1.0.2...1.0.3) (2023-01-26)
+
+
+### Bug Fixes
+
+* Suppress traceback from sh ([#14](https://github.com/osl-incubator/containers-sugar/issues/14)) ([69902c6](https://github.com/osl-incubator/containers-sugar/commit/69902c6372ec55cc36bbdd87e0f594c733163886))
+
+## [1.0.2](https://github.com/osl-incubator/containers-sugar/compare/1.0.1...1.0.2) (2023-01-26)
+
+
+### Bug Fixes
+
+* Fix support for python 3.7.1, 3.8, 3.9, 3.10 ([#13](https://github.com/osl-incubator/containers-sugar/issues/13)) ([83a9592](https://github.com/osl-incubator/containers-sugar/commit/83a9592e06b7fabc7a0f260b38a58267488a070e))
+
+## [1.0.1](https://github.com/osl-incubator/containers-sugar/compare/1.0.0...1.0.1) (2023-01-21)
+
+
+### Bug Fixes
+
+* Fix quotes used by semantic release replace ([#8](https://github.com/osl-incubator/containers-sugar/issues/8)) ([66acb67](https://github.com/osl-incubator/containers-sugar/commit/66acb67b9275a2afea48b6dd97b143edfff80be1))
