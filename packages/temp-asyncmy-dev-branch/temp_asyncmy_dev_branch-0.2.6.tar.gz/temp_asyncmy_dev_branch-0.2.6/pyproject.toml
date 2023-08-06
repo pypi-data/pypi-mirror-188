@@ -1,0 +1,56 @@
+[tool.poetry]
+authors = ["long2ice <long2ice@gmail.com>"]
+build = "build.py"
+description = "asyncmy 0.2.6 Dev Branch"
+documentation = "https://github.com/long2ice/asyncmy"
+homepage = "https://github.com/long2ice/asyncmy"
+include = ["CHANGELOG.md", "LICENSE", "README.md"]
+keywords = ["driver", "asyncio", "mysql"]
+license = "Apache-2.0"
+name = "temp-asyncmy-dev-branch"
+packages = [
+    { include = "asyncmy" },
+]
+readme = "README.md"
+repository = "https://github.com/long2ice/asyncmy.git"
+version = "0.2.6"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+aiomysql = "*"
+bandit = "*"
+black = "*"
+cryptography = "*"
+cython = "*"
+flake8 = "*"
+isort = "*"
+mypy = "*"
+mysqlclient = "*"
+pymysql = "0.8.1"
+pytest = "*"
+rich = "*"
+pyproject-flake8 = "*"
+pytest-asyncio = "*"
+pytest-mock = "*"
+pytest-xdist = "*"
+uvloop = { version = "*", markers = "sys_platform != 'win32'" }
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0, <1.5.0", "setuptools", "cython"]
+
+[tool.black]
+line-length = 100
+target-version = ['py36', 'py37', 'py38', 'py39']
+
+[tool.pytest.ini_options]
+asyncio_mode = 'auto'
+
+[tool.mypy]
+pretty = true
+ignore_missing_imports = true
+
+[tool.flake8]
+ignore = 'E501,W503,E203'
