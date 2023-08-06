@@ -1,0 +1,14 @@
+{% load i18n %}
+{% for message in messages %}
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"{% if true %} data-bs-autohide="false"{% endif %}>
+    <div class="toast-header">
+      {#        <img src="..." class="rounded me-2" alt="...">#}
+      <strong class="me-auto">{{ message.tags }}</strong>
+      <small>1 min ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message|safe }}
+    </div>
+  </div>
+{% endfor %}

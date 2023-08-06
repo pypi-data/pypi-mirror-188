@@ -1,0 +1,43 @@
+{% load l10n i18n crispy_forms_filters %}
+{# This is a special buttons-group crispy-forms field for boolean values in a CharField, used in preferences #}
+{# Saved values are the strings "True" and "False", but displayed is a buttons group. #}
+
+{% if field.is_hidden %}
+  {{ field }}
+{% else %}
+  <div id="div_{{ field.auto_id }}" class="form-group mb-3{% if 'form-horizontal' in form_class %} row{% endif %}{% if wrapper_class %} {{ wrapper_class }}{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
+
+    {% if field.label %}
+      <label {% if field.id_for_label %}for="{{ field.id_for_label }}" {% endif %}class="{{ label_class }}{% if not inline_class %} col-form-label{% endif %}{% if field.field.required %} requiredField{% endif %}">
+        {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+      </label>
+    {% endif %}
+
+    <div {% if field_class %}class="{{ field_class }}"{% endif %}{% if flat_attrs %} {{ flat_attrs|safe }}{% endif %}>
+
+      <div class="btn-group" role="group">
+        <input type="radio" class="btn-check form-control{% if field.errors %} is-invalid{% endif %}" name="{{ field.html_name }}" id="input_{{ field.auto_id }}_true" autocomplete="off"{% if field.value == True %} checked{% endif %} value="True" autofocus>
+        <label for="input_{{ field.auto_id }}_true" type="button" class="btn">{% translate 'On' %}</label>
+
+        <input type="radio" class="btn-check{% if field.errors %} is-invalid{% endif %}" name="{{ field.html_name }}" id="input_{{ field.auto_id }}_false" autocomplete="off" {% if field.value == False %} checked{% endif %} value="False">
+        <label for="input_{{ field.auto_id }}_false" type="button" class="btn">{% translate 'Off' %}</label>
+      </div>
+        {% if form_show_errors and field.errors %}
+          {% for error in field.errors %}
+            {# d-block is needed, as this div is no sibling of input, hence is not shown #}
+            <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="invalid-feedback d-block"><strong>{{ error }}</strong></div>
+          {% endfor %}
+        {% endif %}
+
+
+      {% if field.errors and inline_class %}
+        <div class="w-100 {%if use_custom_control%}custom-control custom-radio{% if inline_class %} custom-control-inline{% endif %}{% else %}form-check{% if inline_class %} form-check-inline{% endif %}{% endif %}">
+          {# the following input is only meant to allow boostrap to render the error message as it has to be after an invalid input. As the input has no name, no data will be sent. #}
+          <input type="checkbox" class="custom-control-input {% if field.errors %}is-invalid{%endif%}">
+          {% include 'bootstrap5/layout/field_errors_block.html' %}
+        </div>
+      {% endif %}
+      {% include 'bootstrap5/layout/help_text.html' %}
+    </div>
+  </div>
+{% endif %}

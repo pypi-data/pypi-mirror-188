@@ -1,0 +1,15 @@
+<div {% if div.css_id %}id="{{ div.css_id }}"{% endif %}
+     class="card mb-3{% if div.css_class %} {{ div.css_class }}{% endif %}"
+    {{ div.flat_attrs }}>
+  {% if div.title or div.subtitle %}
+    <div class="card-header">
+      <h3 class="card-title{% if div.title_class %} {{ div.title_class }}{% endif %}" id="div.title_id">
+        {{ div.title }}
+        {% if div.subtitle %} <span class="card-subtitle">{{ div.subtitle }}</span>{% endif %}
+      </h3>
+    </div>
+  {% endif %}
+  <div class="card-body">
+    {{ fields|safe }}
+  </div>
+</div>

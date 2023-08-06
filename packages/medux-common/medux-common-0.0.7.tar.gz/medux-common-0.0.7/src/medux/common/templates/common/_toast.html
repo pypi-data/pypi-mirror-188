@@ -1,0 +1,32 @@
+{% load i18n %}
+<div id="messages">
+  {% for message in messages %}
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"{% if true %} data-bs-autohide="false"{% endif %}>
+      <div class="toast-header">
+        {#        <img src="..." class="rounded me-2" alt="...">#}
+        <strong class="me-auto">{{ message.tags }}</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        {{ message|safe }}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{#<div class="messages-toast-container position-fixed bottom-0 end-0 p-3">#}
+{#  <div id="messages-toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">#}
+{#    <div class="d-flex">#}
+{#      <div id="messages-toast-body" class="messages-toast-body">#}
+{#        {% include 'common/_messages.html' %}#}
+{#      </div>#}
+{#      <button#}
+{#          type="button"#}
+{#          class="btn-close btn-close-white me-2 m-auto"#}
+{#          data-bs-dismiss="messages-toast"#}
+{#          aria-label="{% translate 'Close' %}"#}
+{#      ></button>#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}

@@ -1,0 +1,37 @@
+{% load i18n %}
+{% if message %}
+  <div class="toast show" id="toast-{{ id }}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-light">
+      <i class="bi bi-{{ icon }} me-2 text-{{ level_tag }}"></i>
+      <strong class="me-auto">{{ title }}</strong>
+      <small class="text-muted">{{ time }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="{% translate 'Close' %}"></button>
+    </div>
+    <div class="toast-body bg-white">
+      {{ message |safe }}
+    </div>
+    {#    {% for button in buttons %}#}
+    {#      <button class="btn btn-{% if forloop.first %}primary{% else %}secondary{% endif %}">{{ button.title }}</button>#}
+    {#    {% endfor %}#}
+  </div>
+  <script>
+      {# FIXME script is not executed when streaming! #}
+      new bootstrap.Toast(document.getElementById('toast-{{ id }}')).show()
+  </script>
+{% endif %}
+
+{% block messages %}
+  <div class="messages">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible{% if message.tags %} {{ message.tags }}{% endif %}">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+          <strong>{{message}}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+  </div>
+
+{% endblock %}

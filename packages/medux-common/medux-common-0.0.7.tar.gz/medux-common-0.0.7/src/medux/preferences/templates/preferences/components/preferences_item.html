@@ -1,0 +1,116 @@
+{% load i18n %}
+
+<div id="preferences-item-{{ namespace }}-{{ key }}">
+  <div class="card mb-2 preferences-item">
+    <div class="row g-0">
+
+      <div class="col-1 bg-light text-center g-0 preferences-item-scope-tabs">
+        {# tablist for Scopes #}
+        <div class="nav nav-tabs flex-column" id="{{ item.namespace }}-{{ item.key }}-tab" role="tablist" aria-orientation="vertical">
+          {% for item in items %}
+            <button class="nav-link position-relative{% if forloop.first %} active{% endif %}  "
+                    id="{{ item.namespace }}-{{ item.key }}-{{ item.get_scope_display }}-tab"
+                    aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-controls="{{ item.namespace }}-{{ item.key }}-{{ item.get_scope_display }}"
+                    role="tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#{{ item.namespace }}-{{ item.key }}-{{ item.get_scope_display }}"
+            >
+              <i class="bi bi-{{ item.get_scope_icon }} fs-6" title="{{ item.get_scope_display }}"></i>
+              {% if not item.effective %}<s>{% endif %}<small class="d-none d-lg-block">{{ item.get_scope_display }}</small>{% if not item.effective %}</s>{% endif %}
+              {% if item.effective %}
+                {% with item.get_scope_display as scope %}
+                  <i class="bi bi-patch-check position-absolute text-dark fs-3 translate-middle top-50 start-0"
+                     title="{% blocktranslate %}{{ scope }} provides the effective setting.{% endblocktranslate %}"
+                  >
+                {% endwith %}
+{#                <span class="visually-hidden">{% translate 'This is the effective setting.' %}</span>#}
+              </i>
+              {% endif %}
+            </button>
+
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-11 tab-content">
+        {% for item in items %}
+          <div class="card-body position-relative tab-pane{% if forloop.first %} show active{% endif %}"
+               id="{{ item.namespace }}-{{ item.key }}-{{ item.get_scope_display }}"
+               aria-labelledby="{{ item.namespace }}-{{ item.key }}-{{ item.get_scope_display }}-tab"
+               role="tabpanel"
+               tabindex="0"
+          >
+            <div class="row">
+              <div class="col-10 col-lg-11 position-relative">
+                <h5 class="card-title">
+                  {% if items.0.icon %}
+                    <i class="preferences-icon bi bi-{{ items.0.icon }}"></i>
+                  {% endif %}
+                  {{ item.key }}
+                </h5>
+                {#                      <h6 class="card-subtitle mb-2 text-muted"></h6>#}
+                <p class="card-text">
+                  <span class="text-muted">{{ item.help_text }}</span>
+                  {% if item.key_type == "text" %}
+                    <textarea class="form-control"{% if item.scope == 1 %} disabled{% endif %} id="key-{{ item.namespace }}-{{ item.key }}-{{ item.scope }}-input" >{{ item.value }}</textarea>
+                  {% elif item.key_type == "str" %}
+                    <input
+                        class="form-control"
+                        type="text"
+                        id="key-{{ item.namespace }}-{{ item.key }}-{{ item.scope }}-input"
+                        value="{{ item.value }}"
+                        {% if item.scope == 1 %}readonly{% endif %}
+                    >
+                  {% endif %}
+                </p>
+                <div >
+                  {# display buttons for VENDOR #}
+                  {% if item.scope == 1 or not item.id %}
+                    <span class="d-inline-block"
+                          tabindex="0"
+                          data-bs-toggle="tooltip"
+                        {% if item.scope == 1 %}
+                          title="{% translate 'Vendor settings cannot be changed.' %}"
+                        {% elif not item.id %}
+                          title="{% translate 'This setting is not saved yet.' %}"
+                        {% endif %}
+                    >
+                  {% endif %}
+
+
+                  {% if item.scope == 1 or not item.id %}
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+
+              {% if item.key_type == "int" %}
+                <div class="col-2 col-lg-1 border-start">
+                  <div class="form-control"{% if item.scope == 1 %} disabled{% endif %}>
+                    <input type="number" id="key-{{ item.namespace }}-{{ item.key }}-{{ item.scope }}-input">
+                  </div>
+                </div>
+              {% elif item.key_type == "bool" %}
+                <div class="col-1 border-start">
+                  <div class="form-check form-switch fs-2"{% if item.scope == 1 %} disabled{% endif %}>
+                    <input class="form-check-input"
+                           type="checkbox"
+                           role="switch"
+                           id="key-{{ item.namespace }}-{{ item.key }}-{{ item.scope }}-input"
+                           {% if item.value == "True" %}checked{% endif %}
+                        {% if item.scope == 1 %} disabled{% endif %}
+                    >
+                    {#                  <label class="form-check-label"></label>#}
+                  </div>
+
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
