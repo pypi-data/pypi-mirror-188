@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "cerebrium"
+version = "0.4.2"
+description = ""
+authors = ["Elijah Roussos <elijah@cerebrium.ai>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+
+[tool.poetry.urls]
+"Homepage" = "https://www.cerebrium.ai"
+"Documentation" = "https://docs.cerebrium.ai/"
+
+[[tool.poetry.source]]
+name = "cerebrium"
+url = "http://52.50.58.118:8080"
+default = false
+secondary = true
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[tool.poetry.dependencies]
+python = ">=3.7.2,<3.11"
+xgboost = "^1.6"
+numpy = "^1.21"
+torch = "^1.12"
+scikit-learn = "^1.0"
+cloudpickle = ">=2.0,<2.1"
+onnxruntime = "^1.12.1"
+requests = "^2.28.1"
+tqdm = "^4.64.1"
+tenacity = "^8.1.0"
+yaspin = "^2.2.0"
+censius = "^1.5.8"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.8.0"
+ipython = "^7.0"
+ipykernel = "^6.16.0"
+poetry-dotenv-plugin = "^0.1.0"
+poetry-bumpversion = "^0.3.0"
+poetry-dynamic-versioning = {extras = ["plugin"], version = "^0.19.0"}
+torchvision = "^0.13.1"
+pytest = "^7.2.0"
+coverage = "^6.5.0"
+pytest-cov = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
