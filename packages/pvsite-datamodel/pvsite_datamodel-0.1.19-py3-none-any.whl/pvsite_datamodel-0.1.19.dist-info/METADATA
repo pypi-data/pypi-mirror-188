@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: pvsite-datamodel
+Version: 0.1.19
+Summary: SDK for interacting with the PVSite database
+Author: Open Climate Fix
+Project-URL: GitHub, https://github.com/openclimatefix/pvsite-datamodel
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10.0
+Description-Content-Type: text/markdown
+Requires-Dist: numpy (==1.24.1)
+Requires-Dist: pandas (==1.5.2)
+Requires-Dist: pandera (==0.13.4)
+Requires-Dist: psycopg2-binary (==2.9.5)
+Requires-Dist: pytest (==7.2.1)
+Requires-Dist: python-dateutil (==2.8.2)
+Requires-Dist: setuptools (==65.6.3)
+Requires-Dist: SQLAlchemy (==1.4.*,>=1.4.44)
+Requires-Dist: testcontainers (==3.7.1)
+Provides-Extra: tests
+Requires-Dist: testcontainers.postgres ; extra == 'tests'
+Requires-Dist: pytest ; extra == 'tests'
+
+# pvsite_datamodel
+
+Python library to interact with PV Site postgres database
+
+
+## Structure
+
+```yaml
+pvsite_datamodel:
+  read: # Sub package containing modules for reading from the database
+  write: # Sub package containing modules for writing to the database
+  - connection.py # Class for connecting to the database
+  - schema.py # Pandera pandas dataframe validation schemas
+  - sqlmodels.py # SQLAlchemy definitions of table schemas
+tests: # External tests package
+```
+
+
+## Top-level functions
+
+Classes specifying table schemas:
+- SiteSQL
+- GenerationSQL
+- ForecastSQL
+- ForecastValueSQL
+- LatestForecastValueSQL
+- ClientSQL
+- DatetimeIntervalSQL
+- StatusSQL
+
+Database connection objects:
+- DatabaseConnection
+
+
+## Read package functions
+
+Currently available functions accessible via `from pvsite_datamodel.read import <func>`:
+
+- get_pv_generation_by_client
+- get_pv_generation_by_sites
+- get_latest_forecast_values_by_site
+- get_site_by_uuid
+- get_site_by_client_site_id
+- get_site_by_client_site_name
+- get_all_sites
+- get_latest_status
+
+
+## Write package functions
+
+Currently available write functions accessible via `from pvsite_datamodels.write import <func>`:
+- insert_forecast_values
+- insert_generation_values
+
+
+ ## Tests
+
+To run tests use `pytest`
