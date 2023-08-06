@@ -1,0 +1,54 @@
+This file has been dedicated to the public domain, to the extent
+possible under applicable law, via CC0. See
+http://creativecommons.org/publicdomain/zero/1.0/ for more
+information. This file is offered as-is, without any warranty.
+
+========================================================================
+
+This file details specifics of the Pygame SGE implementation which
+may be useful to know.
+
+
+FORMATS SUPPORT
+
+sge.gfx.Sprite supports the following image formats if Pygame is built
+with full image support:
+
+- PNG
+- JPEG
+- Non-animated GIF
+- BMP
+- PCX
+- Uncompressed Truevision TGA
+- TIFF
+- ILBM
+- Netpbm
+- X Pixmap
+
+If Pygame is built without full image support, sge.gfx.Sprite will only
+be able to load uncompressed BMP images.
+
+sge.snd.Sound supports the following audio formats:
+
+- Uncompressed WAV
+- Ogg Vorbis
+
+sge.snd.Music supports the following audio formats:
+
+- Ogg Vorbis
+- MOD
+- XM
+- MIDI
+
+MP3 is also supported on some systems, but not all.  On some systems,
+attempting to load an unsupported format can crash the game.  Since MP3
+support is not available on all systems, it is best to avoid using it;
+consider using Ogg Vorbis instead.
+
+For starting position in MOD files, the pattern order number is used
+instead of the number of milliseconds.
+
+The pygame.mixer module, which is used for all audio playback, is
+optional and depends on SDL_mixer; if pygame.mixer is unavailable,
+sounds and music will not play.
+
