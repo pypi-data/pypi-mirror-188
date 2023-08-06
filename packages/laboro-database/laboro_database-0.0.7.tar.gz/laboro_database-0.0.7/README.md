@@ -1,0 +1,229 @@
+---
+gitea: none
+include_toc: true
+---
+![Build Status](https://drone.mcos.nc/api/badges/laboro/laboro_database/status.svg) ![License](https://img.shields.io/static/v1?label=license&color=orange&message=MIT) ![Language](https://img.shields.io/static/v1?label=language&color=informational&message=Python)
+
+# laboro_database
+
+This is the **Laboro database module**. Its purpose is to provide a simplified interface to all major relational database types.
+
+It supports:
+- *PostgreSQL*
+- *SQLite3*
+- *MySQL*
+
+This module is intended to be used by the [**Laboro** is a **NO-Code / Low-Code** workflow manager](https://codeberg.org/laboro/laboro).
+
+## Classes
+
+Public classes provided by this package:
+
+- **Class:** `Database`
+
+  **Module:** `laboro_database`
+
+  **Package:** `laboro_database`
+
+  **Purpose:** The `laboro_database.Database` class provides a simplified interface to all major relational database types.
+
+  **Arguments:**
+  | Name | Type | Required | Implies | Exclude | Secret | Default |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | `username` | str | False | |  - `service`<br/>  | True | None |
+    | `password` | str | False | |  - `service`<br/>  | True | None |
+    | `host` | str | False | |  - `service`<br/>  | False | None |
+    | `port` | int | False | |  - `service`<br/>  | True | None |
+    | `database` | str | False | |  - `service`<br/>  | False | None |
+    | `service` | str | False | |  - `host`<br/>  - `port`<br/>  - `username`<br/>  - `password`<br/>  - `database`<br/>  | False | None |
+    | `db_type` | str | True | |  | False |  |
+
+  **Notes**:
+    - The `db_type` argument must be one of `pgsql`, `sqlite` or `mysql`.
+    - The `service` argument is used for *Postgesql services* can be used only with `db_type` set to `pgsql` (see [*PotsgreSQL* connection service file](https://www.postgresql.org/docs/current/libpq-pgservice.html) for further  details).
+    - When `db_type` is set to `sqlite`:
+      - `username`, `password`, `host`, `port` and `service` are not used
+      - the `database` argument must be the full file path to the *Sqlite3* database.
+
+  **Instantiation examples:**
+
+  - **Postgresql**
+    ```yaml
+    packages:
+    - laboro_database
+    instances:
+      - name: management_database
+        module: laboro_database
+        class: Database
+        args:
+          username: $crypt$gAAAAABi6IOvYj8lRMA76rCafoRBwjUk1SyHdCI0avhUyGsSUMHWhQw--nmJZSabdiKoQW4Yb4il6xtpB1jGdGqaNwmP0Lfn4A==
+          password: $crypt$gAAAAABi6IOcLbBd1eAENaz8akV7yOagHxKyxlDATAkgcLHucD-uEHaZm-P7Ox1EN-6pkbEjm5lDFbkd860-kwgo-qT_qjM1QA==
+          host: pgsql.example.com
+          port: 5432
+          database: management
+          db_type: pgsql
+    ```
+
+  - **Sqlite3**
+    ```yaml
+    packages:
+    - laboro_database
+    instances:
+      - name: users_database
+        module: laboro_database
+        class: Database
+        args:
+          database: /opt/laboro/workspaces/my_workflow/users.db
+          db_type: sqlite
+    ```
+
+  **Methods provided by class `laboro_database.Database` :**
+
+  - **Name:** `query`
+
+    **Purpose:** This method allow to query the database.
+
+    **Arguments:**
+    | Name | Type | Required | Implies | Exclude | Secret | Default |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | `request` | str | True | |  | False |  |
+    | `params` | dict | False | |  | False |  |
+    | `commit` | bool | False | |  | False |  |
+    | `verbose` | bool | False | |  | False | False |
+    | `exit_on_error` | bool | False | |  | False | True |
+
+    **Notes:**
+      - The `request` argument is a string that support variable substitution with named parameters. The variable substitution syntax depends on the chosen `db_type`.
+      - The `params` dictionary may contain more parameters than needed but **must** at least contain all needed parameters to fullfil the `request` string.
+      - The `commit` argument should be set to `True` when the specified `request` insert, update, delete database records.
+
+    **Method call examples:**
+
+      - **Postgresql**
+        ```yaml
+        actions:
+          instances:
+            - name: users_database
+              module: laboro_database
+              class: Database
+              args:
+                service: users_database
+                db_type: pgsql
+        methods:
+          - instance: users_database
+            name: query
+            args:
+              request: select lastname, givenname, password from managers where role = %(role)s
+              params:
+                role: admin
+            output: admins_info
+        ```
+
+      - **Sqlite3**
+        ```yaml
+        actions:
+          instances:
+            - name: users_database
+              module: laboro_database
+              class: Database
+              args:
+                database: /opt/laboro/workspaces/my_workflow/users.db
+                db_type: sqlite
+        methods:
+          - instance: users_database
+            name: query
+            args:
+              request: select lastname, givenname, password from managers where role = :role
+              params:
+                role: admin
+            output: admins_info
+        ```
+
+      - **Mysql**
+        ```yaml
+        actions:
+          instances:
+            - name: users_database
+              module: laboro_database
+              class: Database
+              args:
+                username: $crypt$gAAAAABi6IOvYj8lRMA76rCafoRBwjUk1SyHdCI0avhUyGsSUMHWhQw--nmJZSabdiKoQW4Yb4il6xtpB1jGdGqaNwmP0Lfn4A==
+                password:  $crypt$gAAAAABi6IOcLbBd1eAENaz8akV7yOagHxKyxlDATAkgcLHucD-uEHaZm-P7Ox1EN-6pkbEjm5lDFbkd860-kwgo-qT_qjM1QA==
+                host: mysql.example.com
+                port: 3306
+                database: users
+                db_type: mysql
+        methods:
+          - instance: users_database
+            name: query
+            args:
+              request: select lastname, givenname, password from managers where role = %(role)s
+              params:
+                role: admin
+            output: admins_info
+        ```
+
+  - **Name:** `multi_query`
+
+    **Purpose:** This method allow to execute a query multiple times with different parameters.
+
+    **Arguments:**
+    | Name | Type | Required | Implies | Exclude | Secret | Default |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | `request` | str | True | |  | False |  |
+    | `paramlist` | list | False | |  | False |  |
+    | `commit` | bool | False | |  | False |  |
+    | `verbose` | bool | False | |  | False |  |
+    | `exit_on_error` | bool | False | |  | False |  |
+
+
+    **Notes:**
+      - The `request` argument is a string that support variable substitution with named parameters. The variable substitution syntax depends on the chosen `db_type`.
+      - The `paramlist` is a list of dictionaries. Each dictionary in the list will be used once at a time with the `request` string.  Each dictionary may contain more parameters than needed but **must** at least contain all needed parameters to fullfil the `request` string.
+       - The `commit` argument should be set to `True` when the specified `request` insert, update, delete database records. When set to `True`, a commit statement is sent to the database **after each request**.
+
+    **Method call examples:**
+
+      ```yaml
+      methods:
+        - instance: users_database
+          name: multi_query
+          args:
+            request: select lastname, givenname, password from managers where role = %(role)s
+            paramlist:
+              - role: admin
+              - role: user
+          output: admins_and_users_info
+      ```
+
+  - **Name:** `transaction`
+
+    **Purpose:** Prepare and execute as a single transaction multiple queries on the database.
+
+    **Arguments:**
+    | Name | Type | Required | Implies | Exclude | Secret | Default |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | `requests` | list | True | |  | False |  |
+    | `verbose` | bool | False | |  | False |  |
+    | `exit_on_error` | bool | False | |  | False |  |
+
+     **Notes:**
+      - The `requests` argument is a list of 2 keyed dictionaries specifying a single request string (`query`) and its parameters (`params`) as described at the `Database.query` method.
+      - If one of the queries defined in the `requests` argument fail, all requests within the transaction are roll backed.
+
+    **Method call examples:**
+
+      ```yaml
+      methods:
+        - instance: users_database
+          name: transaction
+          args:
+            requests:
+              - query: select lastname, givenname, password from managers where role = %(role)s
+                params:
+                  - role: admin
+              - query: update role from managers set role = %(new_role)s where role = %(old_role)s
+                params:
+                  - old_role: user
+                  - new_role: admin
+      ```
