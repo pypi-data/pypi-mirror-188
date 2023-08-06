@@ -1,0 +1,39 @@
+[tool.poetry]
+authors = ["Daniel CAUNE <daniel.caune@gmail.com>"]
+classifiers=[
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries",
+]
+description = "Python library to automatically align and crop your photos to the correct biometric passport photo size"
+include = [
+    "CHANGELOG.md"
+]
+keywords = ["photo", "library", "biometric", "passport", "cli"]
+license = "SEE LICENSE IN <LICENSE.md>"
+name = "photoidmagick"
+packages = [{ include = "majormode", from = "src" }]
+readme = "README.md"
+repository = "https://github.com/majormode/photoidmagick-python-library"
+version = "1.1.6"
+
+[tool.poetry.dependencies]
+dlib = "*"
+exifread = "*"
+face-recognition = "*"
+numpy = "*"
+perseus-core-library = "*"
+pillow = "*"
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.poetry.scripts]
+photoidmagick = 'majormode.photoidmagick:main'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
