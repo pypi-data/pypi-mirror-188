@@ -1,0 +1,161 @@
+Metadata-Version: 2.1
+Name: markdown-pytest
+Version: 0.2.1
+Summary: Pytest plugin for runs tests directly from Markdown files
+Home-page: https://github.com/mosquito/markdown-pytest
+License: Apache-2.0
+Keywords: pytest,markdown,documentation
+Author: Dmitry Orlov
+Author-email: me@mosquito.su
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Plugins
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Project-URL: Documentation, https://github.com/mosquito/markdown-pytest/blob/master/README.rst
+Project-URL: Source, https://github.com/mosquito/markdown-pytest
+Project-URL: Tracker, https://github.com/mosquito/markdown-pytest/issues
+Description-Content-Type: text/markdown
+
+markdown-pytest
+===============
+
+Pytest plugin for running tests directly from Markdown files.
+
+Markdown:
+
+````markdown
+<!-- name: test_assert_true -->
+```python
+assert True
+```
+````
+
+<details>
+<summary>Will be shown as</summary>
+
+<!-- name: test_assert_true -->
+```python
+assert True
+```
+
+</details>
+
+This module parsed code by these rules:
+
+* Code without `<!-- name: test_name -->` comment will not be executed.
+* Allowed two or three dashes in the comment symbols
+* Code blocks with same names will be merged in one code and executed once
+
+Code split
+----------
+
+You can split test to the multiple blocks with the same test name:
+
+Markdown:
+
+````markdown
+This block performs import:
+
+<!-- name: test_example -->
+```python
+from itertools import chain
+```
+
+`chain` usage example:
+
+<!-- name: test_example -->
+```python
+assert list(chain(range(2), range(2))) == [0, 1, 0, 1]
+```
+````
+
+<details>
+<summary>Will be shown as</summary>
+
+This block performs import:
+
+<!-- name: test_example -->
+```python
+from itertools import chain
+```
+
+`chain` usage example:
+
+<!-- name: test_example -->
+```python
+assert list(chain(range(2), range(2))) == [0, 1, 0, 1]
+```
+
+</details>
+
+Fictional Code Examples
+-----------------------
+
+Code without `<!-- name: test_name -->` comment will not be executed.
+
+````markdown
+```python
+from universe import antigravity, WrongPlanet
+
+try:
+    antigravity()
+except WrongPlanet:
+    print("You are on the wrong planet.")
+    exit(1)
+```
+````
+
+<details>
+<summary>Will be shown as</summary>
+
+```python
+from universe import antigravity, WrongPlanet
+
+try:
+    antigravity()
+except WrongPlanet:
+    print("You are on the wrong planet.")
+    exit(1)
+```
+</details>
+
+Usage example
+-------------
+
+This README.md file might be tested like this:
+
+```bash
+$ pytest -v README.md
+======================= test session starts =======================
+platform darwin -- Python 3.10.2, pytest-7.2.0, pluggy-1.0.0
+plugins: markdown-pytest-0.1.0
+collected 2 items
+
+README.md::test_assert_true PASSED                                                                                                                                                                                                     [ 50%]
+README.md::test_example PASSED
+```
+
