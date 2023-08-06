@@ -1,0 +1,2 @@
+# BCP Realtime Viewer
+This is a realtime viewer for [BCP](https://www.bcp-bonn.de) and the data is under the [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) and is by BCP GmbH, https://www.bcp-bonn.de.
