@@ -1,0 +1,131 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ualfred"
+description = 'Modern Alfred workflow library for Python3'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = ["alfred", "alfred-workflow", "python3"]
+authors = [
+  { name = "chaojie", email = "hi@chaojie.fun" },
+]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: MacOS :: MacOS X',
+    'Intended Audience :: Developers',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Topic :: Software Development :: Libraries',
+    'Topic :: Software Development :: Libraries :: Application Frameworks',
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/ischaojie/ualfred#readme"
+Issues = "https://github.com/ischaojie/ualfred/issues"
+Source = "https://github.com/ischaojie/ualfred"
+
+[tool.hatch.version]
+path = "ualfred/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "ualfred",
+  "ualfred/Notify.tgz"
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "isort",
+  "black",
+  "pyobjc-framework-Cocoa",
+  "ruff",
+  "bandit",
+]
+[tool.hatch.envs.default.scripts]
+lint = [
+  "isort ualfred",
+  "black ualfred",
+  "ruff ualfred --fix",
+]
+check = [
+  "isort --check --diff ualfred",
+  "black --check ualfred",
+  "ruff ualfred",
+]
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pyobjc-framework-Cocoa",
+  "pytest",
+  "pytest-cov",
+  "pytest-localserver",
+  "pytest-pretty",
+]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+[tool.hatch.envs.test.scripts]
+cov = "pytest --cov-report=term-missing --cov=ualfred --cov-report=xml tests/"
+
+[tool.black]
+color = true
+line-length = 120
+target-version = ['py310']
+skip-string-normalization = true
+
+[tool.ruff]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "ualfred/__init__.py",
+]
+
+[tool.coverage.report]
+include = ["ualfred/*"]
+show_missing = true
+exclude_lines = [
+  # Have to re-enable the standard pragma
+  "no cov",
+  "pragma: no cover",
+  "pragma: nocover",
+
+  # Don't complain about missing debug-only code:
+  "def __repr__",
+  "if self.debug",
+
+  # Don't complain if tests don't hit defensive assertion code:
+  "raise AssertionError",
+  "raise NotImplementedError",
+
+  # Don't complain if non-runnable code isn't run:
+  "if 0",
+  "if False",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+ignore_errors = true
+
+[tool.coverage.html]
+directory = "coverage_report"
+
+[tool.bandit]
+skips = ["B301","B403","B404","B405","B603"]
+exclude_dirs = ["tests"]
