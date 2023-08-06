@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: bunting
+Version: 0.1.2
+Summary: SDK for geospatial APIs like OpenStreetMap and Census
+Author: Brendan Ashworth
+Author-email: brendan@buntinglabs.com
+Requires-Python: >=3.4,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+
+# Bunting Python SDK
+
+Bunting Lab's Python SDK allows you to use the [Bunting Labs geospatial APIs](https://docs.buntinglabs.com/introduction) in your own libraries.
+
+### Installation
+
+```sh
+$ pip install bunting
+```
+
+### Example
+
+```py
+import BuntingClient from bunting
+
+# Get your API key from https://buntinglabs.com/account/register
+bc = BuntingClient('gK6vkrFQXiU9')
+
+# Download from openstreetmap
+highways = bc.osm.extract('leisure=park', bbox=(5.976563,52.449314,6.245728,52.562995))
+
+# Get as GeoDataFrame
+highways.as_gdf()
+```
+
