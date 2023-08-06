@@ -1,0 +1,21 @@
+{% load static %}
+
+<header id="header">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <div class="logo">
+      {% if use_logo %}
+      <a href="#"><img src="{% static 'webuild/img/logo.png' %}" alt="" class="img-fluid"></a>
+      {% else %}
+      <h1 class="text-light"><a href="#"><span>{{ basic_info.company_name }}</span></a></h1>
+      {% endif %}
+    </div>
+
+    {% for component, is_use, menu, is_menu_use in components %}
+      {% if component == 'contact' and is_use and is_menu_use %}
+      <div class="contact-link float-right">
+        <a href="#contact" class="scrollto">{{ menu }}</a>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</header>

@@ -1,0 +1,50 @@
+{% load static %}
+{% load compress %}
+{% load webuild_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ======= SEO ======= -->{% include 'webuild/seo.html' %}<!-- End SEO -->
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'webuild/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'webuild/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'webuild/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <!-- ======= Header ======= -->{% include 'webuild/header.html' %}<!-- End #header -->
+  <!-- ======= Hero Section ======= -->{% hero %}<!-- End Hero -->
+
+  <main id="main">
+    {% for component, is_use, _, _ in components %}
+      {% if is_use %}
+        {% if component == 'popup' %}
+          {% load popup_tags %}
+          {% show_popup %}
+        {% elif component == 'contact' %}
+          <!-- ======= Contact Us Section ======= -->{% contact %}<!-- End Contact Us Section -->
+        {% elif component == 'analytics' %}
+          {% load analytics_tags %}
+          {% make_analytics %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->{% include 'webuild/footer.html' %}<!-- End #footer -->
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'webuild/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- <script src="{% static 'webuild/vendor/php-email-form/validate.js' %}"></script> -->
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'webuild/js/main.js' %}"></script>
+
+</body>
+
+</html>
