@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# adopted from https://zellij.dev/documentation/integration.html
+ZJ_SESSIONS=$(zellij list-sessions)
+NO_SESSIONS=$(echo "${ZJ_SESSIONS}" | wc -l)
+
+# check whether the string "(current)" is in ZJ_SESSIONS
+if [[ "${ZJ_SESSIONS}" == *"(current)"* ]]; then
+    # if so, then we are in a zellij session
+    echo "already inside a session, existing."
+else
+    # if not, then we are not in a zellij session
+
+  if [ "${NO_SESSIONS}" -ge 2 ]; then  # sessions do exist
+      zellij attach "$(echo "${ZJ_SESSIONS}" | fzf)"  options --mirror-session false
+  else  # no sessions, create one
+     zellij attach main -c options --mirror-session false
+  fi
+
+fi
