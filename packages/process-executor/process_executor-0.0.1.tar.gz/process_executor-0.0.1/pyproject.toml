@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "process-executor"
+version = "0.0.1"
+description = ""
+authors = ["Pavel Maksimov <vur21@ya.ru>"]
+license = "Apache-2.0"
+readme = "README.md"
+include = [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+]
+packages = [{include = "process_executor"}]
+homepage = "https://github.com/pavelmaksimov/process-executor"
+keywords = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.88"
+uvicorn = {extras = ["standart"], version = "^0.20.0"}
+pydantic = "^1.9.0"
+asyncio = "^3.4.3"
+GitPython = "^3.1.27"
+confz = "1.8.1"
+typer = "^0.7.0"
+orjson = "^3.8.4"
+loguru = "^0.6.0"
+better-exceptions = "0.3.3"
+script-master-helper = "^0.0.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.0"
+black = "22.12.0"
+coverage = "^7.0.3"
+flake8 = "^6.0.0"
+mccabe = "^0.7.0"
+mypy = "^0.991"
+pylint = "^2.15.9"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+process-executor = 'process_executor.cli:cli'
+script-master-executor = 'process_executor.cli:cli'
