@@ -1,0 +1,69 @@
+/*
+Events service handling
+*/
+syntax = "proto3";
+import "grpc_helper_api/common.proto";
+
+// Some Java options
+option java_multiple_files = true;
+option java_package = "grpc_helper_api";
+
+/*
+API versions
+*/
+enum EventApiVersion {
+    EVENT_API_UNKNOWN = 0;
+    EVENT_API_SUPPORTED = 1;    // Minimum supported version for clients
+    EVENT_API_CURRENT = 2;      // Current version
+}
+
+// Event property
+message EventProperty {
+    string name = 1;    // Property name
+    string value = 2;   // Property value
+}
+
+// Event message
+message Event {
+    string name = 1;                        // Event name
+    repeated EventProperty properties = 2;  // Event properties
+}
+
+// Event status
+message EventStatus {
+    Result r = 1;           // Operation result
+    Event event = 2;        // Received event
+    uint32 client_id = 3;   // Client ID (to be used to interrupt listening process)
+}
+
+// Event listening filter
+message EventFilter {
+    repeated string names = 1;  // List of event names to be returned
+    uint32 client_id = 2;       // Client ID to be resumed (if any)
+}
+
+// Event listening interrupt request
+message EventInterrupt {
+    uint32 client_id = 1;   // Client ID to be interrupted
+}
+
+// Event queues status
+message EventQueueStatus {
+    Result r = 1;                   // Operation result
+    repeated uint32 client_ids = 2; // List or running client_ids
+}
+
+// Event service
+service EventService {
+    // Listen to events
+    rpc listen(EventFilter) returns (stream EventStatus);
+
+    // Interrupt listening
+    rpc interrupt(EventInterrupt) returns (ResultStatus);
+
+    // Send event
+    rpc send(Event) returns (ResultStatus);
+
+    // Inspect running event queues
+    rpc inspect(Empty) returns (EventQueueStatus);
+}

@@ -1,0 +1,62 @@
+/*
+Loggers service handling
+*/
+syntax = "proto3";
+import "grpc_helper_api/common.proto";
+
+// Some Java options
+option java_multiple_files = true;
+option java_package = "grpc_helper_api";
+
+/*
+API versions:
+When connecting, the client must check versions with the following rules:
+ - if its current version is greater than the server current one, the server is "too old" for that client
+ - if its current version is lower than the server minimum one, that client is "too old" for the server
+*/
+enum LoggerApiVersion {
+    option allow_alias = true;
+    LOGGER_API_UNKNOWN = 0;
+    LOGGER_API_SUPPORTED = 1;   // Minimum supported version for clients
+    LOGGER_API_CURRENT = 1;     // Current version
+}
+
+// Logger level
+enum LoggerLevel {
+    LVL_UNKNOWN = 0;    // Level not set
+    LVL_DEBUG = 10;     // Include debug logs
+    LVL_INFO = 20;      // Normal operation logs level
+    LVL_WARNING = 30;   // Warning messages
+    LVL_ERROR = 40;     // Error messages
+    LVL_CRITICAL = 50;  // Critical/fatal error messages
+}
+
+// Logger configuration
+message LoggerConfig {
+    string name = 1;        // Unique logger name
+    bool enabled = 2;       // Enabled/disabled logger state
+    LoggerLevel level = 3;  // Current logger level
+}
+
+// Logger status
+message LoggerStatus {
+    Result r = 1;                       // Operation result
+    repeated LoggerConfig items = 2;    // Logger items configuration
+}
+
+// Logger update
+message LoggerUpdate {
+    repeated LoggerConfig items = 1;    // Logger configuration update
+}
+
+// Loggers service
+service LoggerService {
+    // Get logger items
+    rpc get(Filter) returns (LoggerStatus);
+
+    // Reset logger items to their default configuration
+    rpc reset(Filter) returns (LoggerStatus);
+
+    // Update logger items configuration
+    rpc set(LoggerUpdate) returns (LoggerStatus);
+}
