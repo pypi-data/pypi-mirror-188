@@ -1,0 +1,1 @@
+This is a data profiling and basic data quality rules check library that can be used for both spark and polars dataframe.
