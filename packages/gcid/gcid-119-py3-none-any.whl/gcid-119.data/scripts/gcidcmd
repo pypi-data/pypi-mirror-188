@@ -1,0 +1,51 @@
+#!python
+# This file is placed in the Public Domain.
+
+
+""
+
+
+import inspect
+import os
+import sys
+
+
+sys.path.insert(0, ".")
+
+
+from gcid.handler import Command, Handler
+from gcid.objects import Wd
+from gcid.runtime import Cfg, command, parse
+from gcid.scanner import scan
+
+
+from gcid.modules import cmd, irc, mdl, rss
+
+
+import gcid
+
+
+Cfg.name = "gcid"
+Wd.workdir = "/var/lib/gcid/"
+
+
+class CLI(Handler):
+
+    @staticmethod
+    def raw(txt):
+        print(txt)
+        sys.stdout.flush()
+
+
+
+def main():
+    parse(' '.join(sys.argv[1:]))
+    scan(cmd)
+    scan(irc)
+    scan(mdl)
+    scan(rss)
+    cli = CLI()
+    command(Cfg.prs.otxt, cli)
+    
+
+main()

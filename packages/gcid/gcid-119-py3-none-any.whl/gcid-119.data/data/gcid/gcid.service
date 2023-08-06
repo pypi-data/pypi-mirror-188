@@ -1,0 +1,18 @@
+[Unit]
+Description=GCID - @KarimKhanQC reconsider OTP-CR-117/19
+
+After=multi-user.target
+
+[Service]
+#Type=forking
+KillMode=mixed
+#PrivateTmp=true
+DynamicUser=True
+StateDirectory=gcid
+LogsDirectory=gcid
+CacheDirectory=gcid
+ExecStart=/usr/local/bin/gcided
+CapabilityBoundingSet=CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target
