@@ -1,0 +1,106 @@
+[project]
+name = "zapit-Python-Bridge"
+authors = [{name = "Rob Campbell", email= "git@raacampbell.com"}]
+description = "Bridge for controlling Zapit from Python"
+readme = "README.md"
+requires-python = ">=3.8.0"
+dynamic = ["version"]
+
+license = {text = "BSD-3-Clause"}
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "License :: Free for non-commercial use",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research"
+]
+
+dependencies = [
+    "matlabengine",
+    "ipython"
+    ]
+
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "coverage",
+  "tox",
+  "black",
+  "isort",
+  "mypy",
+  "pre-commit",
+  "flake8",
+  "setuptools_scm",
+]
+
+
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["zapit_python_bridge*"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=zapit_python_bridge"
+
+[tool.black]
+target-version = ['py38', 'py39', 'py310']
+skip-string-normalization = false
+line-length = 91
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | examples
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 91
+
+# for flake8 see ./.flake8
+
+[tool.setuptools_scm]
+
+[tool.check-manifest]
+ignore = [
+  "*.yaml",
+  ".bumpversion.cfg",
+  "tox.ini",
+  "tests/*",
+  "tests/test_unit/*",
+  "tests/test_integration/*",
+  ".flake8"
+]
