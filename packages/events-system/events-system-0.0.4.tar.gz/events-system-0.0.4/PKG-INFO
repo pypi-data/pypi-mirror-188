@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: events-system
+Version: 0.0.4
+Summary: A singleton based thread-safe event system which components can use to subscribe and post to other components.
+Author-email: sir even <sir_even@icloud.com>
+Project-URL: Homepage, https://github.com/sirEven/event-system.git
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENCE
+
+# Events System
+- EventsSystem
+    - A singleton based thread-safe event system, which components can use to subscribe and post to other components. 
+    - install: `pip install events-system`
+    - import: `import EventsSystem`
+    - import `EventListener`: `from events_system.event_listener import EventListener`
+    - subscribe: `EventsSystem.subscribe("event_type", function)`
+    - post: `EventsSystem.post(event_type)`
+    - example use: Create an abstract class as listener to a concrete component by subclassing `EventListener` and defining an abstract function along the lines of `setup_ConcreteComponent_listener`. In its abstract function, this component listener must call `super().setup_event_handlers()` to which the subscription dictionary `{"event_type":function}` is passed. Whatever other component needs to be informed about these events, can now implement that component listener and pass their subscription dictionary to the function.
