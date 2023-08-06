@@ -1,0 +1,56 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - "30-fix-cd-workflow"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: "minor"
+          dry_run: true
+      - name: Fix tag name
+        run: |
+          CURRENT_TAG_NAME="${{ steps.tag_version.outputs.new_tag }}"
+          FIXED_TAG_NAME=$(echo $CURRENT_TAG_NAME | grep -Eo '([0-9]+.[0-9]+\.[0-9]+)')
+          CHANGELOG="${{ steps.tag_version.outputs.changelog }}"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git tag -a $FIXED_TAG_NAME -m "$CHANGELOG"
+          git push origin $FIXED_TAG_NAME
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      max-parallel: 5
+      matrix:
+        python_version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Build package
+        run: python3 -m pip install --upgrade build && python3 -m build
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_KEY }}
