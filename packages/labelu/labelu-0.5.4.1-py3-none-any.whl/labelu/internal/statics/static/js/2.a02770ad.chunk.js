@@ -1,0 +1,2 @@
+(this.webpackJsonpweb=this.webpackJsonpweb||[]).push([[2],{248:function(e){e.exports=JSON.parse('{"attribute":[{"key":"","value":""}],"tools":[{"tool":"polygonTool","config":{"isShowCursor":false,"lineType":0,"lineColor":0,"drawOutsideTarget":false,"edgeAdsorption":false,"copyBackwardResult":false,"attributeConfigurable":true,"textConfigurable":false,"textCheckType":0,"customFormat":"","attributeList":[{"key":"","value":""}]}}]}')}}]);
+//# sourceMappingURL=2.a02770ad.chunk.js.map
