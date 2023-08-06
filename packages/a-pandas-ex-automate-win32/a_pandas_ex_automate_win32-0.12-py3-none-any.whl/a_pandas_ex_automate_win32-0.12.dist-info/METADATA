@@ -1,0 +1,270 @@
+Metadata-Version: 2.1
+Name: a-pandas-ex-automate-win32
+Version: 0.12
+Summary: Automate the Microsoft Windows GUI with Pandas! Without pywin32, only ctypes!
+Home-page: https://github.com/hansalemaos/a_pandas_ex_automate_win32
+Author: Johannes Fischer
+Author-email: <aulasparticularesdealemaosp@gmail.com>
+License: MIT
+Keywords: ctypes,windows,Pandas,DataFrame,pyautogui,pywinauto
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Editors :: Text Processing
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Text Processing :: Indexing
+Classifier: Topic :: Text Processing :: Filters
+Classifier: Topic :: Utilities
+Description-Content-Type: text/markdown
+License-File: LICENSE.rst
+Requires-Dist: a-pandas-ex-apply-ignore-exceptions
+Requires-Dist: flatten-everything
+Requires-Dist: pandas
+
+
+# Automate the Microsoft Windows GUI with Pandas 
+
+
+
+#### This module will show you all elements on your screen that have a handle/hwnd.
+
+##### It also shows hidden windows used, for example, 
+
+##### to process keystrokes. Once you have the handle on those windows, automation is much easier.
+
+
+
+
+
+```python
+
+pip install a-pandas-ex-automate-win32
+
+
+
+from a_pandas_ex_automate_win32 import pd_add_automate_win32
+
+pd_add_automate_win32()
+
+import pandas as pd
+
+df = pd.Q_get_automate32_df()
+
+
+
+
+
+print(df[:100].to_string())
+
+    parent   pid                      title                                    windowtext     hwnd  length   tid     status      coords_client   dim_client                        coords_win      dim_win                 class_name                     path
+
+0   197994  1312                        Dwm                       DWM Notification Window    65632      24  1316  invisible       (0, 0, 0, 0)       (0, 0)  (-32000, -31840, -32000, -31972)    (160, 28)                        Dwm                         
+
+1   132098  1492              SeparatorBand                                                3867734       1  6116    visible       (0, 7, 0, 1)       (7, 1)            (3567, 3574, 252, 253)       (7, 1)              SeparatorBand  C:\Windows\explorer.exe
+
+2   525318  1492              SeparatorBand                                                3867734       1  6116    visible       (0, 7, 0, 1)       (7, 1)            (3567, 3574, 252, 253)       (7, 1)              SeparatorBand  C:\Windows\explorer.exe
+
+3   197608  1492             CtrlNotifySink                                                 132452       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+4   197608  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+5   525318  1492             CtrlNotifySink                                                 132452       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+6   525318  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+7    66830  1492             CtrlNotifySink                                                 132452       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+8    66830  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+9    66832  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+10   66850  1492             CtrlNotifySink                                                 132452       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+11   66850  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+12   66852  1492             CtrlNotifySink                                                 132452       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+13   66852  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+14   66880  1492             CtrlNotifySink                                                 132452       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+15   66880  1492                  ScrollBar                                                  66918       1  6116    visible    (0, 17, 0, 298)    (17, 298)            (3557, 3574, 275, 573)    (17, 298)                  ScrollBar  C:\Windows\explorer.exe
+
+16  197614  1492               DirectUIHWND                                                 459892       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)               DirectUIHWND  C:\Windows\explorer.exe
+
+17  263152  1492  SearchEditBoxWrapperClass                                                 263120       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)  SearchEditBoxWrapperClass  C:\Windows\explorer.exe
+
+18  263152  1492               DirectUIHWND                                                 459892       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)               DirectUIHWND  C:\Windows\explorer.exe
+
+19  132096  1492  SearchEditBoxWrapperClass                                                 263120       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)  SearchEditBoxWrapperClass  C:\Windows\explorer.exe
+
+20  132096  1492               DirectUIHWND                                                 459892       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)               DirectUIHWND  C:\Windows\explorer.exe
+
+21  132098  1492  SearchEditBoxWrapperClass                                                 263120       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)  SearchEditBoxWrapperClass  C:\Windows\explorer.exe
+
+22  132098  1492               DirectUIHWND                                                 459892       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)               DirectUIHWND  C:\Windows\explorer.exe
+
+23  525318  1492  SearchEditBoxWrapperClass                                                 263120       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)  SearchEditBoxWrapperClass  C:\Windows\explorer.exe
+
+24  525318  1492               DirectUIHWND                                                 459892       1  6116    visible     (0, 90, 0, 32)     (90, 32)            (3468, 3558, 237, 269)     (90, 32)               DirectUIHWND  C:\Windows\explorer.exe
+
+25  132096  1492                 Search Box                                                 197614       1  6116    visible    (0, 100, 0, 32)    (100, 32)            (3463, 3563, 237, 269)    (100, 32)                 Search Box  C:\Windows\explorer.exe
+
+26  132098  1492                 Search Box                                                 197614       1  6116    visible    (0, 100, 0, 32)    (100, 32)            (3463, 3563, 237, 269)    (100, 32)                 Search Box  C:\Windows\explorer.exe
+
+27  525318  1492                 Search Box                                                 197614       1  6116    visible    (0, 100, 0, 32)    (100, 32)            (3463, 3563, 237, 269)    (100, 32)                 Search Box  C:\Windows\explorer.exe
+
+28  132098  1492        UniversalSearchBand                                                 263152       1  6116    visible    (0, 100, 0, 36)    (100, 36)            (3463, 3563, 234, 270)    (100, 36)        UniversalSearchBand  C:\Windows\explorer.exe
+
+29  525318  1492        UniversalSearchBand                                                 263152       1  6116    visible    (0, 100, 0, 36)    (100, 36)            (3463, 3563, 234, 270)    (100, 36)        UniversalSearchBand  C:\Windows\explorer.exe
+
+30  132098  1492              SeparatorBand                                                 197612       1  6116    visible       (0, 6, 0, 1)       (6, 1)            (3457, 3463, 252, 253)       (6, 1)              SeparatorBand  C:\Windows\explorer.exe
+
+31  525318  1492              SeparatorBand                                                 197612       1  6116    visible       (0, 6, 0, 1)       (6, 1)            (3457, 3463, 252, 253)       (6, 1)              SeparatorBand  C:\Windows\explorer.exe
+
+32  590798  1492            ToolbarWindow32                          Address band toolbar   721994      21  6116    visible     (0, 66, 0, 30)     (66, 30)            (3385, 3451, 238, 268)     (66, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+33  132096  1492            ToolbarWindow32                          Address band toolbar   721994      21  6116    visible     (0, 66, 0, 30)     (66, 30)            (3385, 3451, 238, 268)     (66, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+34  132098  1492            ToolbarWindow32                          Address band toolbar   721994      21  6116    visible     (0, 66, 0, 30)     (66, 30)            (3385, 3451, 238, 268)     (66, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+35  525318  1492            ToolbarWindow32                          Address band toolbar   721994      21  6116    visible     (0, 66, 0, 30)     (66, 30)            (3385, 3451, 238, 268)     (66, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+36  197608  1492             CtrlNotifySink                                                  66864       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+37  197608  1492                     Button                                                  66866       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+38  197608  1492             CtrlNotifySink                                                  66868       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+39  197608  1492                     Button                                                  66870       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+40  525318  1492             CtrlNotifySink                                                  66864       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+41  525318  1492                     Button                                                  66866       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+42  525318  1492             CtrlNotifySink                                                  66868       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+43  525318  1492                     Button                                                  66870       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+44   66850  1492             CtrlNotifySink                                                  66864       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+45   66850  1492                     Button                                                  66866       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+46   66850  1492             CtrlNotifySink                                                  66868       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+47   66850  1492                     Button                                                  66870       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+48   66852  1492                     Button                                                  66866       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+49   66852  1492                     Button                                                  66870       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2386, 2386, 287, 287)       (0, 0)                     Button  C:\Windows\explorer.exe
+
+50  197608  1492             CtrlNotifySink                                                  66880       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+51  197608  1492           SHELLDLL_DefView                                     ShellView    66830      10  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)           SHELLDLL_DefView  C:\Windows\explorer.exe
+
+52  197608  1492               DirectUIHWND                                                  66832       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)               DirectUIHWND  C:\Windows\explorer.exe
+
+53  525318  1492             CtrlNotifySink                                                  66880       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+54  525318  1492           SHELLDLL_DefView                                     ShellView    66830      10  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)           SHELLDLL_DefView  C:\Windows\explorer.exe
+
+55  525318  1492               DirectUIHWND                                                  66832       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)               DirectUIHWND  C:\Windows\explorer.exe
+
+56   66850  1492             CtrlNotifySink                                                  66880       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)             CtrlNotifySink  C:\Windows\explorer.exe
+
+57   66850  1492           SHELLDLL_DefView                                     ShellView    66830      10  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)           SHELLDLL_DefView  C:\Windows\explorer.exe
+
+58   66850  1492               DirectUIHWND                                                  66832       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)               DirectUIHWND  C:\Windows\explorer.exe
+
+59   66852  1492           SHELLDLL_DefView                                     ShellView    66830      10  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)           SHELLDLL_DefView  C:\Windows\explorer.exe
+
+60   66852  1492               DirectUIHWND                                                  66832       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)               DirectUIHWND  C:\Windows\explorer.exe
+
+61   66880  1492               DirectUIHWND                                                  66832       1  6116    visible  (0, 1200, 0, 298)  (1200, 298)            (2374, 3574, 275, 573)  (1200, 298)               DirectUIHWND  C:\Windows\explorer.exe
+
+62  197608  1492             CtrlNotifySink                                                 132382       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+63  197608  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+64  525318  1492             CtrlNotifySink                                                 132382       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+65  525318  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+66   66830  1492             CtrlNotifySink                                                 132382       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+67   66830  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+68   66832  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+69   66850  1492             CtrlNotifySink                                                 132382       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+70   66850  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+71   66852  1492             CtrlNotifySink                                                 132382       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+72   66852  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+73   66880  1492             CtrlNotifySink                                                 132382       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)             CtrlNotifySink  C:\Windows\explorer.exe
+
+74   66880  1492                  ScrollBar                                                 591202       1  6116  invisible       (0, 0, 0, 0)       (0, 0)            (2374, 2374, 275, 275)       (0, 0)                  ScrollBar  C:\Windows\explorer.exe
+
+75  132096  1492          msctls_progress32                                                 132326       1  6116    visible   (0, 1238, 0, 30)   (1238, 30)            (2213, 3451, 238, 268)   (1238, 30)          msctls_progress32  C:\Windows\explorer.exe
+
+76  132098  1492          msctls_progress32                                                 132326       1  6116    visible   (0, 1238, 0, 30)   (1238, 30)            (2213, 3451, 238, 268)   (1238, 30)          msctls_progress32  C:\Windows\explorer.exe
+
+77  525318  1492          msctls_progress32                                                 132326       1  6116    visible   (0, 1238, 0, 30)   (1238, 30)            (2213, 3451, 238, 268)   (1238, 30)          msctls_progress32  C:\Windows\explorer.exe
+
+78  590798  1492          Breadcrumb Parent                                                 394414       1  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)          Breadcrumb Parent  C:\Windows\explorer.exe
+
+79  590798  1492            ToolbarWindow32  Address: C:\Users\Gamer\anaconda3\envs\dfdir   196758      45  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+80  132096  1492          Breadcrumb Parent                                                 394414       1  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)          Breadcrumb Parent  C:\Windows\explorer.exe
+
+81  132096  1492            ToolbarWindow32  Address: C:\Users\Gamer\anaconda3\envs\dfdir   196758      45  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+82  132098  1492          Breadcrumb Parent                                                 394414       1  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)          Breadcrumb Parent  C:\Windows\explorer.exe
+
+83  132098  1492            ToolbarWindow32  Address: C:\Users\Gamer\anaconda3\envs\dfdir   196758      45  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+84  525318  1492          Breadcrumb Parent                                                 394414       1  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)          Breadcrumb Parent  C:\Windows\explorer.exe
+
+85  525318  1492            ToolbarWindow32  Address: C:\Users\Gamer\anaconda3\envs\dfdir   196758      45  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+86  132326  1492            ToolbarWindow32  Address: C:\Users\Gamer\anaconda3\envs\dfdir   196758      45  6116    visible   (0, 1172, 0, 30)   (1172, 30)            (2213, 3385, 238, 268)   (1172, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+87  132098  1492          Address Band Root                                                 590798       1  6116    visible   (0, 1242, 0, 39)   (1242, 39)            (2211, 3453, 233, 272)   (1242, 39)          Address Band Root  C:\Windows\explorer.exe
+
+88  525318  1492          Address Band Root                                                 590798       1  6116    visible   (0, 1242, 0, 39)   (1242, 39)            (2211, 3453, 233, 272)   (1242, 39)          Address Band Root  C:\Windows\explorer.exe
+
+89  132096  1492            ToolbarWindow32                               Up band toolbar   918712      16  6116    visible     (0, 24, 0, 29)     (24, 29)            (2187, 2211, 242, 271)     (24, 29)            ToolbarWindow32  C:\Windows\explorer.exe
+
+90  132098  1492            ToolbarWindow32                               Up band toolbar   918712      16  6116    visible     (0, 24, 0, 29)     (24, 29)            (2187, 2211, 242, 271)     (24, 29)            ToolbarWindow32  C:\Windows\explorer.exe
+
+91  525318  1492            ToolbarWindow32                               Up band toolbar   918712      16  6116    visible     (0, 24, 0, 29)     (24, 29)            (2187, 2211, 242, 271)     (24, 29)            ToolbarWindow32  C:\Windows\explorer.exe
+
+92  132098  1492                     UpBand                                                 132308       1  6116    visible     (0, 24, 0, 29)     (24, 29)            (2187, 2211, 238, 267)     (24, 29)                     UpBand  C:\Windows\explorer.exe
+
+93  525318  1492                     UpBand                                                 132308       1  6116    visible     (0, 24, 0, 29)     (24, 29)            (2187, 2211, 238, 267)     (24, 29)                     UpBand  C:\Windows\explorer.exe
+
+94  132096  1492            ToolbarWindow32                            Navigation buttons   263136      19  6116    visible     (0, 77, 0, 30)     (77, 30)            (2110, 2187, 238, 268)     (77, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+95  132098  1492            ToolbarWindow32                            Navigation buttons   263136      19  6116    visible     (0, 77, 0, 30)     (77, 30)            (2110, 2187, 238, 268)     (77, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+96  525318  1492            ToolbarWindow32                            Navigation buttons   263136      19  6116    visible     (0, 77, 0, 30)     (77, 30)            (2110, 2187, 238, 268)     (77, 30)            ToolbarWindow32  C:\Windows\explorer.exe
+
+97  197608  1492            ToolbarWindow32                                                 132328       1  6116    visible    (0, 1466, 0, 0)    (1466, 0)            (2108, 3574, 275, 275)    (1466, 0)            ToolbarWindow32  C:\Windows\explorer.exe
+
+98  525318  1492            ToolbarWindow32                                                 132328       1  6116    visible    (0, 1466, 0, 0)    (1466, 0)            (2108, 3574, 275, 275)    (1466, 0)            ToolbarWindow32  C:\Windows\explorer.exe
+
+99  918776  1492            ToolbarWindow32                                                 132328       1  6116    visible    (0, 1466, 0, 0)    (1466, 0)            (2108, 3574, 275, 275)    (1466, 0)            ToolbarWindow32  C:\Windows\explorer.exe
+
+...
+
+
+
+```
+
+
+
