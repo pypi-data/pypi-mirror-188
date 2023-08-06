@@ -1,0 +1,8 @@
+
+# THIS FILE IS GENERATED FROM SigProfilerAssignment SETUP.PY
+short_version = '0.0.25'
+version = '0.0.25'
+Update = 'v0.0.25: DBS Decomposition Plots Plotting'
+
+    
+    
