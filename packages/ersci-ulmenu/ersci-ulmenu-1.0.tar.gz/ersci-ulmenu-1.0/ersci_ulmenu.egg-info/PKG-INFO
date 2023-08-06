@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: ersci-ulmenu
+Version: 1.0
+Summary: Create UL LI html menu from django model queryset
+Home-page: https://github.com/epg900/ersci-ulmenu.git
+Author: epg
+Author-email: epg900@gmail.com
+License: GNU GENERAL PUBLIC LICENSE
+Platform: UNKNOWN
+Requires-Python: >=3.7
+License-File: LICENSE
+
+=====
+Ecard
+=====
+Create UL LI html menu from django model queryset .
+from your ``views`` or your ``template``.
+
+Quick start
+-----------
+1. Add ``ersciUlmenu`` to your INSTALLED_APPS setting like this:
+``INSTALLED_APPS = [
+...,
+'ersciUlmenu' ,
+]``
+2.Register ``Ulmenu`` to admin like add ``admin.site.register(Ulmenu)`` and add your menu into it.
+3. Run ``python manage.py makemigrations`` and ``python manage.py migrate``  to create the Ulmenu models.
+4.Use this command to add menu with your views:
+``
+cl = UlMenuClass()
+clmenu = cl.ulmenu(Ulmenu.objects.all(),None)
+return render(request,"index.html",{'model' : model })
+-- 'model' is variable to use in your template.
+``
+or use this command to add menu with your template:
+``
+{% load ersciUlmenutag %}
+{% ulmenu model None %}
+``
+4.Run  ``python manage.py runserver`` Visit http://127.0.0.1:8000 to create users and its cards.
+
+
+
