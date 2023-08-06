@@ -1,0 +1,29 @@
+# python-clone-page
+A script for downloading complete web pages with assets
+
+- [python-clone-page](#python-clone-page)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Example](#example)
+
+## Installation
+```sh
+pip install clone-page
+```
+
+
+## Usage
+```sh
+clone-page https://www.hightechcrime.org/
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████|45/45
+Summary:
+41/45 assets downloaded successfully.
+Failed to download the following assets:
+https://fonts.googleapis.com/css?family=Arvo%3A400%2C700%7CLato%3A400%2C700&display=swap
+https://fonts.googleapis.com/css?family=Google+Sans:400,500|Roboto:300,400,500,700|Source+Code+Pro:400,700&display=swap
+https://apis.google.com/js/client.js?onload=gapiLoaded
+https://www.googletagmanager.com/gtag/js?id=UA-36293907-1
+```
+
+## Example
+<img src="assets/example.png" width="50%">
