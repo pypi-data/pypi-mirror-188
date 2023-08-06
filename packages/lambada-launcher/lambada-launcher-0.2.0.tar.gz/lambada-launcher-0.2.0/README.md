@@ -1,0 +1,33 @@
+Lambada
+=======
+
+Lambada allows to launch and supervise multiple commands.
+
+Launch with
+```bash
+python3 -m lambada
+```
+
+or
+```bash
+lambada
+```
+
+
+See [lambada.toml](lambada.toml) for an example file.
+
+
+```toml
+[analog]
+cmd = "xclock"
+
+[digital]
+cmd = "xclock -digital"
+```
+
+Commands are described by their name and a `cmd` string field. Following options are availables :
+- `shell` if set to **true** interpret the `cmd` in `bash` (allows to launch multiple commands and use bash features
+  such as `|` or `>`)
+- `persist` if set to **true**, task is not terminated when lambada exits normally.
+- `detach` if set to **true**, task is detached from lambada and does not receive signal (`SIGINT` or Ctrl+C) send to
+  lambada.
