@@ -1,0 +1,1 @@
+This is helper functions for the Home Assistant integrations (recommendation systems).
