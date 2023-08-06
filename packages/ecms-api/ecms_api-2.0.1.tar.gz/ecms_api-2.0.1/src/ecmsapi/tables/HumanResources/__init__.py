@@ -1,0 +1,1 @@
+from ecmsapi.tables.HumanResources.models import HRTEMP, HRTCPR
