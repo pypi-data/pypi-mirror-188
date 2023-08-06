@@ -1,0 +1,40 @@
+language: python
+
+sudo: false
+
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+
+before_install:
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+install:
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip numpy pytest
+  - source activate test-environment
+  - pip install -r requirements_dev.txt
+  - pip install codecov pytest-cov
+  - python setup.py install
+
+before_script:
+  # Download the required sample data files.
+  - python -c "import seabird.utils; seabird.utils.sampledata()"
+
+script:
+  - py.test --cov --cov-report=term-missing -vv
+
+after_success:
+  - codecov
