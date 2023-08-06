@@ -1,0 +1,433 @@
+Metadata-Version: 2.1
+Name: myacme
+Version: 0.1.1
+Summary: MyACME client library and command line tool
+Home-page: https://declassed.art/repository/myacme
+Author: AXY
+Author-email: axy@declassed.art
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Utilities
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: atomicwrites
+Requires-Dist: cryptography (>=3.1)
+Requires-Dist: idna
+Requires-Dist: kvgargs
+Requires-Dist: pyyaml
+Requires-Dist: requests
+
+# MyACME client library and CLI tools
+
+
+
+
+This ACME client might be considered stable, given that I have been using it since 2021 in manual mode.
+However, it's still beta for the following reasons:
+* Automation and some major changes were done recently.
+* Needs more testing. For me, a sole user, this is lazy process because problems
+  may happen only each 2-3 months. Or may not.
+* Authorization needs revising, there are some XXX/TODOs.
+* Certificate revocation is not implemented yet.
+* CLI needs some utility commands.
+
+## Introduction
+
+This yet another ACME client emerged for fwo reasons:
+* I had no my own LE account yet and needed a certificate for my mail server.
+  A few clients I tried required email for some reason, although ACME protocol defines contacts as optional.
+  It was odd to ask an email when I had no mail server yet.
+  Later on I discovered an option in certbot that makes email optional, but here's another reason:
+* Certbot was too complicated for me to extend for my very basic needs. I wanted a simple tool and choosing
+  a way to waste my time I preferred to learn RFC 8555 instead of certbot internals.
+
+So, this client is written from scratch by studying https://tools.ietf.org/html/rfc8555
+and trying out Let's Encrypt staging and production environments.
+It is based on `requests` and `cryptography` packages.
+
+## Installation
+
+```shell
+pip install myacme
+```
+
+
+## Command-line ACME client
+
+### Account creation
+
+Before applying to certificate issuance you need an account on the ACME server.
+
+The following command generates private key and creates an account:
+
+```shell
+myacme create account ak=my-account-key.pem
+```
+
+You can generate my-account-key.pem with other tools, `openssl` for example.
+The above command will use your existing key then.
+
+The default ACME server is Let's Encrypt https://acme-v02.api.letsencrypt.org/directory
+You can specify your own server by providing its directory URL:
+
+```shell
+myacme create account ak=my-account-key.pem acme=https://my.acme.com/directory
+```
+
+Or, you can use a predefined URL, one of:
+
+* le: Let's Encrypt directory, this is the default
+* le-staging: Let's Encrypt staging environment.
+
+Example:
+
+```shell
+myacme create account ak=my-account-key.pem acme=le-staging
+```
+
+The email is not necessary to create an account. However you can provide one or more:
+
+```shell
+myacme create account ak=my-account-key.pem \
+    email=john.doe@example.com email=sarah.connor@example.com
+```
+
+If you run the above command for an existing account it will change contact emails.
+
+
+### Update account
+
+Change account key:
+
+```shell
+myacme update account ak=my-account-key.pem new-ak=new-account-key.pem
+```
+
+Same here, new account key may already exist. If not, it will be generated.
+
+
+### Account deactivation
+
+If you no longer need an account you can deactivate it:
+
+```shell
+myacme deactivate account ak=my-account-key.pem
+```
+
+### Manually applying for certificate issuance
+
+If you already have a CSR, you can get the certificate with a single command:
+
+```shell
+myacme certificate ak=my-account-key.pem csr=my-csr.pem cert=my-cert.pem
+```
+
+You'll have to prove you own your domain. This command will print instructions how to do that.
+
+If you got a temporary error, such as network error or server error, you can run the above command repeatedly.
+The state of appliance process is saved to a file <domain-name>.myacme.json in the current directory.
+
+If you don't have a CSR but do have already generated private key (with `openssl` command, for example),
+`myacme` will automatically generate a CSR for the issuance process:
+
+```shell
+myacme certificate ak=my-account-key.pem \
+    dom=example.com dom=www.example.com \
+    private-key=my-key.pem cert=my-cert.pem
+```
+
+The CSR will be saved only in the state filename, you can extract it with
+`myacme get csr` command (see below).
+
+Finally, if you have neither CSR, nor private key, `myacme` will generate everything for you:
+
+```shell
+myacme certificate ak=my-account-key.pem \
+    dom=example.com dom=www.example.com \
+    private-key=my-key.pem cert=my-cert.pem
+```
+
+Yes, this is exactly the same command as above. This simply checks your
+`my-key.pem` and if it does not exist, the key will be automatically generated
+and written to that file.
+
+
+### Automated certificate management
+
+Directory layout:
+
+```
+/etc/myacme/
+    config.yaml
+    account-key.pem
+    <domain>/
+        previous/
+        config.yaml            -- optional per-domain settings
+        <domain>.myacme.json
+        <domain>.cert.pem
+        <domain>.key.pem
+```
+
+`/etc/myacme` is somewhat arbitrary location, it could be any directory of your choice.
+Mind file permissions and try to avoid running `myacme` as root.
+
+The following command should be run daily:
+
+```shell
+myacme manage dir=/etc/myacme
+```
+
+This will check certificates and apply for re-issuance for expiring ones.
+
+Here's a sample config.yaml:
+
+```yaml
+acme: le  # optional ACME server directory URL
+account_key: account-key.pem
+
+expiring_days: 7  # optional: days before expiring to start renewal
+
+filenames:  # optional, here are defaults:
+    certificate: '{domain}.cert.pem'
+    key:         '{domain}.key.pem'
+
+cert_domains:  # optional list of domains per certificate, {domain} is substituted
+               # with actual domain name; default is single domain name
+    - '{domain}'
+    - '*.{domain}'
+
+csr_fields:  # optional additional fields for CSR
+    - 'Country Name': 'US'
+    - 'State or Province Name': 'California'
+
+authz:  # domain ownership validation parameters
+        # substitutions:
+        # {domain}:          primary domain name, leading wildcard, if any, is stripped
+        # {idna_domain}:     primary domain name, in IDNA encoding; leading wildcard, if any, is stripped
+        # {subdomain}:       list of subdomains, see a note below
+        # {idna_subdomain}:  list subdomains in IDNA encoding, see a note below
+        # {token}:           domain validation token
+        # {key}:             domain validation key for http-01
+        # {key_digest}:      domain validation key digest for dns-01
+
+    dns-01:
+        setup:
+            - 'myacme-zonefile /etc/bind/primary/{subdomain[1]} add-acme-challenge {domain} {key_digest}'
+            - 'rndc reload {idna_subdomain[1]}'
+            - sleep 10
+        cleanup:
+            - 'myacme-zonefile /etc/bind/primary/{subdomain[1]} del-acme-challenge {domain} {key_digest}'
+            - 'rndc reload {idna_subdomain[1]}'
+
+    http-01:
+        setup:
+            - 'mkdir -p /var/www/{domain}/.well-known/acme-challenge'
+            - 'echo {key} >/var/www/{domain}/.well-known/acme-challenge/{token}'
+        cleanup:
+            - 'rm /var/www/{domain}/.well-known/acme-challenge/{token}'
+
+deploy:  # optional deployment commands; possible substitutions: {domain}, {idna_domain},
+         # {directory}, and {filenames[...]}, e.g. filenames[certificate], filenames[key]
+    - 'chmod 600 {directory}/{filenames[certificate]}'
+    - 'chmod 600 {directory}/{filenames[key]}'
+    - 'cp {directory}/{filenames[certificate]} {directory}/{filenames[key]} /etc/nginx/certificates/'
+
+finalize:  # commands to execute after some or all certificates are renewed
+    - 'nginx -s reload'
+```
+
+
+## MyACME library
+
+The library provides the following basic classes:
+
+* `MyAcmeClient`: the main class provides account management and basic methods for ACME requests
+* `MyAcmeOrder`: this class implements certificate issuance state machine
+* `MyAcmeStateFS`: this class implements saving the state of certificate issuance to file system
+* `MyAcmeAuthzManual`: this implementation prints instructions for domain validation and waits for user input
+* `MyAcmeAuthzScript`: this class invokes scripts for domain validation according to provided configuration
+* `MyAcmeError`: the basic exception
+* `MyAcmeHttpError`: ACME HTTP exception
+
+Helper functions:
+
+* `get_certificate_validity_period`
+* `idna_decode`
+* `idna_encode`
+
+Although this library can generate private keys and CSRs, you can provide your own ones in PEM format.
+
+### How to use
+
+The first step is to instantiate `MyAcmeClient` class with a directory URL:
+
+```python
+my_acme = MyAcmeClient('https://acme-v02.api.letsencrypt.org/directory')
+```
+
+To apply for certificates, you should have an account on the ACME server.
+The account is identified by client's public key.
+The account is identified ONLY by client's public key. Contact emails are optional.
+
+If you have no account key yet, there's a method to generate it for you:
+
+```python
+account_key = my_acme.generate_account_key()
+```
+
+The `account_key` is a key pair, containing both public and private keys
+in PEM format, as bytes. You should permanently save the account key somewhere:
+
+```python
+with open('my-account-key.pem', 'wb') as f:
+    f.write(account_key)
+```
+
+If you aleady have an account key, you should provide it explicitly:
+
+```python
+with open('my-account-key.pem', 'rb') as f:
+    my_acme.account_key = f.read()
+```
+
+or:
+
+```python
+with open('my-account-key.pem', 'rb') as f:
+    my_account_key = f.read()
+my_acme = MyAcmeClient('https://acme-v02.api.letsencrypt.org/directory', my_account_key)
+```
+
+Once `account_key` is set, you can create an account on the ACME server, if it was not created yet:
+
+```python
+acme.create_account()
+```
+
+This method can accept the list of contact URLs in the form "mailto:admin@example.org".
+By default contacts is an empty list.
+
+It's desirable to permanently save account URL, along with account key somewhere:
+
+```python
+saved_account_url = my_acme.account_url
+```
+
+This is because this URL is needed for subsequent requests and if not saved,
+the client has to issue extra request to obtain it.
+
+This URL should be restored after instantiation of `MyAcmeClient`:
+
+```python
+my_acme.account_url = saved_account_url
+```
+
+
+### How to apply for certificate issuance
+
+Create an authenticator:
+
+```python
+authenticator = MyAcmeAuthzManual()
+```
+
+Create state object:
+
+```python
+state = MyAcmeStateFS('example.com', '~/.myacme-state')
+```
+
+Apply for a certificate:
+
+```python
+order = acme.process_order('example.com', authenticator, state)
+```
+
+You can provide your own private key:
+
+```python
+order = acme.process_order('example.com', authenticator, state, private_key=example_com_key)
+```
+
+Auto-generated CSR contains only COMMON_NAME field and optionally SAN extension.
+You can provide more fields:
+
+```python
+order = acme.process_order('example.com', authenticator, state, csr_fields={
+    'Country Name': 'US',
+    'State or Province Name': 'California'
+})
+```
+
+Field names are transformed to x509 names by converting them to upper case and replacing spaces
+with underscores. Here are most used names, for the full list see `cryptography.x509.oid.NameOID`:
+
+```
+COUNTRY_NAME             2-letter country code
+LOCALITY_NAME            e.g. city
+STATE_OR_PROVINCE_NAME
+STREET_ADDRESS
+ORGANIZATION_NAME        e.g. company
+ORGANIZATIONAL_UNIT_NAME e.g. section
+EMAIL_ADDRESS
+```
+
+Alternatively you can provide your own CSR. Private key is unnecessary because CSR is already signed:
+
+```python
+order = acme.process_order('example.com', authenticator, state, csr=example_com_csr)
+```
+
+Finally, you should save your certificate somewhere:
+
+```python
+certificate = order.get_certificate()
+with open('my-certificate.pem', 'wb') as f:
+    f.write(certificate)
+```
+
+If you not provided private key, you should also save auto-generated one:
+
+```python
+private_key = order.get_private_key()
+with open('private.key', 'wb') as f:
+    f.write(private_key)
+```
+
+### Internationalized domain names
+
+MyACME accepts and returns all domain names as strings so they may contain non-ASCII characters.
+Domain names are encoded and decoded as necessary.
+
+### The complete example
+
+```python
+my_domain = 'example.com'
+with open('my-account-key.pem', 'rb') as f:
+    my_account_key = f.read()
+my_acme = MyAcmeClient('https://acme-v02.api.letsencrypt.org/directory', my_account_key)
+authenticator = MyAcmeAuthzManual()
+state = MyAcmeStateFS(my_domain, '~/.myacme-state')
+order = acme.process_order(my_domain, authenticator, state)
+if not order:
+    print('Cannot get certificate')  # XXX reason?
+else:
+    certificate = order.get_certificate()
+    with open('my-certificate.pem', 'wb') as f:
+        f.write(certificate)
+    private_key = order.get_private_key()
+    with open('private.key', 'wb') as f:
+        f.write(private_key)
+```
+
+
+
