@@ -1,0 +1,17 @@
+from ans_pycli.cli import CLI as BaseCLI
+from ans_pycli.commands.Dev.DevCommand import TestCommand
+from ans_pycli.mixins import SubparsersDictType
+
+
+class CLI(BaseCLI):
+    _description: str = None
+
+    _subparsers: SubparsersDictType = {
+        "commands": [
+            TestCommand(),
+        ],
+    }
+
+
+if __name__ == "__main__":
+  CLI().run()
