@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: fakejson
+Version: 0.9.0
+Summary: json-like format(allowing single-quote string) parser
+Project-URL: Homepage, https://github.com/kokardy/fakejson
+Project-URL: Bug Tracker, https://github.com/kokardy/fakejson/issues
+Author-email: kokardy <mgc1028@gmail.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# fakejson
+
+JSON-like format parser in Python
+
+## Usage
+
+```sh
+pip install fekejson
+```
+
+```python
+
+import fakejson
+
+# bad quote json (single quote exists.)
+json_like_str = """
+{
+    "key1": "value1",
+    'key2': 'value2',
+}
+"""
+
+parsed = fakejson.loads(json_like_str) # dict
+
+assert parsed["key1"] == "value1"
+assert parsed["key2"] == "value2"
+
+json_str = fakejson.dumps(parsed)
+
+print(json_str) # {"key1":"value1","key2":"value2"}
+
+```
