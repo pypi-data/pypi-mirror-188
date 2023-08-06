@@ -1,0 +1,43 @@
+name: jyg-docs
+
+channels:
+  - conda-forge
+  - nodefaults
+
+dependencies:
+  - python >=3.11,<3.12
+  ### environment-base.yml ###
+  - argcomplete
+  - doit-with-toml
+  - jupyterlab >=3.5.2,<4
+  - pip
+  - python >=3.8,<3.12
+  - traitlets >=5.8
+  ### environment-base.yml ###
+  ### environment-build.yml ###
+  # runtimes
+  - nodejs >=16,!=17.*,<19
+  # build
+  - jsonschema-gentypes
+  - flit >=3.7.1
+  - twine
+  ### environment-build.yml ###
+  ### environment-docs.yml ###
+  # docs
+  - docutils >=0.18
+  - myst-nb
+  - pydata-sphinx-theme
+  - sphinx >=5.1,<6
+  - sphinx-autobuild
+  - sphinx-copybutton
+  - sphinx-jsonschema
+  # check
+  - hunspell
+  - hunspell-en
+  - pytest-check-links
+  # lite cruft
+  - pkginfo
+  - python-libarchive-c
+  - pip:
+      - jupyterlite ==0.1.0b17
+  ### environment-docs.yml ###
