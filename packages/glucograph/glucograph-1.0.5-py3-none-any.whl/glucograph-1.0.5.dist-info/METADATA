@@ -1,0 +1,219 @@
+Metadata-Version: 2.1
+Name: glucograph
+Version: 1.0.5
+Summary: This project contains an application, which plots data exported from CGM (Continuous Glucode Monitoring) system. Currently only data exported from xDrip (https://github.com/NightscoutFoundation/xDrip) is recognized by this program. THIS APPLICATION SHOULD NOT BE USED TO MAKE MEDICAL DECISIONS.
+Project-URL: Homepage, https://gitlab.com/markok314/glucograph
+Project-URL: Bug Tracker, https://gitlab.com/markok314/glucograph/-/issues
+Author: Marko K
+License: GPL v3
+License-File: LICENSE
+Keywords: glucose,xDrip
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: matplotlib>=3.1.0
+Description-Content-Type: text/markdown
+
+# GlucoGraph
+
+This project contains an application, which plots data exported 
+from CGM (Continuous Glucode Monitoring) system. Currently only data exported 
+from [xDrip](https://github.com/NightscoutFoundation/xDrip) is recognized by
+this program.
+
+__IMPORTANT__: RESULTS OD THIS PROGRAM SHOULD NOT BE USED TO MAKE MEDICAL 
+DECISIONS. THERE IS NO WARRANTY FOR THE PROGRAM. THE COPYRIGHT HOLDERS AND/OR 
+OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, 
+EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. 
+THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. 
+SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY 
+SERVICING, REPAIR OR CORRECTION.
+
+The program shows the data in charts, which can be shown on screen or saved to
+file. It is written in Python, so it should run in any environment, where
+Python runs.
+
+Example screenshot:
+
+![screenshot](doc/screenshot-1.png)
+
+
+
+Installation
+---
+
+### 1. Install Python
+
+To run this application, we need Python installed on your system. While it is
+preinstalled in most popular Linux distributions, we have to install it 
+on [Windows](https://docs.python.org/3/using/windows.html#windows-store) and
+[Mac](https://docs.python.org/3/using/mac.html).
+
+### 2. Install this program
+ 
+Open shell (Terminal/Konsole/... on Linux, cmd or Power Shell on Windows)
+and type:
+
+    pip install --upgrade glucograph
+
+## Export data from xDrip
+
+
+Follow these steps:
+
+a) Open xDrip on your phone and select the three dots menu in the top right corner.
+   Select _Import / Export features_ and then _Export database_. File with SQLite
+   database is created on your phone in _xdrip_ folder in internal storage. It is
+   usually named as `export<date>-<time>.zip`. 
+
+b) Copy the exported database file to your computer
+   where you have installed _glucograph_. This can be done in several ways:
+   - connect your phone to computer with USB cable, and allow copying 
+     files on the phone. The use file explorer to navigate to directory 
+     dxrip on the phone and copy the zipped sqlite file to the computer.
+   - share the exported file via Google Drive, email, ...
+
+c) Unzip the file to get file with extension _sqlite_. 
+
+## Create charts
+
+To create charts open shell in directory with your exported database file and type:
+
+    glucograph [options] <name-of-exported-db-file>.sqlite
+
+This application supports many configuration parameters like start date, number
+of days on a chart, ..., which can be specified on a command line when running
+the program. To see all available options and parameters, run:
+
+    glucograph -h
+
+## Examples
+
+This section demonstrates usage of the most useful parameters. In the 
+following examples we'll assume the name of our exported database file as
+`export20230117-221514.sqlite`.
+
+### Set units
+
+Default units for blood glucose are `mmol/l`. To see values in `mg/dl` specify 
+option `--mgdl`, for example:
+
+    glucograph --mgdl 2023-01-01 export20230117-221514.sqlite
+
+### Define start date
+
+Suppose we want to see data beginning with 1st Jan. Specify this with 
+parameter `--start`:
+
+    glucograph --start 2023-01-01 export20230117-221514.sqlite
+
+The date should be given in ISO format (yyyy-mm-dd).
+
+### Show only five days (five charts)
+
+Specify the number of shown days with parameter `-d` or `--days`:
+
+    glucograph --days 5 --start 2023-01-01 export20230117-221514.sqlite
+
+### Specify range for Y axis and reference values other than defaults
+
+This example sets min value on Y axis to 2 mmol/l and the maximum one to 
+15 mmol/l. Reference values for low and high values of blood glucose are 
+set to 3.9 mmol/l and 8.0 mmol/l respectively:
+
+    glucograph --ymin 2 --ymax 15 --ref_min 3.9 --ref_max 8 --start 2023-01-01 export20230117-221514.sqlite
+
+Note: If you specify option `--mgdl`, then all the above parameters must be 
+given in mg/dl.
+
+### Print some statistics only
+
+This parameter currently ignores all other parameters, like start day and 
+number of days. It calculates statistics for all data in the database file.
+
+    glucograph --stats export20230117-221514.sqlite
+
+### Show also glucose measurements from finger pricks
+
+If you control your CGM with finger pricks, but do not enter this data into
+CGM, and your blood glucose monitoring system supports exports of data, you can
+show this data together with CGM values with option `--gmeter`:
+
+    glucograph --gmeter data/next_one-2023-01-09.csv export20230117-221514.sqlite
+
+Data in the specified files must be given in CSV format, where each row
+contains: 
+
+    YYYY-mm-DD HH:MM:SS, <value>, <unit>
+
+for example:
+
+    2022-08-15 21:25:56, 4.3, mmol/L
+    2022-08-16 22:18:02, 5.8, mmol/L
+    2022-08-17 20:13:33, 4.4, mmol/L
+
+### Show meals
+
+If you are on a diet with meals at the same time each day, you can also show
+these. First you have to create a file with description in the following format:
+
+    <hh:mm>, <color>, <description text>
+
+Example:
+
+    4:15, c, CS 30g
+    7:40, y, CS 30g
+
+For available colors see 
+[Matplotlib Color Formats](https://matplotlib.org/stable/tutorials/colors/colors.html).
+
+### Control visible data
+
+xDrip database contains also treatments and notes, if we enter them. To show
+them in charts, we have to specify options `--show_treatments`, and `--show_calibrations`:
+
+    glucograph --show_treatments --show_calibrations export20230117-221514.sqlite
+
+### Save chart to file
+
+To send chart to other people, we can save it to file. Only PDF format is 
+currently supported:
+
+    glucograph --save --days 31 --start 2022-12-01 export20230117-221514.sqlite
+
+Number of days may be greater in such case, because we are not limited with 
+screen size.  
+
+Special considerations
+---
+
+When showing treatments, the application treats text which contains 
+only float value as blood glucose value and draws it at Y position corresponding to the
+float value. However, no effort is currently made to convert this value to 
+the specified glucose units. This means that values given in different unit 
+than selected, will not be shown at correct Y position.
+
+Note: We use notes to record glucose value obtained with finger prick 
+when CGM shows wrong value due to known 
+reason, for example cold, pressure, ... It is not a good idea to calibrate CGM 
+in such case, but it is useful to record the correct blood glucose.
+
+## Support
+If you find a bug in the application or have an idea for a new feature, then 
+please open an issue in GitLab.
+
+## Roadmap
+
+1. Add simple GUI to set options.
+2. Add options to set colors.
+
+## Contributing
+
+If you'd like to contribute to the project, please create a pull request. Note
+that all code must be PEP-8 compliant.
+
+## License
+
+This project is licensed under GPL v3.
