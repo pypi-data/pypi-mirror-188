@@ -1,0 +1,149 @@
+[tool.poetry]
+name = "insightly-outliers"
+version = "1.0.1"
+description = "Individual work for the discipline of configuration management and software evolution at the university of Brasília - Gama for semester 2022.2"
+authors = ["Jonathan Oliveira <jonathan.jb.oliveira@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+include = ["CHANGELOG.md", "LICENSE", "README.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "pyproject.toml", "poetry.lock", "insightly/"]
+keywords = [
+    "insightly outliers",
+    "insightly",
+    "outliers",
+    "anomalias",
+    "trabalho Individual 2022.2",
+    "GCES",
+    "UNB-FGA",
+]
+packages = [
+    { include = "insightly" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+altair = "4.2.0"
+attrs = "22.2.0"
+bpemb = "0.3.4"
+certifi = "2022.12.7"
+charset-normalizer = "2.1.1"
+contourpy = "1.0.6"
+coverage = "7.0.2"
+cycler = "0.11.0"
+entrypoints = "0.4"
+exceptiongroup = "1.1.0"
+fonttools = "4.38.0"
+gensim = "3.8.3"
+idna = "3.4"
+importlib-resources = "5.10.2"
+iniconfig = "1.1.1"
+jinja2 = "3.1.2"
+joblib = "1.2.0"
+jsonschema = "4.17.3"
+kiwisolver = "1.4.4"
+markupsafe = "2.1.1"
+matplotlib = "3.6.2"
+numpy = "1.24.1"
+packaging = "22.0"
+pandas = "1.5.2"
+pillow = "9.4.0"
+pkgutil-resolve-name = "1.3.10"
+pluggy = "1.0.0"
+pyparsing = "3.0.9"
+pyrsistent = "0.19.3"
+python-dateutil = "2.8.2"
+pytz = "2022.7"
+pyyaml = "6.0"
+requests = "2.28.1"
+scikit-learn = "1.2.0"
+scipy = "1.9.3"
+sentencepiece = "0.1.97"
+six = "1.16.0"
+smart-open = "6.3.0"
+threadpoolctl = "3.1.0"
+tomli = "2.0.1"
+toolz = "0.12.0"
+tqdm = "4.64.1"
+urllib3 = "1.26.13"
+whatlies = "0.7.0"
+zipp = "3.11.0"
+
+[tool.poetry.scripts]
+main = "insightly.main:main"
+
+[tool.poetry.group.lint.dependencies]
+isort = "^5.11.4"
+black = "^22.12.0"
+flake8 = "^6.0.0"
+mypy = "^0.991"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.2.0"
+sphinx-material = "^0.0.35"
+pytest-cov = "4.0.0"
+commitizen = "^2.40.0"
+sphinx = "^6.1.3"
+
+
+[tool.poetry.group.docs.dependencies]
+sphinx-mdinclude = "^0.5.3"
+
+[tool.pytest.ini_options]
+pythonpath = ["insightly"]
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[tool.isort]
+profile = "black"
+known_first_party = "insightly"
+line_length = 88
+
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$' # All Python files
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+# 3rd party import
+ignore_missing_imports = true
+# dynamic typing
+disallow_any_unimported = true
+disallow_any_expr = false
+disallow_any_decorated = false
+disallow_any_explicit = true
+disallow_any_generics = false
+disallow_subclassing_any = true
+# platform
+python_version = "3.10"
+# untyped
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+# None and Optional
+no_implicit_optional = true
+# Warnings
+warn_return_any = false
+warn_unreachable = true
+# Misc
+pretty = true
+
+[build-system]
+requires = ["poetry-core", "poetry>=1.3.2"] 
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+docs = ["sphinx", "sphinx_material"]
