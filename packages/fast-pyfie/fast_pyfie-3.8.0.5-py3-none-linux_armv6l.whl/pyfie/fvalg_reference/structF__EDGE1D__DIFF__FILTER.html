@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 構造体 F_EDGE1D_DIFF_FILTER</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>構造体 F_EDGE1D_DIFF_FILTER<br>
+<small>
+[<a class="el" href="group__fie__edge__1d__detector.html">１次元エッジ検出</a>]</small>
+</h1><!-- doxytag: class="F_EDGE1D_DIFF_FILTER" --><hr><a name="_details"></a><h2>説明</h2>
+１次元エッジ用微分フィルタ 
+<p>
+1次元エッジ検出において、微分フィルタモデルを設定する為に使用する構造体です。<p>
+<dl class="user" compact><dt><b>微分フィルタモデルについて</b></dt><dd></dd></dl>
+エッジ計測において、指定直線状で1次元濃度データを取得した後、 そのデータから1次元濃度微分データを計算によって求めます。<p>
+<div align="center">
+<img src="fie_edge1d_diff_filter.png" alt="fie_edge1d_diff_filter.png">
+</div>
+<p>
+上記フィルタモデルをこの構造体で管理します。<br>
+ 各パラメータ値により、下図のような微分フィルタモデルを設定し、 それにより濃度微分値を取得します。<p>
+<div align="center">
+<img src="fie_edge1d_diff_filter_model.png" alt="fie_edge1d_diff_filter_model.png">
+</div>
+<p>
+例えば、<em>minus_foot=3</em>, <em>plus_foot=3</em>, <em>minus_len=1</em>, <em>plus_len=1</em> であれば、 注目画素<img class="formulaInl" alt="$i$" src="form_49.png">における微分値<img class="formulaInl" alt="$d_{i}$" src="form_50.png">は下記式で求められます。 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ d_i = \frac{ (-1)*D_{-4} + (-1)*D_{-3} + (-1)*D_{-2} }{3} + 0*D_{-1} + 0*D_1 + \frac{1*D_2 + 1*D_3 + 1*D_4}{3} \]" src="form_51.png">
+<p>
+<p>
+len はエッジのボケに有効なパラメータです。<br>
+ 検出ライン上のエッジのコントラストが出ていない場合にはこの値を大きくすることで ボケによる回答ずれの影響を軽減させる効果が得られ、より安定した計測が可能になります。<br>
+<p>
+footはノイズ除去に有効なパラメータです。<br>
+ 検出ライン上に高周波のノイズが含まれるような場合には、この値を大きくすることで ノイズによる回答ずれの影響を軽減させる効果が得られ、より安定した計測が可能になります。 <table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>変数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html#7bb983b7ec59e74e0d9023314c6ac454">minus_foot</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html#e58c82090bfea10c96ac68f7228b8fa8">minus_len</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html#971584085b4736d07881d2f935e9d88c">plus_foot</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html#487463f4e1dc368fef1589acd56a695b">plus_len</a></td></tr>
+
+</table>
+<hr><h2>構造体</h2>
+<a class="anchor" name="7bb983b7ec59e74e0d9023314c6ac454"></a><!-- doxytag: member="F_EDGE1D_DIFF_FILTER::minus_foot" ref="7bb983b7ec59e74e0d9023314c6ac454" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__EDGE1D__DIFF__FILTER.html#7bb983b7ec59e74e0d9023314c6ac454">F_EDGE1D_DIFF_FILTER::minus_foot</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+負側のfoot長さ 
+</div>
+</div><p>
+<a class="anchor" name="e58c82090bfea10c96ac68f7228b8fa8"></a><!-- doxytag: member="F_EDGE1D_DIFF_FILTER::minus_len" ref="e58c82090bfea10c96ac68f7228b8fa8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__EDGE1D__DIFF__FILTER.html#e58c82090bfea10c96ac68f7228b8fa8">F_EDGE1D_DIFF_FILTER::minus_len</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+負側のlen長さ 
+</div>
+</div><p>
+<a class="anchor" name="971584085b4736d07881d2f935e9d88c"></a><!-- doxytag: member="F_EDGE1D_DIFF_FILTER::plus_foot" ref="971584085b4736d07881d2f935e9d88c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__EDGE1D__DIFF__FILTER.html#971584085b4736d07881d2f935e9d88c">F_EDGE1D_DIFF_FILTER::plus_foot</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+正側のfoot長さ 
+</div>
+</div><p>
+<a class="anchor" name="487463f4e1dc368fef1589acd56a695b"></a><!-- doxytag: member="F_EDGE1D_DIFF_FILTER::plus_len" ref="487463f4e1dc368fef1589acd56a695b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT <a class="el" href="structF__EDGE1D__DIFF__FILTER.html#487463f4e1dc368fef1589acd56a695b">F_EDGE1D_DIFF_FILTER::plus_len</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+正側のlen長さ 
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,738 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ツール</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ツール<br>
+<small>
+[<a class="el" href="group__fie__machine__leaning.html">機械学習</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+機械学習を行うためには<p>
+<ul>
+<li>識別に用いるための特徴量の定義<br>
+ </li>
+<li>特徴量を実際に抽出し、教師データを作成する(または識別時のデータとする)<br>
+</li>
+</ul>
+といった処理が必須となります。しかし、これには<p>
+<ul>
+<li>識別の対象物がどのようなものか(どのような特徴をもつか)をよく理解する </li>
+<li>定義した特徴量をどのように抽出すればよいかを把握する</li>
+</ul>
+といった、ある程度の前提知識を要します。<br>
+<p>
+本ライブラリでは、機械学習を容易に利用できるように、識別対象を 限定した上で、特徴抽出などの処理を補助するツール関数群を提供します。 対象となるものは、以下のものになります。<p>
+<ul>
+<li>カラー画素の画素値による識別<br>
+ </li>
+<li>リージョンの形状による識別<br>
+</li>
+</ul>
+<dl class="user" compact><dt><b>カラー画素の画素値による識別</b></dt><dd></dd></dl>
+カラー画像の各画素の画素値を特徴量とした、色の類似性に基づくクラス識別のための 教師データの設定、識別処理を行います。 つまり、特徴ベクトルは3次元(=3チャネル分の画素値)となります。<br>
+<p>
+このツールでは、特徴量(3ch分の画素値)の取得は、単純にチャネル0, チャネル1, チャネル2の値を抽出するだけです。 色空間の違い(RGB, HSVなど)や、画像種別(F_IMG_UC8, F_IMG_US16など)の違いについては 考慮していませんので、ご注意下さい。<p>
+<dl class="user" compact><dt><b>リージョンの形状による識別</b></dt><dd></dd></dl>
+指定されたリージョンオブジェクトから、「回転」「スケール変動」に対して 不変な複数の特徴量を抽出し、形状の違いによる識別のための教師データの設定、 識別処理を行います。直接の対象はリージョンオブジェクトですが、 ブローブからリージョンの変換( <a class="el" href="group__fie__measure__result.html#g215dbd234382563737797dfbd76c03d7" title="REGION取得">fnFIE_measure_get_region()</a> ) を用いることで、ブローブ解析結果の分類にも応用ができます。<br>
+<p>
+取得する特徴量が回転、スケール変動に対して不変な特徴量であることには 注意が必要です。これは逆にいえば、「傾きによってクラスを分ける」 「大きさの違いでクラスを分ける」といったことには不適当な特徴ともいえるからです。 もしそのような識別が必要な場合は、独自に特徴量を定義することをお勧めします。 (リージョンの特徴量については <a class="el" href="group__fie__region__img__feature.html">画像特徴量計算</a> を参照してください)<br>
+<p>
+用いる特徴量は理論上は不変ではありますが、実際の画像情報から取得する場合は、 多少の誤差が生じます。そのため、ある程度の数のサンプルデータを 用意しておく必要があります。 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#ge6ec69c7214ed5d578161994933bf3ef">fnFIE_ml_sample_alloc_color</a> (VOID)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画素のカラー分類用 教師オブジェクトの生成  <a href="#ge6ec69c7214ed5d578161994933bf3ef"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#gec43a997c4c714b700b535e90ad06647">fnFIE_ml_sample_add_color_image</a> (FHANDLE hMl_color, FHANDLE hImage, INT response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カラー分類用教師データの追加(画像オブジェクトでの指定)  <a href="#gec43a997c4c714b700b535e90ad06647"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#gf81cdc14600afe49f933ec6abd1849a6">fnFIE_ml_sample_add_color_point</a> (FHANDLE hMl_color, FHANDLE hImage, <a class="el" href="structPNT__T.html">PNT_T</a> point, INT response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カラー分類用教師データの追加(座標指定)  <a href="#gf81cdc14600afe49f933ec6abd1849a6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#g9e2b5807c1ef411fee5ec0a36b2d4944">fnFIE_ml_sample_add_color_area</a> (FHANDLE hMl_color, FHANDLE hImage, FHANDLE hMask, INT response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">カラー分類用教師データの追加(マスクによる領域指定)  <a href="#g9e2b5807c1ef411fee5ec0a36b2d4944"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#g193234d43b1a261a52ede0baea6a7d8d">fnFIE_ml_predict_color_image</a> (FHANDLE hMl, FHANDLE hSrc, FHANDLE hDst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">入力画像のカラー画素値による分類  <a href="#g193234d43b1a261a52ede0baea6a7d8d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#g949f8c21906a254ae9fc4262fb4af8fc">fnFIE_ml_predict_color_point</a> (FHANDLE hMl, FHANDLE hImage, <a class="el" href="structPNT__T.html">PNT_T</a> point, INT *response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">入力画像の指定座標の画素の分類  <a href="#g949f8c21906a254ae9fc4262fb4af8fc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#g5c901d4707c4e411587e1d09b043d031">fnFIE_ml_predict_color_value</a> (FHANDLE hMl, DOUBLE val_ch0, DOUBLE val_ch1, DOUBLE val_ch2, INT *response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">入力された画素値の分類  <a href="#g5c901d4707c4e411587e1d09b043d031"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#gfa005da98cf6cfc1054b8105753752bd">fnFIE_ml_sample_alloc_region_shape</a> (VOID)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リージョンの形状識別用 教師オブジェクトの生成  <a href="#gfa005da98cf6cfc1054b8105753752bd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#g6e72b2831c3b88fe2475684813897a2c">fnFIE_ml_sample_add_region</a> (FHANDLE hMl_Region, FHANDLE hRegion, INT response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">リージョン分類用 教師データの追加  <a href="#g6e72b2831c3b88fe2475684813897a2c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__tools.html#g97af4db8de3332be75fd44a9bdeb1662">fnFIE_ml_predict_region_shape</a> (FHANDLE hMl, FHANDLE hRegion, INT *response)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">入力されたリージョンの識別  <a href="#g97af4db8de3332be75fd44a9bdeb1662"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="ge6ec69c7214ed5d578161994933bf3ef"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_sample_alloc_color" ref="ge6ec69c7214ed5d578161994933bf3ef" args="(VOID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_ml_sample_alloc_color           </td>
+          <td>(</td>
+          <td class="paramtype">VOID&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画素のカラー分類用 教師オブジェクトの生成 
+<p>
+カラー画像の画素値(RGBなど)を特徴ベクトルとして取り扱う教師データオブジェクトを作成し、 そのハンドルを返します。パラメータ不正や、メモリ不足などでオブジェクトを確保 できなかった場合は、NULLが返却されます。<br>
+ 生成されたハンドルが不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<br>
+<p>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>正常終了</em>&nbsp;</td><td>作成された教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了(メモリ不足など) </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gec43a997c4c714b700b535e90ad06647"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_sample_add_color_image" ref="gec43a997c4c714b700b535e90ad06647" args="(FHANDLE hMl_color, FHANDLE hImage, INT response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_sample_add_color_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl_color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カラー分類用教師データの追加(画像オブジェクトでの指定) 
+<p>
+<a class="el" href="group__fie__ml__tools.html#ge6ec69c7214ed5d578161994933bf3ef" title="画素のカラー分類用 教師オブジェクトの生成">fnFIE_ml_sample_alloc_color()</a> で確保したカラー分類用教師データオブジェクトに教師データを追加します。<br>
+ 本関数では、<em>hImage</em> で指定した画像オブジェクトのすべての画素を、 <em>response</em> で指定したラベルの 教師データとしてセットします。<br>
+<p>
+<em>hImage</em> で指定する画像は、 以下の条件を満たす必要があります。<p>
+<ul>
+<li>F_IMG_UC8, F_IMG_US16, F_IMG_DOUBLE : 3ch</li></ul>
+<p>
+RGBQUAD型、RGBTRIPLE型の画像を用いたい場合は、 <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> でデータを アンパッキングしてから用いてください。<p>
+また、<em>response</em> は0以上の整数で指定してください。<br>
+<p>
+メモリ確保に失敗した場合は F_ERR_NOMEMORY を返しますが、元のデータは保持されたままになります。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_color</em>&nbsp;</td><td>教師データを追加する教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImage</em>&nbsp;</td><td>教師データとして追加する画像オブジェクト(type:uc8, us16, dbl / ch:3 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>教師データのラベル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたラベルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入力された画像オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足による領域確保エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf81cdc14600afe49f933ec6abd1849a6"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_sample_add_color_point" ref="gf81cdc14600afe49f933ec6abd1849a6" args="(FHANDLE hMl_color, FHANDLE hImage, PNT_T point, INT response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_sample_add_color_point           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl_color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カラー分類用教師データの追加(座標指定) 
+<p>
+<a class="el" href="group__fie__ml__tools.html#ge6ec69c7214ed5d578161994933bf3ef" title="画素のカラー分類用 教師オブジェクトの生成">fnFIE_ml_sample_alloc_color()</a> で確保したカラー分類用教師データオブジェクトに教師データを追加します。<br>
+ 本関数では、<em>hImage</em> で指定画像の <em>point</em> で指定した座標の画素を、 <em>response</em> で指定したラベルの 教師データとしてセットします。<br>
+<p>
+<em>hImage</em> で指定する画像は、 以下の条件を満たす必要があります。<p>
+<ul>
+<li>F_IMG_UC8, F_IMG_US16, F_IMG_DOUBLE : 3ch</li></ul>
+<p>
+RGBQUAD型、RGBTRIPLE型の画像を用いたい場合は、 <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> でデータを アンパッキングしてから用いてください。<p>
+また、<em>response</em> は0以上の整数で指定してください。<br>
+<p>
+メモリ確保に失敗した場合は F_ERR_NOMEMORY を返しますが、元のデータは保持されたままになります。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_color</em>&nbsp;</td><td>教師データを追加する教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImage</em>&nbsp;</td><td>対象の画像オブジェクト(type:uc8, us16, dbl / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>point</em>&nbsp;</td><td>教師データとする画素の座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>教師データのラベル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたラベルが不正 または 指定した座標が不正(画像範囲外など) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入力された画像オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足による領域確保エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9e2b5807c1ef411fee5ec0a36b2d4944"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_sample_add_color_area" ref="g9e2b5807c1ef411fee5ec0a36b2d4944" args="(FHANDLE hMl_color, FHANDLE hImage, FHANDLE hMask, INT response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_sample_add_color_area           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl_color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+カラー分類用教師データの追加(マスクによる領域指定) 
+<p>
+<a class="el" href="group__fie__ml__tools.html#ge6ec69c7214ed5d578161994933bf3ef" title="画素のカラー分類用 教師オブジェクトの生成">fnFIE_ml_sample_alloc_color()</a> で確保したカラー分類用教師データオブジェクトに教師データを追加します。<br>
+ 本関数では、<em>hImage</em> で指定画像の <em>hMask</em> で指定した領域の画素を、 <em>response</em> で指定したラベルの 教師データとしてセットします。<br>
+<p>
+<em>hImage</em> で指定する画像は、 以下の条件を満たす必要があります。<p>
+<ul>
+<li>F_IMG_UC8, F_IMG_US16, F_IMG_DOUBLE : 3ch</li></ul>
+<p>
+RGBQUAD型、RGBTRIPLE型の画像を用いたい場合は、 <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> でデータを アンパッキングしてから用いてください。<p>
+また、<em>response</em> は0以上の整数で指定してください。<br>
+<p>
+マスク <em>hMask</em> は以下の２つのオブジェクトのうち、どちらかを使用することができます。<p>
+<ul>
+<li>リージョンオブジェクト</li><li>2値画像の画像オブジェクト</li></ul>
+<p>
+マスク <em>hMask</em> は以下の条件を満たしている必要があります。<p>
+<ul>
+<li>マスクが２値画像の場合、入力画像( <em>hImage</em> )とサイズが同じであること</li><li>マスクが２値画像の場合、チャネル数は1であること</li></ul>
+<p>
+リージョンオブジェクトをマスクとして指定した場合、リージョンに含まれる座標の画素を教師データとして追加します。<br>
+ ２値画像をマスクとして指定した場合、マスクの画素値が１となっている座標の画素を教師データとして追加します。<br>
+<p>
+メモリ確保に失敗した場合は F_ERR_NOMEMORY を返しますが、元のデータは保持されたままになります。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_color</em>&nbsp;</td><td>教師データを追加する教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImage</em>&nbsp;</td><td>対象の画像オブジェクト(type:uc8, us16, dbl / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMask</em>&nbsp;</td><td>教師データとする領域を指定するマスクのハンドルオブジェクト <ul>
+<li>リージョン </li>
+<li>２値画像( type : bin / ch : 1) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>教師データのラベル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたラベルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクト, または不正なマスクが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入力された画像オブジェクト, またはマスクとして渡された画像オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足による領域確保エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g193234d43b1a261a52ede0baea6a7d8d"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_predict_color_image" ref="g193234d43b1a261a52ede0baea6a7d8d" args="(FHANDLE hMl, FHANDLE hSrc, FHANDLE hDst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_predict_color_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+入力画像のカラー画素値による分類 
+<p>
+カラー分類用教師オブジェクトで学習した機械学習オブジェクトを使用して、 入力された画像全体の画素を分類します。<br>
+<p>
+本関数では、<em>hSrc</em> で指定された画像のすべての画素に対して分類を行い、その結果を <em>hDst</em> で指定した出力画像の対応する座標に設定します。つまり、出力画像の 各画素の画素値が、入力画像の各画素の分類のラベルになります。<p>
+<em>hSrc</em> で指定する画像は、 以下の条件を満たす必要があります。<p>
+<ul>
+<li>F_IMG_UC8, F_IMG_US16, F_IMG_DOUBLE : 3ch</li></ul>
+<p>
+　 RGBQUAD型、RGBTRIPLE型の画像を用いたい場合は、 <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> でデータを アンパッキングしてから用いてください。<p>
+<em>hDst</em> で指定する画像は、 以下の条件を満たす必要があります。<p>
+<ul>
+<li>F_IMG_I32 : 1ch</li></ul>
+<p>
+また、<em>hSrc</em> と <em>hDst</em> は同じサイズである必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl　　　</em>&nbsp;</td><td>分類に使用する学習オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>分類対象の画像オブジェクト(type:uc8, us16, dbl / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>出力画像(type:i32 / ch:1)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された機械学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入力された画像オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で領域確保に失敗 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g949f8c21906a254ae9fc4262fb4af8fc"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_predict_color_point" ref="g949f8c21906a254ae9fc4262fb4af8fc" args="(FHANDLE hMl, FHANDLE hImage, PNT_T point, INT *response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_predict_color_point           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hImage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+入力画像の指定座標の画素の分類 
+<p>
+カラー分類用教師オブジェクトで学習した機械学習オブジェクトを使用して、 入力画像の指定座標の画素の分類結果を <em>response</em> に出力します。<br>
+<p>
+<em>hSrc</em> で指定する画像は、 以下の条件を満たす必要があります。<p>
+<ul>
+<li>F_IMG_UC8, F_IMG_US16, F_IMG_DOUBLE : 3ch</li></ul>
+<p>
+RGBQUAD型、RGBTRIPLE型の画像を用いたい場合は、 <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> でデータを アンパッキングしてから用いてください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl　　　</em>&nbsp;</td><td>分類に使用する学習オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImage</em>&nbsp;</td><td>分類対象の画像オブジェクト(type:uc8, us16, dbl / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>point</em>&nbsp;</td><td>分類する画素の座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>判別結果</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正(指定座標が画像の範囲外など) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された機械学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入力された画像オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5c901d4707c4e411587e1d09b043d031"></a><!-- doxytag: member="fie_ml_color.c::fnFIE_ml_predict_color_value" ref="g5c901d4707c4e411587e1d09b043d031" args="(FHANDLE hMl, DOUBLE val_ch0, DOUBLE val_ch1, DOUBLE val_ch2, INT *response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_predict_color_value           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val_ch0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val_ch1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val_ch2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+入力された画素値の分類 
+<p>
+カラー分類用教師オブジェクトで学習した機械学習オブジェクトを使用して、 入力された画素値の分類結果を <em>response</em> に出力します。<br>
+<p>
+入力値 <em>val_ch0</em> , <em>val_ch1</em> , <em>val_ch2</em> は、それぞれ チャネル番号0, 1, 2の値となります。たとえば、RGB色空間での画素値を 分類したい場合は、<em>val_ch0</em> にRの値、<em>val_ch1</em> にGの値、<em>val_ch2</em> にBの 値を設定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl　　　</em>&nbsp;</td><td>分類に使用する学習オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val_ch0</em>&nbsp;</td><td>分類対象の画素値(チャネル0) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val_ch1</em>&nbsp;</td><td>分類対象の画素値(チャネル1) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val_ch2</em>&nbsp;</td><td>分類対象の画素値(チャネル2) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>判別結果</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された機械学習オブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfa005da98cf6cfc1054b8105753752bd"></a><!-- doxytag: member="fie_ml_region.c::fnFIE_ml_sample_alloc_region_shape" ref="gfa005da98cf6cfc1054b8105753752bd" args="(VOID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_ml_sample_alloc_region_shape           </td>
+          <td>(</td>
+          <td class="paramtype">VOID&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リージョンの形状識別用 教師オブジェクトの生成 
+<p>
+リージョンの特徴量を特徴ベクトルとして取り扱う教師データオブジェクトを作成し、 そのハンドルを返します。パラメータ不正や、メモリ不足などでオブジェクトを確保 できなかった場合は、NULLが返却されます。<br>
+ 生成されたハンドルが不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<br>
+<p>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>正常終了</em>&nbsp;</td><td>作成された教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>NULL</em>&nbsp;</td><td>異常終了(メモリ不足など) </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6e72b2831c3b88fe2475684813897a2c"></a><!-- doxytag: member="fie_ml_region.c::fnFIE_ml_sample_add_region" ref="g6e72b2831c3b88fe2475684813897a2c" args="(FHANDLE hMl_Region, FHANDLE hRegion, INT response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_sample_add_region           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl_Region</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hRegion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+リージョン分類用 教師データの追加 
+<p>
+<a class="el" href="group__fie__ml__tools.html#gfa005da98cf6cfc1054b8105753752bd" title="リージョンの形状識別用 教師オブジェクトの生成">fnFIE_ml_sample_alloc_region_shape()</a> で確保したリージョンの形状識別用教師データオブジェクトに教師データを追加します。<br>
+ <em>hRegion</em> で指定したリージョンオブジェクトから特徴量を抽出し、 <em>response</em> で指定したラベルの 学習サンプルとしてセットします。<br>
+<p>
+入力するリージョンは、必ず領域が存在するものを指定して下さい。領域が存在しない場合は 計算不能エラー( F_ERR_CALC_IMPOSSIBLE )を返します。また、<em>response</em> は0以上の整数で指定してください。<br>
+<p>
+メモリ確保に失敗した場合は F_ERR_NOMEMORY を返しますが、元のデータは保持されたままになります。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_Region</em>&nbsp;</td><td>教師データを追加する教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hRegion</em>&nbsp;</td><td>教師データとしてリージョンオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>教師データのラベル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたラベルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクト または リージョンオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足による領域確保エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g97af4db8de3332be75fd44a9bdeb1662"></a><!-- doxytag: member="fie_ml_region.c::fnFIE_ml_predict_region_shape" ref="g97af4db8de3332be75fd44a9bdeb1662" args="(FHANDLE hMl, FHANDLE hRegion, INT *response)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_predict_region_shape           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hRegion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>response</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+入力されたリージョンの識別 
+<p>
+リージョン識別用教師オブジェクトで学習した機械学習オブジェクトを使用して、 入力されたリージョンの識別結果を <em>response</em> に出力します。<br>
+<p>
+入力するリージョンは、必ず領域が存在するものを指定して下さい。領域が存在しない場合は 計算不能エラー( F_ERR_CALC_IMPOSSIBLE )を返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl　　　</em>&nbsp;</td><td>識別に使用する学習オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hImage</em>&nbsp;</td><td>識別対象のリージョンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>response</em>&nbsp;</td><td>判別結果</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された機械学習オブジェクト または リージョンオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

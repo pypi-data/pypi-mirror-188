@@ -1,0 +1,591 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 実行</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>実行<br>
+<small>
+[<a class="el" href="group__fie__ml__naivebayes.html">ナイーブベイズ分類器</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">f_ml_nb_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e1685a0adfa8cc0cce7d5ff73ef682d811">F_ML_NB_GAUSSIAN</a> =  1, 
+<a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e1bf7fd055a6ef4397a956f0fd9088e129">F_ML_NB_MULTINOMIAL_MULTIVARIATE</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e14af34c67968cef269f9cfbcec5e5d9e0">F_ML_NB_MULTINOMIAL</a> =  3
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器の尤度のタイプ  <a href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">f_ml_nb_prior_type</a> { <a class="el" href="group__fie__ml__naivebayes__train.html#ggcf0a0ec3d59a3ece341add515b008d6d045a5407ea85a7bee2f6961beb389961">F_ML_NB_PRIOR_UNIFORM</a> =  0, 
+<a class="el" href="group__fie__ml__naivebayes__train.html#ggcf0a0ec3d59a3ece341add515b008d6df25bc6025f215c433d3f6c173b8b4fff">F_ML_NB_PRIOR_PROPORTION</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器の事前分布のタイプ  <a href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#g0ecf47e3bf4e4b4e3b5485ba4b3d0322">fnFIE_ml_do_train_naivebayes</a> (FHANDLE hMl_sample, enum <a class="el" href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">f_ml_nb_type</a> likelihood_type, enum <a class="el" href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">f_ml_nb_prior_type</a> prior_type, DOUBLE alpha, INT preprocess, INT train_time_sec, INT *error_code)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器による機械学習  <a href="#g0ecf47e3bf4e4b4e3b5485ba4b3d0322"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#gdb221b619f2b418d28efac57525d9c79">fnFIE_ml_get_naivebayes_param</a> (FHANDLE hMl, enum <a class="el" href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">f_ml_nb_type</a> *likelihood_type, enum <a class="el" href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">f_ml_nb_prior_type</a> *prior_type, DOUBLE *alpha, INT *preprocess)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器による学習パラメータを取得する  <a href="#gdb221b619f2b418d28efac57525d9c79"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#g3595554064f5e6faacfc07618414b762">fnFIE_ml_naivebayes_predict_probability</a> (FHANDLE hMl, DOUBLE *feature_vec, DOUBLE *responses)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器による、出力クラスの生起確率の予測  <a href="#g3595554064f5e6faacfc07618414b762"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#gd68d16ce8633ba76bdfaf5492dc52c8b">fnFIE_ml_naivebayes_get_class_labels</a> (FHANDLE hMl, INT **labels, INT *num_labels)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器の学習で使用されたクラスラベルの一覧を取得する  <a href="#gd68d16ce8633ba76bdfaf5492dc52c8b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#gce1cd8ccf416beacd7dd68c70bf81313">fnFIE_ml_naivebayes_get_class_prior</a> (FHANDLE hMl, DOUBLE *prior)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器による、出力クラスの事前確率の取得  <a href="#gce1cd8ccf416beacd7dd68c70bf81313"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__ml__naivebayes__train.html#gac9e61c3261e74539f72af50aacb1fec">fnFIE_ml_naivebayes_get_likelihood_params</a> (FHANDLE hMl, INT label, INT feature_idx, DOUBLE **params, INT *num_params)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ナイーブベイズ分類器で学習された尤度モデルのパラメータを取得する  <a href="#gac9e61c3261e74539f72af50aacb1fec"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g62bf31d2d38c8b79a14bc23c664724e1"></a><!-- doxytag: member="fie.h::f_ml_nb_type" ref="g62bf31d2d38c8b79a14bc23c664724e1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">f_ml_nb_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器の尤度のタイプ 
+<p>
+ナイーブベイズ分類器の学習で用いる尤度の種類を設定する定数です <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg62bf31d2d38c8b79a14bc23c664724e1685a0adfa8cc0cce7d5ff73ef682d811"></a><!-- doxytag: member="F_ML_NB_GAUSSIAN" ref="gg62bf31d2d38c8b79a14bc23c664724e1685a0adfa8cc0cce7d5ff73ef682d811" args="" -->F_ML_NB_GAUSSIAN</em>&nbsp;</td><td>
+正規分布。特徴ベクトルは数値属性である必要があります </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg62bf31d2d38c8b79a14bc23c664724e1bf7fd055a6ef4397a956f0fd9088e129"></a><!-- doxytag: member="F_ML_NB_MULTINOMIAL_MULTIVARIATE" ref="gg62bf31d2d38c8b79a14bc23c664724e1bf7fd055a6ef4397a956f0fd9088e129" args="" -->F_ML_NB_MULTINOMIAL_MULTIVARIATE</em>&nbsp;</td><td>
+多変量多項分布。特徴ベクトルはカテゴリ属性である必要があります </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg62bf31d2d38c8b79a14bc23c664724e14af34c67968cef269f9cfbcec5e5d9e0"></a><!-- doxytag: member="F_ML_NB_MULTINOMIAL" ref="gg62bf31d2d38c8b79a14bc23c664724e14af34c67968cef269f9cfbcec5e5d9e0" args="" -->F_ML_NB_MULTINOMIAL</em>&nbsp;</td><td>
+多項分布。特徴ベクトルは非負の実数であるヒストグラムである必要があります </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcf0a0ec3d59a3ece341add515b008d6d"></a><!-- doxytag: member="fie.h::f_ml_nb_prior_type" ref="gcf0a0ec3d59a3ece341add515b008d6d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">f_ml_nb_prior_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器の事前分布のタイプ 
+<p>
+ナイーブベイズ分類器の学習で用いる事前分布の種類を設定する定数です <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggcf0a0ec3d59a3ece341add515b008d6d045a5407ea85a7bee2f6961beb389961"></a><!-- doxytag: member="F_ML_NB_PRIOR_UNIFORM" ref="ggcf0a0ec3d59a3ece341add515b008d6d045a5407ea85a7bee2f6961beb389961" args="" -->F_ML_NB_PRIOR_UNIFORM</em>&nbsp;</td><td>
+一様分布を仮定します </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggcf0a0ec3d59a3ece341add515b008d6df25bc6025f215c433d3f6c173b8b4fff"></a><!-- doxytag: member="F_ML_NB_PRIOR_PROPORTION" ref="ggcf0a0ec3d59a3ece341add515b008d6df25bc6025f215c433d3f6c173b8b4fff" args="" -->F_ML_NB_PRIOR_PROPORTION</em>&nbsp;</td><td>
+クラスごとの教師データ数の比率により推定します </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g0ecf47e3bf4e4b4e3b5485ba4b3d0322"></a><!-- doxytag: member="fie_ml_naivebayes.c::fnFIE_ml_do_train_naivebayes" ref="g0ecf47e3bf4e4b4e3b5485ba4b3d0322" args="(FHANDLE hMl_sample, enum f_ml_nb_type likelihood_type, enum f_ml_nb_prior_type prior_type, DOUBLE alpha, INT preprocess, INT train_time_sec, INT *error_code)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_ml_do_train_naivebayes           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl_sample</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">f_ml_nb_type</a>&nbsp;</td>
+          <td class="paramname"> <em>likelihood_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">f_ml_nb_prior_type</a>&nbsp;</td>
+          <td class="paramname"> <em>prior_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>preprocess</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>train_time_sec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>error_code</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器による機械学習 
+<p>
+<em>hMl_sample</em> で指定された教師データを用いてナイーブベイズ分類器による学習を行い、 その結果を保持した学習オブジェクトのハンドルを返します。<p>
+<em>hMl_sample</em> には、学習で用いる教師データを設定した教師データオブジェクトを 設定します。<em>hMl_sample</em> には2クラス以上の教師データが設定されている必要があります。 2クラス以上の教師データが設定されていない場合、返却されるハンドルはNULLとなります。 また、エラーコードには F_ERR_CALC_IMPOSSIBLE が出力されます。<br>
+<p>
+<em>likelihood_type</em> は、学習で用いる尤度のタイプ(モデル)を指定します。以下の値にて指定してください。<br>
+<p>
+<ul>
+<li><a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e1685a0adfa8cc0cce7d5ff73ef682d811">F_ML_NB_GAUSSIAN</a><br>
+ 尤度は正規分布に従います。教師データの特徴ベクトルは数値属性である必要があります</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e1bf7fd055a6ef4397a956f0fd9088e129">F_ML_NB_MULTINOMIAL_MULTIVARIATE</a><br>
+ 尤度は多変量の多項分布に従います。教師データの特徴ベクトルはカテゴリ属性である必要があります</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e14af34c67968cef269f9cfbcec5e5d9e0">F_ML_NB_MULTINOMIAL</a><br>
+ 尤度は多項分布に従います。教師データの特徴ベクトルは非負の実数であるヒストグラムである必要があります</li></ul>
+<p>
+教師データの属性については、 <a class="el" href="group__fie__ml__naivebayes__doc.html#Naivebayes_Categocical_and_Numerical">こちら</a>を参照してください。 なお、特徴ベクトルの属性にカテゴリ属性を指定した場合、特徴ベクトルの値は全て整数値である必要があります。 そのため、特徴ベクトルに小数点以下の値が含まれていた場合、小数点以下の値は切り捨てられ、 整数値のベクトルとして扱われます。<br>
+ その際、内部で教師データオブジェクトのコピーを作成し、そのデータに対して処理を行います。 そのため、入力の <em>hMl_sample</em> は変更されません。<br>
+<p>
+<em>prior_type</em> は、学習で用いる事前分布のタイプを指定します。以下の値にて指定してください。<br>
+<p>
+<ul>
+<li><a class="el" href="group__fie__ml__naivebayes__train.html#ggcf0a0ec3d59a3ece341add515b008d6d045a5407ea85a7bee2f6961beb389961">F_ML_NB_PRIOR_UNIFORM</a> <br>
+ 一様分布を仮定します。</li></ul>
+<p>
+<ul>
+<li><a class="el" href="group__fie__ml__naivebayes__train.html#ggcf0a0ec3d59a3ece341add515b008d6df25bc6025f215c433d3f6c173b8b4fff">F_ML_NB_PRIOR_PROPORTION</a><br>
+ クラスごとの教師データ数の比率により推定します。</li></ul>
+<p>
+<em>alpha</em> は、特定の条件で出力確率が0となる問題に対応するためのスケーリング係数αを指定します。 尤度として多変量多項分布または多項分布を指定した場合に使用されます。 0以上の実数を指定可能であり、推奨値は1となります。 詳細については、 <a class="el" href="group__fie__ml__naivebayes__doc.html#Naivebayes_Zero_Freq_Problem">特徴量が一定値になる場合の対策</a>を参照してください。<br>
+<p>
+<em>preprocess</em> は学習を開始する前に、与えられた教師データに行う前処理を指定します。<br>
+ 値は以下のdefineをORで指定します。それ以外の値は無視されるので注意してください。 また、前処理が不要な場合は0を指定してください。<br>
+<p>
+<ul>
+<li><a class="el" href="group__fie__machine__leaning.html#g3e0bbb57e553eeb76abf8ad22203cf48">F_ML_PRE_TRIM_VECTOR</a> : 重複した教師データの削除 <br>
+</li><li><a class="el" href="group__fie__machine__leaning.html#g3de91d3be70c2e2d58b68d261b5def11">F_ML_PRE_SCALE_VECTOR</a> : 特徴ベクトルの各成分の正規化 <br>
+</li></ul>
+<p>
+教師データの特徴ベクトルがカテゴリ属性で合った場合は、事前処理の指定は無視されます。<br>
+ なお、教師データに対する前処理を行う際は、内部で教師データオブジェクトのコピーを 作成し、そのデータに対して処理を行います。そのため、入力の <em>hMl_sample</em> は変更されません。<p>
+<em>train_time_sec</em> は 学習時間の上限値を秒単位で設定します。この値が設定されていた場合、 内部で学習開始からの経過時間の監視を行います。指定された時間を経過した場合、 学習を打ち切り、処理を終了します。学習の打ち切りが発生した場合、返却されるハンドルはNULLとなります。 また、エラーコードには F_ERR_TIMEOUT が出力されます。<br>
+<p>
+学習時間の監視が不要な場合は <em>train_time_sec</em> に0を設定します。このときは、 終了条件が成立するまで、無制限に学習を続けます。<br>
+<p>
+<em>error_code</em> には、学習を行った際のエラーコードが出力されます。学習が正常終了した場合は F_ERR_NONE が 出力されます。なお、エラーコードを受け取る必要が無い場合はNULLを指定してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl_sample</em>&nbsp;</td><td>学習に用いる教師データ教師データオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>likelihood_type</em>&nbsp;</td><td>尤度のタイプ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prior_type</em>&nbsp;</td><td>事前分布のタイプ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>alpha</em>&nbsp;</td><td>スケーリング係数α (0 &lt;= <em>alpha</em>) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>preprocess</em>&nbsp;</td><td>学習の前処理指定パラメータ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>train_time_sec</em>&nbsp;</td><td>学習時間の上限値(単位：秒) 指定しない場合は0 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>error_code</em>&nbsp;</td><td>エラー発生時のエラーコード エラーコードを受け取る必要の無い場合は、NULLを指定します。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_INVALID_PARAM 入力されたパラメータが不正</li><li>F_ERR_INVALID_OBJECT 入力された教師データオブジェクトが不正</li><li>F_ERR_TIMEOUT 指定された学習時間内で学習が終了しなかった</li><li>F_ERR_NOMEMORY メモリ不足による領域確保エラー</li><li>F_ERR_CALC_IMPOSSIBLE 計算不能エラー</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>確保された機械学習オブジェクトのハンドル エラーにより学習に失敗した場合はNULLを返します</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__ml.html#g8a2df349dd2fb1029049337851d06be8" title="機械学習に基づいた、入力データの判別">fnFIE_ml_predict()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gdb221b619f2b418d28efac57525d9c79"></a><!-- doxytag: member="fie_ml_naivebayes.c::fnFIE_ml_get_naivebayes_param" ref="gdb221b619f2b418d28efac57525d9c79" args="(FHANDLE hMl, enum f_ml_nb_type *likelihood_type, enum f_ml_nb_prior_type *prior_type, DOUBLE *alpha, INT *preprocess)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_get_naivebayes_param           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__ml__naivebayes__train.html#g62bf31d2d38c8b79a14bc23c664724e1">f_ml_nb_type</a> *&nbsp;</td>
+          <td class="paramname"> <em>likelihood_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__ml__naivebayes__train.html#gcf0a0ec3d59a3ece341add515b008d6d">f_ml_nb_prior_type</a> *&nbsp;</td>
+          <td class="paramname"> <em>prior_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>preprocess</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器による学習パラメータを取得する 
+<p>
+<em>hMl</em> で指定したナイーブベイズ分類器のパラメータを取得します。<p>
+取得できるパラメータは、尤度のタイプ、事前分布のタイプ、 スケーリング係数α、学習時の前処理指定パラメータです。 出力先のパラメータのうち必要のないものはNULLを指定してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl</em>&nbsp;</td><td>情報を取得するナイーブベイズ分類器オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>likelihood_type</em>&nbsp;</td><td>尤度のタイプ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>prior_type</em>&nbsp;</td><td>事前分布のタイプ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>alpha</em>&nbsp;</td><td>スケーリング係数α </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>preprocess</em>&nbsp;</td><td>学習時に指定した前処理指定パラメータ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3595554064f5e6faacfc07618414b762"></a><!-- doxytag: member="fie_ml_naivebayes.c::fnFIE_ml_naivebayes_predict_probability" ref="g3595554064f5e6faacfc07618414b762" args="(FHANDLE hMl, DOUBLE *feature_vec, DOUBLE *responses)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_naivebayes_predict_probability           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>feature_vec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>responses</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器による、出力クラスの生起確率の予測 
+<p>
+<em>hMl</em> で指定したナイーブベイズ分類器オブジェクトの学習内容に基づいて、 入力された特徴ベクトルに対するクラスごとの生起確率を予測し、その確率値を <em>responses</em> に出力します。<br>
+<p>
+入力する特徴ベクトルは、<em>feature_vec</em> で指定します。特徴ベクトルの次元数、 すなわち <em>feature_vec</em> の配列のサイズは、<em>hMl</em> の学習で用いた特徴ベクトルの サイズ以上でなければなりません。 学習で用いた特徴ベクトルのサイズは、 <a class="el" href="group__fie__ml.html#gd208e10f2ed19f182601401e504d3edc" title="機械学習の共通パラメータ取得">fnFIE_ml_get_common_param()</a> にて 取得することができます。<p>
+生起確率は学習で用いたすべてのクラスについて出力されます。 そのため <em>responses</em> の配列のサイズは、<em>hMl</em> の学習で用いたクラス数以上でなければなりません。<p>
+生起確率の出力順は、クラスラベルの昇順となります。 すなわち <em>responses</em> のi番目の要素には、i番目に小さなクラスラベルをもつクラスに対する生起確率が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl</em>&nbsp;</td><td>ナイーブベイズ分類器オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>feature_vec</em>&nbsp;</td><td>確率計算の対象とするベクトル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>responses</em>&nbsp;</td><td>クラスごとの生起確率</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足のため計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd68d16ce8633ba76bdfaf5492dc52c8b"></a><!-- doxytag: member="fie_ml_naivebayes.c::fnFIE_ml_naivebayes_get_class_labels" ref="gd68d16ce8633ba76bdfaf5492dc52c8b" args="(FHANDLE hMl, INT **labels, INT *num_labels)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_naivebayes_get_class_labels           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_labels</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器の学習で使用されたクラスラベルの一覧を取得する 
+<p>
+<em>hMl</em> で指定したナイーブベイズ分類器オブジェクトの学習で使用された クラスラベルの一覧を <em>labels</em> に、クラス数を <em>num_labels</em> に出力します。<p>
+クラスラベルの出力順は昇順となります。 すなわち <em>*labels</em> のi番目の要素には、i番目に小さなクラスラベルが格納されます。<p>
+<em>*labels</em> に出力する配列に必要なメモリは、関数内部で確保します。そのため、<em>*labels</em> は NULLでなければなりません。また、<em>*labels</em> は、不要になった場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて 確実に解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl</em>&nbsp;</td><td>ナイーブベイズ分類器オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>labels</em>&nbsp;</td><td>クラスラベルの一覧 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_labels</em>&nbsp;</td><td>学習で使用されたクラス数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足のため計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gce1cd8ccf416beacd7dd68c70bf81313"></a><!-- doxytag: member="fie_ml_naivebayes.c::fnFIE_ml_naivebayes_get_class_prior" ref="gce1cd8ccf416beacd7dd68c70bf81313" args="(FHANDLE hMl, DOUBLE *prior)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_naivebayes_get_class_prior           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>prior</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器による、出力クラスの事前確率の取得 
+<p>
+<em>hMl</em> で指定したナイーブベイズ分類器オブジェクトの学習内容に基づいて、 クラスごとの事前確率を<em>prior</em> に出力します。<br>
+<p>
+事前確率は学習で用いたすべてのクラスについて出力されます。 そのため <em>prior</em> の配列のサイズは、<em>hMl</em> の学習で用いたクラス数以上でなければなりません。<p>
+事前確率の出力順は、クラスラベルの昇順となります。 すなわち <em>prior</em> のi番目の要素には、i番目に小さなクラスラベルをもつクラスに対する事前確率が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl</em>&nbsp;</td><td>ナイーブベイズ分類器オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>prior</em>&nbsp;</td><td>クラスごとの事前確率</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gac9e61c3261e74539f72af50aacb1fec"></a><!-- doxytag: member="fie_ml_naivebayes.c::fnFIE_ml_naivebayes_get_likelihood_params" ref="gac9e61c3261e74539f72af50aacb1fec" args="(FHANDLE hMl, INT label, INT feature_idx, DOUBLE **params, INT *num_params)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_ml_naivebayes_get_likelihood_params           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>feature_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE **&nbsp;</td>
+          <td class="paramname"> <em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_params</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ナイーブベイズ分類器で学習された尤度モデルのパラメータを取得する 
+<p>
+<em>hMl</em> で指定したナイーブベイズ分類器オブジェクトの尤度分布モデルのパラメータを <em>params</em> に出力します。<p>
+分布パラメータは、クラスラベルごと、特徴要素ごとに出力されます。 <em>label</em> でクラスラベルを、 <em>feature_idx</em> で特徴要素を指定します。 学習ラベルに含まれないクラスラベルや、特徴次元の範囲を超えた要素を指定した場合はエラーとなります。<p>
+出力される尤度分布パラメータは、このナイーブベイズ分類器の学習で指定した尤度分布のタイプによって異なります。 分布パラメータの詳細については <a class="el" href="group__fie__ml__naivebayes__doc.html#NaiveBayes_Training">ナイーブベイズ分類器の学習</a> を参照してください。 パラメータの個数もタイプによって異なるため、個数が <em>num_params</em> に出力されます。 タイプごとのパラメータの詳細は次の通りです。<p>
+<ul>
+<li>正規分布 <a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e1685a0adfa8cc0cce7d5ff73ef682d811">F_ML_NB_GAUSSIAN</a><br>
+ パラメータは平均と標準偏差の2つとなります。*params[0]に平均が、*params[1]に標準偏差が出力され、 <em>num_params</em> には2が出力されます。</li></ul>
+<p>
+<ul>
+<li>多変量多項分布 <a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e1bf7fd055a6ef4397a956f0fd9088e129">F_ML_NB_MULTINOMIAL_MULTIVARIATE</a><br>
+ パラメータはカテゴリごとの生起確率となります。 学習で使用された<em>feature_idx</em> 番目の特徴要素のカテゴリ数がnである場合、<em>num_params</em> にはnが出力されます。 <em>*params</em> のi番目には、カテゴリ属性の特徴の値を数値として解釈したときに、i番目に小さな値となるカテゴリの生起確率が出力されます。</li></ul>
+<p>
+<ul>
+<li>多項分布 <a class="el" href="group__fie__ml__naivebayes__train.html#gg62bf31d2d38c8b79a14bc23c664724e14af34c67968cef269f9cfbcec5e5d9e0">F_ML_NB_MULTINOMIAL</a><br>
+ パラメータは <em>feature_idx</em> 番目のデータの生起確率となります。 <em>num_params</em> には1が出力されます。</li></ul>
+<p>
+<em>*params</em> に出力する配列に必要なメモリは、関数内部で確保します。そのため、<em>*params</em> は NULLでなければなりません。また、<em>*params</em> は、不要になった場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にて 確実に解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMl</em>&nbsp;</td><td>ナイーブベイズ分類器オブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>label</em>&nbsp;</td><td>対象となるクラスラベル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>feature_idx</em>&nbsp;</td><td>対象となる特徴要素の番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>params</em>&nbsp;</td><td>対象となる尤度パラメータを保持した配列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_params</em>&nbsp;</td><td><em>params</em> の配列サイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力されたパラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力された教師データオブジェクトが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足のため計算不能エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

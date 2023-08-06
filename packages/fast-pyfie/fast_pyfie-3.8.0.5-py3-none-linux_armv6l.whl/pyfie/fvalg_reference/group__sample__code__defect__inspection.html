@@ -1,0 +1,603 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 欠陥検査 実装例</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>欠陥検査 実装例<br>
+<small>
+[<a class="el" href="group__fie__sample__code__list.html">サンプルコード一覧</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="smp_image_diff_inspection">
+画像差分処理</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">    最大値・最小値画像を用いた画像差分のサンプルコードです。</span>
+<span class="comment"></span>
+<span class="comment">    このソースコードは位置決めの済んだ画像を対象に画像差分をして、変化を検出し欠陥を見つけようとするものです。</span>
+<span class="comment"></span>
+<span class="comment">    マスタ画像と検査対象画像の差の絶対値を取る単純な画像差分では、環境変動により多くの過検出が生じる問題があります。</span>
+<span class="comment">    そこでこのサンプルコードでは、予め算出した画素ごとの最大値と最小値を用いて、過検出を抑制した画像差分を行います。</span>
+<span class="comment">    画素ごとの最大値・最小値の算出手法として、モルフォロジ演算と画像の統計情報の利用の2種類を提示します。</span>
+<span class="comment">*/</span>
+
+
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 関数プロトタイプ</span>
+
+INT fnSMP_image_diff_execute(VOID *handle, FHANDLE h_target_img, FHANDLE h_dst);
+VOID *fnSMP_image_diff_morphology_setup(FHANDLE h_master_img, INT filter_num, INT *errcode);
+VOID *fnSMP_image_diff_stat_setup(FHANDLE *master_imgs, INT master_num, DOUBLE min_thresh, DOUBLE stddev_factor, INT *errcode);
+VOID fnSMP_image_diff_teardown(VOID* handle);
+
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 画像差分の実装</span>
+
+<span class="comment">/*</span>
+<span class="comment">    最大値・最小値画像を用いた画像差分のデスクリプタ</span>
+<span class="comment">*/</span>
+<span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+    <span class="comment">// 最小値マスタ画像</span>
+    FHANDLE h_min_img;
+    <span class="comment">// 最大値マスタ画像</span>
+    FHANDLE h_max_img;
+} SMP_IMAGE_DIFF_DESC;
+
+<span class="comment">/*</span>
+<span class="comment">    最大値・最小値画像を用いた画像差分の実行。</span>
+<span class="comment"></span>
+<span class="comment">    handle に保存されたマスタ画像の画素ごとの最大値・最小値情報をもとに</span>
+<span class="comment">    h_target_img の画像差分を行い、結果を h_dst に保存します。</span>
+<span class="comment"></span>
+<span class="comment">    出力画像はマスタ画像群と同じ画像型・サイズ・チャネル数である必要があります。</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]  handle 画像差分のデスクリプタハンドル</span>
+<span class="comment">        [in]  h_target_img 検査対象画像 ( type: uc8 / ch: 1 )</span>
+<span class="comment">        [out] h_dst 出力画像 ( type: uc8 / ch: 1 )</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE           正常終了</span>
+<span class="comment">        F_ERR_INVALID_IMAGE  画像が不正のとき</span>
+<span class="comment">        F_ERR_INVALID_PARAM  パラメータ不正</span>
+<span class="comment">        F_ERR_NOMEMORY       メモリ不足エラー</span>
+<span class="comment">        F_ERR_NO_LICENCE     ライセンスエラー、または未初期化エラー </span>
+<span class="comment">*/</span>
+INT fnSMP_image_diff_execute(VOID *handle, FHANDLE h_target_img, FHANDLE h_dst)
+{
+    <span class="comment">// 各種画像のパラメータ（検査対象画像、出力画像、最大値画像、最小値画像）</span>
+    INT tgt_width, tgt_height, tgt_channels, tgt_type;
+    INT dst_width, dst_height, dst_channels, dst_type;
+    INT max_width, max_height, max_channels, max_type;
+    INT min_width, min_height, min_channels, min_type;
+
+    <span class="comment">// デスクリプタ</span>
+    SMP_IMAGE_DIFF_DESC *desc = (SMP_IMAGE_DIFF_DESC*)handle;
+
+    <span class="comment">// 検査対象画像が最大値・最小値を外れた大きさを表す作業用差分画像</span>
+    FHANDLE h_work_brighter = NULL, h_work_darker = NULL;
+
+    <span class="comment">// エラーコード</span>
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// 画像パラメータ取得</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> (desc == NULL) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(h_target_img, &amp;tgt_channels, &amp;tgt_type, NULL, &amp;tgt_width, &amp;tgt_height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(h_dst, &amp;dst_channels, &amp;dst_type, NULL, &amp;dst_width, &amp;dst_height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(desc-&gt;h_max_img, &amp;max_channels, &amp;max_type, NULL, &amp;max_width, &amp;max_height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(desc-&gt;h_min_img, &amp;min_channels, &amp;min_type, NULL, &amp;min_width, &amp;min_height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// エラーチェック</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="comment">// 幅が異なる</span>
+    <span class="keywordflow">if</span> (tgt_width != dst_width || tgt_width != max_width || tgt_width != min_width) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="comment">// 高さが異なる</span>
+    <span class="keywordflow">if</span> (tgt_height != dst_height || tgt_height != max_height || tgt_height != min_height) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="comment">// チャネル数が異なるか1でない</span>
+    <span class="keywordflow">if</span> (tgt_channels != dst_channels || tgt_channels != max_channels || tgt_channels != min_channels || tgt_channels != 1) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="comment">// 型が異なるかuc8でない</span>
+    <span class="keywordflow">if</span> (tgt_type != dst_type || tgt_type != max_type || tgt_type != min_type || tgt_type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 作業用画像の確保</span>
+    h_work_brighter = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(tgt_type, tgt_channels, tgt_width, tgt_height);
+    h_work_darker   = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(tgt_type, tgt_channels, tgt_width, tgt_height);
+    <span class="keywordflow">if</span> (h_work_brighter == NULL || h_work_darker == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 最大値側の差分画像の算出。対象画像 - 最大値画像</span>
+    err = <a class="code" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub</a>(h_target_img, desc-&gt;h_max_img, h_work_brighter);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="comment">// 最小値側の差分画像の算出。最小値画像 - 対象画像</span>
+    err = <a class="code" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub</a>(desc-&gt;h_min_img, h_target_img, h_work_darker);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 結果画像は2つの差分画像の和</span>
+    err = <a class="code" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add</a>(h_work_brighter, h_work_darker, h_dst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="comment">// 作業用画像の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(h_work_brighter);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(h_work_darker);
+    <span class="keywordflow">return</span> err;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    モルフォロジ演算を用いた画像差分のセットアップ。</span>
+<span class="comment"></span>
+<span class="comment">    与えられたマスタ画像に膨張と収縮を施した画像を格納したハンドルを作成します。</span>
+<span class="comment">    このハンドルを用いて、続く fnSMP_image_diff_execute() 関数により画像差分を実行します。</span>
+<span class="comment"></span>
+<span class="comment">    マスタ画像はUC8型の1チャネルである必要があります。</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]  h_master_img  マスタ画像 ( type: uc8 / ch: 1 )</span>
+<span class="comment">        [in]  filter_num    モルフォロジ演算実行回数（1以上）</span>
+<span class="comment">        [out] errcode       エラーコード。エラーコードを受け取る必要の無い場合は、NULLを指定します。</span>
+<span class="comment">            - F_ERR_NONE           正常終了</span>
+<span class="comment">            - F_ERR_INVALID_IMAGE  画像が不正のとき</span>
+<span class="comment">            - F_ERR_INVALID_PARAM  パラメータ不正</span>
+<span class="comment">            - F_ERR_NOMEMORY       メモリ不足エラー</span>
+<span class="comment">            - F_ERR_NO_LICENCE     ライセンスエラー、または未初期化エラー </span>
+<span class="comment">    </span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        正常終了した場合は、画像差分のデスクリプタのハンドルを返します。</span>
+<span class="comment">        異常終了した場合はNULLを返します。</span>
+<span class="comment">*/</span>
+VOID *fnSMP_image_diff_morphology_setup(FHANDLE h_master_img, INT filter_num, INT *errcode)
+{
+    <span class="comment">// マスタ画像パラメータ</span>
+    INT width, height, channels, type;
+    <span class="comment">// デスクリプタ</span>
+    SMP_IMAGE_DIFF_DESC *desc = NULL;
+    <span class="comment">// エラーコード</span>
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// 画像パラメータ取得とエラーチェック</span>
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(h_master_img, &amp;channels, &amp;type, NULL, &amp;width, &amp;height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> (filter_num &lt; 1) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span> (channels != 1) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="keywordflow">if</span> (type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// デスクリプタとその画像の確保</span>
+    desc = (SMP_IMAGE_DIFF_DESC*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(<span class="keyword">sizeof</span>(SMP_IMAGE_DIFF_DESC));
+    <span class="keywordflow">if</span> (desc == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+    desc-&gt;h_max_img = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, channels, width, height);
+    desc-&gt;h_min_img = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, channels, width, height);
+    <span class="keywordflow">if</span> (desc-&gt;h_max_img == NULL || desc-&gt;h_min_img == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// モルフォロジ演算による最大値・最小値画像の算出</span>
+    err = <a class="code" href="group__fie__morphology.html#g6694fcced6af55ab2b564c3d858cf8c0" title="3×3dilation filter">fnFIE_dilation</a>(h_master_img, desc-&gt;h_max_img, filter_num, 0);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__morphology.html#gab249300f5016bfc1b7c0e46681349b7" title="3×3erosion filter">fnFIE_erosion</a>(h_master_img, desc-&gt;h_min_img, filter_num, 0);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+    
+exit:
+    <span class="keywordflow">if</span> (errcode) *errcode = err;
+    <span class="keywordflow">if</span> (err == <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">return</span> desc;
+
+    <span class="comment">// エラー終了の場合はデスクリプタを解放</span>
+    fnSMP_image_diff_teardown(desc);
+
+    <span class="keywordflow">return</span> NULL;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    統計を用いた画像差分のセットアップ。</span>
+<span class="comment"></span>
+<span class="comment">    与えられたマスタ画像群の各画素の平均と標準偏差を用いて算出した最大値画像と最小値画像を格納したハンドルを作成します。</span>
+<span class="comment">    このハンドルを用いて、続く fnSMP_image_diff_execute() 関数により画像差分を実行します。</span>
+<span class="comment"></span>
+<span class="comment">    最大値画像と最小値画像の画素min(x,y), max(x,y)は次の手順で算出されます。</span>
+<span class="comment"></span>
+<span class="comment">    max(x,y) = ave(x,y) + max{min_thresh, stddev(x,y) * stddev_factor}</span>
+<span class="comment">    min(x,y) = ave(x,y) - max{min_thresh, stddev(x,y) * stddev_factor}</span>
+<span class="comment"></span>
+<span class="comment">    ここで、ave(x,y), stddev(x,y)はそれぞれマスタ画像群の画素(x,y)の平均値と標準偏差です。</span>
+<span class="comment"></span>
+<span class="comment">    すべてのマスタ画像群はUC8型の1チャネルであり、同じサイズである必要があります。</span>
+<span class="comment">    最大値画像と最小値画像の画素値は四捨五入された後サチュレーション処理が施されます。</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]  master_imgs    マスタ画像群へのポインタ ( type: uc8, ch: 1 )</span>
+<span class="comment">        [in]  master_num     マスタ画像数（2以上）</span>
+<span class="comment">        [in]  min_thresh     最小のしきい値（0以上）。大きいほど画像変動を強く抑制する</span>
+<span class="comment">        [in]  stddev_factor  標準偏差のしきい値への係数（0より大きい）。大きいほど画像変動を強く抑制する</span>
+<span class="comment">        [out] errcode        エラーコード。エラーコードを受け取る必要の無い場合は、NULLを指定します。</span>
+<span class="comment">            - F_ERR_NONE           正常終了</span>
+<span class="comment">            - F_ERR_INVALID_IMAGE  画像が不正のとき</span>
+<span class="comment">            - F_ERR_INVALID_PARAM  パラメータ不正</span>
+<span class="comment">            - F_ERR_NOMEMORY       メモリ不足エラー</span>
+<span class="comment">            - F_ERR_NO_LICENCE     ライセンスエラー、または未初期化エラー </span>
+<span class="comment">    </span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        正常終了した場合は、画像差分のデスクリプタのハンドルを返します。</span>
+<span class="comment">        異常終了した場合はNULLを返します。</span>
+<span class="comment">*/</span>
+VOID *fnSMP_image_diff_stat_setup(FHANDLE *master_imgs, INT master_num, DOUBLE min_thresh, DOUBLE stddev_factor, INT *errcode)
+{
+    <span class="comment">// マスタ画像パラメータ（全画像共通）</span>
+    INT width, height, channels, type;
+    <span class="comment">// デスクリプタ</span>
+    SMP_IMAGE_DIFF_DESC *desc = NULL;
+
+    <span class="comment">// 作業用画像</span>
+    FHANDLE h_average_img = NULL;  <span class="comment">// 平均画像</span>
+    FHANDLE h_stddev_img = NULL;  <span class="comment">// 標準偏差画像</span>
+    FHANDLE h_work = NULL;
+
+    <span class="comment">// エラーコード</span>
+    INT err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// 引数エラーチェック</span>
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> (master_imgs == NULL) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="keywordflow">if</span> (master_num &lt; 2) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="keywordflow">if</span> (min_thresh &lt; 0) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="keywordflow">if</span> (stddev_factor &lt;= 0) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 画像パラメータの取得とエラーチェック</span>
+    err = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(master_imgs[0], &amp;channels, &amp;type, NULL, &amp;width, &amp;height);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">if</span> (channels != 1) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="keywordflow">if</span> (type != <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    <span class="comment">// 配列内の他の画像のチェックは関数fnFIE_stats_img_average()で行われるため省略する</span>
+
+    <span class="comment">// デスクリプタとその画像の確保</span>
+    desc = (SMP_IMAGE_DIFF_DESC*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(<span class="keyword">sizeof</span>(SMP_IMAGE_DIFF_DESC));
+    <span class="keywordflow">if</span> (desc == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+    desc-&gt;h_max_img = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, channels, width, height);
+    desc-&gt;h_min_img = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, channels, width, height);
+    h_work = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(type, channels, width, height);
+    <span class="keywordflow">if</span> (desc-&gt;h_max_img == NULL || desc-&gt;h_min_img == NULL || h_work == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// マスタ画像群の画素ごとの平均と標準偏差を算出</span>
+    err = <a class="code" href="group__fie__multi__img__stats.html#g2d9495f971a773a0d20cb3a5fe816f52" title="平均値画像作成">fnFIE_stats_img_average</a>(master_imgs, master_num, &amp;h_average_img, <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__multi__img__stats.html#gfeeeb88e5f3f6073f46f9e0193576c65" title="標準偏差画像作成">fnFIE_stats_img_stddev</a>(master_imgs, master_num, &amp;h_stddev_img, <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 平均画像と標準偏差画像から最大値・最小値画像を算出</span>
+    err = <a class="code" href="group__fie__filter__arithm.html#g9ecbc49d4897dce5b48927090b1764e6" title="画像と定数の乗算">fnFIE_img_mul_const</a>(h_stddev_img, stddev_factor, h_work);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__filter__arithm.html#g6a2c30317c1b80b6b76d88c814a34663" title="画像と定数の最大値">fnFIE_img_max_const</a>(h_work, min_thresh, h_work);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add</a>(h_average_img, h_work, desc-&gt;h_max_img);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__filter__arithm.html#g77cfad8b2f10dba9a59eefee025109c1" title="画像間減算">fnFIE_img_sub</a>(h_average_img, h_work, desc-&gt;h_min_img);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="keywordflow">if</span> (errcode) *errcode = err;
+
+    <span class="comment">// 作業用画像を解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(h_average_img);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(h_stddev_img);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(h_work);
+
+    <span class="keywordflow">if</span> (err == <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">return</span> desc;
+
+    <span class="comment">// エラー終了の場合はデスクリプタを解放</span>
+    fnSMP_image_diff_teardown(desc);
+
+    <span class="keywordflow">return</span> NULL;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    最大値・最小値画像を用いた画像差分に用いるハンドルの解放。</span>
+<span class="comment">    handle に保存されたマスタ画像情報を解放します。</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]  handle 画像差分のデスクリプタハンドル。NULL可</span>
+<span class="comment">*/</span>
+VOID fnSMP_image_diff_teardown(VOID *handle)
+{
+    SMP_IMAGE_DIFF_DESC *desc = (SMP_IMAGE_DIFF_DESC*)handle;
+    <span class="keywordflow">if</span> (desc) {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(desc-&gt;h_max_img);
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(desc-&gt;h_min_img);
+        <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(desc);
+    }
+}
+
+
+<span class="comment">//------------------------------------------------</span>
+<span class="comment">// 実行サンプル</span>
+
+<span class="comment">/*</span>
+<span class="comment">    モルフォロジ演算を用いた画像差分の実行サンプル関数。</span>
+<span class="comment">    ファイルからマスタ画像と検査対象画像を読み込み、出力画像をファイルに保存します。</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT run_image_diff_morphology()
+{
+    <span class="comment">// マスタ画像</span>
+    FHANDLE himg_master = NULL;
+    <span class="comment">// 検査対象画像</span>
+    FHANDLE himg_target = NULL;
+    <span class="comment">// 結果画像</span>
+    FHANDLE himg_dst = NULL;
+    <span class="comment">// デスクリプタハンドル</span>
+    VOID* handle = NULL;
+    INT err;
+
+    <span class="comment">// 画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    err = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(<span class="stringliteral">"master.png"</span>, &amp;himg_master, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(<span class="stringliteral">"target.png"</span>, &amp;himg_target, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 出力画像の確保 ( type: uc8, ch: 1 )</span>
+    himg_dst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(himg_master), <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(himg_master));
+    <span class="keywordflow">if</span> (himg_dst == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 画像差分の実行</span>
+    handle = fnSMP_image_diff_morphology_setup(himg_master, 2, &amp;err);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = fnSMP_image_diff_execute(handle, himg_target, himg_dst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 出力画像の保存</span>
+    err = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"dest_morphology.png"</span>, himg_dst, -1);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg_master);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg_target);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg_dst);
+    fnSMP_image_diff_teardown(handle);
+
+    <span class="keywordflow">return</span> err;
+}
+
+
+<span class="comment">/*</span>
+<span class="comment">    統計を用いた画像差分の実行サンプル関数。</span>
+<span class="comment">    ファイルからマスタ画像群と検査対象画像を読み込み、出力画像をファイルに保存します。</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT run_image_diff_stat()
+{
+    <span class="comment">// マスタ画像群</span>
+    FHANDLE himgs_master[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+    };
+    <span class="comment">// マスタ画像群へのファイルパス</span>
+    <span class="comment">// 適当な画像を指定してください</span>
+    CHAR* master_paths[] = {
+        <span class="stringliteral">"master01.png"</span>,
+        <span class="stringliteral">"master02.png"</span>,
+        <span class="stringliteral">"master03.png"</span>,
+        <span class="stringliteral">"master04.png"</span>,
+        <span class="stringliteral">"master05.png"</span>,
+    };
+    <span class="comment">// マスタ画像数</span>
+    INT num_masters = <span class="keyword">sizeof</span>(master_paths) / <span class="keyword">sizeof</span>(master_paths[0]);
+    <span class="comment">// 検査対象画像</span>
+    FHANDLE himg_target = NULL;
+    <span class="comment">// 結果画像</span>
+    FHANDLE himg_dst = NULL;
+    <span class="comment">// デスクリプタハンドル</span>
+    VOID* handle = NULL;
+    INT err, i;
+
+    <span class="comment">// 画像の読み込み</span>
+    <span class="keywordflow">for</span> (i = 0; i &lt; num_masters; i++)
+    {
+        err = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(master_paths[i], &amp;himgs_master[i], <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+        <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    }
+    err = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(<span class="stringliteral">"target.png"</span>, &amp;himg_target, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 出力画像の確保 ( type: uc8, ch: 1 )</span>
+    himg_dst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(himg_target), <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(himg_target));
+    <span class="keywordflow">if</span> (himg_dst == NULL) {
+        err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> exit;
+    }
+
+    <span class="comment">// 画像差分の実行</span>
+    handle = fnSMP_image_diff_stat_setup(himgs_master, num_masters, 10, 3, &amp;err);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+    err = fnSMP_image_diff_execute(handle, himg_target, himg_dst);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    <span class="comment">// 出力画像の保存</span>
+    err = <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"dest_stat.png"</span>, himg_dst, -1);
+    <span class="keywordflow">if</span> (err != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> exit;
+
+    err = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+exit:
+    <span class="keywordflow">for</span> (i = 0; i &lt; num_masters; i++)
+    {
+        <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himgs_master[i]);
+    }
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg_target);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(himg_dst);
+    fnSMP_image_diff_teardown(handle);
+
+    <span class="keywordflow">return</span> err;
+}
+
+
+INT main()
+{
+    INT err;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    err = run_image_diff_morphology();
+    <span class="keywordflow">if</span> (err == <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        err = run_image_diff_stat();
+    }
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> err;
+}
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

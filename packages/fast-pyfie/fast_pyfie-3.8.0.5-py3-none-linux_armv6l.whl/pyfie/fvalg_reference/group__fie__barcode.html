@@ -1,0 +1,1421 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: １Ｄバーコード認識</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>１Ｄバーコード認識<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<dl class="user" compact><dt><b>使用上の注意点</b></dt><dd><ul>
+<li>パラメータ調整はあまりできません。</li><li><a class="el" href="group__fie__barcode.html#g4df439b2691fc63385e2a8daaf3a00b5" title="バーコード認識処理時間の取得">fnFIE_barcode_query_timings()</a> で得られる処理時間に問題があり、個々の時間の和は全ての時間よりも小さくなってしまいます。</li><li>現状サポートされていないバーコードや、バーコードに似たものが画像上にある場合には、それら全てを認識しようと試みるため、処理時間が著しく増大する場合があります。</li><li>バーコード種別 ITF, CODE39, NW7では、印刷品質の低下に弱いため読み取りミスが多くなることが予想されます。<br>
+ これらのコードを認識する必要がない場合は、認識対象コードから除外してください。ITF、CODE39に関しては認識対象から除外する代わりに <a class="el" href="group__fie__barcode.html#g18b6fc521f9445430ba653c2b434feaf" title="チェックディジットの設定(Code 39,ITFのみ有効)">fnFIE_barcode_set_checkdigit()</a> にTRUEを指定してください。(バーコードにチェックデジットが付いている場合のみ)</li><li>最も細いバーコードでも最低1.5画素必要です。</li><li>斜めからの読み取りには対応していません。バーコードは光軸に対して垂直に設置してください。</li><li>バーコードの白黒反転には対応していません。</li></ul>
+</dd></dl>
+<h2><a class="anchor" name="fie_barcode_example_overall">
+サンプルコード</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">//注 : エラーチェックは省いています。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+INT main()
+{       
+    INT i;
+    INT iNoOfDecoded;
+    INT iBarcodeType;
+    DOUBLE dStartX, dStartY, dEndX, dEndY;
+    CHAR* pcBarcodeMessage;
+    FHANDLE fimg = NULL;
+    FHANDLE fBOObj = NULL;  <span class="comment">// 必ずNULLで初期化する必要があります。</span>
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 適当な8ビットグレイ画像を用意する - 画像ファイルは適宜用意すること</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"sample.bmp"</span>, &amp;fimg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// バーコードオブジェクト生成</span>
+    <a class="code" href="group__fie__barcode.html#g103f262663fefb4e8e597dbe512be9eb" title="バーコードオブジェクト生成">fnFIE_barcode_alloc_obj</a>(&amp;fBOObj,2); <span class="comment">// １画面に最大で２つのバーコードを認識</span>
+
+    <span class="comment">// EAN13 CODE 128、ITF のバーコードを認識するようにバーコード種別を設定</span>
+    <a class="code" href="group__fie__barcode.html#g9eeec2f9888fda4c122960be068a48d0" title="バーコード種別の設定">fnFIE_barcode_set_types</a>(fBOObj, <a class="code" href="group__fie__barcode.html#g15e12cff1da782d94dcbf0221882c333">F_BARCODE_EAN13</a> | <a class="code" href="group__fie__barcode.html#gab40c7fd9e8df9f5e3cf37f192b1f2cb">F_BARCODE_CODE128</a> | <a class="code" href="group__fie__barcode.html#g2cb10b6880c3ef72a372b45f51cb3a49">F_BARCODE_ITF</a>);   
+
+    <span class="comment">// 認識実行</span>
+    <a class="code" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute</a>(fimg,fBOObj); <span class="comment">// 256階調のグレイ画像のみ対応</span>
+
+    <span class="comment">// 認識したバーコードの数を取得</span>
+    <a class="code" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num</a>(fBOObj,&amp;iNoOfDecoded);
+
+    <span class="comment">// 認識したバーコートへの操作</span>
+    <span class="keywordflow">for</span> (i=0;i&lt;iNoOfDecoded;i++) {
+        pcBarcodeMessage = NULL;  <span class="comment">// 必ずNULLで初期化する必要があります。</span>
+
+        <span class="comment">// 認識文字列を取得</span>
+        <a class="code" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b" title="認識したバーコード文字列の取得">fnFIE_barcode_query_msg</a>(fBOObj,i,&amp;pcBarcodeMessage);
+        printf(pcBarcodeMessage);
+
+        <span class="comment">// 必要に応じて、バーコードに関するその他の情報を取得してください。(バーコード種別, バーコードの位置、他）</span>
+        <a class="code" href="group__fie__barcode.html#g68aaf2974f190a2994d8b78dec0631e1" title="バーコード種別取得">fnFIE_barcode_query_type</a>(fBOObj,i,&amp;iBarcodeType);
+        <a class="code" href="group__fie__barcode.html#g2499c1b46c832ed1d31af7e008ef407f" title="バーコード位置の取得">fnFIE_barcode_query_start_stop_pos</a>(fBOObj,i,&amp;dStartX,&amp;dStartY,&amp;dEndX,&amp;dEndY);
+        <span class="comment">//...</span>
+    }
+
+    <span class="comment">// オブジェクトの解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(fBOObj);
+
+    <span class="comment">// 画像オブジェクト解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(fimg);
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>モジュール</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode__doc.html">仕様</a></td></tr>
+
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g15e12cff1da782d94dcbf0221882c333">F_BARCODE_EAN13</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g9b7d485242957023653981b55a592c28">F_BARCODE_CODE39</a>&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;1)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#gab40c7fd9e8df9f5e3cf37f192b1f2cb">F_BARCODE_CODE128</a>&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;2)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g2cb10b6880c3ef72a372b45f51cb3a49">F_BARCODE_ITF</a>&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;3)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g42cc9cf2457e5012c26c34556b73d1a9">F_BARCODE_NW7</a>&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;4)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g618c3734e1eb41b8876d307a57c39399">F_BARCODE_EAN8</a>&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;5)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#gfbf22bd075494d4bcb91867ff11e68bb">F_BARCODE_ALL</a>&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13 | F_BARCODE_CODE39 | F_BARCODE_CODE128 | F_BARCODE_ITF | F_BARCODE_NW7 | F_BARCODE_EAN8)</td></tr>
+
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584">fnFIE_barcode_execute</a> (FHANDLE fimg, FHANDLE fBOObj)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード認識の実行  <a href="#ge9ad3bf5caf32ef864a80ae20a61c584"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g103f262663fefb4e8e597dbe512be9eb">fnFIE_barcode_alloc_obj</a> (FHANDLE *pfBOObj, INT iMaxNoOfBarcodes)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコードオブジェクト生成  <a href="#g103f262663fefb4e8e597dbe512be9eb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g9eeec2f9888fda4c122960be068a48d0">fnFIE_barcode_set_types</a> (FHANDLE fBOObj, INT iBarcodeType)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード種別の設定  <a href="#g9eeec2f9888fda4c122960be068a48d0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#gf9d817b0d1581c48b093fcf67f04cf6c">fnFIE_barcode_get_types</a> (FHANDLE fBOObj, INT *piBarcodeType)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード種別の取得  <a href="#gf9d817b0d1581c48b093fcf67f04cf6c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g6b2004c3a39c574469c2a432f881f943">fnFIE_barcode_set_binwinsize</a> (FHANDLE fBOObj, INT iBinWinSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２値化に使用する局所領域サイズの設定  <a href="#g6b2004c3a39c574469c2a432f881f943"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#gfa611394003e765cd5c6c69db0a033d9">fnFIE_barcode_get_binwinsize</a> (FHANDLE fBOObj, INT *piBinWinSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">２値化に使用する局所領域サイズの取得  <a href="#gfa611394003e765cd5c6c69db0a033d9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g18b6fc521f9445430ba653c2b434feaf">fnFIE_barcode_set_checkdigit</a> (FHANDLE fBOObj, BOOL bCheckDigit)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チェックディジットの設定(Code 39,ITFのみ有効)  <a href="#g18b6fc521f9445430ba653c2b434feaf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g787dff75c86e0eadc55f0f59b41c0af9">fnFIE_barcode_get_checkdigit</a> (FHANDLE fBOObj, BOOL *pbCheckDigit)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チェックディジットの取得(Code 39,ITFのみ有効)  <a href="#g787dff75c86e0eadc55f0f59b41c0af9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g6ee56b1762437bc9ce641ce00d2663bd">fnFIE_barcode_set_timeout</a> (FHANDLE fBOObj, DOUBLE dTimeOut)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">タイムアウトの設定  <a href="#g6ee56b1762437bc9ce641ce00d2663bd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g4c4f29eff989e146bb4d9d4e04c6b0b2">fnFIE_barcode_get_timeout</a> (FHANDLE fBOObj, DOUBLE *pdTimeOut)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">タイムアウトの取得  <a href="#g4c4f29eff989e146bb4d9d4e04c6b0b2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#gbf74283e12e90a70216e31499812ec45">fnFIE_barcode_set_duplicate</a> (FHANDLE fBOObj, BOOL bDuplicate)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">重複回答フラグの設定  <a href="#gbf74283e12e90a70216e31499812ec45"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g36e439ad894634451b1eab7b0336e8d4">fnFIE_barcode_get_duplicate</a> (FHANDLE fBOObj, BOOL *pbDuplicate)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">重複回答フラグの取得  <a href="#g36e439ad894634451b1eab7b0336e8d4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g4822d06810660885832348936b35c725">fnFIE_barcode_add_offsets</a> (FHANDLE fBOObj, INT iOffsetX, INT iOffsetY)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード位置のオフセット量設定  <a href="#g4822d06810660885832348936b35c725"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa">fnFIE_barcode_query_num</a> (FHANDLE fBOObj, INT *piNoOfBarcodes)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード認識数取得  <a href="#g829fcf6d3b294971d50f82b25a633cfa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b">fnFIE_barcode_query_msg</a> (FHANDLE fBOObj, INT iBarcodeNo, CHAR **ppcMsg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">認識したバーコード文字列の取得  <a href="#g668c80ac80282318652c383f2f52cd9b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g5ee802f52e9ba74110a5b0dfff4410e7">fnFIE_barcode_query_raw</a> (FHANDLE fBOObj, INT iBarcodeNo, INT **ppiRawdata, INT *piNoOfRawdata)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">認識したバーコードに書かれたデータの取得  <a href="#g5ee802f52e9ba74110a5b0dfff4410e7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g2499c1b46c832ed1d31af7e008ef407f">fnFIE_barcode_query_start_stop_pos</a> (FHANDLE fBOObj, INT iBarcodeNo, DOUBLE *pdStartX, DOUBLE *pdStartY, DOUBLE *pdEndX, DOUBLE *pdEndY)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード位置の取得  <a href="#g2499c1b46c832ed1d31af7e008ef407f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g68aaf2974f190a2994d8b78dec0631e1">fnFIE_barcode_query_type</a> (FHANDLE fBOObj, INT iBarcodeNo, INT *piBarcodeType)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード種別取得  <a href="#g68aaf2974f190a2994d8b78dec0631e1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__barcode.html#g4df439b2691fc63385e2a8daaf3a00b5">fnFIE_barcode_query_timings</a> (FHANDLE fBOObj, DOUBLE *pdImageBinarizationTime, DOUBLE *pdBlobsExtractionTime, DOUBLE *pdBlobsSelectionTime, DOUBLE *pdSignalExtractionTime, DOUBLE *pdBarcodeDecodingTime, DOUBLE *pdTotalDecodingTime)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">バーコード認識処理時間の取得  <a href="#g4df439b2691fc63385e2a8daaf3a00b5"></a><br></td></tr>
+</table>
+<hr><h2>マクロ定義</h2>
+<a class="anchor" name="g15e12cff1da782d94dcbf0221882c333"></a><!-- doxytag: member="fie.h::F_BARCODE_EAN13" ref="g15e12cff1da782d94dcbf0221882c333" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_EAN13&nbsp;&nbsp;&nbsp;1          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別指定: EAN13 
+</div>
+</div><p>
+<a class="anchor" name="g9b7d485242957023653981b55a592c28"></a><!-- doxytag: member="fie.h::F_BARCODE_CODE39" ref="g9b7d485242957023653981b55a592c28" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_CODE39&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;1)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別指定: CODE39 
+</div>
+</div><p>
+<a class="anchor" name="gab40c7fd9e8df9f5e3cf37f192b1f2cb"></a><!-- doxytag: member="fie.h::F_BARCODE_CODE128" ref="gab40c7fd9e8df9f5e3cf37f192b1f2cb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_CODE128&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;2)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別指定: CODE128 
+</div>
+</div><p>
+<a class="anchor" name="g2cb10b6880c3ef72a372b45f51cb3a49"></a><!-- doxytag: member="fie.h::F_BARCODE_ITF" ref="g2cb10b6880c3ef72a372b45f51cb3a49" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_ITF&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;3)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別指定: ITF 
+</div>
+</div><p>
+<a class="anchor" name="g42cc9cf2457e5012c26c34556b73d1a9"></a><!-- doxytag: member="fie.h::F_BARCODE_NW7" ref="g42cc9cf2457e5012c26c34556b73d1a9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_NW7&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;4)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別指定: NW7 
+</div>
+</div><p>
+<a class="anchor" name="g618c3734e1eb41b8876d307a57c39399"></a><!-- doxytag: member="fie.h::F_BARCODE_EAN8" ref="g618c3734e1eb41b8876d307a57c39399" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_EAN8&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13&lt;&lt;5)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別指定: EAN8 
+</div>
+</div><p>
+<a class="anchor" name="gfbf22bd075494d4bcb91867ff11e68bb"></a><!-- doxytag: member="fie.h::F_BARCODE_ALL" ref="gfbf22bd075494d4bcb91867ff11e68bb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BARCODE_ALL&nbsp;&nbsp;&nbsp;(F_BARCODE_EAN13 | F_BARCODE_CODE39 | F_BARCODE_CODE128 | F_BARCODE_ITF | F_BARCODE_NW7 | F_BARCODE_EAN8)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別: 全種類 
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="ge9ad3bf5caf32ef864a80ae20a61c584"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_execute" ref="ge9ad3bf5caf32ef864a80ae20a61c584" args="(FHANDLE fimg, FHANDLE fBOObj)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_execute           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fimg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード認識の実行 
+<p>
+与えられた画像からバーコードの認識(デコード)を行います。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fimg</em>&nbsp;</td><td>入力画像オブジェクトハンドル ( type: uc8 ) </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了。画像の種類やチャネル数が違う場合はこのエラーを出します。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_MEASURE_RUN_OVERFLOW</em>&nbsp;</td><td>２値ブローブ解析中にランテーブルがオーバーフローしたため中断した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_MEASURE_BLOB_OVERFLOW</em>&nbsp;</td><td>２値ブローブ解析中にブローブテーブルがオーバーフローしたため中断した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>バーコード種別、NW7, ITF, CODE39の３つは、印刷品質の低下に弱いため読み取りミスが多くなることが予想されます。これらのコードを認識する必要がない場合は、認識対象コードから除外してください<br>
+ ITF、CODE39に関しては認識対象から除外する代わりに <a class="el" href="group__fie__barcode.html#g18b6fc521f9445430ba653c2b434feaf" title="チェックディジットの設定(Code 39,ITFのみ有効)">fnFIE_barcode_set_checkdigit()</a> にTRUEを指定してください。(バーコードにチェックデジットが付いている場合のみ) </li>
+<li>斜めからの読み取りには対応していません。バーコードは光軸に対して垂直に設置してください。 </li>
+<li>現状サポートされていないバーコードや、バーコードに似たものが画像上にある場合には、それら全てを認識しようと試みるため、処理時間が著しく増大する場合があります。 </li>
+<li>一度作成したバーコードオブジェクトを使用して、何度も <a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> でバーコード認識可能です。</li>
+</ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#g103f262663fefb4e8e597dbe512be9eb" title="バーコードオブジェクト生成">fnFIE_barcode_alloc_obj()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g103f262663fefb4e8e597dbe512be9eb"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_alloc_obj" ref="g103f262663fefb4e8e597dbe512be9eb" args="(FHANDLE *pfBOObj, INT iMaxNoOfBarcodes)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_alloc_obj           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>pfBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMaxNoOfBarcodes</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコードオブジェクト生成 
+<p>
+バーコード認識のためのバーコードオブジェクトを設定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pfBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドルへのポインタ(*pfBOObjはNULLで初期化してください。) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMaxNoOfBarcodes</em>&nbsp;</td><td>１回の実行での認識可能な最大数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ容量不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>pfBOObj には、関数内部で必要なメモリを確保します。 メモリを確保したアドレスを指定しないでください。 安全のため、*edges がNULLで初期化されていない場合はF_ERR_INVALID_PARAMを返します。 本関数でオープンしたオブジェクトが不要になった場合には、 <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9eeec2f9888fda4c122960be068a48d0"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_set_types" ref="g9eeec2f9888fda4c122960be068a48d0" args="(FHANDLE fBOObj, INT iBarcodeType)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_set_types           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBarcodeType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別の設定 
+<p>
+認識を行うバーコードの種別を設定します。下記のコードから選択してください。<p>
+<ul>
+<li>F_BARCODE_EAN13 : EAN 13</li><li>F_BARCODE_CODE39 : Code 39</li><li>F_BARCODE_CODE128 : Code 128</li><li>F_BARCODE_EAN8 : EAN 8</li><li>F_BARCODE_NW7 : NW7 (Codabar)</li><li>F_BARCODE_ITF : ITF (Interleaved 2 of 5)</li><li>F_BARCODE_ALL : 全ての種別の認識</li></ul>
+<p>
+初期値は全て認識(F_BARCODE_ALL)です。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBarcodeType</em>&nbsp;</td><td>バーコード種別</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>バーコード種別、NW7, ITF, CODE39の３つは、印刷品質の低下に弱いため読み取りミスが多くなることが予想されます。これらのコードを認識する必要がない場合は、認識対象コードから除外してください<br>
+ ITF、CODE39に関しては認識対象から除外する代わりに <a class="el" href="group__fie__barcode.html#g18b6fc521f9445430ba653c2b434feaf" title="チェックディジットの設定(Code 39,ITFのみ有効)">fnFIE_barcode_set_checkdigit()</a> にTRUEを指定してください。(バーコードにチェックデジットが付いている場合のみ)</li><li>将来的に認識可能なバーコード種別が増えた場合、F_BARCODE_ALL の値は変更される可能性があります。認識するバーコード種別が決まっている場合には F_BARCODE_ALL を使用しないことをお勧めします。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>Usage example</b></dt><dd></dd></dl>
+<div class="fragment"><pre class="fragment">    <span class="comment">// バーコード種別を EAN13 と Code 128 に設定</span>
+
+    ...
+     <span class="comment">// バーコードオブジェクトの生成（認識数は 2）</span>
+    <a class="code" href="group__fie__barcode.html#g103f262663fefb4e8e597dbe512be9eb" title="バーコードオブジェクト生成">fnFIE_barcode_alloc_obj</a>( &amp;fBOObj, 2 );
+    
+    <span class="comment">// バーコード種別を EAN13 と Code 128 に設定( 認識したいバーコード種別を " | " 演算子によって指定が可能 )</span>
+    <a class="code" href="group__fie__barcode.html#g9eeec2f9888fda4c122960be068a48d0" title="バーコード種別の設定">fnFIE_barcode_set_types</a>(fBOObj, <a class="code" href="group__fie__barcode.html#g15e12cff1da782d94dcbf0221882c333">F_BARCODE_EAN13</a> | <a class="code" href="group__fie__barcode.html#gab40c7fd9e8df9f5e3cf37f192b1f2cb">F_BARCODE_CODE128</a> ); 
+    
+    <span class="comment">// EAN13 と Code 128のみ認識</span>
+    <a class="code" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute</a>( fimg, fBOObj); 
+    ...
+</pre></div> 
+</div>
+</div><p>
+<a class="anchor" name="gf9d817b0d1581c48b093fcf67f04cf6c"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_get_types" ref="gf9d817b0d1581c48b093fcf67f04cf6c" args="(FHANDLE fBOObj, INT *piBarcodeType)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_get_types           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piBarcodeType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別の取得 
+<p>
+指定したオブジェクトハンドルにて設定されているバーコードの種別を取得します。 下記のコードから選択してください。<p>
+<ul>
+<li>F_BARCODE_EAN13 : EAN 13</li><li>F_BARCODE_CODE39 : Code 39</li><li>F_BARCODE_CODE128 : Code 128</li><li>F_BARCODE_EAN8 : EAN 8</li><li>F_BARCODE_NW7 : NW7 (Codabar)</li><li>F_BARCODE_ITF : ITF (Interleaved 2 of 5)</li><li>F_BARCODE_ALL : 全ての種別の認識</li></ul>
+<p>
+初期値は全て認識(F_BARCODE_ALL)です。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piBarcodeType</em>&nbsp;</td><td>バーコード種別</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6b2004c3a39c574469c2a432f881f943"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_set_binwinsize" ref="g6b2004c3a39c574469c2a432f881f943" args="(FHANDLE fBOObj, INT iBinWinSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_set_binwinsize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBinWinSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２値化に使用する局所領域サイズの設定 
+<p>
+画像上のバーコードを認識する際に、適応しきい値２値化( <a class="el" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac" title="局所平均値と標準偏差を用いてSauvola法による画像２値化">fnFIE_sauvola_threshold()</a> )を用いて２値画像を作成しています。 本関数では、２値化の際に使用するウィンドウサイズを指定します。<p>
+初期値 : 15 (最大 3,最小 49)<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBinWinSize</em>&nbsp;</td><td>２値化に使用するウィンドウサイズ。奇数で指定。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac" title="局所平均値と標準偏差を用いてSauvola法による画像２値化">fnFIE_sauvola_threshold()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfa611394003e765cd5c6c69db0a033d9"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_get_binwinsize" ref="gfa611394003e765cd5c6c69db0a033d9" args="(FHANDLE fBOObj, INT *piBinWinSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_get_binwinsize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piBinWinSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+２値化に使用する局所領域サイズの取得 
+<p>
+指定したオブジェクトハンドルにて設定されている２値化に使用する局所領域サイズを取得します<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piBinWinSize</em>&nbsp;</td><td>２値化に使用するウィンドウサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g18b6fc521f9445430ba653c2b434feaf"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_set_checkdigit" ref="g18b6fc521f9445430ba653c2b434feaf" args="(FHANDLE fBOObj, BOOL bCheckDigit)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_set_checkdigit           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>bCheckDigit</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チェックディジットの設定(Code 39,ITFのみ有効) 
+<p>
+チェックディジットによるバーコードのチェックの実行を設定します。<br>
+ 初期値 : 行わない(FALSE)<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bCheckDigit</em>&nbsp;</td><td>チェックの有無(TRUE or FALSE)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>チェックディジットが付いていない場合に TRUEを指定した場合には、誤認識をする可能性が高くなります。<br>
+ バーコードにチェックディジットが付いていない、もしくは付いているかどうかわからないような状況では FALSEを指定してください。</li><li>Code39,ITF では本パラメータがTRUEの場合には、 <a class="el" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b" title="認識したバーコード文字列の取得">fnFIE_barcode_query_msg()</a> にてチェックディジットを返すことはしません。</li><li>本パラメータによって <a class="el" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b" title="認識したバーコード文字列の取得">fnFIE_barcode_query_msg()</a> 関数で得られる出力文字列に違いが出ます。<br>
+ FALSE：チェックディジット文字列が表示される(文字列として意味があるとみなし出力)<br>
+ TRUE ：チェックディジット文字列は表示されない(単なるチェック記号として出力しない)</li><li>ITFでは、特にチェックディジットの計算方法が決められていません。本ライブラリではモジュラス10(ウェイト3)を採用しています。<br>
+ チェックディジットの計算方法がわからない、もしくはそれ以外の計算方法を用いている場合には FALSEを指定してください。<ul>
+<li>モジュラス10(ウェイト3)について<br>
+ ＜計算式＞<br>
+ (1) 読み取ったデータを奇数桁と偶数桁に分けて、奇数桁には重み 3 を、偶数桁には重み 1 をかけて総和を求める。<br>
+ (2) 総和を 10 で割ってその 余りを求める。<br>
+ (3) 求めた余りを 10 から引いた値がチェックデジットとなる。(ただし、余りが 0 の場合には、チェックディジットも 0)<br>
+ ＜計算例＞ (値は 12356 の場合)<br>
+ (1) (1+3+6)×3 + (2+5)×1 = 37<br>
+ (2) 37/10 = 3 余り 7<br>
+ (3) 10-7 = 3 よって、チェックデジット = ｢ 3 ｣<br>
+</li></ul>
+</li><li>Code128, EAN-8,EAN-13では仕様上チェックディジットのチェックを行いますので、本パラメータによって変更することはありません。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b" title="認識したバーコード文字列の取得">fnFIE_barcode_query_msg()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g787dff75c86e0eadc55f0f59b41c0af9"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_get_checkdigit" ref="g787dff75c86e0eadc55f0f59b41c0af9" args="(FHANDLE fBOObj, BOOL *pbCheckDigit)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_get_checkdigit           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL *&nbsp;</td>
+          <td class="paramname"> <em>pbCheckDigit</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チェックディジットの取得(Code 39,ITFのみ有効) 
+<p>
+指定したオブジェクトハンドルにて設定されているチェックディジットを取得します<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pbCheckDigit</em>&nbsp;</td><td>チェックの有無</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6ee56b1762437bc9ce641ce00d2663bd"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_set_timeout" ref="g6ee56b1762437bc9ce641ce00d2663bd" args="(FHANDLE fBOObj, DOUBLE dTimeOut)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_set_timeout           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dTimeOut</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+タイムアウトの設定 
+<p>
+バーコードの認識を打ち切る制限時間を設定します。<p>
+初期値 : 5000(ms)<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dTimeOut</em>&nbsp;</td><td>タイムアウト時間(ms)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>現状サポートされていないバーコードや、バーコードに似たものが画像上にある場合には、それら全てを認識しようと試みるため、処理時間が著しく増大する場合があります。そこで、このような現象を回避するために本ライブラリで制限時間を指定することが出来ます。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4c4f29eff989e146bb4d9d4e04c6b0b2"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_get_timeout" ref="g4c4f29eff989e146bb4d9d4e04c6b0b2" args="(FHANDLE fBOObj, DOUBLE *pdTimeOut)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_get_timeout           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdTimeOut</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+タイムアウトの取得 
+<p>
+指定したオブジェクトハンドルにて設定されているバーコードの認識を打ち切る制限時間を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdTimeOut</em>&nbsp;</td><td>タイムアウト時間(ms)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbf74283e12e90a70216e31499812ec45"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_set_duplicate" ref="gbf74283e12e90a70216e31499812ec45" args="(FHANDLE fBOObj, BOOL bDuplicate)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_set_duplicate           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL&nbsp;</td>
+          <td class="paramname"> <em>bDuplicate</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+重複回答フラグの設定 
+<p>
+１回の認識時に、同じバーコード種別の同じ文字列の回答の認識を許可するか否かを設定します。<br>
+ 初期値:複数検出を許可する(TRUE)<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bDuplicate</em>&nbsp;</td><td>重複回答許可 (TRUE or FALSE)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#g36e439ad894634451b1eab7b0336e8d4" title="重複回答フラグの取得">fnFIE_barcode_get_duplicate()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g36e439ad894634451b1eab7b0336e8d4"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_get_duplicate" ref="g36e439ad894634451b1eab7b0336e8d4" args="(FHANDLE fBOObj, BOOL *pbDuplicate)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_get_duplicate           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BOOL *&nbsp;</td>
+          <td class="paramname"> <em>pbDuplicate</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+重複回答フラグの取得 
+<p>
+指定したオブジェクトハンドルにて設定されている、重複回答を許可するか否かの設定を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pbDuplicate</em>&nbsp;</td><td>重複回答許可</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#gbf74283e12e90a70216e31499812ec45" title="重複回答フラグの設定">fnFIE_barcode_set_duplicate()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4822d06810660885832348936b35c725"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_add_offsets" ref="g4822d06810660885832348936b35c725" args="(FHANDLE fBOObj, INT iOffsetX, INT iOffsetY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_add_offsets           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iOffsetX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iOffsetY</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード位置のオフセット量設定 
+<p>
+認識したバーコードの位置(x,y)に対するオフセット量を画素で指定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iOffsetX</em>&nbsp;</td><td>X 座標オフセット量(0&lt;=) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iOffsetY</em>&nbsp;</td><td>Y 座標オフセット量(0&lt;=)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g829fcf6d3b294971d50f82b25a633cfa"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_query_num" ref="g829fcf6d3b294971d50f82b25a633cfa" args="(FHANDLE fBOObj, INT *piNoOfBarcodes)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_query_num           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piNoOfBarcodes</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード認識数取得 
+<p>
+<a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> 関数によって正常に認識したバーコードの数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piNoOfBarcodes</em>&nbsp;</td><td>認識したバーコード数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#g103f262663fefb4e8e597dbe512be9eb" title="バーコードオブジェクト生成">fnFIE_barcode_alloc_obj()</a>, <a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g668c80ac80282318652c383f2f52cd9b"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_query_msg" ref="g668c80ac80282318652c383f2f52cd9b" args="(FHANDLE fBOObj, INT iBarcodeNo, CHAR **ppcMsg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_query_msg           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBarcodeNo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CHAR **&nbsp;</td>
+          <td class="paramname"> <em>ppcMsg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+認識したバーコード文字列の取得 
+<p>
+<a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> 関数によって正常に認識したバーコードの文字列を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBarcodeNo</em>&nbsp;</td><td>バーコード番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppcMsg</em>&nbsp;</td><td>指定したバーコード番号で得られた認識文字列(*ppcMsgはNULLで初期化してください。)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>*ppcMsg は必ず NULLで初期化しておいてください。</li><li>結果の格納用に本関数でメモリを確保するわけではなく、 <a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> での認識時に fBOObjに 作成されたバッファを参照するだけです。よって、得られた結果は fBOObj を <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> によって解放、もしくは再度 <a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> を実行するまで有効で、*ppcMsg にて得られたアドレスを解放する必要はありません。</li><li>バーコード番号の指定は、 <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> にて、認識したバーコードの数を取得しておいてください。値は 0 から(取得バーコード数-1)まで有効です。</li></ul>
+</dd></dl>
+<ul>
+<li><a class="el" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b" title="認識したバーコード文字列の取得">fnFIE_barcode_query_msg()</a> で得られる文字列について <table class="pretable">
+<tr>
+<th align="center"><br>
+ </th><th align="center">EAN-8/EAN-13 </th><th align="center">ITF </th><th align="center">CODE39 </th><th align="center">CODE128 </th><th align="center">NW-7  </th></tr>
+<tr>
+<th align="center">Check Digitの挿入 </th><td align="left">set_checkdigitの設定値に関わらず返す(※1) </td><td align="left">set_checkdigitの設定値を参照し、TRUEの場合には返さない </td><td align="left">set_checkdigitの設定値を参照し、TRUEの場合には返さない </td><td align="left">set_checkdigitの設定値に関わらず返さない(※2) </td><td align="left">check digit 未対応。読むことは可能だがチェックはしない。よって文字列として返る  </td></tr>
+<tr>
+<th align="center">スタートコード </th><td align="left">返さない<br>
+(レフトガードバー) </td><td align="left">返さない </td><td align="left">返さない。<br>
+*で表されるため、Rawデータでは返す。 </td><td align="left">返さない。<br>
+意味(文字列変換ルール)はあるためRawデータで返す。 </td><td align="left">返さない。<br>
+意味(a,b,c,d)はあるためRawデータで返す。  </td></tr>
+<tr>
+<th align="center">ストップコード </th><td align="left">返さない<br>
+(ライトガードバー) </td><td align="left">返さない </td><td align="left">返さない。<br>
+*で表されるため、Rawデータでは返す。 </td><td align="left">返さない。 </td><td align="left">返さない。<br>
+意味(a,b,c,d)はあるためRawデータで返す。  </td></tr>
+<tr>
+<th align="center">センターバー </th><td align="left">返さない </td><td align="left">無し </td><td align="left">無し </td><td align="left">無し </td><td align="left">無し  </td></tr>
+<tr>
+<th align="center">ASCII１文字で表せないもの </th><td align="left">無し </td><td align="left">無し </td><td align="left">無し </td><td align="left">[ ]で囲んで返す(※3)<br>
+[NUL],[STX],[FNC1]等 </td><td align="left">無し  </td></tr>
+<tr>
+<th align="center">その他 </th><td align="left">無し </td><td align="left">無し </td><td align="left">無し </td><td align="left">Start_?,SHIFT,CODE_?等、文字コードの指定を表すものについては値を返さない。Rawデータでは返す。 </td><td align="left">無し  </td></tr>
+</table>
+(※1)バーコードの下に表記される目視文字列に含まれるため返します。<br>
+ (※2)バーコードの下に表記される目視文字列に含まれないため返しません。<br>
+ (※3)データとして " [ "及び " ] " が格納されることもあり、 <a class="el" href="group__fie__barcode.html#g668c80ac80282318652c383f2f52cd9b" title="認識したバーコード文字列の取得">fnFIE_barcode_query_msg()</a> の回答だけでは判別不可能な場合もあります(例．5つのデータ "[", "S", "T", "X", "]" と １つのデータ"[STX]")。このようなデータを明確に区別する必要がある場合には <a class="el" href="group__fie__barcode.html#g5ee802f52e9ba74110a5b0dfff4410e7" title="認識したバーコードに書かれたデータの取得">fnFIE_barcode_query_raw()</a> の回答を参照する必要があります。</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a>, <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a>, <a class="el" href="group__fie__barcode.html#g18b6fc521f9445430ba653c2b434feaf" title="チェックディジットの設定(Code 39,ITFのみ有効)">fnFIE_barcode_set_checkdigit()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5ee802f52e9ba74110a5b0dfff4410e7"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_query_raw" ref="g5ee802f52e9ba74110a5b0dfff4410e7" args="(FHANDLE fBOObj, INT iBarcodeNo, INT **ppiRawdata, INT *piNoOfRawdata)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_query_raw           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBarcodeNo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>ppiRawdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piNoOfRawdata</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+認識したバーコードに書かれたデータの取得 
+<p>
+<a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> 関数によって正常に認識した際に、文字列に変換する前の生のデータ(整数値)とその数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBarcodeNo</em>&nbsp;</td><td>認識ドしたバーコード番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppiRawdata</em>&nbsp;</td><td>指定したバーコード番号に対応する文字列変換前のバーコードデータ(*ppiRawdataはNULLで初期化してください。) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piNoOfRawdata</em>&nbsp;</td><td>指定したバーコード番号に対応する文字列変換前のバーコードデータ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>*ppiRawdata は必ず NULLで初期化しておいてください。</li><li>結果の格納用に本関数でメモリを確保するわけではなく、 <a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> での認識時に fBOObjに 作成されたバッファを参照するだけです。よって、得られた結果は fBOObj を <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> によって解放、もしくは再度 <a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> を実行するまで有効で、*ppcMsg にて得られたアドレスを解放する必要はありません。</li><li>バーコード番号の指定は、 <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> にて、認識したバーコードの数を取得しておいてください。値は 0 から(取得バーコード数-1)まで有効です。</li></ul>
+</dd></dl>
+<ul>
+<li><a class="el" href="group__fie__barcode.html#g5ee802f52e9ba74110a5b0dfff4410e7" title="認識したバーコードに書かれたデータの取得">fnFIE_barcode_query_raw()</a> で得られる値について <table class="pretable">
+<tr>
+<th align="center"><br>
+ </th><th align="center">EAN-8/EAN-13 </th><th align="center">ITF </th><th align="center">CODE39 </th><th align="center">CODE128 </th><th align="center">NW-7  </th></tr>
+<tr>
+<th align="center">スタートコード </th><td align="center">返さない<br>
+(レフトガードバー) </td><td align="center">返さない </td><td align="center">返す<br>
+(値は43) </td><td align="center">返す<br>
+(値は103 or 104 or 105) </td><td align="center">返す<br>
+(値は16 or 17 or 18 or 19)  </td></tr>
+<tr>
+<th align="center">ストップコード </th><td align="center">返さない<br>
+(ライトガードバー) </td><td align="center">返さない </td><td align="center">返す<br>
+(値は43) </td><td align="center">返さない </td><td align="center">返す<br>
+(値は16 or 17 or 18 or 19)  </td></tr>
+<tr>
+<th align="center">センターバー </th><td align="center">返さない </td><td align="center">無し </td><td align="center">無し </td><td align="center">無し </td><td align="center">無し  </td></tr>
+</table>
+</li></ul>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a>, <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2499c1b46c832ed1d31af7e008ef407f"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_query_start_stop_pos" ref="g2499c1b46c832ed1d31af7e008ef407f" args="(FHANDLE fBOObj, INT iBarcodeNo, DOUBLE *pdStartX, DOUBLE *pdStartY, DOUBLE *pdEndX, DOUBLE *pdEndY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_query_start_stop_pos           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBarcodeNo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdStartX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdStartY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdEndX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdEndY</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード位置の取得 
+<p>
+<a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> 関数によって正常に認識したバーコードの位置を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBarcodeNo</em>&nbsp;</td><td>認識したバーコード番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdStartX</em>&nbsp;</td><td>指定したバーコード番号に対応するバーコード位置 始点 X(画素) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdStartY</em>&nbsp;</td><td>指定したバーコード番号に対応するバーコード位置 始点 Y(画素) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdEndX</em>&nbsp;</td><td>指定したバーコード番号に対応するバーコード位置 終点 X(画素) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdEndY</em>&nbsp;</td><td>指定したバーコード番号に対応するバーコード位置 終点 Y(画素)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>バーコード番号の指定は、 <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> にて、認識したバーコードの数を取得しておいてください。値は 0 から(取得バーコード数-1)まで有効です。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a>, <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g68aaf2974f190a2994d8b78dec0631e1"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_query_type" ref="g68aaf2974f190a2994d8b78dec0631e1" args="(FHANDLE fBOObj, INT iBarcodeNo, INT *piBarcodeType)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_query_type           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBarcodeNo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piBarcodeType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード種別取得 
+<p>
+<a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> 関数によって正常に認識した際のバーコード種別を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBarcodeNo</em>&nbsp;</td><td>認識したバーコード番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piBarcodeType</em>&nbsp;</td><td>バーコード番号に対応するバーコード種別</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>バーコード番号の指定は、 <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> にて、認識したバーコードの数を取得しておいてください。値は 0 から(取得バーコード数-1)まで有効です。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a>, <a class="el" href="group__fie__barcode.html#g829fcf6d3b294971d50f82b25a633cfa" title="バーコード認識数取得">fnFIE_barcode_query_num()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4df439b2691fc63385e2a8daaf3a00b5"></a><!-- doxytag: member="fie_barcode_1d.c::fnFIE_barcode_query_timings" ref="g4df439b2691fc63385e2a8daaf3a00b5" args="(FHANDLE fBOObj, DOUBLE *pdImageBinarizationTime, DOUBLE *pdBlobsExtractionTime, DOUBLE *pdBlobsSelectionTime, DOUBLE *pdSignalExtractionTime, DOUBLE *pdBarcodeDecodingTime, DOUBLE *pdTotalDecodingTime)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_barcode_query_timings           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fBOObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdImageBinarizationTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdBlobsExtractionTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdBlobsSelectionTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdSignalExtractionTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdBarcodeDecodingTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdTotalDecodingTime</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+バーコード認識処理時間の取得 
+<p>
+<a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> 関数の処理時間とその内訳を取得します。 処理時間を知る必要の無いパラメータには NULL を指定することも可能です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fBOObj</em>&nbsp;</td><td>バーコードオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdImageBinarizationTime</em>&nbsp;</td><td>２値化処理時間(ms) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdBlobsExtractionTime</em>&nbsp;</td><td>２値画像からの塊抽出処理時間(ms) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdBlobsSelectionTime</em>&nbsp;</td><td>抽出した塊の選別処理時間(ms) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdSignalExtractionTime</em>&nbsp;</td><td>選別後の塊からバーコードの認識時間(ms) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdBarcodeDecodingTime</em>&nbsp;</td><td>バーコードの認識処理時間(ms) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdTotalDecodingTime</em>&nbsp;</td><td>トータル処理時間(ms)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__barcode.html#ge9ad3bf5caf32ef864a80ae20a61c584" title="バーコード認識の実行">fnFIE_barcode_execute()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ２次元エッジ操作</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>２次元エッジ操作<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__tools.html#gf9933ffa963a85e2eda733e10d26d1c0">fnFIE_edge_connecting</a> (const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *pedges, INT edge_num, DOUBLE weight, DOUBLE threshold1, DOUBLE threshold2, INT area_size, INT area_overlap, INT min_clust_elem, INT mode, <a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> **ppedge_clust, INT *pclust_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">[非推奨]エッジ点の連結  <a href="#gf9933ffa963a85e2eda733e10d26d1c0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__tools.html#gc2a8c0de49ff2a65a308e04438c6d2c8">fnFIE_free_edge_clust</a> (<a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> *pedge_clust, INT clust_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ点クラスタ配列の解放  <a href="#gc2a8c0de49ff2a65a308e04438c6d2c8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__tools.html#g1f84988947c19bf2d4d312a69fabcc2a">fnFIE_edge_connecting2</a> (const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *pedges, INT edge_num, DOUBLE angle_range, INT distance_range, INT min_clust_elem, INT max_clust_elem, <a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> **ppedge_clust, INT *pclust_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ点の連結  <a href="#g1f84988947c19bf2d4d312a69fabcc2a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__tools.html#ge397248afc07d1d4c16298ad464574d8">fnFIE_refilter_edge_by_mask</a> (const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *src_edges, INT src_edge_num, FHANDLE hmask, INT mask_mode, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **dst_edges, INT *dst_edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスクによる エッジ点群のフィルタリング  <a href="#ge397248afc07d1d4c16298ad464574d8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__tools.html#g042f86e1016a1fe17de7cdd9e5a16a42">fnFIE_refilter_edge_by_clust</a> (const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *src_edges, INT src_edge_num, const <a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> *edge_clust, INT edge_clust_num, const INT *clust_idx, INT clust_idx_num, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **dst_edges, INT *dst_edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">クラスタ情報による エッジ点群のフィルタリング  <a href="#g042f86e1016a1fe17de7cdd9e5a16a42"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gf9933ffa963a85e2eda733e10d26d1c0"></a><!-- doxytag: member="fie_edge_connecting.c::fnFIE_edge_connecting" ref="gf9933ffa963a85e2eda733e10d26d1c0" args="(const F_DEDGE *pedges, INT edge_num, DOUBLE weight, DOUBLE threshold1, DOUBLE threshold2, INT area_size, INT area_overlap, INT min_clust_elem, INT mode, F_EDGE_CLUST **ppedge_clust, INT *pclust_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_connecting           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pedges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>threshold1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>threshold2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>area_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>area_overlap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>min_clust_elem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppedge_clust</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pclust_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+[非推奨]エッジ点の連結 
+<p>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000002">非推奨:</a></b></dt><dd>本関数による処理結果は直感的な連結状態とならない場合があり、改善版として <a class="el" href="group__fie__edge__tools.html#g1f84988947c19bf2d4d312a69fabcc2a" title="エッジ点の連結">fnFIE_edge_connecting2()</a> が提供されています。<br>
+ 本関数は後方互換性のために残されていますが、新規の開発では <a class="el" href="group__fie__edge__tools.html#g1f84988947c19bf2d4d312a69fabcc2a" title="エッジ点の連結">fnFIE_edge_connecting2()</a> の使用を推奨します。</dd></dl>
+入力されたエッジ点群を連結します。 連結は、エッジ点間のユークリッド距離とエッジ勾配方向のなす角によって決定されます。 下図のように、入力されたエッジ点群が連結された曲線が生成されます。 エッジ点の連結条件は、パラメータにより調節することができます。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。<p>
+<div align="center">
+<img src="fie_edge_connect.png" alt="fie_edge_connect.png">
+</div>
+<p>
+本関数を応用することで、以下のような処理を構築することができます。 なお以下に示す処理は、一例となります。 <ul>
+<li>不連続な小さいクラックを、一つの大きなクラックとして表すことができる </li>
+<li>構成するエッジ点の個数が少ない曲線をノイズとして除去できる </li>
+<li>形状検査を構築するための要素技術として利用できる</li>
+</ul>
+<dl class="user" compact><dt><b>入力データ（ <em>pedges</em> ）:</b></dt><dd>入力されるエッジ点は、 <a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a> 、 <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix()</a> によって 座標以外に勾配方向が求められている必要があります。 そのため、想定する勾配方向の範囲は、 <img class="formulaInl" alt="$-\pi$" src="form_73.png"> ≦ <em>pedges-&gt;q</em> ≦ <img class="formulaInl" alt="$\pi$" src="form_74.png"> (単位：ラジアン) となります。 ただし、勾配方向の範囲は内部でチェックしていません。 範囲外の勾配方向が入力されてもエラーとはなりません。</dd></dl>
+<dl class="user" compact><dt><b>エッジ勾配方向の重み（ <em>weight</em> ）:</b></dt><dd>エッジ勾配方向の重みは、エッジ点間の距離を１とした場合の割合を示しています。 エッジ勾配方向の重みは、 0.0 &lt;= <em>weight</em> &lt;= 1.0 の範囲で指定してください。 ０を指定した場合は、エッジ点間の距離のみで連結のための計算をします。</dd></dl>
+<dl class="user" compact><dt><b>評価式（ <em>threshold1</em> , <em>threshold2</em> ）:</b></dt><dd>評価値( エッジ点i，j の距離(非類似度) ) <img class="formulaInl" alt="$D_{ij}$" src="form_551.png"> を次のように定義します。 <img class="formulaInl" alt="$D_{ij}$" src="form_551.png"> が 0 に近いほど類似していることを表しています。<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ D_{ij} = \sqrt{ d_{ij}^{2} + \left( s_{ij} \times weight \right)^{2} } \]" src="form_552.png">
+<p>
+ ここで、<img class="formulaInl" alt="$d_{ij}$" src="form_553.png"> は点i、j のユークリッド距離、<img class="formulaInl" alt="$s_{ij}$" src="form_554.png"> は点i、j それぞれのエッジ勾配方向のなす角となります。 なお <img class="formulaInl" alt="$s_{ij}$" src="form_554.png"> は、勾配方向のなす角の単位を、入力点群時点のラジアンから度へ変換された後に計算に用いられます。 つまり、 0 &lt;= <img class="formulaInl" alt="$s_{ij}$" src="form_554.png"> &lt;= 180（単位：度）の範囲となります。 また、 <em>weight</em> はエッジ勾配方向の重みとなります。<br>
+ ここで得られた評価値 <img class="formulaInl" alt="$D_{ij}$" src="form_551.png"> と ２つのしきい値 <em>threshold1</em> 、 <em>threshold2</em> を比較することで、 連結、後述する再連結処理が実行されます。</dd></dl>
+<dl class="user" compact><dt><b>再連結処理（ <em>mode</em> ）:</b></dt><dd>本関数におけるエッジ点の連結は、評価しきい値を基準として実行されます。 まずは、評価しきい値１（ <em>threshold1</em> ）を基準として、エッジ点を連結します。 再連結処理が有効ならば、評価しきい値１で生成された曲線を、評価しきい値２（ <em>threshold2</em> ）によって再連結します。 なお、評価しきい値１で連結されたエッジ点間の関係性は保持しています。</dd></dl>
+<dl class="user" compact><dt><b>局所領域（ <em>area_size</em> , <em>area_overlap</em> ）:</b></dt><dd>本手法では、局所領域内の点群毎に連結性を求めます。 局所領域毎に求められた曲線を、全体で連結処理をします。 局所領域は、正方形で設定（ <em>area_size</em> ）されます。 また局所領域には、重なり部分（ <em>area_overlap</em> ）が存在します。 全体の連結処理では、重なり部分のエッジ点が利用されます。</dd></dl>
+<dl class="user" compact><dt><b>出力データ（ <em>ppedge_clust</em> ）:</b></dt><dd>出力データは、以下に示す条件に従います。 なお、必要のなくなった曲線の情報（ <em>ppedge_clust</em> ）の配列は、必ず <a class="el" href="group__fie__edge__tools.html#gc2a8c0de49ff2a65a308e04438c6d2c8" title="エッジ点クラスタ配列の解放">fnFIE_free_edge_clust()</a> で解放してください。 <ul>
+<li>出力データは下図に示すように、 <a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> の配列となります。 一つの <a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> が一つの曲線を表しています。 </li>
+<li>曲線には、開曲線または閉曲線の二種類があります。 閉曲線は、最初に格納されたエッジ点と最後に格納されたエッジ点が同じエッジ点となります。 開曲線は、最初と最後に格納されたエッジ点が異なります。<br>
+ </li>
+<li><a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> に保持されているデータは、エッジ点の座標ではなく、入力されたエッジ点群配列のインデックスとなります。 </li>
+<li><a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> 配列の保存順序は処理された順になります。 曲線間の位置関係などに依存しません。<br>
+<br>
+</li>
+</ul>
+<div align="center">
+<img src="fie_edge_clust.png" alt="fie_edge_clust.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b>推奨パラメータ</b></dt><dd><table class="pretable">
+<tr align="center">
+<th>パラメータ名 </th><th>推奨値  </th></tr>
+<tr align="center">
+<td><em>weight</em>  </td><td>0.07   </td></tr>
+<tr align="center">
+<td><em>threshold1</em>  </td><td>2.0   </td></tr>
+<tr align="center">
+<td><em>threshold2</em>  </td><td>4.0   </td></tr>
+<tr align="center">
+<td><em>area_size</em>  </td><td>10   </td></tr>
+<tr align="center">
+<td><em>area_overlap</em>  </td><td>3   </td></tr>
+<tr align="center">
+<td><em>min_clust_elem</em>  </td><td>3   </td></tr>
+</table>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pedges</em>&nbsp;</td><td>エッジ点の配列（座標、勾配方向(rad)） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点の個数（ 2 &lt;= <em>edge_num</em> ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>weight</em>&nbsp;</td><td>エッジ勾配方向の重み <em>weight</em> エッジ勾配方向のなす角の重み）（ 0 &lt;= <em>weight</em> &lt;= 1 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold1</em>&nbsp;</td><td>評価しきい値１：連結用（ 0 &lt; <em>threshold1</em> ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold2</em>&nbsp;</td><td>評価しきい値２：再連結用（ <em>threshold1</em> &lt; <em>threshold2</em> ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>area_size</em>&nbsp;</td><td>正方連結用局所領域のサイズ（画素： 3 &lt;= <em>area_size</em> &lt;= 20 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>area_overlap</em>&nbsp;</td><td>連結用局所領域の重なり（画素： <em>area_overlap</em> &lt;= <em>area_size</em> / 2 ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>min_clust_elem</em>&nbsp;</td><td>クラスタに属するエッジ点の個数の最小値（ 2 &lt;= <em>min_clust_elem</em> ） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>再連結処理（０：無効、０以外：有効） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>*ppedge_clust</em>&nbsp;</td><td>抽出した曲線の情報（クラスタ）の配列（初期値は NULL を指定） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pclust_num</em>&nbsp;</td><td>抽出した曲線の個数（初期値は０を指定）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下に処理結果例を示します。 左から、入力画像、エッジ画像、処理結果画像になります。 処理結果画像において、エッジ点を連結して生成された曲線が色ごとに表示されています。 なお、構成しているエッジ点の個数が少ない曲線は、表示していません。</dd></dl>
+<div align="center">
+<img src="fie_edge_connect_result.png" alt="fie_edge_connect_result.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+
+
+VOID edge_connecting()
+{
+    <span class="comment">// 入力画像</span>
+    FHANDLE himg = NULL;
+    <span class="comment">// 出力エッジ画像</span>
+    FHANDLE hdst = NULL;
+
+    <span class="comment">//入力画像の幅と高さ</span>
+    INT width, height;
+
+    <span class="comment">// ２次元エッジ抽出用</span>
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>             *pedges = NULL;
+    INT                 edge_num = 0;
+    <a class="code" href="structF__EDGE__CORR__PARAMS.html" title="相関エッジ用パラメータ構造体">F_EDGE_CORR_PARAMS</a>  params;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>              offset;
+
+    <span class="comment">// エッジ点群連結用</span>
+    <a class="code" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a>    *pclust = NULL;
+    INT             clust_num = 0;
+
+    DOUBLE  weight, threshold1, threshold2;
+    INT     area_size, area_overlap, min_clust_elem, mode;
+
+    <span class="comment">// 連結して生成された曲線描画用</span>
+    DOUBLE color[12][3] = {
+        {   0.0,   0.0, 255.0 },
+        {   0.0,   0.0, 128.0 },
+        {   0.0, 255.0,   0.0 },
+        { 255.0, 255.0,   0.0 },
+        { 255.0, 165.0,   0.0 },
+        { 255.0,   0.0,   0.0 },
+        { 255.0, 192.0, 203.0 },
+        { 176.0,  48.0,  96.0 },
+        {   0.0, 255.0, 255.0 },
+        { 160.0,  32.0, 240.0 },
+        { 255.0,   0.0, 255.0 },
+        {   0.0, 100.0,   0.0 },
+    };
+    INT i, j;
+    
+    <span class="comment">// 入力画像の読み込み</span>
+    <span class="comment">// 適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"sample1.png"</span>, &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得</span>
+    width = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( himg );
+    height = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( himg );
+
+    <span class="comment">// 入力画像を3チャネル化した出力画像を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, width, height );
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>( hdst, 0 ); 
+
+    <span class="comment">// ２次元エッジ抽出（相関エッジ）用パラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#6b0ff7267138fa33fa9c760cb5105fe6" title="相関エッジフィルタの長さ">width</a>            = 5;
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#60cec99d9119f0be474678ab6fc8fce2" title="相関エッジフィルタの高さ">height</a>           = 5;
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#7e06ab8cf3a261447c893498b0cc559b" title="シグモイド係数">sigmoid_k</a>        = 1.0;
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#19d0412af5ec4c953203db7a0c43751e" title="分散しきい値">var_threshold</a>    = 25.0;
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#0019c6f00db4ca555e1284d4a8853512" title="強度しきい値">mag_threshold</a>    = 160;
+    params.<a class="code" href="structF__EDGE__CORR__PARAMS.html#1296509ac3054c3e1a519bd478ec1236" title="非極大抑制のフィルタ片幅">nms_length</a>       = 6;
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>     = 0.0;
+
+    <span class="comment">// ２次元エッジ抽出（相関エッジ）</span>
+    <a class="code" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix</a>( himg, NULL, &amp;params, <a class="code" href="group__fie__edge__detector.html#gf1b0219a1aaa48472cfc9f272687d30f" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向を取得する...">F_EDGE_FEAT_DIRECT</a>, <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f568bc404460c354f6e05d89439f24c6f" title="端延長モード">F_BORDER_CONTINUOUS</a>, offset, &amp;pedges, &amp;edge_num );
+
+    <span class="comment">// エッジ点群の連結用パラメータの設定</span>
+    weight          = 0.07;
+    threshold1      = 2.0;
+    threshold2      = 4.0;
+    area_size       = 10;
+    area_overlap    = 3;
+    min_clust_elem  = 3;
+    mode            = 1;
+
+    <span class="comment">// エッジ点群の連結</span>
+    <a class="code" href="group__fie__edge__tools.html#gf9933ffa963a85e2eda733e10d26d1c0" title="[非推奨]エッジ点の連結">fnFIE_edge_connecting</a>( pedges, edge_num, weight, threshold1, threshold2, 
+                           area_size, area_overlap, min_clust_elem, mode,
+                           &amp;pclust, &amp;clust_num );
+
+    <span class="comment">// 連結された曲線を色を変えて出力画像上に描画する</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; clust_num; i++ ){
+        <span class="keywordflow">for</span>( j = 0; j &lt; ( pclust[i].<a class="code" href="structF__EDGE__CLUST.html#e6a00b21e14f2534b1e42a611e17fb85" title="クラスタの要素数">num</a> - 1); j++ ){
+            <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> start, end;
+
+            start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pedges[pclust[i].<a class="code" href="structF__EDGE__CLUST.html#414a87d412c481cf8d70b9b4843d35e7" title="クラスタに属するエッジのインデックス">pindex</a>[j]].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;
+            start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pedges[pclust[i].<a class="code" href="structF__EDGE__CLUST.html#414a87d412c481cf8d70b9b4843d35e7" title="クラスタに属するエッジのインデックス">pindex</a>[j]].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;
+            end.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>   = pedges[pclust[i].<a class="code" href="structF__EDGE__CLUST.html#414a87d412c481cf8d70b9b4843d35e7" title="クラスタに属するエッジのインデックス">pindex</a>[j + 1]].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;
+            end.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>   = pedges[pclust[i].<a class="code" href="structF__EDGE__CLUST.html#414a87d412c481cf8d70b9b4843d35e7" title="クラスタに属するエッジのインデックス">pindex</a>[j + 1]].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;
+
+            <span class="comment">// 点と点の間は線分で描画する</span>
+            <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>( hdst, color[i%12], start, end );
+        }
+    }
+
+    <span class="comment">// メモリの解放</span>
+    <a class="code" href="group__fie__edge__tools.html#gc2a8c0de49ff2a65a308e04438c6d2c8" title="エッジ点クラスタ配列の解放">fnFIE_free_edge_clust</a>( pclust, clust_num );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( pedges );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+}
+
+INT main()
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    edge_connecting();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+
+</pre></div></dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix</a>, <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix</a>, <a class="el" href="group__fie__edge__tools.html#g1f84988947c19bf2d4d312a69fabcc2a" title="エッジ点の連結">fnFIE_edge_connecting2</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc2a8c0de49ff2a65a308e04438c6d2c8"></a><!-- doxytag: member="fie_edge_connecting.c::fnFIE_free_edge_clust" ref="gc2a8c0de49ff2a65a308e04438c6d2c8" args="(F_EDGE_CLUST *pedge_clust, INT clust_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_free_edge_clust           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> *&nbsp;</td>
+          <td class="paramname"> <em>pedge_clust</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>clust_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジ点クラスタ配列の解放 
+<p>
+エッジ点クラスタ構造体配列を解放します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pedge_clust</em>&nbsp;</td><td>エッジ点クラスタ配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>clust_num</em>&nbsp;</td><td>エッジ点クラスタ配列 要素数 （ <em>clust_num</em> &gt;= 0 ）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ以上 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1f84988947c19bf2d4d312a69fabcc2a"></a><!-- doxytag: member="fie_edge_connecting_2.c::fnFIE_edge_connecting2" ref="g1f84988947c19bf2d4d312a69fabcc2a" args="(const F_DEDGE *pedges, INT edge_num, DOUBLE angle_range, INT distance_range, INT min_clust_elem, INT max_clust_elem, F_EDGE_CLUST **ppedge_clust, INT *pclust_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge_connecting2           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>pedges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>angle_range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>distance_range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>min_clust_elem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>max_clust_elem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppedge_clust</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>pclust_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジ点の連結 
+<p>
+入力されたエッジ点群を連結し、複数の曲線( クラスタ ) を抽出します。<p>
+エッジ点の勾配方向に垂直な方向を そのエッジ点の連結方向とし、 各エッジ点が連結方向に向かって連結先となるエッジ点を見つけ連結を行っていくことにより 1 つの曲線を抽出していきます。 勾配方向についての詳細は <a class="el" href="group__fie__edge__angle.html">総合ドキュメントのエッジ角度</a> をご参照ください。<p>
+<div align="center">
+<img src="fie_edge_connect_2_fig1.png" alt="fie_edge_connect_2_fig1.png">
+</div>
+<p>
+この時、連結先となるエッジ点は 注目エッジ点の連結方向とパラメータで指定された 探索角度範囲( <em>angle_range</em> )、 探索距離範囲( <em>distance_range</em>) から 下図 のように規定される探索範囲内で見つけられます。<br>
+ 探索角度範囲と探索距離範囲を調整することにより、結果として得られるクラスタの連結状態を調整することができます。<p>
+<div align="center">
+<img src="fie_edge_connect_2_fig2.png" alt="fie_edge_connect_2_fig2.png">
+</div>
+<p>
+探索範囲内のエッジ点については、 注目エッジ点と距離が近いものほど、また探索角度範囲の中心に近いものほど連結先として選ばれやすくなります。<br>
+ 従って下図では C のエッジ位置より B のエッジ位置が、また B のエッジ位置より A のエッジ位置が連結先エッジ点として選ばれやすくなります。<p>
+<div align="center">
+<img src="fie_edge_connect_2_fig3.png" alt="fie_edge_connect_2_fig3.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>クラスタに属するエッジ点個数の制限 ( <em>min_clust_elem</em>, <em>max_clust_elem</em> ) :</b></dt><dd>クラスタに属するエッジ点の最大/最小個数を指定することにより、出力として得られるクラスタから 極端に短い (構成するエッジ点数が少ない) もの、 または 極端に長い (構成するエッジ点数が多い) ものを除外することが出来ます。<br>
+ 最小個数は <em>min_clust_elem</em> 、最大個数は <em>max_clust_elem</em> により指定します。指定する最大個数は最小個数以上でなくてはなりません。<br>
+ また、<em>max_clust_elem</em> に負の値を指定した場合 最大個数 は無制限となります。</dd></dl>
+<dl class="user" compact><dt><b>入力データと出力データについて :</b></dt><dd>入出力データの形式は 下記のように <a class="el" href="group__fie__edge__tools.html#gf9933ffa963a85e2eda733e10d26d1c0" title="[非推奨]エッジ点の連結">fnFIE_edge_connecting()</a> と同様となっています。</dd></dl>
+<dl class="user" compact><dt><b>入力データ（ <em>pedges</em> ）:</b></dt><dd>入力されるエッジ点は、 <a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a> 、 <a class="el" href="group__fie__edge__detector.html#g11b7db6e608ebad2f09339c80e4ce907" title="相関エッジフィルタを利用したエッジ検出（サブピクセル精度）...">fnFIE_edge_corr_subpix()</a> によって 座標以外に勾配方向が求められている必要があります。 そのため、想定する勾配方向の範囲は、 <img class="formulaInl" alt="$-\pi$" src="form_73.png"> ≦ <em>pedges-&gt;q</em> ≦ <img class="formulaInl" alt="$\pi$" src="form_74.png"> (単位：ラジアン) となります。 ただし、勾配方向の範囲は内部でチェックしていません。 範囲外の勾配方向が入力されてもエラーとはなりません。</dd></dl>
+<dl class="user" compact><dt><b>出力データ（ <em>ppedge_clust</em> ）:</b></dt><dd>出力データは、以下に示す条件に従います。 なお、必要のなくなった曲線の情報（ <em>ppedge_clust</em> ）の配列は、必ず <a class="el" href="group__fie__edge__tools.html#gc2a8c0de49ff2a65a308e04438c6d2c8" title="エッジ点クラスタ配列の解放">fnFIE_free_edge_clust()</a> で解放してください。 <ul>
+<li>出力データは下図に示すように、 <a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> の配列となります。 一つの <a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> が一つの曲線を表しています。 </li>
+<li>曲線には、開曲線または閉曲線の二種類があります。 閉曲線は、最初に格納されたエッジ点と最後に格納されたエッジ点が同じエッジ点となります。 開曲線は、最初と最後に格納されたエッジ点が異なります。<br>
+ </li>
+<li><a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> に保持されているデータは、エッジ点の座標ではなく、入力されたエッジ点群配列のインデックスとなります。 </li>
+<li><a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a> 配列の保存順序は処理された順になります。 曲線間の位置関係などに依存しません。<br>
+<br>
+</li>
+</ul>
+<div align="center">
+<img src="fie_edge_clust.png" alt="fie_edge_clust.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b>推奨パラメータ</b></dt><dd><table class="pretable">
+<tr align="center">
+<th>パラメータ名 </th><th>推奨値  </th></tr>
+<tr align="center">
+<td><em>angle_range</em>  </td><td><img class="formulaInl" alt="$\pi$" src="form_74.png"> / 2.0   </td></tr>
+<tr align="center">
+<td><em>distance_range</em>  </td><td>5   </td></tr>
+<tr align="center">
+<td><em>min_clust_elem</em>  </td><td>3   </td></tr>
+<tr align="center">
+<td><em>max_clust_elem</em>  </td><td>-1   </td></tr>
+</table>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pedges</em>&nbsp;</td><td>エッジ点の配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>エッジ点の個数 ( 2 ≦ <em>edge_num</em> ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>angle_range</em>&nbsp;</td><td>探索角度範囲 ( 単位: radian , 0 &lt; <em>angle_range</em> ≦ <img class="formulaInl" alt="$\pi$" src="form_74.png"> ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>distance_range</em>&nbsp;</td><td>探索距離範囲 ( 単位: pixel , 0 &lt; <em>distance_range</em> ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>min_clust_elem</em>&nbsp;</td><td>クラスタに属するエッジ点個数の最小値 ( 2 ≦ <em>min_clust_elem</em> ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>max_clust_elem</em>&nbsp;</td><td>クラスタに属するエッジ点個数の最大値 ( <em>min_clust_elem</em> ≦ <em>max_clust_elem</em> ,ただし <em>max_clust_elem</em> &lt; 0 とした場合は無制限 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppedge_clust</em>&nbsp;</td><td>抽出した曲線の情報 ( クラスタ ) の配列 ( 初期値は NULL を指定 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pclust_num</em>&nbsp;</td><td>抽出した曲線の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__edge__tools.html#gc2a8c0de49ff2a65a308e04438c6d2c8" title="エッジ点クラスタ配列の解放">fnFIE_free_edge_clust</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge397248afc07d1d4c16298ad464574d8"></a><!-- doxytag: member="fie_refileter_edge.c::fnFIE_refilter_edge_by_mask" ref="ge397248afc07d1d4c16298ad464574d8" args="(const F_DEDGE *src_edges, INT src_edge_num, FHANDLE hmask, INT mask_mode, F_DEDGE **dst_edges, INT *dst_edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_refilter_edge_by_mask           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>src_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>src_edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mask_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>dst_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>dst_edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスクによる エッジ点群のフィルタリング 
+<p>
+入力されたエッジ点群に対して、指定した マスク によるフィルタリングを行い 出力エッジ点群 にコピーし返します。<br>
+ マスクにはリージョンオブジェクト、または 2値 画像オブジェクトを使用することができます。<p>
+リージョンオブジェクトをマスクとして指定した場合、リージョンに含まれる座標を有効座標、リージョンに含まれない座標を 無効座標として扱います。<br>
+ 画像オブジェクトをマスクとして指定した場合、画素値が１の座標を有効座標、画素値が０の座標 及び 画像範囲外の座標を 無効座標として扱います。<p>
+<dl class="user" compact><dt><b>マスクモード</b></dt><dd>マスクされたエッジ点を省くか、残すかを <em>mask_mode</em> にて指定します。<br>
+<ul>
+<li><em>mask_mode</em> が 0 の場合、入力エッジ点群の中から 無効座標 のもののみを出力エッジ点群にコピーします。<br>
+</li><li><em>mask_mode</em> が 1 の場合、入力エッジ点群の中から 有効座標 のもののみを出力エッジ点群にコピーします。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="pretable">
+<tr>
+<th colspan="2">&nbsp; </th><th>マスクモード 0 </th><th>マスクモード 1  </th></tr>
+<tr>
+<th rowspan="2" align="left">リージョン<br>
+オブジェクト </th><th align="left">リージョンに含まれる座標 </th><td align="center">× </td><td align="center">○  </td></tr>
+<tr>
+<th align="left">リージョンに含まれない座標 </th><td align="center">○ </td><td align="center">×  </td></tr>
+<tr>
+<th rowspan="2" align="left">画像<br>
+オブジェクト </th><th align="left">画素値1の座標 </th><td align="center">× </td><td align="center">○  </td></tr>
+<tr>
+<th align="left">画素値0の座標<br>
+及び画像範囲外の座標 </th><td align="center">○ </td><td align="center">×  </td></tr>
+</table>
+○ : 出力エッジ点群にコピーされる.<br>
+ × : 出力エッジ点群にコピーされない.</dd></dl>
+<dl class="user" compact><dt><b>画像オブジェクトをマスクとして使用する場合</b></dt><dd>マスクとして使用する画像オブジェクトは 画像型が F_IMG_BIN であり、チャネル数が 1 でなければいけません。<br>
+ (画像サイズについての制限はありません)</dd></dl>
+<dl class="user" compact><dt><b>出力エッジ点 配列</b></dt><dd><em>dst_edges</em> は、関数内部で必要なメモリを確保します。メモリを確保した配列を指定しないで下さい。 <em>*dst_edges</em> が NULL で初期化されていない場合は エラーとなります。<br>
+ <em>dst_edges</em> に返されたメモリを解放する場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用して下さい。<br>
+ また、出力されたエッジ点の数は <em>dst_edge_num</em> に返されます。<br>
+ 出力されたエッジ点の数が 0 である場合には、<em>dst_edges</em> には NULL が返され正常終了します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_edges</em>&nbsp;</td><td>入力エッジ点 配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_edge_num</em>&nbsp;</td><td>入力エッジ点の個数 ( 1 &lt;= <em>src_edge_num</em> ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>マスク<ul>
+<li>リージョンオブジェクト</li><li>画像オブジェクト ( type:bin / ch:1 ) </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mask_mode</em>&nbsp;</td><td>マスクモード<ul>
+<li>0 : リージョンに含まれるエッジ点を省く.</li><li>1 : リージョンに含まれるエッジ点を残す. </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst_edges</em>&nbsp;</td><td>出力エッジ点 配列 ( 初期値は NULL を指定 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst_edge_num</em>&nbsp;</td><td>出力エッジ点の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なマスクが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>マスクとして渡された画像オブジェクトが不正である </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g042f86e1016a1fe17de7cdd9e5a16a42"></a><!-- doxytag: member="fie_refileter_edge.c::fnFIE_refilter_edge_by_clust" ref="g042f86e1016a1fe17de7cdd9e5a16a42" args="(const F_DEDGE *src_edges, INT src_edge_num, const F_EDGE_CLUST *edge_clust, INT edge_clust_num, const INT *clust_idx, INT clust_idx_num, F_DEDGE **dst_edges, INT *dst_edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_refilter_edge_by_clust           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__DEDGE.html">F_DEDGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>src_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>src_edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structF__EDGE__CLUST.html">F_EDGE_CLUST</a> *&nbsp;</td>
+          <td class="paramname"> <em>edge_clust</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>edge_clust_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT *&nbsp;</td>
+          <td class="paramname"> <em>clust_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>clust_idx_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>dst_edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>dst_edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+クラスタ情報による エッジ点群のフィルタリング 
+<p>
+入力されたエッジ点群の中から、指定した エッジ点クラスタ に含まれるもののみを 出力エッジ点群 にコピーし返します。<br>
+<p>
+<dl class="user" compact><dt><b>エッジ点クラスタ配列</b></dt><dd><em>edge_clust</em> に渡す エッジ点クラスタ配列 には、入力エッジ点配列 ( <em>src_edges</em> ) に対して実行した <a class="el" href="group__fie__edge__tools.html#gf9933ffa963a85e2eda733e10d26d1c0" title="[非推奨]エッジ点の連結">fnFIE_edge_connecting()</a> や <a class="el" href="group__fie__edge__tools.html#g1f84988947c19bf2d4d312a69fabcc2a" title="エッジ点の連結">fnFIE_edge_connecting2()</a> 等の結果として得られる <a class="el" href="structF__EDGE__CLUST.html" title="エッジ点クラスタ構造体">F_EDGE_CLUST</a>(クラスタに属するエッジ点のインデックスが格納された構造体) の配列を使用して下さい。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><em>edge_clust</em> に格納されている エッジ点のインデックスが、入力エッジ点 配列( <em>src_edges</em> )の要素数の範囲外であった場合 エラー となります。</dd></dl>
+<dl class="user" compact><dt><b>処理対象エッジ点クラスタのインデックス配列</b></dt><dd>エッジ点クラスタ配列( <em>edge_clust</em> ) に含まれる複数の クラスタ の中から 処理対象としたい クラスタ のインデックスを 配列 <em>clust_idx</em> に格納し指定して下さい。<br>
+ このとき 配列 <em>clust_idx</em> に 同じ インデックス が 複数個 含まれていても、そのインデックスのクラスタが 処理対象となるのは 1 度のみとなります。 <br>
+ 配列 <em>clust_idx</em> に エッジ点クラスタ配列 の要素数の範囲外となるインデックスが含まれていた場合は エラー となります。<br>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>また <em>clust_idx</em> に NULL を指定した場合、エッジ点クラスタ配列 の中の全ての クラスタ が処理対象となります。</dd></dl>
+<dl class="user" compact><dt><b>出力エッジ点 配列</b></dt><dd><em>dst_edges</em> は、関数内部で必要なメモリを確保します。メモリを確保した配列を指定しないで下さい。 <em>*dst_edges</em> が NULL で初期化されていない場合は エラーとなります。<br>
+ <em>dst_edges</em> に返されたメモリを解放する場合は <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用して下さい。<br>
+ また、出力されたエッジ点の数は <em>dst_edge_num</em> に返されます。</dd></dl>
+<dl class="user" compact><dt><b>クラスタが閉曲線である場合</b></dt><dd>処理対象エッジ点クラスタが閉曲線、つまり 最初に格納されているエッジ点と最後に格納されているエッジ点が同じである場合、 最後に格納されているエッジ点は 出力エッジ点 に含まれません。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_edges</em>&nbsp;</td><td>入力エッジ点 配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>src_edge_num</em>&nbsp;</td><td>入力エッジ点の個数 ( 1 &lt;= <em>src_edge_num</em> ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_clust</em>&nbsp;</td><td>エッジ点クラスタ配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>edge_clust_num</em>&nbsp;</td><td>エッジ点クラスタ配列 要素数</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>clust_idx</em>&nbsp;</td><td>処理対象エッジ点クラスタのインデックス配列 <br>
+ ( <em>clust_idx</em> = NULL とした場合は全 クラスタ を処理対象とする ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>clust_idx_num</em>&nbsp;</td><td>処理対象エッジ点クラスタのインデックス配列 要素数</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst_edges</em>&nbsp;</td><td>出力エッジ点 配列 ( 初期値は NULL を指定 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dst_edge_num</em>&nbsp;</td><td>出力エッジ点の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

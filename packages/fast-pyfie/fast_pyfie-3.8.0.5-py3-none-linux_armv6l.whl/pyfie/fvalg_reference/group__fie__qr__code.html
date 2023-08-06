@@ -1,0 +1,1636 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ＱＲコード認識</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ＱＲコード認識<br>
+<small>
+[<a class="el" href="group__fie__2d__code.html">２Ｄコード認識</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<h2><a class="anchor" name="fie_qr_about">
+QRコードとは</a></h2>
+QRコードは、マトリックス型二次元データコードの一種で、1994年にデンソーウェーブ(開発当時は株式会社デンソーの一部門)によって開発されました。 バーコードが横方向にしか情報を持たないのに対して、二次元データコードであるQRコードは縦横方向に情報を持っています(fig.1)。そのため、格納できる情報量が多く、数字だけでなく英字や漢字のデータも格納できます。 なお、『QRコード』という名称はデンソーウェーブの登録商標となっており、現在はISOの国際規格として制定(ISO/IEC18004)されています。<p>
+<div align="center">
+<img src="qr_top.png" alt="qr_top.png">
+<p><strong>fig.1 QRコード</strong></p></div>
+<h2><a class="anchor" name="fie_qr_const">
+QRコードの構成</a></h2>
+マトリックス型シンボルの二次元データコードであるQRコードは、セルと呼ばれる１つの要素が正方形状に並んで構成されます。各セルは1bitの情報を持ち黒と白(暗と明)で表されます(fig.2)。 １つのQRコードを構成するセルの数は、21×21セル(1型)から177×177セル(40型)まで、4セル刻みで決められています。 セルの配置については、シンボルの持つ情報を格納するデータ領域の他に、QRコードに格納されている情報に依存しない特定のパタンが配置される領域があり、主にシンボルの検出を行うために利用されます。 以下、黒いセルをQRコードのシンボルを構成する対象として説明を行います。<p>
+<div align="center">
+<img src="qr_const.png" alt="qr_const.png">
+<p><strong>fig.2 QRコードの構成(2型, 25×25セル)</strong></p></div>
+<p>
+<dl class="user" compact><dt><b>ファインダーパタン</b></dt><dd>シンボルの位置を特定するために使われるパタンで、3×3のセルの周囲を囲うようにセルが配置されています。このパタンをQRコードシンボルの3隅に配置することによって、シンボルの位置、傾き、大きさの特徴を検出することができます。</dd></dl>
+<dl class="user" compact><dt><b>アライメントパタン</b></dt><dd>シンボルの位置を特定する他、シンボルの歪みを補正する役割も持つパタンです。孤立したセルの周囲を囲うようにセルが配置されており、孤立したセルが存在することで、中心位置を取得する際の歪による影響を受けにくくしています。 型(サイズ)によってアライメントパタンの数も変化し、1型のシンボルにはアライメントパタンはありません。</dd></dl>
+<dl class="user" compact><dt><b>タイミングパタン</b></dt><dd>白と黒のセルが交互に並ぶパタンで、ファインダーパタンが存在する縦横の２方向に配置されます。 位置情報のほか、歪みやセルピッチの誤差等を検出することが可能です。</dd></dl>
+<dl class="user" compact><dt><b>クワイエットゾーン</b></dt><dd>QRコードシンボルの検出に必要な、シンボル周囲の余白スペースです。このクワイエットゾーンによりシンボル検出を正確に行うことが可能になります。一般的には４セル分のクワイエットゾーンが必要とされています。</dd></dl>
+<dl class="user" compact><dt><b>データ領域</b></dt><dd>QRコードのシンボルの中で、以上に挙げた領域以外がシンボル自体の持つ情報(形式、型番情報、メッセージ等)が格納されるデータ領域となります。 データはある規則に基づいてセル情報として符号化されており、入力データと誤り訂正機能を実現するリードソロモン符号が配置されていますので、シンボル自体が汚れ、欠け、隠蔽等により完全でなくてもデコード(読取り)を行うことが可能です。 次の表1、2にQRコードが持つことができるデータの情報とその量、さらに誤り訂正能力をまとめます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><center> 表1．QRコードの最大収納文字数 <table class="pretable">
+<tr>
+<th align="center">情報の種類 </th><th align="center">最大情報量  </th></tr>
+<tr>
+<td align="center">数字 </td><td align="right">7,089文字  </td></tr>
+<tr>
+<td align="center">英数字 </td><td align="right">4,296文字  </td></tr>
+<tr>
+<td align="center">8ビットバイト（バイナリ） </td><td align="right">2,953文字  </td></tr>
+<tr>
+<td align="center">漢字 </td><td align="right">1,817文字  </td></tr>
+</table>
+</center></dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><center> 表2．誤り訂正機能 <table class="pretable">
+<tr>
+<th align="center">訂正レベル </th><th align="center">復元能力  </th></tr>
+<tr>
+<td align="center">レベルL  </td><td align="left">コードワードの約7％が復元可能  </td></tr>
+<tr>
+<td align="center">レベルM  </td><td align="left">コードワードの約15％が復元可能  </td></tr>
+<tr>
+<td align="center">レベルQ  </td><td align="left">コードワードの約25％が復元可能  </td></tr>
+<tr>
+<td align="center">レベルH  </td><td align="left">コードワードの約30％が復元可能  </td></tr>
+</table>
+</center></dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>QRコードシンボルの色は黒(クワイエットゾーン白)のみの対応となります。 </li>
+<li>QRコードシンボルの鏡映反転には対応していません。 </li>
+<li>ECIプロトコル適用のコードには対応していません。 </li>
+<li>本ライブラリで対応しているQRコードはモデル２と呼ばれるものです。モデル１、マイクロQR等には対応していません。</li>
+</ul>
+</dd></dl>
+<h2><a class="anchor" name="fie_qr_code_example_overall">
+サンプルコード</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+INT main()
+{
+    FHANDLE fQRCObj = NULL;
+    INT i;
+    DOUBLE dSize;
+    INT iNumOfDecodedQRs;
+    INT* piDecodedQRIndex=NULL;
+    CHAR* pcMessage=NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>* pfmatDelimitingPts=NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>* pfmatAppts=NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>* pfmatCellOnes=NULL;
+    
+    FHANDLE hImg=NULL;
+    
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+    
+    <span class="comment">// 適当な8ビットグレイ画像を用意する - 画像ファイルは適宜用意すること</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"sample.bmp"</span>, &amp;hImg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// QRコードオブジェクトの生成</span>
+    <a class="code" href="group__fie__qr__code.html#gb00210fa0cc573b1770c2787d0e76b4b" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコードオブジ...">fnFIE_qr_alloc_obj</a>(&amp;fQRCObj);
+    
+    <span class="comment">//検出モードの設定</span>
+    <a class="code" href="group__fie__qr__code.html#gee29c35a0ac3213e92d7aa7566375156" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  動作モードの...">fnFIE_qr_set_effortlevel</a>( fQRCObj, <a class="code" href="group__fie__qr__code.html#ggd2c71130b5d5ee59db63a305c65dba4b1368b683a51fdd644f99b10a5475a789" title="最大モード：精度重視(推奨)">F_QR_MAXIMUM_EFFORT</a> );
+    
+    <span class="comment">// 指定した画像に対して QRコード読み取り実行</span>
+    <a class="code" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード...">fnFIE_qr_execute</a>( fQRCObj, hImg );
+    
+    <span class="comment">// QRコード読み取り成功情報を参照</span>
+    piDecodedQRIndex = NULL;
+    <a class="code" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード検出個...">fnFIE_qr_query_decoded</a>( fQRCObj, (<span class="keyword">const</span> INT **)&amp;piDecodedQRIndex, &amp;iNumOfDecodedQRs );
+    
+    <span class="comment">// QRコード情報の表示</span>
+    <span class="keywordflow">for</span>( i=0; i&lt;iNumOfDecodedQRs; i++ ){
+        
+        <span class="comment">// デコードメッセージの参照</span>
+        pcMessage = NULL;
+        <a class="code" href="group__fie__qr__code.html#gf7c57bfe151f62ef4d4c25ac0a683c07" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコードのメッ...">fnFIE_qr_query_message</a>( fQRCObj,  piDecodedQRIndex[i], (<span class="keyword">const</span> CHAR **)&amp;pcMessage );
+        
+        <span class="comment">//メッセージ表示</span>
+        printf(pcMessage);
+        
+        <span class="comment">// 必要に応じて、QRコードシンボル情報の参照を行って下さい</span>
+        pfmatDelimitingPts = NULL;
+        <a class="code" href="group__fie__qr__code.html#g5aea346dd4044a4ad0ebd576282dc81d" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード区切り...">fnFIE_qr_query_delimitingpts</a>( fQRCObj, piDecodedQRIndex[i], &amp;pfmatDelimitingPts );
+        pfmatAppts = NULL;
+        <a class="code" href="group__fie__qr__code.html#g1f7fc0329a5e9e9c5025ffbb3c1d557d" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  読み取りに成...">fnFIE_qr_query_appts</a>( fQRCObj, piDecodedQRIndex[i], &amp;pfmatAppts );
+        pfmatCellOnes = NULL;
+        <a class="code" href="group__fie__qr__code.html#g1c22f3492ecf245e69a153494c3f4beb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  読み取りに成...">fnFIE_qr_query_cellones</a>( fQRCObj, piDecodedQRIndex[i], &amp;pfmatCellOnes );
+        <a class="code" href="group__fie__qr__code.html#g83445c3b61a9e957f9a8c7f4edef533f" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  検出したQRコー...">fnFIE_qr_query_mincellwidth</a>( fQRCObj, piDecodedQRIndex[i], &amp;dSize );
+        <span class="comment">//...</span>
+    }
+
+    <span class="comment">// QR コードオブジェクト解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( fQRCObj );
+    
+    <span class="comment">// 画像オブジェクト解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hImg );
+    
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+    
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div><p>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>ISO 国際規格(ISO/IEC18004) </li>
+<li>JIS（日本工業規格 JIS X 0510） </li>
+<li>JISハンドブック 64 情報基本 日本規格協会 </li>
+<li>QRCode.com <a href="http://www.qrcode.com/">http://www.qrcode.com/</a>　株式会社デンソーウェーブ </li>
+<li>これでわかった２次元シンボル　オーム社　社団法人日本自動認識システム協会　佐藤政次 </li>
+<li>知っておきたいバーコード・二次元コードの知識 日本工業出版 平本 純也 </li>
+</ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">f_qr_mode</a> { <a class="el" href="group__fie__qr__code.html#ggd2c71130b5d5ee59db63a305c65dba4b967a80b8e5532ac267726d787bbb12cf">F_QR_NORMAL_EFFORT</a> =  100, 
+<a class="el" href="group__fie__qr__code.html#ggd2c71130b5d5ee59db63a305c65dba4b1368b683a51fdd644f99b10a5475a789">F_QR_MAXIMUM_EFFORT</a> =  101
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">QRコード検出モード  <a href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">f_qr_binarize_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__qr__code.html#ggf1c64dd86070643e4c036d66e8762a89538becc8318398490405713149a976ad">F_QR_BIN_SHIFT_AVERAGE</a> =  0, 
+<a class="el" href="group__fie__qr__code.html#ggf1c64dd86070643e4c036d66e8762a896923615a5a2fb2331637e461ac0f40f6">F_QR_BIN_FIX</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__qr__code.html#ggf1c64dd86070643e4c036d66e8762a8931604bfd31d3bfe576ba192f7dbf5269">F_QR_BIN_DISCRIMINATION</a> =  2, 
+<a class="el" href="group__fie__qr__code.html#ggf1c64dd86070643e4c036d66e8762a89180206df402b5009c9e88c874d10f5f7">F_QR_BIN_SHIFT_AVERAGE_OFFSET</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__qr__code.html#ggf1c64dd86070643e4c036d66e8762a89a0b6a2d173117f6531be52ebd15c4136">F_QR_BIN_KITTLER</a> =  4
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">QRコード二値化手法  <a href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gb00210fa0cc573b1770c2787d0e76b4b">fnFIE_qr_alloc_obj</a> (FHANDLE *pfQRCObj)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコードオブジェクトの生成  <a href="#gb00210fa0cc573b1770c2787d0e76b4b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1">fnFIE_qr_execute</a> (FHANDLE fQRCObj, FHANDLE fimg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード デコード関数  <a href="#gd1812006615f0c320272b54e51e818c1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db">fnFIE_qr_query_decoded</a> (FHANDLE fQRCObj, const INT **ppiDecodedQRIndex, INT *piNumOfDecodedQRs)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード検出個数とインデックス配列の取得  <a href="#gab5238f13f25e5899d02c1f9b56479db"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24">fnFIE_qr_query_undecoded</a> (FHANDLE fQRCObj, const INT **ppiUndecodedQRIndex, INT *piNumOfUndecodedQRs)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  デコードに失敗したQRコード個数とインデックス配列の取得  <a href="#g645129e27fe95ec85e7e50e8c8b5fa24"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gf7c57bfe151f62ef4d4c25ac0a683c07">fnFIE_qr_query_message</a> (FHANDLE fQRCObj, INT iIndex, const CHAR **ppcMessage)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコードのメッセージの参照  <a href="#gf7c57bfe151f62ef4d4c25ac0a683c07"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g0141ff1b6540e251f9ff31024af05064">fnFIE_qr_query_center</a> (FHANDLE fQRCObj, INT iIndex, DOUBLE *pdCenterX, DOUBLE *pdCenterY)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  読み取りに成功したQRコードの中心位置を取得  <a href="#g0141ff1b6540e251f9ff31024af05064"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g45c10dce1b5609f1ac9eea38ec06adfa">fnFIE_qr_query_size</a> (FHANDLE fQRCObj, INT iIndex, INT *piQRSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  位置検出したQRコードのサイズの取得  <a href="#g45c10dce1b5609f1ac9eea38ec06adfa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g83445c3b61a9e957f9a8c7f4edef533f">fnFIE_qr_query_mincellwidth</a> (FHANDLE fQRCObj, INT iIndex, DOUBLE *pdMinCellWidth)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  検出したQRコードの最小セルサイズの取得  <a href="#g83445c3b61a9e957f9a8c7f4edef533f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g1f7fc0329a5e9e9c5025ffbb3c1d557d">fnFIE_qr_query_appts</a> (FHANDLE fQRCObj, INT iIndex, <a class="el" href="structFMATRIX.html">FMATRIX</a> **ppfmatAPPos)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  読み取りに成功したQRコードのファインダーパタン、アライメントパタンの中心位置の参照  <a href="#g1f7fc0329a5e9e9c5025ffbb3c1d557d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g1c22f3492ecf245e69a153494c3f4beb">fnFIE_qr_query_cellones</a> (FHANDLE fQRCObj, INT iIndex, <a class="el" href="structFMATRIX.html">FMATRIX</a> **ppfmatCellOnes)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  読み取りに成功したQRコードのセル位置情報の参照  <a href="#g1c22f3492ecf245e69a153494c3f4beb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g5aea346dd4044a4ad0ebd576282dc81d">fnFIE_qr_query_delimitingpts</a> (FHANDLE fQRCObj, INT iIndex, <a class="el" href="structFMATRIX.html">FMATRIX</a> **ppfmatDelimitingPts)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード区切り座標値の参照  <a href="#g5aea346dd4044a4ad0ebd576282dc81d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gc9bd680143a87b3dc6c7354f423408e9">fnFIE_qr_add_offsets</a> (FHANDLE fQRCObj, INT iOffsetX, INT iOffsetY)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード検出位置に加味するオフセット量の設定  <a href="#gc9bd680143a87b3dc6c7354f423408e9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g670873e44ec8b52b9baba764ebec2b89">fnFIE_qr_set_binwinsize</a> (FHANDLE fQRCObj, INT iWinSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード検出時の２値化ウィンドウサイズ  <a href="#g670873e44ec8b52b9baba764ebec2b89"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g8ab5fcf6839b67ba2b0c85abba334ac5">fnFIE_qr_get_binwinsize</a> (FHANDLE fQRCObj, INT *piWinSize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  ２値化ウィンドウサイズの取得  <a href="#g8ab5fcf6839b67ba2b0c85abba334ac5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gce5697b047b1837810e09bfcde93b6a7">fnFIE_qr_set_minvar</a> (FHANDLE fQRCObj, INT iBinMinVar)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード２値化分散しきい値の設定  <a href="#gce5697b047b1837810e09bfcde93b6a7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g130efd4ac6f236532ae62b21f136e3be">fnFIE_qr_get_minvar</a> (FHANDLE fQRCObj, INT *piBinMinVar)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  ２値化分散しきい値の取得  <a href="#g130efd4ac6f236532ae62b21f136e3be"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gee29c35a0ac3213e92d7aa7566375156">fnFIE_qr_set_effortlevel</a> (FHANDLE fQRCObj, enum <a class="el" href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">f_qr_mode</a> EffortLevel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  動作モードの設定  <a href="#gee29c35a0ac3213e92d7aa7566375156"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#gc2d1b325fd085e85c0e6a76fe13b50b7">fnFIE_qr_get_effortlevel</a> (FHANDLE fQRCObj, enum <a class="el" href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">f_qr_mode</a> *pEffortLevel)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  動作モードの取得  <a href="#gc2d1b325fd085e85c0e6a76fe13b50b7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g93b7569a32a4087df69df2569efaf34e">fnFIE_qr_set_binarize_method</a> (FHANDLE fQRCObj, enum <a class="el" href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">f_qr_binarize_mode</a> mode, INT threshold)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  二値化手法の設定  <a href="#g93b7569a32a4087df69df2569efaf34e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g32746f1de06d1bcde901963542533ac8">fnFIE_qr_get_binarize_method</a> (FHANDLE fQRCObj, enum <a class="el" href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">f_qr_binarize_mode</a> *mode, INT *threshold)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  二値化手法の取得  <a href="#g32746f1de06d1bcde901963542533ac8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g8839cf61e79d3b4d0ce67d3770ea8af8">fnFIE_qr_set_timeout</a> (FHANDLE fQRCObj, DOUBLE timeout)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの設定  <a href="#g8839cf61e79d3b4d0ce67d3770ea8af8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__qr__code.html#g71ce0af73107e59527fb9978a7cadb32">fnFIE_qr_get_timeout</a> (FHANDLE fQRCObj, DOUBLE *timeout)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの取得  <a href="#g71ce0af73107e59527fb9978a7cadb32"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gd2c71130b5d5ee59db63a305c65dba4b"></a><!-- doxytag: member="fie.h::f_qr_mode" ref="gd2c71130b5d5ee59db63a305c65dba4b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">f_qr_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+QRコード検出モード 
+<p>
+QRコード検出における検出モードです。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggd2c71130b5d5ee59db63a305c65dba4b967a80b8e5532ac267726d787bbb12cf"></a><!-- doxytag: member="F_QR_NORMAL_EFFORT" ref="ggd2c71130b5d5ee59db63a305c65dba4b967a80b8e5532ac267726d787bbb12cf" args="" -->F_QR_NORMAL_EFFORT</em>&nbsp;</td><td>
+通常モード：通常検出(汚れ＆欠損がない、処理時間重視) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd2c71130b5d5ee59db63a305c65dba4b1368b683a51fdd644f99b10a5475a789"></a><!-- doxytag: member="F_QR_MAXIMUM_EFFORT" ref="ggd2c71130b5d5ee59db63a305c65dba4b1368b683a51fdd644f99b10a5475a789" args="" -->F_QR_MAXIMUM_EFFORT</em>&nbsp;</td><td>
+最大モード：精度重視(推奨) </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf1c64dd86070643e4c036d66e8762a89"></a><!-- doxytag: member="fie.h::f_qr_binarize_mode" ref="gf1c64dd86070643e4c036d66e8762a89" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">f_qr_binarize_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+QRコード二値化手法 
+<p>
+QRコード検出における二値化手法 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggf1c64dd86070643e4c036d66e8762a89538becc8318398490405713149a976ad"></a><!-- doxytag: member="F_QR_BIN_SHIFT_AVERAGE" ref="ggf1c64dd86070643e4c036d66e8762a89538becc8318398490405713149a976ad" args="" -->F_QR_BIN_SHIFT_AVERAGE</em>&nbsp;</td><td>
+通常モード　局所領域平均値による二値化 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf1c64dd86070643e4c036d66e8762a896923615a5a2fb2331637e461ac0f40f6"></a><!-- doxytag: member="F_QR_BIN_FIX" ref="ggf1c64dd86070643e4c036d66e8762a896923615a5a2fb2331637e461ac0f40f6" args="" -->F_QR_BIN_FIX</em>&nbsp;</td><td>
+固定閾値による二値化 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf1c64dd86070643e4c036d66e8762a8931604bfd31d3bfe576ba192f7dbf5269"></a><!-- doxytag: member="F_QR_BIN_DISCRIMINATION" ref="ggf1c64dd86070643e4c036d66e8762a8931604bfd31d3bfe576ba192f7dbf5269" args="" -->F_QR_BIN_DISCRIMINATION</em>&nbsp;</td><td>
+大津の判別分析法による二値化 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf1c64dd86070643e4c036d66e8762a89180206df402b5009c9e88c874d10f5f7"></a><!-- doxytag: member="F_QR_BIN_SHIFT_AVERAGE_OFFSET" ref="ggf1c64dd86070643e4c036d66e8762a89180206df402b5009c9e88c874d10f5f7" args="" -->F_QR_BIN_SHIFT_AVERAGE_OFFSET</em>&nbsp;</td><td>
+オフセット付き局所領域平均値による二値化 <br>
+ 局所領域平均値に定数を加算した結果を閾値にして二値化を行います。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggf1c64dd86070643e4c036d66e8762a89a0b6a2d173117f6531be52ebd15c4136"></a><!-- doxytag: member="F_QR_BIN_KITTLER" ref="ggf1c64dd86070643e4c036d66e8762a89a0b6a2d173117f6531be52ebd15c4136" args="" -->F_QR_BIN_KITTLER</em>&nbsp;</td><td>
+キトラー法による二値化 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gb00210fa0cc573b1770c2787d0e76b4b"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_alloc_obj" ref="gb00210fa0cc573b1770c2787d0e76b4b" args="(FHANDLE *pfQRCObj)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_alloc_obj           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>pfQRCObj</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコードオブジェクトの生成 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pfQRCObj</em>&nbsp;</td><td>QRコードオブジェクトのポインタ。関数エントリー時には <em>*pfQRCObj</em> を NULL で初期化してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>QRコードオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd1812006615f0c320272b54e51e818c1"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_execute" ref="gd1812006615f0c320272b54e51e818c1" args="(FHANDLE fQRCObj, FHANDLE fimg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_execute           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fimg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード デコード関数 
+<p>
+入力画像に対して、QRコードのデコードを実行する関数です。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fimg</em>&nbsp;</td><td>入力画像(type:UC8/ch:1)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gab5238f13f25e5899d02c1f9b56479db"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_decoded" ref="gab5238f13f25e5899d02c1f9b56479db" args="(FHANDLE fQRCObj, const INT **ppiDecodedQRIndex, INT *piNumOfDecodedQRs)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_decoded           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT **&nbsp;</td>
+          <td class="paramname"> <em>ppiDecodedQRIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piNumOfDecodedQRs</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード検出個数とインデックス配列の取得 
+<p>
+シンボルの検出とデコードに成功したQRコードの数と、そのインデックス配列への参照を取得する関数です。ここで取得したインデックス配列を参照してQRコードの情報(デコードしたメッセージ、位置情報等)にアクセスします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppiDecodedQRIndex</em>&nbsp;</td><td>正常に読み取ることができたQRコードインデックス配列の参照。関数エントリー時には <em>*ppiDecodedQRIndex</em> を NULL で初期化してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piNumOfDecodedQRs</em>&nbsp;</td><td>正常に読み取ることができたQRコード数 </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li><em>ppiDecodedQRIndex</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> か <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> が呼ばれたときには無効になります。</li><li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を行った後にコールします。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gf7c57bfe151f62ef4d4c25ac0a683c07" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコードのメッ...">fnFIE_qr_query_message()</a>, <a class="el" href="group__fie__qr__code.html#g0141ff1b6540e251f9ff31024af05064" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_center()</a>, <a class="el" href="group__fie__qr__code.html#g45c10dce1b5609f1ac9eea38ec06adfa" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  位置検出したQR...">fnFIE_qr_query_size()</a>, <a class="el" href="group__fie__qr__code.html#g1f7fc0329a5e9e9c5025ffbb3c1d557d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_appts()</a>, <a class="el" href="group__fie__qr__code.html#g1c22f3492ecf245e69a153494c3f4beb" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_cellones()</a>, <a class="el" href="group__fie__qr__code.html#g83445c3b61a9e957f9a8c7f4edef533f" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  検出したQRコー...">fnFIE_qr_query_mincellwidth()</a>, <a class="el" href="group__fie__qr__code.html#g5aea346dd4044a4ad0ebd576282dc81d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード区切り...">fnFIE_qr_query_delimitingpts()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g645129e27fe95ec85e7e50e8c8b5fa24"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_undecoded" ref="g645129e27fe95ec85e7e50e8c8b5fa24" args="(FHANDLE fQRCObj, const INT **ppiUndecodedQRIndex, INT *piNumOfUndecodedQRs)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_undecoded           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT **&nbsp;</td>
+          <td class="paramname"> <em>ppiUndecodedQRIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piNumOfUndecodedQRs</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  デコードに失敗したQRコード個数とインデックス配列の取得 
+<p>
+画像処理によってシンボルの検出は成功したが、デコード処理に異常が起こったQRコードの数とインデックス配列への参照を取得する関数です。ここで取得したインデックス配列を参照してQRコードの情報にアクセスします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppiUndecodedQRIndex</em>&nbsp;</td><td>デコードに失敗したQRコードインデックス配列の参照。関数エントリー時には <em>*ppiUndecodedQRIndex</em> を NULL で初期化してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piNumOfUndecodedQRs</em>&nbsp;</td><td>デコードに失敗したQRコード数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li><em>ppiUnecodedQRIndex</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> か <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> が呼ばれたときには無効になります。</li><li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を行った後にコールします。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#g0141ff1b6540e251f9ff31024af05064" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_center()</a>, <a class="el" href="group__fie__qr__code.html#g45c10dce1b5609f1ac9eea38ec06adfa" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  位置検出したQR...">fnFIE_qr_query_size()</a>, <a class="el" href="group__fie__qr__code.html#g1f7fc0329a5e9e9c5025ffbb3c1d557d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_appts()</a>, <a class="el" href="group__fie__qr__code.html#g1c22f3492ecf245e69a153494c3f4beb" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_cellones()</a>, <a class="el" href="group__fie__qr__code.html#g83445c3b61a9e957f9a8c7f4edef533f" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  検出したQRコー...">fnFIE_qr_query_mincellwidth()</a>, <a class="el" href="group__fie__qr__code.html#g5aea346dd4044a4ad0ebd576282dc81d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード区切り...">fnFIE_qr_query_delimitingpts()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf7c57bfe151f62ef4d4c25ac0a683c07"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_message" ref="gf7c57bfe151f62ef4d4c25ac0a683c07" args="(FHANDLE fQRCObj, INT iIndex, const CHAR **ppcMessage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_message           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CHAR **&nbsp;</td>
+          <td class="paramname"> <em>ppcMessage</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコードのメッセージの参照 
+<p>
+デコードに成功したQRコードのメッセージを参照します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置。(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppcMessage</em>&nbsp;</td><td>読み取ったQRコードメッセージ。関数エントリー時には <em>*ppcMessage</em> を NULL で初期化してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>メッセージがありません(<em>iIndex</em> にデコードに失敗した値を指定) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a> によって得られたインデックス配列を参照して使用します。</li><li><em>iIndex</em> に指定できる範囲は「位置検出に成功したQRコード数」ですが、指定した <em>iIndex</em> が読取に成功していなかった場合には戻り値に F_ERR_NODATA が返ります。</li><li><em>ppcMessage</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> が呼ばれた場合は無効になります。</li><li>漢字モードで格納されているデータは Shift_JIS コードで格納されます。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0141ff1b6540e251f9ff31024af05064"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_center" ref="g0141ff1b6540e251f9ff31024af05064" args="(FHANDLE fQRCObj, INT iIndex, DOUBLE *pdCenterX, DOUBLE *pdCenterY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_center           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdCenterX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdCenterY</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  読み取りに成功したQRコードの中心位置を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdCenterX</em>&nbsp;</td><td>QRコードの中心 X 座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdCenterY</em>&nbsp;</td><td>QRコードの中心 Y 座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> によって得られたインデックス配列を参照して使用します。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a>, <a class="el" href="group__fie__qr__code.html#gc9bd680143a87b3dc6c7354f423408e9" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出位...">fnFIE_qr_add_offsets()</a></dd></dl>
+<div align="center">
+<img src="qr_drawcenter.png" alt="qr_drawcenter.png">
+<p><strong>fig. fnFIE_qr_query_center() によって得られた中心座標に対して×マークを描画した例</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="g45c10dce1b5609f1ac9eea38ec06adfa"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_size" ref="g45c10dce1b5609f1ac9eea38ec06adfa" args="(FHANDLE fQRCObj, INT iIndex, INT *piQRSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_size           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piQRSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  位置検出したQRコードのサイズの取得 
+<p>
+対応するQRコードのサイズを取得します。サイズはQRコードの 1～40型に対応する 21～177の値になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piQRSize</em>&nbsp;</td><td>QRコードサイズ(=１辺のセル個数(21～177) )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> によって得られたインデックス配列を参照して使用します。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g83445c3b61a9e957f9a8c7f4edef533f"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_mincellwidth" ref="g83445c3b61a9e957f9a8c7f4edef533f" args="(FHANDLE fQRCObj, INT iIndex, DOUBLE *pdMinCellWidth)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_mincellwidth           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>pdMinCellWidth</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  検出したQRコードの最小セルサイズの取得 
+<p>
+検出したQRコードに存在するセルの中で最小サイズであるセルの値を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pdMinCellWidth</em>&nbsp;</td><td>最小セル幅</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> によって得られたインデックス配列を参照して使用します。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1f7fc0329a5e9e9c5025ffbb3c1d557d"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_appts" ref="g1f7fc0329a5e9e9c5025ffbb3c1d557d" args="(FHANDLE fQRCObj, INT iIndex, FMATRIX **ppfmatAPPos)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_appts           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppfmatAPPos</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  読み取りに成功したQRコードのファインダーパタン、アライメントパタンの中心位置の参照 
+<p>
+QRコードのファインダーパタン、アライメントパタンの位置情報(<em>x</em>,<em>y</em>)を取得します。<br>
+ 列ベクトル(3×<em>n</em> の行列で、<em>n</em> は列の数)として値を参照し、各列には、<img class="formulaInl" alt="$ \left[ \begin{array}{ccc} \bf{x} &amp; \bf{y} &amp; \bf{1} \end{array} \right]^t $" src="form_956.png"> のように座標が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppfmatAPPos</em>&nbsp;</td><td>アライメントパタン中心座標(<em>x</em>,<em>y</em>)の参照。関数エントリー時には <em>*ppfmatAPPos</em> を NULL で初期化してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> によって得られたインデックス配列を参照して使用します。</li><li>ファインダーパタンの中心位置座標も含まれています。<br>
+</li><li><em>ppfmatAPPos</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> が呼ばれた場合は無効になります。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a>, <a class="el" href="group__fie__qr__code.html#gc9bd680143a87b3dc6c7354f423408e9" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出位...">fnFIE_qr_add_offsets()</a></dd></dl>
+<dl class="user" compact><dt><b>記述例</b></dt><dd><div class="fragment"><pre class="fragment">    <span class="comment">// ※サンプルコードは結果の描画部のみの記述です。</span>
+
+    ...
+    piDecodedQRIndex = NULL;
+    <a class="code" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード検出個...">fnFIE_qr_query_decoded</a>( fQRCObj, &amp;piDecodedQRIndex, &amp;iNumOfDecodedQRs ) );
+    
+    <span class="keywordflow">for</span>( i=0; i&lt;iNumOfDecodedQRs; i++ ){
+        <span class="comment">//ファインダーパタン、アライメントパタン描画情報の取得</span>
+        pfmatAppts  = NULL;
+        <a class="code" href="group__fie__qr__code.html#g1f7fc0329a5e9e9c5025ffbb3c1d557d" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  読み取りに成...">fnFIE_qr_query_appts</a>( fQRCObj, piDecodedQRIndex[i], &amp;pfmatAppts );
+        
+        <a class="code" href="group__fie__qr__code.html#g83445c3b61a9e957f9a8c7f4edef533f" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  検出したQRコー...">fnFIE_qr_query_mincellwidth</a>( fQRCObj, piDecodedQRIndex[i], &amp;dSize );
+        
+        rc = dSize; <span class="comment">//描画半径(任意)</span>
+        <span class="keywordflow">for</span>( c=0; c&lt;pfmatAppts-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; c++ ){
+            xc = pfmatAppts-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][c];   <span class="comment">//各パタンのＸ座標</span>
+            yc = pfmatAppts-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][c];   <span class="comment">//各パタンのＹ座標</span>
+            
+            draw_circle( xc, yc, rc );  <span class="comment">//描画関数(各自用意)</span>
+        }
+    }
+    ...
+</pre></div></dd></dl>
+<div align="center">
+<img src="qr_drawappts.png" alt="qr_drawappts.png">
+<p><strong>fig. fnFIE_qr_query_appts() によって得られた点情報を中心にセルサイズを加味して円を描画した例</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="g1c22f3492ecf245e69a153494c3f4beb"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_cellones" ref="g1c22f3492ecf245e69a153494c3f4beb" args="(FHANDLE fQRCObj, INT iIndex, FMATRIX **ppfmatCellOnes)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_cellones           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppfmatCellOnes</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  読み取りに成功したQRコードのセル位置情報の参照 
+<p>
+セルが存在する位置情報(<em>x</em>,<em>y</em>)を取得します。<br>
+ 得られる位置情報はQRコードを構成するセルのみです。つまりクワイエットゾーンと違う色を持つ箇所のみ位置が得られます。 列ベクトル(3×<em>n</em> の行列で、<em>n</em> は列の数)として値を参照し、各列には、<img class="formulaInl" alt="$ \left[ \begin{array}{ccc} \bf{x} &amp; \bf{y} &amp; \bf{1} \end{array} \right]^t $" src="form_956.png"> のように座標が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppfmatCellOnes</em>&nbsp;</td><td>セルが存在する位置情報(<em>x</em>,<em>y</em>)の列ベクトルの参照。関数エントリー時には <em>*ppfmatCellOnes</em> を NULL で初期化してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> によって得られたインデックス配列を参照して使用します。</li><li><em>ppfmatCellOnes</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> が呼ばれた場合は無効になります。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a>, <a class="el" href="group__fie__qr__code.html#gc9bd680143a87b3dc6c7354f423408e9" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出位...">fnFIE_qr_add_offsets()</a></dd></dl>
+<dl class="user" compact><dt><b>記述例</b></dt><dd></dd></dl>
+<div class="fragment"><pre class="fragment">    <span class="comment">// ※サンプルコードは結果の描画部のみの記述です。</span>
+
+    ...
+    piDecodedQRIndex = NULL;
+    <a class="code" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード検出個...">fnFIE_qr_query_decoded</a>( fQRCObj, &amp;piDecodedQRIndex, &amp;iNumOfDecodedQRs ) );
+    
+    <span class="keywordflow">for</span>( i=0; i&lt;iNumOfDecodedQRs; i++ ){
+        <span class="comment">//クワイエットゾーンと違う色を持つセル部描画情報の取得</span>
+        pfmatCellOnes = NULL;
+        <a class="code" href="group__fie__qr__code.html#g1c22f3492ecf245e69a153494c3f4beb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  読み取りに成...">fnFIE_qr_query_cellones</a>( fQRCObj, piDecodedQRIndex[i], &amp;pfmatCellOnes );
+        
+        <a class="code" href="group__fie__qr__code.html#g83445c3b61a9e957f9a8c7f4edef533f" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  検出したQRコー...">fnFIE_qr_query_mincellwidth</a>( fQRCObj, piDecodedQRIndex[i], &amp;dSize );
+        
+        rc = dSize/2; <span class="comment">//描画半径(任意)</span>
+        
+        <span class="keywordflow">for</span>( c=0; c&lt;pfmatCellOnes-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; c++ ){
+            xc = pfmatCellOnes-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][c];    <span class="comment">//各セルのＸ座標</span>
+            yc = pfmatCellOnes-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][c];    <span class="comment">//各セルのＹ座標</span>
+            
+            draw_circle( xc, yc, rc );  <span class="comment">//描画関数(各自用意)</span>
+        }
+    }
+    ...
+</pre></div><p>
+<div align="center">
+<img src="qr_drawcellones.png" alt="qr_drawcellones.png">
+<p><strong>fig. fnFIE_qr_query_cellones() によって得られた点情報を中心にセルサイズを加味して円を描画した例</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="g5aea346dd4044a4ad0ebd576282dc81d"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_query_delimitingpts" ref="g5aea346dd4044a4ad0ebd576282dc81d" args="(FHANDLE fQRCObj, INT iIndex, FMATRIX **ppfmatDelimitingPts)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_query_delimitingpts           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppfmatDelimitingPts</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード区切り座標値の参照 
+<p>
+QRコードの外周を構成する位置情報(<em>x</em>,<em>y</em>)を取得します。<br>
+ 列ベクトル(3×<em>n</em> の行列で、<em>n</em> は列の数)として値を参照し、各列には、<img class="formulaInl" alt="$ \left[ \begin{array}{ccc} \bf{x} &amp; \bf{y} &amp; \bf{1} \end{array} \right]^t $" src="form_956.png"> のように座標が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iIndex</em>&nbsp;</td><td>検出したQRコードインデックス配列の参照位置(0≦<em>iIndex＜位置検出できたQRコード数</em>) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppfmatDelimitingPts</em>&nbsp;</td><td>QRコード区切り座標値(<em>x</em>,<em>y</em>)の列ベクトルの参照。関数エントリー時には <em>*ppfmatDelimitingPts</em> を NULL で初期化してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a> によって得られたインデックス配列を参照して使用します。</li><li><em>ppfmatDelimitingPts</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> が呼ばれた場合は無効になります。</li><li><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a>, <a class="el" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出個...">fnFIE_qr_query_decoded()</a>, <a class="el" href="group__fie__qr__code.html#g645129e27fe95ec85e7e50e8c8b5fa24" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  デコードに失...">fnFIE_qr_query_undecoded()</a>, <a class="el" href="group__fie__qr__code.html#gc9bd680143a87b3dc6c7354f423408e9" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出位...">fnFIE_qr_add_offsets()</a></dd></dl>
+<dl class="user" compact><dt><b>記述例</b></dt><dd><div class="fragment"><pre class="fragment">    <span class="comment">// ※サンプルコードは結果の描画部のみの記述です。</span>
+
+    ...
+    piDecodedQRIndex = NULL;
+    <a class="code" href="group__fie__qr__code.html#gab5238f13f25e5899d02c1f9b56479db" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード検出個...">fnFIE_qr_query_decoded</a>( fQRCObj, &amp;piDecodedQRIndex, &amp;iNumOfDecodedQRs ) );
+    
+    <span class="keywordflow">for</span>( i=0; i&lt;iNumOfDecodedQRs; i++ ){
+        <span class="comment">//境界点情報の取得</span>
+        pfmatDelimitingPts = NULL;
+        <a class="code" href="group__fie__qr__code.html#g5aea346dd4044a4ad0ebd576282dc81d" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード区切り...">fnFIE_qr_query_delimitingpts</a>( fQRCObj, piDecodedQRIndex[i], &amp;pfmatDelimitingPts );
+        
+        <span class="comment">//得られた点の先頭と終端を結ぶことで、QRコードシンボルを囲うように描画します</span>
+        <span class="keywordflow">for</span>( c=0; c&lt;pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; c++ ){
+            xs = pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][(c  )%pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線始点Ｘ座標</span>
+            ys = pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][(c  )%pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線始点Ｙ座標</span>
+            xe = pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][(c+1)%pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線終点Ｘ座標</span>
+            ye = pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][(c+1)%pfmatDelimitingPts-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線終点Ｙ座標</span>
+            
+            draw_line( xs, ys, xe, ye );    <span class="comment">//描画関数(各自用意)</span>
+        }
+    }
+    ...
+</pre></div></dd></dl>
+<div align="center">
+<img src="qr_drawdelimit.png" alt="qr_drawdelimit.png">
+<p><strong>fig. fnFIE_qr_query_delimitingpts() によって得られた点情報を線でつないで描画した例</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="gc9bd680143a87b3dc6c7354f423408e9"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_add_offsets" ref="gc9bd680143a87b3dc6c7354f423408e9" args="(FHANDLE fQRCObj, INT iOffsetX, INT iOffsetY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_add_offsets           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iOffsetX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iOffsetY</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード検出位置に加味するオフセット量の設定 
+<p>
+検出したすべてのQRコードの検出位置(x,y)に、本関数で設定したオフセット量を足します。 例えば、チャイルド画像を使用してQRコードの読み取りを行った場合に、本関数でオフセット値を入力するとルート画像上での位置情報として回答を得ることができます。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iOffsetX</em>&nbsp;</td><td>検出位置に足されるオフセット量Ｘ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iOffsetY</em>&nbsp;</td><td>検出位置に足されるオフセット量Ｙ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> の結果に常に反映される値を設定する関数ではなく、1回の <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> によって格納された位置情報に対して値を加算するものです。 そのため、たとえいつも同じオフセット量を加算する場合でも <a class="el" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード...">fnFIE_qr_execute()</a> によって検出を行った後に本関数を連続してコールする必要があります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#g0141ff1b6540e251f9ff31024af05064" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_center()</a>, <a class="el" href="group__fie__qr__code.html#g1f7fc0329a5e9e9c5025ffbb3c1d557d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_appts()</a>, <a class="el" href="group__fie__qr__code.html#g5aea346dd4044a4ad0ebd576282dc81d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード区切り...">fnFIE_qr_query_delimitingpts()</a>, <a class="el" href="group__fie__qr__code.html#g1c22f3492ecf245e69a153494c3f4beb" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  読み取りに成...">fnFIE_qr_query_cellones()</a></dd></dl>
+<dl class="user" compact><dt><b>記述例</b></dt><dd></dd></dl>
+<div class="fragment"><pre class="fragment">    <span class="comment">// ※サンプルコードは本関数の使用についてのみの記述です。</span>
+
+    ...
+    <span class="comment">// 画像オブジェクト(hImg)のサイズ 640x480</span>
+    <span class="comment">// QRコードの検出を始点:(50,100), 横サイズ:150, 縦サイズ:200のエリアで行う</span>
+    
+    FHANDLE hImgChild = NULL; <span class="comment">// child image</span>
+    FHANDLE fQRCObj = NULL; <span class="comment">// QR code object</span>
+    INT child_sx, child_sy, child_width, child_height;
+    
+    <span class="comment">// チャイルド画像エリア指定</span>
+    child_sx     =  50;
+    child_sy     = 100;
+    child_width  = 150;
+    child_height = 200;
+    
+    <span class="comment">// チャイルド画像生成</span>
+    hImgChild =  <a class="code" href="group__fie__image.html#g167af7bb9b6ab179a806542d68b8b924" title="チャイルド画像の確保">fnFIE_img_child_alloc</a>( hImg, child_sx, child_sy, child_width, child_height );
+    
+    <span class="comment">// QRコードオブジェクト生成</span>
+    <a class="code" href="group__fie__qr__code.html#gb00210fa0cc573b1770c2787d0e76b4b" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコードオブジ...">fnFIE_qr_alloc_obj</a>( &amp;fQRCObj );
+    
+    <span class="comment">// QRコード読取り実行</span>
+    <a class="code" href="group__fie__qr__code.html#gd1812006615f0c320272b54e51e818c1" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード...">fnFIE_qr_execute</a>( fQRCObj, hImgChild );
+    
+    <span class="comment">// 親画像での結果座標に変換</span>
+    <a class="code" href="group__fie__qr__code.html#gc9bd680143a87b3dc6c7354f423408e9" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  QRコード検出位...">fnFIE_qr_add_offsets</a>( fQRCObj, child_sx, child_sy );
+    
+    <span class="comment">// 親画像上に結果座標を表示</span>
+    ...
+</pre></div> 
+</div>
+</div><p>
+<a class="anchor" name="g670873e44ec8b52b9baba764ebec2b89"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_set_binwinsize" ref="g670873e44ec8b52b9baba764ebec2b89" args="(FHANDLE fQRCObj, INT iWinSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_set_binwinsize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iWinSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード検出時の２値化ウィンドウサイズ 
+<p>
+QRコードを検出する際に使用する局所領域２値化のウィンドウサイズを設定します。セル１つの大きさ≦<em>iWinSize</em> を目安に設定します。<br>
+ ２値化手法がF_QR_BIN_SHIFT_AVERAGEまたはF_QR_BIN_SHIFT_AVERAGE_OFFSETの際に利用されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iWinSize</em>&nbsp;</td><td>２値化ウィンドウサイズ(初期値:11, 3≦<em>iWinSize≦15</em>, <em>iWinSize</em> は奇数) </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#g8ab5fcf6839b67ba2b0c85abba334ac5" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  ２値化ウィン...">fnFIE_qr_get_binwinsize()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8ab5fcf6839b67ba2b0c85abba334ac5"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_get_binwinsize" ref="g8ab5fcf6839b67ba2b0c85abba334ac5" args="(FHANDLE fQRCObj, INT *piWinSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_get_binwinsize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piWinSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  ２値化ウィンドウサイズの取得 
+<p>
+現在設定されている２値化ウインドウサイズを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piWinSize</em>&nbsp;</td><td>２値化ウィンドウサイズ </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#g670873e44ec8b52b9baba764ebec2b89" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード検出時...">fnFIE_qr_set_binwinsize()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gce5697b047b1837810e09bfcde93b6a7"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_set_minvar" ref="gce5697b047b1837810e09bfcde93b6a7" args="(FHANDLE fQRCObj, INT iBinMinVar)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_set_minvar           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iBinMinVar</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  QRコード２値化分散しきい値の設定 
+<p>
+２値化のしきい値を決定するための分散値を指定します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iBinMinVar</em>&nbsp;</td><td>２値化最小分散値 (初期値:1000, 0≦<em>iBinMinVar</em>) </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#g130efd4ac6f236532ae62b21f136e3be" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  ２値化分散し...">fnFIE_qr_get_minvar()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g130efd4ac6f236532ae62b21f136e3be"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_get_minvar" ref="g130efd4ac6f236532ae62b21f136e3be" args="(FHANDLE fQRCObj, INT *piBinMinVar)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_get_minvar           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>piBinMinVar</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  ２値化分散しきい値の取得 
+<p>
+現在設定されている分散しきい値を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piBinMinVar</em>&nbsp;</td><td>２値化分散しきい値 </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gce5697b047b1837810e09bfcde93b6a7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード２値化...">fnFIE_qr_set_minvar()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gee29c35a0ac3213e92d7aa7566375156"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_set_effortlevel" ref="gee29c35a0ac3213e92d7aa7566375156" args="(FHANDLE fQRCObj, enum f_qr_mode EffortLevel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_set_effortlevel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">f_qr_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>EffortLevel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  動作モードの設定 
+<p>
+QRコードシンボル検出の動作モード( F_QR_NORMAL_EFFORT or F_QR_MAXIMUM_EFFORT )を設定します。<p>
+<dl class="user" compact><dt><b>F_QR_NORMAL_EFFORT モード と F_QR_MAXIMUM_EFFORT モード の違いについて</b></dt><dd>F_QR_MAXIMUM_EFFORT では、ファインダーパタンの中心位置の推定が F_QR_NORMAL_EFFORT モードよりも正確です。 特にセルサイズが小さかったり、ファインダーパタンが劣化していたりするような場合にはより良い結果が得られる傾向があります。 アライメントパタンについてもファインダーパタンと同様に、良い結果が得られる傾向があります。<br>
+ 設定の際には、処理時間に余裕がある状況では F_QR_MAXIMUM_EFFORT を指定し、極めて綺麗な画像や処理時間を重視する際には F_QR_NORMAL_EFFORT を使用してください。<br>
+ 初期値は F_QR_NORMAL_EFFORT です。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>EffortLevel</em>&nbsp;</td><td>動作モード<ul>
+<li>F_QR_NORMAL_EFFORT 通常検出モード</li><li>F_QR_MAXIMUM_EFFORT 最大検出モード</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gc2d1b325fd085e85c0e6a76fe13b50b7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  動作モードの...">fnFIE_qr_get_effortlevel()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc2d1b325fd085e85c0e6a76fe13b50b7"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_get_effortlevel" ref="gc2d1b325fd085e85c0e6a76fe13b50b7" args="(FHANDLE fQRCObj, enum f_qr_mode *pEffortLevel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_get_effortlevel           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__qr__code.html#gd2c71130b5d5ee59db63a305c65dba4b">f_qr_mode</a> *&nbsp;</td>
+          <td class="paramname"> <em>pEffortLevel</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  動作モードの取得 
+<p>
+現在設定されている動作モードを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>piEffortLevel</em>&nbsp;</td><td>設定している動作モード<ul>
+<li>F_QR_NORMAL_EFFORT 通常検出モード</li><li>F_QR_MAXIMUM_EFFORT 最大検出モード</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#gee29c35a0ac3213e92d7aa7566375156" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  動作モードの...">fnFIE_qr_set_effortlevel()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g93b7569a32a4087df69df2569efaf34e"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_set_binarize_method" ref="g93b7569a32a4087df69df2569efaf34e" args="(FHANDLE fQRCObj, enum f_qr_binarize_mode mode, INT threshold)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_set_binarize_method           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">f_qr_binarize_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>threshold</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  二値化手法の設定 
+<p>
+QRコードを検出する際に使用する二値化手法を設定するとともに、二値化手法に応じたパラメータを設定します。<br>
+ 通常モードである F_QR_BIN_SHIFT_AVERAGE 以外に設定することで読み取り速度を向上できる場合があります。ただし、シェーディングがあったり低コントラストだったりする画像では読み取り性能が低下します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>設定する二値化手法<ul>
+<li>F_QR_BIN_SHIFT_AVERAGE 通常モード　局所領域平均値による二値化を行います。</li><li>F_QR_BIN_SHIFT_AVERAGE_OFFSET オフセット付き局所領域平均値による二値化 <br>
+ 局所領域平均値に定数を加算した結果を閾値にして二値化を行います。</li><li>F_QR_BIN_FIX 固定閾値による二値化を行います。</li><li>F_QR_BIN_DISCRIMINATION 大津の判別分析法による二値化を行います。</li><li>F_QR_BIN_KITTLER キトラー法による二値化を行います。 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>二値化手法別の閾値<br>
+引数 <em>mode</em> によって以下のように異なります。<ul>
+<li>F_QR_BIN_SHIFT_AVERAGE の場合 分散閾値を設定します。 <a class="el" href="group__fie__qr__code.html#gce5697b047b1837810e09bfcde93b6a7" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  QRコード２値化...">fnFIE_qr_set_minvar()</a> で設定する数値と同一で、初期値は1000です。値域は<img class="formulaInl" alt="$ 0 \leq threshold $" src="form_957.png"> です。</li><li>F_QR_BIN_SHIFT_AVERAGE_OFFSET の場合、局所領域平均値に加算する数値を設定します。20程度を推奨します。 <img class="formulaInl" alt="$ (-255 \leq threshold \leq 255 ) $" src="form_958.png"></li><li>F_QR_BIN_FIX の場合、二値化閾値そのものを設定します。<img class="formulaInl" alt="$ (0 \leq threshold \leq 255) $" src="form_959.png"></li><li>F_QR_BIN_DISCRIMINATION の場合、引数は無視されます。</li><li>F_QR_BIN_KITTLER の場合、引数は無視されます。</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#g32746f1de06d1bcde901963542533ac8" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  二値化手法の...">fnFIE_qr_get_binarize_method()</a> <p>
+<a class="el" href="group__fie__threshold.html#g4901e4f18f06708582df9afb31f9821e" title="局所領域平均値による２値画像作成 ボーダー処理付き">fnFIE_shift_avr_threshold_ex()</a> <p>
+<a class="el" href="group__fie__multithreshold.html#ga2766ddc3bfa53dd65d18a2bd805e1c6" title="判別分析法による多値化">fnFIE_discrimination_multithreshold()</a> <p>
+<a class="el" href="group__fie__threshold.html#g912109cbf4d36893385674afec2fb08f" title="キトラー(kittler)法による画像２値化">fnFIE_kittler_threshold()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g32746f1de06d1bcde901963542533ac8"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_get_binarize_method" ref="g32746f1de06d1bcde901963542533ac8" args="(FHANDLE fQRCObj, enum f_qr_binarize_mode *mode, INT *threshold)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_get_binarize_method           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__qr__code.html#gf1c64dd86070643e4c036d66e8762a89">f_qr_binarize_mode</a> *&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>threshold</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  二値化手法の取得 
+<p>
+現在設定されている二値化手法と閾値を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>設定されている二値化手法<ul>
+<li>F_QR_BIN_SHIFT_AVERAGE 通常モード　局所領域平均値による二値化を行います。</li><li>F_QR_BIN_SHIFT_AVERAGE_OFFSET オフセット付き局所領域平均値による二値化 <br>
+ 局所領域平均値に定数を加算した結果を閾値にして二値化を行います。</li><li>F_QR_BIN_FIX 固定閾値による二値化を行います。</li><li>F_QR_BIN_DISCRIMINATION 大津の判別分析法による二値化を行います。</li><li>F_QR_BIN_KITTLER キトラー法による二値化を行います。 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>threshold</em>&nbsp;</td><td>二値化手法別の閾値<br>
+ <em>mode</em> によって以下のように異なります。<ul>
+<li>F_QR_BIN_SHIFT_AVERAGE の場合 分散閾値を取得します。 <a class="el" href="group__fie__qr__code.html#g130efd4ac6f236532ae62b21f136e3be" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  ２値化分散し...">fnFIE_qr_get_minvar()</a> で取得する数値と同一です。</li><li>F_QR_BIN_SHIFT_AVERAGE_OFFSET の場合、局所領域平均値に加算する数値を返します。</li><li>F_QR_BIN_FIX の場合、二値化閾値を返します。</li><li>F_QR_BIN_DISCRIMINATION の場合、0が返ります。</li><li>F_QR_BIN_KITTLER の場合、0が返ります。</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>QRコードオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__qr__code.html#g93b7569a32a4087df69df2569efaf34e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  二値化手法の...">fnFIE_qr_set_binarize_method()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8839cf61e79d3b4d0ce67d3770ea8af8"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_set_timeout" ref="g8839cf61e79d3b4d0ce67d3770ea8af8" args="(FHANDLE fQRCObj, DOUBLE timeout)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_set_timeout           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>timeout</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの設定 
+<p>
+QRコードの認識を打ち切る制限時間を設定します。0を指定した場合はタイムアウトは行いません。<p>
+初期値：0ms タイムアウト無し<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>現状QRコードが大量に存在する、ファインダパタンが欠けたQRコードがある等の場合、処理時間が非常に長くなる可能性があります。このような現象を回避するため、本関数で制限時間を指定することができます。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>timeout</em>&nbsp;</td><td>タイムアウト時間(ms) ( timeout &gt;= 0.0 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g71ce0af73107e59527fb9978a7cadb32"></a><!-- doxytag: member="fie_qr_main.c::fnFIE_qr_get_timeout" ref="g71ce0af73107e59527fb9978a7cadb32" args="(FHANDLE fQRCObj, DOUBLE *timeout)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_qr_get_timeout           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>fQRCObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>timeout</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの取得 
+<p>
+指定したオブジェクトハンドルにて設定されているQRコードの認識を打ち切る制限時間を取得します。<p>
+初期値：0ms タイムアウト無し<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>fQRCObj</em>&nbsp;</td><td>QRコードオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>timeout</em>&nbsp;</td><td>タイムアウト時間(ms) ( timeout &gt;= 0.0 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 円</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>円<br>
+<small>
+[<a class="el" href="group__fie__cg.html">幾何計算</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__circle.html#g8e6ff4a2466dbfe08f198c25fbad8692">fnFIE_cg_enclosing_circle_calc</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT num, <a class="el" href="structPNT__T.html">PNT_T</a> *center, INT *radius2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小外接円の計算  <a href="#g8e6ff4a2466dbfe08f198c25fbad8692"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__circle.html#g70d36b7c82480a31a63aaba2f8b3c925">fnFIE_cg_enclosing_circle_calc_d</a> (const <a class="el" href="structDPNT__T.html">DPNT_T</a> *pnts, INT num, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *radius2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最小外接円(最小包含円)の計算(浮動小数点型)  <a href="#g70d36b7c82480a31a63aaba2f8b3c925"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__cg__circle.html#gf491e3c53d1b61a680314b889c9814e7">fnFIE_cg_empty_circle_calc</a> (const <a class="el" href="structPNT__T.html">PNT_T</a> *pnts, INT num, <a class="el" href="structPNT__T.html">PNT_T</a> *center, INT *radius2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">最大空円(最大内接円)の計算  <a href="#gf491e3c53d1b61a680314b889c9814e7"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g8e6ff4a2466dbfe08f198c25fbad8692"></a><!-- doxytag: member="fie_cg.c::fnFIE_cg_enclosing_circle_calc" ref="g8e6ff4a2466dbfe08f198c25fbad8692" args="(const PNT_T *pnts, INT num, PNT_T *center, INT *radius2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_enclosing_circle_calc           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>radius2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小外接円の計算 
+<p>
+与えられた点集合の最小外接円(最小包含円)を計算します。 アルゴリズムとして、考慮対象とする点をその凸包の頂点に限定することにより、 処理速度の大幅な向上を図っています。<p>
+与えられる入力点群は，「順序データ」である必要もありませんし、重複点があっても構いません。 ただし、異なる点が２点以上あることが必要です。<p>
+厳密な回答は中心座標、半径とも整数の値であるとは限りませんが、処理時間を考慮して、整数値による近似解としました。 よって計算誤差を若干含みます。 なお、<em>radius2</em> の半径は２乗値であるので注意してください。<p>
+<em>pnts</em> の要素数は２点以上の値を入力してください。 <br>
+ また、[-1024, 1024] または、 [0, 2048]の座標範囲の <em>taPnt</em> を入力してください。 範囲外の値を入力した場合、オーバーフローのため正しい値を得られない場合があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点の数( <em>pnts</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>外接円中心 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius2</em>&nbsp;</td><td>外接円半径の２乗</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="comment">//出力画像の幅と高さ及び，入力点数</span>
+<span class="preprocessor">#define WIDTH 206</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 204</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM 20</span>
+<span class="preprocessor"></span>
+VOID cg_enclosing_circle_calc()
+{
+    <span class="comment">//変数宣言部</span>
+
+    INT i;  <span class="comment">//ループ変数</span>
+
+    <span class="comment">//最小外接円の計算用変数</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> pnts[PNTS_NUM];       <span class="comment">//点群  </span>
+    INT pnts_num = PNTS_NUM;    <span class="comment">//点の数( pnts の要素数)</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> icenter;              <span class="comment">//外接円中心</span>
+    INT radius2;                <span class="comment">//外接円半径の２乗</span>
+
+    <span class="comment">//描画用変数</span>
+    DOUBLE val=0;           <span class="comment">//描画用矩形，線分，円の濃度値</span>
+    DOUBLE radius;          <span class="comment">//外接円の半径</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> dcenter;         <span class="comment">//外接円の中心</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> dpnts[PNTS_NUM]; <span class="comment">//点群</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_start;    <span class="comment">//円の中心を描画する線分の始点1</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_end;      <span class="comment">//円の中心を描画する線分の終点1</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_start2;   <span class="comment">//円の中心を描画する線分の始点2</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_end2;     <span class="comment">//円の中心を描画する線分の終点2</span>
+
+    FHANDLE hdst = NULL;    <span class="comment">//結果画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;
+    FHANDLE hrgb_g = NULL;
+    FHANDLE hrgb_b = NULL;
+
+    <span class="comment">//処理部</span>
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+    <span class="comment">//チャイルド画像の領域を確保</span>
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//入力点群</span>
+    pnts[0].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=50,pnts[0].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=60;
+    pnts[1].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=15,pnts[1].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=96;
+    pnts[2].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=35,pnts[2].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=52;
+    pnts[3].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=22,pnts[3].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=106;
+    pnts[4].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=55,pnts[4].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=116;
+    pnts[5].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=65,pnts[5].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=126;
+    pnts[6].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=101,pnts[6].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=168;
+    pnts[7].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=19,pnts[7].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=65;
+    pnts[8].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=66,pnts[8].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=55;
+    pnts[9].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=182,pnts[9].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=98;
+    pnts[10].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=152,pnts[10].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=78;
+    pnts[11].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=36,pnts[11].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=124;
+    pnts[12].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=45,pnts[12].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=156;
+    pnts[13].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=150,pnts[13].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=180;
+    pnts[14].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=147,pnts[14].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=100;
+    pnts[15].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=170,pnts[15].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=170;
+    pnts[16].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=132,pnts[16].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=78;
+    pnts[17].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=111,pnts[17].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=50;
+    pnts[18].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=111,pnts[18].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=5;
+    pnts[19].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=44,pnts[19].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=84;
+
+    <span class="comment">//入力点の描画</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;pnts_num; i++)
+    {
+        <span class="comment">//PNT_TからDPNT_Tへ変換</span>
+        dpnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pnts[i].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>;
+        dpnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pnts[i].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>;
+
+        <span class="comment">//入力点を半径2の円で描画する</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_r, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+    }
+
+    <span class="comment">//最小外接円の計算</span>
+    <a class="code" href="group__fie__cg__circle.html#g8e6ff4a2466dbfe08f198c25fbad8692" title="最小外接円の計算">fnFIE_cg_enclosing_circle_calc</a>(pnts, pnts_num, &amp;icenter, &amp;radius2);
+    
+    <span class="comment">//パラメータの型を描画関数用に変換</span>
+    radius=sqrt((DOUBLE)radius2);       <span class="comment">//半径の2乗-&gt;半径</span>
+    dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = icenter.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>;              <span class="comment">//PNT_TからDPNT_Tへ変換</span>
+    dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = icenter.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>;              <span class="comment">//PNT_TからDPNT_Tへ変換</span>
+
+    <span class="comment">//中心点の描画（2つの線分を用いて×印を描画する)</span>
+    <span class="comment">//線分1</span>
+    center_start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>-5;   <span class="comment">//始点X座標</span>
+    center_start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>-5;   <span class="comment">//始点Y座標</span>
+    center_end.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>+5;     <span class="comment">//終点X座標</span>
+    center_end.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>+5;     <span class="comment">//終点Y座標</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_g, &amp;val, center_start, center_end);    <span class="comment">//描画</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_b, &amp;val, center_start, center_end);    <span class="comment">//描画</span>
+
+    <span class="comment">//線分2</span>
+    center_start2.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>+5;  <span class="comment">//始点X座標</span>
+    center_start2.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>-5;  <span class="comment">//始点Y座標</span>
+    center_end2.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>-5;    <span class="comment">//終点X座標</span>
+    center_end2.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>+5;    <span class="comment">//終点Y座標</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_g, &amp;val, center_start2, center_end2);  <span class="comment">//描画</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_b, &amp;val, center_start2, center_end2);  <span class="comment">//描画</span>
+
+    <span class="comment">//最小外接円の描画</span>
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, dcenter, radius);
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, dcenter, radius);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//画像領域の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_r );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_g );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_b );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    cg_enclosing_circle_calc();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_cg_encl_crcl_calc.png" alt="fie_cg_encl_crcl_calc.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g70d36b7c82480a31a63aaba2f8b3c925"></a><!-- doxytag: member="fie_cg.c::fnFIE_cg_enclosing_circle_calc_d" ref="g70d36b7c82480a31a63aaba2f8b3c925" args="(const DPNT_T *pnts, INT num, DPNT_T *center, DOUBLE *radius2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_enclosing_circle_calc_d           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>radius2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小外接円(最小包含円)の計算(浮動小数点型) 
+<p>
+与えられた点集合の最小包含円を計算します。 アルゴリズムとして、考慮対象とする点をその凸包の頂点に限定することにより、 処理速度の大幅な向上を図っています。<p>
+<div align="center">
+<img src="fie_cg_encl_crcl_calc.png" alt="fie_cg_encl_crcl_calc.png">
+</div>
+<p>
+与えられる入力点群は、「順序データ」である必要もありませんし、重複点があっても構いません。 もし、すべてが同一点であった場合は、半径 <em>radius2</em> = 0 で返ります。<p>
+<em>pnts</em> の要素数は２点以上の値を入力してください。 <br>
+ また、出力する半径 <em>radius2</em> は２乗値であるので注意してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点の数( <em>pnts</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>包含円中心 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius2</em>&nbsp;</td><td>包含円半径の２乗</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf491e3c53d1b61a680314b889c9814e7"></a><!-- doxytag: member="fie_cg.c::fnFIE_cg_empty_circle_calc" ref="gf491e3c53d1b61a680314b889c9814e7" args="(const PNT_T *pnts, INT num, PNT_T *center, INT *radius2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_cg_empty_circle_calc           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>radius2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最大空円(最大内接円)の計算 
+<p>
+与えられた点集合の最大空円(最大内接円)を計算します。 ただし、その中心は点集合の凸包の内部にあるものとします。<p>
+与えられる入力点群に制限はありません。 つまり、「順序データ」である必要もありませんし、重複点があっても構いません。 厳密な回答は中心座標、半径とも整数の値であるとは限りませんが、処理時間を考えて、整数値による近似解としました。 よって計算誤差を若干含みます。 なお、<em>radius2</em> の半径は２乗値であるので注意してください。<p>
+また、<em>pnts</em> の要素数は３点以上の値を入力してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>点群 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>点の数( <em>pnts</em> の要素数) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>外接円中心 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius2</em>&nbsp;</td><td>外接円半径の２乗</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された <ul>
+<li>点群によって生成された凸包の頂点が３点未満 </li>
+<li>ヌルポインタが渡された </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 <ul>
+<li>凸包の内部に中心を持つ円が無い </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+
+<span class="comment">//出力画像の幅と高さ及び，入力点数</span>
+<span class="preprocessor">#define WIDTH 206</span>
+<span class="preprocessor"></span><span class="preprocessor">#define HEIGHT 204</span>
+<span class="preprocessor"></span><span class="preprocessor">#define PNTS_NUM 20</span>
+<span class="preprocessor"></span>
+VOID cg_empty_circle_calc()
+{
+    <span class="comment">//変数宣言部</span>
+
+    INT i;  <span class="comment">//ループ変数</span>
+
+    <span class="comment">//最大空円(最大内接円)計算用変数</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> pnts[PNTS_NUM];       <span class="comment">//点群  </span>
+    INT pnts_num = PNTS_NUM;    <span class="comment">//点の数( pnts の要素数)</span>
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> icenter;              <span class="comment">//外接円中心</span>
+    INT radius2;                <span class="comment">//外接円半径の２乗</span>
+
+    <span class="comment">//描画用変数</span>
+    DOUBLE val=0;           <span class="comment">//描画用矩形，線分，円の濃度値</span>
+    DOUBLE radius;          <span class="comment">//外接円の半径</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> dcenter;         <span class="comment">//外接円の中心</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> dpnts[PNTS_NUM]; <span class="comment">//点群</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_start;    <span class="comment">//円の中心を描画する線分の始点1</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_end;      <span class="comment">//円の中心を描画する線分の終点1</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_start2;   <span class="comment">//円の中心を描画する線分の始点2</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center_end2;     <span class="comment">//円の中心を描画する線分の終点2</span>
+
+    <span class="comment">//結果画像</span>
+    FHANDLE hdst = NULL;    
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hrgb_r = NULL;
+    FHANDLE hrgb_g = NULL;
+    FHANDLE hrgb_b = NULL;
+
+    <span class="comment">//処理部</span>
+
+    <span class="comment">//出力画像の領域を確保します</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, WIDTH, HEIGHT );
+    <span class="comment">//チャイルド画像の領域を確保</span>
+    hrgb_r = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 0, 0, 0, WIDTH, HEIGHT);
+    hrgb_g = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 1, 0, 0, WIDTH, HEIGHT);
+    hrgb_b = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hdst, 2, 0, 0, WIDTH, HEIGHT);
+
+    <span class="comment">//出力画像を白色（255)で塗りつぶす</span>
+    <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 255);
+
+    <span class="comment">//入力点群</span>
+    pnts[0].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=50,pnts[0].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=60;
+    pnts[1].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=15,pnts[1].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=96;
+    pnts[2].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=35,pnts[2].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=52;
+    pnts[3].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=22,pnts[3].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=106;
+    pnts[4].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=55,pnts[4].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=116;
+    pnts[5].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=65,pnts[5].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=126;
+    pnts[6].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=101,pnts[6].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=168;
+    pnts[7].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=19,pnts[7].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=65;
+    pnts[8].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=66,pnts[8].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=55;
+    pnts[9].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=182,pnts[9].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=98;
+    pnts[10].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=152,pnts[10].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=78;
+    pnts[11].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=36,pnts[11].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=124;
+    pnts[12].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=45,pnts[12].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=156;
+    pnts[13].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=150,pnts[13].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=180;
+    pnts[14].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=147,pnts[14].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=100;
+    pnts[15].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=170,pnts[15].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=170;
+    pnts[16].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=132,pnts[16].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=78;
+    pnts[17].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=111,pnts[17].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=50;
+    pnts[18].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=111,pnts[18].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=5;
+    pnts[19].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>=44,pnts[19].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>=84;
+
+    <span class="comment">//入力点の描画</span>
+    <span class="keywordflow">for</span>(i=0; i&lt;pnts_num; i++)
+    {
+        <span class="comment">//PNT_TからDPNT_Tへ変換</span>
+        dpnts[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pnts[i].<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>;
+        dpnts[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pnts[i].<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>;
+
+        <span class="comment">//入力点を半径2の円で描画する</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_r, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9efbf41a862ecd369b6473b8a25371916d" title="図形の内側を塗りつぶし">F_DRAW_FILL_IN</a>, dpnts[i], 2);
+    }
+
+    <span class="comment">//最大空円(最大内接円)の計算</span>
+    <a class="code" href="group__fie__cg__circle.html#gf491e3c53d1b61a680314b889c9814e7" title="最大空円(最大内接円)の計算">fnFIE_cg_empty_circle_calc</a>(pnts, pnts_num, &amp;icenter, &amp;radius2);
+    
+    <span class="comment">//パラメータの型を描画関数用に変換</span>
+    radius=sqrt((DOUBLE)radius2);       <span class="comment">//半径の2乗-&gt;半径</span>
+    dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = icenter.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a>;              <span class="comment">//PNT_TからDPNT_Tへ変換</span>
+    dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = icenter.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a>;              <span class="comment">//PNT_TからDPNT_Tへ変換</span>
+
+    <span class="comment">//中心点の描画（2つの線分を用いて×印を描画する)</span>
+    <span class="comment">//線分1</span>
+    center_start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>-5;   <span class="comment">//始点X座標</span>
+    center_start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>-5;   <span class="comment">//始点Y座標</span>
+    center_end.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>+5;     <span class="comment">//終点X座標</span>
+    center_end.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>+5;     <span class="comment">//終点Y座標</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_g, &amp;val, center_start, center_end);    <span class="comment">//描画</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_b, &amp;val, center_start, center_end);    <span class="comment">//描画</span>
+
+    <span class="comment">//線分2</span>
+    center_start2.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>+5;  <span class="comment">//始点X座標</span>
+    center_start2.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>-5;  <span class="comment">//始点Y座標</span>
+    center_end2.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = dcenter.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>-5;    <span class="comment">//終点X座標</span>
+    center_end2.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = dcenter.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>+5;    <span class="comment">//終点Y座標</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_g, &amp;val, center_start2, center_end2);  <span class="comment">//描画</span>
+    <a class="code" href="group__fie__img__draw.html#g407c003f5e1d6c162327cd9fb6a32ea0" title="線分の描画">fnFIE_draw_line_seg</a>(hrgb_b, &amp;val, center_start2, center_end2);  <span class="comment">//描画</span>
+
+    <span class="comment">//最大空円(最大内接円)の描画</span>
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_g, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, dcenter, radius);
+    <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hrgb_b, &amp;val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, dcenter, radius);
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"result.png"</span>, hdst, -1);
+
+    <span class="comment">//画像領域の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_r );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_g );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hrgb_b );
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    cg_empty_circle_calc();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_cg_empty_crcl_calc.png" alt="fie_cg_empty_crcl_calc.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 構造体 F_MEASURE_FILTER_RANGE</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>構造体 F_MEASURE_FILTER_RANGE<br>
+<small>
+[<a class="el" href="group__fie__measure__result.html">実行結果操作</a>]</small>
+</h1><!-- doxytag: class="F_MEASURE_FILTER_RANGE" --><hr><a name="_details"></a><h2>説明</h2>
+フィルタ条件指定 
+<p>
+ブローブ番号配列のフィルタリング関数に渡すフィルタ条件指定用構造体。 マッチ条件は最小値と最大値にて指定します。 つまり、<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ min \le value \le max \]" src="form_43.png">
+<p>
+ value : 対象の特徴量値<p>
+を満たす値がマッチするものになります。<p>
+<dl class="user" compact><dt><b>角度値の場合の判定</b></dt><dd><a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a> で列挙されている指定子のうち、末尾に <b>_CYCLIC</b> と付くものでは、角度値が巡回数であることを考慮した判定を行います。 ただし、このモードでは <em>min</em> ≦ <em>max</em> でなければいけません。 これが満たされない場合はエラーが発生します。 なお <em>min</em> ≦ <em>max</em> が満たされていれば <em>min</em> , <em>max</em> の値の大きさに制限はありません。</dd></dl>
+<ul>
+<li>F_FEATURE_AXISTHETA_CYCLIC ( <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> の巡回判定版 )</li><li>F_FEATURE_FMAX_THETA_CYCLIC ( <a class="el" href="group__fie__features.html#feature_feret_maxmin">fmax_theta</a> の巡回判定版 )</li><li>F_FEATURE_FMIN_THETA_CYCLIC ( <a class="el" href="group__fie__features.html#feature_feret_maxmin">fmin_theta</a> の巡回判定版 )</li></ul>
+これらの３つの特徴量は、角度範囲が -π/2～π/2 の範囲で得られるので、 下図のように判定を行います。<p>
+<div align="center">
+<img src="fie_measure_filter_range.png" alt="fie_measure_filter_range.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240" title="ブローブ番号配列の取得">fnFIE_measure_get_list()</a>, <a class="el" href="group__fie__measure__result.html#g4f240f10477460f374defc2ff00d209a" title="ブローブ番号配列の特徴量に基づくフィルタリング">fnFIE_measure_refilter_list()</a> </dd></dl>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>変数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__MEASURE__FILTER__RANGE.html#f02d31f33a3e32b8fc02aff0dfd208af">type</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__MEASURE__FILTER__RANGE.html#7d84d78adea851f567bb312d0938c956">min</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">DOUBLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__MEASURE__FILTER__RANGE.html#663815f6b0ab2c7b3e4d7b7a218f7827">max</a></td></tr>
+
+</table>
+<hr><h2>構造体</h2>
+<a class="anchor" name="f02d31f33a3e32b8fc02aff0dfd208af"></a><!-- doxytag: member="F_MEASURE_FILTER_RANGE::type" ref="f02d31f33a3e32b8fc02aff0dfd208af" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a> <a class="el" href="structF__MEASURE__FILTER__RANGE.html#f02d31f33a3e32b8fc02aff0dfd208af">F_MEASURE_FILTER_RANGE::type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+対象特徴量の指定 
+</div>
+</div><p>
+<a class="anchor" name="7d84d78adea851f567bb312d0938c956"></a><!-- doxytag: member="F_MEASURE_FILTER_RANGE::min" ref="7d84d78adea851f567bb312d0938c956" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE <a class="el" href="structF__MEASURE__FILTER__RANGE.html#7d84d78adea851f567bb312d0938c956">F_MEASURE_FILTER_RANGE::min</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最小値 
+</div>
+</div><p>
+<a class="anchor" name="663815f6b0ab2c7b3e4d7b7a218f7827"></a><!-- doxytag: member="F_MEASURE_FILTER_RANGE::max" ref="663815f6b0ab2c7b3e4d7b7a218f7827" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DOUBLE <a class="el" href="structF__MEASURE__FILTER__RANGE.html#663815f6b0ab2c7b3e4d7b7a218f7827">F_MEASURE_FILTER_RANGE::max</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+最大値 
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

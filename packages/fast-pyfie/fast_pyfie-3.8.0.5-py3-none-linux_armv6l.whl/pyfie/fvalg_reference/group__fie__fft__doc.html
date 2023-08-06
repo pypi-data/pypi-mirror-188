@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 説明</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>説明<br>
+<small>
+[<a class="el" href="group__fie__fft__base.html">高速フーリエ変換</a>]</small>
+</h1>Fast Image Engene の高速フーリエ変換関数群(以下FIE_FFTと呼称)は、 前方／後方の両方の高速フーリエ変換を１次元、２次元において、複素数、実数の両データ形式で行うことが出来ます。<p>
+<dl class="user" compact><dt><b>データの型</b></dt><dd></dd></dl>
+下記の４種類のデータ型がFIE_FFTでは使用できます。<ol type=1>
+<li>unsigned char</li><li>unsigned short</li><li>short</li><li>double</li></ol>
+<p>
+FIE_FFTで使用できる複素数データはすべて double型の集合です。 下記の３種の形式が利用可能です。<ol type=1>
+<li>interleaved format</li><li>splitted format</li><li>packed format</li></ol>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fft.html#gc2770286dec3ef9f3cb4eb7a6a601ad2" title="フーリエ変換の入力と出力データの型">f_fft_data_type</a></dd></dl>
+<dl class="user" compact><dt><b>一次元フーリエ変換とその逆変換</b></dt><dd></dd></dl>
+１次元における長さ <img class="formulaInl" alt="$ N $" src="form_576.png"> の複素数データ <img class="formulaInl" alt="$ x $" src="form_2.png"> の時間領域における順方向フーリエ変換は下式にて定義されます。<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ X_k = \sum_{n=0}^{N-1} x_n e^{- \frac {2\pi i } { N } nk } \qquad k = 0,\dots,N-1 \qquad i^2 = -1 \]" src="form_577.png">
+<p>
+<p>
+逆フーリエ変換は下式にて定義されます。<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ x_k = \sum_{n=0}^{N-1} X_n e^{ \frac {2\pi i }{N} nk } \qquad k = 0,\dots,N-1 \qquad i^2 = -1 \]" src="form_578.png">
+<p>
+<p>
+１次元の実数データは、すべての虚数部を０にした複素数データとして処理できます。 したがって、複素数データでの定義は実数のデータにも適用することが出来ます。 実際には実数データの変換はより効率的に行えるアルゴリズムが実装されています。<p>
+<dl class="user" compact><dt><b>二次元フーリエ変換とその逆変換</b></dt><dd></dd></dl>
+幅 <b>N</b> 、高さ <b>M</b> の２次元データの順方法フーリエ変換は下式にて定義されます。<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ X_{k_1, k_2} = \sum_{n=0}^{N-1} e^{-{2\pi i \over N} nk_1 } \sum_{m=0}^{M-1} e^{-{2 \pi i \over M} mk_2 } x_{n,m} \qquad k_1 = 0,\dots,N-1, \qquad k_2 = 0, \dots, M-1 \qquad i^2 = -1 \]" src="form_579.png">
+<p>
+<p>
+２次元データの周波数領域における逆変換は下式にて定義されます。<br>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ x_{k_1, k_2} = \sum_{n=0}^{N-1} e^{ {2\pi i \over N} nk_1 } \sum_{m=0}^{M-1} e^{ {2 \pi i \over M} mk_2 } X_{n,m} \qquad k_1 = 0,\dots,N-1, \qquad k_2 = 0, \dots, M-1 \qquad i^2 = -1 \]" src="form_580.png">
+<p>
+<p>
+FIE_FFTで使用できる複素数の２次元データの形式は <a class="el" href="group__fie__fft.html#gc2770286dec3ef9f3cb4eb7a6a601ad2">f_fft_data_type</a> に記述されています。<p>
+実際には、２次元のフーリエ変換は、各行に対して１次元のフーリエ変換を行った後、 各列に対して１次元のフーリエ変換を行うことで実行されます。 ２次元の実数データの変換は、虚数部を０にした２次元複素数データの変換を考えることで概念が分かりますが、 実際にFIE_FFTに実装されているアルゴリズムは、より効率的に変換を行うようにデザインされています。<p>
+<dl class="user" compact><dt><b>フーリエ変換の正規化</b></dt><dd></dd></dl>
+フーリエ変換されたデータの値は、データの長さに比例します。 そのため、変換結果はデータの長さに応じて正規化する必要があります。 FIE_FFTでは、４種類の正規化手法 (<a class="el" href="group__fie__fft.html#gaa7eab052934ab1797db1a9f603b1fa8">f_fft_normalize_type</a>) が使用可能です。 FIE_FFTの初期化関数を実行する際に、どの手法を使用するかフラグで指定して下さい。 周波数画像の可視化が目的の場合はF_FFT_DIV_FWD_BY_Nを、周波数フィルタリングが目的の場合はF_FFT_DIV_INV_BY_Nの利用を推奨します。<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__fft.html#gaa7eab052934ab1797db1a9f603b1fa8" title="フーリエ変換の正規化方法指定">f_fft_normalize_type</a>, <a class="el" href="group__fie__fft.html#gdcef88a89b5c65eca3246fc9917e4f2f" title="１次元フーリエ変換用にFFTハンドルを初期化する">fnFIE_fft_1D_alloc()</a>, <a class="el" href="group__fie__fft.html#gd1a7a3399177111391d49eb34c74f44d" title="２次元フーリエ変換用にFFTハンドルを初期化する">fnFIE_fft_2D_alloc()</a></dd></dl>
+<dl class="user" compact><dt><b>スケーリングとサチュレーション</b></dt><dd></dd></dl>
+FIE_FFTでは変換前の空間/時間領域のデータに３種の整数データ形式が使用可能です。 変換後の周波数空間データは必ず double 型にて格納されます。 したがって、整数データ型への逆フーリエ変換を行う際は、スケール値と飽和処理について考慮する必要があります。 FIE_FFTの整数データ型への逆フーリエ変換関数では、スケーリングと飽和処理を行います。 飽和処理は自動で行われますが、スケール値はユーザーが正しく設定しなければ、データのダイナミックレンジを そこなうことになります。<p>
+<dl class="user" compact><dt><b>データのサイズ</b></dt><dd></dd></dl>
+FIE_FFTで扱うことが出来る１次元データの長さは <img class="formulaInl" alt="$ 2^{31} $" src="form_581.png"> までです。<br>
+ ２次元画像においても、幅、または高さの最大値は <img class="formulaInl" alt="$ 2^{31} $" src="form_581.png"> ですが、実用的な画像サイズはこの制限よりもとても小さくなります。 幅、または高さの最小値は 2 です。また、画像の幅及び高さはどちらも2のべき乗の値でなければなりません。<p>
+FIE_FFTでフーリエ変換を行うには、どのような形式であってもFIE_FFTハンドルの初期化が必要になります。 初期化時に回転因子のテーブルや変換に必要なバッファの確保と初期化が行われ、ハンドルによって管理されます。 １次元の変換では、回転因子テーブルの大きさは、変換するデータの長さにより決定されます。 ２次元の変換では、画像の幅と高さのうち大きな方の値により決定されます。 確保されたFFTハンドルは下記の条件がすべて満たされている場合、初期化時に指定したFFT処理とは 異なるFFT処理にも使用することが出来ます。<ul>
+<li>必要な回転因子テーブルの長さが、ハンドルに保持されているテーブルの長さを超えていない。</li><li>必要なバッファサイズが、ハンドルによって保持されているサイズを超えていない。 <br>
+</li></ul>
+<p>
+<a class="el" href="group__fie__fft.html#gddbf46eba1b72fe8f2e89fd122d48d5e" title="FFTハンドルの有効性チェック">fnFIE_fft_check_spec()</a> 関数を使用すると、確保済みFFTハンドルが目的の処理に使用可能かどうかを確認することが出来ます。 FFTハンドルを初期化時とは異なるFFT処理に使用する場合は、正規化手法の指定に十分注意してください。 正規化手法の指定を間違えると、出力結果は間違った物になってしまいます。 <a class="el" href="group__fie__fft.html#g9e7a076c37f8b42b40143783c5359bf2" title="FFTハンドルが保持しているパラメータを取得する">fnFIE_fft_get_spec()</a> 関数を使用すると、確保済みFFTハンドルがどの正規化手法を用いるよう 設定されているかを確認することが出来ます。<p>
+<dl class="user" compact><dt><b>関数名命名則</b></dt><dd></dd></dl>
+FIE_FFTには沢山の関数があるため、理解しやすいようにFIE_FFTの関数名命名則を示します。 FIE_FFTの関数名命名則は次のようになっています。<ul>
+<li>接頭語<br>
+ FIE_FFTでは２種類の接頭語が使われます。<br>
+ <b>fnFIE_fft_</b> は１次元の変換関数を示します。<br>
+ <b>fnFIE_fft2_</b> は２次元の変換関数を示します。</li><li>変換方向<br>
+ 順方向変換は <b>_fwd_</b> で示されます。<br>
+ 逆方向変換は <b>_inv_</b> で示されます。</li><li>入力データ型<br>
+ 上記で記述したとおり、FIE_FFTでは４種の実数データ型と、３種の複素数データ型が使用できます。 これらのデータ型は下記のように表記されます。 <ul>
+<li>C: interleaved complex 1D or 2D data <br>
+ </li>
+<li>DD: splitted complex 1D or 2D data <br>
+ </li>
+<li>Pack: packed complex 1D data <br>
+ </li>
+<li>UC8: unsigned char type of real 1D data<br>
+ </li>
+<li>US16: unsigned short type of real 1D data<br>
+ </li>
+<li>S16: short type of real 1D dat<br>
+ </li>
+<li>D64: double type of real 1D data<br>
+ </li>
+<li>Real: 2D data of real type including F_IMG_UC8, F_IMG_S16, F_IMG_US16 and F_IMG_DOUBLE.<br>
+</li>
+</ul>
+</li><li>出力データ型 出力データ型の表記は入力データ型の表記法と同じです。</li><li>出力データ先メモリ <br>
+ <b>_in</b> は出力データが入力データと同じメモリに格納される関数を示します。<br>
+ <b>_out</b> は出力データが入力データとは別のメモリに格納される関数を示します。<br>
+ 関数名に <b>_in</b> 又は <b>_out</b> を含まない関数は <b>_out</b> の動作と同じです。</li></ul>
+<p>
+<dl class="user" compact><dt><b>2次元FFT後の画像(周波数領域画像)について</b></dt><dd></dd></dl>
+<a class="el" href="group__fie__fft.html#gd3943c2a5c44c063551c1c92dcc258a2" title="２次元実数画像を順方向フーリエ変換する">fnFIE_fft2_fwd_RealtoDD()</a> によって実画像を周波数領域画像へ変換できます。 出力される画像は、浮動小数点画像(F_IMG_DOUBLE)となっています。変換した画像から <a class="el" href="group__fie__fft.html#g732c97706536acf260ba8f99b24e3c54" title="周波数領域複素数画像の強度と角度を計算する">fnFIE_fft2_get_mag_and_phase_DD()</a> を用いて強度画像（振幅スペクトル画像）と角度画像（位相スペクトル画像）を得ることもできます。 周波数画像は画像の四方の角から低周波成分、中央に近づくに従って高周波成分となります。また、画像の左上1画素は直流成分を表します。<p>
+<dl class="user" compact><dt><b>周波数画像例 </b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="floppy1.png" alt="floppy1.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_fft2_mag.png" alt="fie_fft2_mag.png">
+<p><strong>強度画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+強度画像は2のべきサイズになるようにリサイズされた入力画像から生成しています。 右の図は強度画像をUC8の濃淡画像(F_IMG_UC8, 1ch)に変換して可視化したものです。<p>
+<dl class="user" compact><dt><b>サンプルコード</b></dt><dd><a class="el" href="group__fie__fft__sample.html#fie_fft_mag_sample">周波数画像可視化サンプル</a> <br>
+ <a class="el" href="group__fie__fft__sample.html#fie_fft_sample">FFTを使用した実画像の周波数フィルタリングのサンプル</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Eleanor Chu and Alan George, "INSIDE the FFT BLACK BOX: Serial and Parallel Fast Fourier Transform Algorithms", Ch.14, 2000, CRC Press</li><li>Duhamel,P. ^ Vetterli M. "Fast Fourier Transforms: ATutorial Review and a State of the Art" Digital Signal Processing Handbook Ed.Vijay K. Madisetti and Douglas B. Williams Boca Raton: CRC Press LLC, 1999</li><li>画像情報教育振興協会, "ディジタル画像処理[改訂新版]," pp.126-128, 2015. </li></ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

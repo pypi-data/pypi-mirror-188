@@ -1,0 +1,1713 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: データマトリックス認識</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>データマトリックス認識<br>
+<small>
+[<a class="el" href="group__fie__2d__code.html">２Ｄコード認識</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<h2><a class="anchor" name="fie_dm_about">
+データマトリックス(DataMatrix)とは</a></h2>
+データマトリックスは、マトリックス型二次元データコードの一種で、1987年にID Matrix 社によって開発されました。 QRコードと同様、二次元データコードである データマトリックスは縦横に情報を持っているため、格納できる情報量が多く、サイズも小型化できる特長があり、誤り訂正などの機能にも対応しています。 現在は ISO国際標準規格(ISO/IEC16022)になっています。米国半導体工業会(SEMI)、米国電子工業会(EIA)、米国規格協会(ANSI)等で多く採用されており、半導体、液晶、IC部品等に使用されるケースが多いです。<p>
+<div align="center">
+<img src="dm_top.png" alt="dm_top.png">
+<p><strong>fig. データマトリックス(FAST http://www.fast-corp.co.jp/)</strong></p></div>
+<h2><a class="anchor" name="fie_dm_const">
+データマトリックスの構成</a></h2>
+マトリックス型シンボルの二次元データコードである データマトリックスは、セルと呼ばれる１つの要素が正方形状に並んで構成されます。各セルは 1bitの情報を持ち黒と白(暗と明)で表されます。 1つの データマトリックスを構成するセルは偶数×偶数として決められ、正方形シンボルの場合には 10×10～144×144、長方形シンボルの場合には 8～16×18～48 の間に定められています。 セルの配置については、シンボルの持つ情報を格納するデータ領域の他に、格納されている情報に依存しない特定のパタンが配置される領域があり、主にシンボルの検出を安定して行うために利用されます。 以下、黒いセルをデータマトリックスのシンボルを構成する対象として説明を行います。<p>
+<div align="center">
+<img src="dm_const.png" alt="dm_const.png">
+<p><strong>fig. データマトリックスの構成(12×12セル(左)と52×52セル(右))</strong></p></div>
+<p>
+<dl class="user" compact><dt><b>ファインダーパタン</b></dt><dd>シンボルの位置を特定するために使われるパタンで、シンボルの外周２辺を用いてアルファベット『 Ｌ 』の字の様にセルが配置されています。</dd></dl>
+<dl class="user" compact><dt><b>タイミングパタン</b></dt><dd>シンボルの外周部、ファインダーパタンの対面の２辺に配置され、1セルごとに明暗が反転する特徴があります。シンボルの位置を特定する他、シンボルのセルのサイズやセル幅を特定することにも用いることができます。</dd></dl>
+<dl class="user" compact><dt><b>クワイエットゾーン</b></dt><dd>データマトリックスの読み取りに必要な周囲の余白スペースで、シンボルを構成する色(白or黒)とは反対の色になります。このクワイエットゾーンにより読み取りを安定したシンボル検出が可能になります。なお、一般的には1セル分のクワイエットゾーンが必要とされています。</dd></dl>
+<dl class="user" compact><dt><b>データ領域</b></dt><dd>データマトリックスのシンボルの中で、以上に挙げた領域以外がシンボル自体の持つ情報(形式、型番情報、メッセージ等)が格納されるデータ領域となります。 ただし、シンボルサイズが 26×26よりも大きい場合には、サイズの小さいデータマトリックスのブロックに分割します。よって、外周部だけでなく、ここでデータ領域として定義している領域にもファインダーパタン、タイミングパタンと同じ配置のパタンが現れます。<br>
+ データはある規則に基づいてセル情報として符号化されており、入力データと誤り訂正機能を実現するリードソロモン符号が配置されていますので、シンボル自体が汚れ、欠け、隠蔽等により完全でなくても読み取りを行うことが可能です。 なお、データマトリックスの誤り訂正は、誤り訂正コードワードがシンボルの28.5％から62.5％の範囲でサイズ毎に決められております。 データマトリックスが持つことができるデータの最大値については、次の表1に示します。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><center> 表1．データマトリックスのサイズによる収納文字数の違い(ECC200) <table class="pretable">
+<tr>
+<th align="center"></th><th align="center">数字 </th><th align="center">英数字 </th><th align="center">バイナリ  </th></tr>
+<tr>
+<th align="center">最小情報量(シンボルサイズ10×10) </th><td align="right">6 </td><td align="right">3 </td><td align="right">1  </td></tr>
+<tr>
+<th align="center">最大情報量(シンボルサイズ144×144) </th><td align="right">3116 </td><td align="right">2335 </td><td align="right">1556  </td></tr>
+</table>
+</center></dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本ライブラリでデコード可能な データマトリックスはECC200のみです。他の仕様(ECC-000,50,80,100,140)の データマトリックスには対応していません。 </li>
+<li>データマトリックスシンボルの鏡映反転読取には対応していません。 </li>
+<li>セル幅の縦横比が異なるデータマトリックスには対応していません。 </li>
+<li>歪、射影変換等の変形には対応していません。 </li>
+<li>ドットマークのシンボルには対応していません。 </li>
+<li>ファインダパタン、タイミングパタンの隠蔽には対応していません。 </li>
+<li>長方形シンボルへの対応は実験的であり、長方形シンボルの読み取りは現時点では非推奨です。現時点では充分な読み取り性能はありません。また、将来は機能互換が絶たれる可能性があります。</li>
+</ul>
+</dd></dl>
+<h2><a class="anchor" name="fie_dm_example_overall">
+サンプルコード</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+INT main()
+{
+    INT i;
+    FHANDLE hdm = NULL;
+    FHANDLE himg = NULL;
+    <span class="keyword">const</span> INT* undecoded_index = NULL;
+    INT  num_undecoded;
+    <span class="keyword">const</span> INT* decoded_index = NULL;
+    INT  num_decoded;
+    <span class="keyword">const</span> CHAR* message = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>* corner=NULL;
+    INT size_cells_min, size_cells_max;
+    DOUBLE width_cell_min, width_cell_max;
+
+    <span class="comment">// FIEライブラリの初期化処理</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+    
+    <span class="comment">// 適当な8ビットグレイ画像を用意する - 画像ファイルは適宜用意すること</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"sample.bmp"</span>, &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+    
+    <span class="comment">// データマトリックスオブジェクト生成</span>
+    <a class="code" href="group__fie__datamatrix.html#g4a6557bf841376e54d16b493eb3a074b" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_alloc_obj</a>( &amp;hdm );
+    
+    <span class="comment">// データマトリックス 検出対象シンボルサイズを適宜設定</span>
+    size_cells_min = 32; size_cells_max = 32;
+    <a class="code" href="group__fie__datamatrix.html#gcdf9b12a119ac84f56fe65d39c945d1c" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_set_size_minmax</a>( hdm, size_cells_min, size_cells_max );
+    
+    <span class="comment">// データマトリックス 検出対象シンボルセルサイズを適宜設定</span>
+    width_cell_min = 5;  width_cell_max = 10;
+    <a class="code" href="group__fie__datamatrix.html#g228ed78e554a38d494e607cf52a80ba5" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_set_cellwidth_minmax</a>( hdm, width_cell_min, width_cell_max );
+
+    <span class="comment">// デコード実行</span>
+    <a class="code" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_execute</a>( hdm, himg );
+
+    <span class="comment">// デコード数とインデックス番号の参照</span>
+    <a class="code" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_decoded</a>( hdm, &amp;decoded_index, &amp;num_decoded );
+    
+    <span class="comment">// デコード結果へのアクセス</span>
+    <span class="keywordflow">for</span>( i=0; i&lt;num_decoded; i++ ) {
+        <span class="comment">// デコードメッセージ取得</span>
+        message = NULL;
+        <a class="code" href="group__fie__datamatrix.html#g0e155a10c14c70cab20925e826fd2b66" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_message</a>( hdm, decoded_index[i], &amp;message, NULL );
+        
+        <span class="comment">// メッセージ表示</span>
+        printf(message);
+
+        <span class="comment">// 必要に応じて、データマトリックスの情報を取得して下さい。</span>
+        corner = NULL;
+        <a class="code" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_corner</a>( hdm, decoded_index[i], &amp;corner );
+        <span class="comment">//...</span>
+    }
+
+    <span class="comment">// デコードに失敗した結果(検出はできた)へのアクセス</span>
+    <a class="code" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_undecoded</a>( hdm, &amp;undecoded_index, &amp;num_undecoded );
+    
+    <span class="keywordflow">for</span>( i=0; i&lt;num_undecoded; i++ ){
+        <span class="comment">//メッセージは存在しません。</span>
+
+        <span class="comment">// 必要に応じて、情報を取得してください</span>
+        corner = NULL;
+        <a class="code" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_corner</a>( hdm, undecoded_index[i], &amp;corner );
+    }
+    
+    <span class="comment">// オブジェクト解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdm );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( himg );
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div><p>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>ISO 国際規格(ISO/IEC16022) </li>
+<li>これでわかった２次元シンボル　オーム社　社団法人日本自動認識システム協会　佐藤政次 </li>
+<li>知っておきたいバーコード・二次元コードの知識 日本工業出版 平本 純也 </li>
+</ul>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">f_dm_color_type</a> { <a class="el" href="group__fie__datamatrix.html#ggb1e3e85e6bd9852c6bb32334e9548b579d2ef8f0efbf89419e0258cc03687c43">F_DM_DARK_ON_LIGHT</a> =  0, 
+<a class="el" href="group__fie__datamatrix.html#ggb1e3e85e6bd9852c6bb32334e9548b575e1d8c728fe2076b77507dff54cb7c0a">F_DM_LIGHT_ON_DARK</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">データマトリックス検出色  <a href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">f_dm_symbol_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__datamatrix.html#gg9ecf96675470f709a4f7a7a3f83d6688e9646ade445d342bda8bb841f0a3774d">F_DM_SYMBOL_SQUARE</a> =  1, 
+<a class="el" href="group__fie__datamatrix.html#gg9ecf96675470f709a4f7a7a3f83d6688509ea1b42961dca0d5e43a4031a98c36">F_DM_SYMBOL_RECTANGLE</a> =  2, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__datamatrix.html#gg9ecf96675470f709a4f7a7a3f83d6688301051ec6e4fd126b7d6db7fe0c8ca3c">F_DM_SYMBOL_ALL</a> =  3
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">データマトリックス検出シンボル形状  <a href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g4a6557bf841376e54d16b493eb3a074b">fnFIE_dm_alloc_obj</a> (FHANDLE *hdm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックスオブジェクトの生成  <a href="#g4a6557bf841376e54d16b493eb3a074b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e">fnFIE_dm_execute</a> (FHANDLE hdm, FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス デコード実行関数  <a href="#g163b0a7539ec76e441c1d5ab344a7d3e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44">fnFIE_dm_query_decoded</a> (FHANDLE hdm, const INT **decoded_index, INT *num_decoded)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出数とインデックス配列の取得  <a href="#g5e143f052d940c72c9027bf3f33c1d44"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952">fnFIE_dm_query_undecoded</a> (FHANDLE hdm, const INT **undecoded_index, INT *num_undecoded)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出したが、読み取ることができなかったデータマトリックス数とインデックス配列の取得  <a href="#g2a9f3a2b434ed9a1b5454280c1ea1952"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g0e155a10c14c70cab20925e826fd2b66">fnFIE_dm_query_message</a> (FHANDLE hdm, INT id, const CHAR **message, INT *message_length)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス指定したインデックス番号にあるデータマトリックスのメッセージを取得  <a href="#g0e155a10c14c70cab20925e826fd2b66"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g7d2a6c2ba5685e7cc39da9dc79dfea74">fnFIE_dm_query_center</a> (FHANDLE hdm, INT id, DOUBLE *center_x, DOUBLE *center_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス読み取りに成功したデータマトリックスの中心位置を取得  <a href="#g7d2a6c2ba5685e7cc39da9dc79dfea74"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g6f5c48b3e48facafe53f587a3f6d3c5e">fnFIE_dm_query_size</a> (FHANDLE hdm, INT id, INT *size_cells_x, INT *size_cells_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボルサイズの取得  <a href="#g6f5c48b3e48facafe53f587a3f6d3c5e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g70e75ad38f95ce1538fec8c4372c0bff">fnFIE_dm_query_cellwidth</a> (FHANDLE hdm, INT id, DOUBLE *cell_width, DOUBLE *cell_height)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス セル幅の取得  <a href="#g70e75ad38f95ce1538fec8c4372c0bff"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#gdcccab013875e3f6b2b0741c543f8859">fnFIE_dm_query_cellones</a> (FHANDLE hdm, INT id, <a class="el" href="structFMATRIX.html">FMATRIX</a> **cell_ones)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 読み取りに成功したデータマトリックスのセル位置情報の参照  <a href="#gdcccab013875e3f6b2b0741c543f8859"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a">fnFIE_dm_query_corner</a> (FHANDLE hdm, INT id, <a class="el" href="structFMATRIX.html">FMATRIX</a> **corner)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボルのコーナー位置情報の取得  <a href="#ge0bd543a43a5bc888cd2941c65996a6a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g0446cbd78ddfc4a793c43c3e5f9bad04">fnFIE_dm_add_offsets</a> (FHANDLE hdm, INT offset_x, INT offset_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出位置に加味するオフセット量の設定  <a href="#g0446cbd78ddfc4a793c43c3e5f9bad04"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g5b74502c9ddbe6edcfdaefabb243d1e3">fnFIE_dm_set_slant_allowance</a> (FHANDLE hdm, INT slant_allowance)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 直交ずれ許容値の設定  <a href="#g5b74502c9ddbe6edcfdaefabb243d1e3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g47456c2bf81597e1dc3e0b7dd6547a54">fnFIE_dm_get_slant_allowance</a> (FHANDLE hdm, INT *slant_allowance)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 直交ずれ許容値の取得  <a href="#g47456c2bf81597e1dc3e0b7dd6547a54"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#gcdf9b12a119ac84f56fe65d39c945d1c">fnFIE_dm_set_size_minmax</a> (FHANDLE hdm, INT size_cells_min, INT size_cells_max)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するシンボルのシンボルサイズの設定  <a href="#gcdf9b12a119ac84f56fe65d39c945d1c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#ge90fc965b7659e256205855461cf0f7b">fnFIE_dm_get_size_minmax</a> (FHANDLE hdm, INT *size_cells_min, INT *size_cells_max)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するシンボルサイズの取得  <a href="#ge90fc965b7659e256205855461cf0f7b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g228ed78e554a38d494e607cf52a80ba5">fnFIE_dm_set_cellwidth_minmax</a> (FHANDLE hdm, DOUBLE width_cell_min, DOUBLE width_cell_max)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するセル幅の設定  <a href="#g228ed78e554a38d494e607cf52a80ba5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g9ecac5ffd4660826dde4267303fe6d8e">fnFIE_dm_get_cellwidth_minmax</a> (FHANDLE hdm, DOUBLE *width_cell_min, DOUBLE *width_cell_max)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するセル幅の取得  <a href="#g9ecac5ffd4660826dde4267303fe6d8e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#gea86606ffa080c861ea808f2517c9a80">fnFIE_dm_set_minvar</a> (FHANDLE hdm, INT min_var)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボル検出のための濃度分散下限しきい値の設定  <a href="#gea86606ffa080c861ea808f2517c9a80"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g0463930f885066192dc9965b1c7f7a9a">fnFIE_dm_get_minvar</a> (FHANDLE hdm, INT *min_var)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボル検出のための濃度分散下限分散しきい値の取得  <a href="#g0463930f885066192dc9965b1c7f7a9a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g3ad88469e9a713d327ff7a1e861ec483">fnFIE_dm_set_color</a> (FHANDLE hdm, enum <a class="el" href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">f_dm_color_type</a> color)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出セル色の設定  <a href="#g3ad88469e9a713d327ff7a1e861ec483"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#gb4e5e3dffa452eb7a695289892ec19a2">fnFIE_dm_get_color</a> (FHANDLE hdm, enum <a class="el" href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">f_dm_color_type</a> *color)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出セル色の取得  <a href="#gb4e5e3dffa452eb7a695289892ec19a2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#ga5f7fe0c66965d0d138b4e484dbf01c3">fnFIE_dm_set_symbol_type</a> (FHANDLE hdm, enum <a class="el" href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">f_dm_symbol_type</a> symbol_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  [非推奨]データマトリックス 検出シンボルタイプの設定  <a href="#ga5f7fe0c66965d0d138b4e484dbf01c3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#ge54bbfeab0a3141c14b9434c3a9beacf">fnFIE_dm_get_symbol_type</a> (FHANDLE hdm, enum <a class="el" href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">f_dm_symbol_type</a> *symbol_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  [非推奨]データマトリックス 検出シンボルタイプの取得  <a href="#ge54bbfeab0a3141c14b9434c3a9beacf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g00ee66358d2cb0b5d40f8980e7285c17">fnFIE_dm_set_timeout</a> (FHANDLE hdm, DOUBLE timeout)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの設定  <a href="#g00ee66358d2cb0b5d40f8980e7285c17"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__datamatrix.html#g9dcd645c31e4104196cae4b5c8413ec0">fnFIE_dm_get_timeout</a> (FHANDLE hdm, DOUBLE *timeout)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの取得  <a href="#g9dcd645c31e4104196cae4b5c8413ec0"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gb1e3e85e6bd9852c6bb32334e9548b57"></a><!-- doxytag: member="fie.h::f_dm_color_type" ref="gb1e3e85e6bd9852c6bb32334e9548b57" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">f_dm_color_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+データマトリックス検出色 
+<p>
+データマトリックス検出における検出色です。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggb1e3e85e6bd9852c6bb32334e9548b579d2ef8f0efbf89419e0258cc03687c43"></a><!-- doxytag: member="F_DM_DARK_ON_LIGHT" ref="ggb1e3e85e6bd9852c6bb32334e9548b579d2ef8f0efbf89419e0258cc03687c43" args="" -->F_DM_DARK_ON_LIGHT</em>&nbsp;</td><td>
+黒シンボル(背景白) </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb1e3e85e6bd9852c6bb32334e9548b575e1d8c728fe2076b77507dff54cb7c0a"></a><!-- doxytag: member="F_DM_LIGHT_ON_DARK" ref="ggb1e3e85e6bd9852c6bb32334e9548b575e1d8c728fe2076b77507dff54cb7c0a" args="" -->F_DM_LIGHT_ON_DARK</em>&nbsp;</td><td>
+白シンボル(背景黒) </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9ecf96675470f709a4f7a7a3f83d6688"></a><!-- doxytag: member="fie.h::f_dm_symbol_type" ref="g9ecf96675470f709a4f7a7a3f83d6688" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">f_dm_symbol_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+データマトリックス検出シンボル形状 
+<p>
+データマトリックス検出の対象となるシンボル形状（正方形、長方形）です。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg9ecf96675470f709a4f7a7a3f83d6688e9646ade445d342bda8bb841f0a3774d"></a><!-- doxytag: member="F_DM_SYMBOL_SQUARE" ref="gg9ecf96675470f709a4f7a7a3f83d6688e9646ade445d342bda8bb841f0a3774d" args="" -->F_DM_SYMBOL_SQUARE</em>&nbsp;</td><td>
+正方形：縦横のセルサイズ（単位：数）が同じシンボル </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9ecf96675470f709a4f7a7a3f83d6688509ea1b42961dca0d5e43a4031a98c36"></a><!-- doxytag: member="F_DM_SYMBOL_RECTANGLE" ref="gg9ecf96675470f709a4f7a7a3f83d6688509ea1b42961dca0d5e43a4031a98c36" args="" -->F_DM_SYMBOL_RECTANGLE</em>&nbsp;</td><td>
+長方形：縦横のセルサイズ（単位：数）が異なるシンボル </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg9ecf96675470f709a4f7a7a3f83d6688301051ec6e4fd126b7d6db7fe0c8ca3c"></a><!-- doxytag: member="F_DM_SYMBOL_ALL" ref="gg9ecf96675470f709a4f7a7a3f83d6688301051ec6e4fd126b7d6db7fe0c8ca3c" args="" -->F_DM_SYMBOL_ALL</em>&nbsp;</td><td>
+両方：正方形または長方形シンボル </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g4a6557bf841376e54d16b493eb3a074b"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_alloc_obj" ref="g4a6557bf841376e54d16b493eb3a074b" args="(FHANDLE *hdm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_alloc_obj           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックスオブジェクトの生成 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドルへのポインタ。関数エントリー時には <em>*hdm</em> を NULL で初期化してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>データマトリックスオブジェクトが不要になったら、必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。 </li></ul>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g163b0a7539ec76e441c1d5ab344a7d3e"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_execute" ref="g163b0a7539ec76e441c1d5ab344a7d3e" args="(FHANDLE hdm, FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_execute           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス デコード実行関数 
+<p>
+本関数は データマトリックス読み取りの実行関数です。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>入力画像(type:UC8/ch:1)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5e143f052d940c72c9027bf3f33c1d44"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_decoded" ref="g5e143f052d940c72c9027bf3f33c1d44" args="(FHANDLE hdm, const INT **decoded_index, INT *num_decoded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_decoded           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT **&nbsp;</td>
+          <td class="paramname"> <em>decoded_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_decoded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出数とインデックス配列の取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>decoded_index</em>&nbsp;</td><td>正常に読み取ることができたデータマトリックスインデックス番号の配列への参照ポインタ。関数エントリー時には <em>*decoded_index</em> を NULL で初期化してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_decoded</em>&nbsp;</td><td>正常に読み取ることができたデータマトリックス数 </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li><em>decoded_index</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> か <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> が呼ばれたときには無効になります。</li><li>本関数は、 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を行った後にコールしてください。 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合は、戻り値は F_ERR_NONE が返り、<em>num_decoded</em> が 0 となります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g0e155a10c14c70cab20925e826fd2b66" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_message()</a>, <a class="el" href="group__fie__datamatrix.html#g7d2a6c2ba5685e7cc39da9dc79dfea74" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_center()</a>, <a class="el" href="group__fie__datamatrix.html#g6f5c48b3e48facafe53f587a3f6d3c5e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_size()</a>, <a class="el" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_corner()</a>, <a class="el" href="group__fie__datamatrix.html#gdcccab013875e3f6b2b0741c543f8859" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_cellones()</a>, <a class="el" href="group__fie__datamatrix.html#g70e75ad38f95ce1538fec8c4372c0bff" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_cellwidth()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2a9f3a2b434ed9a1b5454280c1ea1952"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_undecoded" ref="g2a9f3a2b434ed9a1b5454280c1ea1952" args="(FHANDLE hdm, const INT **undecoded_index, INT *num_undecoded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_undecoded           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const INT **&nbsp;</td>
+          <td class="paramname"> <em>undecoded_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>num_undecoded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出したが、読み取ることができなかったデータマトリックス数とインデックス配列の取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>undecoded_index</em>&nbsp;</td><td>正常に読み取ることができなかったデータマトリックスインデックス配列の参照。関数エントリー時には <em>*undecoded_index</em> を NULL で初期化してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num_ndecoded</em>&nbsp;</td><td>正常に読み取ることができなかったデータマトリックス数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li><em>undecoded_index</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> か <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> が呼ばれたときには無効になります。</li><li>本関数は、 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を行った後にコールしてください。 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合は、戻り値は F_ERR_NONE が返り、<em>num_decoded</em> が 0 となります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g7d2a6c2ba5685e7cc39da9dc79dfea74" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_center()</a>, <a class="el" href="group__fie__datamatrix.html#g6f5c48b3e48facafe53f587a3f6d3c5e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_size()</a>, <a class="el" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_corner()</a>, <a class="el" href="group__fie__datamatrix.html#gdcccab013875e3f6b2b0741c543f8859" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_cellones()</a>, <a class="el" href="group__fie__datamatrix.html#g70e75ad38f95ce1538fec8c4372c0bff" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_cellwidth()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0e155a10c14c70cab20925e826fd2b66"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_message" ref="g0e155a10c14c70cab20925e826fd2b66" args="(FHANDLE hdm, INT id, const CHAR **message, INT *message_length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_message           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const CHAR **&nbsp;</td>
+          <td class="paramname"> <em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>message_length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス指定したインデックス番号にあるデータマトリックスのメッセージを取得 
+<p>
+デコードに成功したデータマトリックスのメッセージを参照します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> によって得られたインデックス配列の参照値。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>message</em>&nbsp;</td><td>読み取ったデータマトリックスメッセージ。関数エントリー時には <em>*message</em> を NULL で初期化してください。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>message_length</em>&nbsp;</td><td>読み取ったデータマトリックスメッセージの文字列長。メッセージ自体に (終端文字)を含む可能性がある場合には文字列長を取得して <em>message</em> を使用してください。特に必要がないことがわかっている場合には <em>message_length</em> は NULL を指定可能です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>メッセージがありません(パラメータ <em>id</em> に、検出したがデコードに失敗したインデックス番号を指定しました) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> によって得られたインデックス配列の値を参照して使用します。</li><li><em>id</em> に指定できる範囲は「位置検出に成功したデータマトリックス数」ですが、指定した <em>id</em> が読取に成功していなかった場合には戻り値に F_ERR_NODATA が返ります。</li><li><em>message</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> が呼ばれた場合は無効になります。</li><li><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7d2a6c2ba5685e7cc39da9dc79dfea74"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_center" ref="g7d2a6c2ba5685e7cc39da9dc79dfea74" args="(FHANDLE hdm, INT id, DOUBLE *center_x, DOUBLE *center_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_center           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>center_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>center_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス読み取りに成功したデータマトリックスの中心位置を取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> , <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の参照値。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center_x</em>&nbsp;</td><td>データマトリックスの中心 X 座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center_y</em>&nbsp;</td><td>データマトリックスの中心 Y 座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の値を参照して使用します。</li><li><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a>, <a class="el" href="group__fie__datamatrix.html#g0446cbd78ddfc4a793c43c3e5f9bad04" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_add_offsets()</a></dd></dl>
+<div align="center">
+<img src="dm_center.png" alt="dm_center.png">
+<p><strong>fig. fnFIE_dm_query_center() によって得られた中心座標に対して×マークを描画した例</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="g6f5c48b3e48facafe53f587a3f6d3c5e"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_size" ref="g6f5c48b3e48facafe53f587a3f6d3c5e" args="(FHANDLE hdm, INT id, INT *size_cells_x, INT *size_cells_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_size           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size_cells_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size_cells_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボルサイズの取得 
+<p>
+8～144 までのデータマトリックスのシンボルサイズを取得します。 得られるセルの数は、データマトリックスシンボルのファインダーパタンがＬ字を描くように配置された状態での値です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> , <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の参照値。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size_cells_x</em>&nbsp;</td><td>横方向セル数(必要の無い場合にはNULLを指定) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size_cells_y</em>&nbsp;</td><td>縦方向セル数(必要の無い場合にはNULLを指定)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>縦横のシンボルサイズが異なるデータマトリックスを検出するためには <a class="el" href="group__fie__datamatrix.html#ga5f7fe0c66965d0d138b4e484dbf01c3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [非推奨]データ...">fnFIE_dm_set_symbol_type()</a> で長方形を検出対象としてください。</li><li><em>size_cells_x</em> と <em>size_cells_y</em> の両方を同時に NULL指定した場合には F_ERR_INVALID_PARAM を返します。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a>, <a class="el" href="group__fie__datamatrix.html#ga5f7fe0c66965d0d138b4e484dbf01c3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  [非推奨]データ...">fnFIE_dm_set_symbol_type()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g70e75ad38f95ce1538fec8c4372c0bff"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_cellwidth" ref="g70e75ad38f95ce1538fec8c4372c0bff" args="(FHANDLE hdm, INT id, DOUBLE *cell_width, DOUBLE *cell_height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_cellwidth           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>cell_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>cell_height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス セル幅の取得 
+<p>
+データマトリックスシンボルの１セルの幅(画素)を取得します。 得られるセル幅は、データマトリックスシンボルのファインダーパタンがＬ字を描くように配置された状態での値です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> , <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の参照値。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cell_width</em>&nbsp;</td><td>Ｘセル幅(画素) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cell_height</em>&nbsp;</td><td>Ｙセル幅(画素)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>縦横のセル幅が異なるデータマトリックスには対応していません。（ただし、<em>cell_width</em> と <em>cell_height</em> の出力値が一致するとは限りません）</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gdcccab013875e3f6b2b0741c543f8859"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_cellones" ref="gdcccab013875e3f6b2b0741c543f8859" args="(FHANDLE hdm, INT id, FMATRIX **cell_ones)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_cellones           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>cell_ones</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 読み取りに成功したデータマトリックスのセル位置情報の参照 
+<p>
+セルが存在する位置情報(<em>x</em>,<em>y</em>)を取得します。<br>
+ 得られる位置情報はデータマトリックスを構成するセルのみです。つまりクワイエットゾーンと異なる色を持つ箇所のみ位置が得られます。 位置座標は、列ベクトル(3×<em>n</em> の行列で、<em>n</em> は列の数)として値を参照し、各列には、<img class="formulaInl" alt="$ \left[ \begin{array}{ccc} \bf{x_i} &amp; \bf{y_i} &amp; \bf{1} \end{array} \right]^t $" src="form_947.png"> のように座標が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> , <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の参照値。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>cell_ones</em>&nbsp;</td><td>セルが存在する位置情報(<em>x</em>,<em>y</em>)の列ベクトルの参照。関数エントリー時には <em>*cell_ones</em> を NULL で初期化してください。 なお、位置情報の格納順は、ファインダパタンＬ字の左上部から、タイミングパタンの方向(Ｌを基準にＸ方向)にラスタ走査を行うように格納されます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の値を参照して使用します。</li><li><em>cell_ones</em> で得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> が呼ばれた場合は無効になります。</li><li><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a>, <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a>, <a class="el" href="group__fie__datamatrix.html#g0446cbd78ddfc4a793c43c3e5f9bad04" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_add_offsets()</a></dd></dl>
+<dl class="user" compact><dt><b>記述例</b></dt><dd></dd></dl>
+<div class="fragment"><pre class="fragment">    <span class="comment">// ※サンプルコードは結果の描画部のみの記述です。</span>
+
+    ...
+    decoded_index = NULL;
+    <a class="code" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_decoded</a>( hdm, &amp;decoded_index, &amp;num_decoded ) );
+    
+    <span class="keywordflow">for</span>( i=0; i&lt;num_decoded; i++ ){
+        <span class="comment">//クワイエットゾーンと違う色を持つセル部描画情報の取得</span>
+        cell_ones = NULL;
+        <a class="code" href="group__fie__datamatrix.html#gdcccab013875e3f6b2b0741c543f8859" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_cellones</a>( hdm, decoded_index[i], &amp;cell_ones );
+        
+        <a class="code" href="group__fie__datamatrix.html#g70e75ad38f95ce1538fec8c4372c0bff" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_cellwidth</a>( hdm, decoded_index[i], &amp;cell_width, &amp;cell_height );
+        
+        rc = (cell_width + cell_height)/4; <span class="comment">//描画半径(任意)</span>
+        
+        <span class="keywordflow">for</span>( c=0; c&lt;cell_ones-&gt;col; c++ ){
+            xc = cell_ones-&gt;m[0][c];    <span class="comment">//各セルのＸ座標</span>
+            yc = cell_ones-&gt;m[1][c];    <span class="comment">//各セルのＹ座標</span>
+            
+            draw_circle( xc, yc, rc );  <span class="comment">//描画関数(各自用意)</span>
+        }
+    }
+    ...
+</pre></div><p>
+<div align="center">
+<img src="dm_cellones.png" alt="dm_cellones.png">
+<p><strong>fig. fnFIE_dm_query_cellones() によって得られた点情報を中心にセルサイズを加味して円を描画した例</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="ge0bd543a43a5bc888cd2941c65996a6a"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_query_corner" ref="ge0bd543a43a5bc888cd2941c65996a6a" args="(FHANDLE hdm, INT id, FMATRIX **corner)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_query_corner           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> **&nbsp;</td>
+          <td class="paramname"> <em>corner</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボルのコーナー位置情報の取得 
+<p>
+シンボルのコーナー位置情報４点 <img class="formulaInl" alt="$ \left( \bf{x_i} , \bf{y_i} \right) $" src="form_948.png"> を取得します。<br>
+ 位置座標は、列ベクトル(3×<em>4</em> の行列で、<em>4</em> は列の数)として値を参照し、各列には、<img class="formulaInl" alt="$ \left[ \begin{array}{ccc} \bf{x_i} &amp; \bf{y_i} &amp; \bf{1} \end{array} \right]^t $" src="form_947.png"> のように座標が格納されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td><a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a> , <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の参照値。 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>corner</em>&nbsp;</td><td>コーナー位置情報(<em>x</em>,<em>y</em>)の列ベクトルの参照。関数エントリー時には <em>*corner</em> を NULL で初期化してください。<br>
+ なお、位置情報の格納順は、ファインダパタンＬ字の左上部から、そのままＬを描く方向に一周するように格納されます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は、 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> にて読み取りを行った後に、 <a class="el" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_decoded()</a>, <a class="el" href="group__fie__datamatrix.html#g2a9f3a2b434ed9a1b5454280c1ea1952" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_undecoded()</a> によって得られたインデックス配列の値を参照して使用します。</li><li><em>corner</em> にて得られたポインタを解放、または内容の変更をしないでください。また、このポインタの内容は <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> か、再度 <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> が呼ばれた場合は無効になります。</li><li><a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> を実行前、または１つのシンボルも検出しない状態で本関数をコールした場合、戻り値に F_ERR_INVALID_PARAM が返ります。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>記述例</b></dt><dd></dd></dl>
+<div class="fragment"><pre class="fragment">    <span class="comment">// ※サンプルコードは結果の描画部のみの記述です。</span>
+
+    ...
+    decoded_index = NULL;
+    <a class="code" href="group__fie__datamatrix.html#g5e143f052d940c72c9027bf3f33c1d44" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_decoded</a>( hdm, &amp;decoded_index, &amp;num_decoded ) );
+    
+    <span class="keywordflow">for</span>( i=0; i&lt;num_decoded; i++ ){
+        <span class="comment">//データマトリックスシンボル外周描画</span>
+        corner = NULL;
+        <a class="code" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  データマトリ...">fnFIE_dm_query_corner</a>( hdm, decoded_index[i], &amp;corner );
+        
+        <span class="keywordflow">for</span>( c=0; c&lt;corner-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>; c++ ){
+            xs = corner-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][(c  )%corner-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線始点Ｘ座標</span>
+            ys = corner-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][(c  )%corner-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線始点Ｙ座標</span>
+            xe = corner-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[0][(c+1)%corner-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線終点Ｘ座標</span>
+            ye = corner-&gt;<a class="code" href="structFMATRIX.html#29c6557931d07e98838edfbb21c25cbe">m</a>[1][(c+1)%corner-&gt;<a class="code" href="structFMATRIX.html#ccffadd564741c2b5a95bd2fea88d3c2">col</a>];   <span class="comment">// 境界線終点Ｙ座標</span>
+            
+            draw_line( xs, ys, xe, ye );    <span class="comment">//描画関数(各自用意)</span>
+        }
+    }
+    ...
+</pre></div><p>
+<div align="center">
+<img src="dm_corner.png" alt="dm_corner.png">
+<p><strong>fig. fnFIE_dm_query_corner() の描画例(赤○マークは先頭位置)</strong></p></div>
+ 
+</div>
+</div><p>
+<a class="anchor" name="g0446cbd78ddfc4a793c43c3e5f9bad04"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_add_offsets" ref="g0446cbd78ddfc4a793c43c3e5f9bad04" args="(FHANDLE hdm, INT offset_x, INT offset_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_add_offsets           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>offset_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出位置に加味するオフセット量の設定 
+<p>
+検出したすべてのデータマトリックスの検出位置(x,y)に、本関数で設定したオフセット量を足します。 例えば、チャイルド画像を使用してデータマトリックスの読み取りを行った場合に、本関数でチャイルド画像の切り出し始点位置をオフセット値として入力すると、ルート画像上での位置情報として回答を得ることができます。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset_x</em>&nbsp;</td><td>検出位置に足されるオフセット量Ｘ </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset_y</em>&nbsp;</td><td>検出位置に足されるオフセット量Ｙ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>本関数は <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> の結果に常に反映される値を設定する関数ではなく、1回の <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> によって格納された位置情報に対して値を加算するものです。 そのため、いつも同じオフセット量を加算する必要がある場合には <a class="el" href="group__fie__datamatrix.html#g163b0a7539ec76e441c1d5ab344a7d3e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_execute()</a> によって検出を行った後に本関数を連続してコールする必要があります。</li><li><em>offset_x</em>, <em>offset_y</em> には負の値も入力可能です。 </li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g7d2a6c2ba5685e7cc39da9dc79dfea74" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_center()</a>, <a class="el" href="group__fie__datamatrix.html#ge0bd543a43a5bc888cd2941c65996a6a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_corner()</a>, <a class="el" href="group__fie__datamatrix.html#gdcccab013875e3f6b2b0741c543f8859" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_query_cellones()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5b74502c9ddbe6edcfdaefabb243d1e3"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_slant_allowance" ref="g5b74502c9ddbe6edcfdaefabb243d1e3" args="(FHANDLE hdm, INT slant_allowance)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_slant_allowance           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>slant_allowance</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 直交ずれ許容値の設定 
+<p>
+データマトリックスのファインダーパタンは基本的に直交しています。 この値を変更することで、直交しないファインダーパタンにも対応することが可能です。 ただし、向かい合う辺同士の平行関係は保たれていなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>slant_allowance</em>&nbsp;</td><td>直交からの角度許容値(1≦<em>slant_allowance≦45</em>, 初期値10，単位：度)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g47456c2bf81597e1dc3e0b7dd6547a54" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_get_slant_allowance()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g47456c2bf81597e1dc3e0b7dd6547a54"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_slant_allowance" ref="g47456c2bf81597e1dc3e0b7dd6547a54" args="(FHANDLE hdm, INT *slant_allowance)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_slant_allowance           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>slant_allowance</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 直交ずれ許容値の取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>slant_allowance</em>&nbsp;</td><td>直交からの角度許容値(1～45度, 単位：度) </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g5b74502c9ddbe6edcfdaefabb243d1e3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_set_slant_allowance()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcdf9b12a119ac84f56fe65d39c945d1c"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_size_minmax" ref="gcdf9b12a119ac84f56fe65d39c945d1c" args="(FHANDLE hdm, INT size_cells_min, INT size_cells_max)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_size_minmax           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_cells_min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>size_cells_max</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するシンボルのシンボルサイズの設定 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_cells_min</em>&nbsp;</td><td>検出最小シンボルサイズ(8 ≦ <em>size_cells_min</em>, <em>size_cells_min</em> ≦ <em>size_cells_max</em>, 初期値:8, 単位:個) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>size_cells_max</em>&nbsp;</td><td>検出最大シンボルサイズ(<em>size_cells_max</em> ≦ 144, <em>size_cells_min</em> ≦ <em>size_cells_max</em>, 初期値:64, 単位:個)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>シンボルとして使用されるシンボルサイズは仕様により決まっています。ここにに記載された値以外は F_ERR_INVALID_PARAM が返ります。(有効サイズ:8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 32, 36, 40, 44, 48, 52, 64, 72, 80, 88, 96, 104, 120, 132, 144)</li></ul>
+</dd></dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#ge90fc965b7659e256205855461cf0f7b" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_get_size_minmax()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge90fc965b7659e256205855461cf0f7b"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_size_minmax" ref="ge90fc965b7659e256205855461cf0f7b" args="(FHANDLE hdm, INT *size_cells_min, INT *size_cells_max)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_size_minmax           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size_cells_min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>size_cells_max</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するシンボルサイズの取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size_cells_min</em>&nbsp;</td><td>検出最小シンボルサイズ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>size_cells_max</em>&nbsp;</td><td>検出最大シンボルサイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#gcdf9b12a119ac84f56fe65d39c945d1c" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_set_size_minmax()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g228ed78e554a38d494e607cf52a80ba5"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_cellwidth_minmax" ref="g228ed78e554a38d494e607cf52a80ba5" args="(FHANDLE hdm, DOUBLE width_cell_min, DOUBLE width_cell_max)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_cellwidth_minmax           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width_cell_min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>width_cell_max</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するセル幅の設定 
+<p>
+検出するデータマトリックスシンボルの１セルの大きさを指定します<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width_cell_min</em>&nbsp;</td><td>検出最小セル幅(3 ≦ <em>width_cell_min</em>, <em>width_cell_min</em> ≦ <em>width_cell_max</em>, 初期値:4, 単位:画素) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>width_cell_max</em>&nbsp;</td><td>検出最大セル幅(<em>width_cell_max</em> ≦ 48, <em>width_cell_min</em> ≦ <em>width_cell_max</em>, 初期値15, 単位:画素) </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g9ecac5ffd4660826dde4267303fe6d8e" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_get_cellwidth_minmax()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9ecac5ffd4660826dde4267303fe6d8e"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_cellwidth_minmax" ref="g9ecac5ffd4660826dde4267303fe6d8e" args="(FHANDLE hdm, DOUBLE *width_cell_min, DOUBLE *width_cell_max)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_cellwidth_minmax           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>width_cell_min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>width_cell_max</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出するセル幅の取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>width_cell_min</em>&nbsp;</td><td>検出最小セル幅(単位:画素) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>width_cell_max</em>&nbsp;</td><td>検出最大セル幅(単位:画素) </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g228ed78e554a38d494e607cf52a80ba5" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_set_cellwidth_minmax()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gea86606ffa080c861ea808f2517c9a80"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_minvar" ref="gea86606ffa080c861ea808f2517c9a80" args="(FHANDLE hdm, INT min_var)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_minvar           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>min_var</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボル検出のための濃度分散下限しきい値の設定 
+<p>
+データマトリックスのシンボル検出に使用する、濃度分散の最小値を指定します。 ここで指定した分散下限しきい値以上の画素の情報をシンボル検出に使用します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>min_var</em>&nbsp;</td><td>分散しきい値 (初期値:1000, 0≦<em>min_var</em>) </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#g0463930f885066192dc9965b1c7f7a9a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_get_minvar()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0463930f885066192dc9965b1c7f7a9a"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_minvar" ref="g0463930f885066192dc9965b1c7f7a9a" args="(FHANDLE hdm, INT *min_var)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_minvar           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>min_var</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス シンボル検出のための濃度分散下限分散しきい値の取得 
+<p>
+現在設定されている濃度分散下限しきい値を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>min_var</em>&nbsp;</td><td>分散しきい値 </td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__datamatrix.html#gea86606ffa080c861ea808f2517c9a80" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  データマトリ...">fnFIE_dm_set_minvar()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3ad88469e9a713d327ff7a1e861ec483"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_color" ref="g3ad88469e9a713d327ff7a1e861ec483" args="(FHANDLE hdm, enum f_dm_color_type color)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_color           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">f_dm_color_type</a>&nbsp;</td>
+          <td class="paramname"> <em>color</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出セル色の設定 
+<p>
+データマトリックスシンボルの色を指定します。 シンボル黒(F_DM_DARK_ON_LIGHT)と、シンボル白(F_DM_LIGHT_ON_DARK)で指定します。<p>
+<div align="center">
+<img src="dm_color.png" alt="dm_color.png">
+<p><strong>fig. データマトリックス色指定(左:シンボル黒,右シンボル白)</strong></p></div>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>color</em>&nbsp;</td><td>シンボルの色(初期値:F_DM_DARK_ON_LIGHT)<ul>
+<li>F_DM_DARK_ON_LIGHT シンボル色：黒（背景色は白）</li><li>F_DM_LIGHT_ON_DARK シンボル色：白（背景色は黒）</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb4e5e3dffa452eb7a695289892ec19a2"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_color" ref="gb4e5e3dffa452eb7a695289892ec19a2" args="(FHANDLE hdm, enum f_dm_color_type *color)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_color           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__datamatrix.html#gb1e3e85e6bd9852c6bb32334e9548b57">f_dm_color_type</a> *&nbsp;</td>
+          <td class="paramname"> <em>color</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  データマトリックス 検出セル色の取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>color</em>&nbsp;</td><td>シンボルの色<ul>
+<li>F_DM_DARK_ON_LIGHT シンボル色：黒（背景色は白）</li><li>F_DM_LIGHT_ON_DARK シンボル色：白（背景色は黒） </li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga5f7fe0c66965d0d138b4e484dbf01c3"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_symbol_type" ref="ga5f7fe0c66965d0d138b4e484dbf01c3" args="(FHANDLE hdm, enum f_dm_symbol_type symbol_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_symbol_type           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">f_dm_symbol_type</a>&nbsp;</td>
+          <td class="paramname"> <em>symbol_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  [非推奨]データマトリックス 検出シンボルタイプの設定 
+<p>
+データマトリックスのシンボルタイプを指定します。 縦横のシンボルサイズ（単位：数）が同じ場合は正方形(F_DM_SYMBOL_SQUARE)、異なる場合は長方形(F_DM_SYMBOL_RECTANGLE)とします。 どちらも許す場合は両方(F_DM_SYMBOL_ALL)とします。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>symbol_type</em>&nbsp;</td><td>シンボルタイプ(初期値:F_DM_SYMBOL_SQUARE)<ul>
+<li>F_DM_SYMBOL_SQUARE 正方形：縦横のシンボルサイズ（単位：数）が同じシンボル</li><li>F_DM_SYMBOL_RECTANGLE 長方形：縦横のシンボルサイズ（単位：数）が異なるシンボル</li><li>F_DM_SYMBOL_ALL 両方：正方形または長方形シンボル</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000006">非推奨:</a></b></dt><dd>長方形シンボルへの対応は実験的であり、長方形シンボルの読み取りは現時点では非推奨です。現時点では充分な読み取り性能はありません。また、将来は機能互換が絶たれる可能性があります。</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge54bbfeab0a3141c14b9434c3a9beacf"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_symbol_type" ref="ge54bbfeab0a3141c14b9434c3a9beacf" args="(FHANDLE hdm, enum f_dm_symbol_type *symbol_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_symbol_type           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__datamatrix.html#g9ecf96675470f709a4f7a7a3f83d6688">f_dm_symbol_type</a> *&nbsp;</td>
+          <td class="paramname"> <em>symbol_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  [非推奨]データマトリックス 検出シンボルタイプの取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>symbol_type</em>&nbsp;</td><td>シンボルタイプ(初期値:F_DM_SYMBOL_SQUARE)<ul>
+<li>F_DM_SYMBOL_SQUARE 正方形：縦横のシンボルサイズ（単位：数）が同じシンボル</li><li>F_DM_SYMBOL_RECTANGLE 長方形：縦横のシンボルサイズ（単位：数）が異なるシンボル</li><li>F_DM_SYMBOL_ALL 両方：正方形または長方形シンボル </li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>データマトリックスオブジェクトの異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b><a class="el" href="deprecated.html#_deprecated000007">非推奨:</a></b></dt><dd>長方形シンボルへの対応は実験的であり、長方形シンボルの読み取りは現時点では非推奨です。現時点では充分な読み取り性能はありません。また、将来は機能互換が絶たれる可能性があります。</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g00ee66358d2cb0b5d40f8980e7285c17"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_set_timeout" ref="g00ee66358d2cb0b5d40f8980e7285c17" args="(FHANDLE hdm, DOUBLE timeout)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_set_timeout           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>timeout</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの設定 
+<p>
+データマトリックスの認識を打ち切る制限時間を設定します。0を指定した場合はタイムアウトは行いません。<p>
+初期値：0ms タイムアウト無し<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>timeout</em>&nbsp;</td><td>タイムアウト時間(ms) ( timeout &gt;= 0.0 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9dcd645c31e4104196cae4b5c8413ec0"></a><!-- doxytag: member="fie_dm_main.c::fnFIE_dm_get_timeout" ref="g9dcd645c31e4104196cae4b5c8413ec0" args="(FHANDLE hdm, DOUBLE *timeout)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_dm_get_timeout           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>timeout</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  タイムアウトの取得 
+<p>
+指定したオブジェクトハンドルにて設定されているデータマトリックスの認識を打ち切る制限時間を取得します。<p>
+初期値：0ms タイムアウト無し<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hdm</em>&nbsp;</td><td>データマトリックスオブジェクトハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>timeout</em>&nbsp;</td><td>タイムアウト時間(ms) ( timeout &gt;= 0.0 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>異常終了(パラメータが不正) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトハンドルが渡されたため、異常終了。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

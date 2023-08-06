@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ラドン変換</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ラドン変換<br>
+<small>
+[<a class="el" href="group__fie__std__operation__base.html">基本画像操作</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__radon__transform.html#g842b8b9c819884ad9b5fd2251e0158a5">fnFIE_radon</a> (FHANDLE hsrc, FHANDLE hdst, DOUBLE start_angle, DOUBLE range_angle, enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a> sampling_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ラドン変換  <a href="#g842b8b9c819884ad9b5fd2251e0158a5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__radon__transform.html#ge43735b7f6aa26761014019a36ebb6b1">fnFIE_projection_rot_rectangle</a> (FHANDLE hsrc, FHANDLE hdst, <a class="el" href="structDPNT__T.html">DPNT_T</a> center, INT direction, DOUBLE start_angle, DOUBLE pitch_angle, INT samp_num_t, DOUBLE pitch_t, DOUBLE pitch_s, enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a> samp_mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">回転する矩形領域内での濃度投影  <a href="#ge43735b7f6aa26761014019a36ebb6b1"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g842b8b9c819884ad9b5fd2251e0158a5"></a><!-- doxytag: member="fie_radon.c::fnFIE_radon" ref="g842b8b9c819884ad9b5fd2251e0158a5" args="(FHANDLE hsrc, FHANDLE hdst, DOUBLE start_angle, DOUBLE range_angle, enum f_sampling_mode sampling_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_radon           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sampling_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ラドン変換 
+<p>
+<div align="center">
+<img src="fie_radon_cordinate_direction.png" alt="fie_radon_cordinate_direction.png">
+<p><strong>ラドン変換</strong></p></div>
+ 上図のような、xy座標とそれを角度 θ だけ回転させた st座標を考えます。このとき、 f(x,y) を t 方向に積分した g(θ,s) <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ g( \theta, s ) = \int_{ -\infty}^{\infty} f( x, y ) dt \]" src="form_872.png">
+<p>
+ が f(x,y) のラドン変換です。<p>
+画像に対する変換では f(x,y) が入力画像の画素値、 g(θ,s) が出力画像の画素値となります。<p>
+出力画像のサイズは任意の大きさに指定できます。 以下、出力画像のサイズを縦横それぞれ height , width とします。 出力画像における θ 軸および s 軸の向きは、 θ 軸が右方向、 s 軸が下方向（原点は軸の中央）となります。 出力画像における座標設定は下図の通りです。<p>
+<div align="center">
+<img src="fie_radon_output_coordinate.png" alt="fie_radon_output_coordinate.png">
+</div>
+<p>
+入力画像におけるst座標の原点は、入力画像の中心に取ります。 s 方向、t 方向へのサンプリングは、入力画像の1ピクセル間隔で行われます。 積分対象となる s の範囲は -height / 2 ≦ s ≦ height / 2 です。 入力画像外の領域は画素値 0 として積算します。 入力画像における座標設定は下図の通りです。<p>
+<div align="center">
+<img src="fie_radon_rect_infty.png" alt="fie_radon_rect_infty.png">
+</div>
+<p>
+θ は x 軸方向を基準に、時計回りを正とします。 θ 方向のサンプリング間隔は | <em>range_angle</em> | / width となります。 θ の範囲は開始角度 <em>start_angle</em> , 角度範囲 <em>range_angle</em> によって、ラジアン単位で以下のように指定します。 <ul>
+<li><em>start_angle</em> : 値の範囲に制限はありません。 </li>
+<li><em>range_angle</em> : 値の範囲に制限はありませんが <em>range_angle</em> が正ならば時計回り、負ならば反時計回りに処理します。 </li>
+<li>ラドン変換の性質上 g(θ,s) = g(θ+π,-s) であるため、通常は -π ≦ <em>range_angle</em> ≦ π の範囲で指定します。</li>
+</ul>
+各計算点の画素値は、補間によって求めます。補間方法は <em>sampling_mode</em> により指定し、以下の3種類から選択します。 各画素値補間方法の違いについては、<a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。 <ul>
+<li>F_SAMPLING_NN 最近傍法により画素値補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により画素値補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により画素値補間を行う</li>
+</ul>
+入力画像と出力画像の型は、以下の組み合わせで指定可能です。 <center> <table class="pretable">
+<tr>
+<th colspan="2," rowspan="2>"></th><th colspan="5>"><center>出力画像</center>  </th></tr>
+<tr>
+<th><center>UC8</center> </th><th><center>S16</center> </th><th><center>US16</center> </th><th><center>FLOAT</center> </th><th><center>DOUBLE</center>  </th></tr>
+<tr>
+<th rowspan="5>"><center>入力画像</center></th><th><center>UC8</center> </th><td><center>◯</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>S16</center> </th><td><center>×</center> </td><td><center>◯</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>US16</center> </th><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>FLOAT</center> </th><td><center>×</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>DOUBLE</center> </th><td><center>×</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center>  </td></tr>
+</table>
+</center><p>
+出力画像の画素の値は、出力画像の型が UC8, S16, US16 の場合、指定した角度範囲内での、画像範囲内となる最大サンプリング点数で割った値が出力されます。 出力画像の型が FLOAT または DOUBLE の場合、サンプル点における値の総和を出力します。<p>
+入力画像と出力画像は、チャネル数が同じでなければなりません。 複数チャネルの場合、各チャネルごとに処理します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type: uc8, s16, us16, float, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type: uc8, s16, us16, float, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>処理開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>角度の処理範囲 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sampling_mode</em>&nbsp;</td><td>画素値補間方法</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Johann Radon (1917), "On the Determination of Functions From Their Integral Values Along Certain Manifolds", translated by P. C. Parks, IEEE Transactions On Medical Imaging, Vol. MI-5, No. 4, Dec. 1986, pp.170-176</li>
+</ul>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>パラメータ設定：<br>
+ <em>start_angle</em> = π/2, <em>range_angle</em> = -π<br>
+ <em>sampling_mode</em> = F_SAMPLING_BILINEAR</dd></dl>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_radon_src.png" alt="fie_radon_src.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_radon_dst.png" alt="fie_radon_dst.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+
+</div>
+</div><p>
+<a class="anchor" name="ge43735b7f6aa26761014019a36ebb6b1"></a><!-- doxytag: member="fie_radon.c::fnFIE_projection_rot_rectangle" ref="ge43735b7f6aa26761014019a36ebb6b1" args="(FHANDLE hsrc, FHANDLE hdst, DPNT_T center, INT direction, DOUBLE start_angle, DOUBLE pitch_angle, INT samp_num_t, DOUBLE pitch_t, DOUBLE pitch_s, enum f_sampling_mode samp_mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_projection_rot_rectangle           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>pitch_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>samp_num_t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>pitch_t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>pitch_s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>samp_mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+回転する矩形領域内での濃度投影 
+<p>
+矩形中心の座標を、 <em>center</em> によって指定します。指定する座標は入力画像外でも構いません。 x 軸方向を基準に時計回りを正とし、矩形領域を θ だけ回転させます。 この矩形領域内で y 軸を θ だけ回転させた方向に濃度投影を行います。 以下、矩形中心の座標を通る投影方向の軸を t、それに垂直な軸を s とします。<p>
+θ 方向のサンプリング開始角度は <em>start_angle</em> により、またサンプリング間隔は <em>pitch_angle</em> によりラジアン単位で指定します。 <em>pitch_angle</em> を負数で指定した場合、反時計回りにサンプリングします。 θ 方向のサンプリング数を samp_num_angle （指定方法は後述） とすると、θ 方向のサンプリング範囲 range_angle は、 range_angle = samp_num_angle × <em>pitch_angle</em> となります。<p>
+t 方向へのサンプリング間隔は <em>pitch_t</em> により、また t 方向へのサンプリング数は <em>samp_num_t</em> により指定します。このとき矩形領域の t 方向の長さ t_rect は t_rect = (<em>samp_num_t</em> - 1) × <em>pitch_t</em> となります。<p>
+s 方向のサンプリング間隔は <em>pitch_s</em> により指定します。 s 方向のサンプリング数を samp_num_s （指定方法は後述） とすると、矩形領域の s 方向の長さ s_rect は s_rect = (samp_num_s - 1) × <em>pitch_s</em> となります。<p>
+通常は <em>pitch_t</em> , <em>pitch_s</em> ともに 1 を指定し、サンプリング数で矩形領域の大きさを指定することを推奨します。<p>
+以上より、矩形の範囲は st 座標で <ul>
+<li>-t_rect / 2 ≦ t ≦ t_rect / 2 </li>
+<li>-s_rect / 2 ≦ s ≦ s_rect / 2</li>
+</ul>
+の範囲となります（下図）。なお、入力画像外となる領域は0として積算します。<p>
+<div align="center">
+<img src="fie_projection_rot_rectangle_input.png" alt="fie_projection_rot_rectangle_input.png">
+</div>
+<p>
+θ 方向と s 方向のサンプリング数 samp_num_angle, samp_num_s は、出力画像のサイズと結果の出力方向 <em>direction</em> によって指定します。 出力画像のサイズを縦横それぞれ height , width とすると、各サンプリング数、出力画像における座標設定は下表および下図の通りです。 <center> <table class="pretable">
+<tr>
+<th></th><th><em>direction</em> == 0  </th><th><em>direction</em> == 1   </th></tr>
+<tr>
+<th>出力画像での θ 軸の方向 </th><td><center>横方向</center> </td><td><center>縦方向</center>  </td></tr>
+<tr>
+<th>samp_num_angle </th><td><center>width</center> </td><td><center>height</center>  </td></tr>
+<tr>
+<th>出力画像での s 軸方向 </th><td><center>縦方向</center> </td><td><center>横方向</center>  </td></tr>
+<tr>
+<th>samp_num_s </th><td><center>height</center> </td><td><center>width</center>  </td></tr>
+</table>
+</center><p>
+<div align="center">
+<img src="fie_projection_rot_rectangle_output.png" alt="fie_projection_rot_rectangle_output.png">
+</div>
+<p>
+各計算点の画素値は、補間によって求めます。補間方法は <em>samp_mode</em> により指定し、以下の3種類から選択します。 各画素値補間方法の違いについては、<a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。 <ul>
+<li>F_SAMPLING_NN 最近傍法により画素値補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により画素値補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により画素値補間を行う</li>
+</ul>
+入力画像と出力画像の型は、以下の組み合わせで指定可能です。 <center> <table class="pretable">
+<tr>
+<th colspan="2," rowspan="2>"></th><th colspan="5>"><center>出力画像</center>  </th></tr>
+<tr>
+<th><center>UC8</center> </th><th><center>S16</center> </th><th><center>US16</center> </th><th><center>FLOAT</center> </th><th><center>DOUBLE</center>  </th></tr>
+<tr>
+<th rowspan="5>"><center>入力画像</center></th><th><center>UC8</center> </th><td><center>◯</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>S16</center> </th><td><center>×</center> </td><td><center>◯</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>US16</center> </th><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>FLOAT</center> </th><td><center>×</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center> </td><td><center>◯</center>  </td></tr>
+<tr>
+<th><center>DOUBLE</center> </th><td><center>×</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>×</center> </td><td><center>◯</center>  </td></tr>
+</table>
+</center><p>
+出力画像の画素の値は、出力画像の型が UC8, S16, US16 の場合、t 方向へのサンプリング数 <em>samp_num_t</em> で割った値が出力されます。 出力画像の型が FLOAT または DOUBLE の場合、サンプル点における値の総和を出力します。<p>
+入力画像と出力画像は、チャネル数が同じでなければなりません。 複数チャネルの場合、各チャネルごとに処理します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type: uc8, s16, us16, float, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type: uc8, s16, us16, float, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>矩形の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direction</em>&nbsp;</td><td>投影結果の出力方向 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>θ 方向のサンプリング開始角度 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_angle</em>&nbsp;</td><td>θ 方向のサンプリング間隔 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>samp_num_t</em>&nbsp;</td><td>t 方向のサンプリング数 ( &gt; 0 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_t</em>&nbsp;</td><td>t 方向のサンプリング間隔 ( &gt; 0 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>pitch_s</em>&nbsp;</td><td>s 方向のサンプリング間隔 ( &gt; 0 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>samp_mode</em>&nbsp;</td><td>画素値補間方法</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

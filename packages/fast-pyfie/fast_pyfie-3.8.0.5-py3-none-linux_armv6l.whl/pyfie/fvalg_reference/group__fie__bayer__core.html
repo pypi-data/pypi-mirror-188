@@ -1,0 +1,378 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 低レベル関数</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>低レベル関数<br>
+<small>
+[<a class="el" href="group__fie__bayer.html">ベイヤー色合成</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__bayer__core.html#gb1c25a9f57257f93cfebb94d2f0f4b15">fnFIE_bayer_calc_cfa_type</a> (FHANDLE hsrc, enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a> camera_cfa_type, enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a> *image_cfa_type)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Bayer Color Filter Array type estimation 画像に適用すべきCFA type（カラーフィルタの配列）を推定します。  <a href="#gb1c25a9f57257f93cfebb94d2f0f4b15"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__bayer__core.html#gefb8534c535f9a985efb3c77e3e3ff2c">fnFIE_bayer_interpolation_bilinear</a> (const FHANDLE hsrc, FHANDLE hdst, enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a> cfa_type, DOUBLE gain[3], DOUBLE offset[3])</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Bayer Color Filter Array Interpolation ( Bayer color demosaicking ) bilinear 線形補間によるベイヤー色合成を行います。  <a href="#gefb8534c535f9a985efb3c77e3e3ff2c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__bayer__core.html#gc05d06766d78cf1ea2c8dddc3b857143">fnFIE_bayer_interpolation_cubic</a> (const FHANDLE hsrc, FHANDLE hdst, enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a> cfa_type, DOUBLE gain[3], DOUBLE offset[3])</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Bayer Color Filter Array Interpolation ( Bayer color demosaicking ) cubic 三次補間によるベイヤー色合成を行います。  <a href="#gc05d06766d78cf1ea2c8dddc3b857143"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__bayer__core.html#gfd48bb631ea398642cf37cf720ffdcd1">fnFIE_bayer_interpolation_easy</a> (const FHANDLE hsrc, FHANDLE hdst, enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a> cfa_type, DOUBLE gain[3], DOUBLE offset[3])</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">簡易ベイヤー色合成 CFAの2x2領域を一画素分のセンサと解釈した簡易ベイヤー色合成を行います。  <a href="#gfd48bb631ea398642cf37cf720ffdcd1"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="gb1c25a9f57257f93cfebb94d2f0f4b15"></a><!-- doxytag: member="fie_bayer.c::fnFIE_bayer_calc_cfa_type" ref="gb1c25a9f57257f93cfebb94d2f0f4b15" args="(FHANDLE hsrc, enum f_cfa_type camera_cfa_type, enum f_cfa_type *image_cfa_type)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_bayer_calc_cfa_type           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a>&nbsp;</td>
+          <td class="paramname"> <em>camera_cfa_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a> *&nbsp;</td>
+          <td class="paramname"> <em>image_cfa_type</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Bayer Color Filter Array type estimation 画像に適用すべきCFA type（カラーフィルタの配列）を推定します。 
+<p>
+ベイヤー色合成を行いたい画像が撮像したままのルート画像であれば、画像のCFA typeはカメラ仕様と同一です。 <em>hsrc</em> がチャイルド画像である場合、ルート画像に対してx座標y座標いずれも偶数ピクセルから始まっていればルート画像とCFA typeが等しくなり、カメラ仕様と同一になります。 そうでない場合はカメラ仕様と異なるため、適切に設定する必要があります。 当関数ではカメラのBayer CFA仕様(つまりルート画像のCFA type)とチャイルド画像の画像オブジェクトから、チャイルド画像のCFA typeを算出します。 画像オブジェクトがルート画像だった場合、与えたCFA typeをそのまま返します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>画像オブジェクト Bayer CFA image </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>camera_cfa_type</em>&nbsp;</td><td>カメラのカラーフィルタ配列タイプ<ul>
+<li>F_CFA_BGGR</li><li>F_CFA_GBRG</li><li>F_CFA_RGGB</li><li>F_CFA_GRBG </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>image_cfa_type</em>&nbsp;</td><td>画像オブジェクトのカラーフィルタ配列タイプ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常<ul>
+<li>画像オブジェクトがNULL</li><li>画像オブジェクトの画像タイプが異なる </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>image_cfa_type</em> がNULL</li><li>カラーフィルタ配列タイプ異常 </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gefb8534c535f9a985efb3c77e3e3ff2c"></a><!-- doxytag: member="fie_bayer.c::fnFIE_bayer_interpolation_bilinear" ref="gefb8534c535f9a985efb3c77e3e3ff2c" args="(const FHANDLE hsrc, FHANDLE hdst, enum f_cfa_type cfa_type, DOUBLE gain[3], DOUBLE offset[3])" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_bayer_interpolation_bilinear           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a>&nbsp;</td>
+          <td class="paramname"> <em>cfa_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>gain</em>[3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>offset</em>[3]</td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Bayer Color Filter Array Interpolation ( Bayer color demosaicking ) bilinear 線形補間によるベイヤー色合成を行います。 
+<p>
+入出力の画像型、画像サイズは同じである必要があります。また、幅と高さは偶数でなければなりません。 入力画像でホワイトバランスがとれていないときのためにゲインとオフセットを指定することができます。 色合成の結果に対し、ゲインを乗算しオフセットを加算した後画像型に応じてサチュレーション処理を行って出力します。<p>
+<em>cfa_typeは</em> <em>hsrc</em> の左上ピクセルを基準に指定します。 <em>hsrc</em> がチャイルド画像である場合、ルート画像に対してx座標y座標いずれも偶数ピクセルから始まっていればルート画像と <em>cfa_type</em> が等しくなり、カメラ仕様と同一になります。 そうでない場合、<em>cfa_type</em> が異なるので適切に設定してください。 <a class="el" href="group__fie__bayer__core.html#gb1c25a9f57257f93cfebb94d2f0f4b15" title="Bayer Color Filter Array type estimation 画像に適用すべきCFA type（カラーフィルタの...">fnFIE_bayer_calc_cfa_type()</a> で算出することもできます。<p>
+なお、線形補間によるベイヤー色合成では出力画像の周囲1画素は出力されません。元の画素値が保持されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 Bayer CFA 1ch RAW (type:uc8,s16,us16,double / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 3ch layerd color (type:uc8,s16,us16,double / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cfa_type</em>&nbsp;</td><td>Bayer color filter arrayの配列タイプ<ul>
+<li>F_CFA_BGGR</li><li>F_CFA_GBRG</li><li>F_CFA_RGGB</li><li>F_CFA_GRBG </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gain</em>&nbsp;</td><td>赤、緑、青のゲイン：通常は全て1.0倍を指定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>赤、緑、青のオフセット：通常は全て0.0を指定する</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>cfa_type</em> が異常</li><li>ゲイン、オフセットがNULL </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常<ul>
+<li>画像オブジェクトがNULL</li><li>入力画像のチャネルが1ではない</li><li>出力画像のチャネルが3ではない</li><li>入出力の画像サイズが異なる</li><li>入出力の画像タイプが異なる</li><li>画像の縦横幅が2の倍数ではない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で作業用画像が生成できない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Bayer, B.E., "Color imaging array", United States Patent 3,971,065, 1976 </li>
+<li>デジタル画像における色再現技術と官能・定量評価 pp.197 (技術情報協会) isbn:4-86104-066-3 C3058 </li>
+</ul>
+
+</div>
+</div><p>
+<a class="anchor" name="gc05d06766d78cf1ea2c8dddc3b857143"></a><!-- doxytag: member="fie_bayer.c::fnFIE_bayer_interpolation_cubic" ref="gc05d06766d78cf1ea2c8dddc3b857143" args="(const FHANDLE hsrc, FHANDLE hdst, enum f_cfa_type cfa_type, DOUBLE gain[3], DOUBLE offset[3])" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_bayer_interpolation_cubic           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a>&nbsp;</td>
+          <td class="paramname"> <em>cfa_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>gain</em>[3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>offset</em>[3]</td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Bayer Color Filter Array Interpolation ( Bayer color demosaicking ) cubic 三次補間によるベイヤー色合成を行います。 
+<p>
+入出力の画像型、画像サイズは同じである必要があります。また、幅と高さは偶数でなければなりません。 入力画像でホワイトバランスがとれていないときのためにゲインとオフセットを指定することができます。 色合成の結果に対し、ゲインを乗算しオフセットを加算した後画像型に応じてサチュレーション処理を行って出力します。<p>
+<em>cfa_typeは</em> <em>hsrc</em> の左上ピクセルを基準に指定します。 <em>hsrc</em> がチャイルド画像である場合、ルート画像に対してx座標y座標いずれも偶数ピクセルから始まっていればルート画像と <em>cfa_type</em> が等しくなり、カメラ仕様と同一になります。 そうでない場合、<em>cfa_type</em> が異なるので適切に設定してください。 <a class="el" href="group__fie__bayer__core.html#gb1c25a9f57257f93cfebb94d2f0f4b15" title="Bayer Color Filter Array type estimation 画像に適用すべきCFA type（カラーフィルタの...">fnFIE_bayer_calc_cfa_type()</a> で算出することもできます。<p>
+なお、三次補間によるベイヤー色合成では出力画像の周囲3画素は出力されません。元の画素値が保持されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 Bayer CFA 1ch RAW (type:uc8,s16,us16,double / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 3ch layerd color (type:uc8,s16,us16,double / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cfa_type</em>&nbsp;</td><td>Bayer color filter arrayの配列タイプ<ul>
+<li>F_CFA_BGGR</li><li>F_CFA_GBRG</li><li>F_CFA_RGGB</li><li>F_CFA_GRBG </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gain</em>&nbsp;</td><td>赤、緑、青のゲイン：通常は全て1.0倍を指定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>赤、緑、青のオフセット：通常は全て0.0を指定する</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>cfa_type</em> が異常</li><li>ゲイン、オフセットがNULL </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常<ul>
+<li>画像オブジェクトがNULL</li><li>入力画像のチャネルが1ではない</li><li>出力画像のチャネルが3ではない</li><li>入出力の画像サイズが異なる</li><li>入出力の画像タイプが異なる</li><li>画像の縦横幅が2の倍数ではない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で作業用画像が生成できない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Bayer, B.E., "Color imaging array", United States Patent 3,971,065, 1976 </li>
+<li>デジタル画像における色再現技術と官能・定量評価 pp.197 (技術情報協会) isbn:4-86104-066-3 C3058 </li>
+</ul>
+
+</div>
+</div><p>
+<a class="anchor" name="gfd48bb631ea398642cf37cf720ffdcd1"></a><!-- doxytag: member="fie_bayer.c::fnFIE_bayer_interpolation_easy" ref="gfd48bb631ea398642cf37cf720ffdcd1" args="(const FHANDLE hsrc, FHANDLE hdst, enum f_cfa_type cfa_type, DOUBLE gain[3], DOUBLE offset[3])" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_bayer_interpolation_easy           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__bayer.html#g842def245f3ab9dbd4dfc7a9262cbf79">f_cfa_type</a>&nbsp;</td>
+          <td class="paramname"> <em>cfa_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>gain</em>[3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>offset</em>[3]</td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+簡易ベイヤー色合成 CFAの2x2領域を一画素分のセンサと解釈した簡易ベイヤー色合成を行います。 
+<p>
+簡易ベイヤー色合成は他の手法と比べて高速に処理できる反面、縦横の画素数が半分になる、画像全体にわたって各チャネルで別々の方向へ <img class="formulaInl" alt="$\frac{\sqrt{2}}{4}$" src="form_507.png"> 画素の位置ずれを起こすという制限があります。<p>
+入力画像でホワイトバランスがとれていないときのためにゲインとオフセットを指定することができます。 色合成の結果に対し、ゲインを乗算しオフセットを加算した後、画像型に応じてサチュレーション処理を行って出力します。 入出力の画像型、画像サイズは同じである必要があります。また、入力画像の幅と高さは偶数でなければなりません。出力画像の画像サイズ幅と高さはいずれも入力の半分である必要があります。<p>
+<em>cfa_typeは</em> <em>hsrc</em> の左上ピクセルを基準に指定します。 <em>hsrc</em> がチャイルド画像である場合、ルート画像に対してx座標y座標いずれも偶数ピクセルから始まっていればルート画像と <em>cfa_type</em> が等しくなり、カメラ仕様と同一になります。 そうでない場合、<em>cfa_type</em> が異なるので適切に設定してください。 <a class="el" href="group__fie__bayer__core.html#gb1c25a9f57257f93cfebb94d2f0f4b15" title="Bayer Color Filter Array type estimation 画像に適用すべきCFA type（カラーフィルタの...">fnFIE_bayer_calc_cfa_type()</a> で算出することもできます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 Bayer CFA 1ch RAW (type:uc8,s16,us16,double / ch:1) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 3ch layerd color (type:uc8,s16,us16,double / ch:3) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>cfa_type</em>&nbsp;</td><td>Bayer color filter arrayの配列タイプ<ul>
+<li>F_CFA_RGGB</li><li>F_CFA_GRBG</li><li>F_CFA_GBRG</li><li>F_CFA_BGGR </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>gain</em>&nbsp;</td><td>赤、緑、青のゲイン：通常は全て1.0 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>赤、緑、青のオフセット：通常は全て0.0</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>cfa_type</em> が異常</li><li>ゲイン、オフセットがNULL </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクト異常<ul>
+<li>画像オブジェクトがNULL</li><li>入力画像のチャネルが1ではない</li><li>出力画像のチャネルが3ではない</li><li>出力画像サイズが入力画像サイズの縦横半分ではない</li><li>入出力の画像サイズが異なる</li><li>入出力の画像タイプが異なる</li><li>画像の縦横幅が2の倍数ではない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足で作業用画像が生成できない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

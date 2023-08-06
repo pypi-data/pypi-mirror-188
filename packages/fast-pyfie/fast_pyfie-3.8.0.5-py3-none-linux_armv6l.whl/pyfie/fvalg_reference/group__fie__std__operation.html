@@ -1,0 +1,2123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 基本画像操作</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>基本画像操作<br>
+<small>
+[<a class="el" href="group__fie__std__operation__base.html">基本画像操作</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g5d19240b9c8e02c83b5d8b40540ecd4f">f_border_mode</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b">F_BORDER_NONE</a>, 
+<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f8b6b9165aec310a776768a3703cbddc5">F_BORDER_ZERO</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f61758ff650fd66a6e950b885a01ad046">F_BORDER_VALUE</a>, 
+<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f568bc404460c354f6e05d89439f24c6f">F_BORDER_CONTINUOUS</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4fdf5bed6d7f4ad85996672ef787f74192">F_BORDER_REPEAT</a>, 
+<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4fe367e5ec118e970144770ad357f020e7">F_BORDER_MIRROR1</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4fa208bb7ba8633e55a011721e20b8e98d">F_BORDER_MIRROR2</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 他モード指定定数  <a href="group__fie__std__operation.html#g5d19240b9c8e02c83b5d8b40540ecd4f">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94">fnFIE_copy_border</a> (FHANDLE hsrc, FHANDLE hdst, INT border_left, INT border_top, INT border_mode, DOUBLE value)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像のボーダーを拡張する  <a href="#g0b20a28445e52bb01ae893baff7c3b94"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#gd5dbf01539d0472cf31a9c20cffad4dd">fnFIE_img_clear_ch</a> (FHANDLE himg, INT channel, DOUBLE val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像クリア 単独ch版  <a href="#gd5dbf01539d0472cf31a9c20cffad4dd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310">fnFIE_img_clear</a> (FHANDLE himg, DOUBLE val)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像クリア  <a href="#g16f145c381736241d6a986ab00e7f310"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g1d8298598a6efc9e67df891c6470e6dd">fnFIE_img_compare</a> (FHANDLE hsrc1, FHANDLE hsrc2, INT *result)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像比較  <a href="#g1d8298598a6efc9e67df891c6470e6dd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d">fnFIE_img_copy</a> (FHANDLE srcimg, FHANDLE dstimg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像コピー  <a href="#gcb85dadcde458186d7720c2a92205b7d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g3d515b8e1843ffa3dc986f67f0185d5c">fnFIE_img_copy_ex</a> (FHANDLE srcimg, FHANDLE dstimg, INT mode, DOUBLE offset, DOUBLE mult)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">濃度変換付き画像コピー  <a href="#g3d515b8e1843ffa3dc986f67f0185d5c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762">fnFIE_unpacking_rgb</a> (const FHANDLE hSrc, FHANDLE hDst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">RGBQUAD / RGBTRIPLE アンパッキング関数  <a href="#g828af50f02eef84a7f55af8143dba762"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g8b4f6bd6f33435bc868ae30432866a8b">fnFIE_packing_rgb</a> (const FHANDLE hSrc, FHANDLE hDst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">RGBQUAD / RGBTRIPLE パッキング関数  <a href="#g8b4f6bd6f33435bc868ae30432866a8b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g3a97dfafd4d861fb1b1280b7676f7fd7">fnFIE_img_expand</a> (FHANDLE hsrc, FHANDLE hdst, INT mag_x, INT mag_y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像伸長  <a href="#g3a97dfafd4d861fb1b1280b7676f7fd7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g0985fa53a4dac8efb83c69c56bbe3e2b">fnFIE_img_get_subdens</a> (FHANDLE himg, DOUBLE x, DOUBLE y, enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a> mode, DOUBLE *dens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定座標の濃度値取得(補間付き)  <a href="#g0985fa53a4dac8efb83c69c56bbe3e2b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g785d22136b67f0d76137c48660f64274">fnFIE_img_get_dens</a> (FHANDLE himg, INT ch, INT x, INT y, DOUBLE *dens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定座標の濃度値取得  <a href="#g785d22136b67f0d76137c48660f64274"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177">fnFIE_img_set_dens</a> (FHANDLE himg, INT ch, INT x, INT y, DOUBLE dens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定座標の濃度値設定  <a href="#g636032b5e363c0fcaab2c430347c5177"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#gd19c8a0f69f56c641fcd79eb4d123282">fnFIE_img_get_dens_channels</a> (FHANDLE himg, INT x, INT y, DOUBLE *dens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定座標の濃度値取得(全チャネル一括)  <a href="#gd19c8a0f69f56c641fcd79eb4d123282"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#gefe15b9ef29eafdccdc121181f0bfce8">fnFIE_img_set_dens_channels</a> (FHANDLE himg, INT x, INT y, DOUBLE *dens)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">指定座標の濃度値設定(全チャネル一括)  <a href="#gefe15b9ef29eafdccdc121181f0bfce8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g88bfd65a3aa1fd0b1d3b1167d57e7fbe">fnFIE_img_rgb_to_gray</a> (const FHANDLE hsrc, FHANDLE hdst, DOUBLE coeff_r, DOUBLE coeff_g, DOUBLE coeff_b, INT mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">係数指定付き濃淡化  <a href="#g88bfd65a3aa1fd0b1d3b1167d57e7fbe"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g08defee9068bf4fb47e1b4dbac364f4e">fnFIE_img_shrink</a> (FHANDLE hsrc, FHANDLE hdst, INT rmag)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">1/N画像圧縮  <a href="#g08defee9068bf4fb47e1b4dbac364f4e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g8187598f6b1da1b815c28f4de446b96e">fnFIE_img_shrink2</a> (FHANDLE hsrc, FHANDLE hdst, INT rmag_x, INT rmag_y, INT mode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像圧縮  <a href="#g8187598f6b1da1b815c28f4de446b96e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g9d030640a1083d0011948014754c1d7d">fnFIE_img_swap</a> (FHANDLE himg1, FHANDLE himg2)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画素値入替え  <a href="#g9d030640a1083d0011948014754c1d7d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g86937144344ab431cb1411b6773de24c">fnFIE_jaehne_testimg</a> (FHANDLE himg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">B.Jaehne のテスト画像を生成する  <a href="#g86937144344ab431cb1411b6773de24c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#ge20b5a6ac1a6deb2fb045ebf51e971f2">fnFIE_packing_ch</a> (FHANDLE hsrc, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複数チャネル画像のパッキング関数  <a href="#ge20b5a6ac1a6deb2fb045ebf51e971f2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g024925ca9ec5302fa3bfb587691745d7">fnFIE_unpacking_ch</a> (FHANDLE hsrc, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">複数チャネル画像へのアンパッキング関数  <a href="#g024925ca9ec5302fa3bfb587691745d7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#g4d9b74c0ff763577a4fee361e8075be4">fnFIE_chessboard_image</a> (FHANDLE himg, INT stepx, INT stepy, INT shiftx, INT shifty)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">チェスボード画像を作成する。  <a href="#g4d9b74c0ff763577a4fee361e8075be4"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#ga17f458beb7ae15a1fb5390df92a98aa">fnFIE_generate_noise_uniform</a> (FHANDLE hsrcdst, DOUBLE low, DOUBLE high, UINT seed)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  ノイズ画像生成（uniform noise）  <a href="#ga17f458beb7ae15a1fb5390df92a98aa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__std__operation.html#gc1e3e8b3a29303060bc8e0e582e46c54">fnFIE_generate_noise_gauss</a> (FHANDLE hsrcdst, DOUBLE ave, DOUBLE var, UINT seed)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"> <img class= inline-img src="oss.png" alt="[[OSS]]">  ノイズ画像生成（gauss noise）  <a href="#gc1e3e8b3a29303060bc8e0e582e46c54"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g5d19240b9c8e02c83b5d8b40540ecd4f"></a><!-- doxytag: member="fie.h::f_border_mode" ref="g5d19240b9c8e02c83b5d8b40540ecd4f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__std__operation.html#g5d19240b9c8e02c83b5d8b40540ecd4f">f_border_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+<a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 他モード指定定数 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b"></a><!-- doxytag: member="F_BORDER_NONE" ref="gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" args="" -->F_BORDER_NONE</em>&nbsp;</td><td>
+ボーダー処理無し </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4f8b6b9165aec310a776768a3703cbddc5"></a><!-- doxytag: member="F_BORDER_ZERO" ref="gg5d19240b9c8e02c83b5d8b40540ecd4f8b6b9165aec310a776768a3703cbddc5" args="" -->F_BORDER_ZERO</em>&nbsp;</td><td>
+０埋めモード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4f61758ff650fd66a6e950b885a01ad046"></a><!-- doxytag: member="F_BORDER_VALUE" ref="gg5d19240b9c8e02c83b5d8b40540ecd4f61758ff650fd66a6e950b885a01ad046" args="" -->F_BORDER_VALUE</em>&nbsp;</td><td>
+一定値モード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4f568bc404460c354f6e05d89439f24c6f"></a><!-- doxytag: member="F_BORDER_CONTINUOUS" ref="gg5d19240b9c8e02c83b5d8b40540ecd4f568bc404460c354f6e05d89439f24c6f" args="" -->F_BORDER_CONTINUOUS</em>&nbsp;</td><td>
+端延長モード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4fdf5bed6d7f4ad85996672ef787f74192"></a><!-- doxytag: member="F_BORDER_REPEAT" ref="gg5d19240b9c8e02c83b5d8b40540ecd4fdf5bed6d7f4ad85996672ef787f74192" args="" -->F_BORDER_REPEAT</em>&nbsp;</td><td>
+繰り返しモード </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4fe367e5ec118e970144770ad357f020e7"></a><!-- doxytag: member="F_BORDER_MIRROR1" ref="gg5d19240b9c8e02c83b5d8b40540ecd4fe367e5ec118e970144770ad357f020e7" args="" -->F_BORDER_MIRROR1</em>&nbsp;</td><td>
+反転モード１ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg5d19240b9c8e02c83b5d8b40540ecd4fa208bb7ba8633e55a011721e20b8e98d"></a><!-- doxytag: member="F_BORDER_MIRROR2" ref="gg5d19240b9c8e02c83b5d8b40540ecd4fa208bb7ba8633e55a011721e20b8e98d" args="" -->F_BORDER_MIRROR2</em>&nbsp;</td><td>
+反転モード２ </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g0b20a28445e52bb01ae893baff7c3b94"></a><!-- doxytag: member="fie_img_border.c::fnFIE_copy_border" ref="g0b20a28445e52bb01ae893baff7c3b94" args="(FHANDLE hsrc, FHANDLE hdst, INT border_left, INT border_top, INT border_mode, DOUBLE value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_copy_border           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_top</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>border_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像のボーダーを拡張する 
+<p>
+入力画像から、入力画像よりも大きい出力先画像へ画像のコピーを行い、 同時にボーダー（境界）部分のピクセルの拡張を行います。 ボーダーの幅は、出力画像において、入力画像がどの位置に有るかを示す <em>border_left</em>, <em>border_top</em> パラメータにて指定することによって指定します。 つまり、出力画像のボーダー幅は下記のようになります。 <ul>
+<li>上部のボーダー幅： <em>border_top</em> </li>
+<li>下部のボーダー幅： 出力画像の高さ - ( (入力画像の高さ) + <em>border_top</em> ) </li>
+<li>左部のボーダー幅： <em>border_left</em> </li>
+<li>右部のボーダー幅： 出力画像の幅 - ( (入力画像の幅) + <em>border_left</em> )</li>
+</ul>
+出力画像の幅は、入力画像の幅 + <em>border_left</em> 以上でなければいけません。 同じく、出力画像の高さは、入力画像の高さ + <em>border_top</em> 以上でなければいけません。 また、入力画像と出力画像の画像型、チャネル数は同じでなければいけません。<p>
+<dl class="user" compact><dt><b>境界コピーモード</b></dt><dd>本関数では <em>border_mode</em>, <em>border_value</em> パラメータで指定するコピーモードにより、 周囲部分の濃度値の決め方を選択します。下記に示す６モードから選択してパラメータに指定して下さい。 なお、以下の図では、入力画像のサイズが5x3、出力画像のサイズが10x7 <em>border_top=2</em>, <em>border_left=2</em> の時の例を示しています。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>F_BORDER_ZEROモード <br>
+ 境界部分の濃度値は全て０になります。 <div align="center">
+<img src="copy_border_zero.png" alt="copy_border_zero.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>F_BORDER_VALUEモード <br>
+ 境界部分の濃度値は、パラメータvalueで設定された値vになります。 <div align="center">
+<img src="copy_border_value.png" alt="copy_border_value.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>F_BORDER_CONTINUOUSモード <br>
+ 境界部分の濃度値は、入力画像の周囲１画素の濃度値を延長したものになります。 <div align="center">
+<img src="copy_border_continuous.png" alt="copy_border_continuous.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>F_BORDER_REPEATモード <br>
+ 入力画像がタイル状に連続していると考えて、出力画像の縁の部分の濃度値を決定します。 <div align="center">
+<img src="copy_border_repeat.png" alt="copy_border_repeat.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>F_BORDER_MIRROR1モード <br>
+ 入力画像の画素の外側（左、上、で言えば、それぞれ-0.5の下図赤鎖線の部分）で 入力画像を折り返して、出力画像の境界部分の濃度値とします。 <div align="center">
+<img src="copy_border_mirror1.png" alt="copy_border_mirror1.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>F_BORDER_MIRROR2モード <br>
+ 入力画像の画素の周囲１画素の中心（左、上、で言えば、それぞれ-0.0の下図赤鎖線の部分）で 入力画像を折り返して、出力画像の境界部分の濃度値とします。 本モードの場合、入力画像の幅及び高さはそれぞれ２以上でなければいけません。 <div align="center">
+<img src="copy_border_mirror2.png" alt="copy_border_mirror2.png">
+</div>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, s16, us16, i32 ,ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, s16, us16, i32 ,ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_left</em>&nbsp;</td><td>左側ボーダー幅（出力先左上Ｘ座標） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_top</em>&nbsp;</td><td>上側ボーダー幅（出力先左上Ｙ座標） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>border_mode</em>&nbsp;</td><td>ボーダーコピーモード<ul>
+<li>F_BORDER_ZERO ０埋めモード</li><li>F_BORDER_VALUE 一定値モード</li><li>F_BORDER_CONTINUOUS 端延長モード</li><li>F_BORDER_REPEAT 繰り返しモード</li><li>F_BORDER_MIRROR1 反転モード１</li><li>F_BORDER_MIRROR2 反転モード２ </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>value</em>&nbsp;</td><td>ボーダー濃度値。<br>
+ <em>border_mode</em> がF_BORDER_VALUEの場合のみ使用されます。 その他のモードの場合は、この値は無視されます。 画像が整数型の場合は、濃度値は単純キャストで整数に変換されます。 ２値画像の場合は ((INT) <em>val</em> )==0 の場合は0, それ以外は1になります。 また、指定の濃度値が濃度値範囲を超えていた場合は、サチュレーション処理が行われます。 F_IMG_RGBQUAD型の場合は各チャネルでrgbRed、rgbGreen、rgbBlue は同じ値( <em>val</em> ), rgbReserved は0に設定されます。 F_IMG_RGBTRIPLE型の場合は各チャネルでR、G、B ともに同じ値(<em>val</em> )に設定されます。 その他の画像型の場合は全てのチャネルで設定された値<em>val</em> になります。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了。画像の種類やチャネル数が違う場合はこのエラーを出します。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常。画像のサイズの影響でボーダー量がマイナスになる場合もこのエラーを出します。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd5dbf01539d0472cf31a9c20cffad4dd"></a><!-- doxytag: member="fie_img_clear.c::fnFIE_img_clear_ch" ref="gd5dbf01539d0472cf31a9c20cffad4dd" args="(FHANDLE himg, INT channel, DOUBLE val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_clear_ch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像クリア 単独ch版 
+<p>
+対象の画像のうち指定したチャネルのみを指定濃度( <em>val</em> )で塗りつぶします。 対象画像のタイプが F_IMG_RGBQUAD の場合は、 <em>rgbRed</em>, <em>rgbGreen</em>, <em>rgbBlue</em> は同じ値( <em>val</em> )、 <em>rgbReserved</em> は 0 に設定されます。 対象画像のタイプが F_IMG_RGBTRIPLE の場合は、R,G,B共に同じ値( <em>val</em> )に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double, rgbq, i32, ui32, i64, float, rgbtriple ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>channel</em>&nbsp;</td><td>処理対象にするチャネル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>塗りつぶす濃度<br>
+ 画像が整数型の場合は、濃度値は単純キャストで整数に変換されます。 ２値画像の場合は ((INT) <em>val</em> )==0 の場合は0, それ以外は1になります。 また、指定の濃度値が濃度値範囲を超えていた場合は、 サチュレーション処理が行われます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>存在しないチャネルが指定されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g16f145c381736241d6a986ab00e7f310"></a><!-- doxytag: member="fie_img_clear.c::fnFIE_img_clear" ref="g16f145c381736241d6a986ab00e7f310" args="(FHANDLE himg, DOUBLE val)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_clear           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>val</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像クリア 
+<p>
+画像を指定濃度( <em>val</em> )で塗りつぶします。 対象画像のタイプが F_IMG_RGBQUAD の場合は、 <em>rgbRed</em>, <em>rgbGreen</em>, <em>rgbBlue</em> は同じ値( <em>val</em> )、 <em>rgbReserved</em> は 0 に設定されます。 対象画像のタイプが F_IMG_RGBTRIPLE の場合は、R,G,B共に同じ値( <em>val</em> )に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, double, rgbq, i32, ui32, i64, float, rgbtriple ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>val</em>&nbsp;</td><td>塗りつぶす濃度。<br>
+ 画像が整数型の場合は、濃度値は単純キャストで整数に変換されます。 ２値画像の場合は ((INT) <em>val</em> )==0 の場合は0, それ以外は1になります。 また、指定の濃度値が濃度値範囲を超えていた場合は、 サチュレーション処理が行われます。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#gd5dbf01539d0472cf31a9c20cffad4dd" title="画像クリア 単独ch版">fnFIE_img_clear_ch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1d8298598a6efc9e67df891c6470e6dd"></a><!-- doxytag: member="fie_img_compare.c::fnFIE_img_compare" ref="g1d8298598a6efc9e67df891c6470e6dd" args="(FHANDLE hsrc1, FHANDLE hsrc2, INT *result)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_compare           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>result</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像比較 
+<p>
+<em>hsrc1</em> 画像と hsrc2 画像の比較を行い、<em>result</em> に結果を格納します。 内容がbit単位で完全に一致していた場合のみTRUEを、それ以外の場合はFALSEを格納します。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式がF_IMG_RGBQUADの場合、rgbReservedも含めて比較します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc1</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc2</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>result</em>&nbsp;</td><td>比較結果<ul>
+<li>TRUE 画像が等しい</li><li>FALSE 画像が異なる</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>result が NULLのため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcb85dadcde458186d7720c2a92205b7d"></a><!-- doxytag: member="fie_img_copy.c::fnFIE_img_copy" ref="gcb85dadcde458186d7720c2a92205b7d" args="(FHANDLE srcimg, FHANDLE dstimg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_copy           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>srcimg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>dstimg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像コピー 
+<p>
+<em>srcimg</em> から <em>dstimg</em> へ画像をコピーします。<p>
+コピー元画像とコピー先画像は、同一サイズでチャネル数が同じでなければなりません。 違っていた場合は異常終了になります。 また、コピー元画像とコピー先画像が同じメモリを 指し示していた場合の動作は不定です。 コピー元画像とコピー先画像の画像形式が違う場合の動作は下表を参照して下さい。<p>
+<table class="pretable">
+<tr>
+<th colspan="2" rowspan="2">&nbsp; </th><th colspan="11">コピー先形式 </th></tr>
+<tr>
+<th>BIN </th><th>UC8 </th><th>S16 </th><th>US16 </th><th>I32 </th><th>UI32 </th><th>I64 </th><th>FLOAT </th><th>DOUBLE </th><th>RGBQUAD </th><th>RGBTRIPLE </th></tr>
+<tr>
+<th rowspan="11">コピー元<br>
+形式 </th><th>BIN </th><td>○ </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※2 </td><td>※6 </td></tr>
+<tr>
+<th>UC8 </th><td>※3 </td><td>○ </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※2 </td><td>※6 </td></tr>
+<tr>
+<th>S16 </th><td>※3 </td><td>※3 </td><td>○ </td><td>※3 </td><td>※1 </td><td>※3 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※2,※3 </td><td>※3,※6 </td></tr>
+<tr>
+<th>US16 </th><td>※3 </td><td>※3 </td><td>※3 </td><td>○ </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※2,※3 </td><td>※3,※6 </td></tr>
+<tr>
+<th>I32 </th><td>※3 </td><td>※3 </td><td>※3 </td><td>※3 </td><td>※○ </td><td>※3 </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※2,※3 </td><td>※3,※6 </td></tr>
+<tr>
+<th>UI32 </th><td>※3 </td><td>※3 </td><td>※3 </td><td>※3 </td><td>※3 </td><td>※○ </td><td>※1 </td><td>※1 </td><td>※1 </td><td>※2,※3 </td><td>※3,※6 </td></tr>
+<tr>
+<th>I64 </th><td>※3 </td><td>※3 </td><td>※3 </td><td>※3 </td><td>※3 </td><td>※3 </td><td>※○ </td><td>※1 </td><td>※1 </td><td>※2,※3 </td><td>※3,※6 </td></tr>
+<tr>
+<th>FLOAT </th><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>○ </td><td>※1 </td><td>※2,※4 </td><td>※4,※6 </td></tr>
+<tr>
+<th>DOUBLE </th><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※4 </td><td>※5 </td><td>○ </td><td>※2,※4 </td><td>※4,※6 </td></tr>
+<tr>
+<th>RGBQUAD </th><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>※7 </td><td>※8 </td></tr>
+<tr>
+<th>RGBTRIPLE </th><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>× </td><td>※9 </td><td>○  </td></tr>
+</table>
+○：可 ×：不可<p>
+<ul>
+<li>※1 元の濃度値そのままでコピーされます。<br>
+ 特にコピー元形式がBINの場合は、出力の濃度値は 0 or 1 になります。 </li>
+<li>※2 rgbRed, rgbGreen, rgbBlue 共に同じ濃度値になります。 rgbReserved は 0 になります。 コピー元形式がBINの場合は、0 or 1 になります。 </li>
+<li>※3 コピー先画像の濃度値は、コピー元画像の濃度値にサチュレーション処理を行った値になります。 </li>
+<li>※4 コピー先画像の濃度値は、コピー元画像の濃度値にサチュレーション処理及び四捨五入を行った値になります。 </li>
+<li>※5 コピー元画像の濃淡値が非数または無限の場合は、コピー先画像の濃淡値がコピー元画像の 濃淡値をコピー先画像のタイプへキャストした値になります。 コピー元画像の濃淡値が非数でも無限でも無い場合は、コピー先画像の濃淡値がコピー元画像の 濃淡値にサチュレーション処理を行った値になります。 </li>
+<li>※6 各色成分の値は全て同じ濃度値になります。コピー元形式がBINの場合は、0 or 1 になります。 </li>
+<li>※7 rgbRed, rgbGreen, rgbBlue の値がコピーされます。コピー先画像の rgbReserved の値は0になります。 </li>
+<li>※8 rgbRed, rgbGreen, rgbBlue の値が、それぞれの色成分へ濃度値そのままでコピーされます。 rgbReserved の値はコピーされません。 </li>
+<li>※9 各色成分の値が、rgbRed, rgbGreen, rgbBlueへ濃度値そのままでコピーされます。 rgbReserved の値は0になります。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>srcimg</em>&nbsp;</td><td>コピー元画像 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dstimg</em>&nbsp;</td><td>コピー先画像</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡されたことにより、異常終了した. <br>
+ 入出力の画像サイズが違う、etc. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#g8b4f6bd6f33435bc868ae30432866a8b" title="RGBQUAD / RGBTRIPLE パッキング関数">fnFIE_packing_rgb()</a> <br>
+ <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> <br>
+ <a class="el" href="group__fie__std__operation.html#g88bfd65a3aa1fd0b1d3b1167d57e7fbe" title="係数指定付き濃淡化">fnFIE_img_rgb_to_gray()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3d515b8e1843ffa3dc986f67f0185d5c"></a><!-- doxytag: member="fie_img_copy.c::fnFIE_img_copy_ex" ref="g3d515b8e1843ffa3dc986f67f0185d5c" args="(FHANDLE srcimg, FHANDLE dstimg, INT mode, DOUBLE offset, DOUBLE mult)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_copy_ex           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>srcimg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>dstimg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>mult</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+濃度変換付き画像コピー 
+<p>
+<em>srcimg</em> から <em>dstimg</em> へ画像を濃度変換しながらコピーします。 濃度変換は <em>mode</em>, <em>offset</em>, <em>mult</em> の３つのパラメータによって指定します。<p>
+<dl class="user" compact><dt><b>mode==0の場合</b></dt><dd><em>mode</em> == 0 の場合 <a class="el" href="group__fie__filter__arithm.html#g50a78b462dbf93ba95f5f332d063f853" title="複合画像間計算[ (A-const1)*const2 ]">fnFIE_img_mixope4()</a> を実行した場合と同じ処理になり、 コピー先の濃度値は下式によって決定されます。 <pre>
+	hdst = (hsrc - offset) * mult
+</pre></dd></dl>
+<dl class="user" compact><dt><b>mode==1の場合</b></dt><dd><em>mode</em> ==1 の場合、本関数はコピー元画像中の最大・最小濃度値を調べ、 その濃度値がコピー先画像型の値域に対してフルスケールとなるように <em>offset</em>, <em>mult</em> が自動決定されて変換します。関数のパラメータに指定された <em>offset</em>, <em>mult</em> の値は 無視されます。たとえばコピー元画像の最小最大濃度値が [21, 218] 、 コピー先画像の型が F_IMG_US16 の場合、本関数による濃度変換は次の式で表されます。 <pre>
+	hdst = (hsrc - offset) * mult
+	offset = 21
+	mult = 65535.0 / (218-21)
+</pre></dd></dl>
+コピー元画像がF_IMG_RGBQUAD、F_IMG_RGBTRIPLEの場合は、チャネル毎に赤濃度、緑濃度、青濃度 の中から最小最大濃度値を調べ、その値を用いて濃度変換を行います。<p>
+<dl class="user" compact><dt><b></b></dt><dd>各画像型に応じたフルスケール値は次の通りです。 <table class="pretable">
+<tr>
+<th>コピー先型</th><th>フルスケール範囲 </th></tr>
+<tr>
+<td>F_IMG_BIN</td><td>[0,1] </td></tr>
+<tr>
+<td>F_IMG_UC8</td><td>[0,255] </td></tr>
+<tr>
+<td>F_IMG_S16</td><td>[0,32767] </td></tr>
+<tr>
+<td>F_IMG_US16</td><td>[0,65535] </td></tr>
+<tr>
+<td>F_IMG_I32</td><td>[0,2^31-1] </td></tr>
+<tr>
+<td>F_IMG_UI32</td><td>[0,2^32-1] </td></tr>
+<tr>
+<td>F_IMG_I64</td><td>[0,2^63-1] </td></tr>
+<tr>
+<td>F_IMG_DOUBLE</td><td>[0,1.0] </td></tr>
+<tr>
+<td>F_IMG_FLOAT</td><td>[0,1.0] </td></tr>
+<tr>
+<td>F_IMG_RGBQUAD</td><td>[0,255] </td></tr>
+<tr>
+<td>F_IMG_RGBTRIPLE</td><td>[0,255]  </td></tr>
+</table>
+</dd></dl>
+<br>
+<br>
+<br>
+<p>
+コピー元画像とコピー先画像は、同一サイズでチャネル数が同じでなければなりません。 違っていた場合は異常終了になります。 また、コピー元画像とコピー先画像が同じメモリを指し示していた場合の動作は不定です。 コピー元画像とコピー先画像の画像形式が違う場合でも処理可能ですが、 一部の組み合わせに制限が有ります。処理可能な型の組み合わせは下表を参照して下さい。<p>
+<table class="pretable">
+<tr>
+<th colspan="2" rowspan="2">&nbsp; </th><th colspan="11">コピー先形式 </th></tr>
+<tr>
+<th>BIN</th><th>UC8</th><th>S16</th><th>US16</th><th>I32</th><th>UI32</th><th>I64</th><th>DOUBLE</th><th>FLOAT</th><th>RGBQUAD</th><th>RGBTRIPLE </th></tr>
+<tr>
+<th rowspan="11">コピー元<br>
+形式 </th><th>BIN</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>UC8</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>S16</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>US16</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>I32</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>UI32</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>I64</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>DOUBLE</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>FLOAT</th><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○</td><td>○※１</td><td>○※１ </td></tr>
+<tr>
+<th>RGBQUAD</th><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>○※４</td><td>○※３ </td></tr>
+<tr>
+<th>RGBTRIPLE</th><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>×</td><td>○※２</td><td>○  </td></tr>
+</table>
+○：可 ×：不可<p>
+<ul>
+<li>※1 rgbRed, rgbGreen, rgbBlue 共に同じ濃度値になります。 rgbReserved は 0 になります。 </li>
+<li>※2 rgbReserved は 0 になります。 </li>
+<li>※3 rgbReserved の値は出力されず、RGBの色成分に対する処理結果のみが出力されます。 </li>
+<li>※4 rgbRed, rgbGreen, rgbBlue に対しての処理結果のみが出力され、 rgbReserved は 0 になります。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>srcimg</em>&nbsp;</td><td>コピー元画像 ( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dstimg</em>&nbsp;</td><td>コピー先画像 ( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>濃度変換モード<ul>
+<li>0 : <em>offset</em>, <em>mult</em> による固定指定</li><li>1 : コピー元画像の濃度値をフルスケール化 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>offset</em>&nbsp;</td><td>濃度オフセット ( <em>mode==1</em> の場合は無視されます。) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mult</em>&nbsp;</td><td>濃度倍率 ( <em>mode==1</em> の場合は無視されます。)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡されたことにより、異常終了した. <br>
+ 入出力の画像サイズが違う、etc. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なモード指定を行った、変換できない組み合わせの画像型を指定した </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g828af50f02eef84a7f55af8143dba762"></a><!-- doxytag: member="fie_img_copy.c::fnFIE_unpacking_rgb" ref="g828af50f02eef84a7f55af8143dba762" args="(const FHANDLE hSrc, FHANDLE hDst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_unpacking_rgb           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+RGBQUAD / RGBTRIPLE アンパッキング関数 
+<p>
+イメージタイプが F_IMG_RGBQUAD または F_IMG_RGBTRIPLE である <em>hSrc</em> を、各成分ごとに分離して <em>hDst</em> 側に格納します。<br>
+ <em>hDst</em> は、チャネル0に赤濃度、チャネル1に緑濃度、チャネル2に青濃度、チャネル3にrgbReserved の値をそれぞれ格納します。<br>
+<p>
+入力画像のイメージタイプは F_IMG_RGBQUAD または F_IMG_RGBTRIPLE でなくてはなりません。また、チャネル数は1でなくてはなりません。<br>
+ 出力画像のイメージタイプは F_IMG_UC8、F_IMG_US16、F_IMG_S16、F_IMG_DOUBLE のいずれかでなくてはなりません。<br>
+ また、チャネル数は3または4でなくてはなりません。<br>
+ 入力画像と出力画像の幅と高さは同じでなくてはなりません。<br>
+<p>
+入力画像のイメージタイプが F_IMG_RGBQUAD、かつ出力画像のチャネル数が3の場合、RGBQUAD 構造体の要素の一つである rgbReserved の値は 出力されず、RGBの色成分のみが出力されます。<br>
+ 入力画像のイメージタイプが F_IMG_RGBTRIPLE、かつ出力画像のチャネル数が4の場合、チャネル3の値には0が出力されます。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>処理対象画像( type: rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理結果画像( type: uc8, s16, us16, double )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの値エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8b4f6bd6f33435bc868ae30432866a8b"></a><!-- doxytag: member="fie_img_copy.c::fnFIE_packing_rgb" ref="g8b4f6bd6f33435bc868ae30432866a8b" args="(const FHANDLE hSrc, FHANDLE hDst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_packing_rgb           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+RGBQUAD / RGBTRIPLE パッキング関数 
+<p>
+3チャネル分、または4チャネル分の濃度値を格納している <em>hSrc</em> を、各成分ごとに分離して <em>hDst</em> に格納します。<br>
+ イメージタイプが F_IMG_UC8、F_IMG_US16、F_IMG_S16、F_IMG_DOUBLEである <em>hSrc</em> を、各成分ごとに分離して <em>hDst</em> 側に格納します。<br>
+<p>
+<em>hSrc</em> が3チャネルの場合、チャネル0を赤濃度、チャネル1を緑濃度、チャネル2を青濃度とみなして <em>hDst</em> に格納します。<br>
+ <em>hSrc</em> が4チャネルの場合、チャネル0を赤濃度、チャネル1を緑濃度、チャネル2を青濃度、チャネル3をrgbReserved の値とみなして <em>hDst</em> に格納します。<p>
+入力画像のイメージタイプは F_IMG_UC8、F_IMG_US16、F_IMG_S16、F_IMG_DOUBLE のいずれかでなくてはなりません。 また、チャネル数は3または4でなくてはなりません。<br>
+ 出力画像のイメージタイプは F_IMG_RGBQUAD または F_IMG_RGBTRIPLE でなくてはなりません。また、チャネル数は1でなくてはなりません。<br>
+ 入力画像と出力画像の幅と高さは同じでなくてはなりません。<br>
+<p>
+入力画像のチャネル数が3、かつ出力画像のイメージタイプが F_IMG_RGBQUAD の場合、RGBQUAD 構造体の要素の一つである rgbReserved の値は0に設定されます。<br>
+ 入力画像のチャネル数が4、かつ出力画像のイメージタイプが F_IMG_RGBTRIPLE の場合、入力画像のチャネル3の値は無視され、 チャネル0からチャネル2の値のみが格納されます。<br>
+<p>
+F_IMG_US16, F_IMG_S16画像の濃度値は、コピー元画像の濃度値にサチュレーション処理を行った値になります。<br>
+ F_IMG_DOUBLE 画像の濃度値は、コピー元画像の濃度値を <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> を使用して四捨五入した後、サチュレーション処理を行った値になります。<br>
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>処理対象画像( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理結果画像( type: rgbq, rgbtri )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの値エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3a97dfafd4d861fb1b1280b7676f7fd7"></a><!-- doxytag: member="fie_img_expand.c::fnFIE_img_expand" ref="g3a97dfafd4d861fb1b1280b7676f7fd7" args="(FHANDLE hsrc, FHANDLE hdst, INT mag_x, INT mag_y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_expand           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mag_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mag_y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像伸長 
+<p>
+入力画像 <em>hsrc</em> を横方向 <em>mag_x</em> 倍、縦方向 <em>mag_y</em> 倍に伸長し、出力画像 <em>hdst</em> に出力します。 入力画像の各画素値が、縦横それぞれの伸長率に応じた個数だけ連続して並べられます。<p>
+例として、サイズが4x2の入力画像（下図）に対して、 <em>mag_x</em> = 3, <em>mag_y</em> = 2 を指定して処理させた場合を考えます。<p>
+<div align="center">
+<img src="fie_expand_input.png" alt="fie_expand_input.png">
+</div>
+<p>
+指定した伸長率分だけ入力画像の画素値を並べることで伸長し、12x4のサイズを持つ処理結果が得られます（下図）。<p>
+<div align="center">
+<img src="fie_expand_output.png" alt="fie_expand_output.png">
+</div>
+<p>
+出力画像 <em>hdst</em> には、どのようなサイズの画像も指定することが可能です。 入力画像の幅を <img class="formulaInl" alt="$src\_width$" src="form_653.png">、高さを<img class="formulaInl" alt="$src\_height$" src="form_654.png">とすると、得られる処理結果のサイズ(幅及び高さ）は<ul>
+<li>処理結果幅：<img class="formulaInl" alt="$src\_width ~\times$" src="form_655.png"> <em>mag_x</em> </li><li>処理結果高さ：<img class="formulaInl" alt="$src\_height ~\times$" src="form_656.png"> <em>mag_y</em> </li></ul>
+<p>
+となります。<p>
+出力画像のサイズが上記処理結果のサイズと等しい場合、すべての処理結果を出力画像の全面で得ることができます。<br>
+ 出力画像のサイズがこれより大きい場合、すべての処理結果を得ることができますが、処理結果が存在しない右端と下端は元の値が保持されます。<br>
+ 出力画像のサイズがこれより小さい場合、出力画像のサイズを超える処理結果の右端と下端は出力画像に出力されません。<p>
+入力画像と出力画像のチャネル数と画像型は、同じでなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type: bin, uc8, s16, us16, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type: bin, uc8, s16, us16, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mag_x</em>&nbsp;</td><td>水平方向伸長率（1以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mag_y</em>&nbsp;</td><td>垂直方向伸長率（1以上）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラーまたは未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0985fa53a4dac8efb83c69c56bbe3e2b"></a><!-- doxytag: member="fie_img_getdens.c::fnFIE_img_get_subdens" ref="g0985fa53a4dac8efb83c69c56bbe3e2b" args="(FHANDLE himg, DOUBLE x, DOUBLE y, enum f_sampling_mode mode, DOUBLE *dens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_subdens           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__std__operation__base.html#ge751127412e5ec90efaea361f0c4fc8e">f_sampling_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定座標の濃度値取得(補間付き) 
+<p>
+画像 <em>himg</em> のサブピクセル座標( <em>x</em>, <em>y</em> ) における濃度値を濃度補間法を用いて算出します。 <em>himg</em> のチャネル数が２以上の場合は各チャネルごとの濃度値を全て算出します。 このため <em>dens</em> には <em>himg</em> のチャネル数以上のサイズの配列を指定してください。 また <em>himg</em> の型が F_IMG_RGBQUAD,F_IMG_RGBTRIPLE型の場合にはチャネル数が１でなければならず、 このとき <em>dens</em> には長さ３以上の配列が必要です。<p>
+<dl class="user" compact><dt><b>補間モード</b></dt><dd>本関数では濃度補間の方法を 最近傍法(F_SAMPLING_NN)、 共一次線形補間法(F_SAMPLING_BILINEAR)、３次畳み込み法(F_SAMPLING_CUBIC) の３種類の手法から選択できます。 ただし、対象画像が２値画像(bin型)の場合は F_SAMPLING_NN のみが指定可能です。 各手法の詳細は <a class="el" href="group__fie__geometric__transform.html">幾何変換の説明ページ</a> を参照してください。</dd></dl>
+<dl class="user" compact><dt><b>座標</b></dt><dd>濃度補間の算出には対象画素とその周囲の画素の情報を利用するため、 補間モードによっては画像の周囲数画素において算出が出来ない部分が有ります。 各補間モードにおける指定可能な座標範囲は 対象画像 <em>himg</em> の幅を w, 高さを h とすると次の通りです。 下記条件が満たされていない場合、本関数は F_ERR_INVALID_PARAM を返します。<ul>
+<li>F_SAMPLING_NN の場合 <br>
+ 0 ≦ x &amp;&amp; x ＜ w &amp;&amp; 0 ≦ y &amp;&amp; y ＜ h</li><li>F_SAMPLING_BILINEAR の場合 <br>
+ 0 ≦ x &amp;&amp; x ＜ (w-1) &amp;&amp; 0 ≦ y &amp;&amp; y ＜ (h-1)</li><li>F_SAMPLING_ の場合 <br>
+ 1.0 ≦ x &amp;&amp; x ＜ (w-2) &amp;&amp; 1.0 ≦ y &amp;&amp; y ＜ (h-2)</li></ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>濃度を取得する画像( type: bin, uc8, s16, us16, i32, ui32, rgbq, rgbtri, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>対象画素のＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>対象画素のＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>補間モード<ul>
+<li>F_SAMPLING_NN 最近傍法</li><li>F_SAMPLING_BILINEAR 共一次線形補間法（bin画像は指定不可）</li><li>F_SAMPLING_CUBIC ３次畳み込み法（bin画像は指定不可） </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dens</em>&nbsp;</td><td>濃度値配列 <br>
+ <em>himg</em> のチャネル数分のサイズが必用 <br>
+ RGBQUAD, RGBTRIPLE型の場合は３以上のサイズが必要</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td><em>himg</em> に指定された画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g785d22136b67f0d76137c48660f64274"></a><!-- doxytag: member="fie_img_getdens.c::fnFIE_img_get_dens" ref="g785d22136b67f0d76137c48660f64274" args="(FHANDLE himg, INT ch, INT x, INT y, DOUBLE *dens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_dens           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定座標の濃度値取得 
+<p>
+画像 <em>himg</em> のチャネル <em>ch</em> 、 座標( <em>x</em>, <em>y</em> )の濃度値を取得します。 ただし、 <em>himg</em> が F_IMG_RGBQUAD または F_IMG_RGBTRIPLE の場合には <em>ch</em> を以下のようにすることで特定の色の成分の濃度値を取得します。<p>
+<ul>
+<li>ch = 0 : 座標( <em>x</em>, <em>y</em> )の赤成分(R)の濃度値</li><li>ch = 1 : 座標( <em>x</em>, <em>y</em> )の緑成分(G)の濃度値</li><li>ch = 2 : 座標( <em>x</em>, <em>y</em> )の青成分(B)の濃度値</li></ul>
+<p>
+このとき、画像 <em>himg</em> のチャネル数は 1 である必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>濃度を取得する画像( type: bin, uc8, s16, us16, i32, ui32, double, float, rgbq, rgbtri) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ch</em>&nbsp;</td><td>対象チャネル( rgbq, rgbtriの場合、色に対応した数 [0 or 1 or 2]) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>対象画素のＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>対象画素のＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dens</em>&nbsp;</td><td>濃度値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td><em>himg</em> に指定された画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177" title="指定座標の濃度値設定">fnFIE_img_set_dens()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g636032b5e363c0fcaab2c430347c5177"></a><!-- doxytag: member="fie_img_getdens.c::fnFIE_img_set_dens" ref="g636032b5e363c0fcaab2c430347c5177" args="(FHANDLE himg, INT ch, INT x, INT y, DOUBLE dens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_set_dens           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>ch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定座標の濃度値設定 
+<p>
+画像 <em>himg</em> のチャネル <em>ch</em> 、 座標( <em>x</em>, <em>y</em> )の濃度値を設定します。 ただし、 <em>himg</em> が F_IMG_RGBQUAD または F_IMG_RGBTRIPLE の場合には <em>ch</em> を以下のようにすることで特定の色の成分に濃度値を設定します。<p>
+<ul>
+<li>ch = 0 : 座標( <em>x</em>, <em>y</em> )の赤成分(R)の濃度値</li><li>ch = 1 : 座標( <em>x</em>, <em>y</em> )の緑成分(G)の濃度値</li><li>ch = 2 : 座標( <em>x</em>, <em>y</em> )の青成分(B)の濃度値</li></ul>
+<p>
+このとき、画像 <em>himg</em> のチャネル数は 1 である必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>濃度を設定する画像( type: bin, uc8, s16, us16, i32, ui32, double, float, rgbq, rgbtri) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ch</em>&nbsp;</td><td>対象チャネル( rgbq, rgbtriの場合、色に対応した数 [0 or 1 or 2]) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>対象画素のＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>対象画素のＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dens</em>&nbsp;</td><td>設定する濃度値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td><em>himg</em> に指定された画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__img__draw.html#g1b6fc1f2fec4bc09638f042ced117401" title="点の描画">fnFIE_draw_point()</a> <p>
+<a class="el" href="group__fie__std__operation.html#g785d22136b67f0d76137c48660f64274" title="指定座標の濃度値取得">fnFIE_img_get_dens()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd19c8a0f69f56c641fcd79eb4d123282"></a><!-- doxytag: member="fie_img_getdens.c::fnFIE_img_get_dens_channels" ref="gd19c8a0f69f56c641fcd79eb4d123282" args="(FHANDLE himg, INT x, INT y, DOUBLE *dens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_get_dens_channels           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定座標の濃度値取得(全チャネル一括) 
+<p>
+画像 <em>himg</em> の座標( <em>x</em> , <em>y</em> )の濃度値を取得します。取得する濃度値とその数は画像型によって異なり、以下のようになります。<br>
+<p>
+<dl class="user" compact><dt><b>画像型がF_IMG_RGBQUAD,F_IMG_RGBTRIPLE型以外の場合</b></dt><dd><ul>
+<li><em>dens</em>[ch] : 座標( <em>x</em>, <em>y</em> )のチャネル <em>ch</em> の濃度値<br>
+ このとき <em>ch</em> は、 0 ≦ <em>ch</em> ＜ [himg のチャネル数] です。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>画像型がF_IMG_RGBQUAD,F_IMG_RGBTRIPLEの場合</b></dt><dd><ul>
+<li><em>dens</em>[0] : 座標( <em>x</em>, <em>y</em> )の赤成分(R)の濃度値</li><li><em>dens</em>[1] : 座標( <em>x</em>, <em>y</em> )の緑成分(G)の濃度値</li><li><em>dens</em>[2] : 座標( <em>x</em>, <em>y</em> )の青成分(B)の濃度値</li></ul>
+</dd></dl>
+このとき、画像 <em>himg</em> のチャネル数は 1 である必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>濃度を取得する画像( type: bin, uc8, s16, us16, i32, ui32, double, float, rgbq, rgbtri) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>対象画素のＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>対象画素のＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dens</em>&nbsp;</td><td>濃度値配列 <br>
+ <em>himg</em> のチャネル数分のサイズが必要 <br>
+ RGBQUAD, RGBTRIPLE型の場合は３以上のサイズが必要</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td><em>himg</em> に指定された画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#gefe15b9ef29eafdccdc121181f0bfce8" title="指定座標の濃度値設定(全チャネル一括)">fnFIE_img_set_dens_channels()</a> <p>
+<a class="el" href="group__fie__std__operation.html#g0985fa53a4dac8efb83c69c56bbe3e2b" title="指定座標の濃度値取得(補間付き)">fnFIE_img_get_subdens()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gefe15b9ef29eafdccdc121181f0bfce8"></a><!-- doxytag: member="fie_img_getdens.c::fnFIE_img_set_dens_channels" ref="gefe15b9ef29eafdccdc121181f0bfce8" args="(FHANDLE himg, INT x, INT y, DOUBLE *dens)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_set_dens_channels           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dens</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+指定座標の濃度値設定(全チャネル一括) 
+<p>
+画像 <em>himg</em> の座標( <em>x</em> , <em>y</em> )の濃度値を設定します。設定する濃度値とその数は画像型によって異なり、以下のようになります。<br>
+<p>
+<dl class="user" compact><dt><b>画像型がF_IMG_RGBQUAD,F_IMG_RGBTRIPLE型以外の場合</b></dt><dd><ul>
+<li><em>dens</em>[ch] : 座標( <em>x</em>, <em>y</em> )のチャネル <em>ch</em> の濃度値<br>
+ このとき <em>ch</em> は、 0 ≦ <em>ch</em> ＜ [himg のチャネル数] です。</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>画像型がF_IMG_RGBQUAD,F_IMG_RGBTRIPLEの場合</b></dt><dd><ul>
+<li><em>dens</em>[0] : 座標( <em>x</em>, <em>y</em> )の赤成分(R)の濃度値</li><li><em>dens</em>[1] : 座標( <em>x</em>, <em>y</em> )の緑成分(G)の濃度値</li><li><em>dens</em>[2] : 座標( <em>x</em>, <em>y</em> )の青成分(B)の濃度値</li></ul>
+</dd></dl>
+このとき、画像 <em>himg</em> のチャネル数は 1 である必要があります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>濃度を設定する画像( type: bin, uc8, s16, us16, i32, ui32, double, float, rgbq, rgbtri) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>対象画素のＸ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>対象画素のＹ座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dens</em>&nbsp;</td><td>濃度値配列 <br>
+ <em>himg</em> のチャネル数分のサイズが必要 <br>
+ RGBQUAD, RGBTRIPLE型の場合は３以上のサイズが必要</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td><em>himg</em> に指定された画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#gd19c8a0f69f56c641fcd79eb4d123282" title="指定座標の濃度値取得(全チャネル一括)">fnFIE_img_get_dens_channels()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g88bfd65a3aa1fd0b1d3b1167d57e7fbe"></a><!-- doxytag: member="fie_img_rgb_to_gray.c::fnFIE_img_rgb_to_gray" ref="g88bfd65a3aa1fd0b1d3b1167d57e7fbe" args="(const FHANDLE hsrc, FHANDLE hdst, DOUBLE coeff_r, DOUBLE coeff_g, DOUBLE coeff_b, INT mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_rgb_to_gray           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>coeff_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>coeff_g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>coeff_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+係数指定付き濃淡化 
+<p>
+カラー画像を、指定の係数に基づき濃淡化します。<br>
+ 入力画像の各成分を R、G、B とし、各成分に対する変換係数を cr、cg、cb とすると 出力画像の濃度値 dst は次の変換式により計算されます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst = cr \times R + cg \times G + cb \times B \]" src="form_680.png">
+<p>
+<p>
+一般的なカラー画像から濃淡画像への変換を行う場合は、各変換係数に次の値を御使用下さい。<br>
+ <em>coeff_r</em> = 0.299 、<em>coeff_g</em> = 0.587 、<em>coeff_b</em> = 0.114 <br>
+<p>
+<dl class="user" compact><dt><b>入力画像</b></dt><dd>入力画像は、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE かつ 3 チャネルであるか、F_IMG_RGBQUAD かつ 1 チャネル である必要があります。<br>
+ 入力画像が3チャネルの場合は 0、1、2 チャネルにそれぞれ R、G、B 成分の値が格納 されているものとして扱います。<br>
+</dd></dl>
+<dl class="user" compact><dt><b>出力画像</b></dt><dd>出力画像は、F_IMG_UC8、F_IMG_S16、F_IMG_US16、F_IMG_DOUBLE かつ 1 チャネルである必要があります。<br>
+ 入力画像と出力画像の画像型は同一である必要はありませんが、サイズは同一である必要があります。 <br>
+ 出力画像が F_IMG_DOUBLE 以外の場合の濃度値は、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> により四捨五入で整数に変換されます。<br>
+</dd></dl>
+<dl class="user" compact><dt><b>変換モード</b></dt><dd>パラメータ <em>mode</em> により、変換モードを指定します。<br>
+ <br>
+ <em>mode</em> に 0 を指定した場合上記の変換式の各変換係数の値には、パラメータ <em>coeff_r</em> 、<em>coeff_g</em> 、<em>coeff_b</em> で指定した値 がそのまま使用されます。<br>
+ この時、出力画像の濃度値はサチュレーション処理を行った値となります。 <ul>
+<li><em>mode</em> == 0 の場合 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ cr = coeff\_r \]" src="form_681.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ cg = coeff\_g \]" src="form_682.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ cb = coeff\_b \]" src="form_683.png">
+<p>
+</li>
+</ul>
+<em>mode</em> に 1 を指定した場合上記の変換式の各変換係数の値には、総和が 1 となるように正規化された値が使用されます。<br>
+ さらにこの時、入力画像と出力画像の画像型が異なる場合は、出力画像型に合わせてスケーリングが行われる為、 入力画像型の最大値を SRC_MAX、出力画像型の最大値を DST_MAX とすると、各変換係数の値は下のようになります。<br>
+ ただし、出力画像型が F_IMG_DOUBLE の場合には、DST_MAX = 1.0 として計算されます。<br>
+ また、入力画像型が F_IMG_DOUBLE の場合には、出力画像がどの画像型であってもスケーリングは行われませんので、 SRC_MAX = DST_MAX = 1.0 となります。 <ul>
+<li><em>mode</em> == 1 の場合 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ cr = \frac{coeff\_r}{coeff\_r + coeff\_g + coeff\_b} \times \frac{DST\_MAX}{SRC\_MAX} \]" src="form_684.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ cg = \frac{coeff\_g}{coeff\_r + coeff\_g + coeff\_b} \times \frac{DST\_MAX}{SRC\_MAX} \]" src="form_685.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ cb = \frac{coeff\_b}{coeff\_r + coeff\_g + coeff\_b} \times \frac{DST\_MAX}{SRC\_MAX} \]" src="form_686.png">
+<p>
+</li>
+</ul>
+注意:<br>
+ <em>coeff_r</em> + <em>coeff_g</em> + <em>coeff_b</em> = 0.0 となる場合には、異常終了 (F_ERR_CALC_IMPOSSIBLE) となります。<br>
+ <br>
+ 各画像型の最大値は次の通りです。 <table class="pretable">
+<tr>
+<th>画像型 </th><th>最大値  </th></tr>
+<tr>
+<td>F_IMG_UC8 </td><td>255  </td></tr>
+<tr>
+<td>F_IMG_S16 </td><td>32767  </td></tr>
+<tr>
+<td>F_IMG_US16 </td><td>65535  </td></tr>
+<tr>
+<td>F_IMG_DOUBLE </td><td>1.0  </td></tr>
+<tr>
+<td>F_IMG_RGBQUAD </td><td>255  </td></tr>
+</table>
+</dd></dl>
+以上を踏まえた各入出力画像型の組合せにおける処理の内容は、下表のようになります。 <table class="pretable">
+<tr>
+<th rowspan="2" colspan="2>">&nbsp; </th><th colspan="4>">出力画像  </th></tr>
+<tr>
+<th>uc8 (1Ch) </th><th>s16 (1Ch) </th><th>us16 (1Ch) </th><th>double (1Ch)  </th></tr>
+<tr>
+<th rowspan="5>">入力画像 </th><th>uc8 (3Ch) </th><td align="center">※1,※4 </td><td align="center">※1,※2 </td><td align="center">※1,※2 </td><td align="center">※1,※3  </td></tr>
+<tr>
+<th>s16 (3Ch) </th><td align="center">※1,※2 </td><td align="center">※1,※4 </td><td align="center">※1,※2 </td><td align="center">※1,※3  </td></tr>
+<tr>
+<th>us16 (3Ch) </th><td align="center">※1,※2 </td><td align="center">※1,※2 </td><td align="center">※1,※4 </td><td align="center">※1,※3  </td></tr>
+<tr>
+<th>double (3Ch) </th><td align="center">※1,※4 </td><td align="center">※1,※4 </td><td align="center">※1,※4 </td><td align="center">※1,※4  </td></tr>
+<tr>
+<th>RGBQ (1Ch) </th><td align="center">※1,※4 </td><td align="center">※1,※2 </td><td align="center">※1,※2 </td><td align="center">※1,※3  </td></tr>
+</table>
+<p>
+<ul>
+<li>※1 <em>mode</em> ==0 の場合、パラメータで指定された変換係数の値をそのまま使用します。 </li>
+<li>※2 <em>mode</em> ==1 の場合、変換係数の正規化及び、入出力画像型に合わせたスケーリングが行われます。 </li>
+<li>※3 <em>mode</em> ==1 の場合、変換係数の正規化及び、出力画像型の最大値を 1.0 としてスケーリングが行われます。 </li>
+<li>※4 <em>mode</em> ==1 の場合、変換係数の正規化のみが行われます。スケーリングは行われません。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 ( type: uc8, s16, us16, double, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 ( type: uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coeff_r</em>&nbsp;</td><td>R 成分変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coeff_g</em>&nbsp;</td><td>G 成分変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>coeff_b</em>&nbsp;</td><td>B 成分変換係数 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>変換モード<ul>
+<li>0 : 正規化、及びスケーリングを行わない</li><li>1 : 正規化、及びスケーリングを行う</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入出力画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算が出来ない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g08defee9068bf4fb47e1b4dbac364f4e"></a><!-- doxytag: member="fie_img_shrink.c::fnFIE_img_shrink" ref="g08defee9068bf4fb47e1b4dbac364f4e" args="(FHANDLE hsrc, FHANDLE hdst, INT rmag)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_shrink           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rmag</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+1/N画像圧縮 
+<p>
+<em>hsrc</em> に指定された画像を縦横共に 1/rmag に圧縮し <em>hdst</em> へ出力します。 <em>hdstへは</em> <ul>
+<li>幅: (hsrcの幅)/rmag</li><li>高さ: (hsrcの高さ)/rmag</li></ul>
+だけ結果が出力され、その外側は変更されません。<p>
+入力画像と出力画像は同じチャネル数、画像型でなければいけません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル(type: uc8) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル(type: uc8) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rmag</em>&nbsp;</td><td>圧縮率。ただし、2&lt;=rmag</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE hsrc = NULL;
+    FHANDLE hdst = NULL;
+    INT i;
+    CHAR buff[1024];
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 入力画像生成</span>
+    hsrc = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 512, 480 );
+    <a class="code" href="group__fie__std__operation.html#g86937144344ab431cb1411b6773de24c" title="B.Jaehne のテスト画像を生成する">fnFIE_jaehne_testimg</a>(hsrc);
+
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, 512, 480 );
+    
+    <span class="comment">// 1/2 ～ 1/32 までの画像を生成する。</span>
+    <span class="keywordflow">for</span>( i=0; i&lt;=32; i++ ){
+        <a class="code" href="group__fie__std__operation.html#g16f145c381736241d6a986ab00e7f310" title="画像クリア">fnFIE_img_clear</a>(hdst, 0.0);
+
+        <a class="code" href="group__fie__std__operation.html#g08defee9068bf4fb47e1b4dbac364f4e" title="1/N画像圧縮">fnFIE_img_shrink</a>( hsrc, hdst, i );  <span class="comment">// i &lt; 2 のときはエラーとなる</span>
+        sprintf(buff, <span class="stringliteral">"shrink-%02d.bmp"</span>, i);
+        <a class="code" href="group__fie__file__image.html#g9e2ba61427e7e6597ae83ce4b30f9c7a" title="ビットマップ保存">fnFIE_save_bmp</a>( buff, hdst );
+    }
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hdst );
+
+    <span class="comment">// FIEライブラリの終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8187598f6b1da1b815c28f4de446b96e"></a><!-- doxytag: member="fie_img_shrink2.c::fnFIE_img_shrink2" ref="g8187598f6b1da1b815c28f4de446b96e" args="(FHANDLE hsrc, FHANDLE hdst, INT rmag_x, INT rmag_y, INT mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_shrink2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rmag_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rmag_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像圧縮 
+<p>
+入力画像 <em>hsrc</em> を、 横方向 1 / <em>rmag_x</em> 、 縦方向 1 / <em>rmag_y</em> に圧縮し、 出力画像 <em>hdst</em> に出力します。 <br>
+<p>
+例として、サイズが 20 x 7 の入力画像に対して、 <em>rmag_x</em> = 3、 <em>rmag_y</em> = 3 を指定して処理させた場合を考えます。 <br>
+ このとき、入力画像は 下図で色分けされているように サイズ 3 x 3 の矩形領域に分割されます。<br>
+<p>
+<div align="center">
+<img src="fie_img_shrink2_src.png" alt="fie_img_shrink2_src.png">
+</div>
+<p>
+そして、この分割された領域毎に <em>mode</em> で指定された処理を施した結果を、出力画像の各画素に出力します。<br>
+ このとき、入力画像を矩形領域に分割した際に余りとなる 「右端」 及び 「下端」 の画素 (上図における灰色の画素) は、無視されます。<p>
+<div align="center">
+<img src="fie_img_shrink2_dst.png" alt="fie_img_shrink2_dst.png">
+</div>
+<p>
+出力画像 <em>hdst</em> には、どのようなサイズの画像も指定することが可能です。<br>
+ 入力画像の幅を <img class="formulaInl" alt="$ src\_width $" src="form_687.png"> 、 高さを <img class="formulaInl" alt="$ src\_height $" src="form_688.png"> とすると、得られる処理結果のサイズ( 幅　及び　高さ　) は<ul>
+<li>処理結果幅 : <img class="formulaInl" alt="$ src\_width $" src="form_687.png"> / <em>rmag_x</em> (切り捨て)</li><li>処理結果高さ : <img class="formulaInl" alt="$ src\_height $" src="form_688.png"> / <em>rmag_y</em> (切り捨て)</li></ul>
+<p>
+となります。<br>
+ 出力画像のサイズが、上記　処理結果のサイズと等しい場合、全ての処理結果を出力画像の全面で得ることができます。<br>
+ 出力画像のサイズがこれより大きかった場合、全ての処理結果を得ることはできますが、出力画像上で該当する処理結果が存在しない 右端　及び　下端　部分は、出力画像の元の値が保持されます。<br>
+ 出力画像のサイズがこれより小さかった場合、出力画像のサイズを超える　処理結果の　右端　及び　下端　部分は、出力画像に出力されません。<p>
+<br>
+<p>
+入力画像と出力画像のチャネル数は同じでなければなりません。 <br>
+ 出力画像の画像型は、入力画像の画像型と同じであるか F_IMG_DOUBLE でなければなりません。<p>
+<em>rmag_x</em> は 1 以上、かつ 入力画像幅以下でなければなりません。<br>
+ <em>rmag_y</em> は 1 以上、かつ 入力画像高さ以下でなければなりません。<br>
+<p>
+<br>
+<p>
+<dl class="user" compact><dt><b>圧縮モードについて.</b></dt><dd>圧縮モードは <em>mode</em> により、下記の値を指定して下さい。 </dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 0 : 平均値.<br>
+ 矩形領域に含まれる画素の平均濃度値を出力します。 <br>
+ 出力画像が整数型である場合、結果値を四捨五入した値が出力されます。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 1 : 合計値.<br>
+ 矩形領域に含まれる画素の合計濃度値を出力します。<br>
+ 結果の値が出力画像型の値域を超える場合は、飽和された値が出力されます。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 2 : 最大値.<br>
+ 矩形領域に含まれる画素の最大濃度値を出力します。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 3 : 最小値.<br>
+ 矩形領域に含まれる画素の最小濃度値を出力します。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 4 : 中央値.<br>
+ 矩形領域に含まれる画素の中央値を出力します。 <br>
+ （中央値は画素を濃度値順にソートしたときに、中央に位置する値となります） <br>
+ 矩形領域の画素数が偶数のときは、中央に近い2つの画素値の大きいほうを採用します。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 5 : 最頻値.<br>
+ 矩形領域に含まれる画素の最頻値を出力します。 <br>
+ （最頻値は濃度値ごとに出現回数をカウントしたときに、出現回数が最も多い値となります） <br>
+ 複数最頻値が出現した場合、その中で濃度値が最大となる最頻値を採用します。 <br>
+ 入力画像型がdoubleの場合、濃度値の小数第1位を四捨五入した後に最頻値を求めます。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 6 : ランク1/4.<br>
+ <img class="formulaInl" alt="$iRank = floor ( ( rmag\_x \times rmag\_y ) \times 1/4 + 1 )$" src="form_689.png"> とします。 <br>
+ 矩形領域に含まれる画素の濃度値を昇順にソートし、<img class="formulaInl" alt="$iRank$" src="form_690.png"> 番目の値を出力します。 </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><ul>
+<li><em>mode</em> = 7 : ランク3/4.<br>
+ <img class="formulaInl" alt="$iRank = floor ( ( rmag\_x \times rmag\_y ) \times 3/4 + 1 )$" src="form_691.png"> とします。 <br>
+ 矩形領域に含まれる画素の濃度値を昇順にソートし、<img class="formulaInl" alt="$iRank$" src="form_690.png"> 番目の値を出力します。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 ( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 ( type: bin, uc8, s16, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rmag_x</em>&nbsp;</td><td>水平方向圧縮率. ( 1 以上 かつ 入力画像幅 以下 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rmag_y</em>&nbsp;</td><td>垂直方向圧縮率. ( 1 以上 かつ 入力画像高さ 以下 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>圧縮モード.<ul>
+<li>0 : 平均値.</li><li>1 : 合計値.</li><li>2 : 最大値.</li><li>3 : 最小値.</li><li>4 : 中央値.</li><li>5 : 最頻値.</li><li>6 : ランク1/4.</li><li>7 : ランク3/4.</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9d030640a1083d0011948014754c1d7d"></a><!-- doxytag: member="fie_img_swap.c::fnFIE_img_swap" ref="g9d030640a1083d0011948014754c1d7d" args="(FHANDLE himg1, FHANDLE himg2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_swap           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画素値入替え 
+<p>
+画像 <em>himg1</em> と <em>himg2</em> の同じ座標となる画素の値を入れ替えます。 2つの画像が重複したメモリを指示していた場合の処理結果は不定です。<p>
+また2つの画像は、型、チャネル数、幅、高さがそれぞれ等しくなければなりません。 入替え対象画像のタイプが F_IMG_RGBQUAD の場合は、入替え後の rgbReserved は 0 に設定されます。<p>
+同一画像上の2つの領域を入れ替える場合には、チャイルド画像を利用して処理を行ってください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>himg1</em>&nbsp;</td><td>画像ハンドル( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>himg2</em>&nbsp;</td><td>画像ハンドル( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラーまたは未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g86937144344ab431cb1411b6773de24c"></a><!-- doxytag: member="fie_jaehne.c::fnFIE_jaehne_testimg" ref="g86937144344ab431cb1411b6773de24c" args="(FHANDLE himg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_jaehne_testimg           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+B.Jaehne のテスト画像を生成する 
+<p>
+Bernd Jaehne の著書Digital Image Processing (ISBN:3540240357)にて紹介されている テスト用の画像を生成します。このテスト用画像は、フィルタリング関数を適用した結果を 視覚化するのに有効です。なお、式の定義は上記書籍に無いので、独自の物です。<p>
+出力画像の濃度値dstは下記式によって求められます。<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ dst = A \sin( 0.5 \pi \times \frac{ (x-\overline{xu})^{2} + (y-\overline{yu})^{2} }{height} ) + B \]" src="form_692.png">
+<p>
+<p>
+但し、 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \overline{xu} = \frac{width-1}{2} \]" src="form_693.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \overline{yu} = \frac{height-1}{2} \]" src="form_694.png">
+<p>
+ であり、A,Bは画像の型によって決まる定数で、次のようになります。<p>
+<table class="pretable">
+<tr>
+<th>画像型</th><th>A</th><th>B </th></tr>
+<tr>
+<td>F_IMG_BIN</td><td>0.5</td><td>0.5 </td></tr>
+<tr>
+<td>F_IMG_UC8</td><td>UC8_MAX/2.0</td><td>UC8_MAX/2.0 </td></tr>
+<tr>
+<td>F_IMG_S16</td><td>S16_MAX</td><td>0 </td></tr>
+<tr>
+<td>F_IMG_US16</td><td>US16_MAX/2.0</td><td>US16_MAX/2.0 </td></tr>
+<tr>
+<td>F_IMG_I32</td><td>I32_MAX</td><td>0 </td></tr>
+<tr>
+<td>F_IMG_UI32</td><td>UI32_MAX/2.0</td><td>UI32_MAX/2.0 </td></tr>
+<tr>
+<td>F_IMG_I64</td><td>2^63</td><td>0 </td></tr>
+<tr>
+<td>F_IMG_DOUBLE</td><td>1.0</td><td>0 </td></tr>
+<tr>
+<td>F_IMG_FLOAT</td><td>1.0</td><td>0 </td></tr>
+<tr>
+<td>F_IMG_RGBQUAD</td><td>UC8_MAX/2.0</td><td>UC8_MAX/2.0 </td></tr>
+<tr>
+<td>F_IMG_RGBTRIPLE</td><td>UC8_MAX/2.0</td><td>UC8_MAX/2.0  </td></tr>
+</table>
+<p>
+出力先の画像はあらかじめ確保されていなければいけません。 画像のチャネル数が２以上だった場合は、全てのチャネルに同じ濃度値を書き込みます。<p>
+画像の型が F_IMG_RGBQUAD の場合は、 <em>rgbRed</em>, <em>rgbGreen</em>, <em>rgbBlue</em> は同じ値、 <em>rgbReserved</em> は 0 に設定されます。 画像の型が F_IMG_RGBTRIPLE の場合は、R,G,B共に同じ値に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>出力先画像のハンドラ。( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Bernd Jaehne / Digital Image Processing (ISBN:3540240357) page.289 Figure.11.3</li></ul>
+<p>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><div align="center">
+<img src="jaehne.png" alt="jaehne.png">
+<p><strong>fnFIE_jaehne_testimg 処理結果画像</strong></p></div>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge20b5a6ac1a6deb2fb045ebf51e971f2"></a><!-- doxytag: member="fie_pack_unpack_ch.c::fnFIE_packing_ch" ref="ge20b5a6ac1a6deb2fb045ebf51e971f2" args="(FHANDLE hsrc, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_packing_ch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複数チャネル画像のパッキング関数 
+<p>
+複数チャネルを持つ入力画像から、チャネルごとの値を横に並べて1チャネルにパックされた画像を出力します。 画素の並びは、x座標の小さいほうから順に、入力画像のチャネル番号0, 1, 2, …となります。 入力画像のチャネル数が1の場合、単にコピーされます。<p>
+例として、サイズが3x3でチャネル数が3の画像を入力した場合、下図のような出力画像が得られます。<p>
+<div align="center">
+<img src="fie_packing_pack.png" alt="fie_packing_pack.png">
+</div>
+<p>
+入力画像と出力画像は、以下の条件を満たす必要があります。<ul>
+<li>入力画像と出力画像の高さと型が、それぞれ同じである</li><li>出力画像の幅は、入力画像の幅のチャネル数倍の大きさである</li><li>出力画像のチャネル数は1である</li></ul>
+<p>
+RGBQUAD型、RGBTRIPLE型へのパックは、 <a class="el" href="group__fie__std__operation.html#g8b4f6bd6f33435bc868ae30432866a8b" title="RGBQUAD / RGBTRIPLE パッキング関数">fnFIE_packing_rgb()</a> をご利用ください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type: uc8, s16, us16, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type: uc8, s16, us16, double, float )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラーまたは未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#g024925ca9ec5302fa3bfb587691745d7" title="複数チャネル画像へのアンパッキング関数">fnFIE_unpacking_ch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g024925ca9ec5302fa3bfb587691745d7"></a><!-- doxytag: member="fie_pack_unpack_ch.c::fnFIE_unpacking_ch" ref="g024925ca9ec5302fa3bfb587691745d7" args="(FHANDLE hsrc, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_unpacking_ch           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+複数チャネル画像へのアンパッキング関数 
+<p>
+入力画像を、複数チャネルの画素値を横方向に並べてパックした画像とみなし、 チャネルごとに分解して複数チャネルを持つ1つの画像として出力します。 分割するチャネル数は、出力画像のチャネル数を使用します。 出力画像のチャネル数が1の場合、単にコピーされます。<p>
+例として、サイズが9x3の単一チャネル画像を入力し、チャネル数3の出力画像を指定した場合、 下図のような出力が得られます。<p>
+<div align="center">
+<img src="fie_unpacking_ch_unpack.png" alt="fie_unpacking_ch_unpack.png">
+</div>
+<p>
+入力画像と出力画像は、以下の条件を満たす必要があります。<ul>
+<li>入力画像のチャネル数は1である</li><li>入力画像と出力画像の高さと型が、それぞれ同じである</li><li>入力画像の幅が、出力画像の幅のチャネル数倍の大きさである</li></ul>
+<p>
+RGBQUAD型、RGBTRIPLE型のアンパックは、 <a class="el" href="group__fie__std__operation.html#g828af50f02eef84a7f55af8143dba762" title="RGBQUAD / RGBTRIPLE アンパッキング関数">fnFIE_unpacking_rgb()</a> をご利用ください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像( type: uc8, s16, us16, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像( type: uc8, s16, us16, double, float )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクト </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラーまたは未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__std__operation.html#ge20b5a6ac1a6deb2fb045ebf51e971f2" title="複数チャネル画像のパッキング関数">fnFIE_packing_ch()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4d9b74c0ff763577a4fee361e8075be4"></a><!-- doxytag: member="fie_test_img.c::fnFIE_chessboard_image" ref="g4d9b74c0ff763577a4fee361e8075be4" args="(FHANDLE himg, INT stepx, INT stepy, INT shiftx, INT shifty)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_chessboard_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>stepx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>stepy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>shiftx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>shifty</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+チェスボード画像を作成する。 
+<p>
+テスト用のチェスボード画像を作成します。<p>
+画像は、白と黒の２濃度で構成され、黒の濃度値は０になります。 白の濃度値は画像型によって異なり、次のようになります。<ul>
+<li>F_IMG_BIN の場合 : 1</li><li>F_IMG_UC8, F_IMG_RGBQUAD, F_IMG_RGBTRIPLE の場合 : 255 (==UC8_MAX)</li><li>F_IMG_S16 の場合 : 32767 (==S16_MAX)</li><li>F_IMG_US16 の場合 : 65535 (==US16_MAX)</li><li>F_IMG_I32 の場合 : 2147483647 (==I32_MAX)</li><li>F_IMG_UI32 の場合 : 4294967295 (==UI32_MAX)</li><li>F_IMG_I64 の場合 : 9223372036854775807 (==L64_MAX)</li><li>F_IMG_DOUBLE, F_IMG_FLOAT の場合 : 1.0</li></ul>
+<p>
+<em>stepx</em>, <em>stepy</em>, <em>shiftx</em>, <em>shifty</em> の４つのパラメータは チェスボードのパタンを決めるパラメータで、下図の通りです。<p>
+<div align="center">
+<img src="fie_chessboard_param.png" alt="fie_chessboard_param.png">
+<p><strong>パラメータの意味</strong></p></div>
+ 出力先の画像はあらかじめ確保されていなければいけません。 画像のチャネル数が２以上だった場合は、全てのチャネルに同じ濃度値を書き込みます。<p>
+画像の型が F_IMG_RGBQUAD の場合は、 <em>rgbRed</em>, <em>rgbGreen</em>, <em>rgbBlue</em> は同じ値、 <em>rgbReserved</em> は 0 に設定されます。 画像の型が F_IMG_RGBTRIPLE の場合は、R,G,B共に同じ値に設定されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himg</em>&nbsp;</td><td>出力先画像のハンドラ。( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>stepx</em>&nbsp;</td><td>チェスボードパタンのＸ方向周期（１以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>stepy</em>&nbsp;</td><td>チェスボードパタンのＹ方向周期（１以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>shiftx</em>&nbsp;</td><td>チェスボードパタンのＸ方向位相移動量（０以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>shifty</em>&nbsp;</td><td>チェスボードパタンのＹ方向位相移動量（０以上）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>出力例:</b></dt><dd><div align="center">
+<img src="fie_chessboard.png" alt="fie_chessboard.png">
+<p><strong>チェスボード画像出力例</strong></p></div>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga17f458beb7ae15a1fb5390df92a98aa"></a><!-- doxytag: member="fie_noise.c::fnFIE_generate_noise_uniform" ref="ga17f458beb7ae15a1fb5390df92a98aa" args="(FHANDLE hsrcdst, DOUBLE low, DOUBLE high, UINT seed)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_generate_noise_uniform           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrcdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>low</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>high</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>seed</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  ノイズ画像生成（uniform noise） 
+<p>
+指定の画像を [ <em>low</em>, <em>high</em> ] の区間で一様分布となるノイズで書き換えます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hsrcdst</em>&nbsp;</td><td>処理対象画像( type: double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>low</em>&nbsp;</td><td>一様に分布する値の範囲の下限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>high</em>&nbsp;</td><td>一様に分布する値の範囲の上限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>seed</em>&nbsp;</td><td>擬似乱数ジェネレータの初期シード値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの値エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#g1b91825599c366d70463a6aa86134808" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  uniform...">fnFIE_add_noise_uniform()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc1e3e8b3a29303060bc8e0e582e46c54"></a><!-- doxytag: member="fie_noise.c::fnFIE_generate_noise_gauss" ref="gc1e3e8b3a29303060bc8e0e582e46c54" args="(FHANDLE hsrcdst, DOUBLE ave, DOUBLE var, UINT seed)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_generate_noise_gauss           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrcdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>ave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>seed</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ <img class= inline-img src="oss.png" alt="[[OSS]]">  ノイズ画像生成（gauss noise） 
+<p>
+指定の画像を平均 <em>ave</em> 分散 <em>var</em> の正規分布になるノイズで書き換えます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hsrcdst</em>&nbsp;</td><td>処理対象画像( type: double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ave</em>&nbsp;</td><td>gauss分布の平均 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>var</em>&nbsp;</td><td>gauss分布の分散(0.0より大きい値) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>seed</em>&nbsp;</td><td>擬似乱数ジェネレータの初期シード値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>画像オブジェクトの値エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__filter.html#gf9779acc73bbe25f97ffc1390c9d39e3" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  gauss...">fnFIE_add_noise_gauss()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

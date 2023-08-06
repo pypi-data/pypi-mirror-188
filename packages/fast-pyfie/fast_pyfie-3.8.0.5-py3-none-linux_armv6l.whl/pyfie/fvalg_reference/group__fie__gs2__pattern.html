@@ -1,0 +1,764 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: パタン操作</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>パタン操作<br>
+<small>
+[<a class="el" href="group__fie__gs2.html">グレイサーチ(正規化相関サーチ)</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96">F_COMP_MODE_SMOOTH</a> =  0, 
+<a class="el" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa17f0ad57742811b493d16ad7772989a2">F_COMP_MODE_MIN</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fa6ece44254601ba80f4e36aa95149a0cd">F_COMP_MODE_MAX</a> =  2, 
+<a class="el" href="group__fie__gs2__pattern.html#gg0cb146a189e528a7db67ad1ab601b8fafcbc01287607d155f656ad5dc5ad2b45">F_COMP_MODE_AVERAGE2</a> =  3
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">圧縮フィルタ指定  <a href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g6d0f8e5f84795cb042d71a2b7dd30e4b">fnFIE_gs2_pattern_alloc</a> (FHANDLE himage, FHANDLE hmask, INT mark_offsetx, INT mark_offsety, enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a> filter, INT *errorcode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">グレイサーチパターンオブジェクトの生成  <a href="#g6d0f8e5f84795cb042d71a2b7dd30e4b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g987a2641a73b80b1ce9df8fe36fe1771">fnFIE_gs2_pattern_set_mask</a> (FHANDLE hpattern, FHANDLE hmask)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">パタンマスクの再設定  <a href="#g987a2641a73b80b1ce9df8fe36fe1771"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g3771dec062a2ae206294b147b65ec054">fnFIE_gs2_pattern_unset_mask</a> (FHANDLE hpattern)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">パタンマスクの除去  <a href="#g3771dec062a2ae206294b147b65ec054"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g98b3e2a87127a4885d3b7c9496642896">fnFIE_gs2_pattern_rotate</a> (FHANDLE hpattern, INT rot_angle, INT clip_width, INT clip_height, INT rotate_method, FHANDLE *rotate_pattern)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">回転パターンの生成  <a href="#g98b3e2a87127a4885d3b7c9496642896"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g204bc0ffed285e59439bc98bfc01e1b5">fnFIE_gs2_pattern_get_image</a> (FHANDLE hpattern, FHANDLE *himage)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">パターン画像を取得する  <a href="#g204bc0ffed285e59439bc98bfc01e1b5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#geacae698b14ed2dcc7d5cc93b0e51cc2">fnFIE_gs2_pattern_get_mask</a> (FHANDLE hpattern, FHANDLE *himage)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">マスク画像を取得する  <a href="#geacae698b14ed2dcc7d5cc93b0e51cc2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g13db6804c49b679211ce650723271daa">fnFIE_gs2_pattern_get_comp_filter</a> (FHANDLE hpattern, enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a> *filter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">圧縮フィルタ種別の取得  <a href="#g13db6804c49b679211ce650723271daa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g29baca055d293242f7d8a6d4ff63af35">fnFIE_gs2_pattern_get_offset</a> (FHANDLE hpattern, INT *x, INT *y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">通知座標オフセットの取得  <a href="#g29baca055d293242f7d8a6d4ff63af35"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g5a32f6b8ff950f17a94adae4ea9bd599">fnFIE_gs2_pattern_set_offset</a> (FHANDLE hpattern, INT x, INT y)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">通知座標オフセットの設定  <a href="#g5a32f6b8ff950f17a94adae4ea9bd599"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g9612814decc7d070349df303caa0b3c5">fnFIE_gs2_pattern_set_comp_filter</a> (FHANDLE hpattern, enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a> filter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">圧縮フィルタの変更  <a href="#g9612814decc7d070349df303caa0b3c5"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__gs2__pattern.html#g5653ddd779afb37191defc8c0ae61d2e">fnFIE_gs2_pattern_get_comp_image</a> (FHANDLE hpattern, INT unit, FHANDLE *himage)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">圧縮画像を取得する  <a href="#g5653ddd779afb37191defc8c0ae61d2e"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g0cb146a189e528a7db67ad1ab601b8fa"></a><!-- doxytag: member="fie.h::f_comp_filter" ref="g0cb146a189e528a7db67ad1ab601b8fa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+圧縮フィルタ指定 
+<p>
+画像ピラミッドを生成するための処理を指定します。 このフィルタ処理をn回繰り返し適用することで、圧縮度1から圧縮度nまでの画像を生成します。 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96"></a><!-- doxytag: member="F_COMP_MODE_SMOOTH" ref="gg0cb146a189e528a7db67ad1ab601b8fa3bda86aed4e19c82246c9ca84da16e96" args="" -->F_COMP_MODE_SMOOTH</em>&nbsp;</td><td>
+通常フィルタ <br>
+ 圧縮前画像での2x2ピクセルの濃度値から平均値を計算し、圧縮後の1ピクセルの濃度値とします。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg0cb146a189e528a7db67ad1ab601b8fa17f0ad57742811b493d16ad7772989a2"></a><!-- doxytag: member="F_COMP_MODE_MIN" ref="gg0cb146a189e528a7db67ad1ab601b8fa17f0ad57742811b493d16ad7772989a2" args="" -->F_COMP_MODE_MIN</em>&nbsp;</td><td>
+最小値フィルタ <br>
+ 圧縮前画像での2x2ピクセルの濃度値のうち最も小さい値を、圧縮後の1ピクセルの濃度値とします。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg0cb146a189e528a7db67ad1ab601b8fa6ece44254601ba80f4e36aa95149a0cd"></a><!-- doxytag: member="F_COMP_MODE_MAX" ref="gg0cb146a189e528a7db67ad1ab601b8fa6ece44254601ba80f4e36aa95149a0cd" args="" -->F_COMP_MODE_MAX</em>&nbsp;</td><td>
+最大値フィルタ <br>
+ 圧縮前画像での2x2ピクセルの濃度値のうち最も大きい値を、圧縮後の1ピクセルの濃度値とします。 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg0cb146a189e528a7db67ad1ab601b8fafcbc01287607d155f656ad5dc5ad2b45"></a><!-- doxytag: member="F_COMP_MODE_AVERAGE2" ref="gg0cb146a189e528a7db67ad1ab601b8fafcbc01287607d155f656ad5dc5ad2b45" args="" -->F_COMP_MODE_AVERAGE2</em>&nbsp;</td><td>
+再平均フィルタ <br>
+ 通常フィルタで圧縮画像を生成後、2x2のカーネルで平滑化を行います。 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g6d0f8e5f84795cb042d71a2b7dd30e4b"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_alloc" ref="g6d0f8e5f84795cb042d71a2b7dd30e4b" args="(FHANDLE himage, FHANDLE hmask, INT mark_offsetx, INT mark_offsety, enum f_comp_filter filter, INT *errorcode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_gs2_pattern_alloc           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>himage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mark_offsetx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mark_offsety</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a>&nbsp;</td>
+          <td class="paramname"> <em>filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>errorcode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+グレイサーチパターンオブジェクトの生成 
+<p>
+画像からグレイサーチパターンオブジェクトを生成します。<br>
+ サーチパターン用画像は F_IMG_UC8形式で １チャネルの画像です。<br>
+ サーチに利用可能な最大の画像サイズは32768x32768です。 また、生成したパターンオブジェクトから <a class="el" href="group__fie__gs2__pattern.html#g98b3e2a87127a4885d3b7c9496642896" title="回転パターンの生成">fnFIE_gs2_pattern_rotate()</a> を用いて回転パターンを生成したい場合、最大23170x23170となります。<br>
+<p>
+マスクは F_IMG_UC8形式 又は F_IMG_BIN形式 の１チャネル画像で、 濃度値が０以外の画素をマスクします。<br>
+ マスク画像はサーチパターン画像 <em>himage</em> と幅、高さが同一でなければいけません。<br>
+ マスクが必要ないときは <em>hmask</em> に NULL を投入すればマスクなしのサーチパターンを生成します。<br>
+ 不要になったパターンは必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>サーチパターンにする画像オブジェクト ( type: uc8 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>マスクにする画像オブジェクト ( type: bin, uc8 ) <br>
+ NULLを投入するとマスクなしのパターンになります。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mark_offsetx</em>&nbsp;</td><td>回答Ｘ座標オフセット(100倍値) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mark_offsety</em>&nbsp;</td><td>回答Ｙ座標オフセット(100倍値) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter</em>&nbsp;</td><td>内部で画像ピラミッドの生成に使うフィルタの種別<ul>
+<li>F_COMP_MODE_SMOOTH 通常（平均）フィルタ 特に問題なければこれを指定</li><li>F_COMP_MODE_MIN 最小値フィルタ パタンが黒い細線で構成されているような場合に指定</li><li>F_COMP_MODE_MAX 最大値フィルタ パタンが白い細線で構成されているような場合に指定</li><li>F_COMP_MODE_AVERAGE2 再平均フィルタ パタンにカメラノイズが多い場合に指定 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>errorcode</em>&nbsp;</td><td>エラーコード。エラーコードを受け取る必要の無い場合は、NULLを指定します。<ul>
+<li>F_ERR_NONE 正常終了</li><li>F_ERR_NO_LICENCE ライセンスエラー、または未初期化エラー</li><li>F_ERR_NOMEMORY メモリ不足</li><li>F_ERR_INVALID_OBJECT 渡されたオブジェクトの種別が異常</li><li>F_ERR_GS_NO_CONTRAST パタン画像に情報が足りないため、パタンにならない。 （==マスク部をのぞいた画像の濃度分散が0.0になる）</li><li>F_ERR_INVALID_IMAGE 対応していない画像が渡された<ul>
+<li><em>hmask</em> と <em>himage</em> のサイズが違う</li><li>非対応画像type</li><li>チャネル数が1でない</li><li>入力画像が大きすぎる</li></ul>
+</li><li>F_ERR_INVALID_PARAM パラメータ異常<ul>
+<li><em>himage</em> オブジェクトがNULL</li><li><em>filter</em> に異常な値が渡された</li></ul>
+</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常終了した場合は、生成したグレイサーチパターンオブジェクトのハンドルを返します。 ライセンスエラー、未初期化エラー、パラメータエラー、またはメモリ不足により生成できなかったときはNULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g987a2641a73b80b1ce9df8fe36fe1771"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_set_mask" ref="g987a2641a73b80b1ce9df8fe36fe1771" args="(FHANDLE hpattern, FHANDLE hmask)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_set_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hmask</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+パタンマスクの再設定 
+<p>
+グレイサーチパタン <em>hpattern</em> に適用されているマスクを新たなマスクに変更します。<br>
+ マスクは F_IMG_UC8形式 又は F_IMG_BIN形式 の１チャネル画像で、 濃度値が０以外の画素をマスクします。<br>
+ マスク画像はサーチパターン画像 <em>himage</em> と幅、高さが同一でなければいけません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパタンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hmask</em>&nbsp;</td><td>新しいマスクにする画像オブジェクト( type : bin, uc8 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>渡されたオブジェクトの種別が異常,またはオブジェクトがNULL </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_GS_NO_CONTRAST</em>&nbsp;</td><td>パタン画像に情報が足りないため、パタンにならない。 （==マスク部をのぞいた画像の濃度分散が0.0になる） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>対応していない画像が渡された,または画像がNULL </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li><em>hmask</em> のチャネル数が1でない</li><li><em>hmask</em> とパタンのサイズが違う </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3771dec062a2ae206294b147b65ec054"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_unset_mask" ref="g3771dec062a2ae206294b147b65ec054" args="(FHANDLE hpattern)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_unset_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+パタンマスクの除去 
+<p>
+グレイサーチパタン <em>hpattern</em> から、パタンマスクを除去します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパタンオブジェクト</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パタンオブジェクト以外が渡された,またはオブジェクトがNULL </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_GS_NO_CONTRAST</em>&nbsp;</td><td>パタン画像に情報が足りないため、パタンにならない。 （==画像の濃度分散が0.0になる） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g98b3e2a87127a4885d3b7c9496642896"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_rotate" ref="g98b3e2a87127a4885d3b7c9496642896" args="(FHANDLE hpattern, INT rot_angle, INT clip_width, INT clip_height, INT rotate_method, FHANDLE *rotate_pattern)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_rotate           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rot_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>clip_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>clip_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>rotate_method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>rotate_pattern</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+回転パターンの生成 
+<p>
+作成済みのパターンを参考にして回転処理を行い、新しい回転済みのパターンを生成します。<br>
+ <em>rot_angle</em> に指定する角度はdegreeの10倍値です。<br>
+ <em>clip_width</em>, <em>clip_height</em> は回転パターンの大きさに上限を設けるものです。 特に問題のない限り I32_MAX を指定してください。 パターンを回転した結果サーチウインドウより大きくなってサーチ不能になるような場合に使用します。<br>
+ 不要になったパターンは必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>参考にするパターン </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rot_angle</em>&nbsp;</td><td>回転角 degreeの10倍値 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>clip_width</em>&nbsp;</td><td>回転パターン幅の上限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>clip_height</em>&nbsp;</td><td>回転パターン高さの上限 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>rotate_method</em>&nbsp;</td><td>回転の方法<ul>
+<li>0 または 1 NN法</li><li>2 bilinear法 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>rotate_pattern</em>&nbsp;</td><td>新たに作成する回転済みパターンへのポインタ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>入力オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>入力したパターン内の画像が大きすぎる </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_GS_NO_CONTRAST</em>&nbsp;</td><td>パタン画像に情報が足りないため、パタンにならない。 （==画像の濃度分散が0.0になる） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>clip_widthとclip_heightについて</b></dt><dd>回転パタンを作成すると、以下の図のようにパタン全体を含む矩形が新たなパタンとなり、周囲にマスクが追加されます。 <div align="center">
+<img src="gs2_pat_rotate1.png" alt="gs2_pat_rotate1.png">
+</div>
+ しかし、パタンよりサーチウインドウが十分大きくない場合、回転した結果サーチウインドウからパタンがはみ出てサーチできなくなることがあります。 <div align="center">
+<img src="gs2_pat_rotate2.png" alt="gs2_pat_rotate2.png">
+</div>
+ このような場合にclip_widthとclip_heightを指定すると生成される回転パタンの大きさに制限をかけることができ、サーチできるようになります。 <div align="center">
+<img src="gs2_pat_rotate3.png" alt="gs2_pat_rotate3.png">
+</div>
+</dd></dl>
+<dl class="user" compact><dt><b>パターンサイズについて</b></dt><dd>FIEグレイサーチパターンオブジェクトの生成時に23170x23170より大きな画像を用いて生成したパターンオブジェクトからは回転パターンを生成できません。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g204bc0ffed285e59439bc98bfc01e1b5"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_get_image" ref="g204bc0ffed285e59439bc98bfc01e1b5" args="(FHANDLE hpattern, FHANDLE *himage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_get_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himage</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+パターン画像を取得する 
+<p>
+パターン画像を取得します。<br>
+ パターン画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>パタン画像 ( type: uc8 ) <em>himage</em> はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パタンでないオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>取得した画像は参照専用とし、濃度値を書き換えないでください。 パターン画像が直接変更されてしまい問題が発生します。 読み出し以外の処理をしたい場合は複製を作ってから処理してください。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="geacae698b14ed2dcc7d5cc93b0e51cc2"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_get_mask" ref="geacae698b14ed2dcc7d5cc93b0e51cc2" args="(FHANDLE hpattern, FHANDLE *himage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_get_mask           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himage</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+マスク画像を取得する 
+<p>
+マスク画像の複製を取得します。マスクがない場合、エラーが返ります。<br>
+ マスク画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>マスク画像 ( type: bin ) <em>himage</em> はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常またはマスクが存在しない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g13db6804c49b679211ce650723271daa"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_get_comp_filter" ref="g13db6804c49b679211ce650723271daa" args="(FHANDLE hpattern, enum f_comp_filter *filter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_get_comp_filter           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a> *&nbsp;</td>
+          <td class="paramname"> <em>filter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+圧縮フィルタ種別の取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>filter</em>&nbsp;</td><td>圧縮フィルタ種別</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パタン以外のオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g29baca055d293242f7d8a6d4ff63af35"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_get_offset" ref="g29baca055d293242f7d8a6d4ff63af35" args="(FHANDLE hpattern, INT *x, INT *y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_get_offset           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+通知座標オフセットの取得 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>水平方向通知座標オフセット(100倍値) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>垂直方向通知座標オフセット(100倍値)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パタン以外のオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5a32f6b8ff950f17a94adae4ea9bd599"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_set_offset" ref="g5a32f6b8ff950f17a94adae4ea9bd599" args="(FHANDLE hpattern, INT x, INT y)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_set_offset           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>y</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+通知座標オフセットの設定 
+<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>x</em>&nbsp;</td><td>水平方向通知座標オフセット(100倍値) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>y</em>&nbsp;</td><td>垂直方向通知座標オフセット(100倍値)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パタン以外のオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g9612814decc7d070349df303caa0b3c5"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_set_comp_filter" ref="g9612814decc7d070349df303caa0b3c5" args="(FHANDLE hpattern, enum f_comp_filter filter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_set_comp_filter           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__gs2__pattern.html#g0cb146a189e528a7db67ad1ab601b8fa">f_comp_filter</a>&nbsp;</td>
+          <td class="paramname"> <em>filter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+圧縮フィルタの変更 
+<p>
+圧縮フィルタの種別を変更し、パターンの再構築を行います。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter</em>&nbsp;</td><td>圧縮フィルタの種別<ul>
+<li>F_COMP_MODE_SMOOTH 通常 2x2（平均）フィルタ 特に問題なければこれを指定</li><li>F_COMP_MODE_MIN 最小値フィルタ パタンが黒い細線で構成されているような場合に指定</li><li>F_COMP_MODE_MAX 最大値フィルタ パタンが白い細線で構成されているような場合に指定</li><li>F_COMP_MODE_AVERAGE2 再平均フィルタ パタンにカメラノイズが多い場合に指定</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>オブジェクト異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_GS_NO_CONTRAST</em>&nbsp;</td><td>パタン画像の分散が0になるため、パタンにならない。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5653ddd779afb37191defc8c0ae61d2e"></a><!-- doxytag: member="fie_gs2.c::fnFIE_gs2_pattern_get_comp_image" ref="g5653ddd779afb37191defc8c0ae61d2e" args="(FHANDLE hpattern, INT unit, FHANDLE *himage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_gs2_pattern_get_comp_image           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hpattern</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE *&nbsp;</td>
+          <td class="paramname"> <em>himage</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+圧縮画像を取得する 
+<p>
+パターン画像を指定した圧縮度で取得します。<br>
+ パターン画像が不要になったら必ず <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> で解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hpattern</em>&nbsp;</td><td>グレイサーチパターンオブジェクト </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>unit</em>&nbsp;</td><td>圧縮度( 0 ～ 9 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>himage</em>&nbsp;</td><td>パタン画像 ( type: uc8 ) <em>himage</em> はNULLで初期化してから引数に渡してください。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>引数異常、または指定した圧縮度に該当するパタン画像がない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パタンでないオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__gs2__pattern.html#g204bc0ffed285e59439bc98bfc01e1b5" title="パターン画像を取得する">fnFIE_gs2_pattern_get_image()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

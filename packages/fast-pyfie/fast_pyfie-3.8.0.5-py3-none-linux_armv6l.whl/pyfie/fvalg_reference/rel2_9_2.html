@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 2.9.2</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel2_9_2">release 2.9.2 </a></h1><div style="text-align:right">2014/05/01</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel2_9_2.html#fie2_9_2">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie2_9_2">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>下記の画像ファイル読込み関数で、 <a class="el" href="group__fie__image.html#g794e246c5e143197b7199690cc51e0fe" title="ルート画像の確保(import版)">fnFIE_img_root_import_alloc()</a> により確保した画像オブジェクトに対して読込みを実行した場合 画像オブジェクトが適切な形式であっても常にエラー終了となっていた 不具合を修正.<br>
+ <a class="el" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  PNGファイル読...">fnFIE_load_png()</a>, <a class="el" href="group__fie__file__image.html#g960ff9702e057177945348f75df537ec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  JPEGファイル読...">fnFIE_load_jpeg()</a>, <a class="el" href="group__fie__file__image.html#g5ee11eaf2aa5edb0d896d9259f983bec" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  TIFFファイル読...">fnFIE_load_tiff()</a>, <a class="el" href="group__fie__file__image.html#gc86472dee6a8e0c41f108702efb5d53c" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像データ読...">fnFIE_read_imgdata()</a></li><li><a class="el" href="group__fie__threshold.html#g3a13eb66a77c9db2c48883b01ba8e98c" title="局所平均値と標準偏差を用いたNiblack法による画像２値化">fnFIE_niblack_threshold()</a> 及び <a class="el" href="group__fie__threshold.html#gfd46af0877af73d655d37039b60b66ac" title="局所平均値と標準偏差を用いてSauvola法による画像２値化">fnFIE_sauvola_threshold()</a> で、メモリ不足エラーにより終了する際 メモリリークが発生する場合がある 不具合を修正.</li><li>FPM(特徴点応用マッチング) の 通常モード かつ 高精度ポーズ推定有効 に設定したサーチの実行をマルチスレッド環境で行った際、実行するたびにサーチ結果が変わる場合がある 不具合を修正.</li><li>#594: <a class="el" href="group__fie__region__tools.html#gad4fa4b0b7f4d1f881e135e8df6efc55" title="リージョンが指定点を含むかの判定">fnFIE_region_includes_xy()</a> で、指定点 y座標 の小数部が 0.5 であった場合に誤判定をする場合がある 不具合を修正. </li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

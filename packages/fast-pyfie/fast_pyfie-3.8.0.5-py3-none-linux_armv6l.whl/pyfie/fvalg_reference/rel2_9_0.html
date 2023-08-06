@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: release 2.9.0</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1><a class="anchor" name="rel2_9_0">release 2.9.0 </a></h1><div style="text-align:right">2013/07/26</div><p>
+<table class="pretable">
+<tr>
+<th>目次  </th></tr>
+<tr>
+<td><a class="el" href="rel2_9_0.html#fie2_9_0">1. FIE module Updates</a>  </td></tr>
+</table>
+<h2><a class="anchor" name="fie2_9_0">
+1. FIE module Updates</a></h2>
+<h3 class="relnote">FIE関数の追加</h3>
+<p>
+<h3 class="relnote_sub">画像オブジェクト</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__image.html#gd6e49e68f84cb23cdee98996367d8c84">画像情報取得(画素サイズ)</a></li><li><a class="el" href="group__fie__image.html#g4b5773d6f5fbe786897fe35adcb164be">画像情報取得(メモリステップ)</a></li></ul>
+<p>
+<h3 class="relnote_sub">２値化/セグメンテーション</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__threshold.html#g891e5304a0e2bd18db2aac9163a30216">局所領域平均値とオフセットによる２値画像作成 マスク付き</a></li><li><a class="el" href="group__fie__threshold.html#g01410167407adb0cb7bb4f11d264fb46">分水嶺法による領域分割</a></li></ul>
+<p>
+<h3 class="relnote_sub">フィルタ全般</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter.html#gd655a05d2db7a8b902779452f57f74c3">バイラテラルフィルタ</a></li><li><a class="el" href="group__fie__filter.html#gb11f2dce4f782f595d56e1fe1b07f651">エッジ出力付きステガーフィルタ</a></li></ul>
+<p>
+<h3 class="relnote_sub">幾何計算</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__cg__std.html#g7e1b4413bb72ddf5a13599c469721b5b">楕円と点の距離算出</a></li></ul>
+<p>
+<h3 class="relnote_sub">フィルターテンプレート</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__filter__template.html#g723f384552151d715e3c4adc3360a741">1画素単位フィルターテンプレート</a></li><li><a class="el" href="group__fie__filter__template.html#g1536c6809e94b5135ea528269eba0b20">カーネルフィルターテンプレート</a></li></ul>
+<p>
+<h3 class="relnote">機能追加および、変更</h3>
+<p>
+<h3 class="relnote_sub">FPM(特徴点応用マッチング)</h3>
+<p>
+<dl class="user" compact><dt><b></b></dt><dd>既存関数の特徴量抽出手法に細線エッジの追加. <br>
+<ul>
+<li><a class="el" href="group__fie__fpm__define.html#g572c7a749698853a9d9acf780f0eae2e">データ構造 : 特徴量計測手法</a></li><li><a class="el" href="unionF__FPM__FEATURE.html">データ構造 : 特徴量計測用共用体</a></li><li><a class="el" href="group__fie__fpm__pattern.html#g56a7cd0574ed5184ab4ccb6c847c899b">関数 : FPM オブジェクト生成</a></li><li><a class="el" href="group__fie__fpm__pattern.html#g1f549835609e04b2c6d99f7cb1d2d6e8">関数 : 特徴量パラメータ取得</a></li><li><a class="el" href="group__fie__fpm__match.html#g990e5409ee9d363460a1aed38097c0ba">関数 : FPM画像オブジェクトからのマッチング実行</a></li><li><a class="el" href="group__fie__fpm__match.html#gca132263af7dba9bea300f3d247378d0">関数 : 一連のマッチング実行</a></li><li><a class="el" href="group__fie__fpm__feature.html#gf250806b575ee18e06aacc4c55fbd8fa">関数 : 特徴量を取得</a></li><li><a class="el" href="group__fie__fpm__feature.html#gc0ddd8ec72900d3124a18a60250e2753">関数 : ウィンドウを指定して特徴量を取得</a></li><li><a class="el" href="group__fie__fpm__feature.html#g0d8185cef2f43551c9d053acfe0d402b">関数 : 特徴量抽出手法の取得</a></li></ul>
+</dd></dl>
+<h3 class="relnote_sub">その他</h3>
+<p>
+<ul>
+<li><a class="el" href="group__fie__polar__transform.html#g9bea4dd8c0b2557ef427c830607dcaed" title="極座標変換マップの作成">fnFIE_polar_trans_map()</a><ul>
+<li>出力画像の対応画像型式に 単精度浮動小数点数画像(F_IMG_FLOAT) を追加.</li></ul>
+</li><li><a class="el" href="group__fie__polar__transform.html#g9b9a0c96c1f7e4f31962ab3e505394e7" title="逆極座標変換マップの作成">fnFIE_polar_trans_map_inv()</a><ul>
+<li>出力画像の対応画像型式に 単精度浮動小数点数画像(F_IMG_FLOAT) を追加.</li></ul>
+</li><li><a class="el" href="group__fie__opt__camcalib__use.html#geed54e0168d712841402bf53f4c70a8a" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の歪み補...">fnFIE_calib_undistort_image_map()</a><ul>
+<li>出力画像の対応画像型式に 単精度浮動小数点数画像(F_IMG_FLOAT) を追加.</li></ul>
+</li><li><a class="el" href="group__fie__opt__camcalib__use.html#ge8d82c04fd81c148d2fe4dfd031bd721" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の歪み補...">fnFIE_calib_undistort_image_map_scale()</a><ul>
+<li>出力画像の対応画像型式に 単精度浮動小数点数画像(F_IMG_FLOAT) を追加.</li></ul>
+</li><li><a class="el" href="group__fie__opt__camcalib__use.html#g22241f0e16d2d55fbbdcae80f6504b1d" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の歪みシ...">fnFIE_calib_distort_image_map()</a><ul>
+<li>出力画像の対応画像型式に 単精度浮動小数点数画像(F_IMG_FLOAT) を追加.</li></ul>
+</li><li><a class="el" href="group__fie__opt__camcalib__use.html#gf3512622ed7c0741f828feaa32821801" title=" &lt;img class= inline-img src=&quot;oss.png&quot; alt=&quot;[[OSS]]&quot;&gt;  画像の正対変...">fnFIE_calib_rectify_ud_image_map()</a><ul>
+<li>出力画像の対応画像型式に 単精度浮動小数点数画像(F_IMG_FLOAT) を追加.</li></ul>
+</li><li><a class="el" href="group__fie__std__operation.html#g3d515b8e1843ffa3dc986f67f0185d5c" title="濃度変換付き画像コピー">fnFIE_img_copy_ex()</a><ul>
+<li>入出力画像が 24bitパッキングカラー画像 (F_IMG_RGBTRIPLE) または 32bitパッキングカラー画像 (F_IMG_RGBQUAD) であるときのチャネル数の制限を解除.</li><li>24bitパッキングカラー画像 (F_IMG_RGBTRIPLE) / 32bitパッキングカラー画像 (F_IMG_RGBQUAD) 間の処理を追加.</li></ul>
+</li><li><a class="el" href="group__fie__filter__arithm.html#g50a78b462dbf93ba95f5f332d063f853" title="複合画像間計算[ (A-const1)*const2 ]">fnFIE_img_mixope4()</a><ul>
+<li>入出力画像が 24bitパッキングカラー画像 (F_IMG_RGBTRIPLE) または 32bitパッキングカラー画像 (F_IMG_RGBQUAD) であるときのチャネル数の制限を解除.</li><li>24bitパッキングカラー画像 (F_IMG_RGBTRIPLE) / 32bitパッキングカラー画像 (F_IMG_RGBQUAD) 間の処理を追加.</li></ul>
+</li><li><a class="el" href="group__fie__filter__arithm.html#g7d1e89195ff7d0335eb54a59d05a6530" title="画像間加算">fnFIE_img_add()</a><ul>
+<li>異種型の入出力画像に対する処理を追加.</li></ul>
+</li><li><a class="el" href="group__fie__filter.html#g689edde2219d9bcf7a30b22d9c34010a" title="gaussian1D filter(recursive(IIR)版)">fnFIE_gaussian_1Dfilter_iir()</a><ul>
+<li>処理の高速化.</li></ul>
+</li><li><a class="el" href="group__fie__filter.html#g668628884fe59386d798393780719f29" title="gaussian1D filter(convolution(FIR)版)">fnFIE_gaussian_1Dfilter_conv()</a><ul>
+<li>処理の高速化.</li></ul>
+</li><li><a class="el" href="group__fie__filter.html#g2cadb9edb1ebf7f56fec1074b93d7574" title="gaussian1D filter">fnFIE_gaussian_1Dfilter()</a><ul>
+<li>処理の高速化.</li></ul>
+</li><li><a class="el" href="group__fie__filter.html#g875c48ec9fc133b3a407c89b4f81f013" title="gaussian2D filter">fnFIE_gaussian_2Dfilter()</a><ul>
+<li>処理の高速化.</li></ul>
+</li></ul>
+<p>
+<h3 class="relnote">不具合修正</h3>
+<p>
+<ul>
+<li>#569 <a class="el" href="group__fie__region__coding.html#g29393624aea303cf1a902418206b7b94" title="リージョンを画像に描画する">fnFIE_region_decode()</a> で 2値画像に対して水平方向画像範囲外のリージョンを描画したとき, 結果画像が正しくない不具合を修正.</li><li>#570 <a class="el" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy()</a> で 浮動小数点数画像 から 整数画像 へのコピー処理のサチュレーション処理を修正.</li><li>#581 直線生成パラメータの定義値の誤りを修正. 直線生成パラメータは以下の関数にて使用されています.<ul>
+<li><a class="el" href="group__fie__cg__std.html#g3652bf24f537a789b851d652124f4bd9" title="点群から直線を算出（直線近似）">fnFIE_cg_calc_line_npoint()</a></li><li><a class="el" href="group__fie__cg__std.html#gae5d06942c16c6607a8de94c759ac1fb" title="点群を通る直線と点までの距離と中点座標の算出（点群と１点指定）...">fnFIE_cg_calc_center_point_and_lineB()</a></li><li><a class="el" href="group__fie__cg__std.html#g1626a074e5c32f8bbd607f0eba609c02" title="２直線（２点群指定）の交点座標と交角の角度の算出">fnFIE_cg_calc_cross_2lineB()</a></li><li><a class="el" href="group__fie__cg__std.html#gc7386db0a3ae8a854e388b3600096478" title="２直線の中心を通る直線の算出（２点群指定）">fnFIE_cg_calc_centerline_2npoint()</a></li><li><a class="el" href="group__fie__cg__std.html#g4b673b9e892b4517fafc763467a75114" title="２組の２直線の中心を通る直線の交点の算出（４点群指定）...">fnFIE_cg_calc_cross_4npoint()</a></li><li><a class="el" href="group__fie__cg__std.html#g51614fdd74ed34ea40928f7c6e0aaaa9" title="四角形の中心座標の算出（４点群指定）">fnFIE_cg_calc_rectangle_4npoint()</a></li><li><a class="el" href="group__fie__modelview.html#gc602fe075b793596f74f9cfe75bf8e44" title="点群と１点から座標系変換行列の設定（その１）">fnFIE_modelview_npointA()</a></li><li><a class="el" href="group__fie__modelview.html#g5613ae66bff78ba13b721d19d0b26c28" title="点群と１点から座標系変換行列の設定（その２）">fnFIE_modelview_npointB()</a></li></ul>
+</li></ul>
+<p>
+<ul>
+<li>#584 <a class="el" href="group__fie__fpm__feature.html#gc0ddd8ec72900d3124a18a60250e2753" title="ウィンドウを指定して特徴量を取得">fnFIE_fpm_feature_window_alloc()</a> で サーチウインドウのパラメータチェックが間違っている不具合を修正.</li><li>#587 <a class="el" href="group__fie__fpm__feature.html#gf250806b575ee18e06aacc4c55fbd8fa" title="特徴量を取得">fnFIE_fpm_feature_alloc()</a> で 画像より大きなフィルタサイズのとき, メモリアクセス違反を起こす不具合を修正. </li></ul>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

@@ -1,0 +1,746 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 論理演算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>論理演算<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#g977adeac365124defa199c9fd67b75ec">fnFIE_img_and</a> (FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間AND演算  <a href="#g977adeac365124defa199c9fd67b75ec"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#g31f683bcab1b313c066b062d1c59f3c1">fnFIE_img_and_const</a> (FHANDLE hsrc, UINT value, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像＆定数AND演算  <a href="#g31f683bcab1b313c066b062d1c59f3c1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#g546599aaccf0c7bd20f3cd30d76af825">fnFIE_img_nand</a> (FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間NAND演算  <a href="#g546599aaccf0c7bd20f3cd30d76af825"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#g551b70495dd06e63bc02c393467d30cf">fnFIE_img_nand_const</a> (FHANDLE hsrc, UINT value, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像＆定数NAND演算  <a href="#g551b70495dd06e63bc02c393467d30cf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#gbe897eff9a74717c949c4e0c2bf23050">fnFIE_img_not</a> (FHANDLE hsrc, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像NOT演算  <a href="#gbe897eff9a74717c949c4e0c2bf23050"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#ge400e9673c71183c33cf64e93c5da09e">fnFIE_img_or</a> (FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間OR演算  <a href="#ge400e9673c71183c33cf64e93c5da09e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#g8b03c7f8872bee956f3341369f951e7c">fnFIE_img_or_const</a> (FHANDLE hsrc, UINT value, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像＆定数OR演算  <a href="#g8b03c7f8872bee956f3341369f951e7c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#g33189ca9605e8b13d49813677191c9de">fnFIE_img_shift</a> (FHANDLE hsrc, FHANDLE hdst, INT shift)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像ビットシフト演算  <a href="#g33189ca9605e8b13d49813677191c9de"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#gafcabf7d69c5bc74864ee0bd808c9638">fnFIE_img_xor</a> (FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像間XOR演算  <a href="#gafcabf7d69c5bc74864ee0bd808c9638"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__filter__logical.html#gc62bb2ef5a24daec16697a3b8559e9d5">fnFIE_img_xor_const</a> (FHANDLE hsrc, UINT value, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像＆定数XOR演算  <a href="#gc62bb2ef5a24daec16697a3b8559e9d5"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g977adeac365124defa199c9fd67b75ec"></a><!-- doxytag: member="fie_arithmetic_and.c::fnFIE_img_and" ref="g977adeac365124defa199c9fd67b75ec" args="(FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_and           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間AND演算 
+<p>
+<em>hsrc1</em> 画像と <em>hsrc2</em> 画像のAND演算を行い <em>hdst</em> 画像に結果を格納します。 AND演算は各ビット単位で行われます。<p>
+入力画像２つと出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式がF_IMG_RGBQUADの場合、各画素の濃度値は rgbRed, rgbGreen, rgbBlue それぞれで演算を行います。 また、rgbReservedは0になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc1</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc2</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, us16, rgbq )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="circuit.png" alt="circuit.png">
+<p><strong>入力画像１</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_mask.png" alt="fie_arithmetic_op_mask.png">
+<p><strong>入力画像２</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_and.png" alt="fie_arithmetic_op_and.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g31f683bcab1b313c066b062d1c59f3c1"></a><!-- doxytag: member="fie_arithmetic_and.c::fnFIE_img_and_const" ref="g31f683bcab1b313c066b062d1c59f3c1" args="(FHANDLE hsrc, UINT value, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_and_const           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像＆定数AND演算 
+<p>
+<em>hsrc</em> 画像と定数 <em>value</em> のAND演算を行い <em>hdst</em> 画像に結果を格納します。 AND演算は各ビット単位で行われます。 また、引数 <em>value</em> は各型にキャストした後に評価されます。 <em>value</em> が型の値域を超えている場合の動作は不定です。 (例えば、画像の型がUC8ならば、0～255が <em>value</em> の有効な値域になる。)<p>
+入力画像２つと出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>value</em>&nbsp;</td><td>定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: uc8, us16 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g546599aaccf0c7bd20f3cd30d76af825"></a><!-- doxytag: member="fie_arithmetic_nand.c::fnFIE_img_nand" ref="g546599aaccf0c7bd20f3cd30d76af825" args="(FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_nand           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間NAND演算 
+<p>
+<em>hsrc1</em> 画像と <em>hsrc2</em> 画像のNAND演算を行い <em>hdst</em> 画像に結果を格納します。 NAND演算は各ビット単位で行われます。<p>
+入力画像２つと出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式がF_IMG_RGBQUADの場合、各画素の濃度値は rgbRed, rgbGreen, rgbBlue それぞれで演算を行います。 また、rgbReservedは0になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc1</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc2</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, us16, rgbq )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_arithmetic_op_src1.png" alt="fie_arithmetic_op_src1.png">
+<p><strong>入力画像１</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_src2.png" alt="fie_arithmetic_op_src2.png">
+<p><strong>入力画像２</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_nand.png" alt="fie_arithmetic_op_nand.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g551b70495dd06e63bc02c393467d30cf"></a><!-- doxytag: member="fie_arithmetic_nand.c::fnFIE_img_nand_const" ref="g551b70495dd06e63bc02c393467d30cf" args="(FHANDLE hsrc, UINT value, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_nand_const           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像＆定数NAND演算 
+<p>
+<em>hsrc</em> 画像と定数 <em>value</em> のNAND演算を行い <em>hdst</em> 画像に結果を格納します。 NAND演算は各ビット単位で行われます。 また、引数 <em>value</em> は各型にキャストした後に評価されます。 <em>value</em> が型の値域を超えている場合の動作は不定です。 (例えば、画像の型がUC8ならば、0～255が <em>value</em> の有効な値域になる。)<p>
+入力画像２つと出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>value</em>&nbsp;</td><td>定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: uc8, us16 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbe897eff9a74717c949c4e0c2bf23050"></a><!-- doxytag: member="fie_arithmetic_not.c::fnFIE_img_not" ref="gbe897eff9a74717c949c4e0c2bf23050" args="(FHANDLE hsrc, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_not           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像NOT演算 
+<p>
+画像のNOT演算を行います。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければなりません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式がF_IMG_RGBQUADの場合、各画素の濃度値は rgbRed, rgbGreen, rgbBlue それぞれで演算を行います。 また、rgbReservedは0になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, us16, rgbq )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_arithmetic_op_mask.png" alt="fie_arithmetic_op_mask.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_not.png" alt="fie_arithmetic_op_not.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge400e9673c71183c33cf64e93c5da09e"></a><!-- doxytag: member="fie_arithmetic_or.c::fnFIE_img_or" ref="ge400e9673c71183c33cf64e93c5da09e" args="(FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_or           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間OR演算 
+<p>
+<em>hsrc1</em> 画像と <em>hsrc2</em> 画像のOR演算を行い <em>hdst</em> 画像に結果を格納します。 OR演算は各ビット単位で行われます。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければなりません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式がF_IMG_RGBQUADの場合、各画素の濃度値は rgbRed, rgbGreen, rgbBlue それぞれで演算を行います。 また、rgbReservedは0になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc1</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc2</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, us16, rgbq )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="circuit.png" alt="circuit.png">
+<p><strong>入力画像１</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_mask.png" alt="fie_arithmetic_op_mask.png">
+<p><strong>入力画像２</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_or.png" alt="fie_arithmetic_op_or.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8b03c7f8872bee956f3341369f951e7c"></a><!-- doxytag: member="fie_arithmetic_or.c::fnFIE_img_or_const" ref="g8b03c7f8872bee956f3341369f951e7c" args="(FHANDLE hsrc, UINT value, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_or_const           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像＆定数OR演算 
+<p>
+<em>hsrc</em> 画像と定数 <em>value</em> のOR演算を行い <em>hdst</em> 画像に結果を格納します。 OR演算は各ビット単位で行われます。 また <em>value</em> は各型にキャストした後に評価されます。 <em>value</em> が型の値域を超えている場合の動作は不定です。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければなりません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>value</em>&nbsp;</td><td>定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: uc8, us16 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g33189ca9605e8b13d49813677191c9de"></a><!-- doxytag: member="fie_arithmetic_shift.c::fnFIE_img_shift" ref="g33189ca9605e8b13d49813677191c9de" args="(FHANDLE hsrc, FHANDLE hdst, INT shift)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_shift           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>shift</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像ビットシフト演算 
+<p>
+画素に対してシフト演算を行います。 <em>shift</em> が正の時左シフト、 <em>shift</em> が負の時右シフト、 <em>shift</em> が0の時画像コピーされます。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければなりません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式が符号付き型(F_IMG_S16)の場合、算術シフトにて処理されます。 符号無し型(F_IMG_UC8, F_IMG_US16, F_IMG_RGBQUAD)の場合は論理シフトにて処理されます。 画像形式がF_IMG_RGBQUADの場合、各画素の濃度値は rgbRed, rgbGreen, rgbBlue それぞれで演算を行います。 また、rgbReservedは0になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: uc8, s16, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: uc8, s16, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>shift</em>&nbsp;</td><td>shift量。正：左シフト、負：右シフト、0：シフトなし（コピー）</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="circuit.png" alt="circuit.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_shift.png" alt="fie_arithmetic_op_shift.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gafcabf7d69c5bc74864ee0bd808c9638"></a><!-- doxytag: member="fie_arithmetic_xor.c::fnFIE_img_xor" ref="gafcabf7d69c5bc74864ee0bd808c9638" args="(FHANDLE hsrc1, FHANDLE hsrc2, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_xor           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像間XOR演算 
+<p>
+<em>hsrc1</em> 画像と <em>hsrc2</em> 画像のXOR演算を行い、 <em>hdst</em> 画像に結果を格納します。 XOR演算は各ビット単位で行われます。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+画像形式がF_IMG_RGBQUADの場合、各画素の濃度値は rgbRed, rgbGreen, rgbBlue それぞれで演算を行います。 また、rgbReservedは0になります。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc1</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc2</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, us16, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, us16, rgbq )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="circuit.png" alt="circuit.png">
+<p><strong>入力画像１</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_mask.png" alt="fie_arithmetic_op_mask.png">
+<p><strong>入力画像２</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_arithmetic_op_xor.png" alt="fie_arithmetic_op_xor.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc62bb2ef5a24daec16697a3b8559e9d5"></a><!-- doxytag: member="fie_arithmetic_xor.c::fnFIE_img_xor_const" ref="gc62bb2ef5a24daec16697a3b8559e9d5" args="(FHANDLE hsrc, UINT value, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_xor_const           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像＆定数XOR演算 
+<p>
+<em>hsrc</em> 画像と定数 <em>value</em> とのXOR演算を行い <em>hdst</em> 画像に結果を格納します。 OR演算は各ビット単位で行われます。 また <em>value</em> は各型にキャストした後に評価されます。 <em>value</em> が型の値域を超えている場合の動作は不定です。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: uc8, us16 ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>value</em>&nbsp;</td><td>定数 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: uc8, us16 )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>当関数はin-place処理可能です。</b></dt><dd></dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

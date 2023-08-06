@@ -1,0 +1,1720 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 実行結果操作</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>実行結果操作<br>
+<small>
+[<a class="el" href="group__fie__measure.html">２値ブローブ解析</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__MEASURE__FILTER__RANGE.html">F_MEASURE_FILTER_RANGE</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">フィルタ条件指定  <a href="structF__MEASURE__FILTER__RANGE.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>マクロ定義</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gb74614d686339dea448d2f234abf422e">F_FEATUREFLAG_XYRANGE</a>&nbsp;&nbsp;&nbsp;0x0000000000000001</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g607cefa874e143e059f88f3b006a40f3">F_FEATUREFLAG_AREA</a>&nbsp;&nbsp;&nbsp;0x0000000000000002</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g94b164a58de43f9b3de97a381ccabb06">F_FEATUREFLAG_PERIMETER</a>&nbsp;&nbsp;&nbsp;0x0000000000000004</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gaf95957d6a7ec8a7d8cd2248f7e559b1">F_FEATUREFLAG_MOMENT1</a>&nbsp;&nbsp;&nbsp;0x0000000000000008</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g792b2e57ad551c4e96b2851cec490247">F_FEATUREFLAG_MOMENT2</a>&nbsp;&nbsp;&nbsp;0x0000000000000010</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g4c0a507fc610969c34169a05d0b09b0d">F_FEATUREFLAG_CENTERG</a>&nbsp;&nbsp;&nbsp;0x0000000000000020</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gaf96a3faf894c4d8043e1b69ecc3c1f7">F_FEATUREFLAG_RECT1AREA</a>&nbsp;&nbsp;&nbsp;0x0000000000000080</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g32dd4267df3835d2d5656859f30848b8">F_FEATUREFLAG_RECT1LRATIO</a>&nbsp;&nbsp;&nbsp;0x0000000000000100</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g449ccf76ac2f54afb47daa5b33171c28">F_FEATUREFLAG_RECT1SRATIO</a>&nbsp;&nbsp;&nbsp;0x0000000000000200</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g5c1c013fb2413bbd9e1b5cec9bba49a9">F_FEATUREFLAG_RECT2SIZE</a>&nbsp;&nbsp;&nbsp;0x0000000000000400</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gd7c6c62de756b50c6d0f4c6467d1effa">F_FEATUREFLAG_RECT2AREA</a>&nbsp;&nbsp;&nbsp;0x0000000000000800</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g0a479d15e5c2709e7d93818aafedd7e1">F_FEATUREFLAG_RECT2LRATIO</a>&nbsp;&nbsp;&nbsp;0x0000000000001000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g7979d2e3a7725c63f936c1ed1c336099">F_FEATUREFLAG_RECT2SRATIO</a>&nbsp;&nbsp;&nbsp;0x0000000000002000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g27e1e3ed3e545646ab7e6ca77ec2fa76">F_FEATUREFLAG_EQUIELLIPSE</a>&nbsp;&nbsp;&nbsp;0x0000000000004000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g695d59319b0e208dcb8d132b21104e05">F_FEATUREFLAG_DISTANCEP</a>&nbsp;&nbsp;&nbsp;0x0000000000008000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g4c391dc07ee545c394ee66522ce315b2">F_FEATUREFLAG_HOLENUM</a>&nbsp;&nbsp;&nbsp;0x0000000000010000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gd43ccbee0c0138fcc0b6abdb52d7dcb1">F_FEATUREFLAG_HOLEAREA</a>&nbsp;&nbsp;&nbsp;0x0000000000020000</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g4b0f783b42217b63543526909eb5cef2">F_FEATUREFLAG_HOLERATIO</a>&nbsp;&nbsp;&nbsp;0x0000000000040000</td></tr>
+
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gd193d86d53262919d9d3adce9f4ea764">f_measure_special_sort_order</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764d747af05b17a6b0f27fbee0896ad28b9">F_MEASURE_UP_TO_LEFT_RIGHT</a> =  0, 
+<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764a25d97a7c521ccf488e0a760f00f4851">F_MEASURE_UP_TO_RIGHT_LEFT</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764ee5be383bc6b026f1397584eaeb9ba91">F_MEASURE_DOWN_TO_LEFT_RIGHT</a> =  2, 
+<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764de6f4d456cd983eb4c5b0a479d245396">F_MEASURE_DOWN_TO_RIGHT_LEFT</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764fb2c6bb0e9c7925d68fa3303c57e5d5a">F_MEASURE_LEFT_TO_UP_DOWN</a> =  4, 
+<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764a3307aa0f5a3542541d8557611829f5d">F_MEASURE_LEFT_TO_DOWN_UP</a> =  5, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764a40157da980d26d6f332d1680a445e42">F_MEASURE_RIGHT_TO_UP_DOWN</a> =  6, 
+<a class="el" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea7642e0a8396186f5e22fe87a1e4cc99539f">F_MEASURE_RIGHT_TO_DOWN_UP</a> =  7
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブ解析：配置順指定  <a href="group__fie__measure__result.html#gd193d86d53262919d9d3adce9f4ea764">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7383fe6a3010da1c8fd783ce1c0e88a72">F_FEATURE_NONE</a> =  0, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca750fe6bbb7d030c8b7cf22a0e6047be43">F_FEATURE_COLOR</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7eb5f2040a1e837ff34d372bab0625e4a">F_FEATURE_XMIN</a> =  2, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca720dc2ff74a8b825dab5d35ec10472f7f">F_FEATURE_YMIN</a> =  3, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7e72906faa37381646c8a7aab08bb5180">F_FEATURE_XMAX</a> =  4, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7215e826ee7af453513dc61e6ab63be6d">F_FEATURE_YMAX</a> =  5, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7b9c570963966bd909f9f1c4b6cded698">F_FEATURE_XMIN_AT_YMIN</a> =  6, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca737f4595e1044837a091c53e0fa3819ce">F_FEATURE_XMAX_AT_YMAX</a> =  7, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7600563235b988733ab6903cc96d94e9d">F_FEATURE_YMIN_AT_XMAX</a> =  8, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca776c98a5cd2e6d17f9eec59f61ae13b66">F_FEATURE_YMAX_AT_XMIN</a> =  9, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca793f740c72cb35774b2e03bc4fb537987">F_FEATURE_XDIFF</a> =  10, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7f5306ffcbf177dc0376be01f0286da48">F_FEATURE_YDIFF</a> =  11, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7d2b3cd7c560868669e5e8ac37aa9e028">F_FEATURE_SUMX</a> =  12, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca760081dc8944efc36096db34564529d0c">F_FEATURE_SUMY</a> =  13, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7d5fae3b9eab9bd1511634b277907fa7b">F_FEATURE_SUMX2</a> =  14, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca75f22a24fdde28507b7f3c5b98761926e">F_FEATURE_SUMY2</a> =  15, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca77ade917af2f787aca25a757c89649e47">F_FEATURE_SUMXY</a> =  16, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca76139c2155001308208279057255b3432">F_FEATURE_AREA</a> =  17, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7575c2f2e3732534ab66e9c7f2efba84c">F_FEATURE_CENTERX</a> =  18, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca704a0b6753019956e8d057b86fa670476">F_FEATURE_CENTERY</a> =  19, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca70a4f1088f7d87f96da81c2bbee999bbb">F_FEATURE_RECT1AREA</a> =  20, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7ae00ed1425a13f43e864680ed2787e00">F_FEATURE_RECT1LRATIO</a> =  21, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca759c7e40bea71e14836c0fcb06efebcd9">F_FEATURE_RECT1SRATIO</a> =  22, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7bf1886aab9009ccb8230f8cd35a1e6a8">F_FEATURE_LSIZE</a> =  23, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca781be1ed1a350520ed7cead65497bacc4">F_FEATURE_WSIZE</a> =  24, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca755609e2f7e0ef7785f8b64479c8e7a42">F_FEATURE_RECT2AREA</a> =  25, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca73aba447e374d093293a7e0115f72b224">F_FEATURE_RECT2LRATIO</a> =  26, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7647364086c1dd1279d449a8ba9d5d0e7">F_FEATURE_RECT2SRATIO</a> =  27, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7f1e6cfff42c15167917aa72f5761bb58">F_FEATURE_MAJORAXIS</a> =  28, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca79f9792f789224f4350e668ea80dd3ba6">F_FEATURE_MINORAXIS</a> =  29, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca753647920ee7732c4678df762c31a8bfc">F_FEATURE_AXISTHETA</a> =  30, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca75cd358e08633aa04899d98a4d3927ada">F_FEATURE_AXISRATIO</a> =  31, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca73b6042bc5ac776c773f6d80806476ae8">F_FEATURE_DIAMETER_EQUIDISK</a> =  32, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca76d0c6fdaef414703c32a49f5ae08613b">F_FEATURE_DIAMETER_EQUICIRCLE</a> =  33, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7f7867c1fe18809775ca23ba7a1397028">F_FEATURE_CIRCULARITY1</a> =  34, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca70c5b41d2fc1e8dc58bce809c415bf9af">F_FEATURE_CIRCULARITY2</a> =  35, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca796ec5179966111d96579f19843adc6de">F_FEATURE_CIRCULARITY3</a> =  36, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca72130943f3948cdca6535ae7905d63a23">F_FEATURE_CONVEX_AREA</a> =  37, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7fc64151481af522f487099c3b643cb93">F_FEATURE_CONVEX_PERIM</a> =  38, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca71a784a8edab5f552cb4672c506e148ce">F_FEATURE_CONVEX_AREARATIO</a> =  39, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca79d6afee7bda1b8c3c79216c32b5da5e6">F_FEATURE_CONVEX_PERIMRATIO</a> =  40, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca72ae5ad6bfa0af9d373879b77aabb23d3">F_FEATURE_FERET_MAX</a> =  41, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7dfa8a8e84eaf506c79e1ce71be5d22ef">F_FEATURE_FERET_MIN</a> =  42, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca71678b88cd850bad39fbc34c8ab2f0c7f">F_FEATURE_FMAX_THETA</a> =  43, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca71bcc43849f5c16306334f64c6a537d58">F_FEATURE_FMIN_THETA</a> =  44, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca71b69c3d488dedf712ae46e32b0187e80">F_FEATURE_DPMIN</a> =  45, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca71548c7c2b525296eae3598e6dd623fae">F_FEATURE_DPMAX</a> =  46, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7b98041b451fffab25ddeeb839c33cefd">F_FEATURE_DPAVE</a> =  47, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca79d585ea0d0e8b67e4f0dd4ecbdedc717">F_FEATURE_DPSIGMA</a> =  48, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7215382cfc61ea1e9f9dd02d7ee6dcfe0">F_FEATURE_DCMAX</a> =  49, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7ac4f52fdb31629a68769cdab615e4a8c">F_FEATURE_DCMIN</a> =  50, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca761571c55306d4bd1ec1399586e36ff66">F_FEATURE_DCAVE</a> =  51, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7227e8c21a26fe0575629d088802ada84">F_FEATURE_DSMAX</a> =  52, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7aab1b5aad778a997306b4a9c2f7436ef">F_FEATURE_DSMIN</a> =  53, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca79fbd8e77584fcf939c64d27568464c66">F_FEATURE_DSAVE</a> =  54, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca797d47bda77e8f62a37a247c3b319fc5b">F_FEATURE_NS</a> =  55, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca784653675e22ae589cb0631c3f086dd36">F_FEATURE_PERIM</a> =  56, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7e5a1c7a3a1814be0b140b273c5629e64">F_FEATURE_ST</a> =  57, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca70c8384b6975223e87f77b49119e5672a">F_FEATURE_SC</a> =  58, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca784e34a2322a4a6dff57b07c6fa0bea5c">F_FEATURE_HOLES</a> =  59, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7f5151be7e371f92a6464f69b287c76b7">F_FEATURE_HRATIO</a> =  60, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca775eca193f354cec53aec62c70ac78c9a">F_FEATURE_PPS</a> =  61, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca79c0e5543cb157d0bd08d6afd7a0746cf">F_FEATURE_AXISTHETA_CYCLIC</a> =  62, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca71fe00353ee0275532751fc05989a6295">F_FEATURE_FMAX_THETA_CYCLIC</a> =  63, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca76430378d0b329dbbd018943289c4fc19">F_FEATURE_FMIN_THETA_CYCLIC</a> =  64, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca75cd2362c8d196bfec93e4fb75303d892">F_FEATURE_M10</a> =  12, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca735f9f93918c6fa51e5b9873c25879e9f">F_FEATURE_M01</a> =  13, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca75a457593ec89d1c9dba9a672666aa636">F_FEATURE_M20</a> =  14, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca718a6403e4eb860358b49c2878c94fca2">F_FEATURE_M02</a> =  15, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca78f795f913a24ffc19e92d563bde75c8e">F_FEATURE_M11</a> =  16, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7ab88e5cb7dae57e712d609f2ad8bc32c">F_FEATURE_M30</a> =  65, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7ca5901fed24257cc4edd3c73282fc052">F_FEATURE_M03</a> =  66, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7739a143273584e7b7296f38be880ec94">F_FEATURE_M21</a> =  67, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7d39ca5ff1ea7d1700aa31c63fd2c2f10">F_FEATURE_M12</a> =  68, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7da3dcc585a0f2cdfecb98751e608ac0a">F_FEATURE_MG20</a> =  69, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca745f46b4cc67f0a209e284095af8b182d">F_FEATURE_MG02</a> =  70, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7161b1fa0a9a2212a494a866797b37eff">F_FEATURE_MG11</a> =  71, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca716965a7267e173cc8199b7ac33fb1237">F_FEATURE_MG30</a> =  72, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7e44020f956901936ed8318de518d1728">F_FEATURE_MG03</a> =  73, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca731b8d2acb354608abcb24c9742ec56b2">F_FEATURE_MG21</a> =  74, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7be567da9cbbfc68c4b5105e761595623">F_FEATURE_MG12</a> =  75, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7fef7af5c6a17a6532bc91926af8dea33">F_FEATURE_HU_MOMENT0</a> =  76, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca761d4aab2ca6fbaa73367b7417f641f64">F_FEATURE_HU_MOMENT1</a> =  77, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca738dc24d9fc99dbfb3d58e239a49aa9cd">F_FEATURE_HU_MOMENT2</a> =  78, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca72719086ab7cdbd662ff0a3dc5f56733a">F_FEATURE_HU_MOMENT3</a> =  79, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7726fbc49db280f1a36d40e9eca006169">F_FEATURE_HU_MOMENT4</a> =  80, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7e6cd2aee27138968e43c414c98f6ac9b">F_FEATURE_HU_MOMENT5</a> =  81, 
+<a class="el" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7bf46cc2524e2cc1d0ab0335690573a31">F_FEATURE_HU_MOMENT6</a> =  82
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブ解析：フィルタ種別指定  <a href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240">fnFIE_measure_get_list</a> (FHANDLE hresult, <a class="el" href="structF__MEASURE__FILTER__RANGE.html">F_MEASURE_FILTER_RANGE</a> *filters, UINT filter_num, UINT **blob_numbers, UINT *num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブ番号配列の取得  <a href="#gfa39d9eee7e6b75f80880061fee35240"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g4f240f10477460f374defc2ff00d209a">fnFIE_measure_refilter_list</a> (FHANDLE hresult, <a class="el" href="structF__MEASURE__FILTER__RANGE.html">F_MEASURE_FILTER_RANGE</a> *filters, UINT filter_num, UINT *blob_numbers, UINT *num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブ番号配列の特徴量に基づくフィルタリング  <a href="#g4f240f10477460f374defc2ff00d209a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g34d4caf19a85738dd93a22eedd38f992">fnFIE_measure_sort_list</a> (FHANDLE hresult, enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a> key1st, INT direc1st, enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a> key2nd, INT direc2nd, enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a> key3rd, INT direc3rd, UINT *numbers, UINT num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブの特徴量に基づくソーティング  <a href="#g34d4caf19a85738dd93a22eedd38f992"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gc26e1927547564d4816ca57f66dce674">fnFIE_measure_specialsort_list</a> (FHANDLE hresult, enum <a class="el" href="group__fie__measure__result.html#gd193d86d53262919d9d3adce9f4ea764">f_measure_special_sort_order</a> order, DOUBLE theta, UINT *numbers, UINT num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブの位置情報に基づくソーティング  <a href="#gc26e1927547564d4816ca57f66dce674"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g215dbd234382563737797dfbd76c03d7">fnFIE_measure_get_region</a> (FHANDLE hresult, UINT blobno, INT *exerr)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION取得  <a href="#g215dbd234382563737797dfbd76c03d7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gbca0c78c378b8398bf3bb8022181d552">fnFIE_measure_get_parent</a> (const FHANDLE hresult, UINT blobno, UINT *parent)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">親ブローブの取得  <a href="#gbca0c78c378b8398bf3bb8022181d552"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g072d42e9ec331cfb98171a064fede04d">fnFIE_measure_get_child</a> (const FHANDLE hresult, UINT blobno, UINT *child)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">子ブローブの取得  <a href="#g072d42e9ec331cfb98171a064fede04d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#gfe70fe52709ebf0db1905b2aad3740a7">fnFIE_measure_get_sibling_back</a> (const FHANDLE hresult, UINT blobno, UINT *back)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">１つ後ろの兄弟ブローブの取得  <a href="#gfe70fe52709ebf0db1905b2aad3740a7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g431fda29f7c4abb65e99acc740d7e25b">fnFIE_measure_get_sibling_next</a> (const FHANDLE hresult, UINT blobno, UINT *next)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">１つ次の兄弟ブローブの取得  <a href="#g431fda29f7c4abb65e99acc740d7e25b"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#ge08e7c600639b7a9c2b9303d9a7b8320">fnFIE_measure_get_is_valid</a> (const FHANDLE hresult, UINT blobno, UINT *invalid)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ブローブ番号の有効/無効チェック  <a href="#ge08e7c600639b7a9c2b9303d9a7b8320"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7">fnFIE_measure_get_blobnum</a> (const FHANDLE hresult, UINT *num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">全ブローブ数の取得  <a href="#g20222f9235cda4f661c73aa7a2fb61f7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__measure__result.html#g0e044b82943708c0702328f7f69c4241">fnFIE_measure_get_real_blobnum</a> (const FHANDLE hresult, UINT *num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">有効BLOB数の取得  <a href="#g0e044b82943708c0702328f7f69c4241"></a><br></td></tr>
+</table>
+<hr><h2>マクロ定義</h2>
+<a class="anchor" name="gb74614d686339dea448d2f234abf422e"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_XYRANGE" ref="gb74614d686339dea448d2f234abf422e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_XYRANGE&nbsp;&nbsp;&nbsp;0x0000000000000001          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：座標範囲(xmin, ymin, xmax, ymax, xmin_at_ymin, xmax_at_ymax, ymin_at_xmax, ymax_at_xmin) 
+</div>
+</div><p>
+<a class="anchor" name="g607cefa874e143e059f88f3b006a40f3"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_AREA" ref="g607cefa874e143e059f88f3b006a40f3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_AREA&nbsp;&nbsp;&nbsp;0x0000000000000002          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：面積(area) 
+</div>
+</div><p>
+<a class="anchor" name="g94b164a58de43f9b3de97a381ccabb06"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_PERIMETER" ref="g94b164a58de43f9b3de97a381ccabb06" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_PERIMETER&nbsp;&nbsp;&nbsp;0x0000000000000004          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：周囲長 
+</div>
+</div><p>
+<a class="anchor" name="gaf95957d6a7ec8a7d8cd2248f7e559b1"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_MOMENT1" ref="gaf95957d6a7ec8a7d8cd2248f7e559b1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_MOMENT1&nbsp;&nbsp;&nbsp;0x0000000000000008          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：１次モーメント(sumx, sumy) 
+</div>
+</div><p>
+<a class="anchor" name="g792b2e57ad551c4e96b2851cec490247"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_MOMENT2" ref="g792b2e57ad551c4e96b2851cec490247" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_MOMENT2&nbsp;&nbsp;&nbsp;0x0000000000000010          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：２次モーメント(sumx2, sumy2, sumxy) 
+</div>
+</div><p>
+<a class="anchor" name="g4c0a507fc610969c34169a05d0b09b0d"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_CENTERG" ref="g4c0a507fc610969c34169a05d0b09b0d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_CENTERG&nbsp;&nbsp;&nbsp;0x0000000000000020          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：重心(centerx, centery) 
+</div>
+</div><p>
+<a class="anchor" name="gaf96a3faf894c4d8043e1b69ecc3c1f7"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT1AREA" ref="gaf96a3faf894c4d8043e1b69ecc3c1f7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT1AREA&nbsp;&nbsp;&nbsp;0x0000000000000080          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接矩形面積(rect1_area) 
+</div>
+</div><p>
+<a class="anchor" name="g32dd4267df3835d2d5656859f30848b8"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT1LRATIO" ref="g32dd4267df3835d2d5656859f30848b8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT1LRATIO&nbsp;&nbsp;&nbsp;0x0000000000000100          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接矩形縦横比(rect1_lratio) 
+</div>
+</div><p>
+<a class="anchor" name="g449ccf76ac2f54afb47daa5b33171c28"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT1SRATIO" ref="g449ccf76ac2f54afb47daa5b33171c28" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT1SRATIO&nbsp;&nbsp;&nbsp;0x0000000000000200          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接矩形面積比(rect1_sratio) 
+</div>
+</div><p>
+<a class="anchor" name="g5c1c013fb2413bbd9e1b5cec9bba49a9"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT2SIZE" ref="g5c1c013fb2413bbd9e1b5cec9bba49a9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT2SIZE&nbsp;&nbsp;&nbsp;0x0000000000000400          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接長方形縦横(lsize, wsize) 
+</div>
+</div><p>
+<a class="anchor" name="gd7c6c62de756b50c6d0f4c6467d1effa"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT2AREA" ref="gd7c6c62de756b50c6d0f4c6467d1effa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT2AREA&nbsp;&nbsp;&nbsp;0x0000000000000800          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接長方形面積(rect2_area) 
+</div>
+</div><p>
+<a class="anchor" name="g0a479d15e5c2709e7d93818aafedd7e1"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT2LRATIO" ref="g0a479d15e5c2709e7d93818aafedd7e1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT2LRATIO&nbsp;&nbsp;&nbsp;0x0000000000001000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接長方形縦横比(rect2_lratio) 
+</div>
+</div><p>
+<a class="anchor" name="g7979d2e3a7725c63f936c1ed1c336099"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_RECT2SRATIO" ref="g7979d2e3a7725c63f936c1ed1c336099" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_RECT2SRATIO&nbsp;&nbsp;&nbsp;0x0000000000002000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外接長方形面積比(rect2_sratio) 
+</div>
+</div><p>
+<a class="anchor" name="g27e1e3ed3e545646ab7e6ca77ec2fa76"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_EQUIELLIPSE" ref="g27e1e3ed3e545646ab7e6ca77ec2fa76" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_EQUIELLIPSE&nbsp;&nbsp;&nbsp;0x0000000000004000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：慣性等価楕円関連(majoraxis, minoraxis, axistheta, axisratio) 
+</div>
+</div><p>
+<a class="anchor" name="g695d59319b0e208dcb8d132b21104e05"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_DISTANCEP" ref="g695d59319b0e208dcb8d132b21104e05" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_DISTANCEP&nbsp;&nbsp;&nbsp;0x0000000000008000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：外周距離最大最小平均標準偏差 
+</div>
+</div><p>
+<a class="anchor" name="g4c391dc07ee545c394ee66522ce315b2"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_HOLENUM" ref="g4c391dc07ee545c394ee66522ce315b2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_HOLENUM&nbsp;&nbsp;&nbsp;0x0000000000010000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：穴の数 
+</div>
+</div><p>
+<a class="anchor" name="gd43ccbee0c0138fcc0b6abdb52d7dcb1"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_HOLEAREA" ref="gd43ccbee0c0138fcc0b6abdb52d7dcb1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_HOLEAREA&nbsp;&nbsp;&nbsp;0x0000000000020000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：穴面積 
+</div>
+</div><p>
+<a class="anchor" name="g4b0f783b42217b63543526909eb5cef2"></a><!-- doxytag: member="fie.h::F_FEATUREFLAG_HOLERATIO" ref="g4b0f783b42217b63543526909eb5cef2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_FEATUREFLAG_HOLERATIO&nbsp;&nbsp;&nbsp;0x0000000000040000          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+特徴量グループ指定フラグ：穴面積比 
+</div>
+</div><p>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="gd193d86d53262919d9d3adce9f4ea764"></a><!-- doxytag: member="fie.h::f_measure_special_sort_order" ref="gd193d86d53262919d9d3adce9f4ea764" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__measure__result.html#gd193d86d53262919d9d3adce9f4ea764">f_measure_special_sort_order</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブ解析：配置順指定 
+<p>
+<a class="el" href="group__fie__measure__result.html#gc26e1927547564d4816ca57f66dce674" title="ブローブの位置情報に基づくソーティング">fnFIE_measure_specialsort_list()</a> における配置順指定のための定数 <div align="center">
+<img src="measure_specialsort_order.png" alt="measure_specialsort_order.png">
+</div>
+<p>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__result.html#gc26e1927547564d4816ca57f66dce674" title="ブローブの位置情報に基づくソーティング">fnFIE_measure_specialsort_list()</a> </dd></dl>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764d747af05b17a6b0f27fbee0896ad28b9"></a><!-- doxytag: member="F_MEASURE_UP_TO_LEFT_RIGHT" ref="ggd193d86d53262919d9d3adce9f4ea764d747af05b17a6b0f27fbee0896ad28b9" args="" -->F_MEASURE_UP_TO_LEFT_RIGHT</em>&nbsp;</td><td>
+上の行から、左-&gt;右の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764a25d97a7c521ccf488e0a760f00f4851"></a><!-- doxytag: member="F_MEASURE_UP_TO_RIGHT_LEFT" ref="ggd193d86d53262919d9d3adce9f4ea764a25d97a7c521ccf488e0a760f00f4851" args="" -->F_MEASURE_UP_TO_RIGHT_LEFT</em>&nbsp;</td><td>
+上の行から、右-&gt;左の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764ee5be383bc6b026f1397584eaeb9ba91"></a><!-- doxytag: member="F_MEASURE_DOWN_TO_LEFT_RIGHT" ref="ggd193d86d53262919d9d3adce9f4ea764ee5be383bc6b026f1397584eaeb9ba91" args="" -->F_MEASURE_DOWN_TO_LEFT_RIGHT</em>&nbsp;</td><td>
+下の行から、左-&gt;右の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764de6f4d456cd983eb4c5b0a479d245396"></a><!-- doxytag: member="F_MEASURE_DOWN_TO_RIGHT_LEFT" ref="ggd193d86d53262919d9d3adce9f4ea764de6f4d456cd983eb4c5b0a479d245396" args="" -->F_MEASURE_DOWN_TO_RIGHT_LEFT</em>&nbsp;</td><td>
+下の行から、右-&gt;左の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764fb2c6bb0e9c7925d68fa3303c57e5d5a"></a><!-- doxytag: member="F_MEASURE_LEFT_TO_UP_DOWN" ref="ggd193d86d53262919d9d3adce9f4ea764fb2c6bb0e9c7925d68fa3303c57e5d5a" args="" -->F_MEASURE_LEFT_TO_UP_DOWN</em>&nbsp;</td><td>
+左の列から、上-&gt;下の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764a3307aa0f5a3542541d8557611829f5d"></a><!-- doxytag: member="F_MEASURE_LEFT_TO_DOWN_UP" ref="ggd193d86d53262919d9d3adce9f4ea764a3307aa0f5a3542541d8557611829f5d" args="" -->F_MEASURE_LEFT_TO_DOWN_UP</em>&nbsp;</td><td>
+左の列から、下-&gt;上の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea764a40157da980d26d6f332d1680a445e42"></a><!-- doxytag: member="F_MEASURE_RIGHT_TO_UP_DOWN" ref="ggd193d86d53262919d9d3adce9f4ea764a40157da980d26d6f332d1680a445e42" args="" -->F_MEASURE_RIGHT_TO_UP_DOWN</em>&nbsp;</td><td>
+右の列から、上-&gt;下の順に配置 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggd193d86d53262919d9d3adce9f4ea7642e0a8396186f5e22fe87a1e4cc99539f"></a><!-- doxytag: member="F_MEASURE_RIGHT_TO_DOWN_UP" ref="ggd193d86d53262919d9d3adce9f4ea7642e0a8396186f5e22fe87a1e4cc99539f" args="" -->F_MEASURE_RIGHT_TO_DOWN_UP</em>&nbsp;</td><td>
+右の列から、下-&gt;上の順に配置 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb6eab823fac22655a18c061aded99ca7"></a><!-- doxytag: member="fie.h::f_measure_feature_type" ref="gb6eab823fac22655a18c061aded99ca7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブ解析：フィルタ種別指定 
+<p>
+<a class="el" href="group__fie__measure__result.html#g34d4caf19a85738dd93a22eedd38f992" title="ブローブの特徴量に基づくソーティング">fnFIE_measure_sort_list()</a> にて、ソート対象とする特徴量、または <a class="el" href="structF__MEASURE__FILTER__RANGE.html" title="フィルタ条件指定">F_MEASURE_FILTER_RANGE</a> にてフィルタ対象とする特徴量 を指定するための定数 <dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7383fe6a3010da1c8fd783ce1c0e88a72"></a><!-- doxytag: member="F_FEATURE_NONE" ref="ggb6eab823fac22655a18c061aded99ca7383fe6a3010da1c8fd783ce1c0e88a72" args="" -->F_FEATURE_NONE</em>&nbsp;</td><td>
+ソート対象無し </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca750fe6bbb7d030c8b7cf22a0e6047be43"></a><!-- doxytag: member="F_FEATURE_COLOR" ref="ggb6eab823fac22655a18c061aded99ca750fe6bbb7d030c8b7cf22a0e6047be43" args="" -->F_FEATURE_COLOR</em>&nbsp;</td><td>
+ブローブ色 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7eb5f2040a1e837ff34d372bab0625e4a"></a><!-- doxytag: member="F_FEATURE_XMIN" ref="ggb6eab823fac22655a18c061aded99ca7eb5f2040a1e837ff34d372bab0625e4a" args="" -->F_FEATURE_XMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_xyrange">xmin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca720dc2ff74a8b825dab5d35ec10472f7f"></a><!-- doxytag: member="F_FEATURE_YMIN" ref="ggb6eab823fac22655a18c061aded99ca720dc2ff74a8b825dab5d35ec10472f7f" args="" -->F_FEATURE_YMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_xyrange">xmax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7e72906faa37381646c8a7aab08bb5180"></a><!-- doxytag: member="F_FEATURE_XMAX" ref="ggb6eab823fac22655a18c061aded99ca7e72906faa37381646c8a7aab08bb5180" args="" -->F_FEATURE_XMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_xyrange">ymin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7215e826ee7af453513dc61e6ab63be6d"></a><!-- doxytag: member="F_FEATURE_YMAX" ref="ggb6eab823fac22655a18c061aded99ca7215e826ee7af453513dc61e6ab63be6d" args="" -->F_FEATURE_YMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_xyrange">ymax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7b9c570963966bd909f9f1c4b6cded698"></a><!-- doxytag: member="F_FEATURE_XMIN_AT_YMIN" ref="ggb6eab823fac22655a18c061aded99ca7b9c570963966bd909f9f1c4b6cded698" args="" -->F_FEATURE_XMIN_AT_YMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_maxminpos">xmin_at_ymin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca737f4595e1044837a091c53e0fa3819ce"></a><!-- doxytag: member="F_FEATURE_XMAX_AT_YMAX" ref="ggb6eab823fac22655a18c061aded99ca737f4595e1044837a091c53e0fa3819ce" args="" -->F_FEATURE_XMAX_AT_YMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_maxminpos">xmax_at_ymax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7600563235b988733ab6903cc96d94e9d"></a><!-- doxytag: member="F_FEATURE_YMIN_AT_XMAX" ref="ggb6eab823fac22655a18c061aded99ca7600563235b988733ab6903cc96d94e9d" args="" -->F_FEATURE_YMIN_AT_XMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_maxminpos">ymin_at_xmax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca776c98a5cd2e6d17f9eec59f61ae13b66"></a><!-- doxytag: member="F_FEATURE_YMAX_AT_XMIN" ref="ggb6eab823fac22655a18c061aded99ca776c98a5cd2e6d17f9eec59f61ae13b66" args="" -->F_FEATURE_YMAX_AT_XMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_maxminpos">ymax_at_xmin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca793f740c72cb35774b2e03bc4fb537987"></a><!-- doxytag: member="F_FEATURE_XDIFF" ref="ggb6eab823fac22655a18c061aded99ca793f740c72cb35774b2e03bc4fb537987" args="" -->F_FEATURE_XDIFF</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_xydiff">xdiff</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7f5306ffcbf177dc0376be01f0286da48"></a><!-- doxytag: member="F_FEATURE_YDIFF" ref="ggb6eab823fac22655a18c061aded99ca7f5306ffcbf177dc0376be01f0286da48" args="" -->F_FEATURE_YDIFF</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_xydiff">ydiff</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7d2b3cd7c560868669e5e8ac37aa9e028"></a><!-- doxytag: member="F_FEATURE_SUMX" ref="ggb6eab823fac22655a18c061aded99ca7d2b3cd7c560868669e5e8ac37aa9e028" args="" -->F_FEATURE_SUMX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment1">sumx</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca760081dc8944efc36096db34564529d0c"></a><!-- doxytag: member="F_FEATURE_SUMY" ref="ggb6eab823fac22655a18c061aded99ca760081dc8944efc36096db34564529d0c" args="" -->F_FEATURE_SUMY</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment1">sumy</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7d5fae3b9eab9bd1511634b277907fa7b"></a><!-- doxytag: member="F_FEATURE_SUMX2" ref="ggb6eab823fac22655a18c061aded99ca7d5fae3b9eab9bd1511634b277907fa7b" args="" -->F_FEATURE_SUMX2</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment2">sumx2</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca75f22a24fdde28507b7f3c5b98761926e"></a><!-- doxytag: member="F_FEATURE_SUMY2" ref="ggb6eab823fac22655a18c061aded99ca75f22a24fdde28507b7f3c5b98761926e" args="" -->F_FEATURE_SUMY2</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment2">sumy2</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca77ade917af2f787aca25a757c89649e47"></a><!-- doxytag: member="F_FEATURE_SUMXY" ref="ggb6eab823fac22655a18c061aded99ca77ade917af2f787aca25a757c89649e47" args="" -->F_FEATURE_SUMXY</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment2">sumxy</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca76139c2155001308208279057255b3432"></a><!-- doxytag: member="F_FEATURE_AREA" ref="ggb6eab823fac22655a18c061aded99ca76139c2155001308208279057255b3432" args="" -->F_FEATURE_AREA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_area">area</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7575c2f2e3732534ab66e9c7f2efba84c"></a><!-- doxytag: member="F_FEATURE_CENTERX" ref="ggb6eab823fac22655a18c061aded99ca7575c2f2e3732534ab66e9c7f2efba84c" args="" -->F_FEATURE_CENTERX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_center">centerx</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca704a0b6753019956e8d057b86fa670476"></a><!-- doxytag: member="F_FEATURE_CENTERY" ref="ggb6eab823fac22655a18c061aded99ca704a0b6753019956e8d057b86fa670476" args="" -->F_FEATURE_CENTERY</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_center">centery</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca70a4f1088f7d87f96da81c2bbee999bbb"></a><!-- doxytag: member="F_FEATURE_RECT1AREA" ref="ggb6eab823fac22655a18c061aded99ca70a4f1088f7d87f96da81c2bbee999bbb" args="" -->F_FEATURE_RECT1AREA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect1_area">rect1_area</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7ae00ed1425a13f43e864680ed2787e00"></a><!-- doxytag: member="F_FEATURE_RECT1LRATIO" ref="ggb6eab823fac22655a18c061aded99ca7ae00ed1425a13f43e864680ed2787e00" args="" -->F_FEATURE_RECT1LRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect1_lratio">rect1_lratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca759c7e40bea71e14836c0fcb06efebcd9"></a><!-- doxytag: member="F_FEATURE_RECT1SRATIO" ref="ggb6eab823fac22655a18c061aded99ca759c7e40bea71e14836c0fcb06efebcd9" args="" -->F_FEATURE_RECT1SRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect1_sratio">rect1_sratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7bf1886aab9009ccb8230f8cd35a1e6a8"></a><!-- doxytag: member="F_FEATURE_LSIZE" ref="ggb6eab823fac22655a18c061aded99ca7bf1886aab9009ccb8230f8cd35a1e6a8" args="" -->F_FEATURE_LSIZE</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect2_size">lsize</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca781be1ed1a350520ed7cead65497bacc4"></a><!-- doxytag: member="F_FEATURE_WSIZE" ref="ggb6eab823fac22655a18c061aded99ca781be1ed1a350520ed7cead65497bacc4" args="" -->F_FEATURE_WSIZE</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect2_size">wsize</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca755609e2f7e0ef7785f8b64479c8e7a42"></a><!-- doxytag: member="F_FEATURE_RECT2AREA" ref="ggb6eab823fac22655a18c061aded99ca755609e2f7e0ef7785f8b64479c8e7a42" args="" -->F_FEATURE_RECT2AREA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect2_area">rect2_area</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca73aba447e374d093293a7e0115f72b224"></a><!-- doxytag: member="F_FEATURE_RECT2LRATIO" ref="ggb6eab823fac22655a18c061aded99ca73aba447e374d093293a7e0115f72b224" args="" -->F_FEATURE_RECT2LRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect2_lratio">rect2_lratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7647364086c1dd1279d449a8ba9d5d0e7"></a><!-- doxytag: member="F_FEATURE_RECT2SRATIO" ref="ggb6eab823fac22655a18c061aded99ca7647364086c1dd1279d449a8ba9d5d0e7" args="" -->F_FEATURE_RECT2SRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_rect2_sratio">rect2_sratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7f1e6cfff42c15167917aa72f5761bb58"></a><!-- doxytag: member="F_FEATURE_MAJORAXIS" ref="ggb6eab823fac22655a18c061aded99ca7f1e6cfff42c15167917aa72f5761bb58" args="" -->F_FEATURE_MAJORAXIS</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_ellipse">majoraxis</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca79f9792f789224f4350e668ea80dd3ba6"></a><!-- doxytag: member="F_FEATURE_MINORAXIS" ref="ggb6eab823fac22655a18c061aded99ca79f9792f789224f4350e668ea80dd3ba6" args="" -->F_FEATURE_MINORAXIS</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_ellipse">minoraxis</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca753647920ee7732c4678df762c31a8bfc"></a><!-- doxytag: member="F_FEATURE_AXISTHETA" ref="ggb6eab823fac22655a18c061aded99ca753647920ee7732c4678df762c31a8bfc" args="" -->F_FEATURE_AXISTHETA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca75cd358e08633aa04899d98a4d3927ada"></a><!-- doxytag: member="F_FEATURE_AXISRATIO" ref="ggb6eab823fac22655a18c061aded99ca75cd358e08633aa04899d98a4d3927ada" args="" -->F_FEATURE_AXISRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axisratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca73b6042bc5ac776c773f6d80806476ae8"></a><!-- doxytag: member="F_FEATURE_DIAMETER_EQUIDISK" ref="ggb6eab823fac22655a18c061aded99ca73b6042bc5ac776c773f6d80806476ae8" args="" -->F_FEATURE_DIAMETER_EQUIDISK</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_disk">diameter_equidisk</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca76d0c6fdaef414703c32a49f5ae08613b"></a><!-- doxytag: member="F_FEATURE_DIAMETER_EQUICIRCLE" ref="ggb6eab823fac22655a18c061aded99ca76d0c6fdaef414703c32a49f5ae08613b" args="" -->F_FEATURE_DIAMETER_EQUICIRCLE</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_circle">diameter_equicircle</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7f7867c1fe18809775ca23ba7a1397028"></a><!-- doxytag: member="F_FEATURE_CIRCULARITY1" ref="ggb6eab823fac22655a18c061aded99ca7f7867c1fe18809775ca23ba7a1397028" args="" -->F_FEATURE_CIRCULARITY1</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_circularity1">circularity1</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca70c5b41d2fc1e8dc58bce809c415bf9af"></a><!-- doxytag: member="F_FEATURE_CIRCULARITY2" ref="ggb6eab823fac22655a18c061aded99ca70c5b41d2fc1e8dc58bce809c415bf9af" args="" -->F_FEATURE_CIRCULARITY2</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_circularity2">circularity2</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca796ec5179966111d96579f19843adc6de"></a><!-- doxytag: member="F_FEATURE_CIRCULARITY3" ref="ggb6eab823fac22655a18c061aded99ca796ec5179966111d96579f19843adc6de" args="" -->F_FEATURE_CIRCULARITY3</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_circularity3">circularity3</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca72130943f3948cdca6535ae7905d63a23"></a><!-- doxytag: member="F_FEATURE_CONVEX_AREA" ref="ggb6eab823fac22655a18c061aded99ca72130943f3948cdca6535ae7905d63a23" args="" -->F_FEATURE_CONVEX_AREA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_convexfeature">convex_area</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7fc64151481af522f487099c3b643cb93"></a><!-- doxytag: member="F_FEATURE_CONVEX_PERIM" ref="ggb6eab823fac22655a18c061aded99ca7fc64151481af522f487099c3b643cb93" args="" -->F_FEATURE_CONVEX_PERIM</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_convexfeature">convex_perim</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca71a784a8edab5f552cb4672c506e148ce"></a><!-- doxytag: member="F_FEATURE_CONVEX_AREARATIO" ref="ggb6eab823fac22655a18c061aded99ca71a784a8edab5f552cb4672c506e148ce" args="" -->F_FEATURE_CONVEX_AREARATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_convexratio">convex_arearatio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca79d6afee7bda1b8c3c79216c32b5da5e6"></a><!-- doxytag: member="F_FEATURE_CONVEX_PERIMRATIO" ref="ggb6eab823fac22655a18c061aded99ca79d6afee7bda1b8c3c79216c32b5da5e6" args="" -->F_FEATURE_CONVEX_PERIMRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_convexratio">convex_perimratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca72ae5ad6bfa0af9d373879b77aabb23d3"></a><!-- doxytag: member="F_FEATURE_FERET_MAX" ref="ggb6eab823fac22655a18c061aded99ca72ae5ad6bfa0af9d373879b77aabb23d3" args="" -->F_FEATURE_FERET_MAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_feret_maxmin">feretmax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7dfa8a8e84eaf506c79e1ce71be5d22ef"></a><!-- doxytag: member="F_FEATURE_FERET_MIN" ref="ggb6eab823fac22655a18c061aded99ca7dfa8a8e84eaf506c79e1ce71be5d22ef" args="" -->F_FEATURE_FERET_MIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_feret_maxmin">feretmin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca71678b88cd850bad39fbc34c8ab2f0c7f"></a><!-- doxytag: member="F_FEATURE_FMAX_THETA" ref="ggb6eab823fac22655a18c061aded99ca71678b88cd850bad39fbc34c8ab2f0c7f" args="" -->F_FEATURE_FMAX_THETA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_feret_maxmin">fmax_theta</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca71bcc43849f5c16306334f64c6a537d58"></a><!-- doxytag: member="F_FEATURE_FMIN_THETA" ref="ggb6eab823fac22655a18c061aded99ca71bcc43849f5c16306334f64c6a537d58" args="" -->F_FEATURE_FMIN_THETA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_feret_maxmin">fmin_theta</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca71b69c3d488dedf712ae46e32b0187e80"></a><!-- doxytag: member="F_FEATURE_DPMIN" ref="ggb6eab823fac22655a18c061aded99ca71b69c3d488dedf712ae46e32b0187e80" args="" -->F_FEATURE_DPMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca71548c7c2b525296eae3598e6dd623fae"></a><!-- doxytag: member="F_FEATURE_DPMAX" ref="ggb6eab823fac22655a18c061aded99ca71548c7c2b525296eae3598e6dd623fae" args="" -->F_FEATURE_DPMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7b98041b451fffab25ddeeb839c33cefd"></a><!-- doxytag: member="F_FEATURE_DPAVE" ref="ggb6eab823fac22655a18c061aded99ca7b98041b451fffab25ddeeb839c33cefd" args="" -->F_FEATURE_DPAVE</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpave</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca79d585ea0d0e8b67e4f0dd4ecbdedc717"></a><!-- doxytag: member="F_FEATURE_DPSIGMA" ref="ggb6eab823fac22655a18c061aded99ca79d585ea0d0e8b67e4f0dd4ecbdedc717" args="" -->F_FEATURE_DPSIGMA</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpsigma</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7215382cfc61ea1e9f9dd02d7ee6dcfe0"></a><!-- doxytag: member="F_FEATURE_DCMAX" ref="ggb6eab823fac22655a18c061aded99ca7215382cfc61ea1e9f9dd02d7ee6dcfe0" args="" -->F_FEATURE_DCMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_childs">dcmax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7ac4f52fdb31629a68769cdab615e4a8c"></a><!-- doxytag: member="F_FEATURE_DCMIN" ref="ggb6eab823fac22655a18c061aded99ca7ac4f52fdb31629a68769cdab615e4a8c" args="" -->F_FEATURE_DCMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_childs">dcmin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca761571c55306d4bd1ec1399586e36ff66"></a><!-- doxytag: member="F_FEATURE_DCAVE" ref="ggb6eab823fac22655a18c061aded99ca761571c55306d4bd1ec1399586e36ff66" args="" -->F_FEATURE_DCAVE</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_childs">dcave</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7227e8c21a26fe0575629d088802ada84"></a><!-- doxytag: member="F_FEATURE_DSMAX" ref="ggb6eab823fac22655a18c061aded99ca7227e8c21a26fe0575629d088802ada84" args="" -->F_FEATURE_DSMAX</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsmax</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7aab1b5aad778a997306b4a9c2f7436ef"></a><!-- doxytag: member="F_FEATURE_DSMIN" ref="ggb6eab823fac22655a18c061aded99ca7aab1b5aad778a997306b4a9c2f7436ef" args="" -->F_FEATURE_DSMIN</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsmin</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca79fbd8e77584fcf939c64d27568464c66"></a><!-- doxytag: member="F_FEATURE_DSAVE" ref="ggb6eab823fac22655a18c061aded99ca79fbd8e77584fcf939c64d27568464c66" args="" -->F_FEATURE_DSAVE</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsave</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca797d47bda77e8f62a37a247c3b319fc5b"></a><!-- doxytag: member="F_FEATURE_NS" ref="ggb6eab823fac22655a18c061aded99ca797d47bda77e8f62a37a247c3b319fc5b" args="" -->F_FEATURE_NS</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_ns">ns</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca784653675e22ae589cb0631c3f086dd36"></a><!-- doxytag: member="F_FEATURE_PERIM" ref="ggb6eab823fac22655a18c061aded99ca784653675e22ae589cb0631c3f086dd36" args="" -->F_FEATURE_PERIM</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_perimeter">perimeter</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7e5a1c7a3a1814be0b140b273c5629e64"></a><!-- doxytag: member="F_FEATURE_ST" ref="ggb6eab823fac22655a18c061aded99ca7e5a1c7a3a1814be0b140b273c5629e64" args="" -->F_FEATURE_ST</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hole_area">st</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca70c8384b6975223e87f77b49119e5672a"></a><!-- doxytag: member="F_FEATURE_SC" ref="ggb6eab823fac22655a18c061aded99ca70c8384b6975223e87f77b49119e5672a" args="" -->F_FEATURE_SC</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hole_area">sc</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca784e34a2322a4a6dff57b07c6fa0bea5c"></a><!-- doxytag: member="F_FEATURE_HOLES" ref="ggb6eab823fac22655a18c061aded99ca784e34a2322a4a6dff57b07c6fa0bea5c" args="" -->F_FEATURE_HOLES</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_holes">holes</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7f5151be7e371f92a6464f69b287c76b7"></a><!-- doxytag: member="F_FEATURE_HRATIO" ref="ggb6eab823fac22655a18c061aded99ca7f5151be7e371f92a6464f69b287c76b7" args="" -->F_FEATURE_HRATIO</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hole_ratio">hratio</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca775eca193f354cec53aec62c70ac78c9a"></a><!-- doxytag: member="F_FEATURE_PPS" ref="ggb6eab823fac22655a18c061aded99ca775eca193f354cec53aec62c70ac78c9a" args="" -->F_FEATURE_PPS</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_pps">pps</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca79c0e5543cb157d0bd08d6afd7a0746cf"></a><!-- doxytag: member="F_FEATURE_AXISTHETA_CYCLIC" ref="ggb6eab823fac22655a18c061aded99ca79c0e5543cb157d0bd08d6afd7a0746cf" args="" -->F_FEATURE_AXISTHETA_CYCLIC</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a> の巡回判定版 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca71fe00353ee0275532751fc05989a6295"></a><!-- doxytag: member="F_FEATURE_FMAX_THETA_CYCLIC" ref="ggb6eab823fac22655a18c061aded99ca71fe00353ee0275532751fc05989a6295" args="" -->F_FEATURE_FMAX_THETA_CYCLIC</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_feret_maxmin">fmax_theta</a> の巡回判定版 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca76430378d0b329dbbd018943289c4fc19"></a><!-- doxytag: member="F_FEATURE_FMIN_THETA_CYCLIC" ref="ggb6eab823fac22655a18c061aded99ca76430378d0b329dbbd018943289c4fc19" args="" -->F_FEATURE_FMIN_THETA_CYCLIC</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_feret_maxmin">fmin_theta</a> の巡回判定版 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca75cd2362c8d196bfec93e4fb75303d892"></a><!-- doxytag: member="F_FEATURE_M10" ref="ggb6eab823fac22655a18c061aded99ca75cd2362c8d196bfec93e4fb75303d892" args="" -->F_FEATURE_M10</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M10</a> == F_MEATURE_SUMX </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca735f9f93918c6fa51e5b9873c25879e9f"></a><!-- doxytag: member="F_FEATURE_M01" ref="ggb6eab823fac22655a18c061aded99ca735f9f93918c6fa51e5b9873c25879e9f" args="" -->F_FEATURE_M01</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M01</a> == F_MEATURE_SUMY </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca75a457593ec89d1c9dba9a672666aa636"></a><!-- doxytag: member="F_FEATURE_M20" ref="ggb6eab823fac22655a18c061aded99ca75a457593ec89d1c9dba9a672666aa636" args="" -->F_FEATURE_M20</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M20</a> == F_MEATURE_SUMX2 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca718a6403e4eb860358b49c2878c94fca2"></a><!-- doxytag: member="F_FEATURE_M02" ref="ggb6eab823fac22655a18c061aded99ca718a6403e4eb860358b49c2878c94fca2" args="" -->F_FEATURE_M02</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M02</a> == F_MEATURE_SUMY2 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca78f795f913a24ffc19e92d563bde75c8e"></a><!-- doxytag: member="F_FEATURE_M11" ref="ggb6eab823fac22655a18c061aded99ca78f795f913a24ffc19e92d563bde75c8e" args="" -->F_FEATURE_M11</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M11</a> == F_MEATURE_SUMXY </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7ab88e5cb7dae57e712d609f2ad8bc32c"></a><!-- doxytag: member="F_FEATURE_M30" ref="ggb6eab823fac22655a18c061aded99ca7ab88e5cb7dae57e712d609f2ad8bc32c" args="" -->F_FEATURE_M30</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M30</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7ca5901fed24257cc4edd3c73282fc052"></a><!-- doxytag: member="F_FEATURE_M03" ref="ggb6eab823fac22655a18c061aded99ca7ca5901fed24257cc4edd3c73282fc052" args="" -->F_FEATURE_M03</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M03</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7739a143273584e7b7296f38be880ec94"></a><!-- doxytag: member="F_FEATURE_M21" ref="ggb6eab823fac22655a18c061aded99ca7739a143273584e7b7296f38be880ec94" args="" -->F_FEATURE_M21</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M21</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7d39ca5ff1ea7d1700aa31c63fd2c2f10"></a><!-- doxytag: member="F_FEATURE_M12" ref="ggb6eab823fac22655a18c061aded99ca7d39ca5ff1ea7d1700aa31c63fd2c2f10" args="" -->F_FEATURE_M12</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_moment">モーメント M12</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7da3dcc585a0f2cdfecb98751e608ac0a"></a><!-- doxytag: member="F_FEATURE_MG20" ref="ggb6eab823fac22655a18c061aded99ca7da3dcc585a0f2cdfecb98751e608ac0a" args="" -->F_FEATURE_MG20</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG20</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca745f46b4cc67f0a209e284095af8b182d"></a><!-- doxytag: member="F_FEATURE_MG02" ref="ggb6eab823fac22655a18c061aded99ca745f46b4cc67f0a209e284095af8b182d" args="" -->F_FEATURE_MG02</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG02</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7161b1fa0a9a2212a494a866797b37eff"></a><!-- doxytag: member="F_FEATURE_MG11" ref="ggb6eab823fac22655a18c061aded99ca7161b1fa0a9a2212a494a866797b37eff" args="" -->F_FEATURE_MG11</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG11</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca716965a7267e173cc8199b7ac33fb1237"></a><!-- doxytag: member="F_FEATURE_MG30" ref="ggb6eab823fac22655a18c061aded99ca716965a7267e173cc8199b7ac33fb1237" args="" -->F_FEATURE_MG30</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG30</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7e44020f956901936ed8318de518d1728"></a><!-- doxytag: member="F_FEATURE_MG03" ref="ggb6eab823fac22655a18c061aded99ca7e44020f956901936ed8318de518d1728" args="" -->F_FEATURE_MG03</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG03</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca731b8d2acb354608abcb24c9742ec56b2"></a><!-- doxytag: member="F_FEATURE_MG21" ref="ggb6eab823fac22655a18c061aded99ca731b8d2acb354608abcb24c9742ec56b2" args="" -->F_FEATURE_MG21</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG21</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7be567da9cbbfc68c4b5105e761595623"></a><!-- doxytag: member="F_FEATURE_MG12" ref="ggb6eab823fac22655a18c061aded99ca7be567da9cbbfc68c4b5105e761595623" args="" -->F_FEATURE_MG12</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG12</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7fef7af5c6a17a6532bc91926af8dea33"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT0" ref="ggb6eab823fac22655a18c061aded99ca7fef7af5c6a17a6532bc91926af8dea33" args="" -->F_FEATURE_HU_MOMENT0</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量0</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca761d4aab2ca6fbaa73367b7417f641f64"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT1" ref="ggb6eab823fac22655a18c061aded99ca761d4aab2ca6fbaa73367b7417f641f64" args="" -->F_FEATURE_HU_MOMENT1</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量1</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca738dc24d9fc99dbfb3d58e239a49aa9cd"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT2" ref="ggb6eab823fac22655a18c061aded99ca738dc24d9fc99dbfb3d58e239a49aa9cd" args="" -->F_FEATURE_HU_MOMENT2</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量2</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca72719086ab7cdbd662ff0a3dc5f56733a"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT3" ref="ggb6eab823fac22655a18c061aded99ca72719086ab7cdbd662ff0a3dc5f56733a" args="" -->F_FEATURE_HU_MOMENT3</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量3</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7726fbc49db280f1a36d40e9eca006169"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT4" ref="ggb6eab823fac22655a18c061aded99ca7726fbc49db280f1a36d40e9eca006169" args="" -->F_FEATURE_HU_MOMENT4</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量4</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7e6cd2aee27138968e43c414c98f6ac9b"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT5" ref="ggb6eab823fac22655a18c061aded99ca7e6cd2aee27138968e43c414c98f6ac9b" args="" -->F_FEATURE_HU_MOMENT5</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量5</a> </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggb6eab823fac22655a18c061aded99ca7bf46cc2524e2cc1d0ab0335690573a31"></a><!-- doxytag: member="F_FEATURE_HU_MOMENT6" ref="ggb6eab823fac22655a18c061aded99ca7bf46cc2524e2cc1d0ab0335690573a31" args="" -->F_FEATURE_HU_MOMENT6</em>&nbsp;</td><td>
+<a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量6</a> </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="gfa39d9eee7e6b75f80880061fee35240"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_list" ref="gfa39d9eee7e6b75f80880061fee35240" args="(FHANDLE hresult, F_MEASURE_FILTER_RANGE *filters, UINT filter_num, UINT **blob_numbers, UINT *num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_list           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__MEASURE__FILTER__RANGE.html">F_MEASURE_FILTER_RANGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>filters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT **&nbsp;</td>
+          <td class="paramname"> <em>blob_numbers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブ番号配列の取得 
+<p>
+指定の特徴量範囲にマッチするブローブのブローブ番号を配列で返します。 なお、背景ブローブ及び無効ブローブの番号は出力ブローブ番号配列には含まれません。 また、フィルタが２種以上指定されているとき( <em>filter_num</em> &gt; 1 )は、 全ての条件のANDでの評価となります。<p>
+返される配列は内部で <a class="el" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc()</a> を使用してメモリを確保し、そのポインタを <em>*blob_numbers</em> にて返します。 関数へのエントリー時、パラメータ <em>blob_numbers</em> の値 <em>*blob_numbers</em> はNULLでなければいけません。 <em>*blob_numbers</em> に返された配列は利用後 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> にてメモリを解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filters</em>&nbsp;</td><td>取得条件フィルタ配列 <br>
+ <em>filter_num</em> == 0 の場合は NULL を指定できます。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td><em>filters</em> の配列サイズ(単位：要素数, <em>filter_num</em> &gt; 0) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>blob_numbers</em>&nbsp;</td><td>ブローブ番号配列 (*blob_numbers=NULL) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td><em>blob_numbers</em> の配列サイズ(単位：要素数)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> パラメータに指定されたブローブ解析結果ハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__result.html#g4f240f10477460f374defc2ff00d209a" title="ブローブ番号配列の特徴量に基づくフィルタリング">fnFIE_measure_refilter_list()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE himg=NULL;
+    FHANDLE measure_result;
+    <a class="code" href="structF__MEASURE__PARAMS.html" title="ブローブ解析処理パラメータ">F_MEASURE_PARAMS</a> param;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> orgin;
+    INT exerr;
+    UINT *bloblist=NULL, blobnum, i;
+
+    <a class="code" href="structF__MEASURE__FILTER__RANGE.html" title="フィルタ条件指定">F_MEASURE_FILTER_RANGE</a> filters[2];
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 適当な２値画像を用意する - 画像ファイル名は適宜変更すること</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"test.bmp"</span>, &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 座標原点の指定</span>
+    orgin.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    orgin.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+
+    <span class="comment">// パラメータ設定</span>
+    memset( &amp;param, 0, <span class="keyword">sizeof</span>(<a class="code" href="structF__MEASURE__PARAMS.html" title="ブローブ解析処理パラメータ">F_MEASURE_PARAMS</a>) );
+    param.<a class="code" href="structF__MEASURE__PARAMS.html#9ba122ef13d4c79988806461d5484cad" title="対象色モード">color_mode</a> = <a class="code" href="group__fie__measure__main.html#ggfe80b71496c984d9459048d428fcd746c8e9f5985fa0cbac5db07ed4e16a309f" title="前景が白(1)、背景が黒(0)">F_MEASURE_WHITEFG_BLACKBG</a>;
+    param.<a class="code" href="structF__MEASURE__PARAMS.html#35810a826947a74b9d854cbbad6b9ffa" title="連結モード">neighborhood</a> = 8;
+
+    <span class="comment">// メジャー実行</span>
+    measure_result = <a class="code" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute</a>( himg, orgin, &amp;param, &amp;exerr );
+
+
+    <span class="comment">// 面積が 10～1000 で、且つ xdiffが 2～10 のブローブのブローブ番号リストを取得。</span>
+    filters[0].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#f02d31f33a3e32b8fc02aff0dfd208af">type</a> = <a class="code" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca76139c2155001308208279057255b3432" title="area">F_FEATURE_AREA</a>;
+    filters[0].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#7d84d78adea851f567bb312d0938c956">min</a> = 10;
+    filters[0].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#663815f6b0ab2c7b3e4d7b7a218f7827">max</a> = 1000;
+    filters[1].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#f02d31f33a3e32b8fc02aff0dfd208af">type</a> = <a class="code" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca793f740c72cb35774b2e03bc4fb537987" title="xdiff">F_FEATURE_XDIFF</a>;
+    filters[1].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#7d84d78adea851f567bb312d0938c956">min</a> = 2;
+    filters[1].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#663815f6b0ab2c7b3e4d7b7a218f7827">max</a> = 10;
+    <a class="code" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240" title="ブローブ番号配列の取得">fnFIE_measure_get_list</a>( measure_result, filters, 2, &amp;bloblist, &amp;blobnum );
+
+    <span class="comment">// 得られたブローブ番号列を表示</span>
+    printf( <span class="stringliteral">"FILTER1: "</span> );
+    <span class="keywordflow">for</span>( i=0; i&lt;blobnum; i++ ) printf( <span class="stringliteral">"%d, "</span>, bloblist[i] );
+    printf( <span class="stringliteral">"\n"</span> );
+
+
+    <span class="comment">// さらに ydiff が 2～10 のブローブを取り出す。</span>
+    filters[0].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#f02d31f33a3e32b8fc02aff0dfd208af">type</a> = <a class="code" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7f5306ffcbf177dc0376be01f0286da48" title="ydiff">F_FEATURE_YDIFF</a>;
+    filters[0].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#7d84d78adea851f567bb312d0938c956">min</a> = 2;
+    filters[0].<a class="code" href="structF__MEASURE__FILTER__RANGE.html#663815f6b0ab2c7b3e4d7b7a218f7827">max</a> = 10;
+    <a class="code" href="group__fie__measure__result.html#g4f240f10477460f374defc2ff00d209a" title="ブローブ番号配列の特徴量に基づくフィルタリング">fnFIE_measure_refilter_list</a>( measure_result, filters, 1, bloblist, &amp;blobnum );
+    
+    <span class="comment">// 得られたブローブ番号列を表示</span>
+    printf( <span class="stringliteral">"FILTER2: "</span> );
+    <span class="keywordflow">for</span>( i=0; i&lt;blobnum; i++ ) printf( <span class="stringliteral">"%d, "</span>, bloblist[i] );
+    printf( <span class="stringliteral">"\n"</span> );
+
+    
+    <span class="comment">// ブローブ番号配列は使い終わったらユーザー側で解放しなければならない。</span>
+    <span class="comment">// 解放には必ず fnOAL_free を使うこと。</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( bloblist );
+    
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( measure_result );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4f240f10477460f374defc2ff00d209a"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_refilter_list" ref="g4f240f10477460f374defc2ff00d209a" args="(FHANDLE hresult, F_MEASURE_FILTER_RANGE *filters, UINT filter_num, UINT *blob_numbers, UINT *num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_refilter_list           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__MEASURE__FILTER__RANGE.html">F_MEASURE_FILTER_RANGE</a> *&nbsp;</td>
+          <td class="paramname"> <em>filters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>filter_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>blob_numbers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブ番号配列の特徴量に基づくフィルタリング 
+<p>
+<em>blob_numbers</em> に渡されたブローブ番号配列から、 <em>filters</em> にて指定される 特徴量範囲にマッチしないブローブのブローブ番号を取り除きます。 なお、背景ブローブ及び無効ブローブの番号は出力ブローブ番号配列には含まれません。 また、フィルタが２種以上指定されているとき( <em>filter_num</em> &gt; 1 )は、 全ての条件のANDでの評価となります。<p>
+フィルタ後の配列は前方に詰められ、残りの部分は不定領域になります。 <div align="center">
+<img src="measure_filter_by_features.png" alt="measure_filter_by_features.png">
+<p><strong>Fig. 処理説明(num=15の時の例)</strong></p></div>
+ <dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filters</em>&nbsp;</td><td>取得条件フィルタ配列 <br>
+ <em>filter_num</em> == 0 の場合は NULLを指定できます。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_num</em>&nbsp;</td><td><em>filters</em> の配列サイズ(単位：要素数, <em>filter_num</em> &gt; 0) </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>blob_numbers</em>&nbsp;</td><td>ブローブ番号配列 </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td><em>blob_numbers</em> の配列サイズ(単位：要素数)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> パラメータに指定されたブローブ解析結果ハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240" title="ブローブ番号配列の取得">fnFIE_measure_get_list()</a></dd></dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><a class="el" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240" title="ブローブ番号配列の取得">fnFIE_measure_get_list()</a> の例を参照。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g34d4caf19a85738dd93a22eedd38f992"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_sort_list" ref="g34d4caf19a85738dd93a22eedd38f992" args="(FHANDLE hresult, enum f_measure_feature_type key1st, INT direc1st, enum f_measure_feature_type key2nd, INT direc2nd, enum f_measure_feature_type key3rd, INT direc3rd, UINT *numbers, UINT num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_sort_list           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a>&nbsp;</td>
+          <td class="paramname"> <em>key1st</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>direc1st</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a>&nbsp;</td>
+          <td class="paramname"> <em>key2nd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>direc2nd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__measure__result.html#gb6eab823fac22655a18c061aded99ca7">f_measure_feature_type</a>&nbsp;</td>
+          <td class="paramname"> <em>key3rd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>direc3rd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>numbers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブの特徴量に基づくソーティング 
+<p>
+<em>numbers</em> パラメータにて渡されたブローブ番号の配列を、 それぞれのブローブの指定特徴量に従ってソートします。<p>
+ソートキーには下記の値のうち、何れかを指定します。 下記にリストされていない値を指定した場合は、F_FEATURE_NONE が指定された場合と同じになります。<ul>
+<li><code>F_FEATURE_NONE</code> 0 (ソートしない)</li><li><code>F_FEATURE_COLOR</code> ブローブ色</li><li><code>F_FEATURE_XMIN</code> <a class="el" href="group__fie__features.html#feature_xyrange">xmin</a></li><li><code>F_FEATURE_XMAX</code> <a class="el" href="group__fie__features.html#feature_xyrange">xmax</a></li><li><code>F_FEATURE_YMIN</code> <a class="el" href="group__fie__features.html#feature_xyrange">ymin</a></li><li><code>F_FEATURE_YMAX</code> <a class="el" href="group__fie__features.html#feature_xyrange">ymax</a></li><li><code>F_FEATURE_XMIN_AT_YMIN</code> <a class="el" href="group__fie__features.html#feature_maxminpos">xmin_at_ymin</a></li><li><code>F_FEATURE_XMAX_AT_YMAX</code> <a class="el" href="group__fie__features.html#feature_maxminpos">xmax_at_ymax</a></li><li><code>F_FEATURE_YMIN_AT_XMAX</code> <a class="el" href="group__fie__features.html#feature_maxminpos">ymin_at_xmax</a></li><li><code>F_FEATURE_YMAX_AT_XMIN</code> <a class="el" href="group__fie__features.html#feature_maxminpos">ymax_at_xmin</a></li><li><code>F_FEATURE_XDIFF</code> <a class="el" href="group__fie__features.html#feature_xydiff">xdiff</a></li><li><code>F_FEATURE_YDIFF</code> <a class="el" href="group__fie__features.html#feature_xydiff">ydiff</a></li><li><code>F_FEATURE_SUMX</code> <a class="el" href="group__fie__features.html#feature_moment1">sumx</a></li><li><code>F_FEATURE_M10</code> F_FEATURE_SUMX のシノニム</li><li><code>F_FEATURE_SUMY</code> <a class="el" href="group__fie__features.html#feature_moment1">sumy</a></li><li><code>F_FEATURE_M01</code> F_FEATURE_SUMY のシノニム</li><li><code>F_FEATURE_SUMX2</code> <a class="el" href="group__fie__features.html#feature_moment2">sumx2</a></li><li><code>F_FEATURE_M20</code> F_FEATURE_SUMX2 のシノニム</li><li><code>F_FEATURE_SUMY2</code> <a class="el" href="group__fie__features.html#feature_moment2">sumy2</a></li><li><code>F_FEATURE_M02</code> F_FEATURE_SUMY2 のシノニム</li><li><code>F_FEATURE_SUMXY</code> <a class="el" href="group__fie__features.html#feature_moment2">sumxy</a></li><li><code>F_FEATURE_M11</code> F_FEATURE_SUMXY のシノニム</li><li><code>F_FEATURE_M30</code> <a class="el" href="group__fie__features.html#feature_moment">M30</a></li><li><code>F_FEATURE_M03</code> <a class="el" href="group__fie__features.html#feature_moment">M03</a></li><li><code>F_FEATURE_M21</code> <a class="el" href="group__fie__features.html#feature_moment">M21</a></li><li><code>F_FEATURE_M12</code> <a class="el" href="group__fie__features.html#feature_moment">M12</a></li><li><code>F_FEATURE_MG20</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG20</a></li><li><code>F_FEATURE_MG02</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG02</a></li><li><code>F_FEATURE_MG11</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG11</a></li><li><code>F_FEATURE_MG30</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG30</a></li><li><code>F_FEATURE_MG03</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG03</a></li><li><code>F_FEATURE_MG21</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG21</a></li><li><code>F_FEATURE_MG12</code> <a class="el" href="group__fie__features.html#feature_central_moment">重心モーメント MG12</a></li><li><code>F_FEATURE_HU_MOMENT0</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量0</a></li><li><code>F_FEATURE_HU_MOMENT1</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量1</a></li><li><code>F_FEATURE_HU_MOMENT2</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量2</a></li><li><code>F_FEATURE_HU_MOMENT3</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量3</a></li><li><code>F_FEATURE_HU_MOMENT4</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量4</a></li><li><code>F_FEATURE_HU_MOMENT5</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量5</a></li><li><code>F_FEATURE_HU_MOMENT6</code> <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">Huモーメント不変量6</a></li><li><code>F_FEATURE_AREA</code> <a class="el" href="group__fie__features.html#feature_area">area</a></li><li><code>F_FEATURE_CENTERX</code> <a class="el" href="group__fie__features.html#feature_center">centerx</a></li><li><code>F_FEATURE_CENTERY</code> <a class="el" href="group__fie__features.html#feature_center">centery</a></li><li><code>F_FEATURE_RECT1AREA</code> <a class="el" href="group__fie__features.html#feature_rect1_area">rect1_area</a></li><li><code>F_FEATURE_RECT1LRATIO</code> <a class="el" href="group__fie__features.html#feature_rect1_lratio">rect1_lratio</a></li><li><code>F_FEATURE_RECT1SRATIO</code> <a class="el" href="group__fie__features.html#feature_rect1_sratio">rect1_sratio</a></li><li><code>F_FEATURE_LSIZE</code> <a class="el" href="group__fie__features.html#feature_rect2_size">lsize</a></li><li><code>F_FEATURE_WSIZE</code> <a class="el" href="group__fie__features.html#feature_rect2_size">wsize</a></li><li><code>F_FEATURE_RECT2AREA</code> <a class="el" href="group__fie__features.html#feature_rect2_area">rect2_area</a></li><li><code>F_FEATURE_RECT2LRATIO</code> <a class="el" href="group__fie__features.html#feature_rect2_lratio">rect2_lratio</a></li><li><code>F_FEATURE_RECT2SRATIO</code> <a class="el" href="group__fie__features.html#feature_rect2_sratio">rect2_sratio</a></li><li><code>F_FEATURE_MAJORAXIS</code> <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">majoraxis</a></li><li><code>F_FEATURE_MINORAXIS</code> <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">minoraxis</a></li><li><code>F_FEATURE_AXISTHETA</code> <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a></li><li><code>F_FEATURE_AXISTHETA_CYCLIC</code> F_FEATURE_AXISTHETA が指定された場合と同じ動作をします</li><li><code>F_FEATURE_AXISRATIO</code> <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axisratio</a></li><li><code>F_FEATURE_DPMIN</code> <a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmin</a></li><li><code>F_FEATURE_DPMAX</code> <a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmax</a></li><li><code>F_FEATURE_DPAVE</code> <a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpave</a></li><li><code>F_FEATURE_DPSIGMA</code> <a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpsigma</a></li><li><code>F_FEATURE_ST</code> <a class="el" href="group__fie__features.html#feature_hole_area">st</a></li><li><code>F_FEATURE_SC</code> <a class="el" href="group__fie__features.html#feature_hole_area">sc</a></li><li><code>F_FEATURE_HOLES</code> <a class="el" href="group__fie__features.html#feature_holes">holes</a></li><li><code>F_FEATURE_HRATIO</code> <a class="el" href="group__fie__features.html#feature_hole_ratio">hratio</a></li><li><code>F_FEATURE_PERIM</code> <a class="el" href="group__fie__features.html#feature_perimeter">perim</a></li><li><code>F_FEATURE_DIAMETER_EQUIDISK</code> <a class="el" href="group__fie__features.html#feature_equivalent_disk">diameter_equidisk</a></li><li><code>F_FEATURE_DIAMETER_EQUICIRCLE</code> <a class="el" href="group__fie__features.html#feature_equivalent_circle">diameter_equicircle</a></li><li><code>F_FEATURE_CIRCULARITY1</code> <a class="el" href="group__fie__features.html#feature_circularity1">circularity1</a></li><li><code>F_FEATURE_CIRCULARITY2</code> <a class="el" href="group__fie__features.html#feature_circularity2">circularity2</a></li><li><code>F_FEATURE_CIRCULARITY3</code> <a class="el" href="group__fie__features.html#feature_circularity3">circularity3</a></li><li><code>F_FEATURE_CONVEX_AREA</code> <a class="el" href="group__fie__features.html#feature_convexfeature">convex_area</a></li><li><code>F_FEATURE_CONVEX_PERIM</code> <a class="el" href="group__fie__features.html#feature_convexfeature">convex_perim</a></li><li><code>F_FEATURE_CONVEX_AREARATIO</code> <a class="el" href="group__fie__features.html#feature_convexratio">convex_arearatio</a></li><li><code>F_FEATURE_CONVEX_PERIMRATIO</code> <a class="el" href="group__fie__features.html#feature_convexratio">convex_perimratio</a></li><li><code>F_FEATURE_FERET_MAX</code> <a class="el" href="group__fie__features.html#feature_feret_maxmin">feretmax</a></li><li><code>F_FEATURE_FERET_MIN</code> <a class="el" href="group__fie__features.html#feature_feret_maxmin">feretmin</a></li><li><code>F_FEATURE_FMAX_THETA</code> <a class="el" href="group__fie__features.html#feature_feret_maxmin">fmax_theta</a></li><li><code>F_FEATURE_FMAX_THETA_CYCLIC</code> F_FEATURE_FMAX_THETA が指定された場合と同じ動作をします</li><li><code>F_FEATURE_FMIN_THETA</code> <a class="el" href="group__fie__features.html#feature_feret_maxmin">fmin_theta</a></li><li><code>F_FEATURE_FMIN_THETA_CYCLIC</code> F_FEATURE_FMIN_THETA が指定された場合と同じ動作をします</li><li><code>F_FEATURE_DCMIN</code> <a class="el" href="group__fie__features.html#feature_distance_to_childs">dcmin</a></li><li><code>F_FEATURE_DCMAX</code> <a class="el" href="group__fie__features.html#feature_distance_to_childs">dcmax</a></li><li><code>F_FEATURE_DCAVE</code> <a class="el" href="group__fie__features.html#feature_distance_to_childs">dcave</a></li><li><code>F_FEATURE_DSMAX</code> <a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsmax</a></li><li><code>F_FEATURE_DSMIN</code> <a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsmin</a></li><li><code>F_FEATURE_DSAVE</code> <a class="el" href="group__fie__features.html#feature_distance_to_siblings">dsave</a></li><li><code>F_FEATURE_NS</code> <a class="el" href="group__fie__features.html#feature_ns">sibling_num</a></li><li><code>F_FEATURE_PPS</code> <a class="el" href="group__fie__features.html#feature_pps">pps</a></li></ul>
+<p>
+ソート対象の特徴量は <em>key1st</em>, <em>key2nd</em>, <em>key3rd</em> にて３番目まで指定することが出来ます。 まず <em>key1st</em> でソートし <em>key1st</em> で同じ値だった物は <em>key2nd</em> でソートされ、 さらに <em>key2nd</em> でも同じだった物は <em>key3rd</em> でソートされます。 ソートキーが３つも必要ない場合は、下記のように指定します。これに従わなかった場合はパラメータエラーとなります。<p>
+<ul>
+<li>ソートキーが１つで良い場合は <em>key1st</em> にキーを設定し、<em>key2nd</em>, <em>key3rd</em> には F_FEATURE_NONE を指定。 </li>
+<li>ソートキーが２つで良い場合は <em>key1st</em>, <em>key2nd</em> にキーを設定し <em>key3rd</em> には F_FEATURE_NONE を指定。</li>
+</ul>
+なお、３つのソートキーが全てF_FEATURE_NONEに設定された場合はパラメータエラーとなります。<p>
+<em>direc1st</em>, <em>direc2nd</em>, <em>direc3rd</em> は各キーでのソート順（昇順or降順）を決めるパラメータです。 昇順にソートする場合は 0 を、 降順にソートする場合は 1 を指定してください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><em>numbers</em> に渡すブローブ番号は、すべて有効ブローブのブローブ番号でなければなりません。 無効ブローブのブローブ番号が含まれていた場合には、パラメータエラーとなります。</dd></dl>
+<dl class="user" compact><dt><b>角度特徴量</b></dt><dd>角度特徴量をソート対象とした場合、（下記にリストされるソートキー）ソートは各特徴量の値そのままに行われます。<ul>
+<li><code>F_FEATURE_AXISTHETA</code> <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">axistheta</a></li><li><code>F_FEATURE_AXISTHETA_CYCLIC</code> F_FEATURE_AXISTHETA が指定された場合と同じ動作をします</li><li><code>F_FEATURE_FMAX_THETA</code> <a class="el" href="group__fie__features.html#feature_feret_maxmin">fmax_theta</a></li><li><code>F_FEATURE_FMAX_THETA_CYCLIC</code> F_FEATURE_FMAX_THETA が指定された場合と同じ動作をします</li><li><code>F_FEATURE_FMIN_THETA</code> <a class="el" href="group__fie__features.html#feature_feret_maxmin">fmin_theta</a></li><li><code>F_FEATURE_FMIN_THETA_CYCLIC</code> F_FEATURE_FMIN_THETA が指定された場合と同じ動作をします</li></ul>
+つまり、これらの特徴量の値域は <img class="formulaInl" alt="$ \frac{-\pi}{2} \le \theta < \frac{\pi}{2} $" src="form_394.png"> ですので、 昇順にソートした場合、 <img class="formulaInl" alt="$-\frac{\pi}{2}$" src="form_748.png"> が最初の要素に、 <img class="formulaInl" alt="$\frac{\pi}{2}$" src="form_749.png"> が 最後の要素になるよう並び替えられることになります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>key1st</em>&nbsp;</td><td>最優先ソートキー（ソート対象特徴量） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direc1st</em>&nbsp;</td><td>key1stのソート順 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>key2nd</em>&nbsp;</td><td>２番目に優先されるソートキー（ソート対象特徴量） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direc2nd</em>&nbsp;</td><td>key2ndのソート順 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>key3rd</em>&nbsp;</td><td>３番目に優先されるソートキー（ソート対象特徴量） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direc3rd</em>&nbsp;</td><td>key3rdのソート順 </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>numbers</em>&nbsp;</td><td>ソート対象ブローブ番号配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>numbersの要素数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresutl</em> に渡された結果ハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE himg=NULL;
+    FHANDLE measure_result;
+    <a class="code" href="structF__MEASURE__PARAMS.html" title="ブローブ解析処理パラメータ">F_MEASURE_PARAMS</a> param;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> orgin;
+    INT exerr;
+    UINT *bloblist=NULL, blobnum, i;
+
+    <a class="code" href="structF__MEASURE__FILTER__RANGE.html" title="フィルタ条件指定">F_MEASURE_FILTER_RANGE</a> filters[2];
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 適当な２値画像を用意する - 画像ファイル名は適宜変更すること</span>
+    <a class="code" href="group__fie__file__image.html#gd328309665f32a8897ef428299a0816a" title="ビットマップ読込">fnFIE_load_bmp</a>( <span class="stringliteral">"test.bmp"</span>, &amp;himg, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">// 座標原点の指定</span>
+    orgin.<a class="code" href="structPNT__T.html#4ff9a28ef8ff1a15f3536f989ad05010">x</a> = 0;
+    orgin.<a class="code" href="structPNT__T.html#5dadbd324332104d1ccf225671098a30">y</a> = 0;
+    <span class="comment">// パラメータ設定</span>
+    memset( &amp;param, 0, <span class="keyword">sizeof</span>(<a class="code" href="structF__MEASURE__PARAMS.html" title="ブローブ解析処理パラメータ">F_MEASURE_PARAMS</a>) );
+    param.<a class="code" href="structF__MEASURE__PARAMS.html#9ba122ef13d4c79988806461d5484cad" title="対象色モード">color_mode</a> = <a class="code" href="group__fie__measure__main.html#ggfe80b71496c984d9459048d428fcd746c8e9f5985fa0cbac5db07ed4e16a309f" title="前景が白(1)、背景が黒(0)">F_MEASURE_WHITEFG_BLACKBG</a>;
+    param.<a class="code" href="structF__MEASURE__PARAMS.html#35810a826947a74b9d854cbbad6b9ffa" title="連結モード">neighborhood</a> = 8;
+
+    <span class="comment">// メジャー実行</span>
+    measure_result = <a class="code" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute</a>( himg, orgin, &amp;param, &amp;exerr );
+    <span class="comment">// 有効なブローブのブローブ番号リストを取得</span>
+    <a class="code" href="group__fie__measure__result.html#gfa39d9eee7e6b75f80880061fee35240" title="ブローブ番号配列の取得">fnFIE_measure_get_list</a>( measure_result, filters, 2, &amp;bloblist, &amp;blobnum );
+
+
+    <span class="comment">// 面積の小さい順にブローブ番号リストをソートする</span>
+    <a class="code" href="group__fie__measure__result.html#g34d4caf19a85738dd93a22eedd38f992" title="ブローブの特徴量に基づくソーティング">fnFIE_measure_sort_list</a>( measure_result,
+                             <a class="code" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca76139c2155001308208279057255b3432" title="area">F_FEATURE_AREA</a>, 0, <a class="code" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7383fe6a3010da1c8fd783ce1c0e88a72" title="ソート対象無し">F_FEATURE_NONE</a>, 0, <a class="code" href="group__fie__measure__result.html#ggb6eab823fac22655a18c061aded99ca7383fe6a3010da1c8fd783ce1c0e88a72" title="ソート対象無し">F_FEATURE_NONE</a>, 0,
+                             bloblist, blobnum );
+
+    <span class="comment">// 得られたブローブ番号列を表示</span>
+    printf( <span class="stringliteral">"SORTBY AREA: "</span> );
+    <span class="keywordflow">for</span>( i=0; i&lt;blobnum; i++ ) printf( <span class="stringliteral">"%d, "</span>, bloblist[i] );
+    printf( <span class="stringliteral">"\n"</span> );
+
+
+    <span class="comment">// 配置順でソートし直す</span>
+    <a class="code" href="group__fie__measure__result.html#gc26e1927547564d4816ca57f66dce674" title="ブローブの位置情報に基づくソーティング">fnFIE_measure_specialsort_list</a>( measure_result,
+                                    <a class="code" href="group__fie__measure__result.html#ggd193d86d53262919d9d3adce9f4ea764d747af05b17a6b0f27fbee0896ad28b9" title="上の行から、左-&amp;gt;右の順に配置">F_MEASURE_UP_TO_LEFT_RIGHT</a>, 0.0,
+                                    bloblist, blobnum );
+
+    <span class="comment">// 得られたブローブ番号列を表示</span>
+    printf( <span class="stringliteral">"SORTBY ARRANGEMENT: "</span> );
+    <span class="keywordflow">for</span>( i=0; i&lt;blobnum; i++ ) printf( <span class="stringliteral">"%d, "</span>, bloblist[i] );
+    printf( <span class="stringliteral">"\n"</span> );
+    
+
+    <span class="comment">// ブローブ番号配列は使い終わったらユーザー側で解放しなければならない。</span>
+    <span class="comment">// 解放には必ず fnOAL_free を使うこと</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( bloblist );
+    
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( measure_result );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc26e1927547564d4816ca57f66dce674"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_specialsort_list" ref="gc26e1927547564d4816ca57f66dce674" args="(FHANDLE hresult, enum f_measure_special_sort_order order, DOUBLE theta, UINT *numbers, UINT num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_specialsort_list           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__measure__result.html#gd193d86d53262919d9d3adce9f4ea764">f_measure_special_sort_order</a>&nbsp;</td>
+          <td class="paramname"> <em>order</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>numbers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブの位置情報に基づくソーティング 
+<p>
+当社の従来ライブラリ(FVL, FVX など)と同様のアルゴリズムによって、 ブローブ列を２次元座標情報に基づいて並べ替えます。<p>
+並べ替えの方向は <em>order</em> パラメータと <em>theta</em> パラメータによって決まります。 <em>order</em> は並び順の方向を決める物で、下図のような意味となります。<p>
+<div align="center">
+<img src="measure_specialsort_order.png" alt="measure_specialsort_order.png">
+</div>
+<p>
+<em>theta</em> は <em>order</em> で指定する並び順を任意の角度に傾けるパラメータです。<p>
+<div align="center">
+<img src="measure_specialsort_order_theta.png" alt="measure_specialsort_order_theta.png">
+<p><strong>order==UP_TO_LEFT_RIGHT, theta==π/6 の場合の例</strong></p></div>
+ <dl class="attention" compact><dt><b>注意:</b></dt><dd><em>numbers</em> に渡すブローブ番号は、すべて有効ブローブのブローブ番号でなければなりません。 無効ブローブのブローブ番号が含まれていた場合には、パラメータエラーとなります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>order</em>&nbsp;</td><td>並び替え順 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>回転角 </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>numbers</em>&nbsp;</td><td>並び替えるブローブ番号の配列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>ブローブ番号配列( <em>numbers</em> )の要素数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された。 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresutl</em> に渡された結果ハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>example code</b></dt><dd><a class="el" href="group__fie__measure__result.html#g34d4caf19a85738dd93a22eedd38f992" title="ブローブの特徴量に基づくソーティング">fnFIE_measure_sort_list()</a> の例を参照 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g215dbd234382563737797dfbd76c03d7"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_region" ref="g215dbd234382563737797dfbd76c03d7" args="(FHANDLE hresult, UINT blobno, INT *exerr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_measure_get_region           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>exerr</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION取得 
+<p>
+ブローブ解析結果から、指定のブローブの領域情報をリージョンオブジェクトとして取得します。 <em>blobno</em> に指定するブローブ番号は、有効ブローブの番号でなければなりません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は ブローブ番号0番（背景）は番号は存在するが、解析は行われていない仮想ブローブになるため、 取得不可能です。</dd></dl>
+<dl class="user" compact><dt><b>連結性について</b></dt><dd>取得されるリージョンオブジェクトの連結性設定( <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77">fnFIE_region_set_connection</a> ) は ブローブの連結性設定を受け継ぎます。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>例：８連結、白前景-黒背景でブローブ解析を行ったとき<ul>
+<li>前景ブローブ -&gt; リージョンは８連結</li><li>背景ブローブ -&gt; リージョンは４連結</li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>特徴量について</b></dt><dd>ブローブ解析で既に計算済みで保存されている特徴量については、 取得されるリージョンオブジェクトにも計算結果がコピーされます。 計算済みの際にコピーされる特徴量は下記の通りです。<ul>
+<li><a class="el" href="group__fie__features.html#feature_xyrange">xmin, ymin, xmax, ymax</a></li><li><a class="el" href="group__fie__features.html#feature_area">area</a></li><li><a class="el" href="group__fie__features.html#feature_moment1">sumx, sumy</a> （オフセット設定が０の場合のみ）</li><li><a class="el" href="group__fie__features.html#feature_moment2">sumx2, sumy2, sumxy</a> （オフセット設定が０の場合のみ）</li><li><a class="el" href="group__fie__features.html#feature_center">centerx, centery</a></li><li><a class="el" href="group__fie__features.html#feature_xydiff">xdiff, ydiff</a></li><li><a class="el" href="group__fie__features.html#feature_rect1_area">rect1_area</a></li><li><a class="el" href="group__fie__features.html#feature_rect1_lratio">rect1_lratio</a></li><li><a class="el" href="group__fie__features.html#feature_rect1_sratio">rect1_sratio</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_size">lsize, wsize</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_area">rect2_area</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_lratio">rect2_lratio</a></li><li><a class="el" href="group__fie__features.html#feature_rect2_sratio">rect2_sratio</a></li><li><a class="el" href="group__fie__features.html#feature_equivalent_ellipse">majoraxis, minoraxis, axistheta, axisratio</a></li><li><a class="el" href="group__fie__features.html#feature_distance_to_boundary">dpmax, dpmin, dpave, dpsigma</a></li><li><a class="el" href="group__fie__features.html#feature_perimeter">perim</a></li></ul>
+</dd></dl>
+<dl class="user" compact><dt><b>オフセットについて</b></dt><dd>ブローブ解析 <a class="el" href="group__fie__measure__main.html#g49c55246e0581da5b31edf1a953a9873" title="２値ブローブ解析実行">fnFIE_measure_execute()</a> の実行時、 offset パラメータに(0,0)以外を 設定すると、本関数で取得されるリージョンにもこのオフセット値が適用されます。 このような場合、取得したリージョンを解析画像へそのままデコードすると描画位置が 元のブローブ位置とはずれることになります。チャイルド画像を適切に配置するか、 または <a class="el" href="group__fie__region__geometric__transform.html#ga752e511407133f24a0d5cb5c21a560a" title="リージョンの平行移動">fnFIE_region_geotrans_shift()</a> を使ってオフセット分を相殺する処理を行うと この問題は解決することができます。</dd></dl>
+取得したリージョンオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>リージョンを取得したいブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>exerr</em>&nbsp;</td><td>エラーコード。エラーコードを受け取る必要の無い場合は、NULLを指定します。</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、生成したリージョンオブジェクトのハンドルを返す。 エラーが発生し、処理に失敗した場合は、NULLを返します。 正常、異常、どちらの場合も <em>exerr</em> パラメータにエラーコード受け取り先変数のポインタが 渡された場合は、そこにエラーコードを代入して返す。返されるエラーコードは下記の何れかです。 </dd></dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラー, <em>blobno</em> に指定されたブローブ番号が不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>パラメータエラー, <em>hresult</em> に指定されたハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>*exerr==F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbca0c78c378b8398bf3bb8022181d552"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_parent" ref="gbca0c78c378b8398bf3bb8022181d552" args="(const FHANDLE hresult, UINT blobno, UINT *parent)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_parent           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>parent</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+親ブローブの取得 
+<p>
+対象ブローブの親ブローブのブローブ番号を取得します。 対象ブローブが背景BLOBの場合は、0を返します。<p>
+対象ブローブ番号が有効なブローブ番号範囲(0～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 無効ブローブである場合は F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>parent</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 本関数は常に０を <em>parent</em> に返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>parent</em>&nbsp;</td><td>親ブローブのブローブ番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, <em>parent</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g072d42e9ec331cfb98171a064fede04d"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_child" ref="g072d42e9ec331cfb98171a064fede04d" args="(const FHANDLE hresult, UINT blobno, UINT *child)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_child           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>child</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+子ブローブの取得 
+<p>
+対象ブローブの子ブローブのブローブ番号を取得します。 対象ブローブに子ブローブが無い場合は、自分自身のブローブ番号を返します。<p>
+対象ブローブ番号が有効なブローブ番号範囲(0～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 無効ブローブである場合は F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>child</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 本関数は常に自分自身のブローブ番号を <em>child</em> に返します。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>child</em>&nbsp;</td><td>子ブローブのブローブ番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, <em>child</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gfe70fe52709ebf0db1905b2aad3740a7"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_sibling_back" ref="gfe70fe52709ebf0db1905b2aad3740a7" args="(const FHANDLE hresult, UINT blobno, UINT *back)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_sibling_back           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>back</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+１つ後ろの兄弟ブローブの取得 
+<p>
+対象ブローブの１つ後ろの兄弟ブローブのブローブ番号を取得します。 兄弟ブローブが存在しない場合は、自分自身のブローブ番号となります。<p>
+対象ブローブ番号が有効なブローブ番号範囲(0～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 無効ブローブである場合は F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>back</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 全てのブローブが背景ブローブ（０番ブローブ）を親とするブローブになり、同じ兄弟関係にあります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>back</em>&nbsp;</td><td>１つ後ろの兄弟ブローブのブローブ番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, <em>back</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g431fda29f7c4abb65e99acc740d7e25b"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_sibling_next" ref="g431fda29f7c4abb65e99acc740d7e25b" args="(const FHANDLE hresult, UINT blobno, UINT *next)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_sibling_next           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>next</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+１つ次の兄弟ブローブの取得 
+<p>
+対象ブローブの１つ次の兄弟ブローブのブローブ番号を取得します。 兄弟ブローブが存在しない場合は、自分自身のブローブ番号となります。<p>
+対象ブローブ番号が有効なブローブ番号範囲(0～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外か、 無効ブローブである場合は F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>next</em> の値は変更されません。<p>
+<dl class="user" compact><dt><b>単色解析モードの場合</b></dt><dd><a class="el" href="group__fie__measure__document.html#fie_measure_document_color">単色解析モード</a> 時は親子関係を構築しないため、 全てのブローブが背景ブローブ（０番ブローブ）を親とするブローブになり、同じ兄弟関係にあります。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>next</em>&nbsp;</td><td>１つ次の兄弟ブローブのブローブ番号</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, <em>next</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge08e7c600639b7a9c2b9303d9a7b8320"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_is_valid" ref="ge08e7c600639b7a9c2b9303d9a7b8320" args="(const FHANDLE hresult, UINT blobno, UINT *invalid)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_is_valid           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT&nbsp;</td>
+          <td class="paramname"> <em>blobno</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>invalid</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ブローブ番号の有効/無効チェック 
+<p>
+対象ブローブが無効ブローブであるか、有効ブローブであるかを取得します。 無効ブローブとは、BLOBの解析中に他のBLOBと連結するなどして、 「途中まで存在していたが、最後には無くなってしまったBLOB」です。<p>
+対象ブローブ番号が有効なブローブ番号範囲(0～( <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> で取得される数-1))外 で有る場合はエラーとなり F_ERR_INVALID_PARAM を返します。 なお、エラー発生時は <em>invalid</em> の値は変更されません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>blobno</em>&nbsp;</td><td>対象ブローブのブローブ番号 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>invalid</em>&nbsp;</td><td>有効==0, 無効==1。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>blobno</em> に指定されたブローブ番号が不正, <em>invalid</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g20222f9235cda4f661c73aa7a2fb61f7"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_blobnum" ref="g20222f9235cda4f661c73aa7a2fb61f7" args="(const FHANDLE hresult, UINT *num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_blobnum           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+全ブローブ数の取得 
+<p>
+無効ブローブと有効ブローブを合わせた全てのブローブの個数を返します。 他の２値ブローブ解析関数群で、ブローブ番号を指定する際は、 0～(本関数で取得した数-1) がブローブ番号範囲となります。<p>
+有効なブローブの数を取得したい場合は <a class="el" href="group__fie__measure__result.html#g0e044b82943708c0702328f7f69c4241" title="有効BLOB数の取得">fnFIE_measure_get_real_blobnum()</a> を使用して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>全ブローブ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td><em>hresult</em> に指定されたオブジェクトハンドルが不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>num</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__result.html#g0e044b82943708c0702328f7f69c4241" title="有効BLOB数の取得">fnFIE_measure_get_real_blobnum()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0e044b82943708c0702328f7f69c4241"></a><!-- doxytag: member="fie_measure_execute.c::fnFIE_measure_get_real_blobnum" ref="g0e044b82943708c0702328f7f69c4241" args="(const FHANDLE hresult, UINT *num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_measure_get_real_blobnum           </td>
+          <td>(</td>
+          <td class="paramtype">const FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hresult</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+有効BLOB数の取得 
+<p>
+有効なブローブの個数を返します。 但し、有効ブローブ数に背景ブローブ(0番)の数は含みません。 無効ブローブを含めた全てのブローブ数を取得したい場合は <a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> を使用して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hresult</em>&nbsp;</td><td>ブローブ解析結果ハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>num</em>&nbsp;</td><td>有効ブローブ数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドルが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td><em>num</em> に NULL pointer が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__measure__result.html#g20222f9235cda4f661c73aa7a2fb61f7" title="全ブローブ数の取得">fnFIE_measure_get_blobnum()</a> </dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

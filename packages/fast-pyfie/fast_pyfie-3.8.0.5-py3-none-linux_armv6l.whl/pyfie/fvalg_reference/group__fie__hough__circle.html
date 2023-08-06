@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ハフ円検出</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ハフ円検出<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__hough__circle.html#g9a399820fc28e84213d8097fdc7aae15">fnFIE_hough_circles_detect</a> (const <a class="el" href="structDEDGE__T.html">DEDGE_T</a> *vpEdgePnts, INT iPntsNum, DOUBLE dRMin, DOUBLE dRMax, DOUBLE dRsl, INT iQRange, INT iEdgePercent, INT iMinScore, INT iCircleColor, INT bRefine, INT iMergeXY, INT iMergeR, <a class="el" href="structHCD__CIRCLE__T.html">HCD_CIRCLE_T</a> **vppCircles, INT *ipCirclesNum, INT *ipPntsIndex)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ハフ変換投票によって点列から円を検出する  <a href="#g9a399820fc28e84213d8097fdc7aae15"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g9a399820fc28e84213d8097fdc7aae15"></a><!-- doxytag: member="fie_hough_circle_detect.c::fnFIE_hough_circles_detect" ref="g9a399820fc28e84213d8097fdc7aae15" args="(const DEDGE_T *vpEdgePnts, INT iPntsNum, DOUBLE dRMin, DOUBLE dRMax, DOUBLE dRsl, INT iQRange, INT iEdgePercent, INT iMinScore, INT iCircleColor, INT bRefine, INT iMergeXY, INT iMergeR, HCD_CIRCLE_T **vppCircles, INT *ipCirclesNum, INT *ipPntsIndex)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_hough_circles_detect           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structDEDGE__T.html">DEDGE_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>vpEdgePnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iPntsNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dRMin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dRMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dRsl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iQRange</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iEdgePercent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMinScore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iCircleColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bRefine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMergeXY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iMergeR</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structHCD__CIRCLE__T.html">HCD_CIRCLE_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>vppCircles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipCirclesNum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ipPntsIndex</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ハフ変換投票によって点列から円を検出する 
+<p>
+ハフ変換投票を行って、入力点列 <em>vpEdgePnts</em> から円を検出します。入力点数は４点以上 なければなりません。点の種類はDEDGE_Tですが、エッジの向き情報を使うことで投票を高速化しています。 この関数は入力点の中に重複点がない前提で処理を行います。<p>
+入力パラメーター <em>dRMin（円の最小許容半径）</em> と <em>dRMax（円の最大許容半径）</em> の差は処理時 間と直接関係があり、差が大きくなればなるほど処理時間は増えます。<p>
+分解能はパラメーター <em>dRsl</em> によって指定できます。分解能は検出する円の中心座標と半径の単位であり、 0.5を指定すれば0.5画素単位で中心座標や半径を求めることができます。ただし <em>dRsl</em> のみ小さくして いった時は円の検出性能は低下します。分解能を小さく設定すると、投票次数は線形に、投票空間は 二乗に増大するので、あまり小さい値を入力しないで下さい。また <em>dRMin</em> は <em>dRsl</em> の3倍以上でなければなりません。<p>
+エッジ向きの情報を活用するため、その誤差範囲をパラメーター <em>iQRange</em> として指定できます。 エッジの向きに対して誤差範囲の分（±iQRange）だけ投票を行うため <em>iQRange</em> を小さくすると高速になります。 <em>iQRange</em> は角度単位で、0以上、90未満の整数値でなければなりません。<p>
+投票空間から円を検出する際に二つの閾値を使います。円上のエッジ点数の閾値は <em>iMinScore</em> で、 エッジ点数と円周長の百分率の閾値は <em>iEdgePercent</em> です。円周長は検出する円の半径によって算出するので、 分解能 <em>dRsl</em> によって変わりません。 <em>iEdgePercent</em> は0以上100未満の整数値 <em>iMinScore</em> は４以上 でなければなりません。 <em>iMinScore</em> と <em>iEdgePercent</em> ともにあまりに小さい値を設定すると、 計算不可能エラーが出でくる可能性があります。円を検出するときに使用する閾値は下記によって算出します。：　 <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ T = MAX( S \cdot iEdgePercent, iMinScore ) \]" src="form_650.png">
+<p>
+ ここで：<ul>
+<li><img class="formulaInl" alt="$S$" src="form_651.png"> は（投票空間における）円周上の画素数</li><li><img class="formulaInl" alt="$MAX$" src="form_652.png"> は二つ数値の大きい値を選ぶ</li><li><img class="formulaInl" alt="$T$" src="form_431.png"> は判定用閾値</li></ul>
+<p>
+エッジの向きは必ず黒から白へ向かいます。白い円を検出する場合 <em>iCircleColor</em> は WHITE_COLORに設定してください。反対に黒い円を検出する場合にはBLACK_COLORに設定してください。 色が未知、或いは両方ともに検出したい場合にはBLACK_WHITE_COLORに設定します。 それ以外の値を <em>iCircleColor</em> に入力するとパラメーター不正になります。<p>
+パラメータ <em>bRefine</em> がTRUEに設定されているときには、ロバスト最小２乗法( fnPAL_rbs_circle() ) を使って、円の再算出を行います。円のパラメーターを再算出をしないときには <em>bRefine</em> をFALSEに設定します。<p>
+検出された円の半径と円心位置が近いもの同士を同一円として統合しますが、 <em>iMergeXY</em> を円心位置の統合範囲、 <em>iMergeR</em> を円半径の統合範囲として指定します。 例えば、iMergeXY = 2、iMergeR = 1と設定して円検出を行った場合、 ある円は局所領域内（半径±1、円心位置±2）に存在するスコアが最大の円に統合されます。 すなわち、その領域内で検出された他の円はすべてこのスコア最大の円に統合される、ということです。 <em>iMergeXY</em> と <em>iMergeR</em> は統合したい座標範囲で、 <em>dRsl</em> との依存関係はありません。 <em>iMergeXY</em> と <em>iMergeR</em> ともに0以上の値を設定しなければなりません。 両方ともに0に設定した場合は統合処理は行われません。<p>
+<em>vppCircles</em> と <em>ipCirclesNum</em> には検出された円とその数が格納されます。 <em>vppCircles</em> には内部で確保したメモリのポインタを返します。 返されたメモリは、不要になったら <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用してユーザーが解放してください。 本関数の呼び出し時 <em>*vppCircles</em> はNULLでなければなりません。<p>
+出力の各円に対応する点を取得したい時は、予め入力点列と同サイズのINTの配列を確保して、 パラメーター <em>ipPntsIndex</em> として渡します。 <em>ipPntsIndex</em> には点が対応するの円のindexが格納されます。 点の対応する円がないときは ipPntsIndex[i] = -1 となっています。 各点と円との対応関係が不要なときは <em>ipPntsIndex</em> にNULLを指定してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpEdgePnts</em>&nbsp;</td><td>入力点列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iPntsNum</em>&nbsp;</td><td>入力点数, ４点以上なければならない </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dRMin</em>&nbsp;</td><td>検出目標にする円の最小半径 ( &gt;= 3 * dRsl ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dRMax</em>&nbsp;</td><td>検出目標にする円の最大半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dRsl</em>&nbsp;</td><td>分解能 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iQRange</em>&nbsp;</td><td>エッジ方向の片幅, 度単位で[0, 90) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iEdgePercent</em>&nbsp;</td><td>円上のエッジ点数と円周の百分率の閾値, [0, 99] </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMinScore</em>&nbsp;</td><td>円上のエッジ点数の閾値, 数値は4以上を指定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iCircleColor</em>&nbsp;</td><td>円の色。<ul>
+<li>BLACK_COLOR: 黒い円を検出する</li><li>WHITE_COLOR: 白い円を検出する</li><li>BLACK_WHITE_COLOR: 円の色は未知、未定の場合 </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bRefine</em>&nbsp;</td><td>ロバスト推定法による検出円のパラメータを算出<ul>
+<li>TRUE： ロバスト推定法を使う</li><li>FALSE：ロバスト推定法を使わない </li></ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMergeXY</em>&nbsp;</td><td>検出された円を統合する円心範囲サイズ、0以上に設定する </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iMergeR</em>&nbsp;</td><td>検出された円を統合する円半径範囲サイズ、0以上に設定する </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vppCircles</em>&nbsp;</td><td>出力円の配列, メモリは関数内部で確保するので、必ずNULLで入力する </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ipCirclesNum</em>&nbsp;</td><td>検出された円の数量 </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>ipPntsIndex</em>&nbsp;</td><td>検出された円上の点のindex</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメーター不正 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td><em>iMinScore</em> の値が小さ過ぎるので、計算不可能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+
+<span class="comment">//検出結果を画像へ描画し，保存する</span>
+VOID img_draw_save(FHANDLE hsrc, INT width, INT height, <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* pedges, 
+              INT edge_num, <a class="code" href="structHCD__CIRCLE__T.html" title="ハフ変換によって検出された円の構造体">HCD_CIRCLE_T</a>* pcircles, INT circles_num)
+{
+    <span class="comment">//ループ用</span>
+    INT i;
+
+    <span class="comment">//検出した円の描画用変数</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> center;                      <span class="comment">//円の中心のX,Y座標</span>
+    DOUBLE plot_val[] = { 255, 0, 0 };  <span class="comment">//描画の際の上書き濃度値</span>
+    DOUBLE radius;                      <span class="comment">//円の半径</span>
+
+    <span class="comment">//ルート画像</span>
+    FHANDLE hedge = NULL;       <span class="comment">//エッジ検出画像</span>
+    FHANDLE hcircle = NULL;     <span class="comment">//円検出画像</span>
+
+    <span class="comment">//チャイルド画像</span>
+    FHANDLE hcolor0 = NULL;     <span class="comment">//R画像</span>
+    FHANDLE hcolor1 = NULL;     <span class="comment">//G画像</span>
+    FHANDLE hcolor2 = NULL;     <span class="comment">//B画像</span>
+
+    <span class="comment">//エッジ検出画像の領域を確保します</span>
+    hedge = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, width, height );
+    <span class="comment">//円検出画像の領域を確保します</span>
+    hcircle = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>( <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 3, width, height );
+
+    <span class="comment">//エッジ検出画像のチャイルド画像領域を確保します</span>
+    hcolor0 = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hedge, 0, 0, 0, width, height);
+    hcolor1 = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hedge, 1, 0, 0, width, height);
+    hcolor2 = <a class="code" href="group__fie__image.html#g84df62546f80d2637fd822677456f757" title="チャイルド画像の確保(単一チャネル割り当て版)">fnFIE_img_child_alloc_single_ch</a>(hedge, 2, 0, 0, width, height);
+
+    <span class="comment">//エッジの検出結果と円検出結果をカラーで表示するために3chの画像に入力画像の濃度値をコピー</span>
+    <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc, hcolor0);
+    <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc, hcolor1);
+    <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hsrc, hcolor2);
+    <a class="code" href="group__fie__std__operation.html#gcb85dadcde458186d7720c2a92205b7d" title="画像コピー">fnFIE_img_copy</a>(hedge, hcircle);
+
+    <span class="keywordflow">for</span>(i=0; i&lt;edge_num; i++)
+    {
+        <span class="comment">// 取得したエッジ点を画像へ描画する(サブピクセル精度で点列を取得しているため四捨五入する)</span>
+        <a class="code" href="group__fie__std__operation.html#g636032b5e363c0fcaab2c430347c5177" title="指定座標の濃度値設定">fnFIE_img_set_dens</a>(hedge, 1, (INT)(pedges[i].x + 0.5), (INT)(pedges[i].y + 0.5), 255);
+    }
+
+    <span class="keywordflow">for</span>(i=0; i&lt;circles_num; i++)
+    {
+        <span class="comment">//描画のため変数の型を変更し，格納する</span>
+        center.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = pcircles[i].<a class="code" href="structHCD__CIRCLE__T.html#90a6bfe5554fe023965e94a6a205b775">xc</a>;
+        center.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = pcircles[i].<a class="code" href="structHCD__CIRCLE__T.html#bc5436f2f70a1fb24ad7bf29beb3629e">yc</a>;
+        radius   = pcircles[i].<a class="code" href="structHCD__CIRCLE__T.html#d5a1e020bf31e3fc9b164e6b126da6b3">r</a>;
+
+        <span class="comment">//円を画像へ描画する</span>
+        <a class="code" href="group__fie__img__draw.html#g11b167f09af94662edd48caa14cef42c" title="円の描画">fnFIE_draw_circle</a>(hcircle, plot_val, <a class="code" href="group__fie__img__draw.html#gg7c9f210cb6c3535d4fc6125964250e9e8be68983747189047c9b0175e81d0914" title="図形の線のみを描画">F_DRAW_LINE</a>, center, radius);
+    }
+
+    <span class="comment">//結果画像を保存します</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"edge.png"</span>, hedge, -1);
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>(<span class="stringliteral">"circle.png"</span>, hcircle, -1);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hedge );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hcircle );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hcolor0 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hcolor1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hcolor2 );
+}
+
+
+<span class="comment">//円ハフ検出をする</span>
+VOID hough_circle(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* pedges, INT edge_num, 
+                  <a class="code" href="structHCD__CIRCLE__T.html" title="ハフ変換によって検出された円の構造体">HCD_CIRCLE_T</a>** ppcircles, INT* pcircles_num)
+{
+    <span class="comment">//ループ用変数</span>
+    INT i;
+
+    <span class="comment">//円ハフパラメータ</span>
+    <a class="code" href="structDEDGE__T.html" title="向き付エッジ点構造体">DEDGE_T</a>* pedge_pnts = NULL;     <span class="comment">//入力点列</span>
+    DOUBLE r_min;                   <span class="comment">//検出目標にする円の最小半径 ( &gt;= 3 * rsl )</span>
+    DOUBLE r_max;                   <span class="comment">//検出目標にする円の最大半径</span>
+    DOUBLE r_sl;                    <span class="comment">//分解能</span>
+    INT q_range;                    <span class="comment">//エッジ方向の片幅, 度単位で[0, 90)</span>
+    INT edge_percent;               <span class="comment">//円上のエッジ点数と円周の百分率の閾値, [0, 99]</span>
+    INT min_score;                  <span class="comment">//円上のエッジ点数の閾値, 数値は4以上を指定する</span>
+    INT circle_color;               <span class="comment">//円の色</span>
+    INT refine;                     <span class="comment">//ロバスト推定法による検出円のパラメータを算出</span>
+    INT merge_xy;                   <span class="comment">//検出された円の統括する円心範囲サイズ、0以上に設定する </span>
+    INT merge_r;                    <span class="comment">//検出された円の統括する円半径範囲サイズ、0以上に設定する </span>
+
+    <span class="comment">//円ハフパラメータ設定</span>
+    r_min = 10;
+    r_max = 40;
+    r_sl = 1;
+    q_range = 10;
+    edge_percent = 30;
+    min_score = 8;
+    circle_color = BLACK_WHITE_COLOR; 
+    refine = TRUE;
+    merge_xy = 2;
+    merge_r = 1;
+
+    <span class="comment">//円ハフ検出の点列入力配列の領域を確保</span>
+    pedge_pnts = (<a class="code" href="structDEDGE__T.html" title="向き付エッジ点構造体">DEDGE_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>((<span class="keyword">sizeof</span>(<a class="code" href="structDEDGE__T.html" title="向き付エッジ点構造体">DEDGE_T</a>)) * edge_num);
+
+    <span class="comment">//エッジ検出結果の点列格納構造体と円ハフ検出に用いる点列の構造体の型が違うため，格納しなおす</span>
+    <span class="keywordflow">for</span>(i=0;i&lt;edge_num;i++)
+    {
+        pedge_pnts[i].<a class="code" href="structDEDGE__T.html#abbc9872dabe1e8dec0c3cda3fba2a5d">x</a>=pedges[i].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a>;    <span class="comment">//X座標</span>
+        pedge_pnts[i].<a class="code" href="structDEDGE__T.html#12cba04451bbd3c04b0221095dc6fe78">y</a>=pedges[i].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a>;    <span class="comment">//Y座標</span>
+        pedge_pnts[i].<a class="code" href="structDEDGE__T.html#708b807c239b37c80c3041bd414ce8ca">q</a>=pedges[i].<a class="code" href="structF__DEDGE.html#5f54e5f56ac256b0e2b89f622fef4d46">q</a>;    <span class="comment">//エッジの勾配</span>
+    }
+
+    <span class="comment">//円ハフの検出(2番目の引数は入力点数，4点以上でなければならない）</span>
+    <a class="code" href="group__fie__hough__circle.html#g9a399820fc28e84213d8097fdc7aae15" title="ハフ変換投票によって点列から円を検出する">fnFIE_hough_circles_detect</a>(pedge_pnts, edge_num, r_min, r_max, r_sl, q_range,
+                               edge_percent, min_score, circle_color,TRUE, merge_xy,
+                               merge_r, ppcircles, pcircles_num, NULL);
+
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( pedge_pnts );       <span class="comment">//取得したエッジの開放</span>
+}
+
+
+<span class="comment">//エッジを検出する</span>
+VOID edge_sobel(FHANDLE hsrc, <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>** ppedges, INT* pedge_num)
+{
+    <span class="comment">// エッジ検出パラメータ</span>
+    <a class="code" href="structF__EDGE__SOBEL__PARAMS.html" title="Sobelエッジ用パラメータ構造体">F_EDGE_SOBEL_PARAMS</a> params;
+    UINT feat_mode;
+    INT border_mode;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> offset;
+ 
+    <span class="comment">// エッジパラメータの設定</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#ecd04096837807aa19a453ff060b3658">mag_threshold</a> = 40;  <span class="comment">// 強度しきい値</span>
+    params.<a class="code" href="structF__EDGE__SOBEL__PARAMS.html#d59647967a163cc6c3fda736ca440d10">nms_length</a> = 1;      <span class="comment">// 非極大抑制のフィルタ片幅</span>
+
+    feat_mode = <a class="code" href="group__fie__edge__detector.html#gf1b0219a1aaa48472cfc9f272687d30f" title="エッジ勾配方向、強度保持指定フラグ エッジの勾配方向を取得する...">F_EDGE_FEAT_DIRECT</a>;     <span class="comment">// 勾配方向、強度データ保持</span>
+    border_mode = <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>;        <span class="comment">// ボーダー処理</span>
+    offset.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;                       <span class="comment">// オフセット量</span>
+    offset.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;                       <span class="comment">// オフセット量</span>
+
+    <span class="comment">// ソーベルフィルタを利用したエッジ検出の実行</span>
+    <span class="comment">//通常版ではエッジの勾配の値が度(degree）のため勾配がradianで出力されるサブピクセル版を使用</span>
+    <a class="code" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix</a>(hsrc, NULL,&amp;params, feat_mode,
+                            border_mode, offset,ppedges, pedge_num);
+}
+
+
+<span class="comment">//エッジ検出-&gt;円ハフ検出-&gt;結果画像を出力する</span>
+VOID circles_detect_sample()
+{
+    <span class="comment">//ルート画像</span>
+    FHANDLE hsrc = NULL;
+
+    <span class="comment">//入力画像の幅と高さ</span>
+    INT width, height;
+
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* pedges = NULL;             <span class="comment">//取得されるエッジ</span>
+    INT edge_num ;                      <span class="comment">//取得されるエッジの数</span>
+    <a class="code" href="structHCD__CIRCLE__T.html" title="ハフ変換によって検出された円の構造体">HCD_CIRCLE_T</a>* pcircles = NULL;      <span class="comment">//出力円の配列, メモリは関数内部で確保するので、必ずNULLで入力する</span>
+    INT circles_num ;                   <span class="comment">//検出された円の数量 </span>
+
+    <span class="comment">//入力画像の読み込み</span>
+    <span class="comment">//適当な画像を読み込んでください</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>( <span class="stringliteral">"floppy1.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a> );
+
+    <span class="comment">//入力画像の幅と高さを取得します</span>
+    width   = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>( hsrc );
+    height  = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>( hsrc ); 
+
+    <span class="comment">//Sobelフィルタによるエッジ検出</span>
+    edge_sobel(hsrc, &amp;pedges, &amp;edge_num);
+
+    <span class="comment">//円ハフ検出</span>
+    hough_circle(pedges, edge_num, &amp;pcircles, &amp;circles_num);
+
+    <span class="comment">//検出結果を画像へ描画し、保存する</span>
+    img_draw_save(hsrc, width , height, pedges, edge_num, pcircles, circles_num);
+
+    <span class="comment">//解放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pedges);         <span class="comment">//取得したエッジの開放</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(pcircles);       <span class="comment">//取得した円の解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hsrc );  <span class="comment">//入力画像領域の解放</span>
+}
+
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">//エッジ検出-&gt;円ハフ検出-&gt;結果画像を出力する</span>
+    circles_detect_sample();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd>以下は、 <a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a> にて検出したエッジに対してハフ円検出をした結果です。</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><a class="el" href="group__fie__edge__detector.html#g4ec620016bd6eeec73e1ad5bc3ddd673" title="ソーベルフィルタを利用したエッジ検出(サブピクセル精度)">fnFIE_edge_sobel_subpix()</a> で指定したパラメータは以下の通りです。 <ul>
+<li><em>params.mag_threshold</em> = 40 </li>
+<li><em>params.nms_length</em> = 1</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd>本関数にて指定したパラメータは以下の通りです。 <ul>
+<li><em>dRMin</em> = 10 </li>
+<li><em>dRMax</em> = 40 </li>
+<li><em>dRsl</em> = 1 </li>
+<li><em>iQRange</em> = 10 </li>
+<li><em>iEdgePercent</em> = 30 </li>
+<li><em>iMinScore</em> = 8 </li>
+<li><em>iCircleColor</em> = BLACK_WHITE_COLOR </li>
+<li><em>bRefine</em> = TRUE </li>
+<li><em>iMergeXY</em> = 2 </li>
+<li><em>iMergeR</em> = 1</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b></b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_edge2d_sobel.png" alt="fie_edge2d_sobel.png">
+<p><strong>入力エッジ画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_hough_circle.png" alt="fie_hough_circle.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

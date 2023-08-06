@@ -1,0 +1,858 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: エッジ検出 応用例</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>エッジ検出 応用例<br>
+<small>
+[<a class="el" href="group__fie__sample__code__list.html">サンプルコード一覧</a>]</small>
+</h1><hr>
+ <h2><a class="anchor" name="smp_edge_box">
+一次元エッジ検出（矩形）</a></h2>
+<div class="fragment"><pre class="fragment"><span class="comment">/*</span>
+<span class="comment">    指定された箱上を走査して、画像データのエッジ検出を高速に行うサンプルコードです。</span>
+<span class="comment">*/</span>
+
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include &lt;math.h&gt;</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+
+<span class="keyword">enum</span> smp_scan_direction
+{
+    R_DIRECT,
+    L_DIRECT,
+    D_DIRECT,
+    U_DIRECT
+};
+INT fnSMP_box_edge(
+    FHANDLE                         hsrc,
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>                          start,
+    DOUBLE                          width,
+    DOUBLE                          height,
+    DOUBLE                          rad,
+    <span class="keyword">enum</span> smp_scan_direction         scan_dir,
+    <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a>            diff_filter,
+    INT                             arnd,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a>    direct_mode,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a>                diff_type,
+    DOUBLE                          diff_thr,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a>         detection_mode,
+    INT                             prj_width,
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>**                       edges,
+    INT*                            edge_num
+);
+<span class="keyword">static</span> INT fnSMP_scan_edges(FHANDLE hsrc, INT prj_width, <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a> diff_filter, INT arnd, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a> direct_mode,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a> diff_type, DOUBLE diff_thr, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a> detection_mode, <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> **edges, INT *edge_num, <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *inverse_af);
+<span class="keyword">static</span> INT fnSMP_mat_affine(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> start, DOUBLE width, DOUBLE  height, DOUBLE rad, INT prj_width,  <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> **mat_aff, <span class="keyword">enum</span> smp_scan_direction scan_dir);
+<span class="keyword">static</span> INT fnSMP_edges_outside(FHANDLE hsrc, <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *box, DOUBLE box_height, INT prj_width, <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a> diff_filter, INT arnd,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a> direct_mode, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a> diff_type, DOUBLE diff_thr, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a> detection_mode, <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> **edges, INT *edge_num);
+
+
+<span class="comment">/*</span>
+<span class="comment"></span>
+<span class="comment">    箱指定によるエッジ検出</span>
+<span class="comment"></span>
+<span class="comment">    指定した箱の各計測ライン（検出線）上におけるエッジを高速に検出します。各計測ライン上で1点のエッジのみを出力します。</span>
+<span class="comment"></span>
+<span class="comment">    start,width,height,radのパラメータにより、箱の領域を決定します。</span>
+<span class="comment">    検出箱はradにて指定した角度だけ回転されます。回転中心はstartで指定した始点と同じ位置です。</span>
+<span class="comment">    回転にはfnFIE_geotrans_calc_rotate_matrix()を使用します。</span>
+<span class="comment">    エッジを検出する方向を指定できます。計測ラインの方向は、scan_dirによって指定します。</span>
+<span class="comment">    各計測ライン上で検出されるエッジの種類はdetection_modeによって指定します。</span>
+<span class="comment">    計測ラインの間隔は1画素となります。</span>
+<span class="comment">    </span>
+<span class="comment">    計測ライン方向scan_dir</span>
+<span class="comment">    －－－－－－    －－－－－－    －－－－－－    －－－－－－</span>
+<span class="comment">    ｜－－－→｜    ｜←－－－｜    ｜｜｜｜｜｜    ｜↑↑↑↑｜</span>
+<span class="comment">    ｜－－－→｜    ｜←－－－｜    ｜｜｜｜｜｜    ｜｜｜｜｜｜</span>
+<span class="comment">    ｜－－－→｜    ｜←－－－｜    ｜｜｜｜｜｜    ｜｜｜｜｜｜</span>
+<span class="comment">    ｜－－－→｜    ｜←－－－｜    ｜↓↓↓↓｜    ｜｜｜｜｜｜</span>
+<span class="comment">    －－－－－－    －－－－－－    －－－－－－    －－－－－－</span>
+<span class="comment">      R_DIRECT        L_DIRECT        D_DIRECT        U_DIRECT</span>
+<span class="comment"></span>
+<span class="comment">    各計測ラインでのエッジ取得にはfnFIE_edge1d_detect_edges_diff()が使用されます。diff_filter,arnd,direct_mode,diff_type,diff_thrのパラメータの詳細はそちらを参照してください。</span>
+<span class="comment">    検出片幅のprj_widthパラメータの意味はfnFIE_edge1d_projection_line()を参照してください。</span>
+<span class="comment">    この他、エッジ検出関数に共通する性質については、１次元エッジ検出の説明を参照してください。</span>
+<span class="comment"></span>
+<span class="comment">    本関数では、検出片幅によって指定される大きさの濃度投影を、複数の計測ラインでまとめて実行することで高速化しています。</span>
+<span class="comment">    一方で、検出片幅を含んだ箱領域が入力画像外に出た場合は計測ラインごと独立にエッジ検出を行うため、高速化されません。</span>
+<span class="comment"></span>
+<span class="comment">    検出されたエッジ点数はedge_numに出力されます。</span>
+<span class="comment">    検出されたエッジ点はedgesに出力されます。</span>
+<span class="comment">    *edges は必ずNULLで初期化されていなければなりません。</span>
+<span class="comment">    検出されたエッジ点数が1以上のとき、新たにメモリ確保されます。</span>
+<span class="comment">    検出されたエッジ点数が0のとき、メモリ確保されずNULLが出力されます。</span>
+<span class="comment">    新たに確保されたメモリは、使用後にfnOAL_free()で解放してください。</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]hsrc            入力画像(type:uc8,us16,double/ch:1)</span>
+<span class="comment">        [in]start           箱の左上の座標</span>
+<span class="comment">        [in]width           箱の幅(1以上)</span>
+<span class="comment">        [in]height          箱の高さ(1以上)</span>
+<span class="comment">        [in]rad             回転角(ラジアン)</span>
+<span class="comment">        [in]scan_dir        計測ライン方向</span>
+<span class="comment">                            - R_DIRECT 検出箱の左から右に向かって計測ラインを設定します</span>
+<span class="comment">                            - L_DIRECT 検出箱の右から左に向かって計測ラインを設定します</span>
+<span class="comment">                            - D_DIRECT 検出箱の上から下に向かって計測ラインを設定します</span>
+<span class="comment">                            - U_DIRECT 検出箱の下から上に向かって計測ラインを設定します</span>
+<span class="comment">        [in]diff_filter     微分フィルタの指定</span>
+<span class="comment">                            - minus_foot 負側のfoot長さ（1以上）</span>
+<span class="comment">                            - minus_len 負側のlen長さ（0以上）</span>
+<span class="comment">                            - plus_foot 正側のfoot長さ（1以上）</span>
+<span class="comment">                            - plus_len 正側のlen長さ（0以上）</span>
+<span class="comment">        [in]arnd            サブピクセル計算に使用する周辺情報の片幅（0以上）</span>
+<span class="comment">                            検出した濃度微分データのピーク位置（または、または最初にしきい値を超えた位置）に対して、</span>
+<span class="comment">                            ここで指定した画素分の両端の濃度微分データを使用してサブピクセル精度の計算をします</span>
+<span class="comment">        [in]direct_mode     検出するエッジ方向の指定</span>
+<span class="comment">                            - F_DRK_TO_BRI 暗→明のエッジ</span>
+<span class="comment">                            - F_BRI_TO_DRK 明→暗のエッジ</span>
+<span class="comment">                            - F_DTC_BOTH 両極性</span>
+<span class="comment">        [in]diff_type       濃度差しきい値の種別</span>
+<span class="comment">                            - F_ABSOLUTE_THR 絶対濃度差</span>
+<span class="comment">                            - F_RELATIVE_THR 相対濃度差</span>
+<span class="comment">        [in]diff_thr        エッジの最小濃度差しきい値</span>
+<span class="comment">                            - F_ABSOLUTE_THR を指定した場合：[0, 2147483647]</span>
+<span class="comment">                                内部で、 fnFIE_d4i5() にて四捨五入されます</span>
+<span class="comment">                            - F_RELATIVE_THR を指定した場合：[0,100](％)</span>
+<span class="comment">                                生成された濃度プロファイル内の最大値と最小値の差に対する割合</span>
+<span class="comment">                                求められたしきい値は、 fnFIE_d4i5() にて四捨五入されます</span>
+<span class="comment">        [in]detection_mode  各計測ラインで検出されるエッジの種類を指定</span>
+<span class="comment">                            - F_MAG_SORT 計測ライン上で強度が最も大きいエッジ</span>
+<span class="comment">                            - F_POS_SORT 計測ライン上で最初に見つかったエッジ</span>
+<span class="comment">        [in]prj_width       検出片幅（0以上、単位：画素）　0を指定した場合は、計測ライン上のみ有意となります</span>
+<span class="comment">                            計測ラインをはさむ指定画素分の平均値を求めるため、この値を大きくするとノイズに強くなります</span>
+<span class="comment">        [out]edges          検出されたエッジ点保存配列のポインタ</span>
+<span class="comment">                            *edges はNULLでなければなりません</span>
+<span class="comment">                            - x ｘ座標</span>
+<span class="comment">                            - y ｙ座標</span>
+<span class="comment">                            - q 勾配方向</span>
+<span class="comment">                                - 暗→明のエッジ 1</span>
+<span class="comment">                                - 明→暗のエッジ -1</span>
+<span class="comment">                            - mag 強度（0以上）</span>
+<span class="comment">        [out]edge_num       検出されたエッジ点個数</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM     不正なパラメータが渡された</span>
+<span class="comment">        F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">        F_ERR_INVALID_IMAGE     不正な画像が渡された</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">        F_ERR_NODATA            指定された箱の有効領域が存在しない</span>
+<span class="comment">        F_ERR_CALC_IMPOSSIBLE   不正な箱の領域が渡された</span>
+<span class="comment">    </span>
+<span class="comment">*/</span>
+INT fnSMP_box_edge(
+    FHANDLE                         hsrc,
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>                          start,
+    DOUBLE                          width,
+    DOUBLE                          height,
+    DOUBLE                          rad,
+    <span class="keyword">enum</span> smp_scan_direction         scan_dir,
+    <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a>            diff_filter,
+    INT                             arnd,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a>    direct_mode,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a>                diff_type,
+    DOUBLE                          diff_thr,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a>         detection_mode,
+    INT                             prj_width,
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>**                       edges,
+    INT*                            edge_num
+)
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    FHANDLE affine_img = NULL; <span class="comment">//アフィン変換後の画像</span>
+    FHANDLE average_img = NULL;<span class="comment">//平滑化後の画像</span>
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_aff = NULL;   <span class="comment">//アフィン変換で用いる行列</span>
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *inverse_aff = NULL;<span class="comment">//mat_affの逆行列</span>
+
+    INT hsrc_width, hsrc_height, hsrc_type;
+    INT i;
+    BOOL is_inside;
+    DOUBLE box_w, box_h;
+
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> box_rearranged[4];<span class="comment">//原点基準・傾きなしに変換された箱4隅の座標点</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> box_original[4];<span class="comment">//変換前の入力画像上における箱4隅の座標点</span>
+
+    <span class="comment">//パラメータ確認</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd25daf957fd87c8c1894d3f5d5b85f6ee" title="パラメータエラー">F_ERR_INVALID_PARAM</a>;
+    <span class="keywordflow">if</span> (prj_width &lt; 0)<span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">if</span> (width &lt; 1 || height &lt; 1)<span class="keywordflow">goto</span> EXIT;
+    <span class="keywordflow">switch</span> (scan_dir)
+    {
+        <span class="keywordflow">case</span> R_DIRECT:
+        <span class="keywordflow">case</span> L_DIRECT:
+        <span class="keywordflow">case</span> D_DIRECT:
+        <span class="keywordflow">case</span> U_DIRECT:
+            <span class="keywordflow">break</span>;
+        <span class="keywordflow">default</span>:
+            <span class="keywordflow">goto</span> EXIT;
+    }
+    <span class="keywordflow">if</span> (edges == NULL || *edges != NULL)<span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, NULL, &amp;hsrc_type, NULL, &amp;hsrc_width, &amp;hsrc_height);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd7899e670e978240beaa8b3c2365d8b02" title="不正な画像エラー">F_ERR_INVALID_IMAGE</a>;
+    <span class="keywordflow">switch</span> (hsrc_type)
+    {
+    <span class="keywordflow">case</span> <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>:
+    <span class="keywordflow">case</span> <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb63726dfd831e50f091b93b401b6251a1" title="16bit濃淡画像">F_IMG_US16</a>:
+    <span class="keywordflow">case</span> <a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>:
+        <span class="keywordflow">break</span>;
+    <span class="keywordflow">default</span>:
+        <span class="keywordflow">goto</span> EXIT;
+    }
+
+    <span class="comment">//作業用行列を確保</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    mat_aff = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>(3, 3);
+    <span class="keywordflow">if</span> (mat_aff == NULL)<span class="keywordflow">goto</span> EXIT;
+    inverse_aff = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>(3, 3);
+    <span class="keywordflow">if</span> (inverse_aff == NULL)<span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//アフィン変換で用いる行列を生成</span>
+    <span class="comment">//このアフィン変換行列は箱の位置/箱の傾き/計測ライン方向を吸収するために使用する</span>
+    ret = fnSMP_mat_affine(start, width, height, rad, prj_width, &amp;mat_aff, scan_dir);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//mat_affの逆行列を生成</span>
+    ret = <a class="code" href="group__fie__math__matrix__lalgebra.html#ge5ac23d449d7ed0ba4fdef0e95d393a9" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  行列の逆行列...">fnFIE_mat_inverse3</a>(mat_aff, inverse_aff, NULL);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//検出片幅を含んだ箱領域の幅、高さ</span>
+    <span class="keywordflow">if</span> (scan_dir == R_DIRECT || scan_dir == L_DIRECT)
+    {
+        box_w = width;
+        box_h = height + prj_width * 2;
+    }
+    <span class="keywordflow">else</span>
+    {
+        box_w = height;
+        box_h = width + prj_width * 2;
+    }
+
+    <span class="comment">//箱左上座標</span>
+    box_rearranged[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    box_rearranged[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    <span class="comment">//箱右上座標</span>
+    box_rearranged[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = box_w - 1;
+    box_rearranged[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    <span class="comment">//箱左下座標</span>
+    box_rearranged[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;
+    box_rearranged[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = box_h - 1;
+    <span class="comment">//箱右下座標</span>
+    box_rearranged[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = box_w - 1;
+    box_rearranged[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = box_h - 1;
+    
+    <span class="comment">//検出片幅を含んだ回転・平行移動前の4隅の座標点を生成</span>
+    ret= <a class="code" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e" title="点群のアフィン変換">fnFIE_geotrans_affine_npoints</a>(box_rearranged, box_original, 4, inverse_aff);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//回転・平行移動前の4隅の座標点が入力画像内か判定</span>
+    is_inside = TRUE;
+    <span class="keywordflow">for</span> (i = 0; i &lt; 4; i++)
+    {
+        <span class="keywordflow">if</span> (box_original[i].x &lt; 0 || box_original[i].x &gt;= hsrc_width || box_original[i].y &lt; 0 || box_original[i].y &gt;= hsrc_height)
+        {
+            is_inside = FALSE;
+            <span class="keywordflow">break</span>;
+        }
+    }
+    
+    <span class="keywordflow">if</span> (is_inside)
+    {
+        INT size_m, size_n;
+
+        <span class="comment">//求めた行列により画像のアフィン変換</span>
+        affine_img = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(hsrc_type, 1, (INT)box_w, (INT)box_h);
+        <span class="keywordflow">if</span> (affine_img == NULL)
+        {
+            ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+            <span class="keywordflow">goto</span> EXIT;
+        }
+        ret = <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>(hsrc, affine_img, NULL, mat_aff, FALSE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8ef37e277b29f4302b27d157d83fa19643" title="共一次線形補間法">F_SAMPLING_BILINEAR</a>);
+        <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+        <span class="comment">//平滑化</span>
+        average_img = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb0a7d3a28a440ff75d1c59831807f9426" title="倍精度浮動小数点画像">F_IMG_DOUBLE</a>, 1, (INT)box_w, (INT)box_h);
+        <span class="keywordflow">if</span> (average_img == NULL)
+        {
+            ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+            <span class="keywordflow">goto</span> EXIT;
+        }
+        size_m = 1;
+        size_n = prj_width * 2 + 1;
+        ret = <a class="code" href="group__fie__filter.html#g946bc69fe30c2c51d730bf1a2ddcc86c" title="平均化フィルタ(M×N)">fnFIE_averageMxN</a>(affine_img, average_img, size_m, size_n, <a class="code" href="group__fie__std__operation.html#gg5d19240b9c8e02c83b5d8b40540ecd4f485fa63ed437a605b6fd5ed01bf68b9b" title="ボーダー処理無し">F_BORDER_NONE</a>, 0);
+        <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+        <span class="comment">//エッジ検出</span>
+        ret = fnSMP_scan_edges(average_img, prj_width, diff_filter, arnd, direct_mode, diff_type, diff_thr, detection_mode, edges, edge_num, inverse_aff);
+        <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    }
+    <span class="keywordflow">else</span>
+    {
+        <span class="comment">//検出幅を含んだ箱領域が入力画像外にはみ出した場合のエッジ検出</span>
+        ret = fnSMP_edges_outside(hsrc, box_original, box_h,prj_width, diff_filter, arnd, direct_mode, diff_type, diff_thr, detection_mode, edges, edge_num);
+        <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    }
+
+EXIT:
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(mat_aff);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(affine_img);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(average_img);
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    指定範囲がすべて入力画像内の時のエッジ検出</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]hsrc            入力画像</span>
+<span class="comment">        [in]prj_width       検出片幅</span>
+<span class="comment">        [in]diff_filter     微分フィルタの指定</span>
+<span class="comment">        [in]arnd            サブピクセル計算に使用する周辺情報の片幅（0以上）</span>
+<span class="comment">        [in]direct_mode     検出するエッジ方向の指定</span>
+<span class="comment">        [in]diff_type       濃度差しきい値の種別</span>
+<span class="comment">        [in]diff_thr        エッジの最小濃度差しきい値</span>
+<span class="comment">        [in]detection_mode  検出されるエッジの種類を指定</span>
+<span class="comment">        [out]edges          検出されたエッジ位置</span>
+<span class="comment">        [out]edge_num       検出されたエッジ点個数</span>
+<span class="comment">        [in]inverse_aff     mat_affの逆行列</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_PARAM     不正なパラメータが渡された</span>
+<span class="comment">        F_ERR_NODATA            濃度プロファイルに有効領域が存在しない</span>
+<span class="comment">        F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_scan_edges(FHANDLE hsrc, INT prj_width, <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a> diff_filter, INT arnd,<span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a> direct_mode,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a> diff_type,DOUBLE diff_thr, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a> detection_mode, <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> **edges, INT *edge_num, <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *inverse_aff)
+{
+
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    INT_PTR prj_step;
+
+    DOUBLE* prj;
+    INT  y;
+    INT edge_cnt;
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* edge_buff_wk = NULL;
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* edges_on_line = NULL;
+    FHANDLE hvarray = NULL;
+
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *src = NULL;
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *dst = NULL;
+    INT i;
+
+    INT height, width;
+
+    ret = <a class="code" href="group__fie__image.html#gbd877b77fb0ae99b4eabd32fa33044ae" title="画像情報取得">fnFIE_img_get_params</a>(hsrc, NULL, NULL, NULL, &amp;width, &amp;height);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    prj_step = <a class="code" href="group__fie__image.html#g95f68f32c9adbfdfcdba3336b8c0e6e5" title="画像情報取得(ステップ)">fnFIE_img_get_step</a>(hsrc);
+    prj = (DOUBLE*)<a class="code" href="group__fie__image.html#gd4800237fd3e04b0c751193ba5f75479" title="画像アドレス取得(チャネル０固定)">fnFIE_img_get_adrs</a>(hsrc);
+
+    <span class="comment">//エッジ保存用メモリを確保</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    edges_on_line = (<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(width * <span class="keyword">sizeof</span>(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>));
+    <span class="keywordflow">if</span> (edges_on_line == NULL)<span class="keywordflow">goto</span> EXIT;
+    hvarray = <a class="code" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc</a>((<span class="keyword">enum</span> <a class="code" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a" title="FIEオブジェクト種別">f_objtag</a>)0, <span class="keyword">sizeof</span>(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>), 0);
+    <span class="keywordflow">if</span> (hvarray == NULL)<span class="keywordflow">goto</span> EXIT;
+    
+    <span class="comment">//横一列ずつエッジを検出</span>
+    edge_cnt = 0;
+    <span class="keywordflow">for</span> (y = prj_width; y &lt; height - prj_width; y++)
+    {
+        INT line_edge_num;
+        <span class="keyword">const</span> DOUBLE* wk_p = prj + (prj_step * y);
+        ret = <a class="code" href="group__fie__edge__1d__detector__core.html#g23f481fcaa204a6a52d7299f4accc466" title="１次微分によるエッジ検出">fnFIE_edge1d_detect_edges_diff</a>(wk_p, width, diff_filter, arnd, 0,
+            direct_mode, diff_type, diff_thr, detection_mode,
+            edges_on_line, width, &amp;line_edge_num, NULL, width);
+        <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+        <span class="comment">//エッジが複数検出された場合は、最初のエッジのみを保存</span>
+        <span class="keywordflow">if</span> (line_edge_num &gt; 0)
+        {
+            edges_on_line-&gt;<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a> = y;
+            ret = <a class="code" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6" title="配列の最後に追加">fnFIE_vectarray_push_back</a>(hvarray, edges_on_line);
+            <span class="keywordflow">if</span> (<a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret)<span class="keywordflow">goto</span> EXIT;
+            edge_cnt++;
+        }
+
+    }
+
+    <span class="comment">// エッジ点が検出されないケースを処理</span>
+    <span class="keywordflow">if</span> (edge_cnt == 0) {
+        *edges = NULL;
+        *edge_num = 0;
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+        <span class="keywordflow">goto</span> EXIT;
+    }
+
+    <span class="comment">//入力画像での座標に変換</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+    src = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(edge_cnt * <span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>));
+    <span class="keywordflow">if</span> (src == NULL)<span class="keywordflow">goto</span> EXIT;
+    dst = (<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(edge_cnt * <span class="keyword">sizeof</span>(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>));
+    <span class="keywordflow">if</span> (dst == NULL)<span class="keywordflow">goto</span> EXIT;
+    
+    <span class="keywordflow">for</span> (i = 0; i &lt; edge_cnt; i++)
+    {
+        src[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = (*(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>(hvarray, i)).x;
+        src[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = (*(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>(hvarray, i)).y;
+    }
+    
+    ret = <a class="code" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e" title="点群のアフィン変換">fnFIE_geotrans_affine_npoints</a>(src, dst, edge_cnt, inverse_aff);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+    
+    edge_buff_wk = (<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(edge_cnt * <span class="keyword">sizeof</span>(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>));
+    <span class="keywordflow">if</span> (edge_buff_wk == NULL)
+    {
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> EXIT;
+    }
+
+    <span class="keywordflow">for</span> (i = 0; i &lt; edge_cnt; i++)
+    {
+        edge_buff_wk[i] = *(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>(hvarray, i);
+        edge_buff_wk[i].<a class="code" href="structF__DEDGE.html#91fc1607f52b5782628318687f79a3ab">x</a> = dst[i].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+        edge_buff_wk[i].<a class="code" href="structF__DEDGE.html#6d4a43abac0c0c3b2cfd4a252da5649d">y</a> = dst[i].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>;
+    }
+
+
+    *edges = edge_buff_wk;
+    *edge_num = edge_cnt;
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+
+EXIT:
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(edges_on_line);
+    <a class="code" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free</a>(hvarray);
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(src);
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(dst);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(edge_buff_wk);
+    }
+
+    <span class="keywordflow">return</span> ret;
+}
+<span class="comment">/*</span>
+<span class="comment">    アフィン変換で用いる行列を求めます。</span>
+<span class="comment"></span>
+<span class="comment">    処理の高速性のため、回転を含む箱領域上で直接エッジ検出は行いません。</span>
+<span class="comment">    代わりに、検出片幅を含んだ箱領域が以下の性質を満たすように入力画像を変換します。</span>
+<span class="comment">    - 原点基準（左上座標が(0,0)）</span>
+<span class="comment">    - 傾きは0</span>
+<span class="comment">    - 計測ラインの向きは常に右</span>
+<span class="comment"></span>
+<span class="comment">    本関数では、上記の変換を達成するアフィン変換行列を求めます。</span>
+<span class="comment"></span>
+<span class="comment">    作成する行列は次の3つの行列の積になります。</span>
+<span class="comment">    - 検出箱の回転（入力画像の逆回転）</span>
+<span class="comment">    - 計測ライン方向が常に左から右になるような回転</span>
+<span class="comment">    - 原点に移動する行列</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]start       箱の左上の座標(始点)</span>
+<span class="comment">        [in]width       箱の幅</span>
+<span class="comment">        [in]height      箱の高さ</span>
+<span class="comment">        [in]rad         回転角(ラジアン)</span>
+<span class="comment">        [in]prj_width   検出片幅（0以上、単位：画素）</span>
+<span class="comment">        [out]mat_aff    アフィン変換時に用いる行列</span>
+<span class="comment">        [in]scan_dir    計測ライン方向</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_INVALID_PARAM     不正なパラメータが渡された</span>
+<span class="comment">        F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ確保エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_mat_affine(<a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> start, DOUBLE width, DOUBLE height, DOUBLE rad, INT prj_width, <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> **mat_aff, <span class="keyword">enum</span> smp_scan_direction scan_dir)
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_rotate = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_shift = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_line_rotate = NULL;
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a> *mat_mul = NULL;
+    DOUBLE line_angle;
+    DOUBLE shift_x, shift_y;
+    
+    <span class="comment">//作業用行列を確保</span>
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+
+    mat_rotate = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>(3, 3);
+    <span class="keywordflow">if</span> (mat_rotate == NULL) <span class="keywordflow">goto</span> EXIT;
+
+    mat_shift = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>(3, 3);
+    <span class="keywordflow">if</span> (mat_shift == NULL)<span class="keywordflow">goto</span> EXIT;
+
+    mat_line_rotate = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>(3, 3);
+    <span class="keywordflow">if</span> (mat_line_rotate == NULL)<span class="keywordflow">goto</span> EXIT;
+
+    mat_mul = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>(3, 3);
+    <span class="keywordflow">if</span> (mat_mul == NULL)<span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//検出箱の回転行列。</span>
+    <span class="comment">//回転中心は始点startとする。</span>
+    <span class="comment">//直接検出箱を回転させるのではなく入力画像を回転させるため、回転方向は負となる。</span>
+    ret = <a class="code" href="group__fie__cg__geometric__transform.html#gc8adf879f6a35b67c481d5b2c2c67a8a" title="回転をする同次変換行列を作成">fnFIE_geotrans_calc_rotate_matrix</a>(mat_rotate, -rad, start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>, start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//計測ライン方向別パラメータ</span>
+    <span class="keywordflow">switch</span> (scan_dir)
+    {
+        <span class="keywordflow">case</span> R_DIRECT:
+            {
+                line_angle = 0;
+                shift_x = -start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+                shift_y = -start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + prj_width;
+            }
+            <span class="keywordflow">break</span>;
+        <span class="keywordflow">case</span> L_DIRECT:
+            {
+                line_angle = PI;
+                shift_x = -start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> + width - 1;
+                shift_y = -start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + height + prj_width - 1;    
+            }
+            <span class="keywordflow">break</span>;
+        <span class="keywordflow">case</span> D_DIRECT:
+            {
+                line_angle = 1.5*PI;
+                shift_x = -start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+                shift_y = -start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + width + prj_width - 1;
+            }
+            <span class="keywordflow">break</span>;
+        <span class="keywordflow">case</span> U_DIRECT:
+            {
+                line_angle = 0.5*PI;
+                shift_x = -start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> + height - 1;
+                shift_y = -start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> + prj_width;
+            }
+            <span class="keywordflow">break</span>;
+        <span class="keywordflow">default</span>:
+            <span class="keywordflow">break</span>;
+    }
+
+    <span class="comment">//計測ライン方向が左から右になるような回転行列</span>
+    ret = <a class="code" href="group__fie__cg__geometric__transform.html#gc8adf879f6a35b67c481d5b2c2c67a8a" title="回転をする同次変換行列を作成">fnFIE_geotrans_calc_rotate_matrix</a>(mat_line_rotate, line_angle, start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>, start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//原点に平行移動する変換行列</span>
+    ret = <a class="code" href="group__fie__cg__geometric__transform.html#g584b4ec9049ab46240b9552d0456c2a3" title="平行移動する同次変換行列を作成">fnFIE_geotrans_calc_shift_matrix</a>(mat_shift, shift_x, shift_y);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__math__matrix__lalgebra.html#gf07026dd5d66b39c550bb03aa3eea381" title="行列と行列のかけ算">fnFIE_mat_mul_aa</a>(mat_shift, mat_line_rotate, mat_mul);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+    ret = <a class="code" href="group__fie__math__matrix__lalgebra.html#gf07026dd5d66b39c550bb03aa3eea381" title="行列と行列のかけ算">fnFIE_mat_mul_aa</a>(mat_mul, mat_rotate, *mat_aff);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>)<span class="keywordflow">goto</span> EXIT;
+
+EXIT:
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(mat_rotate);
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(mat_shift);
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(mat_line_rotate);
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(mat_mul);
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">/*</span>
+<span class="comment">    箱指定範囲を1次元エッジ検出します。</span>
+<span class="comment">    箱指定範囲が入力画像外にはみ出した場合に呼ばれる関数です。</span>
+<span class="comment"></span>
+<span class="comment">    本関数では、高レベルの一次元エッジ検出関数fnFIE_edge1d_line2()を使用します。</span>
+<span class="comment">    この関数は、計測ラインの一部が入力画像外であっても適切に処理可能です（詳細は１次元エッジ検出の説明を参照してください）。</span>
+<span class="comment">    しかし、計測ラインごとに逐一濃度プロファイルを作成するため、処理速度は低速です。</span>
+<span class="comment"></span>
+<span class="comment">    引数:</span>
+<span class="comment">        [in]hsrc            入力画像</span>
+<span class="comment">        [in]box             検出幅を含んだ4隅の座標点</span>
+<span class="comment">        [in]box_height      計測ライン方向を左から右に揃えた後の箱の高さ</span>
+<span class="comment">        [in]prj_width       検出片幅</span>
+<span class="comment">        [in]diff_filter     微分フィルタの指定</span>
+<span class="comment">        [in]arnd            サブピクセル計算に使用する周辺情報の片幅（0以上）</span>
+<span class="comment">        [in]direct_mode     検出するエッジ方向の指定</span>
+<span class="comment">        [in]diff_type       濃度差しきい値の種別</span>
+<span class="comment">        [in]diff_thr        エッジの最小濃度差しきい値</span>
+<span class="comment">        [in]detection_mode  検出されるエッジの種類を指定</span>
+<span class="comment">        [out]edges          検出されたエッジ位置</span>
+<span class="comment">        [out]edge_num       検出されたエッジ点個数</span>
+<span class="comment"></span>
+<span class="comment">    戻り値:</span>
+<span class="comment">        F_ERR_NONE              正常終了</span>
+<span class="comment">        F_ERR_NOMEMORY          メモリ不足</span>
+<span class="comment">        F_ERR_INVALID_PARAM     不正なパラメータが渡された</span>
+<span class="comment">        F_ERR_NODATA            濃度プロファイルに有効領域が存在しない</span>
+<span class="comment">        F_ERR_NO_LICENCE        ライセンスエラー、または未初期化エラー</span>
+<span class="comment">*/</span>
+<span class="keyword">static</span> INT fnSMP_edges_outside(FHANDLE hsrc, <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> *box,DOUBLE box_height,INT prj_width, <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a> diff_filter, INT arnd,
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a> direct_mode, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a> diff_type, DOUBLE diff_thr, <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a> detection_mode, <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a> **edges, INT *edge_num)
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> srt[2], end[2];
+    DOUBLE unit_x, unit_y;
+    DOUBLE norm;
+    <a class="code" href="structDSGMT__T.html" title="線分指定用構造体(DOUBLE)">DSGMT_T</a>  line;
+    INT i;
+    INT edge_cnt = 0;
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* edge_buff_wk = NULL;
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>* edges_on_line = NULL;
+    FHANDLE hvarray = NULL;
+
+    <span class="comment">//計測ラインそれぞれの位置を求めるため、予め箱の高さ方向の単位方向ベクトル</span>
+    <span class="comment">//（隣り合う計測ライン同士の差分ベクトル）を求める</span>
+    srt[0] = box[0];
+    end[0] = box[1];
+    srt[1] = box[2];
+    end[1] = box[3];
+
+    unit_x = srt[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> - srt[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+    unit_y = srt[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> - srt[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>;
+    norm = sqrt(unit_x*unit_x + unit_y*unit_y);
+
+    unit_x /= norm;
+    unit_y /= norm;
+
+    <span class="comment">//エッジ保存用メモリを確保</span>
+    hvarray = <a class="code" href="group__fie__container__vector.html#gc9afc0608d85fb97af5302cb18b89b55" title="配列オブジェクトの確保">fnFIE_vectarray_alloc</a>((<span class="keyword">enum</span> <a class="code" href="group__fie__object.html#g2316b584e020eeaca3a424d22e25129a" title="FIEオブジェクト種別">f_objtag</a>)0, <span class="keyword">sizeof</span>(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>), 0);
+    <span class="keywordflow">if</span> (hvarray == NULL)
+    {
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> EXIT;
+    }
+
+    <span class="comment">//1ラインずつエッジ検出</span>
+    <span class="keywordflow">for</span> (i = prj_width; i &lt; box_height - prj_width; i++)
+    {
+        INT line_edge_num = 0;
+
+        <span class="comment">//計測ラインを求める</span>
+        line.<a class="code" href="structDSGMT__T.html#984e3a00e38148d00bb57220649fe0d6">st</a>.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i*unit_x + srt[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+        line.<a class="code" href="structDSGMT__T.html#984e3a00e38148d00bb57220649fe0d6">st</a>.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = i*unit_y + srt[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>;
+        line.<a class="code" href="structDSGMT__T.html#578c772c13b6308fc7e6dd06b8c95802">ed</a>.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = i*unit_x + end[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a>;
+        line.<a class="code" href="structDSGMT__T.html#578c772c13b6308fc7e6dd06b8c95802">ed</a>.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = i*unit_y + end[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a>;
+
+        ret = <a class="code" href="group__fie__edge__1d__detector.html#g0a94878e8e9a663c371ade960de0b48c" title="計測ライン(線分)上からの複数エッジ点の検出">fnFIE_edge1d_line2</a>(hsrc, line, prj_width, diff_filter, arnd, 0, direct_mode,
+            diff_type, diff_thr, detection_mode, &amp;edges_on_line, &amp;line_edge_num, NULL, NULL);
+
+        <span class="comment">//エッジが複数検出された場合は、最初のエッジのみを保存</span>
+        <span class="keywordflow">if</span> (line_edge_num &gt; 0)
+        {
+            ret = <a class="code" href="group__fie__container__vector.html#g8cb5d120500cca3202c997fbf15ccfe6" title="配列の最後に追加">fnFIE_vectarray_push_back</a>(hvarray, edges_on_line);
+            <span class="keywordflow">if</span> (<a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret)<span class="keywordflow">goto</span> EXIT;
+            edge_cnt++;
+        }
+
+        <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(edges_on_line); edges_on_line = NULL;
+    }
+
+    <span class="comment">// エッジ点が検出されないケースを処理</span>
+    <span class="keywordflow">if</span> (edge_cnt == 0) {
+        *edges = NULL;
+        *edge_num = 0;
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+        <span class="keywordflow">goto</span> EXIT;
+    }
+
+    edge_buff_wk = (<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>(edge_cnt * <span class="keyword">sizeof</span>(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>));
+    <span class="keywordflow">if</span> (edge_buff_wk == NULL)
+    {
+        ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd66019e37614dd7208ad00ac047df2e6c" title="メモリ確保エラー">F_ERR_NOMEMORY</a>;
+        <span class="keywordflow">goto</span> EXIT;
+    }
+
+    <span class="keywordflow">for</span> (i = 0; i &lt; edge_cnt; i++)
+    {
+        edge_buff_wk[i] = *(<a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*)<a class="code" href="group__fie__container__vector.html#g1889658ca9acaf5a84cc6bef2aceb5e9" title="指定位置要素のポインタ取得">fnFIE_vectarray_getat</a>(hvarray, i);
+    }
+
+    *edges = edge_buff_wk;
+    *edge_num = edge_cnt;
+    ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>;
+EXIT:
+
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(edges_on_line);
+    <a class="code" href="group__fie__container__vector.html#g9610944a7940c07708235c81bc638901" title="配列オブジェクトの解放">fnFIE_vectarray_free</a>(hvarray);
+    <span class="keywordflow">if</span> (ret != <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a>) {
+        <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(edge_buff_wk);
+    }
+
+    <span class="keywordflow">return</span> ret;
+}
+
+<span class="comment">//実行サンプル</span>
+<span class="keyword">static</span> INT execute()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">//入力</span>
+    FHANDLE                         hsrc = NULL;<span class="comment">//入力画像</span>
+
+    <span class="comment">//箱情報</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a>                          start;      <span class="comment">//箱の始点</span>
+    DOUBLE                          width;      <span class="comment">//箱の幅</span>
+    DOUBLE                          height;     <span class="comment">//箱の高さ</span>
+    DOUBLE                          rad;        <span class="comment">//箱回転角度(ラジアン)</span>
+
+    <span class="keyword">enum</span> smp_scan_direction         scan_dir;   <span class="comment">//計測ライン方向</span>
+
+    <span class="comment">//エッジ情報</span>
+    <a class="code" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a>            diff_filter;    <span class="comment">//微分フィルタの指定</span>
+    INT                             arnd;           <span class="comment">//サブピクセル計算に使用する周辺情報の片幅(0以上)</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d" title="エッジ方向">f_edge1d_edge_direction</a>    direct_mode;    <span class="comment">//検出するエッジ方向の指定</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e" title="濃度差しきい値種別">f_diff_type</a>                diff_type;      <span class="comment">//濃度差しきい値の種別</span>
+    DOUBLE                          diff_thr;       <span class="comment">//エッジの最小濃度差しきい値</span>
+    <span class="keyword">enum</span> <a class="code" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f" title="エッジの保存順">f_edge1d_sort_mode</a>         detection_mode; <span class="comment">//検出されるエッジの種類</span>
+
+    INT                             prj_width;      <span class="comment">//検出片幅</span>
+
+    <span class="comment">//出力</span>
+    <a class="code" href="structF__DEDGE.html" title="勾配方向、強度付エッジ点構造体(浮動小数点型)">F_DEDGE</a>*                        edges = NULL;   <span class="comment">//検出されたエッジ点保存配列のポインタ </span>
+    INT                             edge_num;       <span class="comment">//検出されたエッジ点個数</span>
+
+    <span class="comment">//画像読込.</span>
+    <span class="comment">//適宜目的の画像に置き換えてください.</span>
+    ret = <a class="code" href="group__fie__file__image.html#ga735b6accb014c4d15eec6e422b6a7bb" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  画像ファイル...">fnFIE_load_img_file</a>(<span class="stringliteral">"edges.bmp"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+    <span class="keywordflow">if</span> (<a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//箱情報</span>
+    start.<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 250;
+    start.<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 200;
+    width = 200;
+    height = 150;
+    rad = 0 * PI;
+    
+    <span class="comment">//計測ライン方向</span>
+    scan_dir = R_DIRECT;
+    
+    <span class="comment">//エッジ情報</span>
+    diff_filter.<a class="code" href="structF__EDGE1D__DIFF__FILTER.html#7bb983b7ec59e74e0d9023314c6ac454">minus_foot</a> = 3;
+    diff_filter.<a class="code" href="structF__EDGE1D__DIFF__FILTER.html#e58c82090bfea10c96ac68f7228b8fa8">minus_len</a> = 1;
+    diff_filter.<a class="code" href="structF__EDGE1D__DIFF__FILTER.html#971584085b4736d07881d2f935e9d88c">plus_foot</a> = 3;
+    diff_filter.<a class="code" href="structF__EDGE1D__DIFF__FILTER.html#487463f4e1dc368fef1589acd56a695b">plus_len</a> = 1;
+    arnd = 5;
+    direct_mode = <a class="code" href="group__fie__edge__1d__detector.html#gg637e517b395aea7739889927db14594d8c975c29974b444b8ed41bc4a692b371">F_DRK_TO_BRI</a>;
+    diff_type = <a class="code" href="group__fie__edge__1d__detector.html#ggec25caf190c97e4315c1f7323d73070e451d69ccdda2edbcaf6aa7622be6f619">F_RELATIVE_THR</a>;
+    diff_thr = 75;
+    detection_mode = <a class="code" href="group__fie__edge__1d__detector.html#ggcc2b74753d5d5dafc8da9de14d96940f382525e966f56b7d3cff7bf224fb6852">F_POS_SORT</a>;
+
+    <span class="comment">//検出片幅</span>
+    prj_width = 5;
+
+    <span class="comment">//メインサンプル実行.</span>
+    ret = fnSMP_box_edge(
+        hsrc,
+        start,
+        width,
+        height,
+        rad,
+        scan_dir,
+        diff_filter,
+        arnd,
+        direct_mode,
+        diff_type,
+        diff_thr,
+        detection_mode,
+        prj_width,
+        &amp;edges,
+        &amp;edge_num
+    );
+    <span class="keywordflow">if</span> (<a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cd457bddfc94b88d8440be1a5e773adefa" title="エラー無し">F_ERR_NONE</a> != ret) <span class="keywordflow">goto</span> EXIT;
+
+    <span class="comment">//結果表示</span>
+    {
+        INT i;
+        
+        <span class="keywordflow">for</span> (i = 0; i &lt; edge_num; i++)
+        {
+            printf(<span class="stringliteral">"%03d: x=%0.5f, y=%0.5f, q=%0.1f, mag=%0.5f\n"</span>,
+                i, edges[i].x, edges[i].y, edges[i].q ,edges[i].mag);
+        }
+
+    }
+
+EXIT:
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>(edges);
+
+    <span class="keywordflow">return</span> ret;
+}
+
+INT main()
+{
+    INT ret = <a class="code" href="group__fie__document.html#ggbffaca45497ab68d341a940f16c668cdec888cfe6642ce77c95e72fd369c9304" title="不明なエラー">F_ERR_UNKNOWN</a>;
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    ret = execute();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> ret;
+}
+</pre></div> 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+</table>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

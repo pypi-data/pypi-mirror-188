@@ -1,0 +1,2822 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 特徴量計算</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>特徴量計算<br>
+<small>
+[<a class="el" href="group__fie__region__base.html">リージョン処理</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77">fnFIE_region_set_connection</a> (FHANDLE hreg, INT connection)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGIONオブジェクトの連結性設定関数  <a href="#g0313f619a8a3392c78b7267b22524b77"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136">fnFIE_region_calc_boundary</a> (FHANDLE hreg, <a class="el" href="structPNT__T.html">PNT_T</a> **pnts, UINT *pnum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION境界点抽出  <a href="#g97d984531698dd011f340769211e5136"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd">fnFIE_region_calc_boundary_ex</a> (FHANDLE hreg, <a class="el" href="structPNT__T.html">PNT_T</a> **ext_pnts, UINT *ext_pnum, <a class="el" href="structPNT__T.html">PNT_T</a> **int_pnts, UINT *int_pnum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION境界点抽出(拡張版)  <a href="#ge48e866514b204d32d5676425e569afd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gb1b47ed8bf09ac5f308c15bccaa94a29">fnFIE_region_get_perimeter</a> (FHANDLE hreg, DOUBLE *perimeter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：周囲長計測  <a href="#gb1b47ed8bf09ac5f308c15bccaa94a29"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505">fnFIE_region_get_area</a> (FHANDLE hreg, UINT *area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：面積  <a href="#g3d1773948d1e4afe9cc4ea6e07122505"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g2ed01873b2e40b50e0497b1ce0fca434">fnFIE_region_get_xyrange</a> (FHANDLE hreg, INT *xmin, INT *xmax, INT *ymin, INT *ymax)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：座標の最大最小値  <a href="#g2ed01873b2e40b50e0497b1ce0fca434"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gd60a5efa4ecbcd79170c502ce3c875ad">fnFIE_region_get_maxminpos</a> (FHANDLE hreg, INT *xmin_at_ymin, INT *xmax_at_ymax, INT *ymin_at_xmax, INT *ymax_at_xmin)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：座標の最大最小位置  <a href="#gd60a5efa4ecbcd79170c502ce3c875ad"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gd3caf57f1520ce54be42145fa9dda76d">fnFIE_region_get_xydiff</a> (FHANDLE hreg, INT *xdiff, INT *ydiff)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接矩形サイズ取得（xdiff、ydiff）  <a href="#gd3caf57f1520ce54be42145fa9dda76d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#ge37ab5e4812fd06e6ab0c787b3ec2f4e">fnFIE_region_get_rect1_area</a> (FHANDLE hreg, UINT *area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接矩形面積  <a href="#ge37ab5e4812fd06e6ab0c787b3ec2f4e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gee402daea0bbe82cf813f2ebf6f7e087">fnFIE_region_get_rect1_lratio</a> (FHANDLE hreg, DOUBLE *lratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接矩形縦横比  <a href="#gee402daea0bbe82cf813f2ebf6f7e087"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g3431667bf2d6da1b1eb50ee758616a3f">fnFIE_region_get_rect1_sratio</a> (FHANDLE hreg, DOUBLE *sratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接矩形面積比  <a href="#g3431667bf2d6da1b1eb50ee758616a3f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g5899ab358ad11fe4c3a3a6e56b7e5e13">fnFIE_region_get_moment1</a> (FHANDLE hreg, DLONG *sumx, DLONG *sumy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：１次モーメント  <a href="#g5899ab358ad11fe4c3a3a6e56b7e5e13"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g196a87140354f5d6887dc9165dfb1c5f">fnFIE_region_get_moment2</a> (FHANDLE hreg, UDLONG *sumx2, UDLONG *sumy2, DLONG *sumxy)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：２次モーメント  <a href="#g196a87140354f5d6887dc9165dfb1c5f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gd56424deef46d991fb9f2542062ff883">fnFIE_region_calc_central_moment2</a> (FHANDLE hreg, DOUBLE *mg20, DOUBLE *mg02, DOUBLE *mg11)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：重心２次モーメント  <a href="#gd56424deef46d991fb9f2542062ff883"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gb894333201980f37ce0256dfba20ee95">fnFIE_region_calc_moment3</a> (FHANDLE hreg, DOUBLE *m30, DOUBLE *m03, DOUBLE *m21, DOUBLE *m12)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：３次モーメント  <a href="#gb894333201980f37ce0256dfba20ee95"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g126f11160e93894a66f3fc657008a38e">fnFIE_region_calc_central_moment3</a> (FHANDLE hreg, DOUBLE *mg30, DOUBLE *mg03, DOUBLE *mg21, DOUBLE *mg12)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：重心３次モーメント  <a href="#g126f11160e93894a66f3fc657008a38e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gc72eacc53ce969a03a11164ca2115999">fnFIE_region_calc_moment</a> (FHANDLE hreg, INT xn, INT yn, DOUBLE *m)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：Ｎ次モーメント  <a href="#gc72eacc53ce969a03a11164ca2115999"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g1a7b1267f22967a6db606909b12f8108">fnFIE_region_calc_central_moment</a> (FHANDLE hreg, INT xn, INT yn, DOUBLE *mg)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：重心Ｎ次モーメント  <a href="#g1a7b1267f22967a6db606909b12f8108"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g18174ca8f7e6fbc3a694fd67752b2787">fnFIE_region_calc_hu_moments</a> (FHANDLE hreg, DOUBLE *h)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：Huモーメント不変量  <a href="#g18174ca8f7e6fbc3a694fd67752b2787"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g6c5ab9e3b9b196307b5be0d0c5594ffe">fnFIE_region_get_center</a> (FHANDLE hreg, DOUBLE *centerx, DOUBLE *centery)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：重心  <a href="#g6c5ab9e3b9b196307b5be0d0c5594ffe"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gd0e3bc69b8c2074947f1bfe5595c994a">fnFIE_region_get_equivalent_ellipse</a> (FHANDLE hreg, DOUBLE *majoraxis, DOUBLE *minoraxis, DOUBLE *theta, DOUBLE *aratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：等価楕円  <a href="#gd0e3bc69b8c2074947f1bfe5595c994a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g3bd7d20634c1488202f19576f9f7215f">fnFIE_region_calc_equivalent_disk</a> (FHANDLE hreg, DOUBLE *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：面積等価円  <a href="#g3bd7d20634c1488202f19576f9f7215f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g80ae4adcb98ea6859ae5fba5857abb1e">fnFIE_region_get_rect2_size</a> (FHANDLE hreg, DOUBLE *lsize, DOUBLE *wsize)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接長方形  <a href="#g80ae4adcb98ea6859ae5fba5857abb1e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g30ef624cc7a7facfa5408bdc517993d0">fnFIE_region_get_rect2_area</a> (FHANDLE hreg, DOUBLE *area)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接長方形面積  <a href="#g30ef624cc7a7facfa5408bdc517993d0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g8ab04bc42476e5c2f85f367773dcfb1f">fnFIE_region_get_rect2_lratio</a> (FHANDLE hreg, DOUBLE *lratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接長方形縦横比  <a href="#g8ab04bc42476e5c2f85f367773dcfb1f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g6b88e3bdcefa77598dcedad2f6f73d7d">fnFIE_region_get_rect2_sratio</a> (FHANDLE hreg, DOUBLE *sratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接長方形面積比  <a href="#g6b88e3bdcefa77598dcedad2f6f73d7d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g412047e79832bfaaf4c574e885824c28">fnFIE_region_calc_circularity1</a> (FHANDLE hreg, DOUBLE *circularity)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：真円度＃１  <a href="#g412047e79832bfaaf4c574e885824c28"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#gb44844cdbfbffc0997cc7dce4c174969">fnFIE_region_calc_equivalent_circle</a> (FHANDLE hreg, DOUBLE *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：周囲長等価円  <a href="#gb44844cdbfbffc0997cc7dce4c174969"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g106e10598f406b12fd93f173886ca0f0">fnFIE_region_get_distance_to_boundary</a> (FHANDLE hreg, DOUBLE *dpmin, DOUBLE *dpmax, DOUBLE *dpave, DOUBLE *dpsigma)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外周距離  <a href="#g106e10598f406b12fd93f173886ca0f0"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g8c25d7ff398c44dee23616ad165de222">fnFIE_region_calc_circularity2</a> (FHANDLE hreg, DOUBLE *circularity)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：真円度＃２  <a href="#g8c25d7ff398c44dee23616ad165de222"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g167c97087dbf40a5aa590daa682d8c8a">fnFIE_region_calc_circularity3</a> (FHANDLE hreg, DOUBLE *circularity)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：真円度＃３  <a href="#g167c97087dbf40a5aa590daa682d8c8a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g0bef5b8a58237a243c0fd5bb8a9c9514">fnFIE_region_calc_convexfeature</a> (FHANDLE hreg, DOUBLE *convex_area, DOUBLE *convex_perim)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：凸包面積・周囲長  <a href="#g0bef5b8a58237a243c0fd5bb8a9c9514"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g43037b7b2c0cb40e12609a1a8d56f245">fnFIE_region_calc_convexratio</a> (FHANDLE hreg, DOUBLE *convex_arearatio, DOUBLE *convex_perimratio)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：凸包面積比・周囲長比  <a href="#g43037b7b2c0cb40e12609a1a8d56f245"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#geaa75d89d65aca1b6ca0444e73575209">fnFIE_region_calc_feret_diameter_maxmin</a> (FHANDLE hreg, DOUBLE *feretmax, DOUBLE *fmax_theta, DOUBLE *feretmin, DOUBLE *fmin_theta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：最大フェレ径、最小フェレ径  <a href="#geaa75d89d65aca1b6ca0444e73575209"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#ga294f51a165e5f1f048a84287fde9f45">fnFIE_region_calc_feret_diameter</a> (FHANDLE hreg, DOUBLE theta, INT mode, DOUBLE *diameter)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：指定角度フェレ径計測  <a href="#ga294f51a165e5f1f048a84287fde9f45"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g8e83e0579fb5e1a8d7d4123656e225b3">fnFIE_region_calc_convex2d</a> (FHANDLE hreg, <a class="el" href="structPNT__T.html">PNT_T</a> **ppHull, UINT *verNum)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：凸包生成  <a href="#g8e83e0579fb5e1a8d7d4123656e225b3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g7c201dac6f9975b8cf80cbf807c108dc">fnFIE_region_calc_rect2pos</a> (FHANDLE hreg, <a class="el" href="structDPNT__T.html">DPNT_T</a> *points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：外接長方形の頂点  <a href="#g7c201dac6f9975b8cf80cbf807c108dc"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g845b8e2e9fc73eefecfdb6760829aea7">fnFIE_region_calc_bounding_rotated_rect_pos</a> (FHANDLE hreg, DOUBLE theta, <a class="el" href="structDPNT__T.html">DPNT_T</a> *points)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：指定角度外接長方形の頂点  <a href="#g845b8e2e9fc73eefecfdb6760829aea7"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__region__feature.html#g416d84221fff9070c8f88a81c5c8a161">fnFIE_region_calc_circumcircle</a> (FHANDLE hreg, <a class="el" href="structDPNT__T.html">DPNT_T</a> *center, DOUBLE *radius)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">REGION特徴量：最小外接円  <a href="#g416d84221fff9070c8f88a81c5c8a161"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g0313f619a8a3392c78b7267b22524b77"></a><!-- doxytag: member="fie_region.c::fnFIE_region_set_connection" ref="g0313f619a8a3392c78b7267b22524b77" args="(FHANDLE hreg, INT connection)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_set_connection           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>connection</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGIONオブジェクトの連結性設定関数 
+<p>
+REGIONオブジェクトの連結性を設定します。 周囲長および外周距離計算時に必要な境界点列を求める際に使われるパラメータです。 連結性が変更された場合は、関連する特徴量のフラグがクリアされます。<p>
+<ul>
+<li>REGIONオブジェクトの連結性の初期値は8です。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>connection</em>&nbsp;</td><td>連結性<ul>
+<li>8 : 8連結</li><li>4 : 4連結</li></ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータ </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g97d984531698dd011f340769211e5136"></a><!-- doxytag: member="fie_region_boundary.c::fnFIE_region_calc_boundary" ref="g97d984531698dd011f340769211e5136" args="(FHANDLE hreg, PNT_T **pnts, UINT *pnum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_boundary           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>pnum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION境界点抽出 
+<p>
+領域（REGION）の境界点を抽出します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_boundary">ここ</a> を参照して下さい。 領域の境界にはexternal boundaryとinternal boundaryの２種類ありますが、 本関数ではexternal boundaryのみ抽出します。（下図参照） internal boundaryが必要な場合には <a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd" title="REGION境界点抽出(拡張版)">fnFIE_region_calc_boundary_ex()</a> を使用してください。<p>
+<div align="center">
+<img src="fie_region_boundary_01.png" alt="fie_region_boundary_01.png">
+</div>
+<p>
+連結モードによって異なる境界点列が取得できます。（下図参照） 連結性の設定は <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> より行って下さい。<p>
+<div align="center">
+<img src="fie_region_boundary_02.png" alt="fie_region_boundary_02.png">
+</div>
+<p>
+領域の境界を画像座標系で反時計回りに探索（右手の法則）します。 １つの境界点列で始点と終点は必ず同一点となります。<p>
+<div align="center">
+<img src="fie_region_boundary_03.png" alt="fie_region_boundary_03.png">
+</div>
+<p>
+領域が２つ以上ある場合（ラベリングするとラベル数が２以上になるとき）でも、すべての領域について境界点列を生成します。 １つの境界点列が終了すると、座標にI32_MINが格納された点を挿入しています。 また、境界点列が複数ある場合、1 yの昇順、2 xの昇順で境界点列の始点を使ってソートします。<p>
+出力用のメモリは関数内で確保されます。 <em>*pnts</em> はNULLにしておいて下さい。 得られた点列( <em>*pnts</em> )は、不要になった後に <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用して解放して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域が存在しないREGIONの時は <em>*pnts</em> は NULL , <em>*pnum</em> は0となります。 </li>
+<li>xdiff, ydiff がそれぞれ2以上65535以下の領域で、4連結で境界点抽出を行った場合の <em>*pnum</em> のサイズの最大値は面積の1.5～1.6倍となります。 </li>
+<li>8連結の場合は xdiff, ydiff が65535以下であれば <em>*pnum</em> がUI32_MAXを超えることはないと考えられます。（ただし証明していない。） </li>
+<li>FVLなどのFASTの境界点抽出ライブラリとは得られる結果が異なります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> を参照して下さい。 </li>
+<li>関数エントリー時 *pnts == NULL でなければいけません。</li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>抽出例</b></dt><dd><div align="center">
+<img src="fie_region_boundary_04.png" alt="fie_region_boundary_04.png">
+</div>
+</dd></dl>
+上図を8連結モードで境界点列を生成したときの結果を以下に示します。 ただしPNT_Tの値を(x,y)と表記します。 <pre>
+	pnum : 22
+	pnts : (1,1)(1,2)(1,3)(2,3)(3,3)(4,3)(5,3)(4,3)(3,2)(3,1)(2,1)(1,1)(I32_MIN,I32_MIN)
+           (3,5)(2,6)(3,5)(4,6)(5,6)(5,5)(4,5)(3,5)(I32_MIN,I32_MIN)
+	</pre><p>
+上図を4連結モードで境界点列を生成したときの結果を以下に示します。 <pre>
+	pnum : 25
+	pnts : (1,1)(1,2)(1,3)(2,3)(3,3)(4,3)(5,3)(4,3)(3,3)(3,2)(3,1)(2,1)(1,1)(I32_MIN,I32_MIN)
+           (3,5)(4,5)(4,6)(5,6)(5,5)(4,5)(3,5)(I32_MIN,I32_MIN)(2,6)(2,6)(I32_MIN,I32_MIN)
+	</pre><p>
+<dl class="user" compact><dt><b>example code</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+INT main()
+{
+    FHANDLE hreg=NULL;
+    <a class="code" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a> *pnts;
+    UINT i,pnum=0;
+    <span class="comment">// リージョン定義用のランレングス配列</span>
+    <a class="code" href="structF__RUNLENGTH.html" title="ランレングス構造体">F_RUNLENGTH</a> runlengths[] = {
+        { 1, 3, 1 },
+        { 1, 1, 2 }, { 3, 3, 2 },
+        { 1, 5, 3 },
+        { 3, 5, 5 },
+        { 2, 2, 6 }, { 4, 5, 6 },
+    };
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// 適当な領域(hreg)を用意する。ドキュメントの抽出例に対応</span>
+    hreg = <a class="code" href="group__fie__region__create.html#g2d44ba25cc0df446a79254611cacc720" title="ラン配列によってリージョンを作成">fnFIE_create_region_runlength</a>(runlengths, 7);
+
+    <span class="comment">// pntsをNULLで初期化する</span>
+    pnts=NULL;
+    
+    <span class="comment">// 8連結で境界点列を求める例</span>
+    <a class="code" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection</a>  ( hreg, 8 );
+    <a class="code" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary</a>( hreg, &amp;pnts, &amp;pnum );
+    
+    <span class="comment">// 結果を表示する</span>
+    printf(<span class="stringliteral">"pnum : %d\n"</span>, pnum);
+    printf(<span class="stringliteral">"pnts :\n"</span>);
+    <span class="keywordflow">for</span>(i=0;i&lt;pnum;i++){
+        <span class="keywordflow">if</span> (pnts[i].x != I32_MIN) {
+            printf(<span class="stringliteral">"(%d,%d)"</span>, pnts[i].x, pnts[i].y);
+        }
+        <span class="keywordflow">else</span> {
+            <span class="comment">// １つの境界点列が終了</span>
+            printf(<span class="stringliteral">"(I32_MIN,I32_MIN)\n"</span>);
+        }
+    }
+    <span class="comment">// pntsのメモリ解放はユーザが行う</span>
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( pnts );
+
+    <span class="comment">// 解放</span>
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hreg);
+
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnts</em>&nbsp;</td><td>出力点列の先頭ポインタを格納するアドレス<br>
+ 関数エントリー時 *pnts == NULL でなければならない </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>pnum</em>&nbsp;</td><td>出力点列の点の数。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li>パラメータに NULL ポインタが渡された。</li><li><em>*pnts</em> が NULL でない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a>, <a class="el" href="group__fie__region__feature.html#ge48e866514b204d32d5676425e569afd" title="REGION境界点抽出(拡張版)">fnFIE_region_calc_boundary_ex()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge48e866514b204d32d5676425e569afd"></a><!-- doxytag: member="fie_region_boundary.c::fnFIE_region_calc_boundary_ex" ref="ge48e866514b204d32d5676425e569afd" args="(FHANDLE hreg, PNT_T **ext_pnts, UINT *ext_pnum, PNT_T **int_pnts, UINT *int_pnum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_boundary_ex           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>ext_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>ext_pnum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>int_pnts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>int_pnum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION境界点抽出(拡張版) 
+<p>
+領域（REGION）の境界点を抽出します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_boundary">ここ</a> を参照して下さい。 領域の境界にはexternal boundaryとinternal boundaryの２種類ありますが、 本関数ではその両方が取得できる <a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a> の拡張版です。（下図参照） external boundaryのみが取得できればいい場合は <a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a> をお使いください。<p>
+<div align="center">
+<img src="fie_region_boundary_01.png" alt="fie_region_boundary_01.png">
+</div>
+<p>
+連結モードによって異なる境界点列が取得できます。（下図参照） 連結性の設定は <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> より行って下さい。<p>
+<div align="center">
+<img src="fie_region_boundary_02.png" alt="fie_region_boundary_02.png">
+</div>
+<p>
+領域の境界を画像座標系で反時計回りに探索（右手の法則）します。 １つの境界点列で始点と終点は必ず同一点となります。<p>
+<div align="center">
+<img src="fie_region_boundary_03.png" alt="fie_region_boundary_03.png">
+</div>
+<p>
+領域が２つ以上ある場合（ラベリングするとラベル数が２以上になるとき）でも、すべての領域について境界点列を生成します。 １つの境界点列が終了すると、座標にI32_MINが格納された点を挿入しています。 また、境界点列が複数ある場合、1:yの昇順、2:xの昇順 で境界点列の始点を使ってソートします。<p>
+出力用のメモリは関数内で確保されます。 <em>*ext_pnts</em>, <em>*int_pnts</em> はNULLにしておいて下さい。 得られた点列( <em>*ext_pnts</em>, <em>*int_pnts</em> )は、不要になった後に <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用して解放して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域が存在しないREGIONの時は <em>*ext_pnts</em> および <em>*int_pnts</em> は NULL , <em>*ext_pnum</em> および <em>*int_pnum</em> は0となります。 </li>
+<li>領域にinternal boundaryが無い（穴がない）REGIONの場合は、 <em>*int_pnts</em> は NULL , <em>*int_pnum</em> は0となります。 </li>
+<li>xdiff, ydiff がそれぞれ2以上65535以下の領域で、4連結で境界点抽出を行った場合の <em>*ext_pnum</em> のサイズの最大値は面積の1.5～1.6倍となります。 </li>
+<li>8連結の場合は xdiff, ydiff が65535以下であれば <em>*ext_pnum</em> がUI32_MAXを超えることはないと考えられます。（ただし証明していない。） </li>
+<li>FVLなどのFASTの境界点抽出ライブラリとは得られる結果が異なります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> を参照して下さい。 </li>
+<li>*ext_pnts は関数エントリー時 *ext_pnts == NULL でなければいけません。( <em>ext_pnts</em> != NULL の場合 ) </li>
+<li>*int_pnts は関数エントリー時 *int_pnts == NULL でなければいけません。( <em>int_pnts</em> != NULL の場合 ) </li>
+</ul>
+</dd></dl>
+<dl class="user" compact><dt><b>抽出例</b></dt><dd><div align="center">
+<img src="fie_region_boundary_ex.png" alt="fie_region_boundary_ex.png">
+</div>
+</dd></dl>
+上図を8連結モードで境界点列を生成したときの結果を以下に示します。 ただしPNT_Tの値を(x,y)と表記します。 <pre>
+	ext_pnum : 28
+	ext_pnts : (0,1),(0,2),(0,3),(0,4),(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),
+	           (6,3),(6,2),(6,1),(5,1),(4,1),(3,1),(2,1),(1,1),(0,1),(I32_MIN,I32_MIN)
+	           (3,6),(2,7),(3,6),(4,6),(5,6),(4,6),(3,6),(I32_MIN,I32_MIN)</pre><p>
+<pre>	int_pnum : 19
+	int_pnts : (0,2),(1,1),(2,1),(3,2),(3,3),(2,4),(1,4),(0,3),(0,2),(I32_MIN,I32_MIN)
+	           (3,2),(4,1),(5,2),(6,3),(5,4),(4,4),(3,3),(3,2),(I32_MIN,I32_MIN)
+	</pre><p>
+上図を4連結モードで境界点列を生成したときの結果を以下に示します。 <pre>
+	ext_pnum : 29
+	ext_pnts : (0,1),(0,2),(0,3),(0,4),(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),(6,3),
+	           (6,2),(6,1),(5,1),(4,1),(3,1),(2,1),(1,1),(0,1),(I32_MIN,I32_MIN)
+	           (3,6),(4,6),(5,6),(4,6),(3,6),(I32_MIN,I32_MIN)
+	           (2,7),(2,7),(I32_MIN,I32_MIN)</pre><p>
+<pre>	int_pnum : 28
+	int_pnts : (0,2),(0,1),(1,1),(2,1),(3,1),(3,2),(3,3),(3,4),(2,4),(1,4),(0,4),(0,3),(0,2),(I32_MIN,I32_MIN)
+	           (3,2),(3,1),(4,1),(5,1),(5,2),(6,2),(6,3),(6,4),(5,4),(4,4),(3,4),(3,3),(3,2),(I32_MIN,I32_MIN)
+	</pre><p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ext_pnts</em>&nbsp;</td><td>external boundary の出力点列の先頭ポインタを格納するアドレス <br>
+ 不要な場合は <em>ext_pnts</em> に NULL を渡す。 <em>ext_pnts</em> != NULL の場合、 関数エントリー時 <em>*ext_pnts</em> == NULL でなければなりません </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ext_pnum</em>&nbsp;</td><td><em>ext_pnts</em> に出力された点の数 <br>
+ <em>ext_pnts</em> == NULL の場合、このパラメータは参照されません </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>int_pnts</em>&nbsp;</td><td>出力点列の先頭ポインタを格納するアドレス <br>
+ 不要な場合は <em>int_pnts</em> に NULL を渡す。 <em>int_pnts</em> != NULL の場合、 関数エントリー時 <em>*int_pnts</em> == NULL でなければなりません </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>int_pnum</em>&nbsp;</td><td><em>int_pnts</em> に出力された点の数 <br>
+ <em>int_pnts</em> == NULL の場合、このパラメータは参照されません</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常<ul>
+<li>パラメータに NULL ポインタが渡された。</li><li><em>ext_pnts</em> と <em>int_pnts</em> がともに NULL</li><li><em>*ext_pnts</em> 又は *int_pnts が NULL でない</li><li><em>ext_pnum</em> 又は <em>int_pnum</em> が NULL </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a>, <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb1b47ed8bf09ac5f308c15bccaa94a29"></a><!-- doxytag: member="fie_region_boundary.c::fnFIE_region_get_perimeter" ref="gb1b47ed8bf09ac5f308c15bccaa94a29" args="(FHANDLE hreg, DOUBLE *perimeter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_perimeter           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>perimeter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：周囲長計測 
+<p>
+REGIONの周囲長を計測します。 REGIONの境界点列のユークリッド距離を周囲長と定義します。 連結性は <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> で指定した値を使用します。 （指定した連結性で境界点列抽出を行い、境界点列から周囲長を求めます。）<p>
+<ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>8連結の場合、xdiff,ydiffが65535以下でない場合は正しく計算できない可能性があります。 </li>
+<li>4連結の場合、xdiff,ydiffが65535以下 かつ (面積/1.51)&lt;=UI32_MAX (←左辺整数)でない場合は正しく計算できない可能性があります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> 参照</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>perimeter</em>&nbsp;</td><td>周囲長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3d1773948d1e4afe9cc4ea6e07122505"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_area" ref="g3d1773948d1e4afe9cc4ea6e07122505" args="(FHANDLE hreg, UINT *area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_area           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：面積 
+<p>
+REGIONの面積を計算します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_area">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの面積を出力します。 </li>
+<li>領域がない場合は面積は0となります。 </li>
+<li>xdiff,ydiffが65535以下で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>area</em>&nbsp;</td><td>面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li>area に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2ed01873b2e40b50e0497b1ce0fca434"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_xyrange" ref="g2ed01873b2e40b50e0497b1ce0fca434" args="(FHANDLE hreg, INT *xmin, INT *xmax, INT *ymin, INT *ymax)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_xyrange           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymax</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：座標の最大最小値 
+<p>
+REGIONのX,Y座標の最大値と最小値をそれぞれ求めます。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_xyrange">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmin</em>&nbsp;</td><td>Ｘ座標最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmax</em>&nbsp;</td><td>Ｘ座標最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymin</em>&nbsp;</td><td>Ｙ座標最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymax</em>&nbsp;</td><td>Ｙ座標最大値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>xmin</em>, <em>xmax</em>, <em>ymin</em>, <em>ymax</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd60a5efa4ecbcd79170c502ce3c875ad"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_maxminpos" ref="gd60a5efa4ecbcd79170c502ce3c875ad" args="(FHANDLE hreg, INT *xmin_at_ymin, INT *xmax_at_ymax, INT *ymin_at_xmax, INT *ymax_at_xmin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_maxminpos           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmin_at_ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xmax_at_ymax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymin_at_xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ymax_at_xmin</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：座標の最大最小位置 
+<p>
+REGIONのX,Y座標の最大最小位置を求めます。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_maxminpos">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で座標の最大最小値を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmin_at_ymin</em>&nbsp;</td><td>Ｙの最小位置におけるＸの最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xmax_at_ymax</em>&nbsp;</td><td>Ｙの最大位置におけるＸの最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymin_at_xmax</em>&nbsp;</td><td>Ｘの最大位置におけるＹの最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ymax_at_xmin</em>&nbsp;</td><td>Ｘの最小位置におけるＹの最大値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>xmin_at_ymin</em>, <em>xmax_at_ymax</em>, <em>ymin_at_xmax</em>, <em>ymax_at_xmin</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g2ed01873b2e40b50e0497b1ce0fca434" title="REGION特徴量：座標の最大最小値">fnFIE_region_get_xyrange()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd3caf57f1520ce54be42145fa9dda76d"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_xydiff" ref="gd3caf57f1520ce54be42145fa9dda76d" args="(FHANDLE hreg, INT *xdiff, INT *ydiff)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_xydiff           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>xdiff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>ydiff</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接矩形サイズ取得（xdiff、ydiff） 
+<p>
+REGIONの外接矩形の横サイズ( <em>xdiff</em> )と縦サイズ( <em>ydiff</em> )を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_xydiff">ここ</a> を参照してください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で座標の最大最小値を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>xdiff</em>&nbsp;</td><td>外接矩形横サイズ </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ydiff</em>&nbsp;</td><td>外接矩形縦サイズ</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>xdiff</em>, <em>ydiff</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g2ed01873b2e40b50e0497b1ce0fca434" title="REGION特徴量：座標の最大最小値">fnFIE_region_get_xyrange()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ge37ab5e4812fd06e6ab0c787b3ec2f4e"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect1_area" ref="ge37ab5e4812fd06e6ab0c787b3ec2f4e" args="(FHANDLE hreg, UINT *area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect1_area           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接矩形面積 
+<p>
+REGIONの外接矩形の面積を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_area">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で外接矩形サイズを必要に応じて求めます。 </li>
+<li>xdiff,ydiffが65535以下で使用することを想定した計算アルゴリズムとなっています。それ以外の場合はオーバーフローの可能性があります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>area</em>&nbsp;</td><td>外接矩形面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>area</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd3caf57f1520ce54be42145fa9dda76d" title="REGION特徴量：外接矩形サイズ取得（xdiff、ydiff）">fnFIE_region_get_xydiff()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gee402daea0bbe82cf813f2ebf6f7e087"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect1_lratio" ref="gee402daea0bbe82cf813f2ebf6f7e087" args="(FHANDLE hreg, DOUBLE *lratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect1_lratio           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>lratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接矩形縦横比 
+<p>
+REGIONの外接矩形の縦横比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_lratio">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で外接矩形サイズを必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>lratio</em>&nbsp;</td><td>外接矩形縦横比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>lratio</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd3caf57f1520ce54be42145fa9dda76d" title="REGION特徴量：外接矩形サイズ取得（xdiff、ydiff）">fnFIE_region_get_xydiff()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3431667bf2d6da1b1eb50ee758616a3f"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect1_sratio" ref="g3431667bf2d6da1b1eb50ee758616a3f" args="(FHANDLE hreg, DOUBLE *sratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect1_sratio           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>sratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接矩形面積比 
+<p>
+REGIONの外接矩形の面積比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect1_sratio">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で領域面積、外接矩形面積を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sratio</em>&nbsp;</td><td>外接矩形面積比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>sratio</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__region__feature.html#gd3caf57f1520ce54be42145fa9dda76d" title="REGION特徴量：外接矩形サイズ取得（xdiff、ydiff）">fnFIE_region_get_xydiff()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5899ab358ad11fe4c3a3a6e56b7e5e13"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_moment1" ref="g5899ab358ad11fe4c3a3a6e56b7e5e13" args="(FHANDLE hreg, DLONG *sumx, DLONG *sumy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_moment1           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：１次モーメント 
+<p>
+REGIONの１次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment1">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>xdiff,ydiffが65535以下かつ-65534&lt;=x,y&lt;=65534の条件を満たさない場合はオーバーフローの可能性があります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumx</em>&nbsp;</td><td>X方向１次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumy</em>&nbsp;</td><td>Y方向１次モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>sumx</em>, <em>sumy</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g196a87140354f5d6887dc9165dfb1c5f"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_moment2" ref="g196a87140354f5d6887dc9165dfb1c5f" args="(FHANDLE hreg, UDLONG *sumx2, UDLONG *sumy2, DLONG *sumxy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_moment2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UDLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumx2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UDLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumy2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DLONG *&nbsp;</td>
+          <td class="paramname"> <em>sumxy</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：２次モーメント 
+<p>
+REGIONの２次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment2">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>xdiff,ydiffが65535以下かつ-65534&lt;=x,y&lt;=65534の条件を満たさない場合はオーバーフローの可能性があります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumx2</em>&nbsp;</td><td>X方向２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumy2</em>&nbsp;</td><td>Y方向２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sumxy</em>&nbsp;</td><td>XY方向２次モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>sumx2</em>, <em>sumy2</em>, <em>sumxy</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd56424deef46d991fb9f2542062ff883"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_central_moment2" ref="gd56424deef46d991fb9f2542062ff883" args="(FHANDLE hreg, DOUBLE *mg20, DOUBLE *mg02, DOUBLE *mg11)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_central_moment2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg20</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg02</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg11</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：重心２次モーメント 
+<p>
+REGIONの２次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_central_moment">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で面積、１次モーメント、２次モーメントを必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg20</em>&nbsp;</td><td>X方向重心２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg02</em>&nbsp;</td><td>Y方向重心２次モーメント </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg11</em>&nbsp;</td><td>XY方向重心２次モーメント</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>mg20</em>, <em>mg02</em>, <em>mg11</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb894333201980f37ce0256dfba20ee95"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_moment3" ref="gb894333201980f37ce0256dfba20ee95" args="(FHANDLE hreg, DOUBLE *m30, DOUBLE *m03, DOUBLE *m21, DOUBLE *m12)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_moment3           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m30</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m03</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m21</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m12</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：３次モーメント 
+<p>
+REGIONの３次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブや座標値の大きいブローブ ( 左上座標が(0,0)の正方ブローブを想定したとき、xdiff または ydiff が 1800程度以上が目安 ) では桁落ちによる計算誤差が発生します。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m30</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{30} $" src="form_750.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m03</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{03} $" src="form_751.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m21</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{21} $" src="form_752.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m12</em>&nbsp;</td><td><img class="formulaInl" alt="$ M_{12} $" src="form_753.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>m30</em>, <em>m03</em>, <em>m21</em>, <em>m12</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g126f11160e93894a66f3fc657008a38e"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_central_moment3" ref="g126f11160e93894a66f3fc657008a38e" args="(FHANDLE hreg, DOUBLE *mg30, DOUBLE *mg03, DOUBLE *mg21, DOUBLE *mg12)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_central_moment3           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg30</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg03</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg21</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg12</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：重心３次モーメント 
+<p>
+REGIONの３次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブ( xdiff または ydiff が 1800程度以上が目安 ) では桁落ちによる計算誤差が発生します。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg30</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{30} $" src="form_754.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg03</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{03} $" src="form_755.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg21</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{21} $" src="form_756.png"> </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg12</em>&nbsp;</td><td><img class="formulaInl" alt="$ MG_{12} $" src="form_757.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>m30</em>, <em>m03</em>, <em>m21</em>, <em>m12</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gc72eacc53ce969a03a11164ca2115999"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_moment" ref="gc72eacc53ce969a03a11164ca2115999" args="(FHANDLE hreg, INT xn, INT yn, DOUBLE *m)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_moment           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>xn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>yn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>m</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：Ｎ次モーメント 
+<p>
+REGIONのＮ次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_moment">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブでは桁落ちによる計算誤差が発生します。 (桁数は指定次数によって変わるため、どの程度のサイズで桁落ちが発生するかは不明です)</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>xn</em>&nbsp;</td><td>ｘ次数(0以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>yn</em>&nbsp;</td><td>ｙ次数(0以上) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>m</em>&nbsp;</td><td>モーメント <img class="formulaInl" alt="$ M $" src="form_873.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>xn</em>, <em>yn</em> に 0 より小さい値が指定された</li><li><em>m</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g1a7b1267f22967a6db606909b12f8108"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_central_moment" ref="g1a7b1267f22967a6db606909b12f8108" args="(FHANDLE hreg, INT xn, INT yn, DOUBLE *mg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_central_moment           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>xn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>yn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>mg</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：重心Ｎ次モーメント 
+<p>
+REGIONのＮ次モーメントを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_central_moment">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部計算は DOUBLE型変数にて行いますが、型精度の都合で、 大きなブローブでは桁落ちによる計算誤差が発生します。 (桁数は指定次数によって変わるため、どの程度のサイズで桁落ちが発生するかは不明です)</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>xn</em>&nbsp;</td><td>ｘ次数(0以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>yn</em>&nbsp;</td><td>ｙ次数(0以上) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>mg</em>&nbsp;</td><td>重心モーメント <img class="formulaInl" alt="$ MG $" src="form_874.png"></td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>xn</em>, <em>yn</em> に 0 より小さい値が指定された</li><li><em>m</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g18174ca8f7e6fbc3a694fd67752b2787"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_hu_moments" ref="g18174ca8f7e6fbc3a694fd67752b2787" args="(FHANDLE hreg, DOUBLE *h)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_hu_moments           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>h</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：Huモーメント不変量 
+<p>
+REGIONの7つのHuモーメント不変量を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_hu_moment_invariants">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>h</em>&nbsp;</td><td>Huモーメント不変量の出力先配列。サイズは7</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>h</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6c5ab9e3b9b196307b5be0d0c5594ffe"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_center" ref="g6c5ab9e3b9b196307b5be0d0c5594ffe" args="(FHANDLE hreg, DOUBLE *centerx, DOUBLE *centery)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_center           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>centerx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>centery</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：重心 
+<p>
+REGIONの重心を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_center">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で面積、１次モーメントを必要に応じて求めます。 </li>
+<li>xdiff,ydiffが65535以下でない場合はオーバーフローの可能性があります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>centerx</em>&nbsp;</td><td>重心のX座標 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>centery</em>&nbsp;</td><td>重心のY座標</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>centerx</em>, <em>centery</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__region__feature.html#g5899ab358ad11fe4c3a3a6e56b7e5e13" title="REGION特徴量：１次モーメント">fnFIE_region_get_moment1()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gd0e3bc69b8c2074947f1bfe5595c994a"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_equivalent_ellipse" ref="gd0e3bc69b8c2074947f1bfe5595c994a" args="(FHANDLE hreg, DOUBLE *majoraxis, DOUBLE *minoraxis, DOUBLE *theta, DOUBLE *aratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_equivalent_ellipse           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>majoraxis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>minoraxis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>aratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：等価楕円 
+<p>
+REGIONの面積と等価な楕円の主軸半径・副軸半径・傾き・主軸副軸長比を取得します。<br>
+ 特徴量の意味は <a class="el" href="group__fie__features.html#feature_equivalent_ellipse">ここ</a> を参照してください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で面積、１次・２次モーメントを必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>majoraxis</em>&nbsp;</td><td>主軸半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>minoraxis</em>&nbsp;</td><td>副軸半径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>傾き（主軸とX軸がなす角度）単位：ラジアン ( -π/2 &lt;= <em>theta</em> &lt;= π/2 ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>aratio</em>&nbsp;</td><td>主軸副軸長比 : 副軸長／主軸長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>majoraxis</em>, <em>minoraxis</em>, <em>theta</em>, <em>aratio</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__region__feature.html#g5899ab358ad11fe4c3a3a6e56b7e5e13" title="REGION特徴量：１次モーメント">fnFIE_region_get_moment1()</a>, <a class="el" href="group__fie__region__feature.html#g196a87140354f5d6887dc9165dfb1c5f" title="REGION特徴量：２次モーメント">fnFIE_region_get_moment2()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3bd7d20634c1488202f19576f9f7215f"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_equivalent_disk" ref="g3bd7d20634c1488202f19576f9f7215f" args="(FHANDLE hreg, DOUBLE *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_equivalent_disk           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：面積等価円 
+<p>
+REGIONの面積と等価な円の直径を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_equivalent_disk">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で面積を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>面積等価円直径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>diameter</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g80ae4adcb98ea6859ae5fba5857abb1e"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect2_size" ref="g80ae4adcb98ea6859ae5fba5857abb1e" args="(FHANDLE hreg, DOUBLE *lsize, DOUBLE *wsize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect2_size           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>lsize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>wsize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接長方形 
+<p>
+領域に外接する長方形のサイズを取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_size">ここ</a> を参照して下さい。 領域内の点(x,y)は(x-0.5,y-0.5),(x+0.5,y-0.5),(x-0.5,y+0.5),(x+0.5,y+0.5)で囲まれる 矩形分の広がりを持っているという定義で外接長方形を求めています。（ <a class="el" href="group__fie__region__feature.html#ga294f51a165e5f1f048a84287fde9f45" title="REGION特徴量：指定角度フェレ径計測">fnFIE_region_calc_feret_diameter()</a> 参照 ）<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で等価楕円を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>lsize</em>&nbsp;</td><td>外接長方形横長 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>wsize</em>&nbsp;</td><td>外接長方形縦長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>lsize</em>, <em>wsize</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gd0e3bc69b8c2074947f1bfe5595c994a" title="REGION特徴量：等価楕円">fnFIE_region_get_equivalent_ellipse()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g30ef624cc7a7facfa5408bdc517993d0"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect2_area" ref="g30ef624cc7a7facfa5408bdc517993d0" args="(FHANDLE hreg, DOUBLE *area)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect2_area           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>area</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接長方形面積 
+<p>
+REGIONの外接長方形の面積を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_area">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で外接長方形サイズを必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>area</em>&nbsp;</td><td>外接長方形面積</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>area</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g80ae4adcb98ea6859ae5fba5857abb1e" title="REGION特徴量：外接長方形">fnFIE_region_get_rect2_size()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8ab04bc42476e5c2f85f367773dcfb1f"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect2_lratio" ref="g8ab04bc42476e5c2f85f367773dcfb1f" args="(FHANDLE hreg, DOUBLE *lratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect2_lratio           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>lratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接長方形縦横比 
+<p>
+REGIONの外接長方形の縦横比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_lratio">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で外接長方形サイズを必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>lratio</em>&nbsp;</td><td>外接長方形縦横比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>lratio</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g80ae4adcb98ea6859ae5fba5857abb1e" title="REGION特徴量：外接長方形">fnFIE_region_get_rect2_size()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g6b88e3bdcefa77598dcedad2f6f73d7d"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_rect2_sratio" ref="g6b88e3bdcefa77598dcedad2f6f73d7d" args="(FHANDLE hreg, DOUBLE *sratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_rect2_sratio           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>sratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接長方形面積比 
+<p>
+REGIONの外接長方形の面積比を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2_sratio">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で領域面積、外接長方形面積を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>sratio</em>&nbsp;</td><td>外接長方形縦横比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>sratio</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g30ef624cc7a7facfa5408bdc517993d0" title="REGION特徴量：外接長方形面積">fnFIE_region_get_rect2_area()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g412047e79832bfaaf4c574e885824c28"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_circularity1" ref="g412047e79832bfaaf4c574e885824c28" args="(FHANDLE hreg, DOUBLE *circularity)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_circularity1           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>circularity</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：真円度＃１ 
+<p>
+REGIONの真円度＃１を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circularity1">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で領域面積、周囲長を必要に応じて求めます。 </li>
+<li>4連結と8連結で周囲長の計算方法が異なるため、真円度が異なる場合があります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> 参照</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>circularity</em>&nbsp;</td><td>真円度＃１</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>circularity</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__region__feature.html#gb1b47ed8bf09ac5f308c15bccaa94a29" title="REGION特徴量：周囲長計測">fnFIE_region_get_perimeter()</a>, <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb44844cdbfbffc0997cc7dce4c174969"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_equivalent_circle" ref="gb44844cdbfbffc0997cc7dce4c174969" args="(FHANDLE hreg, DOUBLE *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_equivalent_circle           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：周囲長等価円 
+<p>
+REGIONの周囲長と等価な円の直径を取得します。 周囲長が0の場合に直径が0となります。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_equivalent_circle">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で周囲長を必要に応じて求めます。 </li>
+<li>4連結と8連結で周囲長の計算方法が異なるため、真円度が異なる場合があります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> 参照</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>周囲長等価円直径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>diameter</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#gb1b47ed8bf09ac5f308c15bccaa94a29" title="REGION特徴量：周囲長計測">fnFIE_region_get_perimeter()</a>, <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g106e10598f406b12fd93f173886ca0f0"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_get_distance_to_boundary" ref="g106e10598f406b12fd93f173886ca0f0" args="(FHANDLE hreg, DOUBLE *dpmin, DOUBLE *dpmax, DOUBLE *dpave, DOUBLE *dpsigma)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_get_distance_to_boundary           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpave</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>dpsigma</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外周距離 
+<p>
+REGIONの重心と境界点列の距離最小値、距離最大値、距離平均値、距離標準偏差値を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_distance_to_boundary">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で重心を必要に応じて求めます。 </li>
+<li>4連結と8連結で境界点列の求め方が異なるため、外周距離の各値が異なる場合があります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> 参照</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpmin</em>&nbsp;</td><td>外周距離最小値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpmax</em>&nbsp;</td><td>外周距離最大値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpave</em>&nbsp;</td><td>外周距離平均値 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>dpsigma</em>&nbsp;</td><td>外周距離標準偏差値</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>dpmin</em>, <em>dpmax</em>, <em>dpave</em>, <em>dpsigma</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g6c5ab9e3b9b196307b5be0d0c5594ffe" title="REGION特徴量：重心">fnFIE_region_get_center()</a>, <a class="el" href="group__fie__region__feature.html#g97d984531698dd011f340769211e5136" title="REGION境界点抽出">fnFIE_region_calc_boundary()</a>, <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8c25d7ff398c44dee23616ad165de222"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_circularity2" ref="g8c25d7ff398c44dee23616ad165de222" args="(FHANDLE hreg, DOUBLE *circularity)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_circularity2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>circularity</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：真円度＃２ 
+<p>
+REGIONの真円度＃２を求めます。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circularity2">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で領域面積、外周距離特徴量を必要に応じて求めます。 </li>
+<li>4連結と8連結で結果が異なる場合があります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> 参照</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>circularity</em>&nbsp;</td><td>真円度＃２</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>circularity</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__region__feature.html#g106e10598f406b12fd93f173886ca0f0" title="REGION特徴量：外周距離">fnFIE_region_get_distance_to_boundary()</a>, <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g167c97087dbf40a5aa590daa682d8c8a"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_circularity3" ref="g167c97087dbf40a5aa590daa682d8c8a" args="(FHANDLE hreg, DOUBLE *circularity)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_circularity3           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>circularity</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：真円度＃３ 
+<p>
+REGIONの真円度＃３求めます。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circularity3">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で外周距離特徴量を必要に応じて求めます。 </li>
+<li>4連結と8連結で結果が異なる場合があります。 </li>
+<li>連結性の設定については <a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a> 参照</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>circularity</em>&nbsp;</td><td>真円度＃３</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>circularity</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g0313f619a8a3392c78b7267b22524b77" title="REGIONオブジェクトの連結性設定関数">fnFIE_region_set_connection()</a>, <a class="el" href="group__fie__region__feature.html#g106e10598f406b12fd93f173886ca0f0" title="REGION特徴量：外周距離">fnFIE_region_get_distance_to_boundary()</a></dd></dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>Computer and Robot Vision VOLUME1 ,Robert M.Haralick P.61 </li></ul>
+
+</div>
+</div><p>
+<a class="anchor" name="g0bef5b8a58237a243c0fd5bb8a9c9514"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_convexfeature" ref="g0bef5b8a58237a243c0fd5bb8a9c9514" args="(FHANDLE hreg, DOUBLE *convex_area, DOUBLE *convex_perim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_convexfeature           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_area</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_perim</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：凸包面積・周囲長 
+<p>
+凸包の面積と周囲長を求めます。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_convexfeature">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は凸包が計算できず、エラーになります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_area</em>&nbsp;</td><td>凸包面積 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_perim</em>&nbsp;</td><td>凸包周囲長</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>convex_area</em>, <em>convex_perim</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g8e83e0579fb5e1a8d7d4123656e225b3" title="REGION特徴量：凸包生成">fnFIE_region_calc_convex2d()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g43037b7b2c0cb40e12609a1a8d56f245"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_convexratio" ref="g43037b7b2c0cb40e12609a1a8d56f245" args="(FHANDLE hreg, DOUBLE *convex_arearatio, DOUBLE *convex_perimratio)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_convexratio           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_arearatio</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>convex_perimratio</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：凸包面積比・周囲長比 
+<p>
+凸包の面積比：(領域の面積/凸包面積)、凸包の周囲長比：(領域の周囲長/凸包周囲長)を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_convexratio">ここ</a> を参照してください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>既に計算済みの場合は再計算されず計算済みの値を出力します。 </li>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>内部で周囲長、面積、凸包面積・周囲長を必要に応じて求めます。 </li>
+<li>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は凸包が計算できず、エラーになります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_arearatio</em>&nbsp;</td><td>凸包面積比 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>convex_perimratio</em>&nbsp;</td><td>凸包周囲長比</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>convex_arearatio</em>, <em>convex_perimratio</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g0bef5b8a58237a243c0fd5bb8a9c9514" title="REGION特徴量：凸包面積・周囲長">fnFIE_region_calc_convexfeature()</a>, <a class="el" href="group__fie__region__feature.html#g3d1773948d1e4afe9cc4ea6e07122505" title="REGION特徴量：面積">fnFIE_region_get_area()</a>, <a class="el" href="group__fie__region__feature.html#gb1b47ed8bf09ac5f308c15bccaa94a29" title="REGION特徴量：周囲長計測">fnFIE_region_get_perimeter()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="geaa75d89d65aca1b6ca0444e73575209"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_feret_diameter_maxmin" ref="geaa75d89d65aca1b6ca0444e73575209" args="(FHANDLE hreg, DOUBLE *feretmax, DOUBLE *fmax_theta, DOUBLE *feretmin, DOUBLE *fmin_theta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_feret_diameter_maxmin           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>feretmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>fmax_theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>feretmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>fmin_theta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：最大フェレ径、最小フェレ径 
+<p>
+領域の最大フェレ径と最小フェレ径を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_feret_maxmin">ここ</a> を参照して下さい。<p>
+角度は-π/2≦θ&lt;π/2の範囲で得られます。 フェレ径が最大、または最小となる角度は複数ある可能性がありますが、そのうちのどの角度が得られるかは特に定義しません。 領域が1点の時は、最大フェレ径、最小フェレ径、最大フェレ径角度、最小フェレ径角度はすべて0.0となります。 領域が直線状になる場合（面積が2以上で凸包が求まらない場合）の最小フェレ径の値は0.0となります。<p>
+本関数では、点が広がりを持たない場合のフェレ径の最大・最小値を計算しています。点が広がりを持つ場合も計算可能ですが、処理を 高速に行なうことを優先して、そのような仕様としています。点の広がりについては <a class="el" href="group__fie__features.html#feature_feret_diameter">ここ</a> を参照してください。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。 </li>
+<li>領域の面積が2^30-1より大きい場合は正しく計算できない場合があります。 </li>
+<li>xdiff,ydiffが65535以下の条件を満たさない場合はオーバーフローの可能性があります。</li>
+</ul>
+<p>
+本関数の角度範囲はFVALG ver1.7 より -π/2≦θ&lt;π/2 に変更されました。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>feretmax</em>&nbsp;</td><td>最大フェレ径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fmax_theta</em>&nbsp;</td><td>最大フェレ径の角度 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>feretmin</em>&nbsp;</td><td>最小フェレ径 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>fmin_theta</em>&nbsp;</td><td>最小フェレ径の角度</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>feretmax</em>, <em>fmax_theta</em>, <em>feretmin</em>, <em>fmin_theta</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#ga294f51a165e5f1f048a84287fde9f45" title="REGION特徴量：指定角度フェレ径計測">fnFIE_region_calc_feret_diameter()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga294f51a165e5f1f048a84287fde9f45"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_feret_diameter" ref="ga294f51a165e5f1f048a84287fde9f45" args="(FHANDLE hreg, DOUBLE theta, INT mode, DOUBLE *diameter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_feret_diameter           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>diameter</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：指定角度フェレ径計測 
+<p>
+指定された角度でREGIONのフェレ径を計測します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_feret_diameter">ここ</a> を参照して下さい。<p>
+<em>mode</em> は、１画素の広がりを考慮するかしないかのモード選択です。 <em>mode</em> が0の時、座標点は広がりを持たないものとして計測します。１点のみの領域はどの角度で計測してもフェレ径の値は0となります。 <em>mode</em> が1の時、領域内の１点は幅１の正方矩形領域であるという定義の下に幅計測します。 詳しい説明は <a class="el" href="group__fie__features.html#feature_feret_diameter">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>フェレ径を計測するときの角度（フェレ径計測軸とx軸がなす角度）単位：ラジアン </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>mode</em>&nbsp;</td><td>画素領域モード <ul>
+<li>0 : 点で計測 </li>
+<li>1 : 矩形の広がりを持つ点で計測 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diameter</em>&nbsp;</td><td>フェレ径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li>diameter に NULL が指定された</li><li>mode に 0 or 1 以外が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8e83e0579fb5e1a8d7d4123656e225b3"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_convex2d" ref="g8e83e0579fb5e1a8d7d4123656e225b3" args="(FHANDLE hreg, PNT_T **ppHull, UINT *verNum)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_convex2d           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPNT__T.html">PNT_T</a> **&nbsp;</td>
+          <td class="paramname"> <em>ppHull</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UINT *&nbsp;</td>
+          <td class="paramname"> <em>verNum</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：凸包生成 
+<p>
+REGIONに外接する凸包を生成します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_convex2d">ここ</a> を参照して下さい。<p>
+出力される凸包の頂点は、画像座標系で時計回りに連結します。 最初と最後の頂点は同じ点で出力するため、出力される凸包の頂点数は実の頂点数プラス１になります。 凸包保存用点配列のメモリは関数内部で確保するため、引数の <em>*ppHull</em> はNULLにして下さい。 （メモリ解放はユーザー側で <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> を使用して行ってください。）<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域内の全点を入力して <a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> を実行した結果とは、 開始点の位置が異なる場合があります。 </li>
+<li>領域全点が一直線上にある場合はF_ERR_CALC_IMPOSSIBLEとなります。 </li>
+<li>xdiff,ydiffが65535以下の条件を満たさない場合はオーバーフローの可能性があります。 </li>
+<li>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は凸包が計算できず、エラーになります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>ppHull</em>&nbsp;</td><td>出力される凸包の頂点列（ <em>*ppHull</em> は必ずNULLでなければならない） </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>verNum</em>&nbsp;</td><td>出力される凸包の頂点の個数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>ppHull</em>, <em>verNum</em> に NULL が指定された</li><li><em>*ppHull</em> == NULL ではない </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__convex2d.html#gaed228d41a5c85817532fc4375c3f283" title="Monotone Chain法による二次凸包作成">fnFIE_convex2d_monochain()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7c201dac6f9975b8cf80cbf807c108dc"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_rect2pos" ref="g7c201dac6f9975b8cf80cbf807c108dc" args="(FHANDLE hreg, DPNT_T *points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_rect2pos           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：外接長方形の頂点 
+<p>
+REGIONの外接長方形の頂点を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_rect2pos">ここ</a> を参照して下さい。<p>
+<em>point</em> には0度のときに画像座標系で左上となる点を始点に、 時計回りに頂点座標を書き込みます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>内部で等価楕円、外接長方形を必要に応じて求めます。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>外接長方形の４頂点の点列。サイズ４</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>points</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g80ae4adcb98ea6859ae5fba5857abb1e" title="REGION特徴量：外接長方形">fnFIE_region_get_rect2_size()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g845b8e2e9fc73eefecfdb6760829aea7"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_bounding_rotated_rect_pos" ref="g845b8e2e9fc73eefecfdb6760829aea7" args="(FHANDLE hreg, DOUBLE theta, DPNT_T *points)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_bounding_rotated_rect_pos           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>points</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：指定角度外接長方形の頂点 
+<p>
+REGIONの指定した傾きをもった外接長方形の頂点を取得します。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_bounding_rotated_rect_pos">外接長方形の頂点座標（指定角）</a> を参照して下さい。<p>
+<em>points</em> には0度のときに画像座標系で左上となる点を始点に、 時計回りに頂点座標を書き込みます。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域がない場合はエラー終了となります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>theta</em>&nbsp;</td><td>外接長方形の角度（外接長方形のある一辺とx軸がなす角度）単位：ラジアン </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>points</em>&nbsp;</td><td>外接長方形の４頂点の点列。サイズ４</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>points</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__region__feature.html#g7c201dac6f9975b8cf80cbf807c108dc" title="REGION特徴量：外接長方形の頂点">fnFIE_region_calc_rect2pos()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g416d84221fff9070c8f88a81c5c8a161"></a><!-- doxytag: member="fie_region_feature.c::fnFIE_region_calc_circumcircle" ref="g416d84221fff9070c8f88a81c5c8a161" args="(FHANDLE hreg, DPNT_T *center, DOUBLE *radius)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_region_calc_circumcircle           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a> *&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>radius</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+REGION特徴量：最小外接円 
+<p>
+REGIONの最小外接円を取得します（最小外接円は最小包含円とも呼ばれます）。 特徴量の意味は <a class="el" href="group__fie__features.html#feature_circumcircle">ここ</a> を参照して下さい。<p>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd><ul>
+<li>領域内の点が１点以下の場合はエラーとなります。 </li>
+<li>xdiff,ydiffが65535以下の条件を満たさない場合はオーバーフローの可能性があります。 </li>
+<li>ブローブのラン数が非常に多い場合（ (ランの数+1)*2*sizeof(<a class="el" href="structPNT__T.html" title="２次元整数座標指定用構造体(INT)">PNT_T</a>)≧UI32_MAX となる場合） は内部で利用する凸包が計算できず、エラーになります。</li>
+</ul>
+</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hreg</em>&nbsp;</td><td>REGIONハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>最小外接円の中心 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>radius</em>&nbsp;</td><td>最小外接円の半径</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが指定された<ul>
+<li><em>center</em>, <em>radius</em> に NULL が指定された </li></ul>
+</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なハンドル </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>計算不能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>参考文献: </b></dt><dd></dd></dl>
+<ul>
+<li>「コンピュータ・ジオメトリ 計算幾何学：アルゴリズムと応用」近代科学社(ISBN4-7649-0277-X) P.105-110 </li></ul>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

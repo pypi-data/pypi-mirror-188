@@ -1,0 +1,1366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: １次元エッジ検出</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>１次元エッジ検出<br>
+<small>
+[<a class="el" href="group__fie__filter__base.html">画像フィルタ</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+<h2><a class="anchor" name="fie_edge1d">
+１次元エッジ検出について</a></h2>
+直線または、円弧上の計測ラインから濃度プロファイル(濃度を格納した配列)を生成して、 その濃度プロファイルを基として１次元上のエッジを検出します。 本ライブラリは、基礎となる処理をする低レベル関数と、低レベル関数を組み合わせた応用関数から構成されています。 ユーザーは、必要に応じて低レベル関数を組み合わせることで、 提供した応用関数以外の１次元エッジ検出関数を作成することができます。<h3><a class="anchor" name="fie_edge1d_flow">
+検出アルゴリズム</a></h3>
+以下に、指定した一つの計測ラインから１次元エッジを検出する場合の処理フローを示します。 <ul>
+<li>濃度プロファイルを生成します。 濃度プロファイルは、直線、円弧の２種類から選択します。 </li>
+<li>生成された濃度プロファイルより、サブピクセル精度でエッジ座標を検出します。 エッジ座標を求めるためのエッジ強度やサブピクセル位置の計算には、いくつかの手法を用意しています。 </li>
+<li>検出されたエッジ座標は、濃度プロファイル上の座標であるため、入力画像での座標系となるように座標変換をします。</li>
+</ul>
+<div align="center">
+<img src="fie_edge1d_flow.png" alt="fie_edge1d_flow.png">
+<p><strong>処理フロー</strong></p></div>
+<h3><a class="anchor" name="fie_edge1d_projection">
+濃度プロファイル</a></h3>
+濃度プロファイルは、直線または、円弧形状から選択できます。 <ul>
+<li>濃度投影は、計測ラインをはさむ指定画素分の平均値として求めます。 </li>
+<li>投影に用いる画素は、計測ラインの片側の画素数(片幅)で指定します。 </li>
+<li>片幅に‘0’を指定した場合は、計測ライン上の濃度のみを用います。 </li>
+<li>濃度取得は、計測ライン始点から１画素毎に、線形補間により求めます。</li>
+</ul>
+<div align="center">
+<img src="fie_edge1d_projection_line.png" alt="fie_edge1d_projection_line.png">
+<p><strong>濃度プロファイル(直線)</strong></p></div>
+<p>
+<div align="center">
+<img src="fie_edge1d_projection_arc.png" alt="fie_edge1d_projection_arc.png">
+<p><strong>濃度プロファイル(円弧)</strong></p></div>
+<p>
+濃度プロファイルは、計測ラインの一部が入力画像に含まれている場合に生成されます。 ただし、計測ライン部分が入力画像に含まれておらず、対応する片幅領域のみが入力画像に含まれている場合は、 有効領域には含まれません。 あくまで、計測ラインを基準として有効領域が設定されます。<br>
+ また、線形補間で濃度を取得するため、画像の横幅を <img class="formulaInl" alt="$w$" src="form_546.png"> pixel, 縦幅を <img class="formulaInl" alt="$h$" src="form_538.png"> pixel としたとき 計測ライン上の座標 <img class="formulaInl" alt="$(x,y)$" src="form_508.png"> が <img class="formulaInl" alt="$ 0 \leq x < w-2 $" src="form_547.png"> かつ <img class="formulaInl" alt="$ 0 \leq y < h-2 $" src="form_548.png"> であれば 座標 <img class="formulaInl" alt="$(x,y)$" src="form_508.png"> は入力画像に含まれているとします。<p>
+計測ラインが直線の場合、濃度プロファイル内の有効領域は１つとなります。 有効領域の位置は、濃度プロファイルの先頭からのオフセット量と長さとして取得されます。 緑色で塗りつぶされている部分が有効領域となります。 図では、濃度プロファイル生成領域内の画素の中心が、入力画像内に含まれている場合に有効領域としています。<p>
+<div align="center">
+<img src="fie_edge1d_projection_line2.png" alt="fie_edge1d_projection_line2.png">
+<p><strong>濃度プロファイルの有効領域</strong></p></div>
+<p>
+<div align="center">
+<img src="fie_edge1d_projection_line3.png" alt="fie_edge1d_projection_line3.png">
+<p><strong>濃度プロファイルの有効領域のオフセットと長さ</strong></p></div>
+<p>
+計測ラインが円弧の場合、濃度プロファイル内の有効領域は複数存在します。 下図に、円弧の角度を <img class="formulaInl" alt="$2\pi$" src="form_183.png"> で指定した場合の例を示します。 この場合、有効領域は最大で５つとなります。 <br>
+ 実際には、円弧の角度に制限を設けていません。 そのため、１つの濃度プロファイル内に最大で「濃度プロファイルの長さ÷２」の有効領域が存在することになります。 有効領域の位置は、濃度プロファイルの先頭からのオフセット量と長さの配列として取得されます。<p>
+<div align="center">
+<img src="fie_edge1d_projection_arc1.png" alt="fie_edge1d_projection_arc1.png">
+<p><strong>有効領域が１つの場合の例</strong></p></div>
+<p>
+<div align="center">
+<img src="fie_edge1d_projection_arc2.png" alt="fie_edge1d_projection_arc2.png">
+<p><strong>有効領域が２つの場合の例</strong></p></div>
+<p>
+<div align="center">
+<img src="fie_edge1d_projection_arc3.png" alt="fie_edge1d_projection_arc3.png">
+<p><strong>有効領域が３つの場合の例</strong></p></div>
+<p>
+<div align="center">
+<img src="fie_edge1d_projection_arc4.png" alt="fie_edge1d_projection_arc4.png">
+<p><strong>有効領域が４つの場合の例</strong></p></div>
+<p>
+<div align="center">
+<img src="fie_edge1d_projection_arc5.png" alt="fie_edge1d_projection_arc5.png">
+<p><strong>有効領域が５つの場合の例</strong></p></div>
+ 
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>モジュール</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector__core.html">低レベル関数</a></td></tr>
+
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__ARRAY__INDEX.html">F_ARRAY_INDEX</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">配列の有効領域指定構造体  <a href="structF__ARRAY__INDEX.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html">F_EDGE1D_DIFF_FILTER</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">１次元エッジ用微分フィルタ  <a href="structF__EDGE1D__DIFF__FILTER.html#_details">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__ARC.html">F_ARC</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">円弧型構造体  <a href="structF__ARC.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a> { <a class="el" href="group__fie__edge__1d__detector.html#gg17e294f1fbd3acce3e391d5a11f48328f9a9f36657f28cf433cdc71ff602c720">F_EDGE1D_DOG</a>, 
+<a class="el" href="group__fie__edge__1d__detector.html#gg17e294f1fbd3acce3e391d5a11f4832874fd4f5ae3d55c33d3f6fd92aeb2c775">F_EDGE1D_CORR</a>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ検出フィルタの種類  <a href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__edge__1d__detector.html#gg637e517b395aea7739889927db14594d8c975c29974b444b8ed41bc4a692b371">F_DRK_TO_BRI</a> =  0, 
+<a class="el" href="group__fie__edge__1d__detector.html#gg637e517b395aea7739889927db14594d10bfcbd1ad4b24c5c7554b859ec2675a">F_BRI_TO_DRK</a> =  1, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__edge__1d__detector.html#gg637e517b395aea7739889927db14594dc13178263db7be443bb768c40def1c98">F_DTC_BOTH</a> =  2
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジ方向  <a href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a> { <a class="el" href="group__fie__edge__1d__detector.html#ggec25caf190c97e4315c1f7323d73070e0355b50364414c2434414f528e3ff694">F_ABSOLUTE_THR</a> =  0, 
+<a class="el" href="group__fie__edge__1d__detector.html#ggec25caf190c97e4315c1f7323d73070e451d69ccdda2edbcaf6aa7622be6f619">F_RELATIVE_THR</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">濃度差しきい値種別  <a href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a> { <a class="el" href="group__fie__edge__1d__detector.html#ggcc2b74753d5d5dafc8da9de14d96940f22ec3e2c3ace2b410399f49d5c1d64a5">F_MAG_SORT</a> =  0, 
+<a class="el" href="group__fie__edge__1d__detector.html#ggcc2b74753d5d5dafc8da9de14d96940f382525e966f56b7d3cff7bf224fb6852">F_POS_SORT</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">エッジの保存順  <a href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">[詳細]</a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g4e0d7fbf4a902a3095eff7e9df5620d2">f_edge1d_projection_mode</a> { <a class="el" href="group__fie__edge__1d__detector.html#gg4e0d7fbf4a902a3095eff7e9df5620d29db034e89cf84cbdb311117a09a882ca">F_PROJECTION_BOX</a> =  0, 
+<a class="el" href="group__fie__edge__1d__detector.html#gg4e0d7fbf4a902a3095eff7e9df5620d21ebc5f28fa450ac04c3df8746e1b9966">F_PROJECTION_FAN</a> =  1
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">濃度投影方法  <a href="group__fie__edge__1d__detector.html#g4e0d7fbf4a902a3095eff7e9df5620d2">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g86f1aa1874fdfdddcd562e2e3f402d72">fnFIE_edge1d_line</a> (FHANDLE hsrc, <a class="el" href="structDSGMT__T.html">DSGMT_T</a> line, INT prj_width, enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a> filter_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a> direct_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a> diff_type, DOUBLE diff_thr, enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a> sort_mode, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">計測ライン(線分)上からの複数エッジ点の検出  <a href="#g86f1aa1874fdfdddcd562e2e3f402d72"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g0a94878e8e9a663c371ade960de0b48c">fnFIE_edge1d_line2</a> (FHANDLE hsrc, <a class="el" href="structDSGMT__T.html">DSGMT_T</a> line, INT prj_width, <a class="el" href="structF__EDGE1D__DIFF__FILTER.html">F_EDGE1D_DIFF_FILTER</a> diff_filter, INT arnd, INT interval, enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a> direct_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a> diff_type, DOUBLE diff_thr, enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a> sort_mode, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num, INT **diff, INT *diff_len)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">計測ライン(線分)上からの複数エッジ点の検出  <a href="#g0a94878e8e9a663c371ade960de0b48c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#gf9104f5a6a160952dda5ae318e4e11f3">fnFIE_edge1d_arc</a> (FHANDLE hsrc, <a class="el" href="structF__ARC.html">F_ARC</a> arc, INT prj_width, enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a> filter_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a> direct_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a> diff_type, DOUBLE diff_thr, enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a> sort_mode, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">計測ライン(円弧)上からの複数エッジ点の検出  <a href="#gf9104f5a6a160952dda5ae318e4e11f3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g3b0ac2728da09d77e6e7f9ff1a271f4c">fnFIE_edge1d_arc2</a> (FHANDLE hsrc, <a class="el" href="structF__ARC.html">F_ARC</a> arc, INT prj_width, <a class="el" href="structF__EDGE1D__DIFF__FILTER.html">F_EDGE1D_DIFF_FILTER</a> diff_filter, INT arnd, INT interval, enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a> direct_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a> diff_type, DOUBLE diff_thr, enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a> sort_mode, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num, INT **diff, INT *diff_len)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">計測ライン(円弧)上からの複数エッジ点の検出  <a href="#g3b0ac2728da09d77e6e7f9ff1a271f4c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__edge__1d__detector.html#g0b4d815f6b7701c497fb3cd4c434c1ba">fnFIE_edge1d_radial</a> (FHANDLE hsrc, <a class="el" href="structDPNT__T.html">DPNT_T</a> center, INT start_radius, INT range_radius, DOUBLE start_angle, DOUBLE range_angle, INT line_num, enum <a class="el" href="group__fie__edge__1d__detector.html#g4e0d7fbf4a902a3095eff7e9df5620d2">f_edge1d_projection_mode</a> prj_mode, INT prj_width, enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a> filter_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a> direct_mode, enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a> diff_type, DOUBLE diff_thr, enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a> detect_mode, <a class="el" href="structF__DEDGE.html">F_DEDGE</a> **edges, INT *edge_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">放射状(収束or発散)方向エッジ検出  <a href="#g0b4d815f6b7701c497fb3cd4c434c1ba"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g17e294f1fbd3acce3e391d5a11f48328"></a><!-- doxytag: member="fie.h::f_edge1d_filter" ref="g17e294f1fbd3acce3e391d5a11f48328" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジ検出フィルタの種類 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg17e294f1fbd3acce3e391d5a11f48328f9a9f36657f28cf433cdc71ff602c720"></a><!-- doxytag: member="F_EDGE1D_DOG" ref="gg17e294f1fbd3acce3e391d5a11f48328f9a9f36657f28cf433cdc71ff602c720" args="" -->F_EDGE1D_DOG</em>&nbsp;</td><td>
+ガウシアン１次微分 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg17e294f1fbd3acce3e391d5a11f4832874fd4f5ae3d55c33d3f6fd92aeb2c775"></a><!-- doxytag: member="F_EDGE1D_CORR" ref="gg17e294f1fbd3acce3e391d5a11f4832874fd4f5ae3d55c33d3f6fd92aeb2c775" args="" -->F_EDGE1D_CORR</em>&nbsp;</td><td>
+相関エッジ </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g637e517b395aea7739889927db14594d"></a><!-- doxytag: member="fie.h::f_edge1d_edge_direction" ref="g637e517b395aea7739889927db14594d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジ方向 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg637e517b395aea7739889927db14594d8c975c29974b444b8ed41bc4a692b371"></a><!-- doxytag: member="F_DRK_TO_BRI" ref="gg637e517b395aea7739889927db14594d8c975c29974b444b8ed41bc4a692b371" args="" -->F_DRK_TO_BRI</em>&nbsp;</td><td>
+暗→明のエッジ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg637e517b395aea7739889927db14594d10bfcbd1ad4b24c5c7554b859ec2675a"></a><!-- doxytag: member="F_BRI_TO_DRK" ref="gg637e517b395aea7739889927db14594d10bfcbd1ad4b24c5c7554b859ec2675a" args="" -->F_BRI_TO_DRK</em>&nbsp;</td><td>
+明→暗のエッジ </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg637e517b395aea7739889927db14594dc13178263db7be443bb768c40def1c98"></a><!-- doxytag: member="F_DTC_BOTH" ref="gg637e517b395aea7739889927db14594dc13178263db7be443bb768c40def1c98" args="" -->F_DTC_BOTH</em>&nbsp;</td><td>
+両極性 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gec25caf190c97e4315c1f7323d73070e"></a><!-- doxytag: member="fie.h::f_diff_type" ref="gec25caf190c97e4315c1f7323d73070e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+濃度差しきい値種別 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggec25caf190c97e4315c1f7323d73070e0355b50364414c2434414f528e3ff694"></a><!-- doxytag: member="F_ABSOLUTE_THR" ref="ggec25caf190c97e4315c1f7323d73070e0355b50364414c2434414f528e3ff694" args="" -->F_ABSOLUTE_THR</em>&nbsp;</td><td>
+絶対濃度差 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggec25caf190c97e4315c1f7323d73070e451d69ccdda2edbcaf6aa7622be6f619"></a><!-- doxytag: member="F_RELATIVE_THR" ref="ggec25caf190c97e4315c1f7323d73070e451d69ccdda2edbcaf6aa7622be6f619" args="" -->F_RELATIVE_THR</em>&nbsp;</td><td>
+相対濃度差 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gcc2b74753d5d5dafc8da9de14d96940f"></a><!-- doxytag: member="fie.h::f_edge1d_sort_mode" ref="gcc2b74753d5d5dafc8da9de14d96940f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+エッジの保存順 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="ggcc2b74753d5d5dafc8da9de14d96940f22ec3e2c3ace2b410399f49d5c1d64a5"></a><!-- doxytag: member="F_MAG_SORT" ref="ggcc2b74753d5d5dafc8da9de14d96940f22ec3e2c3ace2b410399f49d5c1d64a5" args="" -->F_MAG_SORT</em>&nbsp;</td><td>
+強度順 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="ggcc2b74753d5d5dafc8da9de14d96940f382525e966f56b7d3cff7bf224fb6852"></a><!-- doxytag: member="F_POS_SORT" ref="ggcc2b74753d5d5dafc8da9de14d96940f382525e966f56b7d3cff7bf224fb6852" args="" -->F_POS_SORT</em>&nbsp;</td><td>
+始点からの位置順 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4e0d7fbf4a902a3095eff7e9df5620d2"></a><!-- doxytag: member="fie.h::f_edge1d_projection_mode" ref="g4e0d7fbf4a902a3095eff7e9df5620d2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__edge__1d__detector.html#g4e0d7fbf4a902a3095eff7e9df5620d2">f_edge1d_projection_mode</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+濃度投影方法 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg4e0d7fbf4a902a3095eff7e9df5620d29db034e89cf84cbdb311117a09a882ca"></a><!-- doxytag: member="F_PROJECTION_BOX" ref="gg4e0d7fbf4a902a3095eff7e9df5620d29db034e89cf84cbdb311117a09a882ca" args="" -->F_PROJECTION_BOX</em>&nbsp;</td><td>
+矩形型濃度プロファイル </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg4e0d7fbf4a902a3095eff7e9df5620d21ebc5f28fa450ac04c3df8746e1b9966"></a><!-- doxytag: member="F_PROJECTION_FAN" ref="gg4e0d7fbf4a902a3095eff7e9df5620d21ebc5f28fa450ac04c3df8746e1b9966" args="" -->F_PROJECTION_FAN</em>&nbsp;</td><td>
+扇型濃度プロファイル </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g86f1aa1874fdfdddcd562e2e3f402d72"></a><!-- doxytag: member="fie_edge1d.c::fnFIE_edge1d_line" ref="g86f1aa1874fdfdddcd562e2e3f402d72" args="(FHANDLE hsrc, DSGMT_T line, INT prj_width, enum f_edge1d_filter filter_mode, enum f_edge1d_edge_direction direct_mode, enum f_diff_type diff_type, DOUBLE diff_thr, enum f_edge1d_sort_mode sort_mode, F_DEDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge1d_line           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>prj_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a>&nbsp;</td>
+          <td class="paramname"> <em>filter_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a>&nbsp;</td>
+          <td class="paramname"> <em>direct_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>diff_thr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sort_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+計測ライン(線分)上からの複数エッジ点の検出 
+<p>
+指定した計測ラインに垂直方向に濃度投影を実行して得られた濃度プロファイルから、 複数のエッジ点をサブピクセル精度で検出します。<p>
+<div align="center">
+<img src="fie_edge1d_line.png" alt="fie_edge1d_line.png">
+</div>
+<p>
+本関数は、 エッジ検出アルゴリズムの違いにより、 <a class="el" href="group__fie__edge__1d__detector.html#g0a94878e8e9a663c371ade960de0b48c" title="計測ライン(線分)上からの複数エッジ点の検出">fnFIE_edge1d_line2()</a> のように１次微分データは取得できません。<p>
+<dl class="user" compact><dt><b>処理フロー </b></dt><dd></dd></dl>
+濃度プロファイルの生成、エッジ検出（サブピクセル精度）、座標変換の各処理には以下の関数が使用されています。<p>
+<center> <table class="pretable">
+<tr>
+<td>濃度プロファイルの生成</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#ge9c5e84b562e21083e0594c7d4f9cec3" title="計測ライン(線分)上の濃度投影の作成">fnFIE_edge1d_projection_line()</a>   </td></tr>
+<tr>
+<td rowspan="2">エッジの検出</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g7f752ab2fcbb5bb22000a73c9b3dffcb" title="相関エッジフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_corr()</a>   </td></tr>
+<tr>
+<td><a class="el" href="group__fie__edge__1d__detector__core.html#gba273c0d857afb9d5ef2577cc3796095" title="DoGフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_DoG()</a>   </td></tr>
+<tr>
+<td>座標変換</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g513bb9f841f17a4aac56ce1a945d79d9" title="計測ライン(線分)上への座標変換">fnFIE_edge1d_trans_coord_line()</a>   </td></tr>
+</table>
+</center><p>
+本関数では、関数内部で生成される濃度プロファイル内の隣り合う要素の濃度差が１以下の場合は、その部分を平坦であると判定します。 そのため、濃度差が１以下の部分のエッジ点は検出されません。 ただし濃度プロファイルは、微小な濃度変化を吸収するために、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入をした後に上記処理を行います。 なお上記の処理は、 <a class="el" href="group__fie__edge__1d__detector__core.html#g7f752ab2fcbb5bb22000a73c9b3dffcb" title="相関エッジフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_corr()</a> または <a class="el" href="group__fie__edge__1d__detector__core.html#gba273c0d857afb9d5ef2577cc3796095" title="DoGフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_DoG()</a> での処理となります。<p>
+<dl class="user" compact><dt><b>検出されたエッジ点保存配列</b></dt><dd></dd></dl>
+本関数では検出されたエッジ点を保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*edges</em> が NULL で初期化されている場合は、 <em>*edges</em> は内部でメモリが自動的に確保されます。 検出されたエッジ個数は、 <em>edge_num</em> を参照してください。 <em>*edges</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*edges</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>edge_num</em> に確保したメモリの個数を入力してください。 <em>edge_num</em> は <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a> で求められる計測ラインの長さ以上のサイズのメモリを確保した配列を用意してください。 ただし、 <em>edge_num</em> はエッジ座標を検出後、検出されたエッジ点個数に上書きされます。 <em>edge_num</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,s16,us16,double / ch:1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>計測ライン <br>
+ <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a> で求められる計測ラインの長さが9以上でなければなりません <ul>
+<li><em>st</em> 始点 </li>
+<li><em>ed</em> 終点 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prj_width</em>&nbsp;</td><td>検出片幅（0以上、単位：画素） <ul>
+<li>0を指定した場合は、計測ライン上のみ有意となる </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_mode</em>&nbsp;</td><td>エッジ抽出フィルタの指定 <ul>
+<li>F_EDGE1D_DOG （微分方式）DoGフィルタ </li>
+<li>F_EDGE1D_CORR （テンプレートマッチング方式）相関エッジフィルタ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direct_mode</em>&nbsp;</td><td>検出するエッジ方向の指定 <ul>
+<li>F_DRK_TO_BRI 暗→明のエッジ </li>
+<li>F_BRI_TO_DRK 明→暗のエッジ </li>
+<li>F_DTC_BOTH 両極性 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_type</em>&nbsp;</td><td>濃度差しきい値の種別 <ul>
+<li>F_ABSOLUTE_THR 絶対濃度差 </li>
+<li>F_RELATIVE_THR 相対濃度差 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_thr</em>&nbsp;</td><td>エッジの最小濃度差しきい値 <ul>
+<li>F_ABSOLUTE_THR を指定した場合<ul>
+<li>画素タイプが F_IMG_UC8 の場合 ：[0,255]</li><li>画素タイプが F_IMG_S16 または F_IMG_US16 の場合 ：[0,65535]</li><li>画素タイプが F_IMG_DOUBLE の場合 ：[0, 2147483647]</li><li>内部で、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+<li>F_RELATIVE_THR を指定した場合：[0,100](％)<ul>
+<li>生成された濃度プロファイル内の最大値と最小値の差に対する割合</li><li>求められたしきい値は、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sort_mode</em>&nbsp;</td><td>検出されたエッジの保存順を指定 <ul>
+<li>F_MAG_SORT 強度順 </li>
+<li>F_POS_SORT 始点からの位置順 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>検出されたエッジ点保存配列のポインタ <ul>
+<li>x ｘ座標 </li>
+<li>y ｙ座標 </li>
+<li>q 勾配方向<ul>
+<li>暗→明のエッジ 1</li><li>明→暗のエッジ -1 </li></ul>
+</li>
+<li>mag 強度（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>検出されたエッジ点個数 <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>edges</em> のメモリを内部確保：指定なし </li>
+<li><em>edges</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>edge_num</em> &gt;= <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a></li></ul>
+</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された（計測ラインの長さ不足等） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>濃度プロファイルに有効領域が存在しない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0a94878e8e9a663c371ade960de0b48c"></a><!-- doxytag: member="fie_edge1d.c::fnFIE_edge1d_line2" ref="g0a94878e8e9a663c371ade960de0b48c" args="(FHANDLE hsrc, DSGMT_T line, INT prj_width, F_EDGE1D_DIFF_FILTER diff_filter, INT arnd, INT interval, enum f_edge1d_edge_direction direct_mode, enum f_diff_type diff_type, DOUBLE diff_thr, enum f_edge1d_sort_mode sort_mode, F_DEDGE **edges, INT *edge_num, INT **diff, INT *diff_len)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge1d_line2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDSGMT__T.html">DSGMT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>prj_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html">F_EDGE1D_DIFF_FILTER</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>arnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>interval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a>&nbsp;</td>
+          <td class="paramname"> <em>direct_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>diff_thr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sort_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>diff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>diff_len</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+計測ライン(線分)上からの複数エッジ点の検出 
+<p>
+指定した計測ラインに垂直方向に濃度投影を実行して得られた濃度プロファイルから、 複数のエッジ点をサブピクセル精度で検出します。<p>
+<div align="center">
+<img src="fie_edge1d_line.png" alt="fie_edge1d_line.png">
+</div>
+<p>
+<a class="el" href="group__fie__edge__1d__detector.html#g86f1aa1874fdfdddcd562e2e3f402d72" title="計測ライン(線分)上からの複数エッジ点の検出">fnFIE_edge1d_line()</a> とは、エッジの検出アルゴリズムが異なります。 本関数によるエッジ検出アルゴリズムは、 FVXのFvxMultiEdgeと同じです。 ただし、エッジ検出アルゴリズムは前述したものと同じですが、結果が必ずしも一致するわけではありません。<p>
+<dl class="user" compact><dt><b>処理フロー </b></dt><dd></dd></dl>
+濃度プロファイルの生成、エッジ検出（サブピクセル精度）、座標変換の各処理には以下の関数が使用されています。<p>
+<center> <table class="pretable">
+<tr>
+<td>濃度プロファイルの生成</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#ge9c5e84b562e21083e0594c7d4f9cec3" title="計測ライン(線分)上の濃度投影の作成">fnFIE_edge1d_projection_line()</a>   </td></tr>
+<tr>
+<td>エッジの検出</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g23f481fcaa204a6a52d7299f4accc466" title="１次微分によるエッジ検出">fnFIE_edge1d_detect_edges_diff()</a>   </td></tr>
+<tr>
+<td>座標変換</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g513bb9f841f17a4aac56ce1a945d79d9" title="計測ライン(線分)上への座標変換">fnFIE_edge1d_trans_coord_line()</a>   </td></tr>
+</table>
+</center><p>
+<dl class="user" compact><dt><b>微分値作成方法</b></dt><dd></dd></dl>
+本クラスは濃度投影を取得後、微分フィルタパラメータ <em>diff_filter</em> に指定されたフィルタに従って微分データを作成します。 微分フィルタについては、構造体 <a class="el" href="structF__EDGE1D__DIFF__FILTER.html" title="１次元エッジ用微分フィルタ">F_EDGE1D_DIFF_FILTER</a> の説明をご参照ください。<p>
+<dl class="user" compact><dt><b>検出されたエッジ点保存配列</b></dt><dd></dd></dl>
+本関数では検出されたエッジ点を保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*edges</em> が NULL で初期化されている場合は、 <em>*edges</em> は内部でメモリが自動的に確保されます。 検出されたエッジ個数は、 <em>edge_num</em> を参照してください。 <em>*edges</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*edges</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>edge_num</em> に確保したメモリの個数を入力してください。 <em>edge_num</em> は <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a> で求められる計測ラインの長さ以上のサイズのメモリを確保した配列を用意してください。 ただし、 <em>edge_num</em> はエッジ座標を検出後、検出されたエッジ点個数に上書きされます。 <em>edge_num</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+<dl class="user" compact><dt><b>１次微分データ保存配列</b></dt><dd></dd></dl>
+本関数では１次微分データを保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*diff</em> が NULL で初期化されている場合は、 <em>*diff</em> は内部でメモリが自動的に確保されます。 １次微分データの長さは、 <em>diff_len</em> を参照してください。 <em>*diff</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*diff</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>diff_len</em> に確保したメモリの個数を入力してください。 <em>diff</em> は <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a> で求められる計測ラインの長さ以上のサイズのメモリを確保した配列を用意してください。 <em>diff_len</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+なお１次微分データは、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入され整数型として生成され、処理に利用されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,s16,us16,double / ch:1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line</em>&nbsp;</td><td>計測ライン <br>
+ <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a> で求められる計測ラインの長さが <em>arnd</em> * 2 + <em>diff_filter</em> 以上でなければなりません <ul>
+<li><em>st</em> 始点 </li>
+<li><em>ed</em> 終点 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prj_width</em>&nbsp;</td><td>検出片幅（0以上、単位：画素） <ul>
+<li>0を指定した場合は、計測ライン上のみ有意となる </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_filter</em>&nbsp;</td><td>微分フィルタの指定 <ul>
+<li>minus_foot 負側のfoot長さ（1以上） </li>
+<li>minus_len 負側のlen長さ（0以上） </li>
+<li>plus_foot 正側のfoot長さ（1以上） </li>
+<li>plus_len 正側のlen長さ（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>arnd</em>&nbsp;</td><td>サブピクセル計算に使用する周辺情報の片幅（0以上） <br>
+ 検出した濃度微分データのピーク位置（または、または最初にしきい値を超えた位置）に対して、 ここで指定した画素分の両端の濃度微分データを使用してサブピクセル精度の計算をする </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>interval</em>&nbsp;</td><td>エッジ取得間隔（0以上、単位：画素） <br>
+ エッジ計測に利用された１次微分データ上で、エッジ方向が等しい2つのエッジ間の距離は少なくとも <em>interval</em> 以上となる。 エッジ方向が異なる場合は影響しない。 <ul>
+<li><em>interval</em> が０であれば、連続した座標で同じ方向のエッジが取得されることがある。 </li>
+<li><em>interval</em> が n≧1 であれば、連続した座標で同じ方向のエッジが取得されることはなく、隣り合うエッジ間の距離は少なくとも n となる。 </li>
+<li>いずれの場合においても、方向が異なるエッジは連続した座標で取得されることがある。 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direct_mode</em>&nbsp;</td><td>検出するエッジ方向の指定 <ul>
+<li>F_DRK_TO_BRI 暗→明のエッジ </li>
+<li>F_BRI_TO_DRK 明→暗のエッジ </li>
+<li>F_DTC_BOTH 両極性 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_type</em>&nbsp;</td><td>濃度差しきい値の種別 <ul>
+<li>F_ABSOLUTE_THR 絶対濃度差 </li>
+<li>F_RELATIVE_THR 相対濃度差 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_thr</em>&nbsp;</td><td>エッジの最小濃度差しきい値 <ul>
+<li>F_ABSOLUTE_THR を指定した場合<ul>
+<li>画素タイプが F_IMG_UC8 の場合 ：[0,255]</li><li>画素タイプが F_IMG_S16 または F_IMG_US16 の場合 ：[0,65535]</li><li>画素タイプが F_IMG_DOUBLE の場合 ：[0, 2147483647]</li><li>内部で、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+<li>F_RELATIVE_THR を指定した場合：[0,100](％)<ul>
+<li>生成された濃度プロファイル内の最大値と最小値の差に対する割合</li><li>求められたしきい値は、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sort_mode</em>&nbsp;</td><td>検出されたエッジの保存順を指定 <ul>
+<li>F_MAG_SORT 強度順 </li>
+<li>F_POS_SORT 始点からの位置順 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>検出されたエッジ点保存配列のポインタ <ul>
+<li>x ｘ座標 </li>
+<li>y ｙ座標 </li>
+<li>q 勾配方向<ul>
+<li>暗→明のエッジ 1</li><li>明→暗のエッジ -1 </li></ul>
+</li>
+<li>mag 強度（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>検出されたエッジ点個数 <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>edges</em> のメモリを内部確保：指定なし </li>
+<li><em>edges</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>edge_num</em> &gt;= <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a> </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diff</em>&nbsp;</td><td>１次微分データ保存用配列のポインタ </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>diff_len</em>&nbsp;</td><td>１次微分データ保存用配列の長さ <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>diff</em> のメモリを内部確保：指定なし </li>
+<li><em>diff</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>diff_len</em> &gt;= <a class="el" href="group__fie__edge__1d__detector__core.html#g9df237450680fd2b53c77618a96fab5e" title="計測ライン(線分)の長さを計算">fnFIE_edge1d_calc_projection_line_length()</a></li></ul>
+</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された（計測ラインの長さが不足等） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>濃度プロファイルに有効領域が存在しない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf9104f5a6a160952dda5ae318e4e11f3"></a><!-- doxytag: member="fie_edge1d.c::fnFIE_edge1d_arc" ref="gf9104f5a6a160952dda5ae318e4e11f3" args="(FHANDLE hsrc, F_ARC arc, INT prj_width, enum f_edge1d_filter filter_mode, enum f_edge1d_edge_direction direct_mode, enum f_diff_type diff_type, DOUBLE diff_thr, enum f_edge1d_sort_mode sort_mode, F_DEDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge1d_arc           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__ARC.html">F_ARC</a>&nbsp;</td>
+          <td class="paramname"> <em>arc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>prj_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a>&nbsp;</td>
+          <td class="paramname"> <em>filter_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a>&nbsp;</td>
+          <td class="paramname"> <em>direct_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>diff_thr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sort_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+計測ライン(円弧)上からの複数エッジ点の検出 
+<p>
+指定した円弧上にエッジを計測します。 計測ラインに垂直方向に濃度投影を実行して得られた濃度プロファイルから、 複数のエッジ点をサブピクセル精度で検出します。<p>
+<div align="center">
+<img src="fie_edge1d_arc.png" alt="fie_edge1d_arc.png">
+</div>
+<p>
+計測に用いる円弧は <a class="el" href="structF__ARC.html" title="円弧型構造体">F_ARC</a> にて指定します。詳しいデータ構造については、構造体 <a class="el" href="structF__ARC.html" title="円弧型構造体">F_ARC</a> を参照してください。<br>
+ 本関数は、 エッジ検出アルゴリズムの違いにより、 <a class="el" href="group__fie__edge__1d__detector.html#g3b0ac2728da09d77e6e7f9ff1a271f4c" title="計測ライン(円弧)上からの複数エッジ点の検出">fnFIE_edge1d_arc2()</a> のように１次微分データは取得できません。<br>
+ また、円弧の角度を<img class="formulaInl" alt="$2\pi$" src="form_183.png">以上に設定した場合、同じ箇所を複数回 計測してしまうため、エッジが重複して検出されてしまいます。そのため、入力値は<img class="formulaInl" alt="$2\pi$" src="form_183.png">未満としてください。<p>
+<dl class="user" compact><dt><b>処理フロー </b></dt><dd></dd></dl>
+濃度プロファイルの生成、エッジ検出（サブピクセル精度）、座標変換の各処理には以下の関数が使用されています。<p>
+<center> <table class="pretable">
+<tr>
+<td>濃度プロファイルの生成</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#gee6cf7e3bf0807762b13a99375e73495" title="計測ライン(円弧)上の濃度投影による濃度プロファイルの作成...">fnFIE_edge1d_projection_arc()</a>   </td></tr>
+<tr>
+<td rowspan="2">エッジの検出</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g7f752ab2fcbb5bb22000a73c9b3dffcb" title="相関エッジフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_corr()</a>   </td></tr>
+<tr>
+<td><a class="el" href="group__fie__edge__1d__detector__core.html#gba273c0d857afb9d5ef2577cc3796095" title="DoGフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_DoG()</a>   </td></tr>
+<tr>
+<td>座標変換</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g6b5cecb2ec9b34dbf50673b538fe097f" title="計測ライン(円弧)上への座標変換">fnFIE_edge1d_trans_coord_arc()</a>   </td></tr>
+</table>
+</center><p>
+本関数では、関数内部で生成される濃度プロファイル内の隣り合う要素の濃度差が１以下の場合は、その部分を平坦であると判定します。 そのため、濃度差が１以下の部分のエッジ点は検出されません。 ただし濃度プロファイルは、微小な濃度変化を吸収するために、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入をした後に上記処理を行います。 なお上記の処理は、 <a class="el" href="group__fie__edge__1d__detector__core.html#g7f752ab2fcbb5bb22000a73c9b3dffcb" title="相関エッジフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_corr()</a> または <a class="el" href="group__fie__edge__1d__detector__core.html#gba273c0d857afb9d5ef2577cc3796095" title="DoGフィルタによるエッジ検出">fnFIE_edge1d_detect_edges_DoG()</a> での処理となります。<p>
+<dl class="user" compact><dt><b>検出されたエッジ点保存配列</b></dt><dd></dd></dl>
+本関数では検出されたエッジ点を保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*edges</em> が NULL で初期化されている場合は、 <em>*edges</em> は内部でメモリが自動的に確保されます。 検出されたエッジ個数は、 <em>edge_num</em> を参照してください。 <em>*edges</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*edges</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>edge_num</em> に確保したメモリの個数を入力してください。 <em>edge_num</em> は <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a> で求められる計測ラインの長さ以上のサイズのメモリを確保した配列を用意してください。 ただし、 <em>edge_num</em> はエッジ座標を検出後、検出されたエッジ点個数に上書きされます。 <em>edge_num</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,s16,us16,double / ch:1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>arc</em>&nbsp;</td><td>計測ライン（円弧） <br>
+ 構造体 <a class="el" href="structF__ARC.html" title="円弧型構造体">F_ARC</a> にて指定します<br>
+ <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a> で求められる計測ラインの長さが9以上でなければなりません <ul>
+<li><em>x</em> 中心ｘ座標 </li>
+<li><em>y</em> 中心ｙ座標 </li>
+<li><em>radius</em> 半径：0 &lt; <em>radius</em> </li>
+<li><em>start_angle</em> 開始角：[0, <img class="formulaInl" alt="$2\pi$" src="form_183.png">] </li>
+<li><em>sweep_angle</em> 円弧の角度 (単位：radian)<ul>
+<li>時計回り 正</li><li>反時計回り 負 </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prj_width</em>&nbsp;</td><td>検出片幅（0以上、単位：画素） <ul>
+<li>0を指定した場合は、計測ライン上のみ有意となる </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_mode</em>&nbsp;</td><td>エッジ抽出フィルタの指定 <ul>
+<li>F_EDGE1D_DOG （微分方式）DoGフィルタ </li>
+<li>F_EDGE1D_CORR （テンプレートマッチング方式）相関エッジフィルタ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direct_mode</em>&nbsp;</td><td>検出するエッジ方向の指定 <ul>
+<li>F_DRK_TO_BRI 暗→明のエッジ </li>
+<li>F_BRI_TO_DRK 明→暗のエッジ </li>
+<li>F_DTC_BOTH 両極性 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_type</em>&nbsp;</td><td>濃度差しきい値の種別 <ul>
+<li>F_ABSOLUTE_THR 絶対濃度差 </li>
+<li>F_RELATIVE_THR 相対濃度差 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_thr</em>&nbsp;</td><td>エッジの最小濃度差しきい値 <ul>
+<li>F_ABSOLUTE_THR を指定した場合<ul>
+<li>画素タイプが F_IMG_UC8 の場合 ：[0,255]</li><li>画素タイプが F_IMG_S16 または F_IMG_US16 の場合 ：[0,65535]</li><li>画素タイプが F_IMG_DOUBLE の場合 ：[0, 2147483647]</li><li>内部で、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+<li>F_RELATIVE_THR を指定した場合：[0,100](％)<ul>
+<li>生成された濃度プロファイル内の最大値と最小値の差に対する割合</li><li>求められたしきい値は、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sort_mode</em>&nbsp;</td><td>検出されたエッジの保存順を指定 <ul>
+<li>F_MAG_SORT 強度順 </li>
+<li>F_POS_SORT 始点からの位置順 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>検出されたエッジ点保存配列のポインタ <ul>
+<li>x ｘ座標 </li>
+<li>y ｙ座標 </li>
+<li>q 勾配方向<ul>
+<li>暗→明のエッジ 1</li><li>明→暗のエッジ -1 </li></ul>
+</li>
+<li>mag 強度（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>検出されたエッジ点個数 <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>edges</em> のメモリを内部確保：指定なし </li>
+<li><em>edges</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>edge_num</em> &gt;= <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a></li></ul>
+</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された（計測ラインの長さ不足等） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>濃度プロファイルに有効領域が存在しない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3b0ac2728da09d77e6e7f9ff1a271f4c"></a><!-- doxytag: member="fie_edge1d.c::fnFIE_edge1d_arc2" ref="g3b0ac2728da09d77e6e7f9ff1a271f4c" args="(FHANDLE hsrc, F_ARC arc, INT prj_width, F_EDGE1D_DIFF_FILTER diff_filter, INT arnd, INT interval, enum f_edge1d_edge_direction direct_mode, enum f_diff_type diff_type, DOUBLE diff_thr, enum f_edge1d_sort_mode sort_mode, F_DEDGE **edges, INT *edge_num, INT **diff, INT *diff_len)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge1d_arc2           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__ARC.html">F_ARC</a>&nbsp;</td>
+          <td class="paramname"> <em>arc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>prj_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__EDGE1D__DIFF__FILTER.html">F_EDGE1D_DIFF_FILTER</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>arnd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>interval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a>&nbsp;</td>
+          <td class="paramname"> <em>direct_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>diff_thr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>sort_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT **&nbsp;</td>
+          <td class="paramname"> <em>diff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>diff_len</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+計測ライン(円弧)上からの複数エッジ点の検出 
+<p>
+指定した円弧上にエッジを計測します。 計測ラインに垂直方向に濃度投影を実行して得られた濃度プロファイルから、 複数のエッジ点をサブピクセル精度で検出します。<p>
+<div align="center">
+<img src="fie_edge1d_arc.png" alt="fie_edge1d_arc.png">
+</div>
+<p>
+計測に用いる円弧は <a class="el" href="structF__ARC.html" title="円弧型構造体">F_ARC</a> にて指定します。詳しいデータ構造については、構造体 <a class="el" href="structF__ARC.html" title="円弧型構造体">F_ARC</a> を参照してください。<br>
+ 円弧の角度を<img class="formulaInl" alt="$2\pi$" src="form_183.png">以上に設定した場合、同じ箇所を複数回 計測してしまうため、エッジが重複して検出されてしまいます。そのため、入力値は<img class="formulaInl" alt="$2\pi$" src="form_183.png">未満としてください。<br>
+<p>
+<a class="el" href="group__fie__edge__1d__detector.html#g86f1aa1874fdfdddcd562e2e3f402d72" title="計測ライン(線分)上からの複数エッジ点の検出">fnFIE_edge1d_line()</a> とは、エッジの検出アルゴリズムが異なります。 本関数によるエッジ検出アルゴリズムは、 旧１次元エッジ検出ライブラリと同じとなります。 旧ライブラリとの互換性のために、本関数は作成されています。 ただし、エッジ検出アルゴリズムは旧ライブラリと同じですが、結果が必ずしも一致するわけではありません。<p>
+<dl class="user" compact><dt><b>処理フロー </b></dt><dd></dd></dl>
+濃度プロファイルの生成、エッジ検出（サブピクセル精度）、座標変換の各処理には以下の関数が使用されています。<p>
+<center> <table class="pretable">
+<tr>
+<td>濃度プロファイルの生成</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#gee6cf7e3bf0807762b13a99375e73495" title="計測ライン(円弧)上の濃度投影による濃度プロファイルの作成...">fnFIE_edge1d_projection_arc()</a>   </td></tr>
+<tr>
+<td>エッジの検出</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g23f481fcaa204a6a52d7299f4accc466" title="１次微分によるエッジ検出">fnFIE_edge1d_detect_edges_diff()</a>   </td></tr>
+<tr>
+<td>座標変換</td><td><a class="el" href="group__fie__edge__1d__detector__core.html#g6b5cecb2ec9b34dbf50673b538fe097f" title="計測ライン(円弧)上への座標変換">fnFIE_edge1d_trans_coord_arc()</a>   </td></tr>
+</table>
+</center><p>
+<dl class="user" compact><dt><b>検出されたエッジ点保存配列</b></dt><dd></dd></dl>
+本関数では検出されたエッジ点を保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*edges</em> が NULL で初期化されている場合は、 <em>*edges</em> は内部でメモリが自動的に確保されます。 検出されたエッジ個数は、 <em>edge_num</em> を参照してください。 <em>*edges</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*edges</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>edge_num</em> に確保したメモリの個数を入力してください。 <em>edge_num</em> は <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a> で求められる計測ラインの長さ以上のサイズのメモリを確保した配列を用意してください。 ただし、 <em>edge_num</em> はエッジ座標を検出後、検出されたエッジ点個数に上書きされます。 <em>edge_num</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+<dl class="user" compact><dt><b>１次微分データ保存配列</b></dt><dd></dd></dl>
+本関数では１次微分データを保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*diff</em> が NULL で初期化されている場合は、 <em>*diff</em> は内部でメモリが自動的に確保されます。 １次微分データの長さは、 <em>diff_len</em> を参照してください。 <em>*diff</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*diff</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>diff_len</em> に確保したメモリの個数を入力してください。 <em>diff_len</em> は <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a> で求められる計測ラインの長さ以上のサイズのメモリを確保した配列を用意してください。 <em>diff_len</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+なお１次微分データは、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入され整数型として生成され、処理に利用されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,s16,us16,double / ch:1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>arc</em>&nbsp;</td><td>計測ライン（円弧） <br>
+ 構造体 <a class="el" href="structF__ARC.html" title="円弧型構造体">F_ARC</a> にて指定します<br>
+ <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a> で求められる計測ラインの長さが <em>arnd</em> * 2 + diff_filter 以上でなければなりません <ul>
+<li><em>x</em> 中心ｘ座標 </li>
+<li><em>y</em> 中心ｙ座標 </li>
+<li><em>radius</em> 半径：0 &lt; <em>radius</em> </li>
+<li><em>start_angle</em> 開始角：[0, <img class="formulaInl" alt="$2\pi$" src="form_183.png">] </li>
+<li><em>sweep_angle</em> 円弧の角度 (単位：radian)<ul>
+<li>時計回り 正</li><li>反時計回り 負 </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prj_width</em>&nbsp;</td><td>検出片幅（0以上、単位：画素） <ul>
+<li>0を指定した場合は、計測ライン上のみ有意となる </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_filter</em>&nbsp;</td><td>微分フィルタの指定 <ul>
+<li>minus_foot 負側のfoot長さ（1以上） </li>
+<li>minus_len 負側のlen長さ（0以上） </li>
+<li>plus_foot 正側のfoot長さ（1以上） </li>
+<li>plus_len 正側のlen長さ（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>arnd</em>&nbsp;</td><td>サブピクセル計算に使用する周辺情報の片幅（0以上） <br>
+ 検出した濃度微分データのピーク位置（または、または最初にしきい値を超えた位置）に対して、 ここで指定した画素分の両端の濃度微分データを使用してサブピクセル精度の計算をする </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>interval</em>&nbsp;</td><td>エッジ取得間隔（0以上、単位：画素） <br>
+ エッジ計測に利用された１次微分データ上で、エッジ方向が等しい2つのエッジ間の距離は少なくとも <em>interval</em> 以上となる。 エッジ方向が異なる場合は影響しない。 <ul>
+<li><em>interval</em> が０であれば、連続した座標で同じ方向のエッジが取得されることがある。 </li>
+<li><em>interval</em> が n≧1 であれば、連続した座標で同じ方向のエッジが取得されることはなく、隣り合うエッジ間の距離は少なくとも n となる。 </li>
+<li>いずれの場合においても、方向が異なるエッジは連続した座標で取得されることがある。 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direct_mode</em>&nbsp;</td><td>検出するエッジ方向の指定 <ul>
+<li>F_DRK_TO_BRI 暗→明のエッジ </li>
+<li>F_BRI_TO_DRK 明→暗のエッジ </li>
+<li>F_DTC_BOTH 両極性 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_type</em>&nbsp;</td><td>濃度差しきい値の種別 <ul>
+<li>F_ABSOLUTE_THR 絶対濃度差 </li>
+<li>F_RELATIVE_THR 相対濃度差 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_thr</em>&nbsp;</td><td>エッジの最小濃度差しきい値 <ul>
+<li>F_ABSOLUTE_THR を指定した場合<ul>
+<li>画素タイプが F_IMG_UC8 の場合 ：[0,255]</li><li>画素タイプが F_IMG_S16 または F_IMG_US16 の場合 ：[0,65535]</li><li>画素タイプが F_IMG_DOUBLE の場合 ：[0, 2147483647]</li><li>内部で、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+<li>F_RELATIVE_THR を指定した場合：[0,100](％)<ul>
+<li>生成された濃度プロファイル内の最大値と最小値の差に対する割合</li><li>求められたしきい値は、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>sort_mode</em>&nbsp;</td><td>検出されたエッジの保存順を指定 <ul>
+<li>F_MAG_SORT 強度順 </li>
+<li>F_POS_SORT 始点からの位置順 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>検出されたエッジ点保存配列のポインタ <ul>
+<li>x ｘ座標 </li>
+<li>y ｙ座標 </li>
+<li>q 勾配方向<ul>
+<li>暗→明のエッジ 1</li><li>明→暗のエッジ -1 </li></ul>
+</li>
+<li>mag 強度（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>検出されたエッジ点個数 <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>edges</em> のメモリを内部確保：指定なし </li>
+<li><em>edges</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>edge_num</em> &gt;= <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a> </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>diff</em>&nbsp;</td><td>１次微分データ保存用配列のポインタ </td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>diff_len</em>&nbsp;</td><td>１次微分データ保存用配列の長さ <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>diff</em> のメモリを内部確保：指定なし </li>
+<li><em>diff</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>diff_len</em> &gt;= <a class="el" href="group__fie__edge__1d__detector__core.html#g43ce27497e22413781b1368143705e0c" title="計測ライン(円弧)の長さを計算">fnFIE_edge1d_calc_projection_arc_length()</a></li></ul>
+</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された（計測ラインの長さ不足等） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NODATA</em>&nbsp;</td><td>濃度プロファイルに有効領域が存在しない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g0b4d815f6b7701c497fb3cd4c434c1ba"></a><!-- doxytag: member="fie_edge1d.c::fnFIE_edge1d_radial" ref="g0b4d815f6b7701c497fb3cd4c434c1ba" args="(FHANDLE hsrc, DPNT_T center, INT start_radius, INT range_radius, DOUBLE start_angle, DOUBLE range_angle, INT line_num, enum f_edge1d_projection_mode prj_mode, INT prj_width, enum f_edge1d_filter filter_mode, enum f_edge1d_edge_direction direct_mode, enum f_diff_type diff_type, DOUBLE diff_thr, enum f_edge1d_sort_mode detect_mode, F_DEDGE **edges, INT *edge_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_edge1d_radial           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structDPNT__T.html">DPNT_T</a>&nbsp;</td>
+          <td class="paramname"> <em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>start_radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>range_radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>start_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>range_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>line_num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g4e0d7fbf4a902a3095eff7e9df5620d2">f_edge1d_projection_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>prj_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>prj_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g17e294f1fbd3acce3e391d5a11f48328">f_edge1d_filter</a>&nbsp;</td>
+          <td class="paramname"> <em>filter_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#g637e517b395aea7739889927db14594d">f_edge1d_edge_direction</a>&nbsp;</td>
+          <td class="paramname"> <em>direct_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gec25caf190c97e4315c1f7323d73070e">f_diff_type</a>&nbsp;</td>
+          <td class="paramname"> <em>diff_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>diff_thr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="group__fie__edge__1d__detector.html#gcc2b74753d5d5dafc8da9de14d96940f">f_edge1d_sort_mode</a>&nbsp;</td>
+          <td class="paramname"> <em>detect_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structF__DEDGE.html">F_DEDGE</a> **&nbsp;</td>
+          <td class="paramname"> <em>edges</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>edge_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+放射状(収束or発散)方向エッジ検出 
+<p>
+指定した円の中心を基準に開始半径から処理範囲半径まで放射状にエッジを計測します。 処理範囲半径が正の値の場合は、中心から外向きに計測し、負の値の場合は、円周上から内向きに計測を行います。 開始角度は自由に設定することが可能です。検出ラインの間隔は、処理範囲となる角度を(検出ライン本数-1)で割ったものとします。<br>
+ 開始半径と処理範囲半径の合計値が0以上でない場合はエラーとします。( ( start_radius + range_radius ) &gt;= 0 )<p>
+各計測ラインの出力エッジ点は1点とします。出力するエッジ点はdetect_modeにより、エッジ強度が最大の点、もしくは開始半径に一番近い点が選択可能です。<p>
+<div align="center">
+<img src="fie_edge1d_radial.png" alt="fie_edge1d_radial.png">
+<p><strong>range_radiusが正でdetect_modeがF_POS_SORTの場合</strong></p></div>
+ <dl class="user" compact><dt><b>濃度投影方法</b></dt><dd>濃度プロファイルは矩形型と扇型の二種類を選択することが可能です。それぞれの特徴は下記の通りです。 <ul>
+<li>矩形型　：適切な投影片幅を設定することでノイズに強くなります。半径が小さい対象に大きな投影片幅を与えた場合はエッジ点が中心側へずれる場合があります。 投影片幅と検出ライン本数が小さい場合は比較的高速に動作します。 </li>
+<li>扇型　：円状の対象のエッジを検出する場合は、矩形型より正確な投影が可能です。中心側での投影範囲が小さくなる場合があり、その際はノイズに弱くなります。 投影片幅と検出ライン本数が大きい場合は比較的高速に動作します。</li>
+</ul>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_edge1d_radial_projection_box.png" alt="fie_edge1d_radial_projection_box.png">
+<p><strong>矩形型の濃度投影</strong></p></div>
+ </td><td><div align="center">
+<img src="fie_edge1d_radial_projection.png" alt="fie_edge1d_radial_projection.png">
+<p><strong>扇型の濃度投影</strong></p></div>
+  </td></tr>
+</table>
+</dd></dl>
+<dl class="user" compact><dt><b>検出されたエッジ点保存配列</b></dt><dd></dd></dl>
+本関数では検出されたエッジ点を保存するための配列のメモリ確保の方法を選択することができます。 <ul>
+<li>関数内部での自動確保 </li>
+<li>関数外部でのユーザが任意に確保</li>
+</ul>
+<em>*edges</em> が NULL で初期化されている場合は、 <em>*edges</em> は内部でメモリが自動的に確保されます。 検出されたエッジ個数は、 <em>edge_num</em> を参照してください。 <em>*edges</em> が不要になった後は、 <a class="el" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free()</a> をコールしてメモリを解放する必要があります。<p>
+<em>*edges</em> が NULL で初期化されていない場合は、本関数内部でメモリ確保しません。 メモリを確保した配列を用意してください。 <em>edge_num</em> に確保したメモリの個数を入力してください。 <em>edge_num</em> は 計測ライン本数（line_num）以上のサイズのメモリを確保した配列を用意してください。 ただし、 <em>edge_num</em> はエッジ座標を検出後、検出されたエッジ点個数に上書きされます。 <em>edge_num</em> が0以下の場合は、 F_ERR_INVALID_PARAM が返されます。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像（type:uc8,us16,double / ch:1） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>center</em>&nbsp;</td><td>計測円の中心座標 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_radius</em>&nbsp;</td><td>検出ラインの開始半径（0以上） </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_radius</em>&nbsp;</td><td>検出ラインの処理範囲半径 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>start_angle</em>&nbsp;</td><td>開始角度(radian) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>range_angle</em>&nbsp;</td><td>処理範囲角度(radian) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>line_num</em>&nbsp;</td><td>検出ライン本数(1以上) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prj_mode</em>&nbsp;</td><td>濃度投影方法の指定<br>
+ <ul>
+<li>F_PROJECTION_BOX 矩形型濃度投影 </li>
+<li>F_PROJECTION_FAN 扇型濃度投影 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>prj_width</em>&nbsp;</td><td>濃度投影片幅（0以上、単位：画素） <ul>
+<li>0を指定した場合は、計測ライン上のみ有意となる </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>filter_mode</em>&nbsp;</td><td>エッジ抽出フィルタの指定 <ul>
+<li>F_EDGE1D_DOG （微分方式）DoGフィルタ </li>
+<li>F_EDGE1D_CORR （テンプレートマッチング方式）相関エッジフィルタ </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direct_mode</em>&nbsp;</td><td>検出するエッジ方向の指定 <ul>
+<li>F_DRK_TO_BRI 暗→明のエッジ </li>
+<li>F_BRI_TO_DRK 明→暗のエッジ </li>
+<li>F_DTC_BOTH 両極性 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_type</em>&nbsp;</td><td>濃度差しきい値の種別 <ul>
+<li>F_ABSOLUTE_THR 絶対濃度差 </li>
+<li>F_RELATIVE_THR 相対濃度差 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>diff_thr</em>&nbsp;</td><td>エッジの最小濃度差しきい値 <ul>
+<li>F_ABSOLUTE_THR を指定した場合<ul>
+<li>画素タイプが F_IMG_UC8 の場合 ：[0,255]</li><li>画素タイプが F_IMG_US16 の場合 ：[0,65535]</li><li>画素タイプが F_IMG_DOUBLE の場合 ：[0, 2147483647]</li><li>内部で、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+<li>F_RELATIVE_THR を指定した場合：[0,100](％)<ul>
+<li>生成された濃度プロファイル内の最大値と最小値の差に対する割合</li><li>求められたしきい値は、 <a class="el" href="group__fie__math.html#g103dfeaed50d6ebc7b626efae675cdb4" title="入力数値(DOUBLE)の四捨五入した数値(INT)を返す">fnFIE_d4i5()</a> にて四捨五入される </li></ul>
+</li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>detect_mode</em>&nbsp;</td><td>各計測ラインで検出されたエッジ点の出力方法を指定 <ul>
+<li>F_MAG_SORT エッジ強度が最大となる点 </li>
+<li>F_POS_SORT 開始半径に一番近い点 </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>edges</em>&nbsp;</td><td>検出されたエッジ点保存配列のポインタ<br>
+ 開始角度から順に格納されます <ul>
+<li>x ｘ座標 </li>
+<li>y ｙ座標 </li>
+<li>q 勾配方向<ul>
+<li>暗→明のエッジ 1</li><li>明→暗のエッジ -1 </li></ul>
+</li>
+<li>mag 強度（0以上） </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>edge_num</em>&nbsp;</td><td>検出されたエッジ点個数 <br>
+ 入力の場合は、以下の通りに指定する必要があります <ul>
+<li><em>edges</em> のメモリを内部確保：指定なし </li>
+<li><em>edges</em> のメモリを外部確保：確保したメモリ数を入力<ul>
+<li><em>edge_num</em> &gt;= 計測ライン本数（line_num）</li></ul>
+</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された（計測ラインの長さが不足等） </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

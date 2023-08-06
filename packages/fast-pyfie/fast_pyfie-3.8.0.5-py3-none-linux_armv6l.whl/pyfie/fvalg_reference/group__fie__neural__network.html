@@ -1,0 +1,820 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: ニューラルネットワーク</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>ニューラルネットワーク<br>
+<small>
+[<a class="el" href="group__fie__vtool.html">ビジョンツール</a>]</small>
+</h1>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>データ構造</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structF__NN__COND.html">F_NN_COND</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワーク階層毎の生成条件設定用構造体  <a href="structF__NN__COND.html#_details">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>列挙型</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g7ad93878e76abcf48348643e42709391">f_nn_func_type</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__fie__neural__network.html#gg7ad93878e76abcf48348643e42709391c0210a2442ee2f47358126a530526886">F_NN_LINEAR_FUNC</a>, 
+<a class="el" href="group__fie__neural__network.html#gg7ad93878e76abcf48348643e427093917015f609305248b7dbf3ac347fca2cdf">F_NN_SIGMOID_FUNC</a>, 
+<br>
+&nbsp;&nbsp;<a class="el" href="group__fie__neural__network.html#gg7ad93878e76abcf48348643e427093913a6d5fe9eed61fdaf88f209dc9577519">F_NN_TANH_FUNC</a>
+<br>
+ }</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワーク応答関数指定  <a href="group__fie__neural__network.html#g7ad93878e76abcf48348643e42709391">[詳細]</a><br></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9">fnFIE_neuro_create</a> (const <a class="el" href="structF__NN__COND.html">F_NN_COND</a> *layer_cond, INT layer_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの生成  <a href="#g94dc4bd885c157ade109bda5ab00b9d9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g4cb3cf59e5aa6a6462764095fdb8b5fa">fnFIE_neuro_set_coeff</a> (FHANDLE hneuro, DOUBLE epsilon, DOUBLE beta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの結合負荷の修正時の各種係数の設定  <a href="#g4cb3cf59e5aa6a6462764095fdb8b5fa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g95bb2da8540470abb932aa8a24607dd1">fnFIE_neuro_get_coeff</a> (FHANDLE hneuro, DOUBLE *epsilon, DOUBLE *beta)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの結合荷重の修正時の各種係数の取得  <a href="#g95bb2da8540470abb932aa8a24607dd1"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g4652ef2eb689c2f3af2100114df14e11">fnFIE_neuro_learning</a> (FHANDLE hneuro, const DOUBLE *vect_inp, const DOUBLE *vect_tch, DOUBLE *error)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの学習(確率的バックプロパゲーション法)  <a href="#g4652ef2eb689c2f3af2100114df14e11"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g5fa83c07bdcdc9cc0990ab36e040915a">fnFIE_neuro_recognition</a> (FHANDLE hneuro, const DOUBLE *vect_inp, DOUBLE *vect_out)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークでの認識  <a href="#g5fa83c07bdcdc9cc0990ab36e040915a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g425e6d9fcbdc55efc5918f297ccceb8c">fnFIE_neuro_performance</a> (FHANDLE hneuro, const DOUBLE *vect_inp, const DOUBLE *vect_tch, DOUBLE *error)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの学習性能の取得  <a href="#g425e6d9fcbdc55efc5918f297ccceb8c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g7bab3b2de820dc75ee4e992dc77ca368">fnFIE_neuro_get_count</a> (FHANDLE hneuro, INT *count)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの学習回数の取得  <a href="#g7bab3b2de820dc75ee4e992dc77ca368"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g3a1cb607735effffb4555dc3ab4cb1e3">fnFIE_neuro_get_layer</a> (FHANDLE hneuro, INT *layer_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの階層数の取得  <a href="#g3a1cb607735effffb4555dc3ab4cb1e3"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#gb470a9658eb0f98947cb76315e49e6cf">fnFIE_neuro_get_neuron</a> (FHANDLE hneuro, INT *neuron_num)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークの各階層のニューロン数の取得  <a href="#gb470a9658eb0f98947cb76315e49e6cf"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">FHANDLE FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g07b483bd00955396c9d7345173b747bb">fnFIE_neuro_load</a> (<a class="el" href="structfvstream.html">fvstream</a> *strm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークデータのストリーム読み込み  <a href="#g07b483bd00955396c9d7345173b747bb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__neural__network.html#g718705e42d625ed9d8405af6cf947375">fnFIE_neuro_save</a> (FHANDLE hneuro, <a class="el" href="structfvstream.html">fvstream</a> *strm)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ニューラルネットワークデータのストリーム書き込み  <a href="#g718705e42d625ed9d8405af6cf947375"></a><br></td></tr>
+</table>
+<hr><h2>列挙型</h2>
+<a class="anchor" name="g7ad93878e76abcf48348643e42709391"></a><!-- doxytag: member="fie.h::f_nn_func_type" ref="g7ad93878e76abcf48348643e42709391" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__fie__neural__network.html#g7ad93878e76abcf48348643e42709391">f_nn_func_type</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワーク応答関数指定 
+<p>
+<dl compact><dt><b>列挙型の値: </b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" name="gg7ad93878e76abcf48348643e42709391c0210a2442ee2f47358126a530526886"></a><!-- doxytag: member="F_NN_LINEAR_FUNC" ref="gg7ad93878e76abcf48348643e42709391c0210a2442ee2f47358126a530526886" args="" -->F_NN_LINEAR_FUNC</em>&nbsp;</td><td>
+線形出力関数 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg7ad93878e76abcf48348643e427093917015f609305248b7dbf3ac347fca2cdf"></a><!-- doxytag: member="F_NN_SIGMOID_FUNC" ref="gg7ad93878e76abcf48348643e427093917015f609305248b7dbf3ac347fca2cdf" args="" -->F_NN_SIGMOID_FUNC</em>&nbsp;</td><td>
+シグモイド（ロジスティック）関数 </td></tr>
+<tr><td valign="top"><em><a class="anchor" name="gg7ad93878e76abcf48348643e427093913a6d5fe9eed61fdaf88f209dc9577519"></a><!-- doxytag: member="F_NN_TANH_FUNC" ref="gg7ad93878e76abcf48348643e427093913a6d5fe9eed61fdaf88f209dc9577519" args="" -->F_NN_TANH_FUNC</em>&nbsp;</td><td>
+双曲線正接関数 </td></tr>
+</table>
+</dl>
+
+</div>
+</div><p>
+<hr><h2>関数</h2>
+<a class="anchor" name="g94dc4bd885c157ade109bda5ab00b9d9"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_create" ref="g94dc4bd885c157ade109bda5ab00b9d9" args="(const F_NN_COND *layer_cond, INT layer_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_neuro_create           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structF__NN__COND.html">F_NN_COND</a> *&nbsp;</td>
+          <td class="paramname"> <em>layer_cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>layer_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの生成 
+<p>
+ニューラルネットワークオブジェクトを生成します。<p>
+<em>layer_cond</em> は、各階層の条件を設定します。 <em>layer_num</em> で設定した階層数分を入力してください。 なお <em>layer_cond</em> は、３層以上( 3 ≦ <em>layer_num</em> )であることが前提となります。<p>
+<a class="el" href="structF__NN__COND.html" title="ニューラルネットワーク階層毎の生成条件設定用構造体">F_NN_COND</a> 構造体 <em>layer_cond-&gt;func_param</em> には、0.0 より大きい値を設定してください。 また対象によって異なりますが、この <em>layer_cond-&gt;func_param</em> に設定する値の目安は、 線形出力関数の場合1.0、シグモイド関数の場合1.0、双曲線正接の場合0.1 程度です。 ただし、階層毎にパラメータチェックはしていません。 例えば、応答関数の種類が不正な場合の動作は保証しません。<p>
+本関数で生成したオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>layer_cond</em>&nbsp;</td><td>各階層毎の生成条件の配列 <br>
+ <em>layer_num</em> 分の要素を確保した配列です。 <ul>
+<li>(バイアス素子を除く)素子数( <em>elem_num</em> ) </li>
+<li>応答関数の種類( <em>func_type</em> )<ul>
+<li>F_NN_LINEAR_FUNC：線形出力関数</li><li>F_NN_SIGMOID_FUNC：シグモイド(ロジスティック)関数</li><li>F_NN_TANH_FUNC：双曲線正接関数 </li></ul>
+</li>
+<li>応答関数のパラメータ( <em>func_param</em> ) </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>layer_num</em>&nbsp;</td><td>階層数( <em>layer_cond</em> の要素数 )</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、ニューラルネットワークオブジェクトのハンドルを返します。 ライセンスエラー、未初期化エラー、メモリ不足や不正なパラメータを与えた場合には、NULLを返します。 </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4cb3cf59e5aa6a6462764095fdb8b5fa"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_set_coeff" ref="g4cb3cf59e5aa6a6462764095fdb8b5fa" args="(FHANDLE hneuro, DOUBLE epsilon, DOUBLE beta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_set_coeff           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>epsilon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>beta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの結合負荷の修正時の各種係数の設定 
+<p>
+ニューラルネットワークの学習時、すなわち、シナプス結合荷重修正時に必要な各種のパラメータを設定します。<p>
+<ul>
+<li><em>epsilon</em> は、シナプス結合荷重修正時の学習係数εです。 0.0～1.0 の値で設定してください。 この値が大きい程、学習が速くなりますが、ローカルミニマム解（簡単にいえば、誤記憶）になりやすくなります。</li>
+</ul>
+<ul>
+<li><em>beta</em> は、シナプス結合荷重修正時の忘却係数βです。 0.0～1.0 の値で設定してください。 この値が大きい程、一旦憶えたものを忘れる確率が高くなります。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>epsilon</em>&nbsp;</td><td>結合荷重の修正時の学習係数ε(0.0～1.0) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>beta</em>&nbsp;</td><td>結合荷重の修正時の忘却係数β(0.0～1.0)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__neural__network.html#g95bb2da8540470abb932aa8a24607dd1" title="ニューラルネットワークの結合荷重の修正時の各種係数の取得...">fnFIE_neuro_get_coeff()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g95bb2da8540470abb932aa8a24607dd1"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_get_coeff" ref="g95bb2da8540470abb932aa8a24607dd1" args="(FHANDLE hneuro, DOUBLE *epsilon, DOUBLE *beta)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_get_coeff           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>epsilon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>beta</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの結合荷重の修正時の各種係数の取得 
+<p>
+ニューラルネットワークの学習時、すなわち、シナプス結合荷重修正時に必要な各種のパラメータを取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>epsilon</em>&nbsp;</td><td>結合荷重の修正時の学習係数ε(0.0～1.0) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>beta</em>&nbsp;</td><td>結合荷重の修正時の忘却係数β(0.0～1.0)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__neural__network.html#g4cb3cf59e5aa6a6462764095fdb8b5fa" title="ニューラルネットワークの結合負荷の修正時の各種係数の設定...">fnFIE_neuro_set_coeff()</a> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g4652ef2eb689c2f3af2100114df14e11"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_learning" ref="g4652ef2eb689c2f3af2100114df14e11" args="(FHANDLE hneuro, const DOUBLE *vect_inp, const DOUBLE *vect_tch, DOUBLE *error)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_learning           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>vect_inp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>vect_tch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>error</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの学習(確率的バックプロパゲーション法) 
+<p>
+ニューラルネットワークの学習、すなわち、シナプス結合荷重修正を行います。<p>
+<ul>
+<li><em>vect_inp</em> は学習時の入力データです。 入力層の要素数以上の要素を確保してください。 入力層の要素数は、 <a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create()</a> で指定した <em>layer_cond</em>[0].elem_num のことです。 </li>
+<li><em>vect_tch</em> は学習時の教師データです。 出力層の要素数以上の要素を確保してください。 出力層の要素数は、 <a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create()</a> で指定した <em>layer_cond</em>[ <em>layer_num</em> - 1 ].elem_num のことです。</li>
+</ul>
+本関数は、返される <em>error</em> の値が小さな値になるまで、入力データを変えながら繰り返し呼ぶ必要があります。 対象とするデータによって異なりますが、 <em>error</em> が小さくなったと判定する目安は、0.03です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vect_inp</em>&nbsp;</td><td>入力ベクトル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vect_tch</em>&nbsp;</td><td>教師ベクトル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>error</em>&nbsp;</td><td>教師ベクトルとの誤差</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g5fa83c07bdcdc9cc0990ab36e040915a"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_recognition" ref="g5fa83c07bdcdc9cc0990ab36e040915a" args="(FHANDLE hneuro, const DOUBLE *vect_inp, DOUBLE *vect_out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_recognition           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>vect_inp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>vect_out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークでの認識 
+<p>
+学習済みのニューラルネットワークを使って認識を行います。 与えられた入力ベクトルに対し、指定されたニューラルネットワークを使い認識を行います。 結果を出力ベクトルへ反映させます。<p>
+<ul>
+<li><em>vect_inp</em> は認識したい入力データです。 入力層の要素数以上の要素を確保してください。 入力層の要素数は、 <a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create()</a> で指定した <em>layer_cond</em>[0].elem_num のことです。 </li>
+<li><em>vect_out</em> は認識結果の出力データです。 出力層の要素数以上の要素を確保してください。 出力層の要素数は、 <a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create()</a> で指定した <em>layer_cond</em>[ <em>layer_num</em> - 1 ].elem_num のことです。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vect_inp</em>&nbsp;</td><td>入力ベクトル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vect_out</em>&nbsp;</td><td>出力ベクトル</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g425e6d9fcbdc55efc5918f297ccceb8c"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_performance" ref="g425e6d9fcbdc55efc5918f297ccceb8c" args="(FHANDLE hneuro, const DOUBLE *vect_inp, const DOUBLE *vect_tch, DOUBLE *error)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_performance           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>vect_inp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>vect_tch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE *&nbsp;</td>
+          <td class="paramname"> <em>error</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの学習性能の取得 
+<p>
+ニューラルネットワークに入力データおよび教師データを与えて、そのときの誤差を取得します。 <a class="el" href="group__fie__neural__network.html#g4652ef2eb689c2f3af2100114df14e11" title="ニューラルネットワークの学習(確率的バックプロパゲーション法)...">fnFIE_neuro_learning()</a> に似ていますが、本関数では学習を行うことなく誤差量を算出します。<p>
+<ul>
+<li><em>vect_inp</em> は学習時の入力データです。 入力層の要素数以上の要素を確保してください。 入力層の要素数は、 <a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create()</a> で指定した <em>layer_cond</em>[0].elem_num のことです。 </li>
+<li><em>vetc_tch</em> は学習時の教師データです。 出力層の要素数以上の要素を確保してください。 出力層の要素数は、 <a class="el" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create()</a> で指定した <em>layer_cond</em>[ <em>layer_num</em> - 1 ].elem_num のことです。</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in,out]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vect_inp</em>&nbsp;</td><td>入力ベクトル </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vect_tch</em>&nbsp;</td><td>教師ベクトル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>error</em>&nbsp;</td><td>教師ベクトルとの誤差</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g7bab3b2de820dc75ee4e992dc77ca368"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_get_count" ref="g7bab3b2de820dc75ee4e992dc77ca368" args="(FHANDLE hneuro, INT *count)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_get_count           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>count</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの学習回数の取得 
+<p>
+これまでにニューラルネットワークが学習した回数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>count</em>&nbsp;</td><td>学習回数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g3a1cb607735effffb4555dc3ab4cb1e3"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_get_layer" ref="g3a1cb607735effffb4555dc3ab4cb1e3" args="(FHANDLE hneuro, INT *layer_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_get_layer           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>layer_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの階層数の取得 
+<p>
+ニューラルネットワークの階層数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>layer_num</em>&nbsp;</td><td>階層数</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb470a9658eb0f98947cb76315e49e6cf"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_get_neuron" ref="gb470a9658eb0f98947cb76315e49e6cf" args="(FHANDLE hneuro, INT *neuron_num)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_get_neuron           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT *&nbsp;</td>
+          <td class="paramname"> <em>neuron_num</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークの各階層のニューロン数の取得 
+<p>
+ニューラルネットワークの各階層のニューロン数を取得します。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>neuron_num</em>&nbsp;</td><td>各階層のニュ－ロン数を保持する配列 <ul>
+<li>階層数分の要素数を確保している必要があります</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g07b483bd00955396c9d7345173b747bb"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_load" ref="g07b483bd00955396c9d7345173b747bb" args="(fvstream *strm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FHANDLE FVALGAPI fnFIE_neuro_load           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>strm</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークデータのストリーム読み込み 
+<p>
+ニューラルネットワークを、指定のデータストリームから読み込みます。<p>
+本関数で生成したオブジェクトは不要になったら <a class="el" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object()</a> にて解放してください。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>strm</em>&nbsp;</td><td>データストリーム</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>戻り値:</b></dt><dd>正常に終了した場合は、ニューラルネットワークオブジェクトのハンドルを返します。 ライセンスエラー、未初期化エラー、メモリ不足や不正なパラメータを与えた場合には、NULLを返します。</dd></dl>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>
+<span class="preprocessor">#include "fie.h"</span>
+
+<span class="comment">/* ファイル書き込み用関数 */</span>
+<span class="keyword">static</span> INT write_data( VOID *data, INT sz, VOID* strm )
+{
+    <span class="keywordflow">return</span> fwrite( data, 1, sz, (FILE*)strm );
+}
+
+<span class="comment">/* ファイル読込用関数 */</span>
+<span class="keyword">static</span> INT read_data( VOID *data, INT sz, VOID* strm )
+{
+    <span class="keywordflow">return</span> fread( data, 1, sz, (FILE*)strm );
+}
+
+INT main()
+{
+    FHANDLE     hnn1 = NULL, hnn2 = NULL;
+    <a class="code" href="structfvstream.html" title="データストリーム">fvstream</a>    strm;       <span class="comment">// データストリーム</span>
+    <a class="code" href="structF__NN__COND.html" title="ニューラルネットワーク階層毎の生成条件設定用構造体">F_NN_COND</a>   cond[3];    <span class="comment">// 各階層毎の生成条件の配列</span>
+    INT         i;
+
+    DOUBLE      *vect_inp = NULL;   <span class="comment">// 入力ベクトル</span>
+    DOUBLE      *vect_tch = NULL;   <span class="comment">// 教師ベクトル</span>
+    DOUBLE      vect_out;           <span class="comment">// 出力ベクトル</span>
+    DOUBLE      error;              <span class="comment">// 教師ベクトルとの誤差</span>
+
+    DOUBLE      data_tbl[4][3]= { { 0.0, 0.0, 0.0 },
+                                  { 0.0, 1.0, 1.0 },
+                                  { 1.0, 0.0, 1.0 },
+                                  { 1.0, 1.0, 0.0 }
+                                };  <span class="comment">// 入力ベクトル、教師ベクトル初期化用テーブル</span>
+
+    <span class="keyword">const</span> INT       DEF_LAYER_N     = 3;    <span class="comment">// レイヤー数</span>
+    <span class="keyword">const</span> INT       INPUT_NEURON    = 2;    <span class="comment">// 入力レイヤーのニューロン数</span>
+    <span class="keyword">const</span> INT       HIDDEN_NEURON   = 2;    <span class="comment">// 中間レイヤーのニューロン数</span>
+    <span class="keyword">const</span> INT       OUTPUT_NEURON   = 1;    <span class="comment">// 出力レイヤーのニューロン数</span>
+    <span class="keyword">const</span> DOUBLE    EPSILON         = 0.8;  <span class="comment">// 結合荷重の修正時の学習係数</span>
+    <span class="keyword">const</span> DOUBLE    BETA            = 0.02; <span class="comment">// 結合荷重の修正時の忘却係数</span>
+    <span class="keyword">const</span> INT       LEARN_COUNT     = 4000; <span class="comment">// 学習数</span>
+
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    <span class="comment">// ストリームの準備</span>
+    strm.read   = read_data;
+    strm.write  = write_data;
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = NULL;
+
+    <span class="comment">// 生成条件の初期化</span>
+    cond[0].<a class="code" href="structF__NN__COND.html#01afde9a39b806c0cdc5a13b1568462e">elem_num</a>    = INPUT_NEURON;
+    cond[0].<a class="code" href="structF__NN__COND.html#9d3f1e71ea61f547611494e1d520fa48">func_type</a>   = <a class="code" href="group__fie__neural__network.html#gg7ad93878e76abcf48348643e42709391c0210a2442ee2f47358126a530526886" title="線形出力関数">F_NN_LINEAR_FUNC</a>;
+    cond[0].<a class="code" href="structF__NN__COND.html#d07b479e5e2f2cfc6c62a94baa7f23c1">func_param</a>  = 1.0;
+    cond[1].<a class="code" href="structF__NN__COND.html#01afde9a39b806c0cdc5a13b1568462e">elem_num</a>    = HIDDEN_NEURON;
+    cond[1].<a class="code" href="structF__NN__COND.html#9d3f1e71ea61f547611494e1d520fa48">func_type</a>   = <a class="code" href="group__fie__neural__network.html#gg7ad93878e76abcf48348643e427093917015f609305248b7dbf3ac347fca2cdf" title="シグモイド（ロジスティック）関数">F_NN_SIGMOID_FUNC</a>;
+    cond[1].<a class="code" href="structF__NN__COND.html#d07b479e5e2f2cfc6c62a94baa7f23c1">func_param</a>  = 1.0;
+    cond[2].<a class="code" href="structF__NN__COND.html#01afde9a39b806c0cdc5a13b1568462e">elem_num</a>    = OUTPUT_NEURON;
+    cond[2].<a class="code" href="structF__NN__COND.html#9d3f1e71ea61f547611494e1d520fa48">func_type</a>   = <a class="code" href="group__fie__neural__network.html#gg7ad93878e76abcf48348643e427093917015f609305248b7dbf3ac347fca2cdf" title="シグモイド（ロジスティック）関数">F_NN_SIGMOID_FUNC</a>;
+    cond[2].<a class="code" href="structF__NN__COND.html#d07b479e5e2f2cfc6c62a94baa7f23c1">func_param</a>  = 1.0;
+
+    vect_inp = (DOUBLE *)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( INPUT_NEURON * LEARN_COUNT * <span class="keyword">sizeof</span>(DOUBLE) );
+    vect_tch = (DOUBLE *)<a class="code" href="group__memory__alloc.html#g80e0d9105acd3ea67cd8c5194a19f3d6" title="メモリブロックの割当">fnOAL_malloc</a>( OUTPUT_NEURON * LEARN_COUNT * <span class="keyword">sizeof</span>(DOUBLE) );
+
+    <span class="comment">// 入力ベクトル、教師ベクトルの初期化</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; LEARN_COUNT; i++ ){
+        *(vect_inp + (2*i))     = data_tbl[i%4][0];
+        *(vect_inp + (2*i+1))   = data_tbl[i%4][1];
+        *(vect_tch + i)         = data_tbl[i%4][2];
+    }
+
+    <span class="comment">// ニューラルネットワークの生成</span>
+    hnn1 = <a class="code" href="group__fie__neural__network.html#g94dc4bd885c157ade109bda5ab00b9d9" title="ニューラルネットワークの生成">fnFIE_neuro_create</a>( cond, DEF_LAYER_N );
+
+    <span class="comment">// 結合負荷の修正時の各種係数の設定 </span>
+    <a class="code" href="group__fie__neural__network.html#g4cb3cf59e5aa6a6462764095fdb8b5fa" title="ニューラルネットワークの結合負荷の修正時の各種係数の設定...">fnFIE_neuro_set_coeff</a>( hnn1, EPSILON, BETA );
+
+    <span class="comment">// 学習</span>
+    <span class="keywordflow">for</span>( i = 0; i &lt; LEARN_COUNT; i++ )
+        <a class="code" href="group__fie__neural__network.html#g4652ef2eb689c2f3af2100114df14e11" title="ニューラルネットワークの学習(確率的バックプロパゲーション法)...">fnFIE_neuro_learning</a>( hnn1, (vect_inp + (2*i)), (vect_tch + i), &amp;error );
+
+    <span class="comment">// 認識</span>
+    <a class="code" href="group__fie__neural__network.html#g5fa83c07bdcdc9cc0990ab36e040915a" title="ニューラルネットワークでの認識">fnFIE_neuro_recognition</a>( hnn1, vect_inp, &amp;vect_out );
+
+    <span class="comment">// ファイル書き込み</span>
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = fopen( <span class="stringliteral">"test_fie_neuro.dat"</span>, <span class="stringliteral">"wb"</span> );
+    <a class="code" href="group__fie__neural__network.html#g718705e42d625ed9d8405af6cf947375" title="ニューラルネットワークデータのストリーム書き込み">fnFIE_neuro_save</a>( hnn1, &amp;strm );
+    fclose( (FILE*)strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> );
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = NULL;
+
+    <span class="comment">// ファイルの読み込み</span>
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = fopen( <span class="stringliteral">"test_fie_neuro.dat"</span>, <span class="stringliteral">"rb"</span> );
+    hnn2 = <a class="code" href="group__fie__neural__network.html#g07b483bd00955396c9d7345173b747bb" title="ニューラルネットワークデータのストリーム読み込み">fnFIE_neuro_load</a>( &amp;strm );
+    fclose( (FILE*)strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> );
+    strm.<a class="code" href="structfvstream.html#ca0db263218c2161bb191e19c006734c">stream</a> = NULL;
+
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hnn1 );
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>( hnn2 );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( vect_inp );
+    <a class="code" href="group__memory__alloc.html#g78ba9c03b7577b9c091ba42ca9cb7c95" title="メモリブロックの解放">fnOAL_free</a>( vect_tch );
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div> </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g718705e42d625ed9d8405af6cf947375"></a><!-- doxytag: member="fie_neuro.c::fnFIE_neuro_save" ref="g718705e42d625ed9d8405af6cf947375" args="(FHANDLE hneuro, fvstream *strm)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_neuro_save           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hneuro</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structfvstream.html">fvstream</a> *&nbsp;</td>
+          <td class="paramname"> <em>strm</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+ニューラルネットワークデータのストリーム書き込み 
+<p>
+ニューラルネットワークを、指定のデータストリームに書き込みます。<p>
+<dl class="user" compact><dt><b>使用例</b></dt><dd><a class="el" href="group__fie__neural__network.html#g07b483bd00955396c9d7345173b747bb" title="ニューラルネットワークデータのストリーム読み込み">fnFIE_neuro_load()</a> の例を参照してください。</dd></dl>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hneuro</em>&nbsp;</td><td>ニューラルネットワークオブジェクトのハンドル </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>strm</em>&nbsp;</td><td>データストリーム</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_OBJECT</em>&nbsp;</td><td>不正なオブジェクトが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>不正なパラメータが渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:34 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>

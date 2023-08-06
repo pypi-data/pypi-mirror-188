@@ -1,0 +1,1144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>FIEライブラリ: 幾何変換</title>
+<link href="fvalg-prod.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- 作成： Doxygen 1.5.6-FASTSP-p2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="contents">
+<h1>幾何変換<br>
+<small>
+[<a class="el" href="group__fie__std__operation__base.html">基本画像操作</a>]</small>
+</h1><hr><a name="_details"></a><h2>説明</h2>
+画像の幾何変換を行うライブラリです。 同次変換行列の計算および幾何図形の変換に関しては <a class="el" href="group__fie__cg__geometric__transform.html">幾何変換ページ</a> を、 リージョンの幾何変換に関しては <a class="el" href="group__fie__region__geometric__transform.html">リージョンの幾何変換ページ</a> を、 それぞれご参照ください。<h2><a class="anchor" name="fie_geotrans_mask">
+有効画素マスク画像</a></h2>
+FIEの幾何変換関数（射影変換、アフィン変換、平行移動、warpping）では、出力画像での無効領域を 判定するためのマスク画像を作成することが出来ます。マスク画像は、有効画素が１、無効画素が０ となる２値画像で出力されます。<p>
+<div align="center">
+<img src="fie_geotrans_mask.png" alt="fie_geotrans_mask.png">
+<p><strong>有効画素マスク画像の例(アフィン変換での例)</strong></p></div>
+ <h2><a class="anchor" name="fie_interpolation_method">
+濃度補間方法</a></h2>
+FIEの幾何変換関数（射影変換、アフィン変換、平行移動、warpping）には濃度補間方法が６種類有ります。 幾何変換関数によって、利用できる補間手法に制限があり、利用可能な組合せは下表の通りです。<p>
+<table class="pretable">
+<tr>
+<th>&nbsp;</th><th>アフィン変換</th><th>射影変換</th><th>平行移動</th><th>warpping </th></tr>
+<tr>
+<th>F_SAMPLING_NN</th><td>○</td><td>○</td><td>○</td><td>○ </td></tr>
+<tr>
+<th>F_SAMPLING_BILINEAR</th><td>○</td><td>○</td><td>○</td><td>○ </td></tr>
+<tr>
+<th>F_SAMPLING_CUBIC</th><td>○</td><td>○</td><td>○</td><td>○ </td></tr>
+<tr>
+<th>F_SAMPLING_LANCZOS</th><td>○</td><td>×</td><td>×</td><td>× </td></tr>
+<tr>
+<th>F_SAMPLING_SUPER</th><td>○</td><td>×</td><td>×</td><td>× </td></tr>
+<tr>
+<th>F_SAMPLING_ADAPT</th><td>×</td><td>○</td><td>×</td><td>× </td></tr>
+</table>
+<p>
+但し、処理対象の画像が２値画像(F_IMG_BIN)の場合は、F_SAMPLING_NNのみ利用可能です。<p>
+これら６手法のうち、NN, BILINEAR, CUBIC の３手法は、１≦拡大率 の場合に適した手法です。 １＞拡大率 になる変換、つまり縮小をするときには、これらの手法はエイリアシング(aliasing)現像 を起こします。このエイリアシング(aliasing)現像を抑制するため、LANCZOS, SUPER, ADAPT の３種類のアンチエイリアシング（antialiasing）手法を用意しています。 これらの手法は処理時間がかかりますが、美しい結果画像を得ることが出来ます。<p>
+<div align="center">
+<img src="fie_geotrans_aliasing.png" alt="fie_geotrans_aliasing.png">
+<p><strong>各補間法によるエイリアシングの違い(1/3に縮小した例)</strong></p></div>
+ 但し、LANCZOS, SUPER, ADAPTの３手法では、計算時間の爆発を避けるため、適応できる 最大の縦横方向縮小比率を５分の１に設定しています。それ以上に縮小した場合には、 エイリアジングが出てきます。なお、これらのアンチエイリアシング手法(LANCZOS,SUPER,ADAPT) を拡大処理の場合に使用しても問題は有りませんが、処理時間が長くなるため NN,BILINEAR,CUBIC を使用することをおすすめします。<p>
+<dl class="user" compact><dt><b>F_SAMPLING_NN : 最近傍法</b></dt><dd>最近傍法は、各補間法の中で最も高速ですが、最も精度が低い方法です。 濃度値は(x,y)を単純に丸めた座標( (INT)(x+0.5), (INT)(y+0.5) ) の濃度値が使用されます。</dd></dl>
+<dl class="user" compact><dt><b>F_SAMPLING_BILINEAR : 共一次線形補間法</b></dt><dd>共一次線形補間法は、最近傍法よりは低速で、精度の良い方法です。 一方、三次畳み込み法よりは高速で、精度は低くなります。 この方法では、(x,y) の周囲４点の濃度値D(u,v), D(u+1,v), D(u,v+1), D(u+1,v+1)を使用して、 次の式で濃度値を決定します。</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ D(x,y) = \left[ (v+1)-y, y-v \right] \left[\begin{array}{cc} D(u,v) &amp; D(u+1,v) \\ D(u,v+1) &amp; D(u+1,v+1) \end{array}\right] \left[\begin{array}{c} (u+1) - x \\ x - u \end{array}\right] \]" src="form_671.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_interpolation-biliner.png" alt="fie_geotrans_interpolation-biliner.png">
+</div>
+<p>
+<dl class="user" compact><dt><b>F_SAMPLING_CUBIC : 三次畳み込み法</b></dt><dd>三次畳み込み法は共一次線形補間法より低速で、精度の良い方法です。 この方法では、(x,y) の周囲１６点の濃度値を使用して、次の式で濃度値を決定します。</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ D(x,y) = \left[\begin{array}{c} f((v-1)-y) \\ f(v-y) \\ f((v+1)-y) \\ f((v+2)-y) \end{array}\right]^T \left[\begin{array}{cccc} D(u-1,v-1) &amp; D(u,v-1) &amp; D(u+1,v-1) &amp; D(u+2,v-1) \\ D(u-1,v) &amp; D(u,v) &amp; D(u+1,v) &amp; D(u+2,v) \\ D(u-1,v+1) &amp; D(u,v-1) &amp; D(u+1,v+1) &amp; D(u+2,v+1) \\ D(u-1,v+2) &amp; D(u,v-1) &amp; D(u+1,v+2) &amp; D(u+2,v+2) \end{array}\right] \left[\begin{array}{c} f((u-1)-x) \\ f(u-x) \\ f((u+1)-x) \\ f((u+2)-x) \end{array}\right] \]" src="form_672.png">
+<p>
+ <p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f(t) = \left\{ \begin{array}{ll} \dfrac{3|t|^3-5|t|^2+2}{2} &amp; (0 \le t<1) \vspace{.5em} \\ \dfrac{-|t|^3+5|t|^2-8|t|+4}{2} &amp; (1 \le t<2) \vspace{.5em} \\ 0 &amp; (2 \le t) \vspace{.5em} \\ \end{array} \right. \]" src="form_673.png">
+<p>
+<p>
+<div align="center">
+<img src="fie_geotrans_interpolation-cubic.png" alt="fie_geotrans_interpolation-cubic.png">
+</div>
+<p>
+<dl class="user" compact><dt><b></b></dt><dd>なお、３次畳み込み法の重み関数は次の文献に従っています。 Lehmann T. M., Gonner C. and Spitzer Klaus, "Survey: Interpolation Methods in Medical Image Processing", IEEE on Medical Imaging, 1999, Vol. 18, No.11, pp. 1063 with N = 4, a = -0.5</dd></dl>
+<dl class="user" compact><dt><b>F_SAMPLING_LANCZOS : Lanczos-windowed Sinc functionを使用した濃度補間法</b></dt><dd>Lanczos法はLanczos-windowed Sinc函数を使って、補間係数を計算します。 畳み込みを行うウインドウサイズは縮小比率より自動的に決定されます。</dd></dl>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f(t) = \left\{ \begin{array}{ll} \dfrac{\sin(\pi t)}{\pi t}\dfrac{\sin(\pi \dfrac{t}{2})}{\pi \dfrac{t}{2} } &amp; (|t| < 2) \vspace{.5em} \\ 0 &amp; (2 \le |t|) \vspace{.5em} \\ \end{array} \right. \]" src="form_674.png">
+<p>
+<p>
+<dl class="user" compact><dt><b>F_SAMPLING_SUPER : Super-sampling法</b></dt><dd>Super-sampling法は変換する時に各ピクセルをさらに細かいサブピクセルに分解して、それぞれ のサブピクセルの明るさの平均値をピクセル値として適用する方法です。 平均値を取るサブピクセル数は縮小比率によって内部で自動的に決定します。</dd></dl>
+<dl class="user" compact><dt><b>F_SAMPLING_ADAPT : Adaptive Super-sampling法</b></dt><dd>Adaptive Super-sampling法はSuper-sampling法とほぼ同じですが、Super-sampling法が 縮小率を画像全体で一意に決定するのに対して、Adaptive Super-sampling法は各画素ごとに 縮小率を計算し、サンプル数を適応的に決定する点が異なります。 但し、対象画素の縮小率が1.5以下となる場合には、共一次線形補間法をその画素に対して使用します。</dd></dl>
+<dl class="attention" compact><dt><b>注意:</b></dt><dd>F_SAMPLING_NN以外の各補間手法では近傍画素をウィンドウをはって取得するため、 入力画像での有効領域が画像のサイズよりも小さくなります。 そのため画像の周囲部分が欠けますので、周囲部分が欠けると問題がある場合は、 あらかじめ <a class="el" href="group__fie__std__operation.html#g0b20a28445e52bb01ae893baff7c3b94" title="画像のボーダーを拡張する">fnFIE_copy_border()</a> 等を使用して入力画像を拡張しておいて下さい。 </dd></dl>
+
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>関数</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#g4454d8cd11f7ebf8dbabb359085ab962">fnFIE_geotrans_get_offset_matrix</a> (const <a class="el" href="structFMATRIX.html">FMATRIX</a> *vpTransMat, <a class="el" href="structFMATRIX.html">FMATRIX</a> *vpOffsetMat, DOUBLE dSrcOffX, DOUBLE dSrcOffY, DOUBLE dDstOffX, DOUBLE dDstOffY)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">同次変換行列に入力座標系/出力座標系のオフセットを加える  <a href="#g4454d8cd11f7ebf8dbabb359085ab962"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb">fnFIE_geotrans_affine</a> (FHANDLE hSrc, FHANDLE hDst, FHANDLE hMask, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *vpMat, INT bIsClearBack, INT iSamplingMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像のアフィン変換  <a href="#ga3023a245cde8ee92dda78d4da6944fb"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705">fnFIE_geotrans_perspective</a> (FHANDLE hSrc, FHANDLE hDst, FHANDLE hMask, const <a class="el" href="structFMATRIX.html">FMATRIX</a> *vpMat, INT bIsClearBack, INT iSamplingMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像の射影変換  <a href="#g2643f645190d545e409d5311357e1705"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#g599d687f04058cc75345e19f1f9c96ab">fnFIE_geotrans_warpping</a> (FHANDLE hSrc, FHANDLE hMap, FHANDLE hDst, FHANDLE hMask, INT bIsClearBack, INT iSamplingMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">座標変換マップに従って座標を変換する  <a href="#g599d687f04058cc75345e19f1f9c96ab"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#ga241df49dcbe31798950a46a4907403a">fnFIE_geotrans_shift</a> (FHANDLE hSrc, FHANDLE hDst, FHANDLE hMask, DOUBLE dX, DOUBLE dY, INT bIsClearBack, INT iSamplingMode)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像の平行移動  <a href="#ga241df49dcbe31798950a46a4907403a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#g56bb51a6e92d9f38a930561182d08d38">fnFIE_img_mirror</a> (FHANDLE hsrc, FHANDLE hdst, INT direc)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像ミラー反転  <a href="#g56bb51a6e92d9f38a930561182d08d38"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#gb2957ee054f017d2103ffcd181ea5743">fnFIE_img_resize</a> (FHANDLE hsrc, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像のリサイズ  <a href="#gb2957ee054f017d2103ffcd181ea5743"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#g8ffd8aa89e1d29126010913ae065b989">fnFIE_img_transpose</a> (FHANDLE hsrc, FHANDLE hdst)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像転置  <a href="#g8ffd8aa89e1d29126010913ae065b989"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">INT FVALGAPI&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fie__geometric__transform.html#gf4914db1caea3d101c00eceb6e0e7696">fnFIE_img_rotate_clockwise90</a> (FHANDLE hsrc, FHANDLE hdst, INT n)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">画像の回転（９０度の倍数）  <a href="#gf4914db1caea3d101c00eceb6e0e7696"></a><br></td></tr>
+</table>
+<hr><h2>関数</h2>
+<a class="anchor" name="g4454d8cd11f7ebf8dbabb359085ab962"></a><!-- doxytag: member="fie_img_geotrans.c::fnFIE_geotrans_get_offset_matrix" ref="g4454d8cd11f7ebf8dbabb359085ab962" args="(const FMATRIX *vpTransMat, FMATRIX *vpOffsetMat, DOUBLE dSrcOffX, DOUBLE dSrcOffY, DOUBLE dDstOffX, DOUBLE dDstOffY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_get_offset_matrix           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>vpTransMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>vpOffsetMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dSrcOffX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dSrcOffY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dDstOffX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dDstOffY</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+同次変換行列に入力座標系/出力座標系のオフセットを加える 
+<p>
+入力された同次変換行列Mに対して、入力側座標系の原点のオフセット( <img class="formulaInl" alt="$\delta u, \delta v$" src="form_675.png"> )と 出力側座標系の原点オフセット( <img class="formulaInl" alt="$\delta x, \delta y$" src="form_676.png"> ) を加えた新たな同次変換行列 <img class="formulaInl" alt="$M'$" src="form_637.png"> を計算します。本関数はチャイルド画像を処理する場合などで、画像の左上画素の座標が(0,0)に なっていない場合にその原点位置を指定するために使います。<p>
+<div align="center">
+<img src="fie_geotrans_offsets_matrix.png" alt="fie_geotrans_offsets_matrix.png">
+</div>
+<p>
+新たな幾何変換行列 <img class="formulaInl" alt="$M'$" src="form_637.png"> は下記のように算出します。 <img class="formulaInl" alt="$M$" src="form_491.png"> の(i,j)成分を <img class="formulaInl" alt="$m_{ij}$" src="form_677.png"> 、<img class="formulaInl" alt="$M'$" src="form_637.png"> の(i,j)成分を <img class="formulaInl" alt="$m'_{ij}$" src="form_678.png"> と書くとすると、<p>
+<p class="formulaDsp">
+<img class="formulaDsp" alt="\begin{eqnarray*} dS &amp; = &amp; m_{20} \delta u + m_{21} \delta v + m_{22} \\ M' &amp; = &amp; M + \left(\begin{array}{ccc} -m_{20}\delta x &amp; -m_{21}\delta x &amp; m_{00} \delta u + m_{01} \delta v - dS \delta x \\ -m_{20}\delta y &amp; -m_{21}\delta y &amp; m_{00} \delta u + m_{11} \delta v - dS \delta y \\ 0 &amp; 0 &amp; m_{20} \delta u + m_{21} \delta v \end{array}\right) \end{eqnarray*}" src="form_679.png">
+<p>
+<p>
+各成分ごとに書くと、下記のようになります。 <div class="fragment"><pre class="fragment">
+	dS = M[2][2] + M[2][0] * dSrcOffX + M[2][1] * dSrcOffY
+
+	M'[0][0] = M[0][0] - M[2][0] * dDstOffX
+	M'[0][1] = M[0][1] - M[2][1] * dDstOffX
+	M'[0][2] = M[0][2] + M[0][0] * dSrcOffX + M[0][1] * dSrcOffY - dS * dDstOffX
+
+	M'[1][0] = M[1][0] - M[2][0] * dDstOffY
+	M'[1][1] = M[1][1] - M[2][1] * dDstOffY
+	M'[1][2] = M[1][2] + M[1][0] * dSrcOffX + M[1][1] * dSrcOffY - dS * dDstOffY
+
+	M'[2][0] = M[2][0]
+	M'[2][1] = M[2][1]
+	M'[2][2] = S
+</pre></div><p>
+画像の左上点の偏移量の定義は上記の図を参考にして下さい。<p>
+入力同次変換行列 <em>vpTransMat</em> (図中の変換行列 <img class="formulaInl" alt="$M$" src="form_491.png"> )と出力同次変換行列 <em>vpOffsetMat</em> (図中の変換行列 <img class="formulaInl" alt="$M'$" src="form_637.png"> )は 3x3の正方行列です。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpTransMat</em>&nbsp;</td><td>画像幾何変換の同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>vpOffsetMat</em>&nbsp;</td><td>偏移量を含めたの幾何変換の同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dSrcOffX</em>&nbsp;</td><td>元画像の横方向の偏移量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dSrcOffY</em>&nbsp;</td><td>元画像の縦方向の偏移量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dDstOffX</em>&nbsp;</td><td>結果画像の横方向の偏移量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dDstOffY</em>&nbsp;</td><td>結果画像の縦方向の偏移量</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>入力行列或いは出力行列は3x3の正方行列ではない </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga3023a245cde8ee92dda78d4da6944fb"></a><!-- doxytag: member="fie_img_geotrans.c::fnFIE_geotrans_affine" ref="ga3023a245cde8ee92dda78d4da6944fb" args="(FHANDLE hSrc, FHANDLE hDst, FHANDLE hMask, const FMATRIX *vpMat, INT bIsClearBack, INT iSamplingMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_affine           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>vpMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bIsClearBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iSamplingMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像のアフィン変換 
+<p>
+処理対象画像を、幾何変換の同次変換行列 <em>vpMat</em> に従ってアフィン変換します。 処理対象画像と結果画像のサイズは異なっていても構いません。 但し、処理対象画像と結果画像の型とチャネル数は同じでなければいけません。<p>
+本関数は <em>vpMat</em> に従って下記の座標変換を行い、結果画像を作成します。 <pre>
+	dst.x = src.x * vpMat-&gt;m[0][0] + src.y * vpMat-&gt;m[0][1] + vpMat-&gt;m[0][2]
+	dst.y = src.x * vpMat-&gt;m[1][0] + src.y * vpMat-&gt;m[1][1] + vpMat-&gt;m[1][2]
+	</pre><p>
+<em>vpMat</em> は座標変換に使用する同次変換行列で、3x3の正方行列を指定します。 <em>vpMat</em> は下記の条件を満たしていなければいけません。<p>
+<ul>
+<li><em>vpMat</em> の逆行列が計算できること。 </li>
+<li>vpMat-&gt;m[2][0] == 0 </li>
+<li>vpMat-&gt;m[2][1] == 0 </li>
+<li>vpMat-&gt;m[2][2] == 1</li>
+</ul>
+<em>vpMat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を併せてご参照ください。<p>
+<em>hMask</em> に処理結果画像と同じサイズの２値画像を指定すると、出力画像中の有効画素を示す マスク画像を作成します。(マスク画像については <a class="el" href="group__fie__geometric__transform.html#fie_geotrans_mask">有効画素マスク画像</a> を参照して下さい) マスク画像 <em>hMask</em> の型はF_IMG_BINではなければいけません。 また、マスク画像の縦横サイズは結果画像と同じで、チャネル数は１でなければなりません。 これらの条件が満たされない場合は、F_ERR_INVALID_IMAGEを返します。 マスク画像が必要ない場合は <em>hMask</em> にNULLを指定して下さい。<p>
+<em>bIsClear</em> は結果画像中の領域外になる画素(入力座標系での座標が処理対象画像の外側になる画素) の処理方法の指定です。領域外の画素の濃度値を０クリアする場合は <em>bIsClear</em> にTRUE を指定します。 結果画像の元の濃度値を維持する場合は、 FALSE を指定します。<p>
+<em>iSamplingMode</em> は濃度補間方法の指定です。以下の５種類から選択できます。<p>
+<ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う </li>
+<li>F_SAMPLING_LANCZOS Lanczos-windowed Sinc function法により濃度補間を行う </li>
+<li>F_SAMPLING_SUPER super-sampling 法により濃度補間を行う</li>
+</ul>
+但し、処理対象画像の型が ２値(F_IMG_BIN) の場合は、F_SAMPLING_NN のみ使用可能です。 各濃度補間方法の違いについては、<a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, us16, double, rgbq, rgbtri, s16, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, us16, double, rgbq, rgbtri, s16, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hMask</em>&nbsp;</td><td>処理結果画像の有効画素マスク画像( type: bin ) <br>
+ 画像サイズは <em>hDst</em> と同じ、チャネル数１であること。<br>
+ マスク画像が不要な場合はNULLを指定する。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpMat</em>&nbsp;</td><td>アフィン変換の同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bIsClearBack</em>&nbsp;</td><td>処理対象画像の領域外になる画素の処理方法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iSamplingMode</em>&nbsp;</td><td>濃度補間方法 <ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う </li>
+<li>F_SAMPLING_LANCZOS Lanczos-windowed Sinc function法により濃度補間を行う </li>
+<li>F_SAMPLING_SUPER super-sampling 法により濃度補間を行う</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>変換行列の逆行列が計算不可能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#ga46a2252849472cb8f19b52c7c78211c" title="点のアフィン変換">fnFIE_geotrans_affine_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#ga8b40f570884b0091f4e08e41f37913e" title="点群のアフィン変換">fnFIE_geotrans_affine_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gf20b344fd916251f2b12325d322721f5" title="直線のアフィン変換">fnFIE_geotrans_affine_line()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gfabe1b37f8b55f830443557592133c40" title="線分のアフィン変換">fnFIE_geotrans_affine_lineseg()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+
+VOID geotrans_affine()
+{
+    FHANDLE hsrc = NULL;    <span class="comment">//入力画像</span>
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像</span>
+    INT width,height;       <span class="comment">//幅、高さ</span>
+
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>* pmat;          <span class="comment">//アフィン変換行列</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> from[10],to[10]; <span class="comment">//対応点</span>
+
+    <span class="comment">//入力画像の読み込み</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>(<span class="stringliteral">"fvc06.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">//幅と高さの取得</span>
+    width  = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(hsrc);
+    height = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(hsrc);
+
+    <span class="comment">//出力画像の領域を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width, height);
+
+    <span class="comment">// 3×3の行列を設定します。</span>
+    pmat = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// アフィン変換は同一直線上にない3組以上の座標列を設定します。</span>
+    <span class="comment">// 変換前の座標を設定します。</span>
+    from[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;     from[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    from[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 10;    from[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 20;
+    from[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 50;    from[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 50;
+    from[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 130;   from[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 100;
+    from[4].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 150;   from[4].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 130;
+    from[5].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 180;   from[5].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 140;
+    from[6].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 200;   from[6].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 150;
+    from[7].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 230;   from[7].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 170;
+    from[8].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 240;   from[8].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 180;
+    from[9].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 256;   from[9].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 192;
+
+    <span class="comment">// 変換後の座標を設定します。</span>
+    to[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 20;   to[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 30;
+    to[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 40;   to[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;
+    to[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 80;   to[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 80;
+    to[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 100;  to[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 90;
+    to[4].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 110;  to[4].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 100;
+    to[5].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 130;  to[5].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 110;
+    to[6].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 150;  to[6].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 120;
+    to[7].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 170;  to[7].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 130;
+    to[8].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 140;  to[8].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 130;
+    to[9].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 150;  to[9].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 150;
+
+    <span class="comment">// アフィン変換行列を求めます。</span>
+    <a class="code" href="group__fie__cg__geometric__transform.html#gc69a6eef00db76385387367ff62823b1" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  アフィン変換...">fnFIE_geotrans_estimate_affine_matrix</a>( pmat, from, to, 10 );
+
+    <span class="comment">// 求めたアフィン変換行列より、画像のアフィン変換を行います。</span>
+    <span class="comment">// 三次畳み込み法により濃度補間で、結果画像を生成します。</span>
+    <span class="comment">// マスク画像は生成しません。</span>
+    <span class="comment">// 領域外になる画素は0でクリアします。</span>
+    <a class="code" href="group__fie__geometric__transform.html#ga3023a245cde8ee92dda78d4da6944fb" title="画像のアフィン変換">fnFIE_geotrans_affine</a>( hsrc, hdst, NULL, pmat, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <span class="comment">// 結果画像をPNG形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"result.png"</span>, hdst, -1 );
+
+    <span class="comment">//確保した領域の解放</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(pmat);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    geotrans_affine();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fvc06.png" alt="fvc06.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_geotrans_affine.png" alt="fie_img_geotrans_affine.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g2643f645190d545e409d5311357e1705"></a><!-- doxytag: member="fie_img_geotrans.c::fnFIE_geotrans_perspective" ref="g2643f645190d545e409d5311357e1705" args="(FHANDLE hSrc, FHANDLE hDst, FHANDLE hMask, const FMATRIX *vpMat, INT bIsClearBack, INT iSamplingMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_perspective           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFMATRIX.html">FMATRIX</a> *&nbsp;</td>
+          <td class="paramname"> <em>vpMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bIsClearBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iSamplingMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像の射影変換 
+<p>
+処理対象画像を、幾何変換の同次変換行列 <em>vpMat</em> に従って射影変換を行います。 処理対象画像と結果画像のサイズは異なっていても構いません。 但し、処理対象画像と結果画像の型とチャネル数は同じでなければいけません。<p>
+本関数は <em>vpMat</em> に従って下記の座標変換を行い、結果画像を作成します。 <pre>
+		sum   = src.x * vpMat-&gt;m[2][0] + src.y * vpMat-&gt;m[2][1] + vpMat-&gt;m[2][2]
+		dst.x = ( src.x * vpMat-&gt;m[0][0] + src.y * vpMat-&gt;m[0][1] + vpMat-&gt;m[0][2] ) / sum
+		dst.y = ( src.x * vpMat-&gt;m[1][0] + src.y * vpMat-&gt;m[1][1] + vpMat-&gt;m[1][2] ) / sum
+	</pre><p>
+<em>vpMat</em> は座標変換に使用する同次変換行列で、3x3の正方行列を指定します。 <em>vpMat</em> は下記の条件を満たしていなければいけません。 <ul>
+<li><em>vpMat</em> の逆行列が計算できること。</li>
+</ul>
+<em>vpMat</em> の意味や作成法については <a class="el" href="group__fie__cg__geometric__transform.html#homogeneous_coord">同次変換行列</a> を併せてご参照ください。<p>
+<em>hMask</em> に処理結果画像と同じサイズの２値画像を指定すると、出力画像中の有効画素を示す マスク画像を作成します。(マスク画像については <a class="el" href="group__fie__geometric__transform.html#fie_geotrans_mask">有効画素マスク画像</a> を参照して下さい) マスク画像 <em>hMask</em> の型はF_IMG_BINではなければいけません。 また、マスク画像の縦横サイズは結果画像と同じで、チャネル数は１でなければなりません。 これらの条件が満たされない場合は、F_ERR_INVALID_IMAGEを返します。 マスク画像が必要ない場合は <em>hMask</em> にNULLを指定して下さい。<p>
+<em>bIsClear</em> は結果画像中の領域外になる画素(入力座標系での座標が処理対象画像の外側になる画素) の処理方法の指定です。領域外の画素の濃度値を０クリアする場合は <em>bIsClear</em> にTRUE を指定します。 結果画像の元の濃度値を維持する場合は、 FALSE を指定します。<p>
+<em>iSamplingMode</em> は濃度補間方法の指定です。以下の４種類から選択できます。<p>
+<ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う </li>
+<li>F_SAMPLING_ADAPT Adaptive Supersampling法により濃度補間を行う</li>
+</ul>
+但し、処理対象画像の型が ２値(F_IMG_BIN) の場合は、 F_SAMPLING_NN のみ使用可能です。 各濃度補間方法の違いについては <a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hMask</em>&nbsp;</td><td>処理結果画像の有効画素マスク画像( type: bin ) <br>
+ 画像サイズは <em>hDst</em> と同じ、チャネル数１であること。<br>
+ マスク画像が不要な場合はNULLを指定する。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>vpMat</em>&nbsp;</td><td>射影変換の同次変換行列 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bIsClearBack</em>&nbsp;</td><td>処理対象画像の領域外になる画素の処理方法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iSamplingMode</em>&nbsp;</td><td>濃度補間方法 <ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う </li>
+<li>F_SAMPLING_ADAPT Adaptive Super-sampling法により濃度補間を行う</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_CALC_IMPOSSIBLE</em>&nbsp;</td><td>変換行列の逆行列が計算不可能 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="see" compact><dt><b>参照:</b></dt><dd><a class="el" href="group__fie__cg__geometric__transform.html#g60b8d5244f8a96f6a707720ac8c4cf3e" title="点の射影変換">fnFIE_geotrans_perspective_point()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gd8879c70ca9efb494cdaaeb5d21f0779" title="点群の射影変換">fnFIE_geotrans_perspective_npoints()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gdb526c5c3698fc48ec280e24636c6634" title="直線の射影変換">fnFIE_geotrans_perspective_line()</a> , <a class="el" href="group__fie__cg__geometric__transform.html#gcdb2136aabebf65cb6e54defca084dc6" title="線分の射影変換">fnFIE_geotrans_perspective_lineseg()</a></dd></dl>
+<dl class="user" compact><dt><b>使用例:</b></dt><dd><div class="fragment"><pre class="fragment"><span class="comment">// エラー処理は省略しているので注意して下さい。</span>
+<span class="preprocessor">#include "fie.h"</span>
+<span class="preprocessor">#include "oal_aloc.h"</span>   <span class="comment">//メモリ管理</span>
+
+VOID geotrans_perspective()
+{
+    FHANDLE hsrc = NULL;    <span class="comment">//入力画像</span>
+    FHANDLE hdst = NULL;    <span class="comment">//出力画像</span>
+    INT width,height;       <span class="comment">//幅、高さ</span>
+
+    <a class="code" href="structFMATRIX.html" title="行列">FMATRIX</a>* pmat;          <span class="comment">//射影変換行列</span>
+    <a class="code" href="structDPNT__T.html" title="２次元座標指定用構造体(DOUBLE)">DPNT_T</a> from[10],to[10]; <span class="comment">//対応点</span>
+
+    <span class="comment">//入力画像の読み込み</span>
+    <a class="code" href="group__fie__file__image.html#g03238db068bd08078fb1e29c1c31d8ac" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイル読...">fnFIE_load_png</a>(<span class="stringliteral">"fvc06.png"</span>, &amp;hsrc, <a class="code" href="group__fie__file__image.html#gge1ca4e0484c0d907a215a44931bbcc9adb9994a1f48569964f60a6dd2eb91234" title="F_IMG_UC8, 3chで読込">F_COLOR_IMG_TYPE_UC8</a>);
+
+    <span class="comment">//幅と高さの取得</span>
+    width  = <a class="code" href="group__fie__image.html#gab7727792c2d3922f71e4b6af3356549" title="画像情報取得(画像幅)">fnFIE_img_get_width</a>(hsrc);
+    height = <a class="code" href="group__fie__image.html#g277017697cdc16b19d971a9818c68575" title="画像情報取得(画像高さ)">fnFIE_img_get_height</a>(hsrc);
+
+    <span class="comment">//出力画像の領域を確保</span>
+    hdst = <a class="code" href="group__fie__image.html#ge1fb319dbc93c5bbaba49d39904ca491" title="ルート画像の確保">fnFIE_img_root_alloc</a>(<a class="code" href="group__fie__image.html#ggd5e633c5daa48d827c052eb173c0effb290a3f243e6f7dfdd220061fe9077e98" title="8bit濃淡画像">F_IMG_UC8</a>, 1, width, height);
+
+    <span class="comment">// 3×3の行列を設定します。</span>
+    pmat = <a class="code" href="group__fie__math__matrix__basic.html#g35d17c7e740900c4f718ad4f61226283" title="行列の生成">fnFIE_mat_aalloc</a>( 3, 3 );
+
+    <span class="comment">// 射影変換は同一直線上にない4組以上の座標列を設定します。</span>
+    <span class="comment">// 変換前の座標を設定します。</span>
+    from[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;     from[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    from[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 256;   from[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 0;
+    from[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 256;   from[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 192;
+    from[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 0;     from[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 192;
+    from[4].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 50;    from[4].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 50;
+    from[5].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 100;   from[5].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 50;
+    from[6].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 100;   from[6].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 100;
+    from[7].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 50;    from[7].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 100;
+    from[8].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 128;   from[8].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 96;
+    from[9].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 130;   from[9].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 100;
+
+    <span class="comment">// 変換後の座標を設定します。</span>
+    to[0].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 200;   to[0].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 10;
+    to[1].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 220;   to[1].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 180;
+    to[2].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 30;    to[2].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 160;
+    to[3].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 60;    to[3].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 10;
+    to[4].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 150;   to[4].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;
+    to[5].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 190;   to[5].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 130;
+    to[6].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 60;    to[6].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;
+    to[7].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 110;   to[7].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 60;
+    to[8].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 128;   to[8].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 96;
+    to[9].<a class="code" href="structDPNT__T.html#34727f2435dc53ff41a66def5d34e49e">x</a> = 130;   to[9].<a class="code" href="structDPNT__T.html#e121a1fed9bcab2259dccc2f4002376f">y</a> = 100;
+
+    <span class="comment">// 射影変換行列を求めます。</span>
+    <a class="code" href="group__fie__cg__geometric__transform.html#g0e848317e7679efe16a832ae853122e8" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  射影変換の変...">fnFIE_geotrans_estimate_perspective_matrix</a>( pmat, from, to, 10 );
+
+    <span class="comment">// 求めた射影変換行列より、画像の射影変換を行います。</span>
+    <span class="comment">// 三次畳み込み法により濃度補間で、結果画像を生成します。</span>
+    <span class="comment">// マスク画像は生成しません。</span>
+    <span class="comment">// 領域外になる画素は0でクリアします。</span>
+    <a class="code" href="group__fie__geometric__transform.html#g2643f645190d545e409d5311357e1705" title="画像の射影変換">fnFIE_geotrans_perspective</a>( hsrc, hdst, NULL, pmat, TRUE, <a class="code" href="group__fie__std__operation__base.html#gge751127412e5ec90efaea361f0c4fc8e54604087c12bd243675a8380f694d77f" title="三次畳み込み法">F_SAMPLING_CUBIC</a> );
+
+    <span class="comment">// 結果画像をPNG形式のファイルとして保存します。</span>
+    <a class="code" href="group__fie__file__image.html#g5642cf383268870443617c385e28c18e" title=" &amp;lt;img class= inline-img src=&amp;quot;oss.png&amp;quot; alt=&amp;quot;[[OSS]]&amp;quot;&amp;gt;  PNGファイルの...">fnFIE_save_png</a>( <span class="stringliteral">"result.png"</span>, hdst, -1 );
+
+    <span class="comment">//確保した領域の解放</span>
+    <a class="code" href="group__fie__math__matrix__basic.html#g8329aaae1791dcd9737ffff194dde79c" title="行列の解放">fnFIE_mat_afree</a>(pmat);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hsrc);
+    <a class="code" href="group__fie__object.html#g5255bfc98226503d087b8614fcbb240c" title="オブジェクトを解放">fnFIE_free_object</a>(hdst);
+}
+
+INT main(VOID)
+{
+    <span class="comment">// FIEライブラリの使用前に必ずコールする必要があります。</span>
+    <a class="code" href="group__fie__libinit.html#g12250eabf0163ce206c4caa007b33a80" title="FIEライブラリの初期化">fnFIE_setup</a>();
+
+    geotrans_perspective();
+
+    <span class="comment">// 終了処理</span>
+    <a class="code" href="group__fie__libinit.html#gcf71693a1b50ed7ce9947ac8179cbfc3" title="FIEライブラリの終了処理">fnFIE_teardown</a>();
+
+    <span class="keywordflow">return</span> 0;
+}
+</pre></div></dd></dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fvc06.png" alt="fvc06.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_geotrans_perspective.png" alt="fie_img_geotrans_perspective.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g599d687f04058cc75345e19f1f9c96ab"></a><!-- doxytag: member="fie_img_geotrans.c::fnFIE_geotrans_warpping" ref="g599d687f04058cc75345e19f1f9c96ab" args="(FHANDLE hSrc, FHANDLE hMap, FHANDLE hDst, FHANDLE hMask, INT bIsClearBack, INT iSamplingMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_warpping           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bIsClearBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iSamplingMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+座標変換マップに従って座標を変換する 
+<p>
+処理対象画像を、予め作っておいた座標変換マップ <em>hMap</em> に従って座標を変換します。 処理対象画像と結果画像のサイズは異なっていても構いません。 但し、処理対象画像と結果画像の型とチャネル数は同じでなければなりません。<p>
+画像 hImg の座標(x,y)の濃度値を hImg(x,y) 、 <em>hMap</em> のi番目のチャネルを hMap[i] と表すと、 出力画像の濃度値は下式のように定義されます。 <pre>
+	hDst(x,y) = hSrc( hMap[0](x,y), hMap[1](x,y) )
+	</pre><p>
+<em>hMap</em> は座標変換のマップ画像で、縦横サイズは <em>hDst</em> と同じ、 画像型F_IMG_DOUBLEまたはF_IMG_FLOAT、チャネル数２の画像を入力します。 マップ画像の各画素値は結果画像の変換前の座標値として使用されますので、 結果画像の変換前のX座標を <em>hMap</em> のチャネル0、Y座標はチャネル１に入力します。<p>
+<em>hMap</em> に入力されている座標値が処理対象画像 <em>hSrc</em> の外側を示す場合は、 無効画素として処理されます。また、処理対象画像のチャネル数が複数である場合には、 すべてのチャネルに同じ座標変換マップを使用します。<p>
+<em>hMask</em> に処理結果画像と同じサイズの２値画像を指定すると、出力画像中の有効画素を示す マスク画像を作成します。(マスク画像については <a class="el" href="group__fie__geometric__transform.html#fie_geotrans_mask">有効画素マスク画像</a> を参照して下さい) マスク画像 <em>hMask</em> の型はF_IMG_BINではなければいけません。 また、マスク画像の縦横サイズは結果画像と同じで、チャネル数は１でなければなりません。 これらの条件が満たされない場合は、F_ERR_INVALID_IMAGEを返します。 マスク画像が必要ない場合は <em>hMask</em> にNULLを指定して下さい。<p>
+<em>bIsClear</em> は結果画像中の領域外になる画素(入力座標系での座標が処理対象画像の外側になる画素) の処理方法の指定です。領域外の画素の濃度値を０クリアする場合は <em>bIsClear</em> にTRUE を指定します。 結果画像の元の濃度値を維持する場合は、 FALSE を指定します。<p>
+<em>iSamplingMode</em> は濃度補間方法の指定です。以下の３種類から選択できます。<p>
+<ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+但し、処理対象画像の型が ２値(F_IMG_BIN) の場合は、F_SAMPLING_NN のみ使用可能です。 各濃度補間方法の違いについては、<a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hMap</em>&nbsp;</td><td>座標変換マップ画像( type: double, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hMask</em>&nbsp;</td><td>処理結果画像の有効画素マスク画像( type: bin ) <br>
+ 画像サイズはhDstと同じ、チャネル数１であること。<br>
+ マスク画像が不要な場合はNULLを指定する。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bIsClearBack</em>&nbsp;</td><td>処理対象画像の領域外になる画素の処理方法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iSamplingMode</em>&nbsp;</td><td>濃度補間方法 <ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="ga241df49dcbe31798950a46a4907403a"></a><!-- doxytag: member="fie_img_geotrans.c::fnFIE_geotrans_shift" ref="ga241df49dcbe31798950a46a4907403a" args="(FHANDLE hSrc, FHANDLE hDst, FHANDLE hMask, DOUBLE dX, DOUBLE dY, INT bIsClearBack, INT iSamplingMode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_geotrans_shift           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DOUBLE&nbsp;</td>
+          <td class="paramname"> <em>dY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>bIsClearBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>iSamplingMode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像の平行移動 
+<p>
+処理対象画像を、パラメーター <em>dX</em> , <em>dY</em> で表される量だけ、平行移動します。 処理対象画像と結果画像のサイズは異なっていても構いません。 但し、処理対象画像と結果画像の型とチャネル数は同じでなければいけません。<p>
+入力座標と出力座標の関係は下式にて定義されます。 <pre>
+	dst.x = src.x + dX
+	dst.y = src.y + dY
+	</pre><p>
+<em>hMask</em> に処理結果画像と同じサイズの２値画像を指定すると、出力画像中の有効画素を示す マスク画像を作成します。(マスク画像については <a class="el" href="group__fie__geometric__transform.html#fie_geotrans_mask">有効画素マスク画像</a> を参照してください) マスク画像 <em>hMask</em> の型はF_IMG_BINではなければいけません。 また、マスク画像の縦横サイズは結果画像同じで、チャネル数は１でなければなりません。 これらの条件が満たされない場合は、F_ERR_INVALID_IMAGEを返します。 マスク画像が必要ない場合は <em>hMask</em> にNULLを指定して下さい。<p>
+<em>bIsClear</em> は結果画像中の領域外になる画素(入力座標系での座標が処理対象画像の外側になる画素) の処理方法の指定です。領域外の画素の濃度値を０クリアする場合は <em>bIsClear</em> にTRUE を指定します。 結果画像の元の濃度値を維持する場合は、 FALSE を指定します。<p>
+<em>iSamplingMode</em> は濃度補間方法の指定です。以下の３種類から選択できます。<p>
+<ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+但し、処理対象画像の型が ２値(F_IMG_BIN) の場合は、F_SAMPLING_NN のみ使用可能です。 各濃度補間方法の違いについては、<a class="el" href="group__fie__geometric__transform.html#fie_interpolation_method">濃度補間方法</a> を参照して下さい。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hSrc</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hDst</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, us16, double ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hMask</em>&nbsp;</td><td>処理結果画像の有効画素マスク画像( type: bin ) <br>
+ 画像サイズはhDstと同じ、チャネル数１であること。<br>
+ マスク画像が不要な場合はNULLを指定する。 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dX</em>&nbsp;</td><td>x軸方向移動量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dY</em>&nbsp;</td><td>y軸方向移動量 </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>bIsClearBack</em>&nbsp;</td><td>処理対象画像の領域外になる画素の処理方法 <ul>
+<li>TRUE 領域外になる画素は０クリア </li>
+<li>FALSE 領域外になる画素は処理しない </li>
+</ul>
+</td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>iSamplingMode</em>&nbsp;</td><td>濃度補間方法 <ul>
+<li>F_SAMPLING_NN 最近傍法により濃度補間を行う </li>
+<li>F_SAMPLING_BILINEAR 共一次線形補間により濃度補間を行う </li>
+<li>F_SAMPLING_CUBIC 三次畳み込み法により濃度補間を行う</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足エラー </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータ異常 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fvc06.png" alt="fvc06.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_geotrans_shift.png" alt="fie_img_geotrans_shift.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g56bb51a6e92d9f38a930561182d08d38"></a><!-- doxytag: member="fie_img_mirror.c::fnFIE_img_mirror" ref="g56bb51a6e92d9f38a930561182d08d38" args="(FHANDLE hsrc, FHANDLE hdst, INT direc)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_mirror           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>direc</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像ミラー反転 
+<p>
+画像のミラー反転を行います。<p>
+入力画像と出力画像は下記の条件を全て満たしていなければいけません。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しい事 </li>
+<li>入力画像の幅と高さが出力画像と等しい事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, s16, us16, i32, ui32, i64, float, double, rgbq, rgbtri ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>direc</em>&nbsp;</td><td>反転方向 <ul>
+<li>0 Ｘ軸方向(横方向)反転 </li>
+<li>1 Ｙ軸方向(縦方向)反転 </li>
+<li>2 ＸＹ両方向反転</li>
+</ul>
+</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_PARAM</em>&nbsp;</td><td>パラメータエラーにより異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fvc06.png" alt="fvc06.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_geotrans_mirror.png" alt="fie_img_geotrans_mirror.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gb2957ee054f017d2103ffcd181ea5743"></a><!-- doxytag: member="fie_img_resize.c::fnFIE_img_resize" ref="gb2957ee054f017d2103ffcd181ea5743" args="(FHANDLE hsrc, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_resize           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像のリサイズ 
+<p>
+入力画像を出力画像のサイズに一致するようにリサイズします。 スケール変化率と濃度補間方法は画像サイズに応じて自動的に決定されます。<p>
+入力画像と出力画像の型、およびチャネル数は等しくなければなりません。<p>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像 (type: bin, uc8, s16, us16, double, rgbq) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像 (type: bin, uc8, s16, us16, double, rgbq)</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像が渡された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NOMEMORY</em>&nbsp;</td><td>メモリ不足により異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="g8ffd8aa89e1d29126010913ae065b989"></a><!-- doxytag: member="fie_img_transpose.c::fnFIE_img_transpose" ref="g8ffd8aa89e1d29126010913ae065b989" args="(FHANDLE hsrc, FHANDLE hdst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_transpose           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像転置 
+<p>
+画像の転置を行います。 入力画像の濃度値をs, 出力画像の濃度値をdとすると、<p>
+d(x,y) = s(y,x)<p>
+となります。<p>
+<dl class="user" compact><dt><b>２値画像の場合について</b></dt><dd>画像の型がF_IMG_BINだった場合、入力・出力双方の画像共に左上画素が32bit境界に有ると （ <a class="el" href="group__fie__image.html#g86ce5d2cc721fcf4173ae18739d0f6c9" title="２値画像の画像アドレス取得">fnFIE_img_get_ch_binadrs()</a> でアドレスを取得したときに <em>bpos</em> が0 ） 処理速度が速くなります。</dd></dl>
+入力画像と出力画像は下記の条件を全て満たしている必要があります。 <ul>
+<li>入力画像と出力画像の型、及びチャネル数が等しいこと </li>
+<li>出力画像の幅は入力画像の高さと等しい事 </li>
+<li>出力画像の高さは入力画像の幅と等しい事</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>入力画像ハンドル( type: bin, uc8, s16, us16, double, rgbq ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>出力画像ハンドル( type: bin, uc8, s16, us16, double, rgbq )</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像ハンドルが渡されたため、異常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fvc06.png" alt="fvc06.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_geotrans_transpose.png" alt="fie_img_geotrans_transpose.png">
+<p><strong>処理結果画像</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gf4914db1caea3d101c00eceb6e0e7696"></a><!-- doxytag: member="fie_img_transpose.c::fnFIE_img_rotate_clockwise90" ref="gf4914db1caea3d101c00eceb6e0e7696" args="(FHANDLE hsrc, FHANDLE hdst, INT n)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INT FVALGAPI fnFIE_img_rotate_clockwise90           </td>
+          <td>(</td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hsrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FHANDLE&nbsp;</td>
+          <td class="paramname"> <em>hdst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">INT&nbsp;</td>
+          <td class="paramname"> <em>n</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+画像の回転（９０度の倍数） 
+<p>
+処理対象画像 <em>hsrc</em> を、パラメーター <em>n</em> で示された回数に 90度時計回り方向で回転し、結果画像を <em>hdst</em> に出力します。 処理対象画像と結果画像のタイプまたはチャネル数は同じでなければいけません。<p>
+結果画像のサイズは以下の条件を満たさなければなりません： <ul>
+<li><em>n</em> が 2 の倍数の場合: 縦と横サイズが <em>hsrc</em> と同じ </li>
+<li><em>n</em> が 2 の倍数でない場合: 縦サイズは <em>hsrc</em> の横サイズ、そして横サイズが <em>hsrc</em> の縦サイズと同じ</li>
+</ul>
+<dl compact><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>hsrc</em>&nbsp;</td><td>処理対象画像( type: bin, uc8, s16, us16, i32, ui32, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>hdst</em>&nbsp;</td><td>処理結果画像( type: bin, uc8, s16, us16, i32, ui32, double, float ) </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>n</em>&nbsp;</td><td>何回９０度回転するかを示す係数。負の値も指定可能です。</td></tr>
+  </table>
+</dl>
+<dl compact><dt><b>戻り値:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NONE</em>&nbsp;</td><td>正常終了 </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_INVALID_IMAGE</em>&nbsp;</td><td>不正な画像オブジェクトが入力された </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>F_ERR_NO_LICENCE</em>&nbsp;</td><td>ライセンスエラー、または未初期化エラー</td></tr>
+  </table>
+</dl>
+<dl class="user" compact><dt><b>処理結果例:</b></dt><dd><table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_img_rotate_clockwise90_0.png" alt="fie_img_rotate_clockwise90_0.png">
+<p><strong>入力画像</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_rotate_clockwise90_2.png" alt="fie_img_rotate_clockwise90_2.png">
+<p><strong>処理結果画像 (n=2)</strong></p></div>
+   </td></tr>
+</table>
+<table class="layoutTable">
+<tr>
+<td><div align="center">
+<img src="fie_img_rotate_clockwise90_1.png" alt="fie_img_rotate_clockwise90_1.png">
+<p><strong>処理結果画像 (n=1)</strong></p></div>
+  </td><td><div align="center">
+<img src="fie_img_rotate_clockwise90_3.png" alt="fie_img_rotate_clockwise90_3.png">
+<p><strong>処理結果画像 (n=3)</strong></p></div>
+   </td></tr>
+</table>
+</dd></dl>
+
+</div>
+</div><p>
+</div>
+<hr size="1">
+<address style="align: right; color: #cccccc;">
+	<small>
+	Documentation copyright &copy; 2009-2023 FAST Corporation. <br>
+	Generated on Fri Jan 13 11:09:33 2023 for FIEライブラリ by&nbsp;<a href="http://www.doxygen.org/index.html">doxygen</a> 1.5.6-FASTSP-p2
+	</small>
+</address>
+</body>
+</html>
