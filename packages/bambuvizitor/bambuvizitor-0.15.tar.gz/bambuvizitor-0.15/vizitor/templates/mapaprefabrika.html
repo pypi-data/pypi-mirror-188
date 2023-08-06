@@ -1,0 +1,130 @@
+
+
+	{% extends 'baze.html' %}
+    {% block content %}
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+    
+    <style>
+    .leaflet-container {
+    height: 600px;
+    width: 100%;
+        }
+    </style>
+
+
+
+
+<div id="mapem" ></div>
+
+
+                            				
+                               
+
+
+<script>
+
+
+//Kondisaun ba interface mapa husi kada user sira
+
+  var map = L.map('mapem').setView([-8.556856, 125.560310], 8);
+
+  var basemaps = {
+    OpenStreetMap: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 20,
+         attribution: "{{html|safe}}",
+         layers: 'TOPO-WMS'
+    }),
+
+    GoogleSatelite: L.tileLayer.wms('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+         maxZoom: 20,
+         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        subdomains:['mt0','mt1','mt2','mt3']
+    }),
+
+};
+
+L.control.layers(basemaps, {}, {collapsed: false}).addTo(map);
+
+basemaps.OpenStreetMap.addTo(map);
+
+
+
+var grupubambu = L.icon({
+    iconUrl:  '../../media/iconmaps/grupubambu.png',
+    iconSize:     [15, 15], // size of the icon
+    shadowSize:   [15, 15], // size of the shadow
+    iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
+    //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+
+{% for dados in grupubambu %}
+L.marker([ {{dados.kordinate_centru}}], { icon:grupubambu }).addTo(map).bindPopup("<h5><b>{{dados.naran}}  </b>(<i>Grupu Pre-Fabrika</i>) </h5> <br><center><a  href='' data-toggle='modal'  data-id='{{dados.id}}'  data-tipo='prefabrika'    data-target= '#detallumapagr' ><h5 style ='color:blue;'>Hare Detallu</h5></a></center>");
+{% endfor %}
+
+// /<h4> Naran Responsavel : {{dados.naran_kordenador}} </h4> <h4> Deskrisaun : {{dados.deskrisaun}} </h4> <h4> Kontaktu : {{dados.kontaktu}} </h4>
+// alert({{forloop.counter}})
+
+
+
+</script>
+
+
+<div class="modal  fade" tabindex="-1" id="detallumapagr" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+       
+     
+           Detallu 
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          
+        <div class="modal-body">
+         <div class="detmapa"></div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+
+
+$(document).ready(function(){
+
+    $('#detallumapagr').on('show.bs.modal', function (e) {
+
+
+var id = $(e.relatedTarget).data('id');
+var tipo = $(e.relatedTarget).data('tipo');
+// var rowtitulu = $(e.relatedTarget).data('tituluprodutu');
+
+$.ajax({
+              type : 'POST',
+              url : "{% url 'vizitor:detallumapaload' %}",
+              data :  {
+                  'id' : id, 
+                  'tipo' : tipo, 
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+              },
+              success : function(data){
+              $('.detmapa').html(data);
+              }
+          });
+
+
+});
+
+});
+
+
+
+  </script>
+
+
+{% endblock content %}
