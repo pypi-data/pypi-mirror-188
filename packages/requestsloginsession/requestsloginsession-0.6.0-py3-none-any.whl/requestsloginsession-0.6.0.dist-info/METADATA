@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: requestsloginsession
+Version: 0.6.0
+Summary: Wrapper for requests that saves cookie data between script runs, typically for login sessions
+Home-page: https://github.com/damonjavert/requestsloginsession
+Author: DamonJavert
+Author-email: damonjavert@protonmail.com
+License: GPLv3
+Project-URL: Bug Tracker, https://github.com/damonjavert/requestsloginsession/issues
+Project-URL: repository, https://github.com/damonjavert/requestsloginsession
+Platform: unix
+Platform: linux
+Platform: osx
+Platform: cygwin
+Platform: win32
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests (>=2)
+Requires-Dist: urllib3 (>=1.25)
+
+# requestsloginsession
+
+![GitHub last commit](https://img.shields.io/github/last-commit/damonjavert/requestsloginsession) ![License](https://img.shields.io/github/license/damonjavert/requestsloginsession) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+`requestsloginsession` is a simple wrapper for `requests.Session()` that saves the data locally via pickle to allow session information to be recalled on subsequent script runs without needing to relogin. All the attributes from `requests` are available.
+
+## Example usage
+
+```
+>>> from requestsloginsession import RequestsLoginSession
+>>> login_url = "http://httpbingo.org/basic-auth/user123/passwd123"
+>>> login_data = {'username' : 'user123', 'password' : 'passwd123' }
+>>> mysession = RequestsLoginSession(login_url, login_data)
+>>> r = mysession.retrieve_content("http://httpbingo.org/cookies/set?k1=v1234&k2=v5678")
+>>>
+ $ file httpbingo.org_session.dat
+httpbingo.org_session.dat: data
+ $ python3
+
+>>> from requestsloginsession.requestsloginsession import RequestsLoginSession
+>>> login_url = "http://httpbingo.org/basic-auth/user123/passwd123"
+>>> login_data = {'username' : 'user123', 'password' : 'passwd123' }
+>>> mysession = RequestsLoginSession(login_url, login_data)
+>>> r = mysession.retrieve_content("http://httpbingo.org/cookies")
+>>> r.json()
+{'k1': 'v1234', 'k2': 'v5678'}
+>>> r.status_code
+200
+>>> r.text
+'{\n  "k1": "v1234",\n  "k2": "v5678"\n}\n'
+```
+
