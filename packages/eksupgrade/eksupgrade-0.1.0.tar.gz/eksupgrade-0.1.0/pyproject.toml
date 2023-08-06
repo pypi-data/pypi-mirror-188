@@ -1,0 +1,70 @@
+[tool.poetry]
+name = "eksupgrade"
+version = "0.1.0"
+description = "The Amazon EKS cluster upgrade utility"
+authors = ["EKS Upgrade Maintainers <eks-upgrade-maintainers@amazon.com>"]
+readme = "README.md"
+packages = [{include = "eksupgrade"}]
+license = "MIT-0"
+keywords = ["amazon", "aws", "aws-samples", "eks", "kubernetes", "upgrade", "eksupgrade"]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: MIT No Attribution License (MIT-0)",
+]
+include = [
+    "README.md",
+    "LICENSE",
+]
+
+[tool.poetry.scripts]
+eksupgrade = "eksupgrade.cli:entry"
+
+# Styling and linting Configurations
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.black]
+line-length = 120
+target-version = ["py310"]
+
+[tool.pylint]
+max-line-length = 120
+
+[tool.pylint.messages_control]
+max-line-length = 120
+
+[tool.pylint.format]
+max-line-length = 120
+max-module-lines = 1000
+
+[tool.poetry.dependencies]
+python = "^3.8"
+boto3 = "^1.26.60"
+kubernetes = "^25.3.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+coverage = "^7.1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = {extras = ["toml"], version = "^5.12.0"}
+black = "^22.12.0"
+pydocstyle = "^6.3.0"
+pylint = "^2.15.10"
+mypy = "^0.991"
+
+
+[tool.poetry.group.security.dependencies]
+safety = "^2.3.5"
+bandit = "^1.7.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
