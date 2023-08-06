@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: honorific
+Version: 0.1.5
+Summary: Изменение числа во втором лице
+Home-page: https://git.promo-bot.ru/v.merkurev/honorific
+Keywords: promo-bot,promobot
+Author: Viktor Merkurev
+Author-email: v.merkurev@promo-bot.ru
+Maintainer: VMerkurev
+Maintainer-email: v.merkurev@promo-bot.ru
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pymorphy2 (>=0.9.1,<0.10.0)
+Requires-Dist: spacy (>=3.4.3,<4.0.0)
+Requires-Dist: twine (>=4.0.2,<5.0.0)
+Project-URL: Repository, https://git.promo-bot.ru/v.merkurev/honorific
+Description-Content-Type: text/markdown
+
+# honorific
+
+Данный пакет позволяет изменять форму обращения к человеку.
+С неформальной ("ты") на более уважительную ("Вы"), и наоборот.
+
+## Установка
+Установка пакета
+```bash
+python -m pip install honorific
+```
+При первом запуске скачается пакет *ru_core_news_lg* для *spacy*, но можно установить его заранее
+
+```bash
+python -m spacy download ru_core_news_lg
+```
+
+## Пример
+
+```python
+>>> honorific.honor("Как твои дела?")
+'Как ваши дела?'
+
+>>> honorific.honor("Так ты скажешь, откуда ты?")
+'Так вы скажете, откуда вы?'
+```
+
+## Описание
+
+В данный момент обрабатываются 
+* глаголы
+* местоимения
+* краткие прилагательные и причастия(+модальные глаголы).
+
+## TODO
+* обработка глаголов в прошедшем времени в СПП  
+* обработка сложных конструкций(пропуск пунктуации и т.д)  
+* обработка устойчивых выражений("ух ты" и т.д.)  
+* обработка возвратно-притяжательных местоимений
+
+# Метрики
+* Gold Standart - соответствие проф. разметке = 100%
+* Adequacy - соответствие нормам русского языка = 94%
+* Accuracy - правильность измененных словоформ = 100%
+
+
+
