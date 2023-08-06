@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: quantuloop-sparse
+Version: 0.1.0
+Summary: Quantuloop Sparse Quantum Simulator for the Ket Quantum Programming Language.
+Author: Quantuloop
+License: Quantuloop Quantum Simulator Suite EULA
+Keywords: quantum computer,quantum programming,quantum simulator
+Platform: linux
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: PyJWT (>=2.4.0)
+Requires-Dist: cryptography (>=37.0)
+Requires-Dist: ket-lang (<0.6.0,>=0.5.0)
+
+# Quantuloop Sparse simulator for the Ket Quantum Programming Language
+
+This package provides the multi-GPU accelerated quantum simulator Quantuloop Sparse as a quantum execution target for the quantum programming language Ket. For more information on Ket, access <https://quantumket.org>.
+
+The use of this simulator is exclusively for Quantuloop's customers and partners. Contact your institution to get your access token or visit <https://quantuloop.com.br>.
+
+## Compatibility
+
+* CUDA 11.2 or newer with compatible NVIDIA driver
+* NVIDIA GPU with CUDA architecture >= 3.5
+* Linux X86_64 with glibc >= 2.17 (compatible with most Linux distributions released after 2014)
+  * Ubuntu 18.04 or newer.
+  * Red Hat Enterprise Linux 7 or newer.
+* Python 3.7 or newer
+* Ket 0.5.x
+
+## Usage
+
+Importing the `quantuloop.sparse` module sets Quantuloop Sparse as the quantum target execution. Although, you can use the `quantuloop.sparse.use_sparse` function for this proposal. Before the quantum execution, you must set your access token with `quantuloop.sparse.set_token`. See the example below.
+
+```py
+from ket import *
+from quantuloop import sparse
+sparse.use_sparse()
+sparse.set_token('YOUR_ACCESS_TOKEN')
+sparse.set_precision(2) # Optional, default 1
+sparse.set_gpu_count(4) # Optional, default use all GPUs
+```
+
+---
+
+By installing or using this package, you agree to the Quantuloop Quantum Simulator Suite EULA.
+
+All rights reserved (C) 2023 Quantuloop
