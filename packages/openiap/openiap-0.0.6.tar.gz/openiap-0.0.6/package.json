@@ -1,0 +1,24 @@
+{
+  "name": "pyapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "updateproto": "npm uninstall @openiap/proto && npm --save-dev i openiap/proto",
+    "generate": "mkdir -p src/proto && python -m grpc_tools.protoc -I./proto --python_out=./src/proto --pyi_out=./src/proto --grpc_python_out=./src/proto proto/base.proto proto/ace.proto proto/querys.proto proto/queues.proto proto/watch.proto proto/workitems.proto"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openiap/pyapi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/openiap/pyapi/issues"
+  },
+  "homepage": "https://github.com/openiap/pyapi#readme",
+  "devDependencies": {
+    "@openiap/proto": "github:openiap/proto"
+  }
+}
