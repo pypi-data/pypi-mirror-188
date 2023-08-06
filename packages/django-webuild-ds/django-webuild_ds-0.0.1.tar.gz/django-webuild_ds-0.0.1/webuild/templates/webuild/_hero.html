@@ -1,0 +1,58 @@
+{% load static %}
+
+<section id="hero">
+    <div class="hero-container">
+      <h1>{{ hero.title }}</h1>
+      <h2>{{ hero.slogan }}</h2>
+      {% if hero.use_timer %}
+      <div class="countdown" data-count="{{ hero.date }}" data-template="%d days %h:%m:%s"></div>
+      {% endif %}
+
+      {% if hero.use_mailinglist %}
+      <form name="mailinglist_form" action="{% url 'webuild:home' %}" method="post" role="form" class="php-email-form">
+        {% csrf_token %}
+        <div class="row no-gutters">
+          <div class="col-md-6 form-group pr-md-1">
+            {{ mailinglist_form.name }}
+          </div>
+          <div class="col-md-6 form-group pl-md-1">
+            {{ mailinglist_form.email }}
+          </div>
+        </div>
+
+        <div class="text-center"><button type="submit" name="formname" value="mailinglist_form">Get notified!</button></div>
+      </form>
+      {% endif %}
+    </div>
+</section>
+
+{% if show_msgbox %}
+<!-- 쿠키를 통해 다시 열기 방지 체크 및 창 오픈시 모달창 실행 스크립트 -->
+<script src="{% static 'webuild/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'webuild/js/jquery.cookie.js' %}"></script>
+
+<!-- Modal -->
+<div class="modal fade" id="msgbox" tabindex="-1" aria-labelledby="MessageBox" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Thank you</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ msgbox_text }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bbtn-primary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $("#msgbox").modal("show");
+  });
+</script>
+{% endif %}

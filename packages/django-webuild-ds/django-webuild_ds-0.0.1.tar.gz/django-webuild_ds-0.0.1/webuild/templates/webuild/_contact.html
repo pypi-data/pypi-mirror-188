@@ -1,0 +1,70 @@
+<section id="contact" class="contact">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>{{ contact.title }}</h2>
+    </div>
+
+    <div class="row contact-info">
+
+      <div class="col-md-4">
+        <div class="contact-address">
+          <i class="bi bi-geo-alt"></i>
+          <h3>Address</h3>
+          <address>{{ contact.address }}</address>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="contact-phone">
+          <i class="bi bi-phone"></i>
+          <h3>Phone Number</h3>
+          <p><a href="tel:{{ contact.phone }}">{{ contact.phone }}</a></p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="contact-email">
+          <i class="bi bi-envelope"></i>
+          <h3>Email</h3>
+          <p><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+        </div>
+      </div>
+
+    </div>
+
+    <form name="contact_form" action="{% url 'webuild:home' %}" method="POST" role="form" class="php-email-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md form-group">
+          {{ contact_form.name }}
+        </div>
+        <div class="col-md form-group mt-3 mt-md-0">
+          {{ contact_form.phone }}
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        {{ contact_form.message }}
+      </div>
+      {% if post_message %}
+      <div class="my-3">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          {{ post_message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+      {% endif %}
+      <div class="my-3 text-center"><button type="submit" name="formname" value="contact_form">Send Message</button></div>
+    </form>
+  </div>
+</section>
+
+{% if anchor %}
+<!-- context 에 anchor 항목이 있으면 바로 이동시킨다. jquery 필요-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type='text/javascript'>
+$(document).ready(function(){
+    window.location = '#{{ anchor }}'
+});
+</script>
+{% endif %}
