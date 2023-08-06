@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aiochclient.client &mdash; myscaledb-client Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> myscaledb-client
+          </a>
+              <div class="version">
+                0.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install-docs.html">Building the Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">myscaledb-client</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">aiochclient.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for aiochclient.client</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span> <span class="k">as</span> <span class="nn">json_</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">TracebackType</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">AsyncGenerator</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">aiochclient.exceptions</span> <span class="kn">import</span> <span class="n">ChClientError</span>
+<span class="kn">from</span> <span class="nn">aiochclient.http_clients.abc</span> <span class="kn">import</span> <span class="n">HttpClientABC</span>
+<span class="kn">from</span> <span class="nn">aiochclient.records</span> <span class="kn">import</span> <span class="n">FromJsonFabric</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">RecordsFabric</span>
+<span class="kn">from</span> <span class="nn">aiochclient.sql</span> <span class="kn">import</span> <span class="n">sqlparse</span>
+
+<span class="c1"># Optional cython extension:</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">aiochclient._types</span> <span class="kn">import</span> <span class="n">rows2ch</span><span class="p">,</span> <span class="n">json2ch</span><span class="p">,</span> <span class="n">py2ch</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">aiochclient.types</span> <span class="kn">import</span> <span class="n">rows2ch</span><span class="p">,</span> <span class="n">json2ch</span><span class="p">,</span> <span class="n">py2ch</span>
+
+
+<span class="k">class</span> <span class="nc">QueryTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">FETCH</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">INSERT</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">OTHER</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<div class="viewcode-block" id="ChClient"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient">[docs]</a><span class="k">class</span> <span class="nc">ChClient</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;ChClient connection class.</span>
+
+<span class="sd">    Usage:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        async with aiohttp.ClientSession() as s:</span>
+<span class="sd">            client = ChClient(s, compress_response=True)</span>
+<span class="sd">            nums = await client.fetch(&quot;SELECT number FROM system.numbers LIMIT 100&quot;)</span>
+
+<span class="sd">    :param aiohttp.ClientSession session:</span>
+<span class="sd">        aiohttp client session. Please, use one session</span>
+<span class="sd">        and one ChClient for all connections in your app.</span>
+
+<span class="sd">    :param str url:</span>
+<span class="sd">        Clickhouse server url. Need full path, like &quot;http://localhost:8123/&quot;.</span>
+
+<span class="sd">    :param str user:</span>
+<span class="sd">        User name for authorization.</span>
+
+<span class="sd">    :param str password:</span>
+<span class="sd">        Password for authorization.</span>
+
+<span class="sd">    :param str database:</span>
+<span class="sd">        Database name.</span>
+
+<span class="sd">    :param bool compress_response:</span>
+<span class="sd">        Pass True if you want Clickhouse to compress its responses with gzip.</span>
+<span class="sd">        They will be decompressed automatically. But overall it will be slightly slower.</span>
+
+<span class="sd">    :param **settings:</span>
+<span class="sd">        Any settings from https://clickhouse.yandex/docs/en/operations/settings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_session&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;_json&quot;</span><span class="p">,</span> <span class="s2">&quot;_http_client&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:8123/&quot;</span><span class="p">,</span>
+        <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+        <span class="n">compress_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">json</span><span class="o">=</span><span class="n">json_</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="o">**</span><span class="n">settings</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">_http_client</span> <span class="o">=</span> <span class="n">HttpClientABC</span><span class="o">.</span><span class="n">choose_http_client</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">_http_client</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">if</span> <span class="n">password</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="k">if</span> <span class="n">database</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">database</span>
+        <span class="k">if</span> <span class="n">compress_response</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;enable_http_compression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_json</span> <span class="o">=</span> <span class="n">json</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ChClient&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">exc_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]],</span>
+        <span class="n">exc_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span>
+        <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TracebackType</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ChClient.close"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.close">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Close the session&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ChClient.is_alive"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.is_alive">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Checks if connection is Ok.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            assert await client.is_alive()</span>
+
+<span class="sd">        :return: True if connection Ok. False instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;SELECT 1&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">ChClientError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_prepare_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Query params must be a Dict[str, Any]&#39;</span><span class="p">)</span>
+        <span class="n">prepared_query_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">prepared_query_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">py2ch</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prepared_query_params</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_execute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">query_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Record</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_query_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query_params</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="n">need_fetch</span><span class="p">,</span> <span class="n">is_json</span><span class="p">,</span> <span class="n">statement_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_squery</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_json</span> <span class="ow">and</span> <span class="n">json</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; FORMAT JSONEachRow&quot;</span>
+            <span class="n">is_json</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_json</span> <span class="ow">and</span> <span class="n">need_fetch</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; FORMAT TSVWithNamesAndTypes&quot;</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">statement_type</span> <span class="o">!=</span> <span class="s1">&#39;INSERT&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ChClientError</span><span class="p">(</span>
+                    <span class="s2">&quot;It is possible to pass arguments only for INSERT queries&quot;</span>
+                <span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">}</span>
+
+            <span class="k">if</span> <span class="n">is_json</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json2ch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">dumps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="o">.</span><span class="n">dumps</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">rows2ch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">}</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">query_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;query_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">query_id</span>
+
+        <span class="k">if</span> <span class="n">need_fetch</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">post_return_lines</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_json</span><span class="p">:</span>
+                <span class="n">rf</span> <span class="o">=</span> <span class="n">FromJsonFabric</span><span class="p">(</span><span class="n">loads</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">rf</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rf</span> <span class="o">=</span> <span class="n">RecordsFabric</span><span class="p">(</span>
+                    <span class="n">names</span><span class="o">=</span><span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">(),</span>
+                    <span class="n">tps</span><span class="o">=</span><span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">(),</span>
+                    <span class="n">convert</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">rf</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">post_no_return</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="ChClient.execute"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.execute">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query. Returns None.</span>
+
+<span class="sd">        :param str query: Clickhouse query string.</span>
+<span class="sd">        :param args: Arguments for insert queries.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string on field values.</span>
+<span class="sd">        :param str query_id: Clickhouse query_id.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            await client.execute(</span>
+<span class="sd">                &quot;CREATE TABLE t (a UInt8, b Tuple(Date, Nullable(Float32))) ENGINE = Memory&quot;</span>
+<span class="sd">            )</span>
+<span class="sd">            await client.execute(</span>
+<span class="sd">                &quot;INSERT INTO t VALUES&quot;,</span>
+<span class="sd">                (1, (dt.date(2018, 9, 7), None)),</span>
+<span class="sd">                (2, (dt.date(2018, 9, 8), 3.14)),</span>
+<span class="sd">            )</span>
+<span class="sd">            await client.execute(</span>
+<span class="sd">                &quot;SELECT * FROM t WHERE a={u8}&quot;,</span>
+<span class="sd">                params={&quot;u8&quot;: 12}</span>
+<span class="sd">            )</span>
+
+<span class="sd">        :return: Nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+            <span class="n">query</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ChClient.fetch"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.fetch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query and fetch all rows from query result at once in a list.</span>
+
+<span class="sd">        :param query: Clickhouse query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: Clickhouse query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            all_rows = await client.fetch(&quot;SELECT * FROM t&quot;)</span>
+
+<span class="sd">        :return: All rows from query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">row</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+                <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="ChClient.fetchrow"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.fetchrow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetchrow</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query and fetch first row from query result or None.</span>
+
+<span class="sd">        :param query: Clickhouse query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: Clickhouse query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            row = await client.fetchrow(&quot;SELECT * FROM t WHERE a=1&quot;)</span>
+<span class="sd">            assert row[0] == 1</span>
+<span class="sd">            assert row[&quot;b&quot;] == (dt.date(2018, 9, 7), None)</span>
+
+<span class="sd">        :return: First row from query or None if there no results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+            <span class="n">query</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+            <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">row</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ChClient.fetchone"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.fetchone">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetchone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Deprecated. Use ``fetchrow`` method instead&quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;fetchone&#39; method is deprecated. Use &#39;fetchrow&#39; method instead&quot;</span><span class="p">,</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetchrow</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChClient.fetchval"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.fetchval">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetchval</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query and fetch first value of the first row from query result or None.</span>
+
+<span class="sd">        :param query: Clickhouse query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: Clickhouse query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            val = await client.fetchval(&quot;SELECT b FROM t WHERE a=2&quot;)</span>
+<span class="sd">            assert val == (dt.date(2018, 9, 8), 3.14)</span>
+
+<span class="sd">        :return: First value of the first row or None if there no results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+            <span class="n">query</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+            <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ChClient.iterate"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.iterate">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">iterate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Record</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Async generator by all rows from query result.</span>
+
+<span class="sd">        :param str query: Clickhouse query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: Clickhouse query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            async for row in client.iterate(</span>
+<span class="sd">                &quot;SELECT number, number*2 FROM system.numbers LIMIT 10000&quot;</span>
+<span class="sd">            ):</span>
+<span class="sd">                assert row[0] * 2 == row[1]</span>
+
+<span class="sd">            async for row in client.iterate(</span>
+<span class="sd">                &quot;SELECT number, number*2 FROM system.numbers LIMIT {numbers_limit}&quot;,</span>
+<span class="sd">                params={&quot;numbers_limit&quot;: 10000}</span>
+<span class="sd">            ):</span>
+<span class="sd">                assert row[0] * 2 == row[1]</span>
+
+<span class="sd">        :return: Rows one by one.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+            <span class="n">query</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+            <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">row</span></div>
+
+<div class="viewcode-block" id="ChClient.cursor"><a class="viewcode-back" href="../../reference/chclient.html#aiochclient.ChClient.cursor">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Record</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Deprecated. Use ``iterate`` method instead&quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;cursor&#39; method is deprecated. Use &#39;iterate&#39; method instead&quot;</span><span class="p">,</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">row</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_squery</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+        <span class="n">statement</span> <span class="o">=</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">query</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">statement_type</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">statement_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;SELECT&#39;</span><span class="p">,</span> <span class="s1">&#39;SHOW&#39;</span><span class="p">,</span> <span class="s1">&#39;DESCRIBE&#39;</span><span class="p">,</span> <span class="s1">&#39;EXISTS&#39;</span><span class="p">):</span>
+            <span class="n">need_fetch</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">need_fetch</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">fmt</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">token_matching</span><span class="p">(</span>
+            <span class="p">(</span><span class="k">lambda</span> <span class="n">tk</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">sqlparse</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">Keyword</span><span class="p">,</span> <span class="s1">&#39;FORMAT&#39;</span><span class="p">),),</span> <span class="mi">0</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">fmt</span><span class="p">:</span>
+            <span class="n">is_json</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="n">token_matching</span><span class="p">(</span>
+                <span class="p">(</span><span class="k">lambda</span> <span class="n">tk</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;JSONEachRow&#39;</span><span class="p">]),),</span>
+                <span class="n">statement</span><span class="o">.</span><span class="n">token_index</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">is_json</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">need_fetch</span><span class="p">,</span> <span class="n">is_json</span><span class="p">,</span> <span class="n">statement_type</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright moqi.ai 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>myscaledb.db.client &mdash; myscaledb Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> myscaledb
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install-docs.html">Building the Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">myscaledb</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">myscaledb.db.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for myscaledb.db.client</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">TracebackType</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterator</span>
+
+<span class="kn">from</span> <span class="nn">myscaledb.async_db.client</span> <span class="kn">import</span> <span class="n">BaseClient</span> <span class="k">as</span> <span class="n">AsyncChClient</span>
+<span class="kn">from</span> <span class="nn">myscaledb.common.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
+<span class="kn">from</span> <span class="nn">myscaledb.common.records</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">import</span> <span class="nn">nest_asyncio</span>
+<span class="n">nest_asyncio</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">iterate_async_to_sync</span><span class="p">(</span><span class="n">async_iterate</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+
+    <span class="n">async_iterate</span> <span class="o">=</span> <span class="n">async_iterate</span><span class="o">.</span><span class="fm">__aiter__</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_next</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="k">await</span> <span class="n">async_iterate</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">obj</span>
+        <span class="k">except</span> <span class="ne">StopAsyncIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">done</span><span class="p">,</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">get_next</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;create new event loop...&quot;</span><span class="p">)</span>
+            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+            <span class="n">done</span><span class="p">,</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">get_next</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">yield</span> <span class="n">obj</span>
+
+
+<span class="k">def</span> <span class="nf">async_to_sync</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">handle_exception</span><span class="p">(</span><span class="n">loop</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="c1"># context[&quot;message&quot;] will always be there; but context[&quot;exception&quot;] may not</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exception&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Caught exception in async method: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ClientError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
+            <span class="n">func_wrapped</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">iscoroutine</span><span class="p">(</span><span class="n">func_wrapped</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;create new event loop...&quot;</span><span class="p">)</span>
+                    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">set_exception_handler</span><span class="p">(</span><span class="n">handle_exception</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">func_wrapped</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func_wrapped</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">decorator</span>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">AsyncChClient</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Client connection class.</span>
+
+<span class="sd">       Usage:</span>
+
+<span class="sd">       .. code-block:: python</span>
+
+<span class="sd">           from myscaledb import Client</span>
+
+<span class="sd">           def main():</span>
+<span class="sd">               client = Client()</span>
+<span class="sd">               alive = client.is_alive()</span>
+<span class="sd">               print(f&quot;Is MyScale alive? -&gt; {alive}&quot;)</span>
+
+<span class="sd">           if __name__ == &#39;__main__&#39;:</span>
+<span class="sd">               main()</span>
+
+<span class="sd">    :param aiohttp.ClientSession session:</span>
+<span class="sd">        aiohttp client session. Please, use one session</span>
+<span class="sd">        and one Client for all connections in your app.</span>
+
+<span class="sd">    :param str url:</span>
+<span class="sd">        MyScale server url. Need full path, like http://localhost:8123/.</span>
+
+<span class="sd">    :param str user:</span>
+<span class="sd">        User name for authorization.</span>
+
+<span class="sd">    :param str password:</span>
+<span class="sd">        Password for authorization.</span>
+
+<span class="sd">    :param str database:</span>
+<span class="sd">        Database name.</span>
+
+<span class="sd">    :param bool compress_response:</span>
+<span class="sd">        Pass True if you want MyScale to compress its responses with gzip.</span>
+<span class="sd">        They will be decompressed automatically. But overall it will be slightly slower.</span>
+
+<span class="sd">    :param **settings:</span>
+<span class="sd">        Any settings from https://clickhouse.yandex/docs/en/operations/settings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Context manager support</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Client&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ClientError</span><span class="p">(</span><span class="s2">&quot;Client is already closed.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">exc_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]],</span>
+            <span class="n">exc_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span>
+            <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TracebackType</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Client.close"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client.close">[docs]</a>    <span class="nd">@async_to_sync</span><span class="p">()</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Close the session&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aclose</span><span class="p">()</span></div>
+
+    <span class="nd">@async_to_sync</span><span class="p">()</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_alive</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Client.execute"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query. Returns None.</span>
+
+<span class="sd">        :param str query: MyScale query string.</span>
+<span class="sd">        :param args: Arguments for insert queries.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: MyScale query_id.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.execute(</span>
+<span class="sd">                &quot;CREATE TABLE t (a UInt8, b Tuple(Date, Nullable(Float32))) ENGINE = Memory&quot;</span>
+<span class="sd">            )</span>
+<span class="sd">            client.execute(</span>
+<span class="sd">                &quot;INSERT INTO t VALUES&quot;,</span>
+<span class="sd">                (1, (dt.date(2018, 9, 7), None)),</span>
+<span class="sd">                (2, (dt.date(2018, 9, 8), 3.14)),</span>
+<span class="sd">            )</span>
+<span class="sd">            client.execute(</span>
+<span class="sd">                &quot;SELECT * FROM t WHERE a={u8}&quot;,</span>
+<span class="sd">                params={&quot;u8&quot;: 12}</span>
+<span class="sd">            )</span>
+
+<span class="sd">        :return: Nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">iterate_async_to_sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span>
+        <span class="p">),</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Client.fetch"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query and fetch all rows from query result at once in a list.</span>
+
+<span class="sd">        :param query: MyScale query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: MyScale query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            all_rows = client.fetch(&quot;SELECT * FROM t&quot;)</span>
+
+<span class="sd">        :return: All rows from query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">row</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">iterate_async_to_sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+                <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">())</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="Client.fetchrow"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client.fetchrow">[docs]</a>    <span class="k">def</span> <span class="nf">fetchrow</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query and fetch first row from query result or None.</span>
+
+<span class="sd">        :param query: MyScale query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: MyScale query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            row = client.fetchrow(&quot;SELECT * FROM t WHERE a=1&quot;)</span>
+<span class="sd">            assert row[0] == 1</span>
+<span class="sd">            assert row[&quot;b&quot;] == (dt.date(2018, 9, 7), None)</span>
+
+<span class="sd">        :return: First row from query or None if there no results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">iterate_async_to_sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+                <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+        <span class="p">),</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">row</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Client.fetchval"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client.fetchval">[docs]</a>    <span class="k">def</span> <span class="nf">fetchval</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Execute query and fetch first value of the first row from query result or None.</span>
+
+<span class="sd">        :param query: MyScale query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: MyScale query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            val = client.fetchval(&quot;SELECT b FROM t WHERE a=2&quot;)</span>
+<span class="sd">            assert val == (dt.date(2018, 9, 8), 3.14)</span>
+
+<span class="sd">        :return: First value of the first row or None if there no results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">iterate_async_to_sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+                <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+        <span class="p">),</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Client.iterate"><a class="viewcode-back" href="../../../reference/Client.html#myscaledb.db.client.Client.iterate">[docs]</a>    <span class="k">def</span> <span class="nf">iterate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Async generator by all rows from query result.</span>
+
+<span class="sd">        :param str query: MyScale query string.</span>
+<span class="sd">        :param bool json: Execute query in JSONEachRow mode.</span>
+<span class="sd">        :param Optional[Dict[str, Any]] params: Params to escape inside query string.</span>
+<span class="sd">        :param str query_id: MyScale query_id.</span>
+<span class="sd">        :param decode: Decode to python types. If False, returns bytes for each field instead.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            for row in client.iterate(</span>
+<span class="sd">                &quot;SELECT number, number*2 FROM system.numbers LIMIT 10000&quot;</span>
+<span class="sd">            ):</span>
+<span class="sd">                assert row[0] * 2 == row[1]</span>
+
+<span class="sd">            for row in client.iterate(</span>
+<span class="sd">                &quot;SELECT number, number*2 FROM system.numbers LIMIT {numbers_limit}&quot;,</span>
+<span class="sd">                params={&quot;numbers_limit&quot;: 10000}</span>
+<span class="sd">            ):</span>
+<span class="sd">                assert row[0] * 2 == row[1]</span>
+
+<span class="sd">        :return: Rows one by one.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">iterate_async_to_sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">=</span><span class="n">json</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">query_id</span><span class="o">=</span><span class="n">query_id</span><span class="p">,</span>
+                <span class="n">decode</span><span class="o">=</span><span class="n">decode</span><span class="p">,</span>
+        <span class="p">),</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()):</span>
+            <span class="k">yield</span> <span class="n">row</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Moqi Inc. and contributors 2023.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
