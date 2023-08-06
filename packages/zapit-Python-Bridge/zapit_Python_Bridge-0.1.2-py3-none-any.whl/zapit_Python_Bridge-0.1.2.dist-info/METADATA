@@ -1,0 +1,115 @@
+Metadata-Version: 2.1
+Name: zapit-Python-Bridge
+Version: 0.1.2
+Summary: Bridge for controlling Zapit from Python
+Author-email: Rob Campbell <git@raacampbell.com>
+License: BSD-3-Clause
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: License :: Free for non-commercial use
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.8.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matlabengine
+Requires-Dist: ipython
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: setuptools-scm ; extra == 'dev'
+
+# zapit-Python-Bridge
+
+**This code is still under development. It is in no way ready for use.**
+This bridge uses `matlab.engine` to communicate with MATLAB.
+
+
+### Example
+Until it's on PiPy you should first `cd` to code dir and
+```
+pip install -e .
+```
+
+Then in iPython:
+```python
+import zapit_python_bridge.bridge as zpb
+from importlib import reload
+
+# Create an instance of the bridge object
+hZP = zpb.bridge()
+
+# Interact
+hZP.send_samples()
+hZP.stop_opto_stim
+
+
+hZP.send_samples(conditionNum=2,laserOn=0)
+hZP.stop_opto_stim()
+```
+
+If you need to reload the module for development purposes, you **must** first delete the running class instance or it will hang when it next tries to connect:
+
+```ipython
+In [1]: hZP.release_matlab()
+Disconnecting from MATLAB
+
+In [2]: reload(zpb)
+Out[2]: <module 'zapit_python_bridge.bridge' from 'D:zapit-python-bridge\\zapit_python_bridge\\bridge.py'>
+
+In [3]: hZP = zpb.bridge()
+Attempting MATLAB connection...
+Connected!
+```
+
+### Minimal example for running an exeperiment
+See `examples` directory
+
+```
+python minimal_experiment_example.py
+```
+
+### Connecting to the zapit session: minimal example
+
+In MATLAB:
+```MATLAB
+ >> matlab.engine.shareEngine('zapit')
+```
+
+In iPython:
+
+```python
+import matlab.engine
+eng = matlab.engine.connect_matlab('zapit')
+```
+
+Make sure you have set up and calibrated everything in Zapit. Now in Python you can do:
+
+```python
+hZP = eng.workspace['hZP']
+hZPview = eng.workspace['hZPview']
+eng.eval('hZP.stimConfig.plotChanSamples(2)',nargout=0)
+
+# OR
+SC = eng.subsref(hZP, {'type':'.','subs':'stimConfig'})
+eng.plotChanSamples(SC, 1, nargout=0)
+
+
+eng.sendSamples(hZP,  nargout=0)
+eng.stopOptoStim(hZP,  nargout=0)
+```
