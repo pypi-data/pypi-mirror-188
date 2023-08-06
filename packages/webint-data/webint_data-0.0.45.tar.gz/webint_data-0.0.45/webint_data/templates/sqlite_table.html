@@ -1,0 +1,64 @@
+$def with (table, rows)
+$var breadcrumbs = ("tables", "Tables")
+$var title: $table
+
+$for row in rows:
+    <form method=post>
+    <dl>
+    $ row = dict(row)
+    $ rowid = row.pop("rowid")
+    $for col, data in sorted(row.items()):
+        <label>
+        <dt>$col</dt>
+        <dd data-rowid=$rowid>
+        $if data is None:
+            <input name=$col value="">
+        $elif isinstance(data, (int, float)):
+            <input name=$col value="$data">
+        $elif isinstance(data, str):
+            <input name=$col value="$dump(data)[1:-1]">
+        $elif isinstance(data, dict):
+            <textarea name=$col>$dump(data)</textarea>
+        $elif isinstance(data, list):
+            <textarea name=$col>$dump(data)</textarea>
+        $elif isinstance(data, pendulum.DateTime):
+            <input name=$col value="$data">
+        $else:
+            <p><STRONG>$type(data)</STRONG></p>
+        </dd>
+        </label>
+    </dl>
+    <input type=hidden name=rowid value=$rowid>
+    <button name=action value=delete>Delete</button>
+    <button name=action value=update>Update</button>
+    </form>
+
+<style>
+form {
+  clear: both; }
+dt {
+  font-size: .8em; }
+dd {
+  background-color: #ddd;
+  margin: .25em 0 .5em 0;
+  padding: .5em; }
+input, textarea {
+  background-color: #ddd;
+  border: 0;
+  padding: 0;
+  width: 100%; }
+textarea {
+  height: 10em; }
+button {
+  float: right;
+  margin-bottom: .5em; }
+</style>
+
+$# <script>
+$# document.querySelectorAll('dd').forEach(dd => {
+$#     dd.addEventListener('dblclick', () => { 
+$#         // console.log(dd.dataset.rowid)
+$#         console.log(this)
+$#     })
+$# })
+$# </script>
