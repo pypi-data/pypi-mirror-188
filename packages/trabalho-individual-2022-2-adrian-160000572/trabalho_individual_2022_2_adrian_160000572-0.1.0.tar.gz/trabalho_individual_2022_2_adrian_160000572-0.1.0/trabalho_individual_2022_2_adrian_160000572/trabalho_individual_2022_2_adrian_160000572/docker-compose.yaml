@@ -1,0 +1,55 @@
+services:
+  app:
+    build: .
+    container_name: ti_app
+    depends_on:
+      metabase:
+        condition: service_started
+    networks:
+      - app_network
+
+  metabase:
+    image: metabase/metabase
+    container_name: ti_metabase
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./metabase/config/metabase_database_exemple.env
+    depends_on:
+      database:
+        condition: service_started
+      meta_storage:
+        condition: service_started
+    networks:
+      - app_network
+      - meta_network
+
+  database:
+    image: mongo:6.0.4
+    container_name: ti_database
+    ports:
+      - "27017:27017"
+    env_file: ./metabase/config/mongo_exemple.env
+    volumes:
+      - ./db:/data/db
+    networks:
+      - app_network
+
+  meta_storage:
+    image: postgres
+    container_name: meta_storage
+    env_file:
+      - ./metabase/config/postgres_exemple.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./meta_storage:/var/lib/postgresql/data
+    networks:
+      - meta_network
+
+  
+networks:
+  app_network:
+
+  meta_network:
+
