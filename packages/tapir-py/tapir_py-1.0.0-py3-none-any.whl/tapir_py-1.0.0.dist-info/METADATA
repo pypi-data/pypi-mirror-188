@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: tapir-py
+Version: 1.0.0
+Summary: A Python package to use the JSON API from ArchiCAD.
+Home-page: https://github.com/ENZYME-APD/tapir-archicad-automation
+Author: EnzymeAPD
+Author-email: kaushiklsk96+tapir.py@gmail.com
+Project-URL: Bug Tracker, https://github.com/ENZYME-APD/tapir-archicad-automation/issues
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: IronPython
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Requires-Python: >=2.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# tapir_py
+
+Contains the source code for IronPython friendly adaptation of the official [archicad](https://pypi.org/project/archicad/) package.
+
+## Installation
+
+```
+pip install tapir_py
+```
+
+## Usage
+
+```Python
+# Sample code to check connection
+# with open ARCHICAD project.
+
+import tapir_py
+
+result = tapir_py.is_alive()
+print(result)
+```
+
+```Python
+# Sample code to get all elements
+# from open ARCHICAD project, and
+# print the GUID.
+
+from tapir_py import core
+
+# Create an archicad command object.
+archicad = core.Command.create()
+
+# Print GUID of elements
+elements = archicad.GetAllElements()
+for element in elements:
+    print(element.guid)
+```
