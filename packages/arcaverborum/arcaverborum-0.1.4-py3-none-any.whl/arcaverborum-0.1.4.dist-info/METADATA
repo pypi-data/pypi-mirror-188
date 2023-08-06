@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: arcaverborum
+Version: 0.1.4
+Summary: Library for interfacing with data from the GLED project
+Home-page: https://github.com/tresoldi/arcaverborum
+Author: Tiago Tresoldi
+Author-email: tiago.tresoldi@lingfil.uu.se
+License: MIT
+Keywords: linguistics,typology,sampling
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Text Processing :: Indexing
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+
+# Arca Verborum
+
+Arca Verborum is a project to interface with the data from the GLED package.
+
+The main available function is currently the one for performing weighted sampling of
+languages based on their phylogenetic distance. See code for more documentation, as below.
+
+```python
+>>> import arcaverborum
+>>> matrix = arcaverborum.read_default_matrix()
+>>> arcaverborum.language_sample(matrix, 5)
+('GalibiCarib_gali1262', 'DonnoSoDogon_donn1239', 'NorthernAmami-Oshima_nort2935', 'KolPapuaNewGuinea_kolp1236', 'Kiliwa_kili1268')
+```
