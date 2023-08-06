@@ -1,0 +1,425 @@
+/*++
+
+Module Name:
+
+    SingleAligner.cpp
+
+Abstract:
+
+    Functions for running the single end aligner sub-program.
+
+Authors:
+
+    Matei Zaharia, February, 2012
+
+Environment:
+
+    User mode service.
+
+Revision History:
+
+    Adapted from cSNAP, which was in turn adapted from the scala prototype
+
+--*/
+
+#include "stdafx.h"
+#include "options.h"
+#include "BaseAligner.h"
+#include "Compat.h"
+#include "RangeSplitter.h"
+#include "GenomeIndex.h"
+#include "SAM.h"
+#include "Tables.h"
+#include "AlignerContext.h"
+#include "AlignerOptions.h"
+#include "FASTQ.h"
+#include "Util.h"
+#include "SingleAligner.h"
+#include "MultiInputReadSupplier.h"
+
+using namespace std;
+using util::stringEndsWith;
+
+SingleAlignerContext::SingleAlignerContext(AlignerExtension* i_extension)
+    : AlignerContext(0, NULL, NULL, i_extension)
+{
+}
+
+
+    AlignerStats*
+SingleAlignerContext::newStats()
+{
+    return new AlignerStats();
+}
+
+    void
+SingleAlignerContext::runTask()
+{
+    ParallelTask<SingleAlignerContext> task(this);
+    task.run();
+}
+
+void SingleAlignerContext::runIterationThread()
+{
+    Read * read = NULL; 
+
+#ifdef _MSC_VER
+    __try {
+#endif // _MSC_VER
+
+
+        runIterationThreadImpl(read);
+
+#ifdef _MSC_VER
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+        if (read == NULL) {
+            fprintf(stderr, "SNAP crashed before processing a read\n");
+        } else {
+            fprintf(stderr, "SNAP crashed while processing single-end read with ID %.*s\n", read->getIdLength(), read->getId()); 
+            fprintf(stderr, "@%.*s\n%.*s\n+\n%.*s\n", read->getIdLength(), read->getId(), read->getDataLength(), read->getData(),
+                    read->getDataLength(), read->getQuality());
+        }
+        fflush(stderr);
+        soft_exit(1);
+    }
+#endif // _MSC_VER
+
+
+}
+    
+    void
+SingleAlignerContext::runIterationThreadImpl(Read *& read)
+{
+	PreventMachineHibernationWhileThisThreadIsAlive();
+
+    ReadSupplier *supplier = readSupplierGenerator->generateNewReadSupplier();
+    if (NULL == supplier) {
+        //
+        // No work for this thread to do.
+        //
+        return;
+    }
+	if (extension->runIterationThread(supplier, this)) {
+		delete supplier;
+		return;
+	}
+    if (index == NULL) {
+        // no alignment, just input/output
+        while (NULL != (read = supplier->getNextRead())) {
+            stats->totalReads++;
+            SingleAlignmentResult result;
+            result.status = NotFound;
+            result.direction = FORWARD;
+            result.mapq = 0;
+            result.score = 0;
+            result.location = InvalidGenomeLocation;
+            result.usedAffineGapScoring = false;
+            result.basesClippedBefore = 0;
+            result.basesClippedAfter = 0;
+            if (options->passFilter(read, NotFound, read->getDataLength() < minReadLength || read->countOfNs() > maxDist, false)) {
+                stats->notFound++;
+                if (NULL != readWriter) {
+                    readWriter->writeReads(readerContext, read, &result, 1, true);
+                }
+            } else {
+                stats->filtered++;
+            }
+            extension->writeRead(read, &result);
+        }
+        delete supplier;
+        return;
+    }
+
+    int maxReadSize = MAX_READ_LENGTH;
+
+    SingleAlignmentResult *alignmentResults = NULL;
+    bool alignmentResultsReallocated = false;
+    _int64 alignmentResultBufferCount;
+    if (maxSecondaryAlignmentAdditionalEditDistance < 0) {
+        alignmentResultBufferCount = 1;
+    } else {
+        alignmentResultBufferCount = 32;    // Just a nice number that's not too small.  We reallocate on demand.
+    }
+    size_t alignmentResultBufferSize = sizeof(*alignmentResults) * alignmentResultBufferCount; 
+
+    BigAllocator *allocator = new BigAllocator(BaseAligner::getBigAllocatorReservation(index, true, maxHits, maxReadSize, index->getSeedLength(), numSeedsFromCommandLine, seedCoverage, maxSecondaryAlignmentsPerContig, extraSearchDepth) 
+        + alignmentResultBufferSize, 16); // FIXME: Used larger allocation granularity for __m128i that needs to be aligned at 16 byte boundaries
+   
+    BaseAligner *aligner = new (allocator) BaseAligner(
+            index,
+            maxHits,
+            maxDist,
+            maxReadSize,
+            numSeedsFromCommandLine,
+            seedCoverage,
+			minWeightToCheck,
+            extraSearchDepth,
+            disabledOptimizations,
+            useAffineGap,
+            ignoreAlignmentAdjustmentForOm,
+			altAwareness,
+            emitALTAlignments,
+            maxScoreGapToPreferNonALTAlignment,
+            maxSecondaryAlignmentsPerContig,
+            NULL,               // LV (no need to cache in the single aligner)
+            NULL,               // reverse LV
+            matchReward,
+            subPenalty,
+            gapOpenPenalty,
+            gapExtendPenalty,
+            fivePrimeEndBonus,
+            threePrimeEndBonus,
+            stats,
+            allocator);
+
+    alignmentResults = (SingleAlignmentResult *)allocator->allocate(alignmentResultBufferSize);
+ 
+    allocator->checkCanaries();
+
+    aligner->setExplorePopularSeeds(options->explorePopularSeeds);
+    aligner->setStopOnFirstHit(options->stopOnFirstHit);
+
+#ifdef  _MSC_VER
+    if (options->useTimingBarrier) {
+        if (0 == InterlockedDecrementAndReturnNewValue(nThreadsAllocatingMemory)) {
+            AllowEventWaitersToProceed(memoryAllocationCompleteBarrier);
+        } else {
+            WaitForEvent(memoryAllocationCompleteBarrier);
+        }
+    }
+#endif  // _MSC_VER
+
+    // Align the reads.
+    _uint64 lastReportTime = timeInMillis();
+    _uint64 readsWhenLastReported = 0;
+
+    _int64 startTime = timeInMillis();
+    while (NULL != (read = supplier->getNextRead())) {
+        _int64 readFinishedTime;
+        if (options->profile) {
+            readFinishedTime = timeInMillis();
+            stats->millisReading += (readFinishedTime - startTime);
+        }
+
+        stats->totalReads++;
+
+        if (AlignerOptions::useHadoopErrorMessages && stats->totalReads % 10000 == 0 && timeInMillis() - lastReportTime > 10000) {
+            fprintf(stderr,"reporter:counter:SNAP,readsAligned,%llu\n",stats->totalReads - readsWhenLastReported);
+            readsWhenLastReported = stats->totalReads;
+            lastReportTime = timeInMillis();
+        }
+
+        // Skip the read if it has too many Ns or trailing 2 quality scores.
+        if (read->getDataLength() < minReadLength || read->countOfNs() > maxDist) {
+            if (!options->passFilter(read, NotFound, true, false)) {
+                stats->filtered++;
+            } else {
+                if (NULL != readWriter) {
+                    SingleAlignmentResult result;
+                    result.status = NotFound;
+                    result.location = InvalidGenomeLocation;
+                    result.mapq = 0;
+                    result.direction = FORWARD;
+                    result.clippingForReadAdjustment = 0;
+                    result.usedAffineGapScoring = false;
+                    result.basesClippedBefore = 0;
+                    result.basesClippedAfter = 0;
+                    result.supplementary = false;
+                    readWriter->writeReads(readerContext, read, &result, 1, true, useAffineGap);
+                }
+                stats->uselessReads++;
+            }
+            continue;
+        }
+
+        _int64 startTime;
+
+        if (TIME_HISTOGRAM || options->attachAlignmentTimes) {
+            startTime = timeInNanos();
+        }
+
+        _int64 nSecondaryResults = 0;
+
+#ifdef LONG_READS
+        int oldMaxK = aligner->getMaxK();
+        if (options->maxDistFraction > 0.0) {
+            aligner->setMaxK(min(MAX_K, (int)(read->getDataLength() * options->maxDistFraction)));
+        }
+#endif
+        SingleAlignmentResult firstALTResult;
+        while (!aligner->AlignRead(read, alignmentResults, &firstALTResult, maxSecondaryAlignmentAdditionalEditDistance, alignmentResultBufferCount - 1, &nSecondaryResults, maxSecondaryAlignments, alignmentResults + 1, 0, NULL, NULL, useSoftClipping)) {
+            //
+            // Out of secondary alignment buffer.  Reallocate.
+            //
+            if (alignmentResultsReallocated) {
+                BigDealloc(alignmentResults);
+                alignmentResults = NULL;
+            }
+
+            alignmentResultBufferCount *= 2;
+            alignmentResultBufferSize = alignmentResultBufferCount * sizeof(SingleAlignmentResult);
+            alignmentResults = (SingleAlignmentResult *)BigAlloc(alignmentResultBufferSize);
+            alignmentResultsReallocated = true;
+        }
+#ifdef LONG_READS
+        aligner->setMaxK(oldMaxK);
+#endif
+
+        _int64 alignFinishedTime;
+        if (options->profile) {
+            alignFinishedTime = timeInMillis();
+            stats->millisAligning += (alignFinishedTime - readFinishedTime);            
+        }
+
+        _int64 runTime;
+
+        if (TIME_HISTOGRAM || options->attachAlignmentTimes) {
+            runTime = timeInNanos() - startTime;
+            if (runTime < 0) {
+                runTime = 0;
+            }
+        }
+
+#if     TIME_HISTOGRAM
+        int timeBucket = min(30, cheezyLogBase2(runTime));
+        stats->countByTimeBucket[timeBucket]++;
+        stats->nanosByTimeBucket[timeBucket] += runTime;
+#endif // TIME_HISTOGRAM
+
+        allocator->checkCanaries();
+
+        bool containsPrimary = true;
+        if (NULL != readWriter) {
+            //
+            // Remove any reads that don't pass the filter, then send the remainder down to the writer.
+            //
+            for (int i = 0; i <= nSecondaryResults; i++) {
+                if (options->attachAlignmentTimes) {
+                    alignmentResults[i].alignmentTimeInNanoseconds = runTime;
+                }
+                if (!options->passFilter(read, alignmentResults[i].status, false, i != 0 || !containsPrimary)) {
+                    if (i == 0) {
+                        containsPrimary = false;
+                    }
+                    //
+                    // Copy the last result here.
+                    //
+                    alignmentResults[i] = alignmentResults[nSecondaryResults];
+                    nSecondaryResults--;
+
+                    //
+                    // And back up so it gets checked.
+                    //
+                    i--;
+                }
+            } // For each result
+
+            stats->extraAlignments += nSecondaryResults + (containsPrimary ? 0 : 1);    // If it doesn't contain the primary, then it's a secondary.
+            readWriter->writeReads(readerContext, read, alignmentResults, nSecondaryResults + 1, containsPrimary, useAffineGap);
+
+            if (altAwareness && firstALTResult.status != NotFound && options->passFilter(read, firstALTResult.status, false, false)) {
+                readWriter->writeReads(readerContext, read, &firstALTResult, 1, false, useAffineGap);
+            }
+        } // If we're writing reads at all
+
+        if (options->profile) {
+            startTime = timeInMillis();
+            stats->millisWriting = (startTime - alignFinishedTime);
+        }
+
+        if (containsPrimary) {
+            updateStats(stats, read, alignmentResults[0].status, alignmentResults[0].score, alignmentResults[0].mapq);
+        } else {
+            stats->filtered++;
+        }
+    } // while we have a read to align
+
+    stats->lvCalls = aligner->getLocationsScoredWithLandauVishkin();
+    stats->affineGapCalls = aligner->getLocationsScoredWithAffineGap();
+
+    aligner->~BaseAligner(); // This calls the destructor without calling operator delete, allocator owns the memory.
+ 
+    if (supplier != NULL) {
+        delete supplier;
+    }
+
+    if (alignmentResultsReallocated) {
+        BigDealloc(alignmentResults);
+    }
+
+    delete allocator;   // This is what actually frees the memory.
+}
+
+    void
+SingleAlignerContext::updateStats(
+    AlignerStats* stats,
+    Read* read,
+    AlignmentResult result,
+    int score,
+    int mapq)
+{
+    if (isOneLocation(result)) {
+        stats->singleHits++;
+    } else if (result == MultipleHits) {
+        stats->multiHits++;
+    } else {
+        _ASSERT(result == NotFound);
+        stats->notFound++;
+    }
+
+    if (result != NotFound) {
+        _ASSERT(mapq >= 0 && mapq <= AlignerStats::maxMapq);
+        stats->mapqHistogram[mapq]++;
+    }
+}
+
+    void 
+SingleAlignerContext::typeSpecificBeginIteration()
+{
+    if (1 == options->nInputs) {
+        //
+        // We've only got one input, so just connect it directly to the consumer.
+        //
+        readSupplierGenerator = options->inputs[0].createReadSupplierGenerator(options->numThreads, readerContext);
+    } else {
+        //
+        // We've got multiple inputs, so use a MultiInputReadSupplier to combine the individual inputs.
+        //
+        ReadSupplierGenerator **generators = new ReadSupplierGenerator *[options->nInputs];
+        // use separate context for each supplier, initialized from common
+        for (int i = 0; i < options->nInputs; i++) {
+            ReaderContext context(readerContext);
+            generators[i] = options->inputs[i].createReadSupplierGenerator(options->numThreads, context);
+        }
+        readSupplierGenerator = new MultiInputReadSupplierGenerator(options->nInputs,generators);
+    }
+    ReaderContext* context = readSupplierGenerator->getContext();
+    readerContext.header = context->header;
+    readerContext.headerBytes = context->headerBytes;
+    readerContext.headerLength = context->headerLength;
+    readerContext.headerMatchesIndex = context->headerMatchesIndex;
+    readerContext.numRGLines = context->numRGLines;
+    readerContext.rgLines = context->rgLines;
+    readerContext.rgLineOffsets = context->rgLineOffsets;
+}
+    void 
+SingleAlignerContext::typeSpecificNextIteration()
+    {
+    if (readerContext.header != NULL) {
+        delete [] readerContext.header;
+        readerContext.header = NULL;
+        readerContext.headerLength = readerContext.headerBytes = 0;
+        readerContext.headerMatchesIndex = false;
+    }
+    if (readerContext.rgLines != NULL) {
+        delete[] readerContext.rgLines;
+        delete[] readerContext.rgLineOffsets;
+        readerContext.numRGLines = 0;
+        readerContext.rgLines = NULL;
+        readerContext.rgLineOffsets = NULL;
+    }
+    delete readSupplierGenerator;
+    readSupplierGenerator = NULL;
+}
+
+ 
