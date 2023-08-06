@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: torchdrive
+Version: 0.0.1
+Summary: PyTorch library for BEV style perception models
+Author: Tristan Rice
+Author-email: rice@fn.lc
+License: BSD-3-Clause
+Keywords: pytorch,transformer,self-driving
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+License-File: LICENSE
+Requires-Dist: pytorch3d
+Requires-Dist: torchvision
+Requires-Dist: scipy
+
+# ![torchdrive](media/torchdrive.svg)
+
+A PyTorch library for training BEV style perception models for self driving
+tasks. This is unaffiliated with the PyTorch project. This currently includes
+helpful primitives needed to put together a model.
+
+## Install from Source
+
+```
+$ pip install git+https://github.com/d4l3k/torchdrive.git
+```
+
+or
+
+```
+$ git clone --recursive https://github.com/d4l3k/torchdrive.git
+$ cd torchdrive
+$ pip install -e .
+```
+
+## Background
+
+I've been documenting the process for this code. Please see my blog at
+https://fn.lc/post/3d-detr/ for more details.
+
+### 3D Object Detection
+
+3D bounding boxes and velocities for dynamic objects such as cars.
+
+![](media/det.png)
+
+### Voxel Occupancy
+
+Grids of occupancy around the vehicle trained with differential rendering.
+
+![](media/voxel-highway-cars.png)
+
+### BEV Lane Lines and Drivable Space
+
+Lane line and drivable space trained purely from image space labels.
+
+![](media/mesh-semantic.png)
+
+### Semantic Voxel
+
+Per voxel semantic labels for static objects.
+
+![](media/voxel-semantic.png)
+
+## Data Access
+
+The training dataset for this repo has been collected from my car and thus has
+lots of personally identifying information so I'm not willing to make it public
+at this time. If you're interested in contributing or collaborating feel free to
+reach out. I'm happy to test changes on my own hardware and there may be other
+options too.
+
+## Contact
+
+If you have any questions or concerns, please reach out to me either by filing
+an issue or emailing me at [rice@fn.lc](mailto:rice@fn.lc).
+
+## License
+
+This project is a hobby project and done in my free time. This is non-commercial
+and no profit has been made from this work.
+
+See the [LICENSE](LICENSE) file for more information. Some files and functions
+have different licenses and are marked accordingly.
+
+BSD 3-Clause License
+
+Copyright (c) 2023, Tristan Rice
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
