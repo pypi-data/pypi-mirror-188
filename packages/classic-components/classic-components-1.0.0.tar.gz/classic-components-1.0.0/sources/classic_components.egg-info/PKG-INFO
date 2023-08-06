@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: classic-components
+Version: 1.0.0
+Summary: Provides decorator for creating components
+Home-page: https://github.com/variasov/classic_components
+Author: Sergei Variasov
+Author-email: variasov@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/variasov/classic_components/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
+# Classic Components
+
+This package provides decorator for creating components with 
+explicitly defined dependencies for Dependency Injection.
+Decorator marks class as component and, optionally, generates constructor from 
+type annotations.
+
+Part of project "Classic".
+
+Usage:
+
+```python
+from classic.components import component
+
+
+@component
+class SomeService:
+    prop: int
+    
+    def action(self):
+        print(self.prop)
+
+
+service = SomeService(prop=1)
+service.action()  # prints 1
+```
+
+
