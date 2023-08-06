@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: simpledatatable
+Version: 0.3.4
+Summary: This package allows flet developers to easily import SQL, CSV, Excel or Json tables into flet's DataTable.
+Home-page: https://github.com/StanMathers/simple-datatable
+Author: Stan Mathers
+Author-email: sabagamgebeli@gmail.com
+License: MIT
+Keywords: table,datatable,simpledt,tableserializer,sql,csv,excel,json,flet
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Education
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sqlalchemy
+Requires-Dist: pandas
+Requires-Dist: openpyxl
+
+# simpledt
+
+
+This is a third party party package for the framework **Flet**.
+
+It enables **Flet** users to serialize
+
+- Pandas DataFrame
+- SQL
+- CSV
+- JSON
+- Excel
+
+Into Flet's **DataTable**.
+
+For documentation and other details, please visit the project [repository](https://github.com/StanMathers/simple-datatable)
+
+## Release notes:
+
+
+### Version 0.3.4
+
+
+- Added **kwargs to every shortcut function
+
+
+#### Example usage:
+
+
+```python
+import flet as ft
+from simpledt import CSVDataTable
+
+def main(page: ft.Page):
+    csv = CSVDataTable("MOCK_DATA2.csv", delimiter=";")
+    datatable = csv.datatable
+    page.add(datatable)
+
+ft.app(target=main)
+```
