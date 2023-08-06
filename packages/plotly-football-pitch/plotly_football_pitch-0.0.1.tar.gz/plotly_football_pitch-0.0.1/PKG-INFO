@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: plotly_football_pitch
+Version: 0.0.1
+Summary: Package to allow creation of football pitch charts using plotly
+Author: Andrew Davies
+Maintainer: Andrew Davies
+License: This is free and unencumbered software released into the public domain.
+        
+        Anyone is free to copy, modify, publish, use, compile, sell, or
+        distribute this software, either in source code form or as a compiled
+        binary, for any purpose, commercial or non-commercial, and by any
+        means.
+        
+        In jurisdictions that recognize copyright laws, the author or authors
+        of this software dedicate any and all copyright interest in the
+        software to the public domain. We make this dedication for the benefit
+        of the public at large and to the detriment of our heirs and
+        successors. We intend this dedication to be an overt act of
+        relinquishment in perpetuity of all present and future rights to this
+        software under copyright law.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+        IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+        OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+        ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+        OTHER DEALINGS IN THE SOFTWARE.
+        
+        For more information, please refer to <https://unlicense.org>
+        
+Project-URL: Homepage, https://github.com/minimav/plotly-football-pitch
+Project-URL: Bug Reports, https://github.com/minimav/plotly-football-pitch/issues
+Project-URL: Source, https://github.com/minimav/plotly-football-pitch
+Keywords: soccer,football,plotly
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: The Unlicense (Unlicense)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE.txt
+
+# plotly-football-pitch
+
+This repo contains code to plot football pitches using `plotly`. Currently only horizontal pitches are supported, with the origin located at the bottom left
+corner of the pitch.
+
+## Examples
+
+```python
+from plotly_football_pitch import make_pitch_figure, PitchDimensions
+
+
+dimensions = PitchDimensions()
+fig = make_pitch_figure(dimensions)
+fig.show()
+```
+
+![basic pitch](images/basic_pitch.png)
+
+```python
+from plotly_football_pitch import make_pitch_figure, PitchDimensions
+
+
+dimensions = PitchDimensions()
+fig = make_pitch_figure(dimensions, pitch_colour="#81B622")
+fig.show()
+```
+
+![green pitch](images/green_pitch.png)
+
+```python
+import numpy as np
+
+from plotly_football_pitch import make_pitch_figure, PitchDimensions
+
+
+dimensions = PitchDimensions()
+fig = make_pitch_figure(dimensions)
+
+# define number of grid squares for heatmap data
+width_grid = 12
+length_grid = 15
+
+data = np.array([
+    [random.random() for _ in range(length_grid)]
+    for _ in range(width_grid)
+])
+
+fig = add_heatmap(fig, data)
+fig.show()
+```
+
+![basic pitch with heatmp](images/basic_pitch_with_heatmap.png)
+
+## Installation
+
+`pip install plotly_football_pitch`
+
+## Development installation
+
+```bash
+make setup-env
+source .venv/bin/activate
+make dev-install
+```
