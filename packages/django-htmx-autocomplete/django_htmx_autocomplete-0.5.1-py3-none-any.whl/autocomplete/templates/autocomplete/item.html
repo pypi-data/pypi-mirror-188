@@ -1,0 +1,40 @@
+{% load autocomplete %}
+<a
+    id="{{ component_id }}__item__{{ item.value|make_id }}"
+    class="item {{ item.selected|yesno:'selected,' }}"
+    {% if not item.selected %}
+    onblur="return phac_aspc_autocomplete_blur_handler(event, '{{ component_id }}', {{ multiselect|yesno:'false,true' }}, true)"
+    onkeydown="return phac_aspc_autocomplete_keydown_handler(event)"
+    href="#"
+    hx-put="{% url route_name method='toggle' %}"
+    hx-params="{{ name }},item,component_id"
+    hx-include="#{{ component_id }}"
+    hx-vals='{"component_id": "{{ component_id|escapejs }}", "item": "{{ item.value|escapejs }}"}'
+    {% endif %}
+    hx-swap="outerHTML"
+    {% if swap_oob %}
+    hx-swap-oob="outerHTML:#{{ component_id }}__item__{{ item.value|make_id }}"
+    {% endif %}
+>
+    {{ item.label|search_highlight:search }}
+</a>
+
+{% if toggle is not None %}
+    <div id="{{ component_id }}" hx-swap-oob="true">
+        {% include "./values.html" %}
+    </div>
+    {% if multiselect %}
+        {% include "./ac_container.html" with selected_items=toggle %}
+    {% else %}
+        <span
+            id="{{ component_id }}__data"
+            hx-swap-oob="outerHTML:#{{ component_id }}__data"
+            data-phac-aspc-autocomplete="{{ item.label }}"
+        ></span>
+        {% for item in toggle %}
+            {% if not item.selected %}
+                {% include "autocomplete/item.html" with toggle=None swap_oob=True %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}
