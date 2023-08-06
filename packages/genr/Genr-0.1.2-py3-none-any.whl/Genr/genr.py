@@ -1,0 +1,100 @@
+import requests
+import json
+from functions import get_dict, ensure_format_dict, ensure_format_list, max_prompt_len
+import ast
+
+class OpenAI:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = "https://api.openai.com/v1/completions"
+
+    def summarize(self, text, model="text-davinci-003", temperature=1, max_tokens=1000, stop="."):
+        payload = {
+            "model": model,
+            "prompt": "Sumarize the following text: "+ text[:max_prompt_len(max_tokens)],
+            "temperature": temperature,
+            "max_tokens":max_tokens,
+            "stop": stop
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}"
+        }
+        response = requests.post(self.base_url, json=payload, headers=headers)
+        response = json.loads(response.text)
+        # print(response)
+        response = response['choices'][0]['text'].strip()
+
+        return response
+
+    def get_prompt(self, text, model="text-davinci-003", temperature=1, max_tokens=1000, stop="."):
+        payload = {
+            "model": model,
+            "prompt": "Write a prompt to generate an image based on summary of: "+ text[:max_prompt_len(max_tokens)],
+            "temperature": temperature,
+            "max_tokens":max_tokens,
+            "stop": stop
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}"
+        }
+        response = requests.post(self.base_url, json=payload, headers=headers)
+        response = json.loads(response.text)
+        response = response['choices'][0]['text'].strip()
+        # print(response)
+        # print(response[:2])
+        # print(response[-2:])
+        # if response[:2]=="[\"" and response[-2:]=="\"]":
+        #     return ast.literal_eval(response)
+        # elif response[:2]=="[\"" and response[-2:]!="\"]":
+        #     # print("Here")
+        #     # print(response['choices'][0]['text']+"\"]")
+        #     return ast.literal_eval(response+"\"]")
+        # elif response[:2]!="[\"" and response[-2:]=="\"]":
+        #     return ast.literal_eval("[\""+response)
+        # else:
+        #     return ast.literal_eval("[\""+response+"\"]")
+        return response
+
+    def ner(self, text, model="text-davinci-003", temperature=1, max_tokens=1000, stop="."):
+        payload = {
+            "model": model,
+            "prompt": "Recognize different entitites from the following text a give the result in the format [\"X\", \"Y\"] where X is the category or type of entity and Y is the word captured: "+ text[:max_prompt_len(max_tokens)],
+            "temperature": temperature,
+            "max_tokens":max_tokens,
+            "stop": stop
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}"
+        }
+        response = requests.post(self.base_url, json=payload, headers=headers)
+        response = json.loads(response.text)
+        response = response['choices'][0]['text'].strip()
+
+        return response
+
+    def generate_questions(self, text, model="text-davinci-003", temperature=1, max_tokens=1000, stop=".", questions=5):
+        payload = {
+            "model": model,
+            "prompt": "Analyze the following text and prepare a set of "+str(questions)+" questions and answers. The ouput format is strictly only \"A\", \"B\" where A is the question and B the answer. The next part is the text: "+ text[:max_prompt_len(max_tokens)],
+            "temperature": temperature,
+            "max_tokens":max_tokens,
+            "stop": stop
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}"
+        }
+        # print(payload['prompt'])
+        response = requests.post(self.base_url, json=payload, headers=headers)
+        response = json.loads(response.text)
+        response = response['choices'][0]['text'].strip()
+
+        return response
+        
+    def list_models(self):
+        return ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]
+
+    # def generate_image(self):
