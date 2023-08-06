@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: ai-openchat
+Version: 1.0.7
+Summary: Python module for asynchronous interaction with OpenAI 
+Home-page: https://github.com/Whitev2/async-openai
+Author: Whitev2
+Author-email: maksfundd@gmail.com
+License: Apache License, Version 2.0, see LICENSE file
+Download-URL: https://github.com/Whitev2/async-openai/archive/v1.0.7/main.zip
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Description-Content-Type: text/markdown
+
+<hr/>
+
+![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=40&pause=1000&color=373737&background=91C5F4&center=true&vCenter=true&multiline=true&width=1080&height=80&lines=Python+async+module+for+OpenAI)
+<hr/>
+
+## Technologies
+- Python >= 3.8;
+- aiohttp >= 3.8
+
+
+## quick start
+
+1. Example #1 Chat:
+
+``` python
+import asyncio
+
+from ai_openchat import AsyncOpenAI
+from ai_openchat.base.model import Model
+
+
+async def chat():
+    openai_client = AsyncOpenAI(token='API-KEY')
+    resp = await openai_client.send_message('Your request?', Model().chat())
+    print(resp)
+
+
+if __name__ == '__main__':
+    asyncio.run(chat())
+```
+
+2. Example #2 Movie to Emoji:
+``` python
+import asyncio
+
+from ai_openchat import AsyncOpenAI
+from ai_openchat.base.model import Model
+
+
+async def movie_to_emoji():
+    openai_client = AsyncOpenAI(token='API-KEY')
+    resp = await openai_client.send_message('Convert movie titles into emoji.\n\n'
+                                            'Back to the Future: 👨👴🚗🕒 \n'
+                                            'Batman: 🤵🦇 \n'
+                                            'Transformers: 🚗🤖 \n'
+                                            'Star Wars:', Model().movie_to_emoji())
+    print(resp)
+    # ⭐️⚔️
+
+
+if __name__ == '__main__':
+    asyncio.run(movie_to_emoji())
+
+
+```
+
+<hr/>
+This project is an attempt to make an asynchronous library for convenient OpenAI management.
+You can check out the rest of the models here: https://beta.openai.com/examples.
+
+I continue to develop it and will soon add image generation
+
+
+
