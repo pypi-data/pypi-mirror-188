@@ -1,0 +1,63 @@
+<p align="center">
+<img src="https://raw.githubusercontent.com/Octra/Octra.py/master/docs/icon.png" alt="Logo" title="Octra.py" height="200" width="200"/>
+</p>
+
+# Octra.py
+
+[![PyPI](https://img.shields.io/pypi/v/Octra.py)](https://pypi.org/project/Octra.py)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Octra.py)](https://pypi.org/project/Octra.py)
+[![Documentation Status](https://readthedocs.org/projects/Octrapy/badge/?version=latest)](https://Octrapy.readthedocs.io/en/latest/?badge=latest)
+[![GitHub - License](https://img.shields.io/github/license/Octra/Octra.py)](LICENSE)
+[![Octra Channel](https://img.shields.io/badge/Octra-t.me%2Ftpy__updates-0088cc)](https://t.me/tpy_updates)
+
+An async API wrapper for Octra bot API in Python
+
+## Installation
+
+Python 3.7+ is **required** to install and use Octra.py.
+
+Install the latest release from PyPI:
+
+```bash
+# Mac/Linux
+python3 -m pip install Octra.py
+
+# Windows
+py -3 -m pip install Octra.py
+```
+
+Or install the development version from GitHub:
+
+```
+# Mac/Linux
+python3 -m pip install git+https://github.com/Octra/Octra.py
+
+# Windows
+py -3 -m pip install git+https://github.com/Octra/Octra.py
+```
+
+## Quick Example
+
+```python
+import logging
+
+import Octrapy
+from Octrapy.ext import commands
+
+logging.basicConfig(level=logging.INFO, format="(%(asctime)s) %(levelname)s %(message)s", datefmt="%m/%d/%y - %H:%M:%S %Z")
+logger = logging.getLogger("Octrapy")
+
+bot = commands.Bot("token here")
+
+@bot.command()
+async def hi(ctx):
+    await ctx.send("Hello")
+
+bot.run()
+```
+
+For a line-by-line walkthrough for this example, see the [quickstart](https://Octrapy.readthedocs.io/en/latest/quickstart.html#basic-example).
+
+## Documentation
+
+[Documentation can be found here.](https://Octrapy.readthedocs.io)
