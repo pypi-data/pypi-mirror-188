@@ -1,0 +1,110 @@
+from typing import Optional, Union
+from PIL import Image  # type: ignore
+import deeplake
+from deeplake.core.partial_sample import PartialSample
+from deeplake.core.linked_tiled_sample import LinkedTiledSample
+import numpy as np
+import io
+from deeplake.core.tensor_link import read_linked_sample
+
+
+def validate_downsampling(downsampling):
+    if downsampling is None:
+        return None, None
+    if len(downsampling) != 2:
+        raise ValueError(
+            f"Downsampling must be a tuple of the form (downsampling_factor, number_of_layers), got {downsampling}"
+        )
+    downsampling_factor, number_of_layers = downsampling
+    if downsampling_factor < 1 or not isinstance(downsampling_factor, int):
+        raise ValueError("Downsampling factor must be an integer >= 1")
+    if number_of_layers < 1 or not isinstance(number_of_layers, int):
+        raise ValueError("Number of layers must be an integer >= 1")
+
+    return downsampling_factor, number_of_layers
+
+
+def needs_downsampling(sample: Image.Image, factor: int):
+    if sample.size[0] * sample.size[1] <= 100 * factor * factor:
+        return False
+    return sample.size[0] // factor > 0 and sample.size[1] // factor > 0
+
+
+def get_filter(htype):
+    if "image" in htype:
+        return Image.BILINEAR
+    if "mask" in htype:
+        return Image.NEAREST
+    raise ValueError(f"Got unexpected htype {htype}")
+
+
+def downsample_sample(
+    sample: Optional[Union[Image.Image, PartialSample]],
+    factor: int,
+    compression: Optional[str],
+    htype: str,
+    partial: bool = False,
+    link_creds=None,
+):
+    if isinstance(sample, PartialSample):
+        return sample.downsample(factor)
+
+    if isinstance(sample, LinkedTiledSample):
+        return downsample_link_tiled(sample, factor, compression, htype, link_creds)
+
+    if sample is None:
+        return None
+    if not (partial or needs_downsampling(sample, factor)):
+        arr = np.array(sample)
+        required_shape = tuple([0] * len(arr.shape))
+        required_dtype = arr.dtype
+        return np.ones(required_shape, dtype=required_dtype)
+
+    size = sample.size[0] // factor, sample.size[1] // factor
+    downsampled_sample = sample.resize(size, get_filter(htype))
+    if compression is None:
+        return np.array(downsampled_sample)
+    with io.BytesIO() as f:
+        downsampled_sample.save(f, format=compression)
+        image_bytes = f.getvalue()
+        return deeplake.core.sample.Sample(buffer=image_bytes, compression=compression)
+
+
+def downsample_link_tiled(
+    sample: LinkedTiledSample, factor, compression, htype, link_creds=None
+):
+    shape = sample.shape
+    tile_shape = sample.tile_shape
+    downsampled_tile_size = tile_shape[0] // factor, tile_shape[1] // factor
+
+    downsample_sample_size = shape[0] // factor, shape[1] // factor
+    path_array = sample.path_array
+    arr = None
+    for i in range(path_array.shape[0]):
+        for j in range(path_array.shape[1]):
+            tile_pil = read_linked_sample(
+                sample.path, sample.creds_key, link_creds, verify=False
+            ).pil
+            downsampled_tile_pil = tile_pil.resize(
+                downsampled_tile_size, get_filter(htype)
+            )
+            downsampled_tile_arr = np.array(downsampled_tile_pil)
+            if arr is None:
+                arr_size = downsample_sample_size + shape[2:]
+                arr = np.zeros(arr_size, dtype=downsampled_tile_arr.dtype)
+            arr[
+                i * downsampled_tile_size[0] : (i + 1) * downsampled_tile_size[0],
+                j * downsampled_tile_size[1] : (j + 1) * downsampled_tile_size[1],
+            ] = downsampled_tile_arr
+
+    if compression is None:
+        return arr
+    with io.BytesIO() as f:
+        Image.fromarray(arr).save(f, format=compression)
+        image_bytes = f.getvalue()
+        return deeplake.core.sample.Sample(buffer=image_bytes, compression=compression)
+
+
+def apply_partial_downsample(tensor, global_sample_index, val):
+    downsample_sub_index, new_value = val
+    tensor[global_sample_index][downsample_sub_index] = new_value
