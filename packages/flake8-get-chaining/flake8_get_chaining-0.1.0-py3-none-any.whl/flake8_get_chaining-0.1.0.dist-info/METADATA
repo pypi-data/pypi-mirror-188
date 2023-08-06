@@ -1,0 +1,81 @@
+Metadata-Version: 2.1
+Name: flake8-get-chaining
+Version: 0.1.0
+Summary: A plugin for flake8 finding likely bugs when chaining dict.get calls
+Author-email: Augustin Bouverot <augustin.bouverot@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Sacrimento/flake8-get-chaining
+Project-URL: Change Log, https://github.com/Sacrimento/flake8-get-chaining#change-log
+Keywords: flake8,get-chaining,bugs,pyflakes,pylint,linter,qa
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Framework :: Flake8
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: flake8 (>=3.0.0)
+Provides-Extra: dev
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+
+<div align="center" size="15px">
+
+# flake8-get-chaining
+
+A [flake8](https://github.com/PyCQA/flake8) plugin finding likely bugs when chaining dict.get calls
+
+[![CI](https://github.com/Sacrimento/flake8-get-chaining/actions/workflows/ci.yml/badge.svg)](https://github.com/Sacrimento/flake8-get-chaining/actions/workflows/ci.yml)
+[![code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+</div>
+
+`flake8-get-chaining` plugin checks for chained `dict.get` calls and makes sure valid defaults are provided.
+
+## Installation
+------------
+
+Install from `pip` with:
+
+```sh
+$ pip install flake8-get-chaining
+```
+
+It will then automatically be run as part of `flake8`; you can check it has been picked up with:
+
+```sh
+$ flake8 --version
+5.0.4 (flake8-get-chaining: 0.1.0, mccabe: 0.7.0, pycodestyle: 2.9.1, pyflakes: 2.5.0) CPython 3.10.9 on Linux
+```
+
+## List of warnings
+------------
+
+**DGC1001**: Missing default argument when chaining dict.get  
+This warning is emitted when `dict.get` calls are chained, and no default was provided.  
+  
+_Example_: `my_dict.get("foo").get("bar")`  
+  
+  
+**DGC1002**: Invalid default argument when chaining dict.get  
+This warning is emitted when `dict.get` calls are chained, and the default value is  
+invalid (i.e not a dict nor an identifier)  
+  
+_Example_: `my_dict.get("foo", "bar").get("baz")`  
+  
