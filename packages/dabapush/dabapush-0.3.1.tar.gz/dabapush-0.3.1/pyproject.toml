@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "dabapush"
+version = "0.3.1"
+description = ""
+authors = [
+	"Philipp Kessling <p.kessling@leibniz-hbi.de>",
+	"Aditya Kumar <a.kumar@leibniz-hbi.de>",
+	"Felix Victor Münch <f.muench@leibniz-hbi.de>"
+]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Leibniz-HBI/dabapush"
+classifiers = [
+		"Development Status :: 2 - Pre-Alpha",
+		"Environment :: Console",
+		"Intended Audience :: Science/Research",
+]
+packages = [
+	{include = "smo-database"},
+	{include = "dabapush"}
+]
+include = ["config.yml"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "*"
+SQLAlchemy = "*"
+loguru = "*"
+pandas = "*"
+PyYAML = "*"
+importlib-metadata = "*"
+ujson = "*"
+psycopg2-binary = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-cov = "*"
+black = "*"
+coverage = "*"
+pdoc3 = "*"
+pre-commit = "*"
+isort = "*"
+pylint = "*"
+pytest-html = "*"
+pydocstyle = "^6.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dabapush = 'dabapush.main:cli'
+
+[tool.poetry.plugins.dabapush077]
+"Twacapic" = "dabapush.Reader.TwacapicReader:TwacapicReader"
+"CSV" = "dabapush.Writer.CSVWriter:CSVWriter"
+
+[tool.pytest.ini_options]
+addopts = "--cov-report html:tests/coverage --cov=dabapush --capture=sys"
+
+[tool.pylint.messages_control]
+disable=["invalid-name"]
