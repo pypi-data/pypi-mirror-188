@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: elgamal-anass-daniel
+Version: 0.0.4
+Summary: ElGamal encryption
+Home-page: UNKNOWN
+Author: Anass Anhari & Daniel Alamillo
+Author-email: <anassanhari@estudiantat-upc.edu>
+License: UNKNOWN
+Keywords: python,elgamal,encryption,chyper
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+
+
+# elgamal-anass-daniel
+
+A friendly module for testing ElGamal Cryptosystem.
+Moreover, it also brings futures such as validating primitive roots, obtaining them, and optimized operations such as Fast Modular Exponentiation.
+
+Developed by Anass Anhari & Daniel Alamillo (c) 2023
+
+## Examples of How To Use
+
+ElGamal built-in and optimized operations:
+
+```python
+from ElGamal import ElGamal
+
+elGamal = ElGamal()
+
+# Fast Modular Exponentiation
+elGamal.FastModExp(g=2, e=284523875345345, p=456), 32) # 32
+elGamal.FastModExp(g=100, e=284523875345345, p=456)    # 256
+
+# Obtain Primitive Roots
+elGamal.getPrimitiveRoots(5)  # [2, 3]
+elGamal.getPrimitiveRoots(29) # [2, 3, 8, 10, 11, 14, 15, 18, 19, 21, 26, 27]
+
+# Obtain the First Primitive Root
+elGamal.getFirstPrimitiveRoot(6) # None
+elGamal.getPrimitiveRoots(29)    # 2
+
+# Test a Primitive Root
+elGamal.isPrimitive(725, 829) # True
+elGamal.isPrimitive(41, 101)  # False
+
+msg1 = ElGamal.Message("[Msg-1] Hola que tal estas! :D")
+msg1.encrypt(g=2, g_x=1024, p=8820220609)
+print(msg1.decrypt(x=10, p=8820220609))
+```
+
+Create a message, encrypt it and decrypt it:
+
+```python
+from ElGamal import Message
+
+msg1 = Message("[Msg-1] Hola que tal estas! :D")
+msg1.encrypt(g=2, g_x=1024, p=8820220609)
+print(msg1.decrypt(x=10, p=8820220609))
+```
+
