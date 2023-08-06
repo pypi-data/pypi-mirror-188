@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: scora-ldap-extractor
+Version: 1.1.0
+Summary: Scora Ldap Extractor, see docs for more details.
+Home-page: https://github.com/oncase/scora-ldap-extractor
+Author: Oncase
+Author-email: contato@oncase.com.br
+License: MIT
+Keywords: scora
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ldap3 (>=2.9.1)
+Requires-Dist: boto3 (>=1.26.57)
+Requires-Dist: python-dotenv (>=0.21.1)
+Requires-Dist: environs (>=9.5.0)
+Requires-Dist: numpy (>=1.24.1)
+
+# Scora Ldap Extractor
+
+## Usage
+
+```python
+from scora_ldap_extractor import LdapService
+ldap_service = LdapService(TENANT, LDAP_USERNAME, LDAP_PASSWORD)
+```
+
+## Environment Variables
+
+- **AWS_PROFILE_NAME**: The name of a profile to use. If not given, then
+  the default profile is used.
+
+- **AWS_REGION**: Region for DynamoDB table.
+
+- **DYNAMO_TABLE_NAME**: DynamoDB table name to fetch services config.
+
+### DynamoDB Object Example
+
+```json
+{
+  "service": "service",
+  "ldap_admin_groups": [],
+  "ldap_domain": "@service.local",
+  "ldap_groups": ["GS_1", "group2"],
+  "ldap_root_dn": "CN=GS_1,OU=Grupos,DC=service,DC=local",
+  "ldap_root_dn_dev": "dc=service,dc=local",
+  "ldap_server": "ldap://localhost.389",
+  "ldap_port": 636 /* Default is 389 */,
+  "ldap_server_alias": ["service.com.br"]
+}
+```
