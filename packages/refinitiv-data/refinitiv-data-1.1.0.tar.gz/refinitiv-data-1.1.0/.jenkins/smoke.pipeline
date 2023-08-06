@@ -1,0 +1,66 @@
+@Library('jenkins-shared-library@morelia-shared-library') _
+pipeline {
+    environment {
+        TEST_AGENT = "EAPI-testagent-${JOB_BASE_NAME}-py"
+        GIT_CI_CREDENTIALS = credentials('git_ci_credentials')
+
+        DOCKER_NETWORK_NAME = "ealp-${UUID.randomUUID().toString()}-py"
+        DOCKER_EIKON = "ealp-eikon-${UUID.randomUUID().toString()}-py"
+
+        ENV_NAME = "${params.ENV_NAME}"
+
+        EDP_USERNAME = credentials('RDP_LOGIN-1855')
+        EDP_PASSWORD = credentials('RDP_PASSWORD-1855')
+        DESKTOP_APP_KEY = credentials('APP_KEY-1855')
+
+        PPE_USERNAME = credentials('PPE_USERNAME_MORELIA')
+        PPE_PASSWORD = credentials('PPE_PASSWORD_MORELIA')
+        PPE_DESKTOP_APP_KEY = credentials('PPE_DESKTOP_APP_KEY_MORELIA')
+
+        BETA_USERNAME = credentials("TEST.USER.MORELIA.PPE")
+        BETA_PASSWORD = credentials("TEST.USER.MORELIA.PASS.PPE")
+
+        PROD_USERNAME = credentials('TEST_USER_12')
+        PROD_PASSWORD = credentials('TEST_USER_12_PASSWORD')
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    agent {label 'slave5'}
+      stages {
+        stage('Run Workspace') {
+            steps {
+                runWorkspace()
+            }
+        }
+
+        stage('Run Unit, Integration, BDD tests') {
+            steps {
+                script {
+                    docker.image("python:${PY_VER}").inside('--name ${TEST_AGENT} --net ${DOCKER_NETWORK_NAME} -v /var/run/docker.sock:/var/run/docker.sock -u 0') {
+                        setUpSocatAndTox()
+                        sh 'rm *.log || true'
+                        sh 'python3 -m tox -e smoke'
+                        sh 'chmod -R o+rw ./allure-results'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            removeDockerNetwork()
+            allure([
+                includeProperties: false,
+                jdk: '',
+                properties: [],
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'allure-results/']],
+                report: 'allure-report/'
+            ])
+        }
+    }
+}

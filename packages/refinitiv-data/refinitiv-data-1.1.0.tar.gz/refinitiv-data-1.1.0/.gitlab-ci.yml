@@ -1,0 +1,115 @@
+image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/python:3
+
+stages:
+  - test
+  - sonarqube-check
+  - build
+  - publish
+
+sonarqube-check:
+  stage: sonarqube-check
+  image: sonarsource/sonar-scanner-cli:latest
+  variables:
+    SONAR_PROJECT_BASE_DIR: "$CI_PROJECT_DIR"
+  script:
+    - sonar-scanner -Dsonar.projectVersion=$CI_BUILD_ID -Dsonar.branch.name=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+  only:
+    - merge_requests
+    - develop
+  cache:
+    key: COVERAGE
+    paths:
+      - coverage.xml
+    policy: pull
+  tags:
+    - Linux,Medium,Refinitiv
+
+.pytest:
+  stage: test
+  only:
+    - tags
+    - develop
+    - merge_requests
+  before_script:
+    - pip install . -r requirements/test.txt
+  timeout: 5m
+  script:
+    - coverage run --source=./refinitiv -m pytest tests/unit/
+    - coverage report -m
+    - coverage xml -o ./coverage.xml
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+  tags:
+    - Linux,Medium,Refinitiv
+
+pytest 3.7/py3:
+  extends:
+    - .pytest
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/python:3.7
+
+pytest 3.8/py3:
+  extends:
+    - .pytest
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/python:3.8
+
+pytest 3.9/py3:
+  extends:
+    - .pytest
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/python:3.9
+  cache:
+    key: COVERAGE
+    paths:
+      - coverage.xml
+    policy: push
+
+pytest 3.10/py3:
+  extends:
+    - .pytest
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/python:3.10
+
+pytest 3.11/py3:
+  extends:
+    - .pytest
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/python:3.11
+
+build:
+  stage: build
+  when: manual
+  before_script:
+    - pip install -r requirements/build.txt
+  script:
+    - python -m build .
+  artifacts:
+    paths:
+      - dist/*.whl
+      - dist/*.tar.gz
+  tags:
+    - Linux,Medium,Refinitiv
+
+.release:
+  when: manual
+  stage: publish
+  only:
+    - tags
+  except:
+    - branches
+  before_script:
+    - pip install twine
+  tags:
+    - Linux,Medium,Refinitiv
+
+bams-release:
+  extends:
+    - .release
+  script:
+    - twine upload --username ${BAMS_USERNAME} --password ${BAMS_TOKEN} --config-file ./.pypirc -r bams --verbose dist/*
+
+pypi-release:
+  extends:
+    - .release
+  script:
+    - twine upload --username ${PYPI_USERNAME} --password ${PYPI_TOKEN} --config-file ./.pypirc -r pypi --verbose dist/*

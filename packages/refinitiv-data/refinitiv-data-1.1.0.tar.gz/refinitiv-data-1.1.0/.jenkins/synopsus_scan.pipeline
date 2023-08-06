@@ -1,0 +1,48 @@
+@Library('jenkins-shared-library@morelia-shared-library') _
+pipeline {
+    environment {
+        GIT_CI_CREDENTIALS = credentials('git_ci_credentials')
+        DOCKER_NETWORK_NAME = "ealp-${UUID.randomUUID().toString()}"
+        DOCKER_EIKON = "ealp-eikon-${UUID.randomUUID().toString()}-py"
+        TEST_AGENT_ID = "ealj-testagent-${UUID.randomUUID().toString()}"
+        RD_VERSION = "${params.RD_VERSION}"
+        USERNAME = credentials('morelia_bams_username')
+        PASSWORD = credentials('morelia_bams_password')
+        BD_API_TOKEN = credentials('BD_API_TOKEN')
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    agent {label 'slave5'}
+
+    stages {
+        stage('Enabled Synopsys detect on RD lib') {
+            steps {
+                script {
+                    sh "docker network create ${DOCKER_NETWORK_NAME}"
+                    docker.build("black-duck-env", "-f .jenkins/DockerFile .").inside('--name ${TEST_AGENT_ID} --net ${DOCKER_NETWORK_NAME} -v /var/run/docker.sock:/var/run/docker.sock -u 0') {
+                        sh '''
+                            python3 -m venv black-duck
+                            . black-duck/bin/activate
+                            pip3 install --extra-index-url https://${USERNAME}:${PASSWORD}@bams-aws.refinitiv.com/artifactory/api/pypi/default.pypi.cloud/simple refinitiv-data==${RD_VERSION}
+                            pip list -v
+                            cd black-duck/
+                            set -x
+                            curl -s -L https://detect.synopsys.com/detect.sh -o detect.sh && chmod a+rx detect.sh
+                            bash ./detect.sh --blackduck.url=https://refinitiv.app.blackduck.com --detect.npm.include.dev.dependencies=false --detect.project.name=refinitiv-data --detect.project.version.name=${RD_VERSION} --blackduck.api.token=${BD_API_TOKEN}
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            removeDockerNetwork()
+        }
+    }
+}

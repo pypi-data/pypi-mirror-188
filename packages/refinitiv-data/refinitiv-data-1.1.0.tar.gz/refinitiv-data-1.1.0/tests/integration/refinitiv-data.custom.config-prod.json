@@ -1,0 +1,130 @@
+{
+    "sessions": {
+        "default": "platform.deployed-cipsnylab2",
+        "platform": {
+            "my-session": {
+                "app-key": "${DESKTOP_APP_KEY}",
+                "username": "${EDP_USERNAME}",
+                "password": "${EDP_PASSWORD}",
+                "auto-reconnect": true,
+                "server-mode": false,
+                "base-url": "https://api.refinitiv.com",
+                "auth": {
+                    "url": "/auth/oauth2/v1",
+                    "authorize": "/authorize",
+                    "token": "/token"
+                }
+            },
+            "rdp-session": {
+                "app-key": "${DESKTOP_APP_KEY}",
+                "username": "${RDP_USERNAME}",
+                "password": "${RDP_PASSWORD}",
+                "auto-reconnect": true,
+                "server-mode": false,
+                "base-url": "https://api.refinitiv.com",
+                "auth": {
+                    "url": "/auth/oauth2/v1",
+                    "authorize": "/authorize",
+                    "token": "/token"
+                }
+            },
+            "deployed-cipsnylab2": {
+                "app-key": "${DESKTOP_APP_KEY}",
+                "realtime-distribution-system": {
+                    "url": "${DEPLOYED_PLATFORM_HOST}",
+                    "dacs": {
+                        "username": "${DEPLOYED_PLATFORM_USER_NAME}",
+                        "application-id": "256",
+                        "position": ""
+                    }
+                }
+            }
+        },
+        "desktop": {
+            "my-session": {
+                "app-key": "${DESKTOP_APP_KEY}",
+                "base-url": "http://localhost:9000",
+                "platform-paths": {"rdp": "/api/rdp", "udf": "/api/udf"},
+                "handshake-url": "/api/handshake"
+            }
+        }
+    },
+    "apis": {
+        "streaming": {
+            "contrib": {
+                "endpoints": {
+                    "main": {
+                        "direct-url": "ws://10.184.8.188:15000",
+                        "path": "/",
+                        "protocols": ["OMM"],
+                        "locations": []
+                    }
+                }
+            },
+            "pricing": {
+                "url": "/streaming/pricing/v1",
+                "endpoints": {
+                    "main": {"path": "/", "protocols": ["OMM"], "locations": []},
+                    "direct-websocket": {
+                        "direct-url": "wss://ap-southeast-1-aws-2-lrg.optimized-pricing-api.refinitiv.net:443",
+                        "protocols": ["OMM"],
+                        "locations": []
+                    }
+                }
+            }
+        }
+    },
+    "search": {
+        "templates": {
+            "Equity": {
+                "request_body": {
+                    "Filter": "AssetState ne 'DC' and SearchAllCategoryv2 eq 'Equities' and ExchangeName xeq '#{exchange_name}'",
+                    "Select": "DTSubjectName,ExchangeName,RIC,IssueISIN,CUSIP,CinCUSIP,SEDOL,Gics,RCSAssetCategory,AssetState,BusinessEntity,PI,ExDividendDate,RCSCurrencyLeaf",
+                    "Top": 100,
+                    "GroupCount": 3,
+                    "View": "EquityQuotes"
+                },
+                "description": "Equity template",
+                "parameters": {
+                    "exchange_name": {
+                        "description": "Exchange name parameter description",
+                        "default": ""
+                    }
+                }
+            }
+        }
+    },
+    "bulk": {
+        "esg": {
+            "standard_scores": {
+                "package": {
+                    "bucket": "bulk-ESG",
+                    "name": "Bulk-ESG-Global-Raw-Full-Limited-SchemeB-v1",
+                    "download": {
+                        "path": "./downloads/esg/standard_scores",
+                        "auto-retry": {"enabled": true, "count": 3},
+                        "auto-extract": true
+                    }
+                },
+                "db": {
+                    "connection": {
+                        "module": "sqlite3",
+                        "parameters": {"database": "db.sqlite"}
+                    },
+                    "create-table-queries": [
+                        {
+                            "table-name": "NEW_TABLE_1",
+                            "create-query": "CREATE TABLE IF NOT EXISTS NEW_TABLE_1 (ORGANIZATION varchar(255), INSERT_DATE varchar(255), INSTRUMENT varchar(255), PERIOD_END_DATE varchar(255), ESG_C_SCORE varchar(255), ESG_SCORE varchar(255), ENVIRONMENT_PILLAR_SCORE varchar(255), SOCIAL_PILLAR_SCORE varchar(255), GOVERNANCE_PILLAR_SCORE varchar(255))",
+                            "check-if-exists-query": "SELECT name FROM sqlite_master WHERE type='table';"
+                        }
+                    ],
+                    "insert-queries": [
+                        "REPLACE INTO NEW_TABLE_1(ORGANIZATION, INSERT_DATE, INSTRUMENT, PERIOD_END_DATE, ESG_C_SCORE, ESG_SCORE,ENVIRONMENT_PILLAR_SCORE, SOCIAL_PILLAR_SCORE, GOVERNANCE_PILLAR_SCORE)VALUES ('#Fields.ESGOrganization.Names.Name.OrganizationName.0.NormalizedName', '#File.DateTime','#Fields.StatementDetails.OrganizationId', '#Fields.StatementDetails.FinancialPeriodEndDate','#Fields.ESGScores.ESGCombinedScore.Value', '#Fields.ESGScores.ESGScore.Value','#Fields.ESGScores.EnvironmentPillarScore.Value', '#Fields.ESGScores.SocialPillarScore.Value','#Fields.ESGScores.GovernancePillarScore.Value')"
+                    ],
+                    "search-query": "SELECT * FROM NEW_TABLE_1 WHERE INSTRUMENT IN #{universe}",
+                    "clean-up-queries": ["DELETE FROM NEW_TABLE_1"]
+                }
+            }
+        }
+    }
+}

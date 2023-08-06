@@ -1,0 +1,116 @@
+@Library('jenkins-shared-library@morelia-shared-library') _
+pipeline {
+    environment {
+        TEST_AGENT = "EAPI-testagent-${JOB_BASE_NAME}-py"
+        GIT_CI_CREDENTIALS = credentials('git_ci_credentials')
+
+        DOCKER_NETWORK_NAME = "ealp-${UUID.randomUUID().toString()}-py"
+        DOCKER_EIKON = "ealp-eikon-${UUID.randomUUID().toString()}-py"
+
+        ENV_NAME = "${params.ENV_NAME}"
+        TESTS_PATH = "${params.TESTS_PATH}"
+        XDIST_WORKER_COUNT = "${params.XDIST_WORKER_COUNT}"
+        XDIST_DISTRIBUTION = "${params.XDIST_DISTRIBUTION}"
+
+        DESKTOP_APP_KEY = credentials('APP_KEY-1855')
+
+        RDP_USERNAME = credentials('RDP_USERNAME_MORELIA')
+        RDP_PASSWORD = credentials('RDP_PASSWORD_MORELIA')
+
+        RDP_USERNAME_2 = credentials('RDP_USERNAME_MORELIA_8455')
+        RDP_PASSWORD_2 = credentials('RDP_PASSWORD_MORELIA_8455')
+
+        EDP_USERNAME = credentials('MORELIA_EDP_USERNAME-3655')
+        EDP_PASSWORD = credentials('MORELIA_EDP_PASSWORD-3655')
+
+        EDP_USERNAME_2 = credentials('MORELIA_EDP_USERNAME-8455')
+        EDP_PASSWORD_2 = credentials('MORELIA_EDP_PASSWORD-8455')
+
+        EDP_USERNAME_3 = credentials('MORELIA_EDP_USERNAME-5006')
+        EDP_PASSWORD_3 = credentials('MORELIA_EDP_PASSWORD-5006')
+
+        EIKON_USERNAME = credentials('EIKON_LOGIN_A')
+        EIKON_PASSWORD = credentials('EIKON_PASSWORD_A')
+
+        PPE_USERNAME = credentials('PPE_USERNAME_MORELIA')
+        PPE_PASSWORD = credentials('PPE_PASSWORD_MORELIA')
+        PPE_DESKTOP_APP_KEY = credentials('PPE_DESKTOP_APP_KEY_MORELIA')
+
+        BETA_USERNAME = credentials("TEST.USER.MORELIA.PPE")
+        BETA_PASSWORD = credentials("TEST.USER.MORELIA.PASS.PPE")
+
+        PROD_USERNAME = credentials('TEST_USER_12')
+        PROD_PASSWORD = credentials('TEST_USER_12_PASSWORD')
+
+        DEPLOYED_PLATFORM_HOST = "10.187.14.95:15000"
+        DEPLOYED_PLATFORM_USER_NAME = " "
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    agent { label 'slave5' }
+    stages {
+        stage('Run Workspace') {
+            steps {
+                runWorkspace()
+            }
+        }
+        stage('Run unit and integration tests') {
+            steps {
+                script {
+                    docker.image("python:${PY_VER}").inside('--name ${TEST_AGENT} --net ${DOCKER_NETWORK_NAME} -v /var/run/docker.sock:/var/run/docker.sock -u 0') {
+                        setUpSocatAndTox()
+                        sh 'rm *.log || true'
+                        sh 'python3 -m tox -e tests-nix'
+                        sh 'chmod -R o+rw ./allure-results'
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube') {
+            steps {
+                script {
+                    if (params.SONAR_ENABLED == true) {
+                        docker.withRegistry('https://342562131727.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-access') {
+                            docker.image('342562131727.dkr.ecr.us-east-1.amazonaws.com/a205826-jenkins-agents:node10_sq4.5.0.2216').inside {
+                                withSonarQubeEnv('refinitiv-sq') {
+                                    sh """
+                                       sonar-scanner -X \
+                                      -Dsonar.host.url=https://sonarqube.refinitiv.com \
+                                      -Dsonar.sourceEncoding=UTF-8 \
+                                      -Dsonar.projectKey=RD_Python_Library \
+                                      -Dsonar.branch.name=${env.GIT_BRANCH} \
+                                      -Dsonar.sources=refinitiv/data \
+                                      -Dsonar.exclusions=tests/**/* \
+                                      -Dsonar.python.coverage.reportPaths=coverage.xml \
+                                      -Dsonar.issue.ignore.multicriteria.e1.ruleKey=python:S1192 \
+                                      -Dsonar.issue.ignore.multicriteria.e1.resourceKey=refinitiv/data/_core/session/_scope_map.py
+                                    """
+                                }
+                            }
+                        }
+                    } else {
+                        sh "echo 'SonarQube skipped'"
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            removeDockerNetwork()
+            allure([
+                    includeProperties: false,
+                    jdk              : '',
+                    properties       : [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results          : [[path: 'allure-results/']],
+                    report           : 'allure-report/'
+            ])
+        }
+    }
+}

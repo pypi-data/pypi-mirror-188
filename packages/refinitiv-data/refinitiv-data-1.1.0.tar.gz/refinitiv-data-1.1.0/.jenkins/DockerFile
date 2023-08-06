@@ -1,0 +1,25 @@
+FROM openkbs/jdk-mvn-py3
+
+RUN sudo apt-get update && \
+    sudo apt-get install -y \
+        socat \
+        make build-essential libssl-dev zlib1g-dev \
+        libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+        libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
+
+ENV PYENV_ROOT="/home/developer/.pyenv" \
+    PATH="/home/developer/.pyenv/bin:/home/developer/.pyenv/shims:$PATH"
+
+RUN sudo curl https://pyenv.run | bash
+
+RUN pyenv update && \
+    pyenv install 3.9.6 && \
+    pyenv install 3.8.0 && \
+    pyenv install 3.7.5 && \
+    pyenv install 3.7.0
+
+
+RUN pyenv global 3.9.6 && \
+    python -m pip install -U pip && \
+    python -m pip install tox==3.23.0 && \
+    pyenv rehash
