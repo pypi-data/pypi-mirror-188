@@ -1,0 +1,64 @@
+$def with (files)
+$var title: Media
+
+$if tx.user.is_owner:
+    <form action="" enctype=multipart/form-data method=post>
+    <div><label>File <input name=file type=file></label></div>
+    <button>Upload</button>
+    </form>
+    $# <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    $# <link rel="stylesheet" type="text/css"
+    $# href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css">
+    $# <form action="" class="dropzone" id="my-awesome-dropzone"></form>
+    $# <script type="application/javascript">
+    $# console.log(Dropzone)
+    $# Dropzone.options.dropper = {
+    $#     paramName: 'file',
+    $#     chunking: true,
+    $#     forceChunking: true,
+    $#     url: 'https://ragt.ag/media',
+    $#     maxFilesize: 1025, 
+    $#     chunkSize: 10000,
+    $#     parallelChunkUploads: true
+    $# }
+    $# </script>
+
+<div id=files>
+$for file in files:
+    <div>
+    $if tx.user.is_owner:
+        <form action=/$file.name method=delete>
+        <input type=hidden name=_http_method value=delete>
+    $if file.name.endswith((".png", ".jpg", ".jpeg", ".gif", ".webp")):
+        <div><a href=/$file.name><img src=/$file.name></a></div>
+    $elif file.name.endswith((".mp4", ".webm", ".mov", ".flv")):
+        $if file.name.endswith(".mp4"):
+            $ type = "mp4"
+        $elif file.name.endswith(".webm"):
+            $ type = "webm"
+        $elif file.name.endswith(".mov"):
+            $ type = "mov"
+        $elif file.name.endswith(".flv"):
+            $ type = "x-flv"
+        <div><video controls style=width:100%>
+        <source src=/$file.name type=video/$type>
+        </video></div>
+    $elif file.name.endswith((".m4a",)):
+        <div><audio controls>
+        <source src=/$file.name type=audio/mp4>
+        </audio></div>
+    <p>$file.name <small>$round(file.stat().st_size / 1024 / 1024, 2)mb</small></p>
+    $if tx.user.is_owner:
+        <button>Delete</button>
+        </form>
+    </div>
+</div>
+
+<style>
+#files {
+  list-style: none;
+  padding-left: 0;
+  text-align: right; }
+#files img {
+  width: 100%; }
+</style>
