@@ -1,0 +1,260 @@
+{% extends 'main/dashboard.html' %}
+{% block content %}
+
+
+{% load crispy_forms_tags %}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Informasaun / <b><a href="{% url 'informasaun:produtu' %}">Order</a></b> /
+      Konteudu Produtu </span>
+
+
+
+
+  </h4>
+  <div class="row">
+
+
+    <div class="col-md-9">
+      <div class="card" style="padding: 20px;">
+
+        <div class="table-responsive text-nowrap">
+
+
+
+
+
+
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            <font color="gray"> {{ message }}</font>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          <center>
+            <h4>Detallu husi order ho id {{order.id }} </h4>
+            <hr>
+          </center>
+
+          <table class="table table-sm">
+            <thead>
+              <tr class="text-nowrap">
+
+                <th>Nu</th>
+                <th>Imagen Produtu</th>
+                <th>Deskrisaun Produtu</th>
+                <th>Quantidade Order</th>
+                <th>Presu / Satuan </th>
+                <th>Total Presu </th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+              {% for dados in listaorder %}
+
+              <tr>
+                <td style="font-size: 13px;">{{forloop.counter}}</td>
+                <td style="font-size: 13px;"><img src="{{dados.produtu.imagen_main.url}}" width="100px"></td>
+                <td style="font-size: 13px;"> {{dados.produtu}}</td>
+                <td style="font-size: 13px;"> {{dados.total_order}}</td>
+                <td style="font-size: 13px;"> {{dados.presu_order}}</td>
+                <td style="font-size: 13px;"> {{dados.presu_order}}</td>
+
+
+
+
+              </tr>
+
+              {% endfor %}
+
+
+
+
+
+
+
+            </tbody>
+          </table>
+          <br><br>
+
+
+
+
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-3">
+
+      <div class="col-md-12">
+
+        <div class="card" style="padding: 20px;">
+
+          <h5>
+            Deskrisaun {{kliente.username}}
+          </h5>
+          <hr>
+
+          Naran Kliente : {{kliente.username}} <br>
+          Total Osan : $ {{total_price}} <br>
+
+          Deskrisaun : {{order.deskrisaun}} <br>
+        </div>
+      </div>
+
+      <br>
+      <div class="col-md-12">
+
+        <div class="card" style="padding: 20px;">
+
+          <h5>
+            Resposta Pedidu
+          </h5>
+          <hr>
+
+          {% if order.resposta == null %}
+          <div id='konteudumensagen'>
+            <textarea class="form-control" id="mensagentxt"></textarea> <br>
+
+            <a href='#' id="butaunmanda" class="btn btn-primary">Manda Mensagen </a>
+
+
+          </div>
+
+          <div id="msgloadingprosses">
+            <center> <img src='http://minio-s3.apps06.tic.gov.tl/bambumedia/pajina/loadingspiner.gif'
+                style="width: 130px ;"></center>
+          </div>
+          </a>
+          {% else %}
+
+         
+            {{order.resposta}}
+          
+          {% endif %}
+
+
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            Reply Order
+          </div>
+          <div class="modal-body">
+            <center>
+              <img src="" id="output" style="width: 200px ; height: 200px  px; object-fit: cover;">
+            </center>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+      function myFunction() {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+      }
+
+    </script>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <script>
+    document.getElementById("konteudumensagen").style.display = "block";
+    document.getElementById("msgloadingprosses").style.display = "none";
+
+
+
+    $('#butaunmanda').on('click', function () {
+
+      document.getElementById("konteudumensagen").style.display = "none";
+      document.getElementById("msgloadingprosses").style.display = "block";
+
+
+      mensagen = document.getElementById('mensagentxt').value;
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'informasaun:ordermandamensagenajax' %}",
+        data: {
+          'mensagen': mensagen,
+          'id': "{{id}}",
+          'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function (data) {
+
+          $('#konteudumensagen').html(data);
+
+          function loadloading() {
+            document.getElementById("msgloadingprosses").style.display = "none";
+            document.getElementById("konteudumensagen").style.display = "block";
+          }
+
+          setTimeout(loadloading, 3000);
+
+          //menampilkan data ke dalam modal
+        }
+      });
+
+    });
+
+
+
+
+
+
+
+
+  </script>
+
+
+  {% endblock content %}
