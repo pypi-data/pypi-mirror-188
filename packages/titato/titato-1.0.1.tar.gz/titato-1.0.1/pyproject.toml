@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "titato"
+version = "1.0.1"
+authors = [{ name="Steppe_Mammoth", email="qwqwqww404@gmail.com" }]
+
+description = "Library of the game tic-tac-toe + AI. Experimental functionality with dynamic parameters of the game field"
+
+readme = {"file" = "./docs/pypi/README.md", "content-type" = "text/markdown"}
+
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Games/Entertainment",
+]
+
+keywords = [
+    "tic-tac-toe",
+    "game",
+    "api",
+    "framework",
+]
+
+dependencies = ["prettytable ~= 3.6.0"]
+
+
+[project.urls]
+Documentation = "https://github.com/Steppe-Mammoth/titato/tree/dev-1.x#titato"
+Source =  "https://github.com/Steppe-Mammoth/titato/tree/dev-1.x"
+Issues = "https://github.com/Steppe-Mammoth/titato/issues"
+
+
+[tool.hatch.build]
+include = [ "titato", "tests",]
+exclude = [
+    ".git",
+    ".idea",
+    "build",
+    "dist",
+    "venv",
+    ".venv",
+    "dev",
+    ".pytest_cahce",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["titato"]
