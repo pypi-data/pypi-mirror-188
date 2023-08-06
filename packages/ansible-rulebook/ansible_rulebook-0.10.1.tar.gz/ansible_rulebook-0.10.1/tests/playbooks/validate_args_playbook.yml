@@ -1,0 +1,12 @@
+---
+- name: Playbook to check if the passed in values in rulebook_extra_vars are correct
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Convert vars to json so we can use nested keys
+      ansible.builtin.set_fact:
+        vars_json: "{{ vars | to_json }}"
+
+    - name: Compare value
+      ansible.builtin.include_tasks: compare_value.yml
+      loop: "{{ rulebook_extra_vars | dict2items }}"
