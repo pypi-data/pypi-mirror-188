@@ -1,0 +1,19 @@
+$def with (system, apps, projects)
+$var title: Code
+
+<h2>System</h2>
+<p>$system</p>
+<ul>\
+$ apps = {list(app.get_entry_map()["webapps"].values())[0].name: app for app in apps}
+$for app_name, app in sorted(apps.items()):
+    <li>$app_name
+    <small><a href=/system/$app.project_name>$app.project_name</a>
+    <a href=/system/$app.project_name/$app.version><small>$app.version</small></a></small>
+    </li>
+</ul>
+
+<h2>Projects</h2>
+<ul>
+$for project in projects:
+    <li><a href=/projects/$project>$project</a></li>
+</ul>
