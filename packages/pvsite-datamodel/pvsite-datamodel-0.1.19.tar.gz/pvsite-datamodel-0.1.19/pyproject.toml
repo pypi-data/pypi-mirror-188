@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=3.4"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pvsite-datamodel"
+description = "SDK for interacting with the PVSite database"
+authors = [
+    { name = "Open Climate Fix" }
+]
+requires-python = ">=3.10.0"
+version = "0.1.19"  # Autoincremented by bumpversion.cfg
+classifiers = ["Programming Language :: Python :: 3"]
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+tests = [
+  'testcontainers.postgres',
+  'pytest',
+]
+
+[project.urls]
+"GitHub" = "https://github.com/openclimatefix/pvsite-datamodel"
+
+
+[tool.setuptools]
+include-package-data = true
+packages = [
+    "pvsite_datamodel",
+    "pvsite_datamodel.read",
+    "pvsite_datamodel.write",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.mypy]
+python_version = "3.10"
+plugins = [
+    "sqlalchemy.ext.mypy.plugin",
+    "pandera.mypy"
+]
+exclude = [
+    "^gen/*$", # TOML basic string (double-quotes, backslash and other characters need escaping)
+]
+
+[tool.ruff]
+select = [
+    "E", # pycodestyle
+    "W", # newline at end of files
+    "F", # pyflakes
+    "N", # pep8 naming
+    "B", # flake8-bugbear
+    "I", # isosort
+    "D", # pydocstyle
+    "S", # flake8-bandit
+    "T20", # flake8-print
+    "PT" # flake8-print
+]
+line-length = 100
+ignore = ["D203", "D213"]
+exclude = ["__init__.py"]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["E402"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
