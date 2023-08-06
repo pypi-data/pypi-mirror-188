@@ -1,0 +1,42 @@
+# mistery
+
+*mistery* (c.f. "MIST query") is a Python module for retrieving data
+from the [MESA Isochrones and Stellar
+Tracks](http://waps.cfa.harvard.edu/MIST/) (MIST) database of stellar
+models.  The module allows you to fetch data by submitting requests to
+the web interpolator.  It is intended as a lightweight teaching tool
+that lets students access real-world stellar model data.  If you're
+doing intensive scientific work, you may prefer to access
+the data in other ways (e.g. by downloading [packaged model
+grids](http://waps.cfa.harvard.edu/MIST/model_grids.html)).
+
+Install *mistery* from PyPI with
+
+```
+    pip install mistery
+```
+
+Then fetch a single track with
+
+```python
+    track = mistery.get_track(M=3.1081, FeH=-0.8128)
+```
+
+The data is returned as a structured NumPy array. i.e. you can access
+the columns by name rather than number.  To see a list of names, use
+
+```python
+    print(track.dtype.names)
+```
+
+and access columns with statements like ``track['log_L']``.
+
+You can download multiple tracks in one call by instead passing an
+iterable of masses to ``mistery.get_tracks``, e.g.
+
+```python
+    tracks = mistery.get_tracks(M=[1.086718, 2.8511], FeH=0.012756)
+```
+
+The data in ``tracks`` is now a list of tracks and can be accessed
+with e.g. ``tracks[0]['log_L']``.
