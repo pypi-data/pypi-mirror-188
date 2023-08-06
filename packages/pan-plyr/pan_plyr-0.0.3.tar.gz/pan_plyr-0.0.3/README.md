@@ -1,0 +1,167 @@
+# pan_plyr package
+The pan_plyr package is a simple wrapper around the pandas library that makes it easy to perform common data manipulation similar to dplyr style. The package provides a pan_plyr class that can be initialized with a DataFrame and provides methods for performing tasks such as group by, sort by, select, drop, rename, filter and SQL like functionality.
+
+## Installation
+You can install the package using pip:
+
+```
+pip install pan_plyr
+from pan_plyr import pan_plyr
+```
+
+Usage
+The package can be used by first importing the pan_plyr class and then initializing it with a DataFrame. The package provides several methods that can be used to manipulate the DataFrame.
+
+```
+import pandas as pd
+from pan_plyr import pan_plyr
+```
+
+
+```
+## Create a sample DataFrame
+df = pd.DataFrame({'A': [1, 2, 3, 4], 'B': [5, 6, 7, 8],'C': ['a','b','c','d']})
+
+## Initialize the pan_plyr class with the DataFrame
+op = pan_plyr(df)
+```
+
+
+## Methods
+
+### group_by
+The group_by method can be used to group the DataFrame by a specified column.
+
+```
+op.group_by("C")
+```
+
+### sort_by
+The sort_by method can be used to sort the DataFrame by a specified column in ascending or descending order.
+
+```
+op.sort_by("A", False)
+```
+
+### select
+The select method can be used to select specified columns from the DataFrame.
+
+```
+op.select("A", "C")
+```
+### drop_col
+The drop_col method can be used to drop a specified column from the DataFrame.
+
+```
+op.drop_col("A")
+```
+### rename_col
+The rename_col method can be used to rename columns of the DataFrame.
+
+```
+op.rename_col(
+    {
+        "A":"A_A",
+        "B":"NEW_B_NAME"
+    }
+)
+```
+
+### filter
+The filter method can be used to filter the DataFrame based on a given query. The query should be in the format of a valid pandas query, using the syntax df.query("column_name operator value")
+
+```
+op.filter("A > 2")
+
+```
+
+### mutate
+This method allows you to create a new column in your dataframe by applying an expression to existing columns.
+```
+op.mutate('C', 'A + B')
+```
+
+### sql_mutate
+Creates a new variable in the dataframe by performing a SQL mutate operation on an existing variable or an expression.
+
+```
+op.sql_mutate('x + y', 'sum')
+```
+
+### sql_plyr
+SQL like functionality
+The pan_plyr also provides SQL like functionality by creating a SQLite connection and saving the DataFrame as a table in memory. The query method can be used to execute a SQL query on the DataFrame.
+When refering to the datat frame inside the query, you should use 'df' no matter what the name of your
+dataframe is.
+
+```
+# Execute a SQL query
+df_with_a_name = pd.DataFrame({'x': [1, 2, 3], 'y': [4, 5, 6]})
+pp = pan_plyr(df_with_a_name)
+op.sql_query('SELECT * FROM df WHERE x > 2')
+```
+
+### case_when
+This is similar to case when function of SQL, 
+if you would like to replace an existing column with the results, use it as a target_var
+
+``` 
+df = pd.DataFrame({'A': [1, 2, 3, 4], 'B': [5, 6, 7, 8],'C': ['a','b','c','d']})
+pp = pan_plyr(df)
+
+op.case_when(
+            [
+          (" C == 'a' ","AAA"),
+          ("C in ('b','c','d')","OTHER"),
+            ],
+        target_var="new_col"
+        ) 
+
+```
+
+### summarize
+This method allows to perform groupby and aggregation on the dataframe.
+The aggregation function to apply to the variable can be a string for built-in aggregation functions such as 'mean' or 'sum'
+or a user-defined function.
+
+
+### Chaining
+All the methods provided by the pan_plyr class return the pan_plyr object, allowing you to chain multiple methods together to perform multiple data manipulation tasks in one line.
+
+```
+op.group_by("C").sort_by("A", False).select("A", "C")
+```
+### clean_names()
+This method can be used to clean the name of variables
+
+```
+df = pd.DataFrame({'key is': ['A', 'B', 'C', 'D'], 'Value_ dD': [1, 1, 1, 4]})
+pan_plyr(df).clean_names().to_df
+```
+
+### skim
+This method provides a compact overview of the key characteristics of a dataframe.
+It can also be used after other data manipulation operations such as select, sql_dplyr, filter, etc. 
+```
+op.skim()
+```
+
+### Recommened style of writing codes: 
+
+```
+df = pd.DataFrame({'x': [1, 2, 3, 4, 5, 6], 'y': [4, 5, 6, 7, 8, 9, 10],'z':['a','b','a','b','a','a'})
+```
+```
+
+op  = pan_plyr(df)
+(
+op.
+mutate('a','x+y').
+sql_plyr('SELECT x, y,z, (x*y) as h FROM df').
+select('x','z','h').
+filter('x > 2').
+summarize(group_var='z',var=['x','h'],agg_func='mean')
+).to_df
+
+
+```
