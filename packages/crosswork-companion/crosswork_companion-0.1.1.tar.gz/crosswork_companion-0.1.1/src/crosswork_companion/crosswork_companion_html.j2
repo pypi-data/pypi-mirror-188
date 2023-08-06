@@ -1,0 +1,183 @@
+{%- include 'datatable_header.j2' %}
+{%- if api == "/crosswork/hi/v1/kpimgmt/query" %}
+<h1>Health Insights KPI Management Query</h1>
+<table id = "datatable">
+<thead>
+  <tr>
+    <th>KPI ID</th>
+    <th>KPI Name</th>
+    <th>Category</th>
+    <th>Created By</th>
+    <th>Creation Date</th>
+    <th>Details</th>
+    <th>Last Updated By</th>
+    <th>Last Updation Date</th>
+    <th>Module And Revision</th>
+    <th>Sensor Type</th>
+    <th>Summary</th>
+  </tr>
+</thead>  
+<tbody>
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+    <tr>
+        <td>{{ kpi.kpi_id }}</td>
+        <td>{{ kpi.kpi_name }}</td>
+        <td>{{ kpi.category }}</td>
+        <td>{{ kpi.created_by }}</td>
+        <td>{{ kpi.creation_date }}</td>
+        <td>{{ kpi.details }}</td>
+        <td>{{ kpi.last_updated_by }}</td>
+        <td>{{ kpi.last_updation_date }}</td>
+        <td>{{ kpi.module_and_revision }}</td>
+        <td>{{ kpi.sensor_type }}</td>
+        <td>{{ kpi.summary }}</td>
+    </tr>
+{%-     endfor %}
+</tbody>
+</table>
+{%- elif api == "kpimgmt_query_alert_outputs" %}
+<h1>Health Insights KPI Management Query Alert Output</h1>
+<table id = "datatable">
+<thead>
+  <tr>
+    <th>KPI ID</th>
+    <th>KPI Name</th>
+    <th>Alert Output Tag</th>
+  </tr>
+</thead>  
+<tbody>
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for tag in kpi['alert_outputs']['alert_output'] %}
+  <tr>
+    <td>{{ kpi.kpi_id }}</td>
+    <td>{{ kpi.kpi_name }}</td>
+    <td>{{ tag['alert_tag'] }}</td>
+  </tr>
+{%-         endfor %}
+{%-     endfor %}
+</tbody>
+</table>
+{%- elif api == "kpimgmt_query_dashboards" %}
+<h1>Health Insights KPI Management Query Dashboards</h1>
+<table id = "datatable">
+<thead>
+  <tr>
+    <th>KPI ID</th>
+    <th>KPI Name</th>
+    <th>Label</th>
+    <th>Type</th>
+    <th>Value</th>
+  </tr>
+</thead>  
+<tbody>
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for dashboard in kpi['dashboards']['dashboard'] %}
+  <tr>
+    <td>{{ kpi.kpi_id }}</td>
+    <td>{{ kpi.kpi_name }}</td>
+    <td>{{ dashboard['label'] }}</td>
+    <td>{{ dashboard['type'] }}</td>
+    <td>{{ dashboard['value'] }}</td>
+  </tr>
+{%-         endfor %}
+{%-     endfor %}
+</tbody>
+</table>
+{%- elif api == "kpimgmt_query_scripts" %}
+<h1>Health Insights KPI Management Query Scripts</h1>
+<table id = "datatable">
+<thead>
+  <tr>
+    <th>KPI ID</th>
+    <th>KPI Name</th>
+    <th>Scope</th>
+    <th>Script</th>
+    <th>Script_id</th>
+    <th>Template</th>
+    <th>Type</th>
+    <th>Parameter Name</th>
+    <th>Parameter Display Name</th>
+    <th>Parameter Description</th>
+    <th>Parameter Possible Values</th>
+    <th>Parameter Type</th>
+    <th>Parameter Value</th>
+  </tr>
+</thead>  
+<tbody>
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for script in kpi['scripts']['script'] %}
+{%-             for parameter in script['parameters']['parameter'] %}
+  <tr>
+    <td>{{ kpi.kpi_id }}</td>
+    <td>{{ kpi.kpi_name }}</td>
+    <td>{{ script.scope }}</td>
+    <td>{{ script.script }}</td>
+    <td>{{ script.script_id }}</td>
+    <td>{{ script.template }}</td>
+    <td>{{ script.type }}</td>
+    <td>{{ parameter.name }}</td>
+    <td>{{ parameter.display_name }}</td>
+    <td>{{ parameter.description }}</td>
+    <td>{{ parameter.possible_values }}</td>
+    <td>{{ parameter.type }}</td>
+    <td>{{ parameter.value }}</td>
+  </tr>
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+</tbody>
+</table>
+{%- elif api == "kpimgmt_query_sensor_groups" %}
+<h1>Health Insights KPI Management Query Sensor Groups</h1>
+<table id = "datatable">
+<thead>
+  <tr>
+    <th>KPI ID</th>
+    <th>KPI Name</th>
+    <th>Cadence Default</th>
+    <th>Cadence Increment</th>
+    <th>Cadence Max</th>
+    <th>Cadence Min</th>
+    <th>Sensor Path ID</th>
+  </tr>
+</thead>  
+<tbody>
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for sensor_group in kpi['sensor_groups']['sensor_group'] %}
+{%-             for path in sensor_group['sensor_paths']['sensor_path'] %}
+  <tr>
+    <td>{{ kpi.kpi_id }}</td>
+    <td>{{ kpi.kpi_name }}</td>
+    <td>{{ sensor_group.cadence.default }}</td>
+    <td>{{ sensor_group.cadence.increment }}</td>
+    <td>{{ sensor_group.cadence.max }}</td>
+    <td>{{ sensor_group.cadence.min }}</td>
+    <td>{{ path.path_id }}</td>
+  </tr>
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+</tbody>
+</table>
+{%- elif api == "/crosswork/nca/v1/yang/modules" %}
+<h1>YANG Modules</h1>
+<table id = "datatable">
+<thead>
+  <tr>
+    <th>Module ID</th>
+    <th>Revsion</th>
+  </tr>
+</thead>  
+<tbody>
+{%-     for module in data_to_template['modules'] %}
+{%-         for revision in module['revisions'] %}
+  <tr>
+    <td>{{ module.module_id }}</td>
+    <td>{{ revision }}</td>
+  </tr>
+{%-         endfor %}
+{%-     endfor %}
+</tbody>
+</table>
+{%- endif %}
+{%- include 'datatable_footer.j2' %}

@@ -1,0 +1,39 @@
+{%- if api == "/crosswork/hi/v1/kpimgmt/query" %}KPI ID,KPI Name,Category,Created By,Creation Date,Details,Last Updated By,Last Updation Date,Module And Revision,Sensor Type,Summary
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{{ kpi.kpi_id }},{{ kpi.kpi_name }},{{ kpi.category }},{{ kpi.created_by }},{{ kpi.creation_date }},{{ kpi.details | replace(","," ") }},{{ kpi.last_updated_by }},{{ kpi.last_updation_date }},{{ kpi.module_and_revision }},{{ kpi.sensor_type | replace(","," ") }},{{ kpi.summary | replace(","," ") }}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_alert_outputs" %}KPI ID,KPI Name,Alert Output Tag
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for tag in kpi['alert_outputs']['alert_output'] %}
+{{ kpi.kpi_id }},{{ kpi.kpi_name }},{{ tag['alert_tag'] }}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_dashboards" %}KPI ID,KPI Name,Label,Type,Value
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for dashboard in kpi['dashboards']['dashboard'] %}
+{{ kpi.kpi_id }},{{ kpi.kpi_name }},{{ dashboard['label'] }},{{ dashboard['type'] }},{{ dashboard['value'] }}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_scripts" %}KPI ID,KPI Name,Scope,Script,Script_id,Template,Type,Parameter Name,Parameter Display Name,Parameter Description,Parameter Possible Values,Parameter Type,Parameter Value
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for script in kpi['scripts']['script'] %}
+{%-             for parameter in script['parameters']['parameter'] %}
+{{ kpi.kpi_id }},{{ kpi.kpi_name }},{{ script.scope }},{{ script.script | replace("\n"," ") | replace(","," ") }},{{ script.script_id }},{{ script.template }},{{ script.type }},{{ parameter.name }},{{ parameter.display_name }},{{ parameter.description | replace(","," ") }},{{ parameter.possible_values | replace(","," ") }},{{ parameter.type }},{{ parameter.value }}
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_sensor_groups" %}KPI ID,KPI Name,Cadence Default,Cadence Increment,Cadence Max,Cadence Min,Sensor Path ID
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+{%-         for sensor_group in kpi['sensor_groups']['sensor_group'] %}
+{%-             for path in sensor_group['sensor_paths']['sensor_path'] %}
+{{ kpi.kpi_id }},{{ kpi.kpi_name }},{{ sensor_group.cadence.default }},{{ sensor_group.cadence.increment }},{{ sensor_group.cadence.max }},{{ sensor_group.cadence.min }},{{ path.path_id }}
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "/crosswork/nca/v1/yang/modules" %}Module ID,Revsion
+{%-     for module in data_to_template['modules'] %}
+{%-         for revision in module['revisions'] %}
+{{ module.module_id }},{{ revision }}
+{%-         endfor %}
+{%-     endfor %}
+{%- endif %}

@@ -1,0 +1,87 @@
+{%- if api == "/crosswork/hi/v1/kpimgmt/query" %}
+# Health Insights KPI Management Query
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+## KPI Name: {{ kpi.kpi_name }}
+### KPI ID: {{ kpi.kpi_id }}
+### Category: {{ kpi.category }}
+### Created
+#### By: {{ kpi.created_by }}
+#### On: {{ kpi.creation_date }}
+### Details: {{ kpi.details }}
+### Last Updated
+#### By: {{ kpi.last_updated_by }}
+#### On: {{ kpi.last_updation_date }}
+### Module and Revision: {{ kpi.module_and_revision }}
+### Sensor Type: {{ kpi.sensor_type }}
+### Summary: {{ kpi.summary }}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_alert_outputs" %}
+# Health Insights KPI Management Query Alert Output
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+## {{ kpi.kpi_name }}
+### KPI ID: {{ kpi.kpi_id }}
+### Tags
+{%-         for tag in kpi['alert_outputs']['alert_output'] %}
+#### {{ tag['alert_tag'] }}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_dashboards" %}
+# Health Insights KPI Management Query Dashboards
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+## KPI Name: {{ kpi.kpi_name }}
+### KPI ID: {{ kpi.kpi_id }}
+{%-         for dashboard in kpi['dashboards']['dashboard'] %}
+### Dashboard
+#### Label: {{ dashboard['label'] }}
+#### Type: {{ dashboard['type'] }}
+#### Value: {{ dashboard['value'] }}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_scripts" %}
+# Health Insights KPI Management Query Scripts
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+## Name: {{ kpi.kpi_name }}
+### KPI ID: {{ kpi.kpi_id }}
+### Script
+{%-         for script in kpi['scripts']['script'] %}
+#### {{ script.script_id }}
+##### Scope: {{ script.scope }}
+##### Template: {{ script.template }}
+##### Type: {{ script.type }}
+##### Script: {{ script.script | replace("\n"," ") }}
+{%-             for parameter in script['parameters']['parameter'] %}
+#### Name: {{ parameter.name }}
+##### Display Name: {{ parameter.display_name }}
+##### Description: {{ parameter.description }}
+##### Possible Values: {{ parameter.possible_values }}
+##### Type: {{ parameter.type }}
+##### Value: {{ parameter.value }}
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "kpimgmt_query_sensor_groups" %}
+# Health Insights KPI Management Query Sensor Groups
+{%-     for kpi in data_to_template['kpis']['kpi'] %}
+## {{ kpi.kpi_name }}
+### KPI ID: {{ kpi.kpi_id }}
+### Sensor Group Cadence 
+{%-         for sensor_group in kpi['sensor_groups']['sensor_group'] %}
+#### Default: {{ sensor_group.cadence.default }}
+#### Increment: {{ sensor_group.cadence.increment }}
+#### Max: {{ sensor_group.cadence.max }}
+#### Min: {{ sensor_group.cadence.min }}
+#### Sensor Path
+{%-             for path in sensor_group['sensor_paths']['sensor_path'] %}
+##### Path Id: {{ path.path_id }}
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+{%- elif api == "/crosswork/nca/v1/yang/modules" %}
+# YANG Modules
+{%-     for module in data_to_template['modules'] %}
+## Module ID: {{ module.module_id }}
+{%-         for revision in module['revisions'] %}
+### Revision: {{ revision }}
+{%-         endfor %}
+{%-     endfor %}
+{%- endif %}
