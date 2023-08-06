@@ -1,0 +1,65 @@
+IBoxLoader: !include
+  - ecs/ecs-task.yml
+  - lambda/permission.yml
+
+global:
+  Condition:
+    - EnableExecuteCommand: Equals(True, False)
+  EventsRule:
+    - ECSRunTask:
+        IBOX_SOURCE_OBJ: EventsRuleTargetLambda
+        Description: 'Periodically invoke LambdaECSRunTask'
+        State: 'ENABLED'
+        Targets:
+          - Lambda0:
+              Arn: ImportValue('LambdaECSRunTaskArn')
+              Id: 'TargetFunction-01'
+              Input: Join('"', [
+                  '{',
+                  'Cluster":', get_expvalue('Cluster', 'ClusterStack'), ',',
+                  'ECSInstancesStackName":', get_endvalue('ClusterStack'), ',',
+                  'LaunchType":', get_endvalue('LaunchType'), ',',
+                  If('NetworkModeAwsVpc', 'NetworkModeAwsVpc":"awsvpc",', Ref('AWS::NoValue')),
+                  'TaskDefinition":', Ref('TaskDefinition'), ',',
+                  'Subnets":', get_expvalue('SubnetsPrivate'), ',',
+                  'SecurityGroups":', Join(' ', cfg.SecurityGroupsImport),
+                  '}',
+                ])
+  IAMPolicy:
+    - LambdaECSRunTaskTrigger:
+        PolicyName: Sub('LambdaECSRunTaskTrigger_${AWS::StackName}')
+        Roles:
+          - get_expvalue('RoleLambdaECSRunTask')
+        PolicyDocument:
+          Statement:
+            - 1:
+                Action:
+                  - 'ecs:RunTask'
+                  - 'ecs:StartTask'
+                Effect: Allow
+                Resource: Ref('TaskDefinition')
+            - 2:
+                Action:
+                  - 'iam:GetRole'
+                  - 'iam:PassRole'
+                Effect: Allow
+                Resource: 
+                  - GetAtt('RoleTask', 'Arn')
+                  - get_expvalue('RoleECSTaskExecution')
+  LambdaECSRunTask.DISABLED.Use.CommonOne.In.Resources:
+    - ECSRunTask:
+        Description: 'Run ECS Task'
+        MemorySize: 128
+        Runtime: python3.9
+        Timeout: 10
+        Environment:
+          Variables:
+            - Cluster: get_expvalue('Cluster', 'ClusterStack')
+            - ECSInstancesStackName: get_endvalue('ClusterStack')
+            - LaunchType: get_endvalue('LaunchType')
+            - NetworkModeAwsVpc: If('NetworkModeAwsVpc','awsvpc',Ref('AWS::NoValue'))
+            - TaskDefinition: Ref('TaskDefinition')
+            - Subnets: get_expvalue('SubnetsPrivate')
+            - SecurityGroups: Join(' ', cfg.SecurityGroupsImport)
+  LaunchType: EC2
+  NetworkMode: awsvpc
