@@ -1,0 +1,45 @@
+version: "3.9"
+# name: trabalho-individual
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.4.3-bionic
+    environment:
+      "MONGO_INITDB_ROOT_USERNAME": ${MONGO_INITDB_ROOT_USERNAME}
+      "MONGO_INITDB_ROOT_PASSWORD": ${MONGO_INITDB_ROOT_PASSWORD}
+    command: --auth
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-import:
+    container_name: mongo-import
+    image: mongo:4.4.3-bionic
+    command: mongoimport --authenticationDatabase=admin -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --host mongodb --db testeDB --collection dados --type csv --file data/data/dados.csv --headerline
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/data
+
+  metabase:
+    container_name: metabase
+    image: metabase/metabase:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo-import
+    volumes:
+      - .:/data/metabase
+
+  application:
+    container_name: application
+    image: python:3.8
+    build: .
+    depends_on:
+      - metabase
+    volumes:
+      - .:/data/metabase
+
+volumes:
+  mongodb_data:
