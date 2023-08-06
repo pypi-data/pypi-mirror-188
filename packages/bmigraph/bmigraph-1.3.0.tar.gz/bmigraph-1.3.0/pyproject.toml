@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "bmigraph"
+version = "1.3.0"
+description = "A BMI calculator and more!"
+authors = ["Qurat-ul-Ain Azim, Natalie Cho, HanChen Wang, Kelvin Wong"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+plotly = ">=5.12.0"
+plotly-express = "^0.4.1"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+python-semantic-release = "^7.33.0"
+myst-nb = {version = "^0.17.1", python = "^3.9"}
+sphinx-autoapi = "^2.0.1"
+sphinx-rtd-theme = "^1.1.1"
+sphinxcontrib-napoleon = "^0.7"
+
+[tool.semantic_release]
+version_source = "commit"                   # version source
+version_variable = "pyproject.toml:version" # version location
+branch = "master"                           # branch to make releases of
+changelog_file = "CHANGELOG.md"             # changelog file
+build_command = "poetry build"              # build dists
+dist_path = "dist/"                         # where to put dists
+upload_to_release = true                    # auto-create GitHub release
+upload_to_pypi = false                      # don't auto-upload to PyPI
+remove_dist = false                         # don't remove dists
+patch_without_tag = true                    # patch release by default
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
