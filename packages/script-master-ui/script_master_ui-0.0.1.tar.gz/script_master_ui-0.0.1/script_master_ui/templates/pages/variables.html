@@ -1,0 +1,138 @@
+{% extends "pages/wrapper.html" %}
+
+{% block pretitle %}OVERVIEW{% endblock %}
+{% block title %}Variables{% endblock %}
+
+{% block title_btns %}
+{% if variables %}
+<span class="d-none d-sm-inline"></span>
+<a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-choose-file-format">
+    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    Create variable
+</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+{% if variables %}
+<div class="row row-deck row-cards">
+    <div class="col-12">
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table card-table table-vcenter text-nowrap datatable">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in variables %}
+
+                    <tr>
+                        <td>
+                            <a class="text-light" href="/variable/{{ item.name }}/detailed">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/ban -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 21v-4a3 3 0 0 1 3 -3h5"></path>
+                                    <path d="M9 17l3 -3l-3 -3"></path>
+                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                    <path d="M5 11v-6a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-9.5"></path>
+                                </svg>
+
+                                {{ item.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="btn-list flex-nowrap justify-content-end">
+
+                                <a href="/variable/{{ item.name }}/edit" class="btn btn-icon btn-outline-info"
+                                   title="Edit variable file">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/edit -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                         height="24"
+                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                        <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                                        <line x1="16" y1="5" x2="19" y2="8"></line>
+                                    </svg>
+                                </a>
+
+                                <a href="/variable/{{ item.name }}/delete" class="btn btn-icon btn-outline-danger"
+                                   title="Delete variable file">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                         height="24"
+                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container-xl d-flex flex-column justify-content-center">
+    <div class="empty">
+        <p class="empty-title">No variables found</p>
+        <p class="empty-subtitle text-muted">
+            You haven't created any variables yet.
+        </p>
+        <div class="empty-action">
+            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+               data-bs-target="#modal-choose-file-format">
+                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Create variable
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="modal modal-blur fade" id="modal-choose-file-format" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose file format</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <a href="/variable/create/yaml" class="btn btn-orange">.yaml</a>
+                <a href="/variable/create/json" class="btn btn-blue">.json</a>
+                <a href="/variable/create/sql" class="btn btn-pink">.sql</a>
+                <a href="/variable/create/txt" class="btn btn-lime">.txt</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

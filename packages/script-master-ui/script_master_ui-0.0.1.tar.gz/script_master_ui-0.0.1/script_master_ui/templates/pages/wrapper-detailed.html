@@ -1,0 +1,40 @@
+{% extends "pages/wrapper.html" %}
+
+{% block title %}
+Detailed
+{% endblock %}
+
+
+{% block title_btns %}
+<span class="d-none d-sm-inline">
+{% if not render %}
+    <a href="/{{ object }}/{{ form_data.name }}/detailed?render=true" class="btn btn-outline-secondary">Render</a>
+{% else %}
+    <a href="/{{ object }}/{{ form_data.name }}/detailed" class="btn btn-outline-secondary">Unrender</a>
+{% endif %}
+</span>
+<span class="d-none d-sm-inline">
+    <a href="/{{ object }}/{{ form_data.name }}/edit" class="btn btn-outline-success">Edit</a>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="card card-lg">
+    <div class="card-body ">
+        <div class="row g-4">
+            <div class="col-12 markdown">
+                <h1>{{ form_data.name }}</h1>
+                <p>{{ filepath }}</p>
+                <pre style="background: #1f2936">{{ form_data.text }}</pre>
+            </div>
+
+            {% if form_errors.text %}
+            <div class="mb-3">
+                <h3 class="text-danger">Error</h3>
+                <pre class="text-danger" style="background-color: #0d1117">{{ form_errors.text }}</pre>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

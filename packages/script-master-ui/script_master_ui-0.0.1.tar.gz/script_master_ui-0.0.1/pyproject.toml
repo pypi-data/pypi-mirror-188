@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "script-master-ui"
+version = "0.0.1"
+description = ""
+authors = ["Pavel Maksimov <vur21@ya.ru>"]
+include = [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+]
+packages = [{include = "script_master_ui"}]
+homepage = "https://github.com/pavelmaksimov/script-master-ui"
+keywords = []
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.88"
+uvicorn = {extras = ["standart"], version = "^0.20.0"}
+pydantic = "^1.9.0"
+PyYAML = "^6.0"
+typer = "^0.7.0"
+confz = "^1.8"
+script-master-helper = "^0.0.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+script-master-ui = 'script_master_ui.cli:cli'

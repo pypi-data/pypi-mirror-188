@@ -1,0 +1,46 @@
+{% extends "pages/wrapper.html" %}
+
+{% block title %}
+Detailed {% if render %}with variables{% endif %}
+{% endblock %}
+
+
+{% block title_btns %}
+<span class="d-none d-sm-inline">
+{% if not render %}
+    <a href="/notebook/{{ name }}/detailed?render=true" class="btn btn-outline-secondary{% if not valid %} disabled" title="File no valid{% endif %}">Render</a>
+{% else %}
+    <a href="/notebook/{{ name }}/detailed" class="btn btn-outline-secondary">Unrender</a>
+{% endif %}
+</span>
+<span class="d-none d-sm-inline">
+    <a href="/notebook/{{ name }}/edit" class="btn btn-outline-success">Edit</a>
+</span>
+<span class="d-none d-sm-inline">
+    <a href="/notebook/{{ name }}/tasks" class="btn btn-outline-primary">Tasks</a>
+</span>
+<span class="d-none d-sm-inline">
+    <a href="/notebook/{{ name }}/error-tasks" class="btn btn-outline-warning">Error tasks</a>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="card card-lg">
+    <div class="card-body ">
+        <div class="row g-4">
+            <div class="col-12 markdown">
+                <h1>{{ name }}</h1>
+                <p>{{ filepath }}</p>
+                <pre style="background: #1f2936">{{ yaml_text }}</pre>
+            </div>
+
+            {% if yaml_text_error %}
+            <div class="mb-3">
+                <h3 class="text-danger">Error</h3>
+                <pre class="text-danger" style="background-color: #0d1117">{{ yaml_text_error }}</pre>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
