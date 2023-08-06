@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/duration.proto";
+
+import "common.proto";
+import "entity_reference.proto";
+
+option java_package = "io.calixa.domain.learning";
+option java_multiple_files = true;
+option optimize_for = SPEED;
+
+package calixa.domain.learning;
+
+/**
+ * Enumerates the possible Prediction Tasks available. A Prediction Task
+ * might be comprised of several ML model, both supervised and not, whose output
+ * are then combined to generate a TaskResult.
+ */
+enum PredictionTask {
+  PREDICTION_TASK_UNSPECIFIED = 0;
+  PREDICTION_TASK_BIG_FISH = 1;
+}
+
+message LearningWorkflowNotification {
+  // This tells us for whom the work is done and work is done
+
+  string organization_id = 1;
+  PredictionTask prediction_task = 2;
+
+  string labels_table_name = 10;
+  string feature_vectors_table_name = 11;
+  string model_table_name = 12;
+}
+
+message Reason {
+  string feature_name = 1;
+  double attribution = 2;
+}
+
+message Prediction {
+  google.protobuf.Value predicted_label = 1;
+  double probability = 2;
+  repeated Reason reasons = 3;
+}
+
+/**
+ * Defines a PredictionTask: which models and which features for each models.
+ * A collection of these messages represent the 'prediction_task_definitions' for a given organization_id
+ * and it is stored in organization.proto:Settings
+ */
+message PredictionTaskDefinition {
+  string prediction_id = 100;
+  PredictionTask prediction_task = 1;
+
+  // which entity type this task for?
+  calixa.domain.common.EntityType entity_type = 3;
+}
+
+message GetLabelRequest {
+ string organization_id = 1;
+ // optional, omit to retrieve all overwrites for the specified org
+ oneof type {
+   string canonical_id = 2;
+   calixa.domain.common.EntityType entity_type = 3;
+ }
+ string prediction_id = 4;
+}
+
+message SetLabelRequest {
+  Label label = 1;
+  string organization_user_id = 2;
+}
+
+message Label {
+  calixa.domain.entity.EntityReference entity_reference = 1;
+  string prediction_id = 2;
+  google.protobuf.Value value = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message LabelList {
+  repeated Label labels = 1;
+}
+
+service LearningService {
+  rpc setLabel(SetLabelRequest) returns (Label) {}
+  rpc getLabels(GetLabelRequest) returns (LabelList) {}
+}
