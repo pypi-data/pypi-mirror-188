@@ -1,0 +1,28 @@
+[package]
+name = "pysonic_channel"
+version = "0.1.2"
+edition = "2021"
+authors = ["ylfeng <ylfeng@ir.hit.edu.cn>"]
+description = "Python client for sonic search backend"
+categories = ["api-bindings"]
+keywords = ["sonic", "search", "client", "elasticsearch", "api"]
+license = "MPL-2.0"
+repository = "https://github.com/alongwy/pysonic"
+homepage = "https://github.com/alongwy/pysonic"
+documentation = "https://docs.rs/pysonic"
+readme = "README.md"
+
+[lib]
+name = "sonic"
+crate-type = ["cdylib"]
+
+[dependencies]
+sonic-channel = { version = "1.0" }
+pyo3 = { version = "0.18", features = ["default", "extension-module"] }
+
+[features]
+default = ["search", "ingest", "control", "abi3"]
+search = ["sonic-channel/search"]
+ingest = ["sonic-channel/ingest"]
+control = ["sonic-channel/control"]
+abi3 = ["pyo3/abi3-py37"]
