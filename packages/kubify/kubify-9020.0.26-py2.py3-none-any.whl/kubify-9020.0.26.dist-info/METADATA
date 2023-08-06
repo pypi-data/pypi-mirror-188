@@ -1,0 +1,198 @@
+Metadata-Version: 2.1
+Name: kubify
+Version: 9020.0.26
+Summary: Rapid Testing Framework for Kubernetes
+Home-page: https://github.com/willyguggenheim/kubify
+Author: kubify
+Author-email: w@kubify.com
+License: BSD license
+Keywords: kubify
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.7
+License-File: LICENSE
+Requires-Dist: ansible-runner
+Requires-Dist: awscli
+Requires-Dist: boto3
+Requires-Dist: kubernetes
+Provides-Extra: develop
+Requires-Dist: Sphinx ; extra == 'develop'
+Requires-Dist: bandit ; extra == 'develop'
+Requires-Dist: black ; extra == 'develop'
+Requires-Dist: bump2version ; extra == 'develop'
+Requires-Dist: check-manifest ; extra == 'develop'
+Requires-Dist: flake8 ; extra == 'develop'
+Requires-Dist: pick ; extra == 'develop'
+Requires-Dist: pylint ; extra == 'develop'
+Requires-Dist: pytest ; extra == 'develop'
+Requires-Dist: pytest-cov ; extra == 'develop'
+Requires-Dist: tox ; extra == 'develop'
+Provides-Extra: test
+Requires-Dist: bandit ; extra == 'test'
+Requires-Dist: black ; extra == 'test'
+Requires-Dist: bump2version ; extra == 'test'
+Requires-Dist: check-manifest ; extra == 'test'
+Requires-Dist: flake8 ; extra == 'test'
+Requires-Dist: pick ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: tox ; extra == 'test'
+Provides-Extra: tests
+Requires-Dist: bandit ; extra == 'tests'
+Requires-Dist: black ; extra == 'tests'
+Requires-Dist: bump2version ; extra == 'tests'
+Requires-Dist: check-manifest ; extra == 'tests'
+Requires-Dist: flake8 ; extra == 'tests'
+Requires-Dist: pick ; extra == 'tests'
+Requires-Dist: pytest ; extra == 'tests'
+Requires-Dist: pytest-cov ; extra == 'tests'
+Requires-Dist: tox ; extra == 'tests'
+
+dev toolkit for kubernetes multi-cloud multi-service
+
+release targets
+===============
+
+* conda https://anaconda.org/kubify/kubify
+* docker/podman https://hub.docker.com/repository/docker/willy0912/kubify
+* pip/pypa/poerty https://pypi.org/project/kubify
+
+.. |artifacts_release| image:: https://github.com/willyguggenheim/kubify/actions/workflows/docker-pypi-conda.yml/badge.svg?branch=main
+   :target: https://hub.docker.com/repository/docker/willy0912/kubify
+.. |docs_release| image:: https://readthedocs.org/projects/kubify-os/badge/?version=latest
+   :target: https://kubify.readthedocs.io/en/latest/?version=latest
+
+on-boarding
+===========
+
+1. ``make clouds``
+2. ``kubfiy start-all``
+
+welcome
+=======
+
+kubify os oss, version: 9020.0.26
+
+getting started
+===============
+
+local
+=======
+
+.. code-block:: bash
+
+   $ [pip|conda] install kubify
+   $ kubify --up
+   $ kubify --start-all
+   $ cd services[][] && kubify --start
+   $ kubify --down
+
+compatible with cloud providers
+    * aws
+    * gcp
+    * azure
+
+compatible with devops tools
+    * terraform
+    * terraform cdk
+    * cloudformation
+    * serverless framework
+    * helm and kustomize
+
+"if it works on my computer, it will work in the cloud"
+
+cloud
+=====
+
+.. code-block:: bash
+
+   $ make clouds
+   $ make clouds-delete
+
+docs
+====
+
+1. https://kubify-os.readthedocs.io
+2. CONTRIBUTING.rst
+3. USAGE.rst
+
+.. figure:: ./docs/img/README_md_imgs/kubify-arch.drawio.png
+   :alt: TURN_KEY_DEVOPS_RAPID_TESTER
+
+aws partner
+===========
+
+.. figure:: ./docs/img/README_md_imgs/AWS-Partner.jpeg
+   :alt: AWSPARTNER
+
+enjoy the fun
+
+To use the python package
+=========================
+
+You can ``import kubify`` (we ship to PyPi), and then you can override
+any folder (such as terraform or services folders) by having folder with
+the same name in your repo.
+
+See ``./examples/simple`` for Python Package usage example.
+
+To run this repo directly
+=========================
+
+To contribute to Kubify Open Source (and I hope you do), then clone this
+repo and:
+
+1. ``make cloud cloud=[aws|gcp|azure]``
+2. ``make local``
+3. ``make local start-all``
+4. ``make local [service]``
+
+All the dependant services will start and will listen for code changes
+as well. Efficiently edit the entire codebase.
+
+To install directly on workstation
+==================================
+
+To install directly on your workstation (instead of just using the
+container):
+
+1. apple: ``make mac``
+2. ubuntu, debian and other debian-based: ``make deb``
+3. rhel, centos and other epel-based: ``make epel``
+
+Environment Isolation
+~~~~~~~~~~~~~~~~~~~~~
+
+Security Minute: You should not give prod access to anyone (but devs
+need to debug urgent issue in prod). Zero Trust, With No Data Access, yet Identical Env. How?
+
+.. code:: bash
+
+   cd services/example-node-complex-svc
+   make local prod
+
+What Just Happened?
+===================
+
+You are hot patching many services locally (and with the full real
+environment) without access to data, but with the full real prod!
+Kubernetes can be amazing, and it is, with Kubify..
+
+Contributing Workflow Patterns
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. DevContainer
+2. Invoke Python Directly (pull image if missing tools)
+3. Tox (multi-python testing)
+4. Install Directly and Invoke Python Directly
+
