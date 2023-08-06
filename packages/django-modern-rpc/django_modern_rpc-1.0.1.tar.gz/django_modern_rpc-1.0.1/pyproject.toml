@@ -1,0 +1,167 @@
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "django-modern-rpc"
+version = "1.0.1"
+
+authors = ["Antoine Lorence <antoine.lorence@gmail.com>"]
+description = "Simple and powerful RPC server for your Django project"
+repository = "https://github.com/alorence/django-modern-rpc"
+documentation = "https://django-modern-rpc.readthedocs.io"
+
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Framework :: Django",
+    "Framework :: Django :: 2.1",
+    "Framework :: Django :: 2.2",
+    "Framework :: Django :: 3.0",
+    "Framework :: Django :: 3.1",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+packages = [
+    { include = "modernrpc" }
+]
+include = ["README.md"]
+exclude = ["tests"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/alorence/django-modern-rpc/issues"
+"Demo" = "https://modernrpc.onrender.com"
+
+[tool.poetry.dependencies]
+python = "^3.5"
+django = ">=2.1"
+docutils = { version = "*", optional = true }
+markdown = { version = "*", optional = true }
+
+[tool.poetry.extras]
+docutils = ["docutils"]
+markdown = ["markdown"]
+
+[tool.poetry.group.dev.dependencies]
+jsonrpcclient = "^3.3"
+requests = "*"
+docutils = "*"
+markdown = "*"
+
+[tool.poetry.group.tests]
+optional = false
+[tool.poetry.group.tests.dependencies]
+# pytest 6.1 doesn't run with python 3.10. But pytest 6.2 requires at least python 3.6
+# Use poetry "multiple constraints dependencies" syntax to fix it until python 3.5 support is dropped
+# This will bread requirements file export (used in tox config) but a specific fix is used (see tox.ini)
+pytest = [
+    { version = "^6.1", python = "<3.6" },
+    { version = "^6.2", python = ">=3.6" }
+]
+pytest-django = "*"
+pytest-pythonpath = "*"
+pytest-sugar = "^0.9"
+pytest-cov = "*"
+
+[tool.poetry.group.tox]
+optional = true
+[tool.poetry.group.tox.dependencies]
+tox = "^3.25.0"
+
+[tool.poetry.group.docs]
+optional = true
+[tool.poetry.group.docs.dependencies]
+sphinx = { version = "^4", python = ">=3.7" }
+sphinx-autobuild = { version = "^2021", python = ">=3.7" }
+sphinx-book-theme = {version = "^0.3", python = ">=3.7"}
+myst-parser = {version = "^0.17.2", python = ">=3.7"}
+
+[tool.poetry.group.flake8]
+optional = true
+[tool.poetry.group.flake8.dependencies]
+flake8 = "*"
+
+[tool.poetry.group.pylama]
+optional = true
+[tool.poetry.group.pylama.dependencies]
+pylama = { version = "^8.4.1", python = ">=3.7" }
+
+[tool.poetry.group.black]
+optional = true
+[tool.poetry.group.black.dependencies]
+black = { version = "^21.12b0", python = ">=3.7" }
+
+[tool.poetry.group.pylint]
+optional = true
+[tool.poetry.group.pylint.dependencies]
+pylint = { version = "^2.15", python = ">=3.7.2" }
+## This ensure platformdirs won't be installed on python 3.5 & 3.6 env, which is impossible due to dependency graph
+platformdirs = { version = "^2.2", python = ">=3.7" }
+
+[tool.poetry.group.mypy]
+optional = true
+[tool.poetry.group.mypy.dependencies]
+mypy = { version = "^0.931", python = ">=3.6" }
+django-stubs = { version = "^1.9.0", python = ">=3.6" }
+types-docutils = { version = "^0.17.1", python = ">=3.6" }
+types-Markdown = { version = "^3.3.9", python = ">=3.6" }
+
+[tool.pylint]
+# Override default pylint configurations
+# To update, run `pylint --generate-rcfile` for default reference or check the docs:
+#  - http://pylint.pycqa.org/en/latest/technical_reference/features.html
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+# pytest-pythonpath settings; Ensure tests are run within ./tests directory so "testsite.settings" can be imported
+python_paths = "tests"
+# pytest-django settings
+DJANGO_SETTINGS_MODULE = "testsite.settings"
+FAIL_INVALID_TEMPLATE_VARS = true
+
+[tool.mypy]
+exclude = [
+    '^tests/.+$',
+    '^docs/.+$',
+]
+
+[tool.black]
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+(
+  ^/docs
+  | .*module_with_syntax_errors\.py
+)'''
+
+[tool.pylama]
+max_line_length = 120
+skip = ".git/*,.vscode/*,.idea/*,dist/*,.tox/*,.pytest_cache/*,.mypy_cache/*"
+
+[tool.pylama.linter.pyflakes]
+ignore = "W0611"
+max-complexity = 10
+
+[tool.pylama.linter.mccabe]
+max-complexity = 10
