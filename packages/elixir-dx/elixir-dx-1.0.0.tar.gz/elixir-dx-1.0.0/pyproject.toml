@@ -1,0 +1,39 @@
+[project]
+name = "elixir-dx"
+version = "1.0.0"
+description = "Python wrapper for Data Explorer"
+authors = [
+    { name = "ciusji", email = "bqjimaster@gmail.com" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["data", "exploration", "visualization"]
+
+dependencies = [
+    "pandas>=1.3.5",
+    "ipython>=7.31.1",
+    "pydantic>=1.9",
+    "structlog>=22.1.0",
+    "duckdb>=0.6.1",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.black]
+line-length = 100
+
+[tool.coverage.run]
+branch = false
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = ["if self.debug:",
+                 "pragma: no cover",
+                 "raise AssertionError",
+                 "raise NotImplementedError",
+                 "if __name__ == '__main__':"]
+ignore_errors = true
+omit = []
+
