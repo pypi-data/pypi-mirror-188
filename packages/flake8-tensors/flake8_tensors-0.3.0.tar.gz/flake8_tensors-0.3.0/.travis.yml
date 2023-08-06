@@ -1,0 +1,20 @@
+language: python
+dist: bionic
+
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  - "3.9"
+
+install:
+  - pip install -U tox-travis coverage coveralls
+  - pip install -U -r requirements.txt
+
+
+script:
+  - tox
+  - coverage run --source flake8_tensors -L -m flake8 test/test.py  --select WT
+
+after_success:
+  - coveralls
