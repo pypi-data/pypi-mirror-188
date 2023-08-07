@@ -1,0 +1,24 @@
+SELECT DISTINCT
+	ss_users.id AS user_id,
+	ss_users.email,
+	ss_users.company_name,
+	ss_users.first_name,
+	ss_users.last_name,
+	ss_users.login,
+	ss_users.password
+
+FROM
+	`ss_users`,
+	ssm_commdep_projects_activities
+
+WHERE
+	ss_users.id = ssm_commdep_projects_activities.creator_id
+
+	GROUP BY
+	ss_users.id,
+	ss_users.email,
+	ss_users.company_name,
+	ss_users.first_name,
+	ss_users.last_name,
+	ss_users.login,
+	ss_users.password
